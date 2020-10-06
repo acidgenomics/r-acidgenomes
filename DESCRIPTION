@@ -1,0 +1,95 @@
+Package: acidgenomes
+Title: Acid Genomics Genome Annotations
+Description: Toolkit for downloading and processing genome annotations.
+Version: 0.0.1
+Date: 2020-10-05
+Authors@R: c(
+    person(
+        "Michael", "Steinbaugh",
+        email = "mike@steinbaugh.com",
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-2403-2221")
+    ),
+    person(
+        given = "Acid Genomics",
+        role = c("cph", "fnd")
+    ))
+URL:
+    https://acidgenomes.acidgenomics.com/,
+    https://github.com/acidgenomics/acidgenomes/
+BugReports: https://github.com/acidgenomics/acidgenomes/issues/
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.0)
+Imports:
+    AnnotationDbi,
+    AnnotationHub,
+    Biobase,
+    BiocFileCache,
+    BiocGenerics,
+    BiocParallel,
+    Biostrings,
+    GenomeInfoDb,
+    GenomicFeatures,
+    GenomicRanges,
+    IRanges,
+    Matrix (>= 1.2),
+    S4Vectors,
+    SingleCellExperiment,
+    SummarizedExperiment,
+    acidbase (>= 0.1.14),
+    acidgenerics (>= 0.3.12),
+    cli (>= 2.0),
+    ensembldb,
+    goalie (>= 0.4.8),
+    magrittr (>= 1.5),
+    matrixStats (>= 0.56),
+    methods,
+    pipette (>= 0.4.14),
+    rappdirs (>= 0.3),
+    scales (>= 1.1),
+    sessioninfo (>= 1.1),
+    stringr (>= 1.4),
+    syntactic (>= 0.4.2),
+    tibble (>= 3.0),
+    utils
+Suggests:
+    BiocStyle,
+    EnsDb.Hsapiens.v75,
+    RCurl,
+    acidtest (>= 0.3.2),
+    biomaRt,
+    datasets,
+    knitr,
+    rmarkdown,
+    testthat
+Remotes:
+    acidgenomics/acidbase,
+    acidgenomics/acidgenerics,
+    acidgenomics/acidtest,
+    acidgenomics/goalie,
+    acidgenomics/pipette,
+    acidgenomics/syntactic
+biocViews:
+    DataImport,
+    GenomeAnnotation,
+    Preprocessing
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
+Collate: 
+    'AllClasses.R'
+    'AllGenerics.R'
+    'imports.R'
+    'makeGRanges-internal.R'
+    'makeGRangesFromEnsembl.R'
+    'makeGRangesFromEnsDb.R'
+    'makeGRangesFromGFF-Ensembl.R'
+    'makeGRangesFromGFF-FlyBase.R'
+    'makeGRangesFromGFF-GENCODE.R'
+    'makeGRangesFromGFF-RefSeq.R'
+    'makeGRangesFromGFF-WormBase.R'
+    'makeGRangesFromGFF.R'
+    'makeGene2Symbol.R'
+    'makeTx2Gene.R'
+    'makeTx2GeneFromFASTA.R'
