@@ -3,6 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{pasteURL}
 \alias{organism}
 \alias{organism<-}
 \title{Objects exported from other packages}
@@ -12,6 +13,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{AcidBase}{\code{\link[AcidBase]{pasteURL}}}
+
   \item{BiocGenerics}{\code{\link[BiocGenerics:organism_species]{organism}}, \code{\link[BiocGenerics:organism_species]{organism<-}}}
 }}
 
