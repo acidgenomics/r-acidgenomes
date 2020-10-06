@@ -24,6 +24,7 @@ Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.2.1),
     AcidGenerics (>= 0.4.0),
+    AcidPlyr (>= 0.1.0),
     AnnotationDbi,
     AnnotationHub,
     Biobase,
@@ -58,6 +59,7 @@ Suggests:
 Remotes:
     acidgenomics/AcidBase,
     acidgenomics/AcidGenerics,
+    acidgenomics/AcidPlyr,
     acidgenomics/AcidTest,
     acidgenomics/goalie,
     acidgenomics/pipette,
@@ -93,7 +95,7 @@ Collate:
     'internal-detectGFF.R'
     'internal-makeGRanges.R'
     'internal-mergeGenesIntoTranscripts.R'
-    'internal-slotGenomeMetadata.R'
+    'internal-metadata.R'
     'makeGRangesFromEnsembl.R'
     'makeGRangesFromEnsDb.R'
     'makeGRangesFromGFF-Ensembl.R'
