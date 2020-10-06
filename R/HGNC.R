@@ -1,7 +1,7 @@
 #' Import HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-06.
 #'
 #' @return `HGNC`.
 #'
@@ -24,7 +24,7 @@ HGNC <- function() {
         "hgnc_complete_set.txt",
         protocol = "ftp"
     )
-    file <- cacheURL(url)
+    file <- cacheURL(url = url, pkg = packageName())
     df <- import(file, format = "tsv")
     df <- as(df, "DataFrame")
     colnames(df) <- camelCase(colnames(df))
