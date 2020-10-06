@@ -7,7 +7,7 @@
 #' @name makeTx2Gene
 #' @note Updated 2020-10-05.
 #'
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #'
 #' @return `Tx2Gene`.
 #'
