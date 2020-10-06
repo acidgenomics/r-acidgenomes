@@ -4,6 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{organism}
+\alias{organism<-}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +12,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{BiocGenerics}{\code{\link[BiocGenerics:organism_species]{organism}}}
+  \item{BiocGenerics}{\code{\link[BiocGenerics:organism_species]{organism}}, \code{\link[BiocGenerics:organism_species]{organism<-}}}
 }}
 
