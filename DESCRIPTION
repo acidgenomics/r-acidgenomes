@@ -1,8 +1,8 @@
-Package: acidgenomes
+Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
-Version: 0.0.1
-Date: 2020-10-05
+Version: 0.1.0
+Date: 2020-10-06
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -16,8 +16,8 @@ Authors@R: c(
     ))
 URL:
     https://acidgenomes.acidgenomics.com/,
-    https://github.com/acidgenomics/acidgenomes/
-BugReports: https://github.com/acidgenomics/acidgenomes/issues/
+    https://github.com/acidgenomics/AcidGenomes/
+BugReports: https://github.com/acidgenomics/AcidGenomes/issues/
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
@@ -25,7 +25,6 @@ Imports:
     AnnotationDbi,
     AnnotationHub,
     Biobase,
-    BiocFileCache,
     BiocGenerics,
     BiocParallel,
     Biostrings,
@@ -37,8 +36,8 @@ Imports:
     S4Vectors,
     SingleCellExperiment,
     SummarizedExperiment,
-    acidbase (>= 0.1.14),
-    acidgenerics (>= 0.3.12),
+    AcidBase (>= 0.1.14),
+    AcidGenerics (>= 0.3.12),
     cli (>= 2.0),
     ensembldb,
     goalie (>= 0.4.8),
@@ -64,8 +63,8 @@ Suggests:
     rmarkdown,
     testthat
 Remotes:
-    acidgenomics/acidbase,
-    acidgenomics/acidgenerics,
+    acidgenomics/AcidBase,
+    acidgenomics/AcidGenerics,
     acidgenomics/acidtest,
     acidgenomics/goalie,
     acidgenomics/pipette,
