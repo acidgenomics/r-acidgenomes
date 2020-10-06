@@ -72,6 +72,7 @@ VignetteBuilder: knitr
 Collate: 
     'AllClasses.R'
     'AllGenerics.R'
+    'AllGlobals.R'
     'Ensembl2Entrez-methods.R'
     'Gene2Symbol-methods.R'
     'HGNC.R'
