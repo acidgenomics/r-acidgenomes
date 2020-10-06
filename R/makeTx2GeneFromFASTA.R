@@ -5,7 +5,7 @@
 #'   contain gene identifiers, and is not supported.
 #' @note Updated 2019-11-06.
 #'
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
 #'   FASTA file source:
 #'

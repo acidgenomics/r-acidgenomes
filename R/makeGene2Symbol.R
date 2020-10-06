@@ -8,7 +8,7 @@
 #' @note Updated 2020-10-05.
 #'
 #' @inheritParams Gene2Symbol
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #'
 #' @return `Gene2Symbol`.
 #'

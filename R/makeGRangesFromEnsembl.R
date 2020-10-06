@@ -84,7 +84,7 @@
 #' @export
 #' @note Updated 2020-10-05.
 #'
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #'
 #' @return `GRanges`.
 #'
