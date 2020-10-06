@@ -224,7 +224,7 @@ Related URLs:
 }
 
 \examples{
-file <- pasteURL(basejumpTestsURL, "ensembl.gtf", protocol = "none")
+file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf", protocol = "none")
 
 ## Genes
 x <- makeGRangesFromGFF(file = file, level = "genes")

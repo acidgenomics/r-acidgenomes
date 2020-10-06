@@ -66,7 +66,7 @@ File path.}
 Make a Gene2Symbol object
 }
 \note{
-Updated 2020-10-05.
+Updated 2020-10-06.
 }
 \section{GFF/GTF file}{
 
@@ -87,12 +87,12 @@ if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {
 
 ## makeGene2SymbolFromGFF ====
 ## GTF
-file <- file.path(basejumpTestsURL, "example.gtf")
+file <- file.path(AcidGenomesTestsURL, "example.gtf")
 x <- makeGene2SymbolFromGFF(file)
 print(x)
 
 ## GFF3
-file <- file.path(basejumpTestsURL, "example.gff3")
+file <- file.path(AcidGenomesTestsURL, "example.gff3")
 x <- makeGene2SymbolFromGFF(file)
 print(x)
 }
