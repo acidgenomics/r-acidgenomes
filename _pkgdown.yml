@@ -1,0 +1,16 @@
+authors:
+  Michael Steinbaugh:
+    href: https://steinbaugh.com/
+  Acid Genomics:
+    href: https://acidgenomics.com/
+
+navbar:
+  components:
+     acid:
+       icon: "fas fa-vial fa-lg"
+       href: https://acidgenomics.com/
+  structure:
+    right: [acid, github]
+
+news:
+  - one_page: false
