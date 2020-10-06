@@ -105,5 +105,6 @@ Collate:
     'mapHumanOrthologs.R'
     'mapUCSCBuildToEnsembl.R'
     'organism-methods.R'
+    'params.R'
     'reexports.R'
     'stripTranscriptVersions-methods.R'
