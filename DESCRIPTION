@@ -93,6 +93,7 @@ Collate:
     'internal-detectGFF.R'
     'internal-makeGRanges.R'
     'internal-mergeGenesIntoTranscripts.R'
+    'internal-slotGenomeMetadata.R'
     'makeGRangesFromEnsembl.R'
     'makeGRangesFromEnsDb.R'
     'makeGRangesFromGFF-Ensembl.R'
