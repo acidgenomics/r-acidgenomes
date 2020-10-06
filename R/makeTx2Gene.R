@@ -42,7 +42,7 @@ NULL
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2020-10-05.
+## Updated 2020-10-06.
 makeTx2GeneFromEnsembl <-
     function() {
         gr <- do.call(
@@ -50,6 +50,7 @@ makeTx2GeneFromEnsembl <-
             args = matchArgsToDoCall(
                 args = list(
                     level = "transcripts",
+                    broadClass = FALSE,
                     synonyms = FALSE
                 )
             )
@@ -65,13 +66,14 @@ formals(makeTx2GeneFromEnsembl) <- f
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2020-10-05.
+## Updated 2020-10-06.
 makeTx2GeneFromEnsDb <- function(object) {
     gr <- do.call(
         what = makeGRangesFromEnsDb,
         args = matchArgsToDoCall(
             args = list(
                 level = "transcripts",
+                broadClass = FALSE,
                 synonyms = FALSE
             )
         )
@@ -93,6 +95,7 @@ makeTx2GeneFromGFF <- function(file) {
         what = makeGRangesFromGFF,
         args = matchArgsToDoCall(args = list(
             level = "transcripts",
+            broadClass = FALSE,
             synonyms = FALSE
         ))
     )

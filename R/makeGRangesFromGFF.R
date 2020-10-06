@@ -183,12 +183,14 @@ makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreTxVersion = TRUE,
+    broadClass = TRUE,
     synonyms = FALSE,
     .checkAgainstTxDb = FALSE
 ) {
     assert(
         isString(file),
         isFlag(ignoreTxVersion),
+        isFlag(broadClass),
         isFlag(synonyms),
         isFlag(.checkAgainstTxDb)
     )
@@ -294,8 +296,6 @@ makeGRangesFromGFF <- function(
     if (type == "GFF3") {
         genes <- .minimizeGFF3(genes)
     }
-    ## Drop columns that contain all `NA`.
-    mcols(genes) <- removeNA(mcols(genes))
     ## Set names and stash metadata.
     names(genes) <- mcols(genes)[["gene_id"]]
     metadata(genes)[["level"]] <- "genes"
@@ -336,10 +336,6 @@ makeGRangesFromGFF <- function(
         if (type == "GFF3") {
             transcripts <- .minimizeGFF3(transcripts)
         }
-        ## Drop columns that contain all NA.
-        ## This step is necessary for gene-level merge step to work.
-        ## Relatively slow for large datasets, and could use a speed boost.
-        mcols(transcripts) <- removeNA(mcols(transcripts))
         ## Set names and stash metadata.
         names(transcripts) <- mcols(transcripts)[["transcript_id"]]
         metadata(transcripts)[["level"]] <- "transcripts"
@@ -364,6 +360,7 @@ makeGRangesFromGFF <- function(
     out <- .makeGRanges(
         object = out,
         ignoreTxVersion = ignoreTxVersion,
+        broadClass = broadClass,
         synonyms = synonyms
     )
     ## Ensure that the ranges match GenomicFeatures output, if desired.

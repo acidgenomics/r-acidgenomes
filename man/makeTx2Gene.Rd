@@ -24,7 +24,12 @@ makeTx2GeneFromEnsDb(
   synonyms = FALSE
 )
 
-makeTx2GeneFromGFF(file, ignoreTxVersion = TRUE, synonyms = FALSE)
+makeTx2GeneFromGFF(
+  file,
+  ignoreTxVersion = TRUE,
+  broadClass = TRUE,
+  synonyms = FALSE
+)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
