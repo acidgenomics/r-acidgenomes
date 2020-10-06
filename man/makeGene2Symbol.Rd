@@ -42,6 +42,13 @@ ensembldb in use.}
 in the identifier. Only applies when \code{level = "transcripts"}. This
 simplifies identifier matching when generating a \code{tx2gene} file.}
 
+\item{broadClass}{\code{logical(1)}.
+Include broad class definitions.}
+
+\item{synonyms}{\code{logical(1)}.
+Include gene synonyms.
+Queries the Ensembl web server, and is CPU intensive.}
+
 \item{format}{\code{character(1)}.
 Formatting method to apply:
 \itemize{
