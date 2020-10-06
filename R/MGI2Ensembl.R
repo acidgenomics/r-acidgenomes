@@ -14,7 +14,7 @@ MGI2Ensembl <- function() {  # nolint
         "MGI_Gene_Model_Coord.rpt",
         protocol = "http"
     )
-    file <- cacheURL(url)
+    file <- cacheURL(url = url, pkg = packageName())
     df <- import(file = file, format = "tsv", colnames = TRUE)
     df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgi", "ensembl")

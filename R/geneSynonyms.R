@@ -56,7 +56,7 @@ geneSynonyms <- function(
         paste0(genome[["species"]], ".gene_info.gz"),
         protocol = "ftp"
     )
-    file <- cacheURL(url)
+    file <- cacheURL(url = url, pkg = packageName())
     df <- import(file = file, format = "tsv", colnames = TRUE)
     assert(hasLength(df))
     df <- as(df, "DataFrame")
