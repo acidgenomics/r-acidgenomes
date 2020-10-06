@@ -36,5 +36,6 @@ Provides legacy support for GRCh37 (hg19).
 Updated 2020-10-06.
 }
 \examples{
-getEnsDb(organism = "Homo sapiens", release = 100L)
+object <- getEnsDb(organism = "Homo sapiens", release = 100L)
+class(object)
 }
