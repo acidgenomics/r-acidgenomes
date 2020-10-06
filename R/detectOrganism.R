@@ -53,7 +53,7 @@ detectOrganism <- function(object) {
     assert(isCharacter(object))
     data <- import(
         file = system.file(
-            "extdata", "organismMappings.rds",
+            "extdata", "detectOrganism.rds",
             package = packageName()
         ),
         quiet = TRUE
