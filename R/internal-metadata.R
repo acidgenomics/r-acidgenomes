@@ -1,12 +1,6 @@
-## FIXME REWORK THIS FILE.
-
-
-
-## Unordered list.
-.li <- "  -"
-
-
-
+#' Prototype metadata
+#' @note Updated 2020-10-06.
+#' @noRd
 .prototypeMetadata <- list(
     version = packageVersion("basejump"),
     date = Sys.Date()
@@ -14,6 +8,9 @@
 
 
 
+#' Slot genome metadata
+#' @note Updated 2020-10-06.
+#' @noRd
 .slotGenomeMetadata <- function(object) {
     metadata <- metadata(object)
     proto <- c(
@@ -30,7 +27,9 @@
 
 
 
-## Slot organism into `metadata()`, if necessary.
+#' Slot organism into metadata, if necessary
+#' @note Updated 2020-10-06.
+#' @noRd
 .slotOrganism <- function(object) {
     if (is.null(metadata(object)[["organism"]])) {
         metadata(object)[["organism"]] <- tryCatch(
