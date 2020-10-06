@@ -22,6 +22,8 @@ License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
+    AcidBase (>= 0.1.14),
+    AcidGenerics (>= 0.3.12),
     AnnotationDbi,
     AnnotationHub,
     Biobase,
@@ -32,40 +34,30 @@ Imports:
     GenomicFeatures,
     GenomicRanges,
     IRanges,
-    Matrix (>= 1.2),
     S4Vectors,
-    SingleCellExperiment,
     SummarizedExperiment,
-    AcidBase (>= 0.1.14),
-    AcidGenerics (>= 0.3.12),
     cli (>= 2.0),
     ensembldb,
     goalie (>= 0.4.8),
     magrittr (>= 1.5),
-    matrixStats (>= 0.56),
     methods,
-    pipette (>= 0.4.14),
-    rappdirs (>= 0.3),
-    scales (>= 1.1),
+    pipette (>= 0.4.15),
     sessioninfo (>= 1.1),
     stringr (>= 1.4),
     syntactic (>= 0.4.2),
     tibble (>= 3.0),
     utils
 Suggests:
-    BiocStyle,
+    AcidTest (>= 0.3.2),
     EnsDb.Hsapiens.v75,
-    RCurl,
-    acidtest (>= 0.3.2),
     biomaRt,
-    datasets,
     knitr,
     rmarkdown,
     testthat
 Remotes:
     acidgenomics/AcidBase,
     acidgenomics/AcidGenerics,
-    acidgenomics/acidtest,
+    acidgenomics/AcidTest,
     acidgenomics/goalie,
     acidgenomics/pipette,
     acidgenomics/syntactic
@@ -82,7 +74,10 @@ Collate:
     'Ensembl2Entrez-methods.R'
     'Gene2Symbol-methods.R'
     'Tx2Gene-methods.R'
+    'detectOrganism.R'
+    'getEnsDb.R'
     'imports.R'
+    'internal-AnnotationHub.R'
     'makeGRanges-internal.R'
     'makeGRangesFromEnsembl.R'
     'makeGRangesFromEnsDb.R'
@@ -95,3 +90,4 @@ Collate:
     'makeGene2Symbol.R'
     'makeTx2Gene.R'
     'makeTx2GeneFromFASTA.R'
+    'reexports.R'
