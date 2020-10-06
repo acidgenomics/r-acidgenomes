@@ -22,8 +22,8 @@ License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    AcidBase (>= 0.1.14),
-    AcidGenerics (>= 0.3.12),
+    AcidBase (>= 0.2.1),
+    AcidGenerics (>= 0.4.0),
     AnnotationDbi,
     AnnotationHub,
     Biobase,
@@ -39,7 +39,7 @@ Imports:
     SummarizedExperiment,
     cli (>= 2.0),
     ensembldb,
-    goalie (>= 0.4.8),
+    goalie (>= 0.4.9),
     magrittr (>= 1.5),
     methods,
     pipette (>= 0.4.16),
@@ -49,7 +49,7 @@ Imports:
     tibble (>= 3.0),
     utils
 Suggests:
-    AcidTest (>= 0.3.2),
+    AcidTest (>= 0.4.0),
     EnsDb.Hsapiens.v75,
     biomaRt,
     knitr,
