@@ -16,10 +16,11 @@
 #'   assayNames assayNames<- assays assays<- colData colData<- rowData rowData<-
 #'   rowRanges rowRanges<-
 #' @importFrom cli cli_alert cli_alert_info cli_alert_warning cli_dl
-#' @importFrom goalie areSetEqual assert bapply hasLength hasNoDuplicates
+#' @importFrom goalie areSetEqual assert bapply hasInternet hasLength hasNoDuplicates
 #'   hasRows isAny isCharacter isFlag isInt isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setValidity
 #' @importFrom pipette as.SummarizedExperiment cacheURL getURLDirList import
 #' @importFrom stringr boundary str_extract str_split_fixed
+#' @importFrom syntactic camelCase
 #' @importFrom utils packageName packageVersion
 NULL

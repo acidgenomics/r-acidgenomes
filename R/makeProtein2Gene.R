@@ -1,7 +1,7 @@
 #' Map protein identifiers to genes
 #'
 #' @name makeProtein2Gene
-#' @note Updated 2020-09-29.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ids `character`.
@@ -45,7 +45,7 @@ makeProtein2GeneFromEnsembl <- function(
         columns = c("GENEID", "GENENAME")
     )
     df <- as(df, "DataFrame")
-    df <- camelCase(df)
+    colnames(df) <- camelCase(colnames(df))
     colnames(df) <- gsub("id$", "ID", colnames(df))
     colnames(df) <- gsub("name$", "Name", colnames(df))
     if (!areSetEqual(ids, unique(df[["proteinID"]]))) {
