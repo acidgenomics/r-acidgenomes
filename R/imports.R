@@ -30,3 +30,8 @@
 #' @importFrom syntactic camelCase makeNames
 #' @importFrom utils capture.output packageName packageVersion
 NULL
+
+
+
+## FIXME See if we can make this simpler
+## SummarizedExperiment, S4Vectors, cli
