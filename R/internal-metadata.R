@@ -2,7 +2,7 @@
 #' @note Updated 2020-10-06.
 #' @noRd
 .prototypeMetadata <- list(
-    version = packageVersion("basejump"),
+    version = .version,
     date = Sys.Date()
 )
 

@@ -109,9 +109,10 @@
         n <- length(gr2) - length(gr1)
         cli_alert_warning(sprintf(
             fmt = paste0(
-                "{.pkg basejump} dropped %d %s from file to make ",
-                "{.var GRanges}. Missing: %s."
+                "{.pkg %s} dropped %d %s from file to make {.var GRanges}. ",
+                "Missing: %s."
             ),
+            packageName(),
             n,
             ngettext(
                 n = n,
@@ -144,14 +145,14 @@
                 "%d range mismatches detected in {.var TxDb}.",
                 "Showing {.var GRanges} mismatch comparison (first 10).",
                 "",
-                "(1) {.pkg basejump}:",
+                "(1) {.pkg AcidGenomes}:",
                 "%s",
                 "",
                 "(2) {.pkg GenomicFeatures}:",
                 "%s",
                 "",
                 "If the ranges in (1) are incorrect, please file an issue:",
-                "  https://github.com/acidgenomics/basejump/issues",
+                "  https://github.com/acidgenomics/AcidGenomes/issues",
                 "If the ranges in (2) are incorrect, please file an issue:",
                 "  https://github.com/Bioconductor/GenomicFeatures/issues",
                 sep = "\n"
