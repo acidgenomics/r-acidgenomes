@@ -44,6 +44,7 @@ Imports:
 Suggests:
     AcidTest (>= 0.4.0),
     EnsDb.Hsapiens.v75,
+    GenomicFeatures,
     biomaRt,
     knitr,
     rmarkdown,
