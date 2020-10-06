@@ -284,12 +284,12 @@
 
 
 
-#' Standardize the GRanges into desired conventions used in basejump
+#' Standardize the GRanges into desired conventions
 #'
 #' Note that this step makes GRanges imported via `rtracklayer::import()`
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()`.
 #'
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-06.
 #' @noRd
 .standardizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
