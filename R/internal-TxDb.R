@@ -213,6 +213,7 @@
 #'
 #' @noRd
 .makeTxDbFromGFF <- function(object) {
+    requireNamespaces("GenomicFeatures")
     assert(
         is(object, "GRanges"),
         isSubset("detect", names(metadata(object)))
@@ -230,12 +231,12 @@
                 cli_alert(
                     "Making {.var TxDb} using {.fun makeTxDbFromGFF}."
                 )
-                makeTxDbFromGFF(file)
+                GenomicFeatures::makeTxDbFromGFF(file)
             } else if (type == "GTF") {
                 cli_alert(
                     "Making {.var TxDb} using {.fun makeTxDbFromGRanges}."
                 )
-                makeTxDbFromGRanges(object)
+                GenomicFeatures::makeTxDbFromGRanges(object)
             },
             error = function(e) {
                 stop(

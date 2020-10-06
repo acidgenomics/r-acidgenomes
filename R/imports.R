@@ -1,13 +1,15 @@
 #' @importClassesFrom GenomicRanges GRanges
+#' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase forceDetach matchArgsToDoCall pasteURL requireNamespaces
+#' @importFrom AcidBase forceDetach matchArgsToDoCall pasteURL printString
+#'   requireNamespaces
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
-#' @importFrom GenomicRanges GRanges
-#' @importFrom IRanges IRanges
+#' @importFrom GenomicRanges GRanges ranges seqnames
+#' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame List Rle SimpleList %in% aggregate
 #'   as.data.frame as.list complete.cases cor decode do.call expand expand.grid
 #'   head lapply match mcols mcols<- merge metadata metadata<- na.omit order
@@ -22,9 +24,9 @@
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
 #'   isCharacter isFlag isInt isMatchingRegex isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setValidity
-#' @importFrom pipette as.SummarizedExperiment cacheURL getURL getURLDirList
-#'   import removeNA sanitizeNA
+#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL getURL
+#'   getURLDirList import removeNA sanitizeNA
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
-#' @importFrom syntactic camelCase
-#' @importFrom utils packageName packageVersion
+#' @importFrom syntactic camelCase makeNames
+#' @importFrom utils capture.output packageName packageVersion
 NULL
