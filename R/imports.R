@@ -19,11 +19,11 @@
 #'   cli_div cli_dl cli_end cli_li cli_text cli_ul cli_verbatim
 #' @importFrom ensembldb ensemblVersion
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
-#'   hasInternet hasLength hasNoDuplicates hasNames hasRows isAny isCharacter
-#'   isFlag isInt isMatchingRegex isString isSubset validate
+#'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
+#'   isCharacter isFlag isInt isMatchingRegex isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setValidity
-#' @importFrom pipette as.SummarizedExperiment cacheURL getURLDirList import
-#'   removeNA sanitizeNA
+#' @importFrom pipette as.SummarizedExperiment cacheURL getURL getURLDirList
+#'   import removeNA sanitizeNA
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase
 #' @importFrom utils packageName packageVersion
