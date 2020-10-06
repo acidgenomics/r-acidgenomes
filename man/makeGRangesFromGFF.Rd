@@ -34,6 +34,13 @@ Return as genes or transcripts.}
 in the identifier. Only applies when \code{level = "transcripts"}. This
 simplifies identifier matching when generating a \code{tx2gene} file.}
 
+\item{broadClass}{\code{logical(1)}.
+Include broad class definitions.}
+
+\item{synonyms}{\code{logical(1)}.
+Include gene synonyms.
+Queries the Ensembl web server, and is CPU intensive.}
+
 \item{.checkAgainstTxDb}{\code{logical(1)}.
 Enable strict mode, intended for development and unit testing only.
 Generate an internal \code{TxDb} using \code{\link[GenomicFeatures:makeTxDbFromGRanges]{GenomicFeatures::makeTxDbFromGRanges()}}

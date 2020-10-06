@@ -148,6 +148,7 @@
 #' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
+#' @inheritParams params
 #' @param .checkAgainstTxDb `logical(1)`.
 #'   Enable strict mode, intended for development and unit testing only.
 #'   Generate an internal `TxDb` using [GenomicFeatures::makeTxDbFromGRanges()]

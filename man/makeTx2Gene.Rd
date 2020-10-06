@@ -51,6 +51,13 @@ ensembldb in use.}
 in the identifier. Only applies when \code{level = "transcripts"}. This
 simplifies identifier matching when generating a \code{tx2gene} file.}
 
+\item{broadClass}{\code{logical(1)}.
+Include broad class definitions.}
+
+\item{synonyms}{\code{logical(1)}.
+Include gene synonyms.
+Queries the Ensembl web server, and is CPU intensive.}
+
 \item{object}{Object.}
 
 \item{file}{\code{character(1)}.
@@ -63,7 +70,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2020-10-05.
+Updated 2020-10-06.
 }
 \section{GFF/GTF file}{
 

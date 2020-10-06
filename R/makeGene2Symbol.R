@@ -13,6 +13,7 @@
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
+#' @inheritParams params
 #'
 #' @return `Gene2Symbol`.
 #'
