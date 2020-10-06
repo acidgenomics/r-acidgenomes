@@ -33,7 +33,7 @@ Remaps UCSC genome build to Ensembl automatically, if necessary.
 Provides legacy support for GRCh37 (hg19).
 }
 \note{
-Updated 2020-09-25.
+Updated 2020-10-06.
 }
 \examples{
 getEnsDb(organism = "Homo sapiens", release = 100L)
