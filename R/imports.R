@@ -8,7 +8,6 @@
 #' @importFrom BiocParallel bplapply
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
-#' @importFrom RCurl getURL
 #' @importFrom S4Vectors DataFrame List Rle SimpleList %in% aggregate
 #'   as.data.frame as.list complete.cases cor decode do.call expand expand.grid
 #'   head lapply match mcols mcols<- merge metadata metadata<- na.omit order
@@ -18,6 +17,7 @@
 #'   rowRanges rowRanges<-
 #' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
 #'   cli_div cli_dl cli_end cli_li cli_text cli_ul cli_verbatim
+#' @importFrom ensembldb ensemblVersion
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRows isAny isCharacter
 #'   isFlag isInt isMatchingRegex isString isSubset validate
