@@ -9,6 +9,7 @@ makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
   ignoreTxVersion = TRUE,
+  broadClass = TRUE,
   synonyms = FALSE,
   .checkAgainstTxDb = FALSE
 )
@@ -17,6 +18,7 @@ makeGRangesFromGTF(
   file,
   level = c("genes", "transcripts"),
   ignoreTxVersion = TRUE,
+  broadClass = TRUE,
   synonyms = FALSE,
   .checkAgainstTxDb = FALSE
 )

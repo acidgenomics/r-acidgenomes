@@ -55,6 +55,7 @@ makeGene2SymbolFromEnsembl <-
             args = matchArgsToDoCall(
                 args = list(
                     level = "genes",
+                    broadClass = FALSE,
                     synonyms = FALSE
                 ),
                 removeFormals = "format"
@@ -72,12 +73,13 @@ formals(makeGene2SymbolFromEnsembl) <- f
 
 #' @rdname makeGene2Symbol
 #' @export
-## Updated 2020-10-05.
+## Updated 2020-10-06.
 makeGene2SymbolFromEnsDb <-
     function(object, format) {
         format <- match.arg(format)
         gr <- makeGRangesFromEnsDb(
             object = object,
+            broadClass = FALSE,
             synonyms = FALSE
         )
         Gene2Symbol(gr, format = format)
@@ -90,13 +92,14 @@ formals(makeGene2SymbolFromEnsDb)[["format"]] <-
 
 #' @rdname makeGene2Symbol
 #' @export
-## Updated 2020-10-05.
+## Updated 2020-10-06.
 makeGene2SymbolFromGFF <-
     function(file, format) {
         format <- match.arg(format)
         gr <- makeGRangesFromGFF(
             file = file,
             level = "genes",
+            broadClass = FALSE,
             synonyms = FALSE
         )
         Gene2Symbol(gr, format = format)
