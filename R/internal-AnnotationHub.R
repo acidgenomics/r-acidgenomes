@@ -13,7 +13,7 @@
         ah <- suppressMessages(AnnotationHub())
     }))
     assert(is(ah, "AnnotationHub"))
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     ah
 }
 
@@ -162,7 +162,7 @@
         unname(isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$"))
     )
     cli_alert_info(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     id
 }
 
@@ -229,6 +229,6 @@
     colnames(df)[colnames(df) == "ENSEMBL"] <- "ensembl"
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrez"
     df[["entrez"]] <- as.integer(df[["entrez"]])
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     df
 }
