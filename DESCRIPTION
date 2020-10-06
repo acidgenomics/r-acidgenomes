@@ -79,6 +79,9 @@ VignetteBuilder: knitr
 Collate: 
     'AllClasses.R'
     'AllGenerics.R'
+    'Ensembl2Entrez-methods.R'
+    'Gene2Symbol-methods.R'
+    'Tx2Gene-methods.R'
     'imports.R'
     'makeGRanges-internal.R'
     'makeGRangesFromEnsembl.R'
