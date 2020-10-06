@@ -1,0 +1,76 @@
+#' Make GRanges from EnsDb object
+#'
+#' @details
+#' Use specific `EnsDb` object as annotation source.
+#' Alternatively, can pass in an EnsDb package name as a `character(1)`.
+#'
+#' @export
+#' @include makeGRangesFromEnsembl.R
+#' @note Updated 2020-10-05.
+#'
+#' @inheritParams acidroxygen::params
+#'
+#' @return `GRanges`.
+#'
+#' @examples
+#' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
+#'     x <- makeGRangesFromEnsDb("EnsDb.Hsapiens.v75")
+#' }
+makeGRangesFromEnsDb <- function(
+    object,
+    level,
+    ignoreTxVersion = TRUE,
+    broadClass = TRUE,
+    synonyms = TRUE
+) {
+    assert(
+        isFlag(ignoreTxVersion),
+        isFlag(broadClass),
+        isFlag(synonyms)
+    )
+    level <- match.arg(level)
+    cli_alert("Making {.var GRanges} from {.var EnsDb}.")
+    userAttached <- .packages()
+    if (isString(object)) {
+        package <- object
+        requireNamespaces(package)
+        object <- get(
+            x = package,
+            envir = asNamespace(package),
+            inherits = FALSE
+        )
+    }
+    assert(is(object, "EnsDb"))
+    metadata <- .getEnsDbMetadata(object, level = level)
+    genes <- genes(
+        x = object,
+        order.by = "gene_id",
+        return.type = "GRanges"
+    )
+    if (level == "genes") {
+        out <- genes
+    }
+    if (level == "transcripts") {
+        transcripts <- transcripts(
+            x = object,
+            order.by = "tx_id",
+            return.type = "GRanges"
+        )
+        out <- .mergeGenesIntoTranscripts(
+            transcripts = transcripts,
+            genes = genes
+        )
+    }
+    .forceDetach(keep = userAttached)
+    metadata(out) <- metadata
+    out <- .makeGRanges(
+        object = out,
+        ignoreTxVersion = ignoreTxVersion,
+        broadClass = broadClass,
+        synonyms = synonyms
+    )
+    out
+}
+
+formals(makeGRangesFromEnsDb)[["level"]] <-
+    formals(makeGRangesFromEnsembl)[["level"]]
