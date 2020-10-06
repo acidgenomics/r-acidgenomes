@@ -1,3 +1,6 @@
+## FIXME NEED TO PASS broadClass ARGUMENT IN HERE TOO?
+
+
 ## nolint start
 
 #' Make GRanges from a GFF/GTF file
@@ -142,7 +145,7 @@
 #'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS267/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS267.canonical_geneset.gtf.gz)
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param .checkAgainstTxDb `logical(1)`.
@@ -180,7 +183,7 @@ makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreTxVersion = TRUE,
-    synonyms = TRUE,
+    synonyms = FALSE,
     .checkAgainstTxDb = FALSE
 ) {
     assert(

@@ -1,3 +1,7 @@
+## FIXME DONT CALCULATE BROADCLASS HERE.
+
+
+
 #' Make a Tx2Gene object
 #'
 #' @section GFF/GTF file:
@@ -83,11 +87,14 @@ formals(makeTx2GeneFromEnsDb) <- f
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2019-09-05.
+## Updated 2020-10-06.
 makeTx2GeneFromGFF <- function(file) {
     gr <- do.call(
         what = makeGRangesFromGFF,
-        args = matchArgsToDoCall(args = list(level = "transcripts"))
+        args = matchArgsToDoCall(args = list(
+            level = "transcripts",
+            synonyms = FALSE
+        ))
     )
     Tx2Gene(gr)
 }

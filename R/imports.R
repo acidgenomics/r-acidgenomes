@@ -18,9 +18,9 @@
 #'   rowRanges rowRanges<-
 #' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
 #'   cli_div cli_dl cli_end cli_li cli_text cli_ul cli_verbatim
-#' @importFrom goalie areSetEqual assert bapply hasDuplicates hasInternet
-#'   hasLength hasNoDuplicates hasNames hasRows isAny isCharacter isFlag isInt
-#'   isMatchingRegex isString isSubset validate
+#' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
+#'   hasInternet hasLength hasNoDuplicates hasNames hasRows isAny isCharacter
+#'   isFlag isInt isMatchingRegex isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setValidity
 #' @importFrom pipette as.SummarizedExperiment cacheURL getURLDirList import
 #'   removeNA sanitizeNA
