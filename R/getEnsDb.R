@@ -92,7 +92,7 @@ getEnsDb <- function(
         edb <- suppressMessages(ah[[id]])
     }))
     assert(is(edb, "EnsDb"))
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     edb
 }
 
@@ -115,7 +115,7 @@ getEnsDb <- function(
         inherits = FALSE
     )
     assert(is(edb, "EnsDb"))
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     edb
 }
 

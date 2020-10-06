@@ -61,7 +61,7 @@ makeGRangesFromEnsDb <- function(
             genes = genes
         )
     }
-    .forceDetach(keep = userAttached)
+    forceDetach(keep = userAttached)
     metadata(out) <- metadata
     out <- .makeGRanges(
         object = out,
