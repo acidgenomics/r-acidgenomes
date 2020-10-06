@@ -1,7 +1,7 @@
-#' Convert UCSC build to Ensembl
+#' Map UCSC genome build to Ensembl
 #'
 #' @export
-#' @note Updated 2019-08-21.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -14,9 +14,9 @@
 #'
 #' @examples
 #' from <- c("hg19", "hg38")
-#' to <- convertUCSCBuildToEnsembl(from)
+#' to <- mapUCSCBuildToEnsembl(from)
 #' print(to)
-convertUCSCBuildToEnsembl <- function(object) {
+mapUCSCBuildToEnsembl <- function(object) {
     assert(isCharacter(object))
     ucsc <- .ucscMatrix[, "ucsc"]
     ensembl <- .ucscMatrix[, "ensembl"]
@@ -34,6 +34,8 @@ convertUCSCBuildToEnsembl <- function(object) {
 }
 
 
+
+## FIXME SAVE THIS AS INTERNAL DATA AND IMPORT INSTEAD.
 
 ## nolint start
 .ucscMatrix <- matrix(
