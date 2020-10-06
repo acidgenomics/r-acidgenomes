@@ -14,7 +14,7 @@ makeGene2SymbolFromEnsembl(
   release = NULL,
   ignoreTxVersion = TRUE,
   broadClass = TRUE,
-  synonyms = TRUE,
+  synonyms = FALSE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
