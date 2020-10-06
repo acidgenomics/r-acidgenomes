@@ -9,7 +9,7 @@
 #' @param dmel `logical(1)`.
 #'   Return *Drosophila melanogaster* genome release version.
 #'
-#' @return `character(1)`.
+#' @return `character(1)` or `integer(1)` when possible.
 #'   Release version.
 #'
 #' @seealso
@@ -33,14 +33,14 @@ NULL
 #' @rdname currentGenomeVersion
 #' @export
 currentEnsemblVersion <- function() {
-    suppressMessages({
-        x <- import(
-            file = "ftp://ftp.ensembl.org/pub/current_README",
-            format = "lines"
-        )
-    })
+    x <- import(
+        file = "ftp://ftp.ensembl.org/pub/current_README",
+        format = "lines",
+        quiet = TRUE
+    )
     x <- x[[3L]]
     x <- str_split_fixed(x, pattern = boundary("word"), n = 4L)[1L, 3L]
+    x <- as.integer(x)
     x
 }
 
@@ -48,12 +48,10 @@ currentEnsemblVersion <- function() {
 
 #' @rdname currentGenomeVersion
 #' @export
-currentGencodeVersion <- function(organism) {
-    requireNamespaces("RCurl")
-    organism <- match.arg(
-        arg = organism,
-        choices = c("Homo sapiens", "Mus musculus")
-    )
+currentGencodeVersion <- function(
+    organism = c("Homo sapiens", "Mus musculus")
+) {
+    organism <- match.arg(organism)
     url <- "https://www.gencodegenes.org"
     if (identical(organism, "Homo sapiens")) {
         shortName <- "human"
@@ -63,9 +61,12 @@ currentGencodeVersion <- function(organism) {
         pattern <- "Release M[[:digit:]]+"
     }
     url <- paste0(url, "/", shortName, "/")
-    x <- RCurl::getURL(url)
+    x <- getURL(url)
     x <- str_extract(x, pattern = pattern)
     x <- str_split_fixed(x, pattern = boundary("word"), n = 2L)[1L, 2L]
+    if (identical(organism, "Homo sapiens")) {
+        x <- as.integer(x)
+    }
     x
 }
 
@@ -73,20 +74,21 @@ currentGencodeVersion <- function(organism) {
 
 #' @rdname currentGenomeVersion
 #' @export
-currentRefseqVersion <- function() {
-    suppressMessages({
-        import(
-            file = "ftp://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
-            format = "lines"
-        )
-    })
+currentRefSeqVersion <- function() {
+    x <- import(
+        file = "ftp://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
+        format = "lines",
+        quiet = TRUE
+    )
+    x <- as.integer(x)
+    x
 }
 
 
 
 #' @rdname currentGenomeVersion
 #' @export
-currentFlybaseVersion <- function(dmel = FALSE) {
+currentFlyBaseVersion <- function(dmel = FALSE) {
     assert(isFlag(dmel))
     url <- "ftp://ftp.flybase.net/releases/"
     if (isTRUE(dmel)) {
@@ -106,7 +108,7 @@ currentFlybaseVersion <- function(dmel = FALSE) {
 
 #' @rdname currentGenomeVersion
 #' @export
-currentWormbaseVersion <- function() {
+currentWormBaseVersion <- function() {
     url <- pasteURL(
         "ftp.wormbase.org",
         "pub",

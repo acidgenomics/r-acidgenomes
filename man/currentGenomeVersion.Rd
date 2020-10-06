@@ -4,20 +4,20 @@
 \alias{currentGenomeVersion}
 \alias{currentEnsemblVersion}
 \alias{currentGencodeVersion}
-\alias{currentRefseqVersion}
-\alias{currentFlybaseVersion}
-\alias{currentWormbaseVersion}
+\alias{currentRefSeqVersion}
+\alias{currentFlyBaseVersion}
+\alias{currentWormBaseVersion}
 \title{Current genome version}
 \usage{
 currentEnsemblVersion()
 
-currentGencodeVersion(organism)
+currentGencodeVersion(organism = c("Homo sapiens", "Mus musculus"))
 
-currentRefseqVersion()
+currentRefSeqVersion()
 
-currentFlybaseVersion(dmel = FALSE)
+currentFlyBaseVersion(dmel = FALSE)
 
-currentWormbaseVersion()
+currentWormBaseVersion()
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -27,7 +27,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Return \emph{Drosophila melanogaster} genome release version.}
 }
 \value{
-\code{character(1)}.
+\code{character(1)} or \code{integer(1)} when possible.
 Release version.
 }
 \description{
