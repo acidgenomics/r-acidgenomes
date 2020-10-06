@@ -25,7 +25,7 @@
 #'   defined in koopa shell bootloader.
 #'
 #' @examples
-#' file <- file.path(basejumpTestsURL, "tx2gene.csv")
+#' file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")
 #' x <- importTx2Gene(
 #'     file = file,
 #'     organism = "Homo sapiens",

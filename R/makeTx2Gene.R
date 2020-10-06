@@ -24,12 +24,12 @@
 #'
 #' ## makeTx2GeneFromGFF ====
 #' ## GTF
-#' file <- file.path(basejumpTestsURL, "example.gtf")
+#' file <- file.path(AcidGenomesTestsURL, "example.gtf")
 #' x <- makeTx2GeneFromGFF(file)
 #' print(x)
 #'
 #' ## GFF3
-#' file <- file.path(basejumpTestsURL, "example.gff3")
+#' file <- file.path(AcidGenomesTestsURL, "example.gff3")
 #' x <- makeTx2GeneFromGFF(file)
 #' print(x)
 NULL

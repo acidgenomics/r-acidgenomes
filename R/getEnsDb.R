@@ -12,7 +12,8 @@
 #' @return `EnsDb`.
 #'
 #' @examples
-#' getEnsDb(organism = "Homo sapiens", release = 100L)
+#' object <- getEnsDb(organism = "Homo sapiens", release = 100L)
+#' class(object)
 getEnsDb <- function(
     organism,
     genomeBuild = NULL,
