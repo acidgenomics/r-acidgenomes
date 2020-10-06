@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor AnnotationHub
 #'
 #' @export
-#' @note Updated 2020-09-25.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -25,7 +25,7 @@ getEnsDb <- function(
     )
     if (isString(genomeBuild)) {
         remap <- tryCatch(
-            expr = convertUCSCBuildToEnsembl(genomeBuild),
+            expr = mapUCSCBuildToEnsembl(genomeBuild),
             error = function(e) NULL
         )
         if (hasLength(remap)) {
