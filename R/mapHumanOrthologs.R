@@ -1,0 +1,117 @@
+#' Map input to human gene orthologs
+#'
+#' @note Updated 2020-10-05.
+#' @export
+#'
+#' @inheritParams AcidRoxygen::params
+#'
+#' @return `DataFrame`.
+#'   Data frame containing mapping columns:
+#'
+#'   - geneID
+#'   - hgncID
+#'   - geneName
+#'   - hgncName
+#'
+#' @seealso
+#' - `biomaRt::listEnsemblArchives()`.
+#' - `biomaRt::listMarts()`.
+#' - `biomaRt::useMart()`.
+#'
+#' @examples
+#' genes <- c(
+#'     "ENSMUSG00000000001", "ENSMUSG00000000003",
+#'     "ENSMUSG00000000028", "ENSMUSG00000000031",
+#'     "ENSMUSG00000000037", "ENSMUSG00000000049"
+#' )
+#' ## Protect against Ensembl timeouts causing build checks to fail.
+#' ## > if (goalie::hasInternet("https://ensembl.org")) {
+#' ## >     mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+#' ## > }
+mapHumanOrthologs <- function(
+    genes,
+    organism = NULL,
+    ensemblRelease = NULL
+) {
+    requireNamespaces("biomaRt")
+    assert(
+        isCharacter(genes),
+        isString(organism, nullOK = TRUE),
+        isInt(ensemblRelease, nullOK = TRUE)
+    )
+    if (is.null(organism)) {
+        organism <- detectOrganism(genes)
+    }
+    ## Don't allow the user to pass in human genes, since this makes no sense.
+    assert(!identical(organism, "Homo sapiens"))
+    ## Match the Ensembl release to the archive host name, required for biomaRt.
+    ## e.g. Ensembl 99: http://jan2020.archive.ensembl.org
+    host <- mapEnsemblReleaseToURL(ensemblRelease)
+    ## e.g. "mmusculus_gene_ensembl".
+    dataset <- paste0(
+        tolower(sub(
+            pattern = "^([A-Z])([a-z]+)\\s([a-z]+)$",
+            replacement = "\\1\\3",
+            x = organism
+        )),
+        "_gene_ensembl"
+    )
+    cli_alert(sprintf(
+        fmt = paste(
+            "Matching orthologs against {.var %s} ({.url %s}) with",
+            "{.pkg biomaRt} %s."
+        ),
+        dataset, host, packageVersion("biomaRt")
+    ))
+    mart <- tryCatch(
+        expr = biomaRt::useMart(
+            ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
+            biomart = "ensembl",
+            dataset = dataset,
+            host = host,
+            verbose = FALSE
+        ),
+        error = function(e) {
+            stop("'biomaRt::useMart()' error: ", e)
+        }
+    )
+    map <- tryCatch(
+        expr = select(
+            x = mart,
+            keys = genes,
+            keytype = "ensembl_gene_id",
+            columns =  c(
+                "ensembl_gene_id",
+                "hsapiens_homolog_ensembl_gene"
+            )
+        ),
+        error = function(e) {
+            stop("'biomaRt::select()' error: ", e)
+        }
+    )
+    map <- as(map, "DataFrame")
+    colnames(map) <- c("geneID", "hgncID")
+    map <- sanitizeNA(map)
+    ## Get the corresponding gene-to-symbol mappings.
+    cli_alert(sprintf("Getting {.emph %s} gene symbols.", organism))
+    g2s <- makeGene2SymbolFromEnsembl(
+        organism = organism,
+        release = ensemblRelease,
+        format = "unmodified"
+    )
+    cli_alert("Getting {.emph Homo sapiens} gene symbols.")
+    g2shs <- makeGene2SymbolFromEnsembl(
+        organism = "Homo sapiens",
+        release = ensemblRelease,
+        format = "unmodified"
+    )
+    g2shs <- as(g2shs, "DataFrame")
+    colnames(g2shs) <- c("hgncID", "hgncName")
+    ## Return.
+    out <- map
+    out <- leftJoin(out, g2s, by = "geneID")
+    out <- leftJoin(out, g2shs, by = "hgncID")
+    rownames(out) <- out[["geneID"]]
+    out <- out[, sort(colnames(out))]
+    out
+}

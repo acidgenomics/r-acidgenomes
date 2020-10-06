@@ -1,4 +1,5 @@
-#' @importClassesFrom S4Vectors DataFrame
+#' @importClassesFrom GenomicRanges GRanges
+#' @importClassesFrom S4Vectors DataFrame Vector
 #'
 #' @importFrom goalie assert bapply hasNoDuplicates hasRows isAny isCharacter
 #'   isFlag isInt isString isSubset validate
