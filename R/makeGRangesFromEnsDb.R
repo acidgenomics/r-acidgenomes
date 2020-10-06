@@ -6,7 +6,7 @@
 #'
 #' @export
 #' @include makeGRangesFromEnsembl.R
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -21,7 +21,7 @@ makeGRangesFromEnsDb <- function(
     level,
     ignoreTxVersion = TRUE,
     broadClass = TRUE,
-    synonyms = TRUE
+    synonyms = FALSE
 ) {
     assert(
         isFlag(ignoreTxVersion),

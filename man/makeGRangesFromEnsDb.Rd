@@ -9,7 +9,7 @@ makeGRangesFromEnsDb(
   level = c("genes", "transcripts"),
   ignoreTxVersion = TRUE,
   broadClass = TRUE,
-  synonyms = TRUE
+  synonyms = FALSE
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ Use specific \code{EnsDb} object as annotation source.
 Alternatively, can pass in an EnsDb package name as a \code{character(1)}.
 }
 \note{
-Updated 2020-10-05.
+Updated 2020-10-06.
 }
 \examples{
 if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {

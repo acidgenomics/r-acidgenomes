@@ -12,7 +12,7 @@ makeGRangesFromEnsembl(
   release = NULL,
   ignoreTxVersion = TRUE,
   broadClass = TRUE,
-  synonyms = TRUE
+  synonyms = FALSE
 )
 
 annotable(...)
@@ -72,7 +72,7 @@ coercing using \code{\link[BiocGenerics:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2020-10-05.
+Updated 2020-10-06.
 }
 \section{Broad class definitions}{
 

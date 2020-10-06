@@ -1,3 +1,7 @@
+## FIXME DONT CALCULATE BROADCLASS HERE.
+
+
+
 #' Make a Gene2Symbol object
 #'
 #' @section GFF/GTF file:

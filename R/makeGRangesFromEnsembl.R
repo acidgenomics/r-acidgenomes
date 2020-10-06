@@ -82,7 +82,7 @@
 #' ```
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -107,7 +107,7 @@ makeGRangesFromEnsembl <- function(
     release = NULL,
     ignoreTxVersion = TRUE,
     broadClass = TRUE,
-    synonyms = TRUE
+    synonyms = FALSE
 ) {
     assert(
         isFlag(ignoreTxVersion),
