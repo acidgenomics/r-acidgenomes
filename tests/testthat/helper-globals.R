@@ -28,6 +28,7 @@ DataFrame <- S4Vectors::DataFrame
 GRanges <- GenomicRanges::GRanges
 IRanges <- IRanges::IRanges
 SummarizedExperiment <- SummarizedExperiment::SummarizedExperiment
+assay <- SummarizedExperiment::assay
 `assay<-` <- SummarizedExperiment::`assay<-`
 cause <- goalie::cause
 hasInternet <- goalie::hasInternet
