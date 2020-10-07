@@ -5,7 +5,6 @@
 #' Alternatively, can pass in an EnsDb package name as a `character(1)`.
 #'
 #' @export
-#' @include makeGRangesFromEnsembl.R
 #' @note Updated 2020-10-06.
 #'
 #' @inheritParams AcidRoxygen::params
@@ -19,7 +18,7 @@
 #' }
 makeGRangesFromEnsDb <- function(
     object,
-    level,
+    level = c("genes", "transcripts"),
     ignoreTxVersion = TRUE,
     broadClass = TRUE,
     synonyms = FALSE
@@ -72,6 +71,3 @@ makeGRangesFromEnsDb <- function(
     )
     out
 }
-
-formals(makeGRangesFromEnsDb)[["level"]] <-
-    formals(makeGRangesFromEnsembl)[["level"]]
