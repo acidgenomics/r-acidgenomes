@@ -39,3 +39,46 @@ setGeneric(
         standardGeneric("Tx2Gene")
     }
 )
+
+
+
+#' @rdname geneNames
+#' @name geneNames
+#' @importFrom AcidGenerics geneNames
+#' @usage geneNames(object, ...)
+#' @export
+NULL
+
+
+
+#' @rdname organism
+#' @name organism
+#' @importFrom BiocGenerics organism
+#' @usage organism(object)
+#' @export
+NULL
+
+#' @rdname organism
+#' @name organism<-
+#' @importFrom BiocGenerics organism<-
+#' @usage organism(object) <- value
+#' @export
+NULL
+
+
+
+#' @rdname stripTranscriptVersions
+#' @name stripTranscriptVersions
+#' @importFrom AcidGenerics stripTranscriptVersions
+#' @usage stripTranscriptVersions(object, ...)
+#' @export
+NULL
+
+
+
+#' @rdname summary
+#' @name summary
+#' @importFrom S4Vectors summary
+#' @usage summary(object, ...)
+#' @export
+NULL

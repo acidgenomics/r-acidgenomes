@@ -27,15 +27,6 @@ NULL
 
 
 
-#' @rdname summary
-#' @name summary
-#' @importFrom S4Vectors summary
-#' @usage summary(object, ...)
-#' @export
-NULL
-
-
-
 ## Updated 2019-07-22.
 `summary,Gene2Symbol` <-  # nolint
     function(object) {

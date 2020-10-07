@@ -15,15 +15,6 @@ NULL
 
 
 
-#' @rdname geneNames
-#' @name geneNames
-#' @importFrom AcidGenerics geneNames
-#' @usage geneNames(object, ...)
-#' @export
-NULL
-
-
-
 ## Updated 2019-07-22.
 `geneNames,Vector` <-  # nolint
     function(object) {
