@@ -87,11 +87,9 @@ test_that("GFF3 transcripts", {
         expected = list(
             broadClass = Rle,
             ccdsID = Rle,
-            description = Rle,
             geneBiotype = Rle,
             geneID = Rle,
             geneName = Rle,
-            logicName = Rle,
             source = Rle,
             tag = Rle,
             transcriptBiotype = Rle,
