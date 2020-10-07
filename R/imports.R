@@ -20,7 +20,8 @@
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
 #'   isCharacter isFlag isInt isMatchingRegex isString isSubset validate
-#' @importFrom methods as is new setClass setGeneric setValidity
+#' @importFrom methods as is new setClass setGeneric setMethod setValidity
+#'   signature
 #' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL getURL
 #'   getURLDirList import removeNA sanitizeNA
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
