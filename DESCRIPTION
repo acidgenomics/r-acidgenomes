@@ -49,14 +49,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Remotes:
-    acidgenomics/AcidBase,
-    acidgenomics/AcidGenerics,
-    acidgenomics/AcidPlyr,
-    acidgenomics/AcidTest,
-    acidgenomics/goalie,
-    acidgenomics/pipette,
-    acidgenomics/syntactic
 biocViews:
     DataImport,
     GenomeAnnotation,
