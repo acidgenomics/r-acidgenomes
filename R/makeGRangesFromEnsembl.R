@@ -135,6 +135,9 @@ makeGRangesFromEnsembl <- function(
     )
 }
 
+formals(makeGRangesFromEnsembl)[["level"]] <-
+    formals(makeGRangesFromEnsDb)[["level"]]
+
 
 
 #' @describeIn makeGRangesFromEnsembl
