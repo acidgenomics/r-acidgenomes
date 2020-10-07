@@ -1,8 +1,14 @@
 context("Ensembl annotations")
 
-mat <- .ucscMatrix
-keep <- as.logical(mat[, "ensembldb"])
-mat <- mat[keep, , drop = FALSE]
+map <- import(
+    file = system.file(
+        "extdata", "mapUCSCBuildToEnsembl.rds",
+        package = packageName()
+    ),
+    quiet = TRUE
+)
+keep <- as.logical(map[["ensembldb"]])
+map <- map[keep, , drop = FALSE]
 
 ## Note that we're running at transcript level here to check the gene merge.
 ##
@@ -18,8 +24,8 @@ mat <- mat[keep, , drop = FALSE]
 
 test_that("UCSC genome build remaps", {
     mapply(
-        organism = mat[, "organism"],
-        genomeBuild = mat[, "ucsc"],
+        organism = map[["organism"]],
+        genomeBuild = map[["ucsc"]],
         FUN = function(organism, genomeBuild) {
             object <- makeGRangesFromEnsembl(
                 organism = organism,

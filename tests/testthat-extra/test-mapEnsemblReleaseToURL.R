@@ -1,17 +1,17 @@
 ## This code depends on biomaRt and Ensembl, which can time out.
 
-context("extra | matchEnsemblReleaseToURL")
+context("extra | mapEnsemblReleaseToURL")
 
 test_that("NULL input", {
     expect_identical(
-        object = matchEnsemblReleaseToURL(NULL),
+        object = mapEnsemblReleaseToURL(NULL),
         expected = "http://useast.ensembl.org"
     )
 })
 
 test_that("integer input", {
     expect_identical(
-        object = matchEnsemblReleaseToURL(96L),
+        object = mapEnsemblReleaseToURL(96L),
         expected = "http://apr2019.archive.ensembl.org"
     )
 })
