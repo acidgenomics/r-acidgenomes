@@ -3,7 +3,7 @@
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
 #' @importFrom AcidBase forceDetach matchArgsToDoCall pasteURL printString
-#'   requireNamespaces
+#'   requireNamespaces showSlotInfo
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
