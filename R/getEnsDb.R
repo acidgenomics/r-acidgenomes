@@ -124,7 +124,7 @@ getEnsDb <- function(
 
 #' Get metadata inside EnsDb object
 #'
-#' @note Updated 2020-09-25.
+#' @note Updated 2020-10-07.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
     assert(
@@ -146,7 +146,7 @@ getEnsDb <- function(
         "ensembldb" = metadata
     )
     if (!is.null(level)) {
-        level[["level"]] <- level
+        list[["level"]] <- level
     }
     ## AnnotationHub ID should be stashed in attributes, when possible.
     if (isString(attr(object, "id"))) {
