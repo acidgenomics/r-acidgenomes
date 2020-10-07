@@ -22,15 +22,6 @@ NULL
 
 
 
-#' @rdname stripTranscriptVersions
-#' @name stripTranscriptVersions
-#' @importFrom AcidGenerics stripTranscriptVersions
-#' @usage stripTranscriptVersions(object, ...)
-#' @export
-NULL
-
-
-
 ## Pattern matching against Ensembl transcript (and gene) IDs.
 ##
 ## Example prefixes: ENST (human); ENSMUST (mouse).
