@@ -10,15 +10,12 @@
 #' @importFrom BiocParallel bplapply
 #' @importFrom GenomicRanges GRanges ranges seqnames
 #' @importFrom IRanges DataFrameList IRanges
-#' @importFrom S4Vectors DataFrame List Rle SimpleList %in% aggregate
-#'   as.data.frame as.list complete.cases cor decode do.call expand expand.grid
-#'   head lapply match mcols mcols<- merge metadata metadata<- na.omit order
-#'   setdiff split summary t tail
-#' @importFrom SummarizedExperiment SummarizedExperiment assay assay<-
-#'   assayNames assayNames<- assays assays<- colData colData<- rowData rowData<-
-#'   rowRanges rowRanges<-
-#' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
-#'   cli_div cli_dl cli_end cli_li cli_text cli_ul cli_verbatim
+#' @importFrom S4Vectors DataFrame Rle %in% as.data.frame complete.cases decode
+#'   do.call expand head lapply match mcols mcols<- metadata metadata<- order
+#'   setdiff split summary tail
+#' @importFrom SummarizedExperiment rowData rowRanges
+#' @importFrom cli cli_alert cli_alert_info cli_alert_warning
+#'   cli_div cli_dl cli_end
 #' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
@@ -30,8 +27,3 @@
 #' @importFrom syntactic camelCase makeNames
 #' @importFrom utils capture.output packageName packageVersion
 NULL
-
-
-
-## FIXME See if we can make this simpler
-## SummarizedExperiment, S4Vectors, cli
