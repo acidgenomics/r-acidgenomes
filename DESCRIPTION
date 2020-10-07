@@ -22,7 +22,7 @@ License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    AcidBase (>= 0.2.1),
+    AcidBase (>= 0.2.2),
     AcidGenerics (>= 0.4.0),
     AcidPlyr (>= 0.1.0),
     AnnotationDbi,
@@ -108,3 +108,4 @@ Collate:
     'params.R'
     'reexports.R'
     'stripTranscriptVersions-methods.R'
+    'summary-methods.R'
