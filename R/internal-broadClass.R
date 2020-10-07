@@ -111,7 +111,7 @@
 
 #' Broad class definitions factor return
 #'
-#' @note Updated 2019-07-22.
+#' @note Updated 2020-10-07.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -149,8 +149,8 @@
     } else {
         ## FlyBase GTF will hit this step.
         ## Note that we're early returning without calculations in this case.
-        warning(
-            "GRanges does not contain biotype in 'mcols()'.\n",
+        cli_alert_warning(
+            "{.var GRanges} does not contain biotype in {.var mcols}.\n",
             "Returning without broad class definitions."
         )
         ## Early `NA` return works successfully in `mcols()` construction.
