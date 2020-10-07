@@ -27,7 +27,6 @@
         y = colnames(mcols(transcripts))
     )
     ## Only attempt the merge if there's useful additional metadata to include.
-    ## Note that base `merge()` can reorder rows, so be careful here.
     if (length(geneCols) > 0L) {
         cli_alert(sprintf(
             "Merging gene-level annotations: {.var %s}.",
