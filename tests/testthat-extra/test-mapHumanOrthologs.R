@@ -1,14 +1,14 @@
 ## This code depends on biomaRt and Ensembl, which can time out.
 
-context("extra | matchHumanOrthologs")
+context("extra | mapHumanOrthologs")
 
-test_that("matchHumanOrthologs", {
+test_that("mapHumanOrthologs", {
     genes <- c(
         "ENSMUSG00000000001", "ENSMUSG00000000003",
         "ENSMUSG00000000028", "ENSMUSG00000000031",
         "ENSMUSG00000000037", "ENSMUSG00000000049"
     )
-    object <- matchHumanOrthologs(genes, ensemblRelease = 87L)
+    object <- mapHumanOrthologs(genes, ensemblRelease = 87L)
     expected <- tibble(
         geneID = c(
             "ENSMUSG00000000001",
