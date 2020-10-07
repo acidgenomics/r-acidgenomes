@@ -31,8 +31,7 @@ test_that("GTF genes", {
 
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
-    ## BioC 3.7+: CompressedGRangesList
-    expect_s4_class(object, "GRangesList")
+    expect_s4_class(object, "CompressedGRangesList")
     expect_identical(length(object), 111L)
     expect_identical(names(object)[[1L]], "MIR1302-2")
     expect_identical(
@@ -40,19 +39,15 @@ test_that("GTF transcripts", {
         expected = list(
             broadClass = Rle,
             dbXref = Rle,
-            description = Rle,
             exception = Rle,
             exonNumber = Rle,
             gbkey = Rle,
-            geneBiotype = Rle,
             geneID = Rle,
             geneName = Rle,
-            geneSynonym = Rle,
             inference = Rle,
             modelEvidence = Rle,
             note = Rle,
             product = Rle,
-            pseudo = Rle,
             source = Rle,
             transcriptID = Rle,
             transcriptName = Rle,
@@ -89,27 +84,19 @@ test_that("GFF3 transcripts", {
     expect_s4_class(object, "GRanges")
     expect_identical(length(object), 100L)
     expect_identical(names(object)[[1L]], "NM_001005221.2")
-
-    if (packageVersion("GenomicRanges") < "1.31") {
-        AsIs <- "AsIs"  # nolint
-    } else {
-        AsIs <- "list"  # nolint
-    }
+    AsIs <- "list"  # nolint
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
             broadClass = Rle,
-            description = Rle,
             exception = Rle,
             gbkey = Rle,
-            geneBiotype = Rle,
             geneID = Rle,
             geneName = Rle,
             geneSynonym = AsIs,
             inference = Rle,
             modelEvidence = Rle,
             product = Rle,
-            pseudo = Rle,
             source = Rle,
             transcriptID = Rle,
             type = Rle
