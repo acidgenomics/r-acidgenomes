@@ -19,7 +19,7 @@
 #'   rowRanges rowRanges<-
 #' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
 #'   cli_div cli_dl cli_end cli_li cli_text cli_ul cli_verbatim
-#' @importFrom ensembldb ensemblVersion
+#' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
 #'   isCharacter isFlag isInt isMatchingRegex isString isSubset validate
