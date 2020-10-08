@@ -1,5 +1,5 @@
 env:
-  - CRAN=1 RCHECK_SKIP_COVERAGE=1
+  - RCHECK_SKIP_COVERAGE=1
 
 os: linux
 language: shell
