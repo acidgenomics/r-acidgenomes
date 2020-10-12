@@ -1,6 +1,6 @@
 #' Map Ensembl release to archive URL.
 #'
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-12.
 #' @export
 #'
 #' @param release `integer(1)` or `character(1)`.
@@ -13,7 +13,10 @@
 #' - `biomaRt::listEnsemblArchives()`.
 #'
 #' @examples
-#' mapEnsemblReleaseToURL(96L)
+#' tryCatch(
+#'     expr = mapEnsemblReleaseToURL(96L),
+#'     error = function(e) message(e)
+#' )
 mapEnsemblReleaseToURL <- function(release) {
     requireNamespaces("biomaRt")
     currentURL <- "http://useast.ensembl.org"

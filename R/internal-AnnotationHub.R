@@ -21,7 +21,7 @@
 
 #' Get the AnnotationHub ID for desired EnsDb
 #'
-#' @note Updated 2020-09-24.
+#' @note Updated 2020-10-12.
 #' @noRd
 #'
 #' @examples
@@ -102,11 +102,11 @@
     mcols <- mcols(ahs, use.names = TRUE)
     assert(
         all(mcols[["dataprovider"]] == "Ensembl"),
-        all(mcols[["genome"]] == genomeBuild),
         all(mcols[["preparerclass"]] == preparerclass),
         all(mcols[["rdataclass"]] == rdataclass),
         all(mcols[["sourcetype"]] == "ensembl"),
-        all(mcols[["species"]] == organism)
+        all(tolower(mcols[["genome"]]) == tolower(genomeBuild)),
+        all(tolower(mcols[["species"]]) == tolower(organism))
     )
     ## Sort the entries by Ensembl release as integer instead of AH identifier.
     ## Updates can otherwise mess up the expected order, for example:
