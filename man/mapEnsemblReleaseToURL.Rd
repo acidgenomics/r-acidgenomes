@@ -21,7 +21,10 @@ Map Ensembl release to archive URL.
 Updated 2020-10-05.
 }
 \examples{
-mapEnsemblReleaseToURL(96L)
+tryCatch(
+    expr = mapEnsemblReleaseToURL(96L),
+    error = function(e) message(e)
+)
 }
 \seealso{
 \itemize{
