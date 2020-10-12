@@ -18,10 +18,13 @@ URL.
 Map Ensembl release to archive URL.
 }
 \note{
-Updated 2020-10-05.
+Updated 2020-10-12.
 }
 \examples{
-mapEnsemblReleaseToURL(96L)
+tryCatch(
+    expr = mapEnsemblReleaseToURL(96L),
+    error = function(e) message(e)
+)
 }
 \seealso{
 \itemize{
