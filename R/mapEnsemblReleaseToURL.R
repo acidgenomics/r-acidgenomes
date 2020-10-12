@@ -1,6 +1,6 @@
 #' Map Ensembl release to archive URL.
 #'
-#' @note Updated 2020-10-05.
+#' @note Updated 2020-10-12.
 #' @export
 #'
 #' @param release `integer(1)` or `character(1)`.
