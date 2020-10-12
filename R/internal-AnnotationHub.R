@@ -21,7 +21,7 @@
 
 #' Get the AnnotationHub ID for desired EnsDb
 #'
-#' @note Updated 2020-09-24.
+#' @note Updated 2020-10-12.
 #' @noRd
 #'
 #' @examples
