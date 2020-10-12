@@ -13,7 +13,10 @@
 #' - `biomaRt::listEnsemblArchives()`.
 #'
 #' @examples
-#' mapEnsemblReleaseToURL(96L)
+#' tryCatch(
+#'     expr = mapEnsemblReleaseToURL(96L),
+#'     error = function(e) message(e)
+#' )
 mapEnsemblReleaseToURL <- function(release) {
     requireNamespaces("biomaRt")
     currentURL <- "http://useast.ensembl.org"
