@@ -9,7 +9,7 @@ services:
 
 branches:
   only:
-    - master
+    - main
 
 install:
   - curl -sSL https://raw.githubusercontent.com/acidgenomics/Rcheck/master/install | bash
