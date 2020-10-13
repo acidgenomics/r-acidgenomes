@@ -1,6 +1,3 @@
-## FIXME NEED TO PASS broadClass ARGUMENT IN HERE TOO?
-
-
 ## nolint start
 
 #' Make GRanges from a GFF/GTF file
