@@ -1,7 +1,3 @@
-## FIXME DONT CALCULATE BROADCLASS HERE.
-
-
-
 #' Make a Tx2Gene object
 #'
 #' @section GFF/GTF file:
