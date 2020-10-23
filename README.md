@@ -12,7 +12,10 @@ Toolkit for downloading and processing genome annotations.
 ```r
 install.packages(
     pkgs = "AcidGenomes",
-    repos = c("r.acidgenomics.com", getOption("repos"))
+    repos = c(
+        "https://r.acidgenomics.com",
+        getOption("repos")
+    )
 )
 ```
 
