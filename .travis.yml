@@ -2,6 +2,7 @@ env:
   - RCHECK_SKIP_COVERAGE=1
 
 os: linux
+arch: arm64-graviton2
 language: shell
 
 services:
@@ -18,10 +19,15 @@ jobs:
   include:
     - stage: test
       name: "bioc-release"
-      script: tag="bioc-release" ./.Rcheck/docker
+      script: image="acidgenomics/r-acidgenomes" tag="bioc-release" ./.Rcheck/docker
+    - stage: test
+      name: "bioc-oldrel"
+      script: image="acidgenomics/r-acidgenomes" tag="bioc-oldrel" ./.Rcheck/docker
     - stage: test
       name: "bioc-devel"
-      script: tag="bioc-devel" ./.Rcheck/docker
+      script: image="acidgenomics/r-acidgenomes" tag="bioc-devel" ./.Rcheck/docker
+  allow_failures:
+    - name: "bioc-devel"
   allow_failures:
     - name: "bioc-devel"
   fast_finish: true
