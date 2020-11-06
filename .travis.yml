@@ -38,6 +38,6 @@ after_failure:
 notifications:
   email:
     recipients:
-      - mike@steinbaugh.com
+      - travis-ci@acidgenomics.com
     on_success: change
     on_failure: change
