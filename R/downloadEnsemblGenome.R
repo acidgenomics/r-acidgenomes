@@ -11,6 +11,7 @@
 #' @param decompress `integer(1)`.
 #'
 #' @examples
+#' ## This example is bandwidth intensive.
 #' ## > downloadEnsemblGenome(
 #' ## >     organism = "Homo sapiens",
 #' ## >     genomeBuild = "GRCh38",
@@ -175,12 +176,7 @@ downloadEnsemblGenome <-
         readmeFile <- file.path(outputDir, basename(readmeURL))
         checksumsFile <- file.path(outputDir, basename(checksumsURL))
         fastaFile <- file.path(outputDir, basename(fastaURL))
-        ## FIXME IMPORT `download` from pipette here.
-        ## FIXME DEFINE THIS IN ACIDBASE, AS A HARDENED FUNCTION.
-        timeout <- getOption("timeout")
-        ## FIXME ONLY SET IF TIMEOUT IS A NUMBER.
-        options("timeout" = 99999L)
-        status <- mapply(
+        mapply(
             url = c(
                 readmeURL,
                 checksumsURL,
@@ -191,15 +187,14 @@ downloadEnsemblGenome <-
                 checksumsFile,
                 fastaFile
             ),
-            FUN = download.file,
+            FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        assert(all(unlist(status) == 0L))
         if (isTRUE(decompress)) {
-            ## FIXME DECOMPRESS THE FASTA, IF DESIRED.
+            decompress(file = fastaFile, remove = FALSE, overwrite = TRUE)
         }
-        options("timeout" = timeout)
+        invisible(outputDir)
     }
 
 

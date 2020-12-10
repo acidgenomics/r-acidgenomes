@@ -43,6 +43,7 @@ Download Ensembl reference genome
 Updated 2020-12-10.
 }
 \examples{
+## This example is bandwidth intensive.
 ## > downloadEnsemblGenome(
 ## >     organism = "Homo sapiens",
 ## >     genomeBuild = "GRCh38",
