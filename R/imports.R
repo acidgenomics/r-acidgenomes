@@ -2,8 +2,8 @@
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase forceDetach initDir matchArgsToDoCall pasteURL
-#'   printString requireNamespaces showSlotInfo
+#' @importFrom AcidBase decompress download forceDetach initDir
+#'   matchArgsToDoCall pasteURL printString requireNamespaces showSlotInfo
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
@@ -18,12 +18,12 @@
 #'   cli_div cli_dl cli_end
 #' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
-#'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isAny
-#'   isCharacter isFlag isInt isMatchingRegex isString isSubset validate
+#'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isADir
+#'   isAny isCharacter isFlag isInt isMatchingRegex isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity
 #'   signature
-#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL download
-#'   getURL getURLDirList import removeNA sanitizeNA
+#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL getURL
+#'   getURLDirList import removeNA sanitizeNA
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase makeNames
 #' @importFrom utils capture.output packageName packageVersion
