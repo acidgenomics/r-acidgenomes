@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2020-07-24.
+#' @note Updated 2020-12-09.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -13,13 +13,7 @@
 #'   Release version.
 #'
 #' @seealso
-#' Refer to the koopa package for shell variants:
-#'
-#' - `current-ensembl-version`.
-#' - `current-flybase-version`.
-#' - `current-gencode-version`.
-#' - `current-refseq-version`.
-#' - `current-wormbase-version`.
+#' Refer to the koopa package for Bash shell variants.
 #'
 #' @examples
 #' ## Protect against Ensembl timeouts causing build checks to fail.
