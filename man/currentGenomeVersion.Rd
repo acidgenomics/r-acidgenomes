@@ -34,7 +34,7 @@ Release version.
 Obtain the latest release version from various genome annotation sources.
 }
 \note{
-Updated 2020-07-24.
+Updated 2020-12-09.
 }
 \examples{
 ## Protect against Ensembl timeouts causing build checks to fail.
@@ -43,12 +43,5 @@ Updated 2020-07-24.
 ## > }
 }
 \seealso{
-Refer to the koopa package for shell variants:
-\itemize{
-\item \code{current-ensembl-version}.
-\item \code{current-flybase-version}.
-\item \code{current-gencode-version}.
-\item \code{current-refseq-version}.
-\item \code{current-wormbase-version}.
-}
+Refer to the koopa package for Bash shell variants.
 }
