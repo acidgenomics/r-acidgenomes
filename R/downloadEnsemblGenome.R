@@ -118,6 +118,10 @@ downloadEnsemblGenome <-
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
             do.call(what = .downloadEnsemblGFF, args = args)
         }
+        saveData(
+            object = sessionInfo(),
+            file = file.path(outputDir, "sessionInfo.rds")
+        )
         cli_alert_success(sprintf(
             "Ensembl genome downloaded successfully to {.path %s}.",
             outputDir
@@ -301,7 +305,7 @@ downloadEnsemblGenome <-
     ) {
         outputDir <- initDir(file.path(outputDir, "gtf"))
         baseURL <- pasteURL(
-            releaseURL, "gtf", tolower(organism.lower),
+            releaseURL, "gtf", tolower(organism),
             protocol = "none"
         )
         readmeURL <- pasteURL(baseURL, "README", protocol = "none")
