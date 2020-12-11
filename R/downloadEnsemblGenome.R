@@ -299,29 +299,40 @@ downloadEnsemblGenome <-
         outputDir,
         decompress
     ) {
-        # output_dir = join(output_dir, "gtf")
-        # base_url = paste_url(release_url, "gtf", organism.lower())
-        # readme_url = paste_url(base_url, "README")
-        # checksums_url = paste_url(base_url, "CHECKSUMS")
-        # gtf_url = paste_url(
-        #     base_url, organism + "." + genomeBuild + "." + release + ".gtf.gz"
-        # )
-        # download(url=readme_url, output_dir=output_dir)
-        # download(url=checksums_url, output_dir=output_dir)
-        # download(url=gtf_url, output_dir=output_dir, decompress=decompress)
-        # if organism in ("Homo_sapiens", "Mus_musculus"):
-        #     gtf_patch_url = paste_url(
-        #         base_url,
-        #         organism
-        #         + "."
-        #         + genomeBuild
-        #         + "."
-        #         + release
-        #         + ".chr_patch_hapl_scaff.gtf.gz",
-        #     )
-        # download(
-        #     url=gtf_patch_url, output_dir=output_dir, decompress=decompress
-        # )
+        outputDir <- initDir(file.path(outputDir, "gtf"))
+        baseURL <- pasteURL(
+            releaseURL, "gtf", tolower(organism.lower),
+            protocol = "none"
+        )
+        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
+        readmeFile <- file.path(outputDir, basename(readmeURL))
+        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
+        checksumsFile <- file.path(outputDir, basename(checksumsURL))
+        gtfURL <- pasteURL(
+            baseURL,
+            paste(organism, genomeBuild, release, "gtf.gz", sep = "."),
+            protocol = "none"
+        )
+        gtfFile <- file.path(outputDir, basename(gtfURL))
+        mapply(
+            url = c(
+                readmeURL,
+                checksumsURL,
+                gtfURL
+            ),
+            destfile = c(
+                readmeFile,
+                checksumsFile,
+                gtfFile
+            ),
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        if (isTRUE(decompress)) {
+            decompress(file = gtfFile, remove = FALSE, overwrite = TRUE)
+        }
+        invisible(outputDir)
     }
 
 
