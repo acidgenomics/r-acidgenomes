@@ -112,6 +112,7 @@ downloadEnsemblGenome <-
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             do.call(what = .downloadEnsemblTranscriptome, args = args)
         }
+        args <- c(args, release = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
             do.call(what = .downloadEnsemblGTF, args = args)
         }
