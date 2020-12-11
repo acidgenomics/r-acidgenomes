@@ -156,13 +156,15 @@ downloadEnsemblGenome <-
         outputDir,
         decompress
     ) {
-        outputDir = initDir(file.path(outputDir, "genome"))
-        baseURL = pasteURL(
+        outputDir <- initDir(file.path(outputDir, "genome"))
+        baseURL <- pasteURL(
             releaseURL, "fasta", tolower(organism), "dna",
             protocol = "none"
         )
-        readmeURL = pasteURL(baseURL, "README", protocol = "none")
-        checksumsURL = pasteURL(baseURL, "CHECKSUMS", protocol = "none")
+        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
+        readmeFile <- file.path(outputDir, basename(readmeURL))
+        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
+        checksumsFile <- file.path(outputDir, basename(checksumsURL))
         if (isSubset(organism, c("Homo_sapiens", "Mus_musculus"))) {
             assembly <- "primary_assembly"
         } else {
@@ -170,11 +172,12 @@ downloadEnsemblGenome <-
         }
         fastaURL <- pasteURL(
             baseURL,
-            paste0(organism, ".", genomeBuild, ".dna.", assembly, ".fa.gz"),
+            paste(
+                organism, genomeBuild, "dna", assembly, "fa.gz",
+                sep = "."
+            ),
             protocol = "none"
         )
-        readmeFile <- file.path(outputDir, basename(readmeURL))
-        checksumsFile <- file.path(outputDir, basename(checksumsURL))
         fastaFile <- file.path(outputDir, basename(fastaURL))
         mapply(
             url = c(
@@ -200,7 +203,7 @@ downloadEnsemblGenome <-
 
 
 ## Updated 2020-12-10.
-downloadEnsemblTranscriptome <-
+.downloadEnsemblTranscriptome <-
     function(
         organism,
         genomeBuild,
@@ -208,64 +211,106 @@ downloadEnsemblTranscriptome <-
         outputDir,
         decompress
     ) {
-        # output_dir = join(output_dir, "transcriptome")
-        # transcriptome_file = join(output_dir, "transcriptome.fa.gz")
-        # base_url = paste_url(release_url, "fasta", organism.lower())
-        # # cDNA FASTA.
-        # cdna_output_dir = join(output_dir, "cdna")
-        # cdna_base_url = paste_url(base_url, "cdna")
-        # cdna_readme_url = paste_url(cdna_base_url, "README")
-        # cdna_checksums_url = paste_url(cdna_base_url, "CHECKSUMS")
-        # cdna_fasta_file_basename = organism + "." + genomeBuild + ".cdna.all.fa.gz"
-        # cdna_fasta_file = join(cdna_output_dir, cdna_fasta_file_basename)
-        # cdna_fasta_url = paste_url(cdna_base_url, cdna_fasta_file_basename)
-        # download(url=cdna_readme_url, output_dir=cdna_output_dir)
-        # download(url=cdna_checksums_url, output_dir=cdna_output_dir)
-        # download(
-        #     url=cdna_fasta_url, output_file=cdna_fasta_file, decompress=decompress
-        # )
-        # # ncRNA FASTA.
-        # ncrna_output_dir = join(output_dir, "ncrna")
-        # ncrna_base_url = paste_url(base_url, "ncrna")
-        # ncrna_readme_url = paste_url(ncrna_base_url, "README")
-        # ncrna_checksums_url = paste_url(ncrna_base_url, "CHECKSUMS")
-        # ncrna_fasta_file_basename = organism + "." + genomeBuild + ".ncrna.fa.gz"
-        # ncrna_fasta_file = join(ncrna_output_dir, ncrna_fasta_file_basename)
-        # ncrna_fasta_url = paste_url(ncrna_base_url, ncrna_fasta_file_basename)
-        # download(url=ncrna_readme_url, output_dir=ncrna_output_dir)
-        # download(url=ncrna_checksums_url, output_dir=ncrna_output_dir)
-        # download(
-        #     url=ncrna_fasta_url,
-        #     output_file=ncrna_fasta_file,
-        #     decompress=decompress,
-        # )
-        # # Merged transcriptome FASTA.
-        # #
-        # # This method is memory efficient. It automatically reads the input files
-        # # chunk by chunk for you, which is more more efficient and reading the
-        # # input files in and will work even if some of the input files are too
-        # # large to fit into memory.
-        # #
-        # # See also:
-        # # - https://stackoverflow.com/a/18209002
-        # # - https://stackoverflow.com/a/27077437
-        # FIXME REWORK USING CONCATENATE CALL IN R.
-        # with open(transcriptome_file, "wb") as output_file:
-        #     for file in [cdna_fasta_file, ncrna_fasta_file]:
-        #     with open(file, "rb") as file_open:
-        #     copyfileobj(file_open, output_file)
-
-        # FIXME GENERATE THE TX2GENE FILE
-        makeTx2geneFromFASTA(
-            sourceName = "ensembl",
-            outputDir = outputDir
+        outputDir = initDir(file.path(outputDir, "transcriptome"))
+        baseURL <- pasteURL(
+            releaseURL, "fasta", tolower(organism),
+            protocol = "none"
         )
+        ## cDNA FASTA.
+        cdnaOutputDir <- initDir(file.path(outputDir, "cdna"))
+        cdnaBaseURL <-
+            pasteURL(baseURL, "cdna", protocol = "none")
+        cdnaReadmeURL <-
+            pasteURL(cdnaBaseURL, "README", protocol = "none")
+        cdnaReadmeFile <-
+            file.path(cdnaOutputDir, basename(cdnaReadmeURL))
+        cdnaChecksumsURL <-
+            pasteURL(cdnaBaseURL, "CHECKSUMS", protocol = "none")
+        cdnaChecksumsFile <-
+            file.path(cdnaOutputDir, basename(cdnaChecksumsURL))
+        cdnaFastaURL <-
+            pasteURL(
+                cdnaBaseURL,
+                paste(organism, genomeBuild, "cdna.all.fa.gz", sep = "."),
+                protocol = "none"
+            )
+        cdnaFastaFile <-
+            file.path(cdnaOutputDir, basename(cdnaFastaURL))
+        ## ncRNA FASTA.
+        ncrnaOutputDir <- initDir(file.path(outputDir, "ncrna"))
+        ncrnaBaseURL <-
+            pasteURL(baseURL, "ncrna", protocol = "none")
+        ncrnaReadmeURL <-
+            pasteURL(ncrnaBaseURL, "README", protocol = "none")
+        ncrnaReadmeFile <-
+            file.path(ncrnaOutputDir, basename(ncrnaReadmeURL))
+        ncrnaChecksumsURL <-
+            pasteURL(ncrnaBaseURL, "CHECKSUMS", protocol = "none")
+        ncrnaChecksumsFile <-
+            file.path(ncrnaOutputDir, basename(ncrnaChecksumsURL))
+        ncrnaFastaURL <- pasteURL(
+            ncrnaBaseURL,
+            paste(organism, genomeBuild, "ncrna.fa.gz", sep = "."),
+            protocol = "none"
+        )
+        ncrnaFastaFile <-
+            file.path(ncrnaOutputDir, basename(ncrnaFastaURL))
+        mapply(
+            url = c(
+                cdnaReadmeURL,
+                cdnaChecksumsURL,
+                cdnaFastaURL,
+                ncrnaReadmeURL,
+                ncrnaChecksumsURL,
+                ncrnaFastaURL
+            ),
+            destfile = c(
+                cdnaReadmeFile,
+                cdnaChecksumsFile,
+                cdnaFastaFile,
+                ncrnaReadmeFile,
+                ncrnaChecksumsFile,
+                ncrnaFastaFile
+            ),
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        # Create a merged transcriptome FASTA.
+        cdnaFasta <- import(file = cdnaFastaFile, format = "lines")
+        ncrnaFasta <- import(file = ncrnaFastaFile, format = "lines")
+        mergeFasta <- c(cdnaFasta, ncrnaFasta)
+        mergeFastaFile <- export(
+            object = mergeFasta,
+            file = file.path(outputDir, "transcriptome.fa"),
+            overwrite = TRUE
+        )
+        mergeFastaFile <- compress(
+            file = mergeFastaFile,
+            ext = "gz",
+            remove = !decompress,
+            overwrite = TRUE
+        )
+        tx2gene <- makeTx2GeneFromFASTA(
+            file = mergeFastaFile,
+            source = "ensembl"
+        )
+        tx2geneFile <- file.path(outputDir, "tx2gene.csv")
+        if (isFALSE(decompress)) {
+            tx2geneFile <- paste0(tx2geneFile, ".gz")
+        }
+        export(
+            object = tx2gene,
+            file = tx2geneFile,
+            overwrite = TRUE
+        )
+        invisible(outputDir)
     }
 
 
 
 ## Updated 2020-12-10.
-downloadEnsemblGTF <-
+.downloadEnsemblGTF <-
     function(
         organism,
         genomeBuild,
