@@ -338,7 +338,7 @@ downloadEnsemblGenome <-
 
 
 ## Updated 2020-12-10.
-downloadEnsemblGFF <-
+.downloadEnsemblGFF <-
     function(
         organism,
         genomeBuild,
@@ -347,27 +347,38 @@ downloadEnsemblGFF <-
         outputDir,
         decompress
     ) {
-        # output_dir = join(output_dir, "gff")
-        # base_url = paste_url(release_url, "gff3", organism.lower())
-        # readme_url = paste_url(base_url, "README")
-        # checksums_url = paste_url(base_url, "CHECKSUMS")
-        # gff_url = paste_url(
-        #     base_url, organism + "." + genomeBuild + "." + release + ".gff3.gz"
-        # )
-        # download(url=readme_url, output_dir=output_dir)
-        # download(url=checksums_url, output_dir=output_dir)
-        # download(url=gff_url, output_dir=output_dir, decompress=decompress)
-        # if organism in ("Homo sapiens", "Mus musculus"):
-        #     gtf_patch_url = paste_url(
-        #         base_url,
-        #         organism
-        #         + "."
-        #         + genomeBuild
-        #         + "."
-        #         + release
-        #         + ".chr_patch_hapl_scaff.gff3.gz",
-        #     )
-        # download(
-        #     url=gtf_patch_url, output_dir=output_dir, decompress=decompress
-        # )
+        outputDir <- initDir(file.path(outputDir, "gff"))
+        baseURL <- pasteURL(
+            releaseURL, "gff3", tolower(organism),
+            protocol = "none"
+        )
+        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
+        readmeFile <- file.path(outputDir, basename(readmeURL))
+        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
+        checksumsFile <- file.path(outputDir, basename(checksumsURL))
+        gffURL <- pasteURL(
+            baseURL,
+            paste(organism, genomeBuild, release, "gff3.gz", sep = "."),
+            protocol = "none"
+        )
+        gffFile <- file.path(outputDir, basename(gffURL))
+        mapply(
+            url = c(
+                readmeURL,
+                checksumsURL,
+                gffURL
+            ),
+            destfile = c(
+                readmeFile,
+                checksumsFile,
+                gffFile
+            ),
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        if (isTRUE(decompress)) {
+            decompress(file = gffFile, remove = FALSE, overwrite = TRUE)
+        }
+        invisible(outputDir)
     }
