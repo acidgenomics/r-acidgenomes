@@ -119,7 +119,7 @@ downloadEnsemblGenome <-
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
             do.call(what = .downloadEnsemblGFF, args = args)
         }
-        saveData(
+        saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
         )
