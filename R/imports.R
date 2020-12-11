@@ -2,7 +2,7 @@
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase decompress download forceDetach initDir
+#' @importFrom AcidBase compress decompress download forceDetach initDir
 #'   matchArgsToDoCall pasteURL printString requireNamespaces showSlotInfo
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi select
@@ -22,7 +22,7 @@
 #'   isAny isCharacter isFlag isInt isMatchingRegex isString isSubset validate
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity
 #'   signature
-#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL getURL
+#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export getURL
 #'   getURLDirList import removeNA sanitizeNA
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase makeNames
