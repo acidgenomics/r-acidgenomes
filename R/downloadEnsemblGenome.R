@@ -99,44 +99,24 @@ downloadEnsemblGenome <-
         outputDir <- file.path(outputDir, outputBasename)
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        ## FIXME Tighten these up by sharing args to function calls.
+        args <- list(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            releaseURL = releaseURL,
+            outputDir = outputDir,
+            decompress = decompress
+        )
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            .downloadEnsemblGenome(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                releaseURL = releaseURL,
-                outputDir = outputDir,
-                decompress = decompress
-            )
+            do.call(what = .downloadEnsemblGenome, args = args)
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            .downloadEnsemblTranscriptome(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                releaseURL = releaseURL,
-                outputDir = outputDir,
-                decompress = decompress
-            )
+            do.call(what = .downloadEnsemblTranscriptome, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            .downloadEnsemblGTF(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                release = release,
-                releaseURL = releaseURL,
-                outputDir = outputDir,
-                decompress = decompress
-            )
+            do.call(what = .downloadEnsemblGTF, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            .downloadEnsemblGFF(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                release = release,
-                releaseURL = releaseURL,
-                outputDir = outputDir,
-                decompress = decompress
-            )
+            do.call(what = .downloadEnsemblGFF, args = args)
         }
         cli_alert_success(sprintf(
             "Ensembl genome downloaded successfully to {.path %s}.",
