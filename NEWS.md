@@ -1,3 +1,10 @@
+## AcidGenomes 0.1.2 (2020-12-12)
+
+### New functions
+
+- Added new genome download functions, migrated from previous Python approach
+  defined in py-koopa package.
+
 ## AcidGenomes 0.1.1 (2020-10-12)
 
 ### Minor changes
