@@ -22,7 +22,7 @@ License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    AcidBase (>= 0.2.5),
+    AcidBase (>= 0.2.6),
     AcidGenerics (>= 0.4.1),
     AcidPlyr (>= 0.1.4),
     AnnotationDbi,
