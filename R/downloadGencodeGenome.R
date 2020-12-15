@@ -40,6 +40,7 @@ downloadGencodeGenome <-
             arg = organism,
             choices = c("Homo sapiens", "Mus musculus")
         )
+        ## FIXME REWORK with `currentGencodeBuild` function.
         genomeBuild <- match.arg(
             arg = genomeBuild,
             choices = switch(
@@ -156,13 +157,13 @@ downloadGencodeGenome <-
         }
         genomeFastaURL <- pasteURL(
             baseURL,
-            paste0(build, ".primary_assembly.genome.fa.gz"),
+            paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
             protocol = "none"
         )
         md5sumsURL <- pasteURL(baseURL, "MD5SUMS", protocol = "none")
         download(
             url = readmeURL,
-            destfile = file.path(outputDir, basename(md5sumsURL))
+            destfile = file.path(outputDir, basename(readmeURL))
         )
         download(
             url = md5sumsURL,
@@ -173,23 +174,45 @@ downloadGencodeGenome <-
 
 
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            ## FIXME In this function, make sure target directory exists
-            ## automatically.
             download(
-                url = genome_fasta_url,
-                output_dir = join(output_dir, "genome"),
-                decompress = decompress,
+                url = genomeFastaURL,
+                destfile = file.path(
+                    outputDir, "genome", basename(genomeFastaURL)
+                )
             )
+            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
+            ## FIXME REFER TO ENSEMBL FUNCTION.
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            do.call(what = .downloadGencodeTranscriptome, args = args)
+            download(
+                url = transcriptomeFastaURL,
+                destfile = file.path(
+                    outputDir, "transcriptome", basename(transcriptomeFastaURL)
+                )
+            )
+            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
+            ## FIXME REFER TO ENSEMBL FUNCTION.
         }
         args <- c(args, release = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            do.call(what = .downloadGencodeGTF, args = args)
+            download(
+                url = gtfURL,
+                destfile = file.path(
+                    outputDir, "gtf", basename(gtfURL)
+                )
+            )
+            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
+            ## FIXME REFER TO ENSEMBL FUNCTION.
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            do.call(what = .downloadGencodeGFF, args = args)
+            download(
+                url = gffURL,
+                destfile = file.path(
+                    outputDir, "gff", basename(gffURL)
+                )
+            )
+            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
+            ## FIXME REFER TO ENSEMBL FUNCTION.
         }
 
 
