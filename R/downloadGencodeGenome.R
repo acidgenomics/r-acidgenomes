@@ -48,6 +48,9 @@ downloadGencodeGenome <-
                 "Mus musculus" = "GRCm38"
             )
         )
+        if (is.null(release)) {
+            release <- currentGencodeVersion(organism = organism)
+        }
         outputDir <- initDir(outputDir)
         type <- match.arg(type)
         annotation <- match.arg(annotation)
@@ -90,26 +93,23 @@ downloadGencodeGenome <-
                 dlList[["annotation"]][["gtf"]] <- TRUE
             }
         )
+        organismShort <- switch(
+            EXPR = organism,
+            "Homo sapiens" = "human",
+            "Mus musculus" = "mouse"
+        )
         organism <- gsub(pattern = " ", replacement = "_", x = organism)
-
-
-
-        baseURL <- "ftp://ftp.ensembl.org/pub"
-        if (genomeBuild == "GRCh37") {
-            assert(is.null(release))
-            baseURL <- pasteURL(baseURL, "grch37", protocol = "none")
-            release <- 87L
-        }
-        if (is.null(release)) {
-            release <- currentEnsemblVersion()
-        }
-        releaseURL <- pasteURL(
-            baseURL,
-            paste0("release-", release),
+        baseURL <- pasteURL(
+            "ftp://ftp.ebi.ac.uk",
+            "pub",
+            "databases",
+            "gencode",
+            paste("Gencode", organismShort, sep = "_"),
+            paste("release", release, sep = "_"),
             protocol = "none"
         )
-        outputBasename = kebabCase(tolower(paste(
-            organism, genomeBuild, "ensembl", release
+        outputBasename <- kebabCase(tolower(paste(
+            organism, genomeBuild, "gencode", release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         assert(!isADir(outputDir))
@@ -122,24 +122,24 @@ downloadGencodeGenome <-
             decompress = decompress
         )
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            do.call(what = .downloadEnsemblGenome, args = args)
+            do.call(what = .downloadGencodeGenome, args = args)
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            do.call(what = .downloadEnsemblTranscriptome, args = args)
+            do.call(what = .downloadGencodeTranscriptome, args = args)
         }
         args <- c(args, release = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            do.call(what = .downloadEnsemblGTF, args = args)
+            do.call(what = .downloadGencodeGTF, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            do.call(what = .downloadEnsemblGFF, args = args)
+            do.call(what = .downloadGencodeGFF, args = args)
         }
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
         )
         cli_alert_success(sprintf(
-            "Ensembl genome downloaded successfully to {.path %s}.",
+            "GENCODE genome downloaded successfully to {.path %s}.",
             outputDir
         ))
         invisible(outputDir)
