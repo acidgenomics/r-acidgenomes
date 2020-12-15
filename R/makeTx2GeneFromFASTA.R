@@ -1,3 +1,8 @@
+## FIXME ADD A COMPRESS ARGUMENT HERE.
+## FIXME NEED TO ALLOW THE USER TO SPECIFY WHERE TO SAVE TX2GENE.
+
+
+
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
@@ -142,4 +147,22 @@ makeTx2GeneFromFASTA <- function(
     }
     x <- unique(x)
     Tx2Gene(x)
+}
+
+
+
+## FIXME REWORK THIS, USING CODE FROM ENSEMBL SCRIPT.
+## Updated 2020-12-15.
+#' @rdname makeTx2GeneFromFASTA
+#' @export
+makeTx2GeneFileFromFASTA <- function(
+    file,
+    source,
+    outputFile = file.path(dirname(file), "tx2gene.csv.gz")
+) {
+    t2g <- makeTx2GeneFromFASTA(file = file, source = source)
+    assert(is(t2g, "Tx2Gene"))
+    ## FIXME EXPORT MESSAGE IS DROPPING CSV FROM FILE NAME HERE.
+    ## FIXME PIN TO A PIPETTE FIX WITH BETTER MESSAGE HERE FIRST.
+    export(object = t2g, file = outputFile, overwrite = TRUE)
 }

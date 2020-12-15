@@ -1,21 +1,17 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2020-12-14.
+#' @note Updated 2020-12-15.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @param releaseURL `integer(1)` or `NULL`.
-#' @param outputDir `character(1)`.
-#' @param decompress `integer(1)`.
-#'
 #' @examples
 #' ## This example is bandwidth intensive.
-#' ## > downloadEnsemblGenome(
+#' ## > downloadGencodeGenome(
 #' ## >     organism = "Homo sapiens",
 #' ## >     genomeBuild = "GRCh38",
-#' ## >     release = 100L,
+#' ## >     release = 36L,
 #' ## >     type = "transcriptome",
 #' ## >     annotation = "gtf"
 #' ## > )
@@ -24,8 +20,8 @@ downloadGencodeGenome <-
         organism,
         genomeBuild,
         release = NULL,
-        type = c("transcriptome", "genome", "all", "none"),
-        annotation = c("gtf", "gff", "all", "none"),
+        type = c("all", "transcriptome", "genome", "none"),
+        annotation = c("all", "gtf", "gff", "none"),
         outputDir = ".",
         decompress = FALSE
     ) {
@@ -40,7 +36,7 @@ downloadGencodeGenome <-
             arg = organism,
             choices = c("Homo sapiens", "Mus musculus")
         )
-        ## FIXME REWORK with `currentGencodeBuild` function.
+        ## FIXME Consider reworking with `currentGencodeBuild` function.
         genomeBuild <- match.arg(
             arg = genomeBuild,
             choices = switch(
@@ -49,6 +45,8 @@ downloadGencodeGenome <-
                 "Mus musculus" = "GRCm38"
             )
         )
+        urls <- character()
+        destfiles <- character()
         if (is.null(release)) {
             release <- currentGencodeVersion(organism = organism)
         }
@@ -117,106 +115,120 @@ downloadGencodeGenome <-
         outputDir <- initDir(outputDir)
         if (genomeBuild == "GRCh37") {
             baseURL <- pasteURL(baseURL, "GRCh37_mapping", protocol = "none")
-            transcriptomeFastaURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, "lift37.transcripts.fa.gz"),
-                protocol = "none"
-            )
-            gtfURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, "lift37.annotation.gtf.gz"),
-                protocol = "none"
-            )
-            gffURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, "lift37.annotation.gff3.gz"),
-                protocol = "none"
-            )
-            readmeURL <- pasteURL(
-                baseURL,
-                "_README_GRCh37_mapping.txt",
-                protocol = "none"
-            )
-        } else {
-            transcriptomeFastaURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, ".transcripts.fa.gz"),
-                protocol = "none"
-            )
-            gtfURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, ".annotation.gtf.gz"),
-                protocol = "none"
-            )
-            gffURL <- pasteURL(
-                baseURL,
-                paste0("gencode.v", release, ".annotation.gff3.gz"),
-                protocol = "none"
-            )
-            readmeURL <- pasteURL(baseURL, "_README.TXT", protocol = "none")
         }
-        genomeFastaURL <- pasteURL(
+        ## README file.
+        urls[["readme"]] <- pasteURL(
             baseURL,
-            paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
+            switch(
+                EXPR = genomeBuild,
+                "GRCh37" = "_README_GRCh37_mapping.txt",
+                "_README.TXT"
+            ),
             protocol = "none"
         )
-        md5sumsURL <- pasteURL(baseURL, "MD5SUMS", protocol = "none")
-        download(
-            url = readmeURL,
-            destfile = file.path(outputDir, basename(readmeURL))
+        destfiles[["readme"]] <- file.path(outputDir, basename(urls[["readme"]]))
+        ## MD5 checksums file.
+        urls[["md5sums"]] <- pasteURL(baseURL, "MD5SUMS", protocol = "none")
+        destfiles[["md5sums"]] <- file.path(
+            outputDir, basename(urls[["md5sums"]])
         )
-        download(
-            url = md5sumsURL,
-            destfile = file.path(outputDir, basename(md5sumsURL))
-        )
-
-
-
-
+        ## Genome FASTA file.
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            download(
-                url = genomeFastaURL,
-                destfile = file.path(
-                    outputDir, "genome", basename(genomeFastaURL)
-                )
+            urls[["genome"]] <- pasteURL(
+                baseURL,
+                paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
+                protocol = "none"
             )
-            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
-            ## FIXME REFER TO ENSEMBL FUNCTION.
+            destfiles[["genome"]] <- file.path(
+                outputDir, "genome", basename(urls[["genome"]])
+            )
         }
+        ## Transcriptome FASTA file.
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            download(
-                url = transcriptomeFastaURL,
-                destfile = file.path(
-                    outputDir, "transcriptome", basename(transcriptomeFastaURL)
-                )
+            urls[["transcriptome"]] <- pasteURL(
+                baseURL,
+                paste0(
+                    "gencode.v", release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".transcripts.fa.gz"
+                ),
+                protocol = "none"
             )
-            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
-            ## FIXME REFER TO ENSEMBL FUNCTION.
+            destfiles[["transcriptome"]] <- file.path(
+                outputDir, "transcriptome", basename(urls[["transcriptome"]])
+            )
         }
-        args <- c(args, release = release)
+        ## GTF file.
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            download(
-                url = gtfURL,
-                destfile = file.path(
-                    outputDir, "gtf", basename(gtfURL)
-                )
+            urls[["gtf"]] <- pasteURL(
+                baseURL,
+                paste0(
+                    "gencode.v",
+                    release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".annotation.gtf.gz"
+                ),
+                protocol = "none"
             )
-            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
-            ## FIXME REFER TO ENSEMBL FUNCTION.
+            destfiles[["gtf"]] <- file.path(
+                outputDir, "gtf", basename(urls[["gtf"]])
+            )
         }
+        ## GFF3 file.
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            download(
-                url = gffURL,
-                destfile = file.path(
-                    outputDir, "gff", basename(gffURL)
-                )
+            urls[["gff"]] <- pasteURL(
+                baseURL,
+                paste0(
+                    "gencode.v",
+                    release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".annotation.gff3.gz"
+                ),
+                protocol = "none"
             )
-            ## FIXME NEED TO HANDLE DECOMPRESSION HERE.
-            ## FIXME REFER TO ENSEMBL FUNCTION.
+            destfiles[["gff"]] <- file.path(
+                outputDir, "gff", basename(urls[["gff"]])
+            )
         }
+        stopifnot(identical(names(urls), names(destfiles)))
+        mapply(
+            url = urls,
+            destfile = destfiles,
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
 
 
 
+        ## FIXME NEED TO MAKE TX2GENE HERE.
+        ## FIXME NEEDS OUTPUT FILE OPTION.
+        tx2gene <- makeTx2GeneFromFASTA(
+            file = "XXX",
+            source = "gencode",
+            compress = !decompress
+        )
+
+
+
+        if (isTRUE(decompress)) {
+            ## FIXME SIMPLIY FIND COMPRESSED FILES HERE AND DECOMPRESS.
+            ## FIXME MAKE THIS A SHARED FUNCTION...findAndDecompress
+            ## FIXME LOOK FOR OUTPUT DIR FOR FILE MASK.
+            decompress(file = gffFile, remove = FALSE, overwrite = TRUE)
+        }
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")

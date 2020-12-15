@@ -1,14 +1,16 @@
+## FIXME SIMPLIFY COMPRESSED FILE HANDLING HERE.
+## FIXME REWORK TX2GENE CALL TO SPECIFY OUTPUT FILE NAME.
+## FIXME NEED TO DEFINE makeTx2GeneFileFromFASTA
+
+
+
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2020-12-10.
+#' @note Updated 2020-12-15.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
-#'
-#' @param releaseURL `integer(1)` or `NULL`.
-#' @param outputDir `character(1)`.
-#' @param decompress `integer(1)`.
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
@@ -24,8 +26,8 @@ downloadEnsemblGenome <-
         organism,
         genomeBuild,
         release = NULL,
-        type = c("transcriptome", "genome", "all", "none"),
-        annotation = c("gtf", "gff", "all", "none"),
+        type = c("all", "transcriptome", "genome", "none"),
+        annotation = c("all", "gtf", "gff", "none"),
         outputDir = ".",
         decompress = FALSE
     ) {
@@ -276,6 +278,10 @@ downloadEnsemblGenome <-
             remove = !decompress,
             overwrite = TRUE
         )
+        ## FIXME SWITCH THIS TO MAKETX2GENEFILEFROMFASTA FUNCTION.
+        ## FIXME SIMPLY CHANGE THE FILE EXTENSION DEPENDING ON DECOMPESS
+        ## ARGUMENT.
+        ## REMOVE COMPRESSED FILES WHEN DECOMPRESS IS TRUE.
         tx2gene <- makeTx2GeneFromFASTA(
             file = mergeFastaFile,
             source = "ensembl"
