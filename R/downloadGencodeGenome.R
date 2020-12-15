@@ -114,15 +114,72 @@ downloadGencodeGenome <-
         outputDir <- file.path(outputDir, outputBasename)
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        args <- list(
-            organism = organism,
-            genomeBuild = genomeBuild,
-            releaseURL = releaseURL,
-            outputDir = outputDir,
-            decompress = decompress
+        if (genomeBuild == "GRCh37") {
+            baseURL <- pasteURL(baseURL, "GRCh37_mapping", protocol = "none")
+            transcriptomeFastaURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, "lift37.transcripts.fa.gz"),
+                protocol = "none"
+            )
+            gtfURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, "lift37.annotation.gtf.gz"),
+                protocol = "none"
+            )
+            gffURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, "lift37.annotation.gff3.gz"),
+                protocol = "none"
+            )
+            readmeURL <- pasteURL(
+                baseURL,
+                "_README_GRCh37_mapping.txt",
+                protocol = "none"
+            )
+        } else {
+            transcriptomeFastaURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, ".transcripts.fa.gz"),
+                protocol = "none"
+            )
+            gtfURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, ".annotation.gtf.gz"),
+                protocol = "none"
+            )
+            gffURL <- pasteURL(
+                baseURL,
+                paste0("gencode.v", release, ".annotation.gff3.gz"),
+                protocol = "none"
+            )
+            readmeURL <- pasteURL(baseURL, "_README.TXT", protocol = "none")
+        }
+        genomeFastaURL <- pasteURL(
+            baseURL,
+            paste0(build, ".primary_assembly.genome.fa.gz"),
+            protocol = "none"
         )
+        md5sumsURL <- pasteURL(baseURL, "MD5SUMS", protocol = "none")
+        download(
+            url = readmeURL,
+            destfile = file.path(outputDir, basename(md5sumsURL))
+        )
+        download(
+            url = md5sumsURL,
+            destfile = file.path(outputDir, basename(md5sumsURL))
+        )
+
+
+
+
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            do.call(what = .downloadGencodeGenome, args = args)
+            ## FIXME In this function, make sure target directory exists
+            ## automatically.
+            download(
+                url = genome_fasta_url,
+                output_dir = join(output_dir, "genome"),
+                decompress = decompress,
+            )
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             do.call(what = .downloadGencodeTranscriptome, args = args)
@@ -134,6 +191,9 @@ downloadGencodeGenome <-
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
             do.call(what = .downloadGencodeGFF, args = args)
         }
+
+
+
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
@@ -147,8 +207,8 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2020-12-10.
-.downloadEnsemblGenome <-
+## Updated 2020-12-15.
+.downloadGencodeGenome <-
     function(
         organism,
         genomeBuild,
