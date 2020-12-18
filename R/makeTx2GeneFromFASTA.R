@@ -8,7 +8,7 @@
 #' @export
 #' @note RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
 #'   contain gene identifiers, and is not supported.
-#' @note Updated 2019-11-06.
+#' @note Updated 2020-12-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
@@ -22,11 +22,6 @@
 #'   Assuming Ensembl transcriptome (i.e. cDNA) input by default.
 #'
 #' @return `Tx2Gene`.
-#'
-#' @seealso
-#' tx2gene importers defined in [koopa][].
-#'
-#' [koopa]: https://koopa.acidgenomics.com/
 #'
 #' @examples
 #' ## Ensembl ====
@@ -151,18 +146,15 @@ makeTx2GeneFromFASTA <- function(
 
 
 
-## FIXME REWORK THIS, USING CODE FROM ENSEMBL SCRIPT.
-## Updated 2020-12-15.
+## Updated 2020-12-18.
 #' @rdname makeTx2GeneFromFASTA
 #' @export
 makeTx2GeneFileFromFASTA <- function(
     file,
-    source,
-    outputFile = file.path(dirname(file), "tx2gene.csv.gz")
+    outputFile = file.path(dirname(file), "tx2gene.csv.gz"),
+    source
 ) {
     t2g <- makeTx2GeneFromFASTA(file = file, source = source)
     assert(is(t2g, "Tx2Gene"))
-    ## FIXME EXPORT MESSAGE IS DROPPING CSV FROM FILE NAME HERE.
-    ## FIXME PIN TO A PIPETTE FIX WITH BETTER MESSAGE HERE FIRST.
     export(object = t2g, file = outputFile, overwrite = TRUE)
 }
