@@ -2,11 +2,18 @@
 % Please edit documentation in R/makeTx2GeneFromFASTA.R
 \name{makeTx2GeneFromFASTA}
 \alias{makeTx2GeneFromFASTA}
+\alias{makeTx2GeneFileFromFASTA}
 \title{Make a Tx2Gene object from transcriptome FASTA}
 \usage{
 makeTx2GeneFromFASTA(
   file,
   source = c("ensembl", "gencode", "flybase", "wormbase")
+)
+
+makeTx2GeneFileFromFASTA(
+  file,
+  outputFile = file.path(dirname(file), "tx2gene.csv.gz"),
+  source
 )
 }
 \arguments{
@@ -34,7 +41,7 @@ Make a Tx2Gene object from transcriptome FASTA
 RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
 contain gene identifiers, and is not supported.
 
-Updated 2019-11-06.
+Updated 2020-12-18.
 }
 \examples{
 ## Ensembl ====
@@ -89,7 +96,4 @@ file <- pasteURL(
     protocol = "ftp"
 )
 ## > makeTx2GeneFromFASTA(file, source = "wormbase")
-}
-\seealso{
-tx2gene importers defined in \href{https://koopa.acidgenomics.com/}{koopa}.
 }
