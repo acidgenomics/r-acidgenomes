@@ -1,13 +1,7 @@
-## FIXME SIMPLIFY COMPRESSED FILE HANDLING HERE.
-## FIXME REWORK TX2GENE CALL TO SPECIFY OUTPUT FILE NAME.
-## FIXME NEED TO DEFINE makeTx2GeneFileFromFASTA
-
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2020-12-15.
+#' @note Updated 2020-12-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -28,15 +22,13 @@ downloadEnsemblGenome <-
         release = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
-        outputDir = ".",
-        decompress = FALSE
+        outputDir = "."
     ) {
         assert(
             isString(organism),
             isString(genomeBuild),
             isInt(release, nullOK = TRUE),
-            isString(outputDir),
-            isFlag(decompress)
+            isString(outputDir)
         )
         outputDir <- initDir(outputDir)
         type <- match.arg(type)
@@ -105,8 +97,7 @@ downloadEnsemblGenome <-
             organism = organism,
             genomeBuild = genomeBuild,
             releaseURL = releaseURL,
-            outputDir = outputDir,
-            decompress = decompress
+            outputDir = outputDir
         )
         if (isTRUE(dlList[["type"]][["genome"]])) {
             do.call(what = .downloadEnsemblGenome, args = args)
@@ -134,30 +125,29 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-10.
+## Updated 2020-12-18.
 .downloadEnsemblGenome <-
     function(
         organism,
         genomeBuild,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
         outputDir <- initDir(file.path(outputDir, "genome"))
         baseURL <- pasteURL(
             releaseURL, "fasta", tolower(organism), "dna",
             protocol = "none"
         )
-        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
-        readmeFile <- file.path(outputDir, basename(readmeURL))
-        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
-        checksumsFile <- file.path(outputDir, basename(checksumsURL))
+        urls <- c(
+            "readme" = pasteURL(baseURL, "README", protocol = "none"),
+            "checksums" = pasteURL(baseURL, "CHECKSUMS", protocol = "none")
+        )
         if (isSubset(organism, c("Homo_sapiens", "Mus_musculus"))) {
             assembly <- "primary_assembly"
         } else {
             assembly <- "toplevel"
         }
-        fastaURL <- pasteURL(
+        urls[["fasta"]] <- pasteURL(
             baseURL,
             paste(
                 organism, genomeBuild, "dna", assembly, "fa.gz",
@@ -165,40 +155,34 @@ downloadEnsemblGenome <-
             ),
             protocol = "none"
         )
-        fastaFile <- file.path(outputDir, basename(fastaURL))
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
         mapply(
-            url = c(
-                readmeURL,
-                checksumsURL,
-                fastaURL
-            ),
-            destfile = c(
-                readmeFile,
-                checksumsFile,
-                fastaFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        if (isTRUE(decompress)) {
-            decompress(file = fastaFile, remove = FALSE, overwrite = TRUE)
-        }
         invisible(outputDir)
     }
 
 
 
-## Updated 2020-12-10.
+## Updated 2020-12-18.
 .downloadEnsemblTranscriptome <-
     function(
         organism,
         genomeBuild,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
-        outputDir = initDir(file.path(outputDir, "transcriptome"))
+        outputDir <- initDir(file.path(outputDir, "transcriptome"))
         baseURL <- pasteURL(
             releaseURL, "fasta", tolower(organism),
             protocol = "none"
@@ -263,37 +247,25 @@ downloadEnsemblGenome <-
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        # Create a merged transcriptome FASTA.
-        cdnaFasta <- import(file = cdnaFastaFile, format = "lines")
-        ncrnaFasta <- import(file = ncrnaFastaFile, format = "lines")
-        mergeFasta <- c(cdnaFasta, ncrnaFasta)
+        ## Create a merged transcriptome FASTA.
+        fastaList <- lapply(
+            X = c(
+                cdnaFastaFile,
+                ncrnaFastaFile
+            ),
+            FUN = import,
+            format = "lines"
+        )
+        mergeFasta <- do.call(what = c, args = fastaList)
         mergeFastaFile <- export(
             object = mergeFasta,
-            file = file.path(outputDir, "transcriptome.fa"),
+            file = file.path(outputDir, "transcriptome.fa.gz"),
             overwrite = TRUE
         )
-        mergeFastaFile <- compress(
+        makeTx2GeneFileFromFASTA(
             file = mergeFastaFile,
-            ext = "gz",
-            remove = !decompress,
-            overwrite = TRUE
-        )
-        ## FIXME SWITCH THIS TO MAKETX2GENEFILEFROMFASTA FUNCTION.
-        ## FIXME SIMPLY CHANGE THE FILE EXTENSION DEPENDING ON DECOMPESS
-        ## ARGUMENT.
-        ## REMOVE COMPRESSED FILES WHEN DECOMPRESS IS TRUE.
-        tx2gene <- makeTx2GeneFromFASTA(
-            file = mergeFastaFile,
+            outputFile = file.path(outputDir, "tx2gene.csv.gz"),
             source = "ensembl"
-        )
-        tx2geneFile <- file.path(outputDir, "tx2gene.csv")
-        if (isFALSE(decompress)) {
-            tx2geneFile <- paste0(tx2geneFile, ".gz")
-        }
-        export(
-            object = tx2gene,
-            file = tx2geneFile,
-            overwrite = TRUE
         )
         invisible(outputDir)
     }
