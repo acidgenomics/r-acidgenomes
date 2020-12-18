@@ -8,8 +8,8 @@ downloadGencodeGenome(
   organism,
   genomeBuild,
   release = NULL,
-  type = c("transcriptome", "genome", "all", "none"),
-  annotation = c("gtf", "gff", "all", "none"),
+  type = c("all", "transcriptome", "genome", "none"),
+  annotation = c("all", "gtf", "gff", "none"),
   outputDir = ".",
   decompress = FALSE
 )
@@ -38,10 +38,10 @@ Updated 2020-12-15.
 }
 \examples{
 ## This example is bandwidth intensive.
-## > downloadEnsemblGenome(
+## > downloadGencodeGenome(
 ## >     organism = "Homo sapiens",
 ## >     genomeBuild = "GRCh38",
-## >     release = 100L,
+## >     release = 36L,
 ## >     type = "transcriptome",
 ## >     annotation = "gtf"
 ## > )

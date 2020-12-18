@@ -8,10 +8,9 @@ downloadEnsemblGenome(
   organism,
   genomeBuild,
   release = NULL,
-  type = c("transcriptome", "genome", "all", "none"),
-  annotation = c("gtf", "gff", "all", "none"),
-  outputDir = ".",
-  decompress = FALSE
+  type = c("all", "transcriptome", "genome", "none"),
+  annotation = c("all", "gtf", "gff", "none"),
+  outputDir = "."
 )
 }
 \arguments{
@@ -34,7 +33,7 @@ ensembldb in use.}
 Download Ensembl reference genome
 }
 \note{
-Updated 2020-12-15.
+Updated 2020-12-18.
 }
 \examples{
 ## This example is bandwidth intensive.
