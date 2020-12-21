@@ -53,14 +53,14 @@ NULL
 
 #' @rdname organism
 #' @name organism
-#' @importFrom BiocGenerics organism
+#' @importFrom AcidGenerics organism
 #' @usage organism(object)
 #' @export
 NULL
 
 #' @rdname organism
 #' @name organism<-
-#' @importFrom BiocGenerics organism<-
+#' @importFrom AcidGenerics organism<-
 #' @usage organism(object) <- value
 #' @export
 NULL
@@ -78,7 +78,7 @@ NULL
 
 #' @rdname summary
 #' @name summary
-#' @importFrom S4Vectors summary
+#' @importFrom AcidGenerics summary
 #' @usage summary(object, ...)
 #' @export
 NULL

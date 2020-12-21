@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.1.2
-Date: 2020-12-18
+Date: 2020-12-19
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -27,7 +27,6 @@ Imports:
     AcidPlyr (>= 0.1.4),
     AnnotationDbi,
     AnnotationHub,
-    BiocGenerics,
     BiocParallel,
     GenomicRanges,
     IRanges,
