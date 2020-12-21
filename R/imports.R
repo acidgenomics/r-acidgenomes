@@ -4,15 +4,16 @@
 #'
 #' @importFrom AcidBase compress decompress download forceDetach initDir
 #'   matchArgsToDoCall pasteURL printString requireNamespaces showSlotInfo
+#' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
+#'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
+#'   split tail
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
 #' @importFrom GenomicRanges GRanges ranges seqnames
 #' @importFrom IRanges DataFrameList IRanges
-#' @importFrom S4Vectors DataFrame Rle %in% as.data.frame complete.cases decode
-#'   do.call expand head lapply match mcols mcols<- metadata metadata<- order
-#'   setdiff split summary tail
+#' @importFrom S4Vectors DataFrame Rle
 #' @importFrom SummarizedExperiment rowData rowRanges
 #' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
 #'   cli_div cli_dl cli_end
