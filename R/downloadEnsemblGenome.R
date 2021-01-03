@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2020-12-18.
+#' @note Updated 2020-12-19.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -125,7 +125,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-18.
+## Updated 2020-12-19.
 .downloadEnsemblGenome <-
     function(
         organism,
@@ -174,7 +174,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-18.
+## Updated 2020-12-19.
 .downloadEnsemblTranscriptome <-
     function(
         organism,
@@ -187,86 +187,74 @@ downloadEnsemblGenome <-
             releaseURL, "fasta", tolower(organism),
             protocol = "none"
         )
+        urls <- character()
+        destfiles <- character()
         ## cDNA FASTA.
+        cdnaBaseURL <- pasteURL(baseURL, "cdna", protocol = "none")
         cdnaOutputDir <- initDir(file.path(outputDir, "cdna"))
-        cdnaBaseURL <-
-            pasteURL(baseURL, "cdna", protocol = "none")
-        cdnaReadmeURL <-
+        urls[["cdnaReadme"]] <-
             pasteURL(cdnaBaseURL, "README", protocol = "none")
-        cdnaReadmeFile <-
-            file.path(cdnaOutputDir, basename(cdnaReadmeURL))
-        cdnaChecksumsURL <-
+        destfiles[["cdnaReadme"]] <-
+            file.path(cdnaOutputDir, basename(urls[["cdnaReadme"]]))
+        urls[["cdnaChecksums"]] <-
             pasteURL(cdnaBaseURL, "CHECKSUMS", protocol = "none")
-        cdnaChecksumsFile <-
-            file.path(cdnaOutputDir, basename(cdnaChecksumsURL))
-        cdnaFastaURL <-
+        destfiles[["cdnaChecksums"]] <-
+            file.path(cdnaOutputDir, basename(urls[["cdnaChecksums"]]))
+        urls[["cdnaFasta"]] <-
             pasteURL(
                 cdnaBaseURL,
                 paste(organism, genomeBuild, "cdna.all.fa.gz", sep = "."),
                 protocol = "none"
             )
-        cdnaFastaFile <-
-            file.path(cdnaOutputDir, basename(cdnaFastaURL))
+        destfiles[["cdnaFasta"]] <-
+            file.path(cdnaOutputDir, basename(urls[["cdnaFasta"]]))
         ## ncRNA FASTA.
+        ncrnaBaseURL <- pasteURL(baseURL, "ncrna", protocol = "none")
         ncrnaOutputDir <- initDir(file.path(outputDir, "ncrna"))
-        ncrnaBaseURL <-
-            pasteURL(baseURL, "ncrna", protocol = "none")
-        ncrnaReadmeURL <-
+        urls[["ncrnaReadme"]] <-
             pasteURL(ncrnaBaseURL, "README", protocol = "none")
-        ncrnaReadmeFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaReadmeURL))
-        ncrnaChecksumsURL <-
+        destfiles[["ncrnaReadme"]] <-
+            file.path(ncrnaOutputDir, basename(urls[["ncrnaReadme"]]))
+        urls[["ncrnaChecksums"]] <-
             pasteURL(ncrnaBaseURL, "CHECKSUMS", protocol = "none")
-        ncrnaChecksumsFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaChecksumsURL))
-        ncrnaFastaURL <- pasteURL(
-            ncrnaBaseURL,
-            paste(organism, genomeBuild, "ncrna.fa.gz", sep = "."),
-            protocol = "none"
-        )
-        ncrnaFastaFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaFastaURL))
+        destfiles[["ncrnaChecksums"]] <-
+            file.path(ncrnaOutputDir, basename(urls[["ncrnaChecksums"]]))
+        urls[["ncrnaFasta"]] <-
+            pasteURL(
+                ncrnaBaseURL,
+                paste(organism, genomeBuild, "ncrna.fa.gz", sep = "."),
+                protocol = "none"
+            )
+        destfiles[["ncrnaFasta"]] <-
+            file.path(ncrnaOutputDir, basename(urls[["ncrnaFasta"]]))
+        assert(identical(names(urls), names(destfiles)))
         mapply(
-            url = c(
-                cdnaReadmeURL,
-                cdnaChecksumsURL,
-                cdnaFastaURL,
-                ncrnaReadmeURL,
-                ncrnaChecksumsURL,
-                ncrnaFastaURL
-            ),
-            destfile = c(
-                cdnaReadmeFile,
-                cdnaChecksumsFile,
-                cdnaFastaFile,
-                ncrnaReadmeFile,
-                ncrnaChecksumsFile,
-                ncrnaFastaFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
         ## Create a merged transcriptome FASTA.
+        cli_alert("Creating a merged transcriptome FASTA file.")
         fastaList <- lapply(
             X = c(
-                cdnaFastaFile,
-                ncrnaFastaFile
+                destfiles[["cdnaFasta"]],
+                destfiles[["ncrnaFasta"]]
             ),
             FUN = import,
             format = "lines"
         )
         mergeFasta <- do.call(what = c, args = fastaList)
+
+        ## THIS ISNT EXPORTING WITH THE CORRECT FILE EXTENSION...
+        ## FIXME IT STARTS CORRECTLY AND THEN ADDS EXTRA '.GZ' TO FILE.
         mergeFastaFile <- export(
             object = mergeFasta,
             file = file.path(outputDir, "transcriptome.fa.gz"),
             overwrite = TRUE
         )
-        makeTx2GeneFileFromFASTA(
-            file = mergeFastaFile,
-            outputFile = file.path(outputDir, "tx2gene.csv.gz"),
-            source = "ensembl"
-        )
+        makeTx2GeneFileFromFASTA(file = mergeFastaFile, source = "ensembl")
         invisible(outputDir)
     }
 
