@@ -1,14 +1,9 @@
-## FIXME ADD A COMPRESS ARGUMENT HERE.
-## FIXME NEED TO ALLOW THE USER TO SPECIFY WHERE TO SAVE TX2GENE.
-
-
-
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
 #' @note RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
 #'   contain gene identifiers, and is not supported.
-#' @note Updated 2020-12-18.
+#' @note Updated 2021-01-05.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
@@ -146,7 +141,7 @@ makeTx2GeneFromFASTA <- function(
 
 
 
-## Updated 2020-12-18.
+## Updated 2021-01-05.
 #' @rdname makeTx2GeneFromFASTA
 #' @export
 makeTx2GeneFileFromFASTA <- function(
