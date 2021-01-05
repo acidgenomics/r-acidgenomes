@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2020-12-19.
+#' @note Updated 2021-01-05.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -257,15 +257,14 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-10.
+## Updated 2021-01-05.
 .downloadEnsemblGTF <-
     function(
         organism,
         genomeBuild,
         release,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
         outputDir <- initDir(file.path(outputDir, "gtf"))
         baseURL <- pasteURL(
@@ -297,23 +296,19 @@ downloadEnsemblGenome <-
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        if (isTRUE(decompress)) {
-            decompress(file = gtfFile, remove = FALSE, overwrite = TRUE)
-        }
         invisible(outputDir)
     }
 
 
 
-## Updated 2020-12-10.
+## Updated 2021-01-05.
 .downloadEnsemblGFF <-
     function(
         organism,
         genomeBuild,
         release,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
         outputDir <- initDir(file.path(outputDir, "gff"))
         baseURL <- pasteURL(
@@ -345,8 +340,5 @@ downloadEnsemblGenome <-
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        if (isTRUE(decompress)) {
-            decompress(file = gffFile, remove = FALSE, overwrite = TRUE)
-        }
         invisible(outputDir)
     }
