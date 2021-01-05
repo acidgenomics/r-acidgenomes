@@ -246,9 +246,6 @@ downloadEnsemblGenome <-
             format = "lines"
         )
         mergeFasta <- do.call(what = c, args = fastaList)
-
-        ## THIS ISNT EXPORTING WITH THE CORRECT FILE EXTENSION...
-        ## FIXME IT STARTS CORRECTLY AND THEN ADDS EXTRA '.GZ' TO FILE.
         mergeFastaFile <- export(
             object = mergeFasta,
             file = file.path(outputDir, "transcriptome.fa.gz"),
