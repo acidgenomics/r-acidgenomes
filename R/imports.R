@@ -21,10 +21,13 @@
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isADir
 #'   isAny isCharacter isFlag isInt isMatchingRegex isString isSubset validate
+#' @importFrom httr GET content content_type stop_for_status
+#' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity
 #'   signature
 #' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export getURL
 #'   getURLDirList import removeNA sanitizeNA
+#' @importFrom purrr map_df
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase makeNames
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
