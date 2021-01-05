@@ -35,8 +35,11 @@ Imports:
     cli (>= 2.2),
     ensembldb,
     goalie (>= 0.4.11),
+    httr (>= 1.4),
+    jsonlite (>= 1.7),
     methods,
     pipette (>= 0.4.23),
+    purrr (>= 0.3),
     stringr (>= 1.4),
     syntactic (>= 0.4.3),
     utils

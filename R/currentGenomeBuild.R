@@ -1,19 +1,31 @@
 #' Current genome build
 #'
+#' Fetch the current genome build (assembly) version from online resources.
+#'
 #' @name currentGenomeBuild
 #' @note Updated 2020-01-05.
 #'
 #' @inheritParams AcidRoxygen::params
+#' @param subdir `character(1)`.
+#'   *Only applies to RefSeq*.
+#'   FTP server subdirectory path (e.g. "vertebrate_mammalian").
 #'
 #' @return `character(1)`.
-#'   Genome build.
+#'   Genome assembly build version.
 #'
 #' @seealso
 #' - [Ensembl REST API](https://rest.ensembl.org).
 #' - [UCSC Genome Browser REST API](https://genome.ucsc.edu/goldenPath/help/api.html).
+#' - [RefSeq genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/).
 #'
 #' @examples
+#' currentEnsemblBuild("Homo sapiens")
 #' currentGencodeBuild("Homo sapiens")
+#' currentRefSeqGenomeBuild(
+#'     organism = "Homo sapiens",
+#'     subdir = "vertebrate_mammalian"
+#' )
+#' currentUCSCGenomeBuild("Homo sapiens")
 NULL
 
 
@@ -67,6 +79,48 @@ currentGencodeBuild <- function(organism) {
 }
 
 
+
+## Alternate approach using URL only:
+## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/<subdir>/<organism>/
+##     latest_assembly_versions/
+
+#' @rdname currentGenomeBuild
+#' @export
+currentRefSeqGenomeBuild <- function(
+    organism,
+    subdir = "vertebrate_mammalian"
+) {
+    assert(
+        isString(organism),
+        isString(subdir)
+    )
+    url <- pasteURL(
+        "ftp.ncbi.nlm.nih.gov",
+        "genomes",
+        "refseq",
+        snakeCase(subdir),
+        gsub(pattern = " ", replacement = "_", x = organism),
+        "assembly_summary.txt",
+        protocol = "https"
+    )
+    df <- import(
+        file = url,
+        format = "tsv",
+        colnames = FALSE,
+        skip = 2L,
+        quiet = TRUE
+    )
+    vec <- as.character(df[1L, , drop = TRUE])
+    if (!isSubset(organism, vec)) {
+        stop("Invalid organism.")
+    }
+    out <- vec[[1L]]
+    assert(isString(out))
+    out
+}
+
+
+
 ## Updated 2020-01-05.
 #' @rdname currentGenomeBuild
 #' @export
@@ -91,36 +145,15 @@ currentUCSCGenomeBuild <- function(organism) {
         SIMPLIFY = FALSE,
         USE.NAMES = FALSE
     )
-    df <- purrr::map_df(.x = l, .f = unlist)
-    df <- df[df[["active"]] == 1L, ]
+    df <- map_df(.x = l, .f = unlist)
+    df <- df[df[["active"]] == 1L, , drop = FALSE]
     if (!isSubset(organism, unique(df[["scientificName"]]))) {
         stop("Invalid organism.")
     }
-    df <- df[df[["scientificName"]] == organism, ]
+    df <- df[df[["scientificName"]] == organism, , drop = FALSE]
     ## The latest genome build has the lowest "orderKey" value.
-    df <- df[order(df[["orderKey"]]), ]
+    df <- df[order(df[["orderKey"]]), , drop = FALSE]
     out <- df[["build"]][[1L]]
     assert(isString(out))
     out
-}
-
-
-
-## FIXME WORMBASE REST API.
-## Updated 2020-01-05.
-#' @rdname currentGenomeBuild
-#' @export
-currentWormBaseGenomeBuild <- function(organism) {
-    print("FIXME")
-}
-
-
-
-## FIXME FLYBASE REST API.
-## FIXME WORMBASE REST API.
-## Updated 2020-01-05.
-#' @rdname currentGenomeBuild
-#' @export
-currentFlyBaseGenomeBuild <- function(organism) {
-    print("FIXME")
 }
