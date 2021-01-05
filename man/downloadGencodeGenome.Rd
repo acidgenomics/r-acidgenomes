@@ -10,8 +10,7 @@ downloadGencodeGenome(
   release = NULL,
   type = c("all", "transcriptome", "genome", "none"),
   annotation = c("all", "gtf", "gff", "none"),
-  outputDir = ".",
-  decompress = FALSE
+  outputDir = "."
 )
 }
 \arguments{
@@ -34,7 +33,7 @@ ensembldb in use.}
 Download GENCODE reference genome
 }
 \note{
-Updated 2020-12-15.
+Updated 2021-01-05.
 }
 \examples{
 ## This example is bandwidth intensive.
