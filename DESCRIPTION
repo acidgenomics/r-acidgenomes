@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.1.2
-Date: 2020-12-19
+Date: 2020-01-05
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -15,9 +15,9 @@ Authors@R: c(
         role = c("cph", "fnd")
     ))
 URL:
-    https://acidgenomes.acidgenomics.com/,
-    https://github.com/acidgenomics/AcidGenomes/
-BugReports: https://github.com/acidgenomics/AcidGenomes/issues/
+    https://r.acidgenomics.com/packages/acidgenomes/,
+    https://github.com/acidgenomics/r-acidgenomes/
+BugReports: https://github.com/acidgenomics/r-acidgenomes/issues/
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
