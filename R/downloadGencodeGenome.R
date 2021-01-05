@@ -1,7 +1,11 @@
+## FIXME THIS ISNT PRODUCTION READY YET.
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2020-12-15.
+#' @note Updated 2021-01-05.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -22,15 +26,13 @@ downloadGencodeGenome <-
         release = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
-        outputDir = ".",
-        decompress = FALSE
+        outputDir = "."
     ) {
         assert(
             isString(organism),
             isString(genomeBuild),
             isInt(release, nullOK = TRUE),
-            isString(outputDir),
-            isFlag(decompress)
+            isString(outputDir)
         )
         organism <- match.arg(
             arg = organism,
@@ -211,24 +213,8 @@ downloadGencodeGenome <-
             USE.NAMES = FALSE
         )
 
+        ## FIXME RETHINK TX2GENE HANDLING HERE.
 
-
-        ## FIXME NEED TO MAKE TX2GENE HERE.
-        ## FIXME NEEDS OUTPUT FILE OPTION.
-        tx2gene <- makeTx2GeneFromFASTA(
-            file = "XXX",
-            source = "gencode",
-            compress = !decompress
-        )
-
-
-
-        if (isTRUE(decompress)) {
-            ## FIXME SIMPLIY FIND COMPRESSED FILES HERE AND DECOMPRESS.
-            ## FIXME MAKE THIS A SHARED FUNCTION...findAndDecompress
-            ## FIXME LOOK FOR OUTPUT DIR FOR FILE MASK.
-            decompress(file = gffFile, remove = FALSE, overwrite = TRUE)
-        }
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
@@ -242,14 +228,13 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2020-12-15.
+## Updated 2021-01-05.
 .downloadGencodeGenome <-
     function(
         organism,
         genomeBuild,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
         outputDir <- initDir(file.path(outputDir, "genome"))
         baseURL <- pasteURL(
@@ -289,22 +274,18 @@ downloadGencodeGenome <-
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
-        if (isTRUE(decompress)) {
-            decompress(file = fastaFile, remove = FALSE, overwrite = TRUE)
-        }
         invisible(outputDir)
     }
 
 
 
-## Updated 2020-12-10.
-.downloadEnsemblTranscriptome <-
+## Updated 2021-01-05.
+.downloadGencodeTranscriptome <-
     function(
         organism,
         genomeBuild,
         releaseURL,
-        outputDir,
-        decompress
+        outputDir
     ) {
         outputDir = initDir(file.path(outputDir, "transcriptome"))
         baseURL <- pasteURL(
@@ -388,7 +369,7 @@ downloadGencodeGenome <-
         )
         tx2gene <- makeTx2GeneFromFASTA(
             file = mergeFastaFile,
-            source = "ensembl"
+            source = "gencode"
         )
         tx2geneFile <- file.path(outputDir, "tx2gene.csv")
         if (isFALSE(decompress)) {
@@ -404,8 +385,8 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2020-12-10.
-.downloadEnsemblGTF <-
+## Updated 2021-01-05.
+.downloadGencodeGTF <-
     function(
         organism,
         genomeBuild,
@@ -452,8 +433,8 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2020-12-10.
-.downloadEnsemblGFF <-
+## Updated 2021-01-05.
+.downloadGencodeGFF <-
     function(
         organism,
         genomeBuild,
