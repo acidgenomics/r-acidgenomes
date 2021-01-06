@@ -219,7 +219,7 @@ downloadGencodeGenome <-
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
         )
-        cli_alert_success(sprintf(
+        alertSuccess(sprintf(
             "GENCODE genome downloaded successfully to {.path %s}.",
             outputDir
         ))
