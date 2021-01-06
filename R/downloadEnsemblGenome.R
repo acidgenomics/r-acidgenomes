@@ -72,8 +72,6 @@ downloadEnsemblGenome <-
                 dlList[["annotation"]][["gtf"]] <- TRUE
             }
         )
-        ## FIXME RETHINK THIS STEP.
-        organism <- gsub(pattern = " ", replacement = "_", x = organism)
         baseURL <- "ftp://ftp.ensembl.org/pub"
         if (genomeBuild == "GRCh37") {
             assert(is.null(release))
@@ -126,7 +124,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-19.
+## Updated 2020-01-06.
 .downloadEnsemblGenome <-
     function(
         organism,
@@ -136,14 +134,17 @@ downloadEnsemblGenome <-
     ) {
         outputDir <- initDir(file.path(outputDir, "genome"))
         baseURL <- pasteURL(
-            releaseURL, "fasta", tolower(organism), "dna",
+            releaseURL,
+            "fasta",
+            snakeCase(organism),
+            "dna",
             protocol = "none"
         )
         urls <- c(
             "readme" = pasteURL(baseURL, "README", protocol = "none"),
             "checksums" = pasteURL(baseURL, "CHECKSUMS", protocol = "none")
         )
-        if (isSubset(organism, c("Homo_sapiens", "Mus_musculus"))) {
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
             assembly <- "primary_assembly"
         } else {
             assembly <- "toplevel"
@@ -151,7 +152,11 @@ downloadEnsemblGenome <-
         urls[["fasta"]] <- pasteURL(
             baseURL,
             paste(
-                organism, genomeBuild, "dna", assembly, "fa.gz",
+                gsub(pattern = " ", replacement = "_", x = organism),
+                genomeBuild,
+                "dna",
+                assembly,
+                "fa.gz",
                 sep = "."
             ),
             protocol = "none"
