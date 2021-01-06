@@ -1,12 +1,12 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-06.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
 #' print(object)
 MGI2Ensembl <- function() {  # nolint
     assert(hasInternet())
-    cli_alert("Importing MGI-to-Ensembl gene ID mappings.")
+    alert("Importing MGI-to-Ensembl gene ID mappings.")
     url <- pasteURL(
         "www.informatics.jax.org",
         "downloads",

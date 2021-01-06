@@ -13,7 +13,7 @@ HGNC2Ensembl()
 HGNC-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2020-10-03.
+Updated 2021-01-06.
 }
 \examples{
 object <- HGNC2Ensembl()

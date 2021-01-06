@@ -1,5 +1,5 @@
 #' @inherit HGNC2Ensembl-class title description return
-#' @note Updated 2020-10-03.
+#' @note Updated 2021-01-06.
 #' @export
 #' @examples
 #' object <- HGNC2Ensembl()
@@ -7,7 +7,7 @@
 HGNC2Ensembl <-  # nolint
     function() {
         hgnc <- HGNC()
-        cli_alert("Mapping HGNC identifiers to Ensembl.")
+        alert("Mapping HGNC identifiers to Ensembl.")
         df <- as(hgnc, "DataFrame")
         cols <- c("hgncID", "ensemblGeneID")
         assert(isSubset(cols, colnames(df)))

@@ -4,6 +4,7 @@
 #'
 #' @importFrom AcidBase compress download forceDetach initDir matchArgsToDoCall
 #'   pasteURL printString requireNamespaces showSlotInfo
+#' @importFrom AcidCLI alert alertInfo alertWarning dl
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
 #'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
 #'   split tail
@@ -15,8 +16,6 @@
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom SummarizedExperiment rowData rowRanges
-#' @importFrom cli cli_alert cli_alert_info cli_alert_success cli_alert_warning
-#'   cli_div cli_dl cli_end
 #' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isADir

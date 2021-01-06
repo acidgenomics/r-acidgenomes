@@ -37,7 +37,7 @@ Look up gene synonyms from NCBI.
 Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI.
 Use the \href{https://wormbase.acidgenomics.com/}{wormbase} package instead.
 
-Updated 2020-10-05.
+Updated 2021-01-06.
 }
 \examples{
 object <- geneSynonyms(organism = "Homo sapiens")
