@@ -180,7 +180,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-12-19.
+## Updated 2021-01-06.
 .downloadEnsemblTranscriptome <-
     function(
         organism,
@@ -190,7 +190,9 @@ downloadEnsemblGenome <-
     ) {
         outputDir <- initDir(file.path(outputDir, "transcriptome"))
         baseURL <- pasteURL(
-            releaseURL, "fasta", tolower(organism),
+            releaseURL,
+            "fasta",
+            snakeCase(organism),
             protocol = "none"
         )
         urls <- character()
@@ -209,7 +211,12 @@ downloadEnsemblGenome <-
         urls[["cdnaFasta"]] <-
             pasteURL(
                 cdnaBaseURL,
-                paste(organism, genomeBuild, "cdna.all.fa.gz", sep = "."),
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild,
+                    "cdna", "all", "fa.gz",
+                    sep = "."
+                ),
                 protocol = "none"
             )
         destfiles[["cdnaFasta"]] <-
@@ -228,7 +235,12 @@ downloadEnsemblGenome <-
         urls[["ncrnaFasta"]] <-
             pasteURL(
                 ncrnaBaseURL,
-                paste(organism, genomeBuild, "ncrna.fa.gz", sep = "."),
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild,
+                    "ncrna", "fa.gz",
+                    sep = "."
+                ),
                 protocol = "none"
             )
         destfiles[["ncrnaFasta"]] <-
@@ -263,6 +275,8 @@ downloadEnsemblGenome <-
 
 
 
+
+## FIXME NEED TO REWORK ORGANISM HANDLING HERE.
 
 ## if organism in ("Homo_sapiens", "Mus_musculus"):
 ##gtf_patch_url = paste_url(
