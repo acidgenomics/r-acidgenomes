@@ -20,7 +20,8 @@
 #' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie areDisjointSets areSetEqual assert bapply hasDuplicates
 #'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows isADir
-#'   isAny isCharacter isFlag isInt isMatchingRegex isString isSubset validate
+#'   isAny isCharacter isFlag isInt isMatchingRegex isOrganism isString isSubset
+#'   validate
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity

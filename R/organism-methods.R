@@ -96,7 +96,7 @@ setMethod(
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
-        if (isString(organism)) {
+        if (isOrganism(organism)) {
             return(organism)
         }
         ## Otherwise, fall back to matrix method.
@@ -120,7 +120,7 @@ setMethod(
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
-        if (isString(organism)) {
+        if (isOrganism(organism)) {
             return(organism)
         }
         assert(hasNames(object))
@@ -144,7 +144,7 @@ setMethod(
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
-        if (isString(organism)) {
+        if (isOrganism(organism)) {
             return(organism)
         }
         ## Fall back to detecting from rowRanges or rownames.

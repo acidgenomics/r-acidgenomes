@@ -34,7 +34,7 @@ NULL
 #' @rdname currentGenomeBuild
 #' @export
 currentEnsemblBuild <- function(organism) {
-    assert(isString(organism))
+    assert(isOrganism(organism))
     organism <- snakeCase(organism)
     json <- getJSON(pasteURL(
         "rest.ensembl.org",
@@ -75,7 +75,7 @@ currentRefSeqGenomeBuild <- function(
     subdir = "vertebrate_mammalian"
 ) {
     assert(
-        isString(organism),
+        isOrganism(organism),
         isString(subdir)
     )
     url <- pasteURL(
@@ -109,7 +109,7 @@ currentRefSeqGenomeBuild <- function(
 #' @rdname currentGenomeBuild
 #' @export
 currentUCSCGenomeBuild <- function(organism) {
-    assert(isString(organism))
+    assert(isOrganism(organism))
     json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
     assert(isSubset("ucscGenomes", names(json)))
     json <- json[["ucscGenomes"]]

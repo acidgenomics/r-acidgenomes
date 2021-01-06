@@ -1,10 +1,7 @@
-## FIXME ADD BACK GTF WITH SCAFFOLD (MORE COMPLETE GENE IDS)
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-01-05.
+#' @note Updated 2021-01-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -28,7 +25,7 @@ downloadEnsemblGenome <-
         outputDir = "."
     ) {
         assert(
-            isString(organism),
+            isOrganism(organism),
             isString(genomeBuild),
             isInt(release, nullOK = TRUE),
             isString(outputDir)
@@ -75,6 +72,7 @@ downloadEnsemblGenome <-
                 dlList[["annotation"]][["gtf"]] <- TRUE
             }
         )
+        ## FIXME RETHINK THIS STEP.
         organism <- gsub(pattern = " ", replacement = "_", x = organism)
         baseURL <- "ftp://ftp.ensembl.org/pub"
         if (genomeBuild == "GRCh37") {
@@ -260,7 +258,27 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-05.
+
+## if organism in ("Homo_sapiens", "Mus_musculus"):
+##gtf_patch_url = paste_url(
+##    base_url,
+##    organism
+##    + "."
+##    + build
+##    + "."
+##    + release
+##    + ".chr_patch_hapl_scaff.gtf.gz",
+##)
+##download(
+##    url=gtf_patch_url, output_dir=output_dir, decompress=decompress
+##)
+
+## ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gtf.gz
+
+## ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gff3.gz
+
+
+## Updated 2021-01-06.
 .downloadEnsemblGTF <-
     function(
         organism,
