@@ -115,7 +115,7 @@ downloadEnsemblGenome <-
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
         )
-        cli_alert_success(sprintf(
+        alertSuccess(sprintf(
             "Ensembl genome downloaded successfully to {.path %s}.",
             outputDir
         ))
@@ -256,7 +256,7 @@ downloadEnsemblGenome <-
             USE.NAMES = FALSE
         )
         ## Create a merged transcriptome FASTA.
-        cli_alert("Creating a merged transcriptome FASTA file.")
+        alert("Creating a merged transcriptome FASTA file.")
         fastaList <- lapply(
             X = c(
                 destfiles[["cdnaFasta"]],
