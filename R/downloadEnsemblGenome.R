@@ -1,3 +1,6 @@
+## FIXME ADD BACK GTF WITH SCAFFOLD (MORE COMPLETE GENE IDS)
+
+
 #' Download Ensembl reference genome
 #'
 #' @export
