@@ -4,7 +4,7 @@
 #'
 #' @note Synonym support for *Caenorhabditis elegans* is poor on NCBI.
 #' Use the [wormbase](https://wormbase.acidgenomics.com/) package instead.
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-06.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -34,10 +34,7 @@ geneSynonyms <- function(
     assert(hasInternet())
     organism <- match.arg(organism)
     return <- match.arg(return)
-    cli_alert(sprintf(
-        "Importing {.var %s} gene synonyms from Ensembl.",
-        organism
-    ))
+    alert(sprintf("Importing {.var %s} gene synonyms from Ensembl.", organism))
     ## NCBI uses underscore for species name.
     species <- gsub(" ", "_", organism)
     if (species == "Drosophila_melanogaster") {
@@ -92,7 +89,7 @@ geneSynonyms <- function(
     df <- df[order(df[["geneID"]]), , drop = FALSE]
     split <- split(df, f = df[["geneID"]])
     if (identical(return, "DataFrame")) {
-        cli_alert("Preparing unique synonyms per gene.")
+        alert("Preparing unique synonyms per gene.")
         list <- bplapply(
             X = split,
             FUN = function(x) {

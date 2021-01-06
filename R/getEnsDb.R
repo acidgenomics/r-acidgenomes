@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor AnnotationHub
 #'
 #' @export
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -32,7 +32,7 @@ getEnsDb <- function(
         if (hasLength(remap)) {
             ucsc <- names(remap)
             ensembl <- unname(remap)
-            cli_alert_warning(sprintf(
+            alertWarning(sprintf(
                 fmt = paste(
                     "Remapping genome build from UCSC ({.val %s}) to",
                     "Ensembl ({.val %s})."
@@ -101,12 +101,12 @@ getEnsDb <- function(
 
 #' Get EnsDb from Package
 #'
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-06.
 #' @noRd
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
-    cli_alert(sprintf("Getting {.var EnsDb} from {.pkg %s}.", package))
+    alert(sprintf("Getting {.var EnsDb} from {.pkg %s}.", package))
     userAttached <- .packages()
     assert(isString(package))
     require(package, character.only = TRUE)
@@ -152,7 +152,6 @@ getEnsDb <- function(
     if (isString(attr(object, "id"))) {
         list[["id"]] <- attr(object, "id")
     }
-    cli_div(theme = list(body = list("margin-left" = 4L)))
     items <- c(
         "Organism" = list[["organism"]],
         "Genome build" = list[["genomeBuild"]],
@@ -161,7 +160,6 @@ getEnsDb <- function(
     if (isString(list[["level"]])) {
         items <- c(items, "Level" = list[["level"]])
     }
-    cli_dl(items = items)
-    cli_end()
+    dl(items = items)
     list
 }

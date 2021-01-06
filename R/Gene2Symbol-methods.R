@@ -6,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -57,7 +57,7 @@ NULL
         duplicated <- duplicated(data[["geneName"]])
         if (any(duplicated)) {
             dupes <- unique(data[["geneName"]][duplicated])
-            cli_alert_info(sprintf(
+            alertInfo(sprintf(
                 "%d non-unique gene %s detected.",
                 length(dupes),
                 ngettext(
@@ -74,12 +74,12 @@ NULL
             ## it is used heavily in other functions.
             data[["geneName"]] <- make.unique(data[["geneName"]])
         } else if (format == "unmodified") {
-            cli_alert_warning(paste(
+            alertWarning(paste(
                 "Returning with unmodified gene symbols",
                 "{.emph (may contain duplicates)}."
             ))
         } else if (format == "1:1") {
-            cli_alert("Returning 1:1 mappings using oldest gene ID per symbol.")
+            alert("Returning 1:1 mappings using oldest gene ID per symbol.")
             x <- split(data, f = data[["geneName"]])
             x <- bplapply(
                 X = x,
