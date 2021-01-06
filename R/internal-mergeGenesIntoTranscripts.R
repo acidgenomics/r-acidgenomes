@@ -28,7 +28,7 @@
     )
     ## Only attempt the merge if there's useful additional metadata to include.
     if (length(geneCols) > 0L) {
-        cli_alert(sprintf(
+        alert(sprintf(
             "Merging gene-level annotations: {.var %s}.",
             toString(camelCase(geneCols), width = 100L)
         ))

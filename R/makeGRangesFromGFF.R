@@ -193,7 +193,7 @@ makeGRangesFromGFF <- function(
         isFlag(.checkAgainstTxDb)
     )
     level <- match.arg(level)
-    cli_alert(sprintf(
+    alert(sprintf(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
@@ -225,7 +225,7 @@ makeGRangesFromGFF <- function(
     ## This check may be removed in a future update.
     if (isTRUE(.checkAgainstTxDb)) {
         ## nocov start
-        cli_alert_warning(
+        alertWarning(
             "Strict mode enabled. Checking against {.var TxDb}."
         )
         txdb <- .makeTxDbFromGFF(object)
@@ -349,7 +349,7 @@ makeGRangesFromGFF <- function(
             ## identifiers.
             out <- .mergeGenesIntoTranscripts(transcripts, genes)
         } else {
-            cli_alert_warning("Skipping gene metadata merge.")
+            alertWarning("Skipping gene metadata merge.")
             out <- transcripts
         }
     }

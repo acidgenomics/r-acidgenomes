@@ -74,11 +74,11 @@
 
 
 
-## Updated 2020-01-20.
+## Updated 2021-01-06.
 .slotGFFDetectInfo <- function(object) {
     source <- .detectGFFSource(object)
     type <- .detectGFFType(object)
-    cli_alert_info(sprintf("%s %s detected.", source, type))
+    alertInfo(sprintf("%s %s detected.", source, type))
     metadata(object)[["detect"]] <- c(
         source = source,
         type = type
