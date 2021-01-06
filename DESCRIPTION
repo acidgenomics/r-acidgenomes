@@ -23,6 +23,7 @@ Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.2.6),
+    AcidCLI (>= 0.0.1),
     AcidGenerics (>= 0.5.0),
     AcidPlyr (>= 0.1.4),
     AnnotationDbi,
@@ -32,7 +33,6 @@ Imports:
     IRanges,
     S4Vectors,
     SummarizedExperiment,
-    cli (>= 2.2),
     ensembldb,
     goalie (>= 0.4.11),
     httr (>= 1.4),

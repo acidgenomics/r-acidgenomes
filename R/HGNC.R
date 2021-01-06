@@ -1,7 +1,7 @@
 #' Import HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-06.
 #'
 #' @return `HGNC`.
 #'
@@ -14,7 +14,7 @@
 #' print(object)
 HGNC <-  # nolint
     function() {
-        cli_alert("Importing HGNC complete set.")
+        alert("Importing HGNC complete set.")
         url <- pasteURL(
             "ftp.ebi.ac.uk",
             "pub",
