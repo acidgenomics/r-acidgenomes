@@ -116,7 +116,7 @@ makeGRangesFromEnsembl <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    cli_alert("Making {.var GRanges} from Ensembl.")
+    alert("Making {.var GRanges} from Ensembl.")
     edb <- getEnsDb(
         organism = organism,
         genomeBuild = genomeBuild,

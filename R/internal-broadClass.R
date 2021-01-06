@@ -149,7 +149,7 @@
     } else {
         ## FlyBase GTF will hit this step.
         ## Note that we're early returning without calculations in this case.
-        cli_alert_warning(
+        alertWarning(
             "{.var GRanges} does not contain biotype in {.var mcols}.\n",
             "Returning without broad class definitions."
         )
@@ -162,7 +162,7 @@
         geneNameCol <- "geneName"
         geneNameData <- data[[geneNameCol]]
     } else {
-        cli_alert_warning(
+        alertWarning(
             "{.var GRanges} does not contain gene names in {.fun mcols}."
         )
         geneNameCol <- NULL
@@ -178,13 +178,13 @@
         seqnamesData <- data[[seqnamesCol]]
     } else {
         ## Don't think this is currently possible to hit, but keep just in case.
-        cli_alert_warning("{.var GRanges} does not contain {.fun seqnames}.")
+        alertWarning("{.var GRanges} does not contain {.fun seqnames}.")
         seqnamesCol <- NULL
         seqnamesData <- NA_character_
     }
 
     ## Apply broad class -------------------------------------------------------
-    cli_alert(sprintf(
+    alert(sprintf(
         "Defining {.var broadClass} using: {.var %s}.",
         ## Note that `c()` call here effectively removes `NULL` definitions.
         toString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))

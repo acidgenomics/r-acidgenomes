@@ -29,7 +29,7 @@ makeGRangesFromEnsDb <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    cli_alert("Making {.var GRanges} from {.var EnsDb}.")
+    alert("Making {.var GRanges} from {.var EnsDb}.")
     userAttached <- .packages()
     if (isString(object)) {
         package <- object

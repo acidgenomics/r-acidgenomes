@@ -56,7 +56,7 @@ mapHumanOrthologs <- function(
         )),
         "_gene_ensembl"
     )
-    cli_alert(sprintf(
+    alert(sprintf(
         fmt = paste(
             "Matching orthologs against {.var %s} ({.url %s}) with",
             "{.pkg biomaRt} %s."
@@ -93,13 +93,13 @@ mapHumanOrthologs <- function(
     colnames(map) <- c("geneID", "hgncID")
     map <- sanitizeNA(map)
     ## Get the corresponding gene-to-symbol mappings.
-    cli_alert(sprintf("Getting {.emph %s} gene symbols.", organism))
+    alert(sprintf("Getting {.emph %s} gene symbols.", organism))
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
         format = "unmodified"
     )
-    cli_alert("Getting {.emph Homo sapiens} gene symbols.")
+    alert("Getting {.emph Homo sapiens} gene symbols.")
     g2shs <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
