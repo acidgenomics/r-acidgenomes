@@ -30,29 +30,13 @@ NULL
 
 
 
-#' Get JSON (from REST API)
-#'
-#' Consider exporting this in pipette in a future update.
-#'
-#' @note Updated 2020-01-05.
-#' @noRd
-.getJSON <- function(url) {
-    reponse <- GET(url = url, content_type("application/json"))
-    stop_for_status(reponse)
-    json <- fromJSON(toJSON(content(reponse)))
-    assert(is.list(json))
-    json
-}
-
-
-
 ## Updated 2020-01-05.
 #' @rdname currentGenomeBuild
 #' @export
 currentEnsemblBuild <- function(organism) {
     assert(isString(organism))
     organism <- snakeCase(organism)
-    json <- .getJSON(pasteURL(
+    json <- getJSON(pasteURL(
         "rest.ensembl.org",
         "info",
         "assembly",
@@ -126,8 +110,7 @@ currentRefSeqGenomeBuild <- function(
 #' @export
 currentUCSCGenomeBuild <- function(organism) {
     assert(isString(organism))
-    url <- "https://api.genome.ucsc.edu/list/ucscGenomes"
-    json <- .getJSON(url)
+    json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
     assert(isSubset("ucscGenomes", names(json)))
     json <- json[["ucscGenomes"]]
     l <- mapply(
