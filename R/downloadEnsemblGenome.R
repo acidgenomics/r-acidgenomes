@@ -180,6 +180,8 @@ downloadEnsemblGenome <-
 
 
 
+## FIXME REWORK THE DESTFILES HERE.
+
 ## Updated 2021-01-06.
 .downloadEnsemblTranscriptome <-
     function(
@@ -275,8 +277,7 @@ downloadEnsemblGenome <-
 
 
 
-
-## FIXME NEED TO REWORK ORGANISM HANDLING HERE.
+## FIXME REWORK THE DESTFILES HERE.
 
 ## if organism in ("Homo_sapiens", "Mus_musculus"):
 ##gtf_patch_url = paste_url(
@@ -297,6 +298,8 @@ downloadEnsemblGenome <-
 ## ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gff3.gz
 
 
+## FIXME REWORK THIS.
+
 ## Updated 2021-01-06.
 .downloadEnsemblGTF <-
     function(
@@ -308,7 +311,9 @@ downloadEnsemblGenome <-
     ) {
         outputDir <- initDir(file.path(outputDir, "gtf"))
         baseURL <- pasteURL(
-            releaseURL, "gtf", tolower(organism),
+            releaseURL,
+            "gtf",
+            snakeCase(organism),
             protocol = "none"
         )
         readmeURL <- pasteURL(baseURL, "README", protocol = "none")
@@ -317,7 +322,13 @@ downloadEnsemblGenome <-
         checksumsFile <- file.path(outputDir, basename(checksumsURL))
         gtfURL <- pasteURL(
             baseURL,
-            paste(organism, genomeBuild, release, "gtf.gz", sep = "."),
+            paste(
+                gsub(pattern = " ", replacement = "_", x = organism),
+                genomeBuild,
+                release,
+                "gtf.gz",
+                sep = "."
+            ),
             protocol = "none"
         )
         gtfFile <- file.path(outputDir, basename(gtfURL))
@@ -340,6 +351,8 @@ downloadEnsemblGenome <-
     }
 
 
+
+## FIXME REWORK ORGANISM HANDLING AND DESTFILES HERE.
 
 ## Updated 2021-01-05.
 .downloadEnsemblGFF <-
