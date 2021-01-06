@@ -33,7 +33,7 @@ ensembldb in use.}
 Download Ensembl reference genome
 }
 \note{
-Updated 2021-01-05.
+Updated 2021-01-06.
 }
 \examples{
 ## This example is bandwidth intensive.

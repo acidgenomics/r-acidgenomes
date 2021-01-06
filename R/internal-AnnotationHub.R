@@ -33,7 +33,7 @@
     ah = NULL
 ) {
     assert(
-        isString(organism),
+        isOrganism(organism),
         isString(genomeBuild, nullOK = TRUE),
         isInt(release, nullOK = TRUE),
         is(ah, "AnnotationHub") || is.null(ah)
@@ -184,7 +184,7 @@
         hasNoDuplicates(keys),
         isString(keytype),
         isCharacter(columns),
-        isString(organism),
+        isOrganism(organism),
         isFlag(strict)
     )
     cli_alert(sprintf(

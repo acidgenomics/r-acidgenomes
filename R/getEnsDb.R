@@ -20,7 +20,7 @@ getEnsDb <- function(
     release = NULL
 ) {
     assert(
-        isString(organism),
+        isOrganism(organism),
         isString(genomeBuild, nullOK = TRUE),
         isInt(release, nullOK = TRUE)
     )
