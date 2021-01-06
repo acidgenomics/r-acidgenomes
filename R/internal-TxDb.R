@@ -17,7 +17,7 @@
         inherits = FALSE
     )
     assert(is.function(fun))
-    cli_alert(sprintf("Checking %s in {.var TxDb}.", level))
+    alert(sprintf("Checking %s in {.var TxDb}.", level))
     gr1 <- gr
     rm(gr)
     ## Convert the TxDb to GRanges using either `genes()` or `transcripts()`.
@@ -40,7 +40,7 @@
     ) {
         ## GenomicFeatures currently returns GFF3 input with gene symbols as the
         ## names, so ensure we're setting the GRanges from GFF to match.
-        cli_alert(
+        alert(
             "{.var TxDb} returns gene names as identifiers for GFF3.\n",
             "Setting names on {.var GRanges} from GFF to match."
         )
@@ -69,7 +69,7 @@
     ) {
         ## GenomicFeatures currently returns GFF3 input with transcript names
         ## only, so ensure we're setting both GRanges accordingly.
-        cli_alert(
+        alert(
             "{.var TxDb} returns gene names as identifiers for GFF3.\n",
             "Setting names on {.var GRanges} from GFF to match."
         )
@@ -87,7 +87,7 @@
     if (length(gr1) > length(gr2)) {
         assert(isSubset(names(gr2), names(gr1)))
         n <- length(gr1) - length(gr2)
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             fmt = paste0(
                 "{.pkg GenomicFeatures} dropped %d %s from file to make ",
                 "{.var TxDb}. Missing: %s."
@@ -107,7 +107,7 @@
         ## dupes from the GFF file but they still remain in GenomicFeatures.
         assert(isSubset(names(gr1), names(gr2)))
         n <- length(gr2) - length(gr1)
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             fmt = paste0(
                 "{.pkg %s} dropped %d %s from file to make {.var GRanges}. ",
                 "Missing: %s."
@@ -140,7 +140,7 @@
     diff <- r1 != r2
     if (any(diff)) {
         which <- head(which(diff), n = 10L)
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             fmt = paste(
                 "%d range mismatches detected in {.var TxDb}.",
                 "Showing {.var GRanges} mismatch comparison (first 10).",
@@ -228,12 +228,12 @@
                 ## `makeTxDbFromGRanges()` often chokes on GRanges from GFF3,
                 ## imported via `rtracklayer::import()`, so switch to using
                 ## `makeTxDbFromGFF()` instead, which always works.
-                cli_alert(
+                alert(
                     "Making {.var TxDb} using {.fun makeTxDbFromGFF}."
                 )
                 GenomicFeatures::makeTxDbFromGFF(file)
             } else if (type == "GTF") {
-                cli_alert(
+                alert(
                     "Making {.var TxDb} using {.fun makeTxDbFromGRanges}."
                 )
                 GenomicFeatures::makeTxDbFromGRanges(object)

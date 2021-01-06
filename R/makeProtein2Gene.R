@@ -29,7 +29,7 @@ makeProtein2GeneFromEnsembl <- function(
         isCharacter(ids),
         hasNoDuplicates(ids)
     )
-    cli_alert("Making {.var Protein2Gene} from Ensembl.")
+    alert("Making {.var Protein2Gene} from Ensembl.")
     if (is.null(organism)) {
         organism <- detectOrganism(ids)
     }

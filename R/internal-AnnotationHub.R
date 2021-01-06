@@ -55,7 +55,7 @@
             x = fullOrganism,
             ignore.case = TRUE
         )
-        cli_alert(sprintf(
+        alert(sprintf(
             "Matching {.val %s} using {.val %s}.",
             fullOrganism, organism
         ))
@@ -78,7 +78,7 @@
     ## Matching EnsDb objects from ensembldb by default.
     preparerclass <- "AHEnsDbs"
     rdataclass <- "EnsDb"
-    cli_alert(sprintf(
+    alert(sprintf(
         "Getting {.var %s} from {.pkg AnnotationHub} %s (%s).",
         rdataclass,
         packageVersion("AnnotationHub"),
@@ -161,7 +161,7 @@
         isString(id),
         unname(isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$"))
     )
-    cli_alert_info(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
+    alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
     forceDetach(keep = userAttached)
     id
 }
@@ -187,7 +187,7 @@
         isOrganism(organism),
         isFlag(strict)
     )
-    cli_alert(sprintf(
+    alert(sprintf(
         "Matching identifiers using NCBI {.var %s} via {.pkg %s} %s.",
         "OrgDb",
         "AnnotationHub",
@@ -201,7 +201,7 @@
         orgdb <- ah[[id]]
     })
     assert(is(orgdb, "OrgDb"))
-    cli_alert_info(sprintf(
+    alertInfo(sprintf(
         "{.val %s} (%s): %s.",
         id,
         mcols(ahs)[id, "title"],

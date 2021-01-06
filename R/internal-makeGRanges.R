@@ -25,7 +25,7 @@
     if (!isSubset(organism, eval(formals(geneSynonyms)[["organism"]]))) {
         return(object)
     }
-    cli_alert(sprintf(
+    alert(sprintf(
         "Adding gene synonyms to {.var %s} column.",
         "geneSynonyms"
     ))
@@ -42,10 +42,10 @@
 #'
 #' Append the transcript version to the identifier (e.g. ENST00000000233.10).
 #'
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-06.
 #' @noRd
 .addTxVersion <- function(object) {
-    cli_alert("Adding version to transcript identifiers.")
+    alert("Adding version to transcript identifiers.")
     mcolnames <- colnames(mcols(object))
     assert(
         is(object, "GRanges"),
@@ -149,7 +149,7 @@
     invalid <- setdiff(names, make.names(names, unique = TRUE))
     if (hasLength(invalid)) {
         invalid <- sort(unique(invalid))
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             fmt = "%d invalid %s: {.var %s}.",
             length(invalid),
             ngettext(
@@ -163,7 +163,7 @@
     rm(invalid)
     ## Split into GRangesList if object contains multiple ranges per feature.
     if (hasDuplicates(names)) {
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             fmt = paste(
                 "{.var GRanges} contains multiple ranges per '%s'.",
                 "Splitting into {.var GRangesList}."
@@ -185,7 +185,7 @@
         arg = metadata(object)[["level"]],
         choices = c("genes", "transcripts")
     )
-    cli_alert_info(sprintf(
+    alertInfo(sprintf(
         "%d %s detected.",
         length(object),
         ngettext(
@@ -314,7 +314,7 @@
     if (all(c("geneName", "symbol") %in% colnames(mcols))) {
         mcols[["symbol"]] <- NULL
     } else if ("symbol" %in% colnames(mcols)) {
-        cli_alert(
+        alert(
             "Renaming {.var symbol} to {.var geneName} in {.fun mcols}."
         )
         mcols[["geneName"]] <- mcols[["symbol"]]
@@ -332,7 +332,7 @@
 
     ## Ensure the ranges are sorted by identifier.
     idCol <- .detectGRangesIDs(object)
-    cli_alert(sprintf("Arranging by {.var %s}.", idCol))
+    alert(sprintf("Arranging by {.var %s}.", idCol))
     names(object) <- mcols(object)[[idCol]]
     object <- object[sort(names(object))]
     object

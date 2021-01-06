@@ -152,7 +152,7 @@
     keep <- mcols(object)[["type"]] == "exon"
     assert(any(keep))
     n <- sum(keep, na.rm = TRUE)
-    cli_alert_info(sprintf(
+    alertInfo(sprintf(
         "%d %s detected.",
         n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
     ))
