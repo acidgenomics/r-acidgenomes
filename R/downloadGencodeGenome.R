@@ -29,7 +29,7 @@ downloadGencodeGenome <-
         outputDir = "."
     ) {
         assert(
-            isString(organism),
+            isOrganism(organism),
             isString(genomeBuild),
             isInt(release, nullOK = TRUE),
             isString(outputDir)

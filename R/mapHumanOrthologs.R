@@ -36,7 +36,7 @@ mapHumanOrthologs <- function(
     requireNamespaces("biomaRt")
     assert(
         isCharacter(genes),
-        isString(organism, nullOK = TRUE),
+        isOrganism(organism, nullOK = TRUE),
         isInt(ensemblRelease, nullOK = TRUE)
     )
     if (is.null(organism)) {
