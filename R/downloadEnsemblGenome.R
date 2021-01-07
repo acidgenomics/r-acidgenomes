@@ -97,9 +97,10 @@ downloadEnsemblGenome <-
         h1(sprintf(
             paste(
                 "Downloading Ensembl genome for {.emph %s}",
-                " %s %d to {.path %s} from {.url %s}."
+                " %s %d from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild, release, outputDir, releaseURL
+            organism, genomeBuild, release,
+            releaseURL, outputDir
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
