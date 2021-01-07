@@ -41,7 +41,7 @@ Make a Tx2Gene object from transcriptome FASTA
 RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
 contain gene identifiers, and is not supported.
 
-Updated 2021-01-05.
+Updated 2021-01-07.
 }
 \examples{
 ## Ensembl ====
