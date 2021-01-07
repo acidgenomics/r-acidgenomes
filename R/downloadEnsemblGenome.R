@@ -106,19 +106,26 @@ downloadEnsemblGenome <-
             releaseURL = releaseURL,
             outputDir = outputDir
         )
+        out <- list()
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            do.call(what = .downloadEnsemblGenome, args = args)
+            out[["type"]][["genome"]] <-
+                do.call(what = .downloadEnsemblGenome, args = args)
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            do.call(what = .downloadEnsemblTranscriptome, args = args)
+            out[["type"]][["transcriptome"]] <-
+                do.call(what = .downloadEnsemblTranscriptome, args = args)
         }
         args <- c(args, "release" = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            do.call(what = .downloadEnsemblGTF, args = args)
+            out[["annotation"]][["gtf"]] <-
+                do.call(what = .downloadEnsemblGTF, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            do.call(what = .downloadEnsemblGFF, args = args)
+            out[["annotation"]][["gff"]] <-
+                do.call(what = .downloadEnsemblGFF, args = args)
         }
+        out[["args"]] <- args
+        out[["call"]] <- match.call()
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
@@ -127,10 +134,7 @@ downloadEnsemblGenome <-
             "Ensembl genome downloaded successfully to {.path %s}.",
             outputDir
         ))
-
-        ## FIXME RETURN THE PATHS HERE INSTEAD.
-
-        invisible(outputDir)
+        invisible(out)
     }
 
 
@@ -292,7 +296,6 @@ downloadEnsemblGenome <-
         releaseURL,
         outputDir
     ) {
-        outputDir <- initDir(file.path(outputDir, "gtf"))
         baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
         urls <- c(
             "readme" = pasteURL(baseURL, "README"),
@@ -316,27 +319,12 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
     }
 
 
 
-## Updated 2021-01-06.
+## Updated 2021-01-07.
 .downloadEnsemblGFF <-
     function(
         organism,
@@ -345,7 +333,6 @@ downloadEnsemblGenome <-
         releaseURL,
         outputDir
     ) {
-        outputDir <- initDir(file.path(outputDir, "gff"))
         baseURL <- pasteURL(releaseURL, "gff3", snakeCase(organism))
         urls <- c(
             "readme" = pasteURL(baseURL, "README"),
@@ -369,20 +356,5 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
     }
