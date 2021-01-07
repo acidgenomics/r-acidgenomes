@@ -313,10 +313,10 @@ downloadEnsemblGenome <-
             source = "ensembl"
         )
         out <- list(
-            "fasta" = mergeFastaFile,
-            "fastaElements" = list(
+            "fasta" = list(
                 "cdna" = cdnaFiles,
-                "ncrna" = ncrnaFiles
+                "ncrna" = ncrnaFiles,
+                "merge" = mergeFastaFile
             ),
             "tx2gene" = tx2geneFile
         )

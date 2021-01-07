@@ -168,51 +168,6 @@ downloadGencodeGenome <-
 
 
 ## Updated 2021-01-07.
-.downloadGencodeGTF <-
-    function(
-        genomeBuild,
-        release,
-        releaseURL,
-        outputDir
-    ) {
-        outputDir <- initDir(file.path(outputDir, "gtf"))
-        urls <- c(
-            "gtf" = pasteURL(
-                baseURL,
-                paste0(
-                    "gencode.v",
-                    release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".annotation.gtf.gz"
-                )
-            )
-        )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
-    }
-
-
-
-## FIXME
-## Updated 2021-01-07.
 .downloadGencodeGFF <-
     function(
         genomeBuild,
@@ -220,11 +175,9 @@ downloadGencodeGenome <-
         releaseURL,
         outputDir
     ) {
-        outputDir <- initDir(file.path(outputDir, "gff"))
-        ## FIXME MAKE THIS A SHARED FUNCTION.
         urls <- c(
             "gff" = pasteURL(
-                baseURL,
+                releaseURL,
                 paste0(
                     "gencode.v",
                     release,
@@ -237,24 +190,36 @@ downloadGencodeGenome <-
                 )
             )
         )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
     }
 
+
+
+## Updated 2021-01-07.
+.downloadGencodeGTF <-
+    function(
+        genomeBuild,
+        release,
+        releaseURL,
+        outputDir
+    ) {
+        urls <- c(
+            "gtf" = pasteURL(
+                releaseURL,
+                paste0(
+                    "gencode.v",
+                    release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".annotation.gtf.gz"
+                )
+            )
+        )
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
+    }
 
 
 
@@ -265,29 +230,13 @@ downloadGencodeGenome <-
         releaseURL,
         outputDir
     ) {
-        outputDir <- initDir(file.path(outputDir, "genome"))
         urls <- c(
-            "genome" = pasteURL(
+            "fasta" = pasteURL(
                 releaseURL,
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
         )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
     }
 
 
@@ -300,9 +249,9 @@ downloadGencodeGenome <-
         releaseURL,
         outputDir
     ) {
-        outputDir <- initDir(file.path(outputDir, "transcriptome"))
+        out <- list()
         urls <- c(
-            "transcriptome" = pasteURL(
+            "fasta" = pasteURL(
                 releaseURL,
                 paste0(
                     "gencode.v", release,
@@ -315,24 +264,15 @@ downloadGencodeGenome <-
                 )
             )
         )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
+        out[["fasta"]] <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "transcriptome")
         )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        makeTx2GeneFileFromFASTA(
-            file = destfiles[["transcriptome"]],
+        fastaFile <- out[["fasta"]][["fasta"]]
+        assert(isAFile(fastaFile))
+        out[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
+            file = fastaFile,
             source = "gencode"
         )
-        invisible(outputDir)
+        invisible(out)
     }
