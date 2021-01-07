@@ -6,7 +6,7 @@
 \usage{
 downloadGencodeGenome(
   organism,
-  genomeBuild,
+  genomeBuild = NULL,
   release = NULL,
   type = c("all", "transcriptome", "genome", "none"),
   annotation = c("all", "gtf", "gff", "none"),
