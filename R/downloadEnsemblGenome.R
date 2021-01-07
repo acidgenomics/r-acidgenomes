@@ -116,7 +116,7 @@ downloadEnsemblGenome <-
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             do.call(what = .downloadEnsemblTranscriptome, args = args)
         }
-        args <- c(args, release = release)
+        args <- c(args, "release" = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
             do.call(what = .downloadEnsemblGTF, args = args)
         }
@@ -173,6 +173,7 @@ downloadEnsemblGenome <-
             ),
             protocol = "none"
         )
+        ## FIXME MAKE THIS A SHARED FUNCTION.
         destfiles <- vapply(
             X = urls,
             FUN = function(url) {
@@ -212,6 +213,9 @@ downloadEnsemblGenome <-
         ## cDNA FASTA.
         cdnaBaseURL <- pasteURL(baseURL, "cdna", protocol = "none")
         cdnaOutputDir <- initDir(file.path(outputDir, "cdna"))
+
+        ## FIXME MAKE THIS A SHARED FUNCTION.
+
         urls[["cdnaReadme"]] <-
             pasteURL(cdnaBaseURL, "README", protocol = "none")
         destfiles[["cdnaReadme"]] <-
@@ -233,6 +237,7 @@ downloadEnsemblGenome <-
         destfiles[["cdnaFasta"]] <-
             file.path(cdnaOutputDir, basename(urls[["cdnaFasta"]]))
         ## ncRNA FASTA.
+        ## FIXME MAKE THIS A SHARED FUNCTION.
         ncrnaBaseURL <- pasteURL(baseURL, "ncrna", protocol = "none")
         ncrnaOutputDir <- initDir(file.path(outputDir, "ncrna"))
         urls[["ncrnaReadme"]] <-
@@ -256,6 +261,7 @@ downloadEnsemblGenome <-
         destfiles[["ncrnaFasta"]] <-
             file.path(ncrnaOutputDir, basename(urls[["ncrnaFasta"]]))
         assert(identical(names(urls), names(destfiles)))
+        ## FIXME MAKE THIS A SHARED FUNCTION.
         mapply(
             url = urls,
             destfile = destfiles,
@@ -332,6 +338,7 @@ downloadEnsemblGenome <-
             },
             FUN.VALUE = character(1L)
         )
+        ## FIXME MAKE THIS A SHARED FUNCTION.
         mapply(
             url = urls,
             destfile = destfiles,
@@ -391,6 +398,7 @@ downloadEnsemblGenome <-
             },
             FUN.VALUE = character(1L)
         )
+        ## FIXME MAKE THIS A SHARED FUNCTION.
         mapply(
             url = urls,
             destfile = destfiles,
