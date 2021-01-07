@@ -273,28 +273,6 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME REWORK THE DESTFILES HERE.
-
-## if organism in ("Homo_sapiens", "Mus_musculus"):
-##gtf_patch_url = paste_url(
-##    base_url,
-##    organism
-##    + "."
-##    + build
-##    + "."
-##    + release
-##    + ".chr_patch_hapl_scaff.gtf.gz",
-##)
-##download(
-##    url=gtf_patch_url, output_dir=output_dir, decompress=decompress
-##)
-
-## ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gtf.gz
-
-## ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gff3.gz
-
-
-
 ## Updated 2021-01-06.
 .downloadEnsemblGTF <-
     function(
@@ -329,7 +307,7 @@ downloadEnsemblGenome <-
                 baseURL,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
+                    genomeBuild, release, "chr_patch_hapl_scaff", "gff3.gz",
                     sep = "."
                 ),
                 protocol = "none"
@@ -354,9 +332,7 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME REWORK ORGANISM HANDLING AND DESTFILES HERE.
-
-## Updated 2021-01-05.
+## Updated 2021-01-06.
 .downloadEnsemblGFF <-
     function(
         organism,
@@ -367,22 +343,35 @@ downloadEnsemblGenome <-
     ) {
         outputDir <- initDir(file.path(outputDir, "gff"))
         baseURL <- pasteURL(
-            releaseURL, "gff3", tolower(organism),
+            releaseURL,
+            "gff3",
+            snakeCase(organism),
             protocol = "none"
         )
-        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
-        readmeFile <- file.path(outputDir, basename(readmeURL))
-        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
-        checksumsFile <- file.path(outputDir, basename(checksumsURL))
-        gffURL <- pasteURL(
-            baseURL,
-            paste(organism, genomeBuild, release, "gff3.gz", sep = "."),
-            protocol = "none"
+        urls <- c(
+            "readme" = pasteURL(baseURL, "README", protocol = "none"),
+            "checksums" = pasteURL(baseURL, "CHECKSUMS", protocol = "none"),
+            "gff" = pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "gff3.gz",
+                    sep = "."
+                ),
+                protocol = "none"
+            )
         )
-        gffFile <- file.path(outputDir, basename(gffURL))
-
-
-
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+            urls[["gff2"]] <- pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
+                    sep = "."
+                ),
+                protocol = "none"
+            )
+        }
         destfiles <- vapply(
             X = urls,
             FUN = function(url) {
