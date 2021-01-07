@@ -109,11 +109,11 @@ downloadEnsemblGenome <-
         out <- list()
         if (isTRUE(dlList[["type"]][["genome"]])) {
             out[["type"]][["genome"]] <-
-                do.call(what = .downloadEnsemblGenome, args = args)
+                do.call(what = .downloadEnsemblGenomeFASTA, args = args)
         }
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             out[["type"]][["transcriptome"]] <-
-                do.call(what = .downloadEnsemblTranscriptome, args = args)
+                do.call(what = .downloadEnsemblTranscriptomeFASTA, args = args)
         }
         args <- c(args, "release" = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
@@ -135,40 +135,6 @@ downloadEnsemblGenome <-
             outputDir
         ))
         invisible(out)
-    }
-
-
-
-## Updated 2020-01-07.
-.downloadEnsemblGenome <-
-    function(
-        organism,
-        genomeBuild,
-        releaseURL,
-        outputDir
-    ) {
-        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
-        urls <- c(
-            "readme" = pasteURL(baseURL, "README"),
-            "checksums" = pasteURL(baseURL, "CHECKSUMS")
-        )
-        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
-            assembly <- "primary_assembly"
-        } else {
-            assembly <- "toplevel"
-        }
-        urls[["fasta"]] <- pasteURL(
-            baseURL,
-            paste(
-                gsub(pattern = " ", replacement = "_", x = organism),
-                genomeBuild,
-                "dna",
-                assembly,
-                "fa.gz",
-                sep = "."
-            )
-        )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
     }
 
 
@@ -247,8 +213,42 @@ downloadEnsemblGenome <-
 
 
 
+## Updated 2020-01-07.
+.downloadEnsemblGenomeFASTA <-
+    function(
+        organism,
+        genomeBuild,
+        releaseURL,
+        outputDir
+    ) {
+        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
+        urls <- c(
+            "readme" = pasteURL(baseURL, "README"),
+            "checksums" = pasteURL(baseURL, "CHECKSUMS")
+        )
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+            assembly <- "primary_assembly"
+        } else {
+            assembly <- "toplevel"
+        }
+        urls[["fasta"]] <- pasteURL(
+            baseURL,
+            paste(
+                gsub(pattern = " ", replacement = "_", x = organism),
+                genomeBuild,
+                "dna",
+                assembly,
+                "fa.gz",
+                sep = "."
+            )
+        )
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
+    }
+
+
+
 ## Updated 2021-01-07.
-.downloadEnsemblTranscriptome <-
+.downloadEnsemblTranscriptomeFASTA <-
     function(
         organism,
         genomeBuild,
