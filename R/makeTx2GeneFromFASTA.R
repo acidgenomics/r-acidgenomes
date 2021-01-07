@@ -135,6 +135,8 @@ makeTx2GeneFromFASTA <- function(
         x <- do.call(what = rbind, args = x)
         x[, 2L] <- gsub(pattern = "^gene=", replacement = "", x = x[, 2L])
     }
+    ## FIXME MOVE THIS STEP TO TX2GENE GENERATOR.
+    ## FIXME NEED TO TIGHTEN UP VALIDITY CHECKS ON THIS OBJECT CLASS.
     x <- unique(x)
     Tx2Gene(x)
 }
