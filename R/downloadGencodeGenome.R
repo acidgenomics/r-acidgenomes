@@ -3,8 +3,7 @@
 #' @export
 #' @note Updated 2021-01-07.
 #'
-#' @inheritParams AcidRoxygen::params
-#' @inheritParams params
+#' @inheritParams downloadEnsemblGenome
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
