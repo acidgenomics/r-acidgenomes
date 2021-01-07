@@ -40,10 +40,10 @@
     ) {
         ## GenomicFeatures currently returns GFF3 input with gene symbols as the
         ## names, so ensure we're setting the GRanges from GFF to match.
-        alert(
-            "{.var TxDb} returns gene names as identifiers for GFF3.\n",
+        alert(paste(
+            "{.var TxDb} returns gene names as identifiers for GFF3.",
             "Setting names on {.var GRanges} from GFF to match."
-        )
+        ))
         names(gr1) <- mcols(gr1)[["geneName"]]
     } else if (
         level == "transcripts" &&
@@ -69,10 +69,10 @@
     ) {
         ## GenomicFeatures currently returns GFF3 input with transcript names
         ## only, so ensure we're setting both GRanges accordingly.
-        alert(
-            "{.var TxDb} returns gene names as identifiers for GFF3.\n",
+        alert(paste(
+            "{.var TxDb} returns gene names as identifiers for GFF3.",
             "Setting names on {.var GRanges} from GFF to match."
-        )
+        ))
         names(gr1) <- mcols(gr1)[["transcriptName"]]
         names(gr2) <- mcols(gr2)[["txName"]]
     }
