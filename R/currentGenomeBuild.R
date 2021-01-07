@@ -15,7 +15,7 @@
 #'
 #' @seealso
 #' - [Ensembl REST API](https://rest.ensembl.org).
-#' - [UCSC Genome Browser REST API](https://genome.ucsc.edu/goldenPath/help/api.html).
+#' - [UCSC REST API](https://genome.ucsc.edu/goldenPath/help/api.html).
 #' - [RefSeq genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/).
 #'
 #' @examples

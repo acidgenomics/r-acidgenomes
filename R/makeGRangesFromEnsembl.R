@@ -143,7 +143,7 @@ formals(makeGRangesFromEnsembl)[["level"]] <-
 #' @describeIn makeGRangesFromEnsembl
 #' Legacy convenience function that calls [makeGRangesFromEnsembl()] and returns
 #' a `tbl_df` (tibble) instead of `GRanges`. Note that `GRanges` can also be
-#' coercing using [`as.data.frame()`][BiocGenerics::as.data.frame].
+#' coerced using [`as.data.frame()`][base::as.data.frame].
 #' @export
 annotable <- function(...) {
         gr <- makeGRangesFromEnsembl(...)

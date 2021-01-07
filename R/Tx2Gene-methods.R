@@ -29,7 +29,7 @@ NULL
             is.character(object),
             identical(ncol(object), 2L)
         )
-        object <-as.data.frame(object, stringsAsFactors = FALSE)
+        object <- as.data.frame(object, stringsAsFactors = FALSE)
         Tx2Gene(object)
     }
 
