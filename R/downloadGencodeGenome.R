@@ -1,3 +1,8 @@
+## FIXME RETHINK THIS...DONT MODIFY
+## > organism <- gsub(pattern = " ", replacement = "_", x = organism)
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
@@ -88,12 +93,7 @@ downloadGencodeGenome <-
             "Homo sapiens" = "human",
             "Mus musculus" = "mouse"
         )
-
-        ## FIXME RETHINK THIS...DONT MODIFY
-        ## > organism <- gsub(pattern = " ", replacement = "_", x = organism)
-
-
-        baseURL <- pasteURL(
+        releaseURL <- pasteURL(
             "ftp://ftp.ebi.ac.uk",
             "pub",
             "databases",
@@ -102,51 +102,49 @@ downloadGencodeGenome <-
             paste("release", release, sep = "_"),
             protocol = "none"
         )
+        if (genomeBuild == "GRCh37") {
+            releaseURL <-
+                pasteURL(releaseURL, "GRCh37_mapping", protocol = "none")
+        }
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "gencode", release
         )))
         outputDir <- file.path(outputDir, outputBasename)
-
-
-
-        ## FIXME RETHINK THIS.
-        ## FIXME NEED TO UPDATE ACID_CLI TO USE TXT INSTEAD OF VERBATIM FOR HEADERS.
         h1(sprintf(
-            "Downloading GENCODE genome for {.emph %s} %s %d to {.path %s}.",
-            organism, genomeBuild, release, outputDir
+            paste(
+                "Downloading GENCODE genome for {.emph %s}",
+                " %s %d from {.url %s} to {.path %s}."
+            ),
+            organism, genomeBuild, release,
+            releaseURL, outputDir
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        if (genomeBuild == "GRCh37") {
-            baseURL <- pasteURL(baseURL, "GRCh37_mapping", protocol = "none")
-        }
-
-
-
-
-
-
-
-
-        ## FIXME NEED TO HAND OFF TO FUNCTIONS HERE.
-
-        urls <- character()
-        destfiles <- character()
-        ## README file.
-        urls[["readme"]] <- pasteURL(
-            baseURL,
-            switch(
-                EXPR = genomeBuild,
-                "GRCh37" = "_README_GRCh37_mapping.txt",
-                "_README.TXT"
+        urls <- c(
+            "readme" = pasteURL(
+                releaseURL,
+                switch(
+                    EXPR = genomeBuild,
+                    "GRCh37" = "_README_GRCh37_mapping.txt",
+                    "_README.TXT"
+                ),
+                protocol = "none"
             ),
-            protocol = "none"
+            "md5sums" = pasteURL(releaseURL, "MD5SUMS", protocol = "none")
         )
-        destfiles[["readme"]] <- file.path(outputDir, basename(urls[["readme"]]))
-        ## MD5 checksums file.
-        urls[["md5sums"]] <- pasteURL(baseURL, "MD5SUMS", protocol = "none")
-        destfiles[["md5sums"]] <- file.path(
-            outputDir, basename(urls[["md5sums"]])
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
+        mapply(
+            url = urls,
+            destfile = destfiles,
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
         )
 
 
@@ -233,8 +231,6 @@ downloadGencodeGenome <-
         ## FIXME ===============================================================
 
 
-
-        ## FIXME RETHINK TX2GENE HANDLING HERE.
 
         saveRDS(
             object = sessionInfo(),
