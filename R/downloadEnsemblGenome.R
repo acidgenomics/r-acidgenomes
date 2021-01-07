@@ -307,7 +307,7 @@ downloadEnsemblGenome <-
                 baseURL,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "chr_patch_hapl_scaff", "gff3.gz",
+                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
                     sep = "."
                 ),
                 protocol = "none"
