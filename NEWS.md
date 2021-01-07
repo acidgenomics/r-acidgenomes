@@ -1,9 +1,10 @@
-## AcidGenomes 0.1.2 (2021-01-05)
+## AcidGenomes 0.1.2 (2021-01-07)
 
 ### New functions
 
 - Added new genome download functions, migrated from previous Python approach
   defined in py-koopa package.
+- Switched from cli to AcidCLI for interactive messages.
 
 ## AcidGenomes 0.1.1 (2020-10-12)
 
