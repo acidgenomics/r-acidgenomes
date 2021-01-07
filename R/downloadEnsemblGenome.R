@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-01-07.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -139,43 +139,7 @@ downloadEnsemblGenome <-
 
 
 
-#' Download multiple genome files in a single call
-#'
-#' @note Intentionally not allowing accidental overwrites here.
-#' @note Updated 2021-01-07.
-#' @noRd
-#'
-#' @return `character`
-#'   Destination files.
-.downloadURLs <- function(urls, outputDir) {
-    assert(
-        allAreURLs(urls),
-        !isADir(outputDir)
-    )
-    outputDir <- initDir(outputDir)
-    destfiles <- vapply(
-        X = urls,
-        FUN = function(url) {
-            file.path(outputDir, basename(url))
-        },
-        FUN.VALUE = character(1L)
-    )
-    assert(identical(names(urls), names(destfiles)))
-    out <- mapply(
-        url = urls,
-        destfile = destfiles,
-        FUN = download,
-        SIMPLIFY = TRUE,
-        USE.NAMES = FALSE
-    )
-    names(out) <- names(urls)
-    assert(allAreFiles(out))
-    invisible(out)
-}
-
-
-
-## Updated 2020-01-06.
+## Updated 2020-01-07.
 .downloadEnsemblGenome <-
     function(
         organism,
@@ -205,121 +169,6 @@ downloadEnsemblGenome <-
             )
         )
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
-    }
-
-
-
-## Updated 2021-01-07.
-.downloadEnsemblTranscriptome <-
-    function(
-        organism,
-        genomeBuild,
-        releaseURL,
-        outputDir
-    ) {
-        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
-        ## Download cDNA FASTA files.
-        cdnaBaseURL <- pasteURL(baseURL, "cdna")
-        urls <- c(
-            "readme" = pasteURL(cdnaBaseURL, "README"),
-            "checksums" = pasteURL(cdnaBaseURL, "CHECKSUMS"),
-            "fasta" = pasteURL(
-                cdnaBaseURL,
-                paste(
-                    gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, "cdna", "all", "fa.gz",
-                    sep = "."
-                )
-            )
-        )
-        cdnaFiles <- .downloadURLs(
-            urls = urls,
-            outputDir = file.path(outputDir, "cdna")
-        )
-        ## Download ncRNA FASTA files.
-        ncrnaBaseURL <- pasteURL(baseURL, "ncrna")
-        urls <- c(
-            "readme" = pasteURL(ncrnaBaseURL, "README"),
-            "checksums" = pasteURL(ncrnaBaseURL, "CHECKSUMS"),
-            "fasta" = pasteURL(
-                    ncrnaBaseURL,
-                    paste(
-                        gsub(pattern = " ", replacement = "_", x = organism),
-                        genomeBuild, "ncrna", "fa.gz",
-                        sep = "."
-                    )
-                )
-        )
-        ncrnaFiles <- .downloadURLs(
-            urls =  urls,
-            outputDir = file.path(outputDir, "ncrna")
-        )
-        ## Create a merged transcriptome FASTA.
-        alert("Creating a merged transcriptome FASTA file.")
-        fastaList <- lapply(
-            X = c(
-                cdnaFiles[["fasta"]],
-                ncrnaFiles[["fasta"]]
-            ),
-            FUN = import,
-            format = "lines"
-        )
-        mergeFasta <- do.call(what = c, args = fastaList)
-        mergeFastaFile <- export(
-            object = mergeFasta,
-            file = file.path(outputDir, "transcriptome.fa.gz"),
-            overwrite = TRUE
-        )
-        tx2geneFile <- makeTx2GeneFileFromFASTA(
-            file = mergeFastaFile,
-            source = "ensembl"
-        )
-        out <- list(
-            "fasta" = mergeFastaFile,
-            "fastaElements" = list(
-                "cdna" = cdnaFiles,
-                "ncrna" = ncrnaFiles
-            ),
-            "tx2gene" = tx2geneFile
-        )
-        invisible(out)
-    }
-
-
-
-## Updated 2021-01-06.
-.downloadEnsemblGTF <-
-    function(
-        organism,
-        genomeBuild,
-        release,
-        releaseURL,
-        outputDir
-    ) {
-        baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
-        urls <- c(
-            "readme" = pasteURL(baseURL, "README"),
-            "checksums" = pasteURL(baseURL, "CHECKSUMS"),
-            "gtf" = pasteURL(
-                baseURL,
-                paste(
-                    gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "gtf.gz",
-                    sep = "."
-                )
-            )
-        )
-        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
-            urls[["gtf2"]] <- pasteURL(
-                baseURL,
-                paste(
-                    gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
-                    sep = "."
-                )
-            )
-        }
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
     }
 
 
@@ -358,3 +207,154 @@ downloadEnsemblGenome <-
         }
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
     }
+
+
+
+## Updated 2021-01-07.
+.downloadEnsemblGTF <-
+    function(
+        organism,
+        genomeBuild,
+        release,
+        releaseURL,
+        outputDir
+    ) {
+        baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
+        urls <- c(
+            "readme" = pasteURL(baseURL, "README"),
+            "checksums" = pasteURL(baseURL, "CHECKSUMS"),
+            "gtf" = pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "gtf.gz",
+                    sep = "."
+                )
+            )
+        )
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+            urls[["gtf2"]] <- pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
+                    sep = "."
+                )
+            )
+        }
+        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
+    }
+
+
+
+## Updated 2021-01-07.
+.downloadEnsemblTranscriptome <-
+    function(
+        organism,
+        genomeBuild,
+        releaseURL,
+        outputDir
+    ) {
+        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
+        ## Download cDNA FASTA files.
+        cdnaBaseURL <- pasteURL(baseURL, "cdna")
+        urls <- c(
+            "readme" = pasteURL(cdnaBaseURL, "README"),
+            "checksums" = pasteURL(cdnaBaseURL, "CHECKSUMS"),
+            "fasta" = pasteURL(
+                cdnaBaseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, "cdna", "all", "fa.gz",
+                    sep = "."
+                )
+            )
+        )
+        cdnaFiles <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "cdna")
+        )
+        ## Download ncRNA FASTA files.
+        ncrnaBaseURL <- pasteURL(baseURL, "ncrna")
+        urls <- c(
+            "readme" = pasteURL(ncrnaBaseURL, "README"),
+            "checksums" = pasteURL(ncrnaBaseURL, "CHECKSUMS"),
+            "fasta" = pasteURL(
+                ncrnaBaseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, "ncrna", "fa.gz",
+                    sep = "."
+                )
+            )
+        )
+        ncrnaFiles <- .downloadURLs(
+            urls =  urls,
+            outputDir = file.path(outputDir, "ncrna")
+        )
+        ## Create a merged transcriptome FASTA.
+        alert("Creating a merged transcriptome FASTA file.")
+        fastaList <- lapply(
+            X = c(
+                cdnaFiles[["fasta"]],
+                ncrnaFiles[["fasta"]]
+            ),
+            FUN = import,
+            format = "lines"
+        )
+        mergeFasta <- do.call(what = c, args = fastaList)
+        mergeFastaFile <- export(
+            object = mergeFasta,
+            file = file.path(outputDir, "transcriptome.fa.gz"),
+            overwrite = TRUE
+        )
+        tx2geneFile <- makeTx2GeneFileFromFASTA(
+            file = mergeFastaFile,
+            source = "ensembl"
+        )
+        out <- list(
+            "fasta" = mergeFastaFile,
+            "fastaElements" = list(
+                "cdna" = cdnaFiles,
+                "ncrna" = ncrnaFiles
+            ),
+            "tx2gene" = tx2geneFile
+        )
+        invisible(out)
+    }
+
+
+
+#' Download multiple genome files in a single call
+#'
+#' @note Intentionally not allowing accidental overwrites here.
+#' @note Updated 2021-01-07.
+#' @noRd
+#'
+#' @return `character`
+#'   Destination files.
+.downloadURLs <- function(urls, outputDir) {
+    assert(
+        allAreURLs(urls),
+        !isADir(outputDir)
+    )
+    outputDir <- initDir(outputDir)
+    destfiles <- vapply(
+        X = urls,
+        FUN = function(url) {
+            file.path(outputDir, basename(url))
+        },
+        FUN.VALUE = character(1L)
+    )
+    assert(identical(names(urls), names(destfiles)))
+    out <- mapply(
+        url = urls,
+        destfile = destfiles,
+        FUN = download,
+        SIMPLIFY = TRUE,
+        USE.NAMES = FALSE
+    )
+    names(out) <- names(urls)
+    assert(allAreFiles(out))
+    invisible(out)
+}
