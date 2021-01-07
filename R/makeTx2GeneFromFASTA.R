@@ -3,7 +3,7 @@
 #' @export
 #' @note RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
 #'   contain gene identifiers, and is not supported.
-#' @note Updated 2021-01-05.
+#' @note Updated 2021-01-07.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
@@ -135,8 +135,6 @@ makeTx2GeneFromFASTA <- function(
         x <- do.call(what = rbind, args = x)
         x[, 2L] <- gsub(pattern = "^gene=", replacement = "", x = x[, 2L])
     }
-    ## FIXME MOVE THIS STEP TO TX2GENE GENERATOR.
-    ## FIXME NEED TO TIGHTEN UP VALIDITY CHECKS ON THIS OBJECT CLASS.
     x <- unique(x)
     Tx2Gene(x)
 }
