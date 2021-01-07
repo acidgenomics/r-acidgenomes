@@ -114,8 +114,8 @@ downloadGencodeGenome <-
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
+        out <- list()
         ## Download the metadata files first.
-        ## FIXME MAKE THIS A SHARED FUNCTION.
         urls <- c(
             "readme" = pasteURL(
                 releaseURL,
@@ -127,21 +127,7 @@ downloadGencodeGenome <-
             ),
             "md5sums" = pasteURL(releaseURL, "MD5SUMS")
         )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
+        out[["metadata"]] <- .downloadURLs(urls = urls, outputDir = outputDir)
         ## Now ready to download individual genome files.
         args <- list(
             genomeBuild = genomeBuild,
@@ -149,19 +135,25 @@ downloadGencodeGenome <-
             outputDir = outputDir
         )
         if (isTRUE(dlList[["type"]][["genome"]])) {
-            do.call(what = .downloadGencodeGenome, args = args)
+            out[["type"]][["genome"]] <-
+                do.call(what = .downloadGencodeGenomeFASTA, args = args)
         }
         args <- c(args, "release" = release)
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            do.call(what = .downloadGencodeTranscriptome, args = args)
+            out[["type"]][["transcriptome"]] <-
+                do.call(what = .downloadGencodeTranscriptomeFASTA, args = args)
         }
         args <- c(args, release = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            do.call(what = .downloadGencodeGTF, args = args)
+            out[["annotation"]][["gtf"]] <-
+                do.call(what = .downloadGencodeGTF, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            do.call(what = .downloadGencodeGFF, args = args)
+            out[["annotation"]][["gff"]] <-
+                do.call(what = .downloadGencodeGFF, args = args)
         }
+        out[["args"]] <- args
+        out[["call"]] <- match.call()
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
@@ -170,89 +162,7 @@ downloadGencodeGenome <-
             "GENCODE genome downloaded successfully to {.path %s}.",
             outputDir
         ))
-        invisible(outputDir)
-    }
-
-
-
-## Updated 2021-01-07.
-.downloadGencodeGenome <-
-    function(
-        genomeBuild,
-        releaseURL,
-        outputDir
-    ) {
-        outputDir <- initDir(file.path(outputDir, "genome"))
-        urls <- c(
-            "genome" = pasteURL(
-                releaseURL,
-                paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
-            )
-        )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        invisible(outputDir)
-    }
-
-
-
-## FIXME NEED TO GENERATE TX2GENE HERE AUTOMATICALLY.
-## Updated 2021-01-07.
-.downloadGencodeTranscriptome <-
-    function(
-        genomeBuild,
-        release,
-        releaseURL,
-        outputDir
-    ) {
-        outputDir <- initDir(file.path(outputDir, "transcriptome"))
-        urls <- c(
-            "transcriptome" = pasteURL(
-                releaseURL,
-                paste0(
-                    "gencode.v", release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".transcripts.fa.gz"
-                )
-            )
-        )
-        destfiles <- vapply(
-            X = urls,
-            FUN = function(url) {
-                file.path(outputDir, basename(url))
-            },
-            FUN.VALUE = character(1L)
-        )
-        ## FIXME MAKE THIS A SHARED FUNCTION.
-        mapply(
-            url = urls,
-            destfile = destfiles,
-            FUN = download,
-            SIMPLIFY = FALSE,
-            USE.NAMES = FALSE
-        )
-        makeTx2GeneFileFromFASTA(
-            file = destfiles[["transcriptome"]],
-            source = "gencode"
-        )
-        invisible(outputDir)
+        invisible(out)
     }
 
 
@@ -341,6 +251,88 @@ downloadGencodeGenome <-
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
+        )
+        invisible(outputDir)
+    }
+
+
+
+
+## Updated 2021-01-07.
+.downloadGencodeGenomeFASTA <-
+    function(
+        genomeBuild,
+        releaseURL,
+        outputDir
+    ) {
+        outputDir <- initDir(file.path(outputDir, "genome"))
+        urls <- c(
+            "genome" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
+            )
+        )
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
+        ## FIXME MAKE THIS A SHARED FUNCTION.
+        mapply(
+            url = urls,
+            destfile = destfiles,
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        invisible(outputDir)
+    }
+
+
+
+## Updated 2021-01-07.
+.downloadGencodeTranscriptomeFASTA <-
+    function(
+        genomeBuild,
+        release,
+        releaseURL,
+        outputDir
+    ) {
+        outputDir <- initDir(file.path(outputDir, "transcriptome"))
+        urls <- c(
+            "transcriptome" = pasteURL(
+                releaseURL,
+                paste0(
+                    "gencode.v", release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".transcripts.fa.gz"
+                )
+            )
+        )
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
+        ## FIXME MAKE THIS A SHARED FUNCTION.
+        mapply(
+            url = urls,
+            destfile = destfiles,
+            FUN = download,
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        makeTx2GeneFileFromFASTA(
+            file = destfiles[["transcriptome"]],
+            source = "gencode"
         )
         invisible(outputDir)
     }
