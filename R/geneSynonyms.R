@@ -3,7 +3,8 @@
 #' Look up gene synonyms from NCBI.
 #'
 #' @note Synonym support for *Caenorhabditis elegans* is poor on NCBI.
-#' Use the [wormbase](https://wormbase.acidgenomics.com/) package instead.
+#' Use the [WormBase](https://r.acidgenomics.com/packages/wormbase/) package
+#' instead.
 #' @note Updated 2021-01-06.
 #' @export
 #'
