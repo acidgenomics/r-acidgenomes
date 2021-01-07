@@ -38,7 +38,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2019-10-24.
+Updated 2020-01-07.
 }
 \examples{
 ## SummarizedExperiment ====
