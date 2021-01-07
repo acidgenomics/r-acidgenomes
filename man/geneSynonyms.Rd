@@ -35,7 +35,8 @@ Look up gene synonyms from NCBI.
 }
 \note{
 Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI.
-Use the \href{https://wormbase.acidgenomics.com/}{wormbase} package instead.
+Use the \href{https://r.acidgenomics.com/packages/wormbase/}{WormBase} package
+instead.
 
 Updated 2021-01-06.
 }
