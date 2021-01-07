@@ -165,7 +165,7 @@
 #' - [GenomicFeatures::makeTxDbFromGFF()].
 #'
 #' @examples
-#' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf", protocol = "none")
+#' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
 #'
 #' ## Genes
 #' x <- makeGRangesFromGFF(file = file, level = "genes")
