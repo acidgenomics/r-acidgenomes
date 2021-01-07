@@ -150,6 +150,7 @@ downloadGencodeGenome <-
 
 
         ## FIXME ===============================================================
+        ## THESE NEED TO MIGRATE TO SPECIFIC FUNCTIONS BELOW.
         ## Genome FASTA file.
         if (isTRUE(dlList[["type"]][["genome"]])) {
             urls[["genome"]] <- pasteURL(
@@ -162,6 +163,7 @@ downloadGencodeGenome <-
             )
         }
         ## Transcriptome FASTA file.
+        ## FIXME NEED TO REWORK TX2GENE PROCESSING HERE.
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             urls[["transcriptome"]] <- pasteURL(
                 baseURL,
