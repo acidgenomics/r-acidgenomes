@@ -1,11 +1,7 @@
-## FIXME THIS ISNT PRODUCTION READY YET.
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-05.
+#' @note Updated 2021-01-07.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -22,7 +18,7 @@
 downloadGencodeGenome <-
     function(
         organism,
-        genomeBuild,
+        genomeBuild = NULL,
         release = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
@@ -30,7 +26,7 @@ downloadGencodeGenome <-
     ) {
         assert(
             isOrganism(organism),
-            isString(genomeBuild),
+            isString(genomeBuild, nullOK = TRUE),
             isInt(release, nullOK = TRUE),
             isString(outputDir)
         )
@@ -38,17 +34,10 @@ downloadGencodeGenome <-
             arg = organism,
             choices = c("Homo sapiens", "Mus musculus")
         )
-        ## FIXME Consider reworking with `currentGencodeBuild` function.
-        genomeBuild <- match.arg(
-            arg = genomeBuild,
-            choices = switch(
-                EXPR = organism,
-                "Homo sapiens" = c("GRCh38", "GRCh37"),
-                "Mus musculus" = "GRCm38"
-            )
-        )
-        urls <- character()
-        destfiles <- character()
+        if (is.null(genomeBuild)) {
+            genomeBuild <- currentGencodeBuild(organism)
+            genomeBuild <- .simpleGenomeBuild(genomeBuild)
+        }
         if (is.null(release)) {
             release <- currentGencodeVersion(organism = organism)
         }
@@ -99,7 +88,11 @@ downloadGencodeGenome <-
             "Homo sapiens" = "human",
             "Mus musculus" = "mouse"
         )
-        organism <- gsub(pattern = " ", replacement = "_", x = organism)
+
+        ## FIXME RETHINK THIS...DONT MODIFY
+        ## > organism <- gsub(pattern = " ", replacement = "_", x = organism)
+
+
         baseURL <- pasteURL(
             "ftp://ftp.ebi.ac.uk",
             "pub",
@@ -113,11 +106,32 @@ downloadGencodeGenome <-
             organism, genomeBuild, "gencode", release
         )))
         outputDir <- file.path(outputDir, outputBasename)
+
+
+
+        ## FIXME RETHINK THIS.
+        ## FIXME NEED TO UPDATE ACID_CLI TO USE TXT INSTEAD OF VERBATIM FOR HEADERS.
+        h1(sprintf(
+            "Downloading GENCODE genome for {.emph %s} %s %d to {.path %s}.",
+            organism, genomeBuild, release, outputDir
+        ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
         if (genomeBuild == "GRCh37") {
             baseURL <- pasteURL(baseURL, "GRCh37_mapping", protocol = "none")
         }
+
+
+
+
+
+
+
+
+        ## FIXME NEED TO HAND OFF TO FUNCTIONS HERE.
+
+        urls <- character()
+        destfiles <- character()
         ## README file.
         urls[["readme"]] <- pasteURL(
             baseURL,
@@ -134,6 +148,10 @@ downloadGencodeGenome <-
         destfiles[["md5sums"]] <- file.path(
             outputDir, basename(urls[["md5sums"]])
         )
+
+
+
+        ## FIXME ===============================================================
         ## Genome FASTA file.
         if (isTRUE(dlList[["type"]][["genome"]])) {
             urls[["genome"]] <- pasteURL(
@@ -212,6 +230,9 @@ downloadGencodeGenome <-
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
+        ## FIXME ===============================================================
+
+
 
         ## FIXME RETHINK TX2GENE HANDLING HERE.
 
