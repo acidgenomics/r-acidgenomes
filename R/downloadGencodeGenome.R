@@ -234,6 +234,19 @@ downloadGencodeGenome <-
 
 
 
+        if (isTRUE(dlList[["type"]][["genome"]])) {
+            do.call(what = .downloadGencodeGenome, args = args)
+        }
+        if (isTRUE(dlList[["type"]][["transcriptome"]])) {
+            do.call(what = .downloadGencodeTranscriptome, args = args)
+        }
+        args <- c(args, release = release)
+        if (isTRUE(dlList[["annotation"]][["gtf"]])) {
+            do.call(what = .downloadGencodeGTF, args = args)
+        }
+        if (isTRUE(dlList[["annotation"]][["gff"]])) {
+            do.call(what = .downloadGencodeGFF, args = args)
+        }
         saveRDS(
             object = sessionInfo(),
             file = file.path(outputDir, "sessionInfo.rds")
@@ -247,7 +260,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-05.
+## Updated 2021-01-07.
 .downloadGencodeGenome <-
     function(
         organism,
@@ -256,39 +269,23 @@ downloadGencodeGenome <-
         outputDir
     ) {
         outputDir <- initDir(file.path(outputDir, "genome"))
-        baseURL <- pasteURL(
-            releaseURL, "fasta", tolower(organism), "dna",
-            protocol = "none"
+        urls <- c(
+            "genome" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
+                protocol = "none"
+            )
         )
-        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
-        readmeFile <- file.path(outputDir, basename(readmeURL))
-        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
-        checksumsFile <- file.path(outputDir, basename(checksumsURL))
-        if (isSubset(organism, c("Homo_sapiens", "Mus_musculus"))) {
-            assembly <- "primary_assembly"
-        } else {
-            assembly <- "toplevel"
-        }
-        fastaURL <- pasteURL(
-            baseURL,
-            paste(
-                organism, genomeBuild, "dna", assembly, "fa.gz",
-                sep = "."
-            ),
-            protocol = "none"
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
         )
-        fastaFile <- file.path(outputDir, basename(fastaURL))
         mapply(
-            url = c(
-                readmeURL,
-                checksumsURL,
-                fastaURL
-            ),
-            destfile = c(
-                readmeFile,
-                checksumsFile,
-                fastaFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
@@ -298,6 +295,7 @@ downloadGencodeGenome <-
 
 
 
+## FIXME
 ## Updated 2021-01-05.
 .downloadGencodeTranscriptome <-
     function(
@@ -404,6 +402,7 @@ downloadGencodeGenome <-
 
 
 
+## FIXME
 ## Updated 2021-01-05.
 .downloadGencodeGTF <-
     function(
@@ -452,6 +451,7 @@ downloadGencodeGenome <-
 
 
 
+## FIXME
 ## Updated 2021-01-05.
 .downloadGencodeGFF <-
     function(
