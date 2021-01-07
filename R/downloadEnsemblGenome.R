@@ -180,8 +180,6 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME REWORK THE DESTFILES HERE.
-
 ## Updated 2021-01-06.
 .downloadEnsemblTranscriptome <-
     function(
@@ -215,8 +213,7 @@ downloadEnsemblGenome <-
                 cdnaBaseURL,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild,
-                    "cdna", "all", "fa.gz",
+                    genomeBuild, "cdna", "all", "fa.gz",
                     sep = "."
                 ),
                 protocol = "none"
@@ -239,8 +236,7 @@ downloadEnsemblGenome <-
                 ncrnaBaseURL,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild,
-                    "ncrna", "fa.gz",
+                    genomeBuild, "ncrna", "fa.gz",
                     sep = "."
                 ),
                 protocol = "none"
@@ -298,7 +294,6 @@ downloadEnsemblGenome <-
 ## ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.chr_patch_hapl_scaff.gff3.gz
 
 
-## FIXME REWORK THIS.
 
 ## Updated 2021-01-06.
 .downloadEnsemblGTF <-
@@ -316,33 +311,40 @@ downloadEnsemblGenome <-
             snakeCase(organism),
             protocol = "none"
         )
-        readmeURL <- pasteURL(baseURL, "README", protocol = "none")
-        readmeFile <- file.path(outputDir, basename(readmeURL))
-        checksumsURL <- pasteURL(baseURL, "CHECKSUMS", protocol = "none")
-        checksumsFile <- file.path(outputDir, basename(checksumsURL))
-        gtfURL <- pasteURL(
-            baseURL,
-            paste(
-                gsub(pattern = " ", replacement = "_", x = organism),
-                genomeBuild,
-                release,
-                "gtf.gz",
-                sep = "."
-            ),
-            protocol = "none"
+        urls <- c(
+            "readme" = pasteURL(baseURL, "README", protocol = "none"),
+            "checksums" = pasteURL(baseURL, "CHECKSUMS", protocol = "none"),
+            "gtf" = pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "gtf.gz",
+                    sep = "."
+                ),
+                protocol = "none"
+            )
         )
-        gtfFile <- file.path(outputDir, basename(gtfURL))
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+            urls[["gtf2"]] <- pasteURL(
+                baseURL,
+                paste(
+                    gsub(pattern = " ", replacement = "_", x = organism),
+                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
+                    sep = "."
+                ),
+                protocol = "none"
+            )
+        }
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
         mapply(
-            url = c(
-                readmeURL,
-                checksumsURL,
-                gtfURL
-            ),
-            destfile = c(
-                readmeFile,
-                checksumsFile,
-                gtfFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
@@ -378,17 +380,19 @@ downloadEnsemblGenome <-
             protocol = "none"
         )
         gffFile <- file.path(outputDir, basename(gffURL))
+
+
+
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
         mapply(
-            url = c(
-                readmeURL,
-                checksumsURL,
-                gffURL
-            ),
-            destfile = c(
-                readmeFile,
-                checksumsFile,
-                gffFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
