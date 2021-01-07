@@ -327,7 +327,6 @@ downloadEnsemblGenome <-
 
 #' Download multiple genome files in a single call
 #'
-#' @note Intentionally not allowing accidental overwrites here.
 #' @note Updated 2021-01-07.
 #' @noRd
 #'
@@ -336,7 +335,7 @@ downloadEnsemblGenome <-
 .downloadURLs <- function(urls, outputDir) {
     assert(
         allAreURLs(urls),
-        !isADir(outputDir)
+        isString(outputDir)
     )
     outputDir <- initDir(outputDir)
     destfiles <- vapply(
