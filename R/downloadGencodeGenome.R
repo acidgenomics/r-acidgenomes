@@ -151,36 +151,11 @@ downloadGencodeGenome <-
 
         ## FIXME ===============================================================
         ## THESE NEED TO MIGRATE TO SPECIFIC FUNCTIONS BELOW.
-        ## Genome FASTA file.
-        if (isTRUE(dlList[["type"]][["genome"]])) {
-            urls[["genome"]] <- pasteURL(
-                baseURL,
-                paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
-                protocol = "none"
-            )
-            destfiles[["genome"]] <- file.path(
-                outputDir, "genome", basename(urls[["genome"]])
-            )
-        }
+
         ## Transcriptome FASTA file.
         ## FIXME NEED TO REWORK TX2GENE PROCESSING HERE.
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            urls[["transcriptome"]] <- pasteURL(
-                baseURL,
-                paste0(
-                    "gencode.v", release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".transcripts.fa.gz"
-                ),
-                protocol = "none"
-            )
-            destfiles[["transcriptome"]] <- file.path(
-                outputDir, "transcriptome", basename(urls[["transcriptome"]])
-            )
+
         }
         ## GTF file.
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
@@ -234,9 +209,18 @@ downloadGencodeGenome <-
 
 
 
+        args <- list(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            releaseURL = releaseURL,
+            outputDir = outputDir
+        )
         if (isTRUE(dlList[["type"]][["genome"]])) {
             do.call(what = .downloadGencodeGenome, args = args)
         }
+
+        ## FIXME THESE NEED RELEASE VERSION?
+
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             do.call(what = .downloadGencodeTranscriptome, args = args)
         }
@@ -295,8 +279,7 @@ downloadGencodeGenome <-
 
 
 
-## FIXME
-## Updated 2021-01-05.
+## Updated 2021-01-07.
 .downloadGencodeTranscriptome <-
     function(
         organism,
@@ -305,97 +288,34 @@ downloadGencodeGenome <-
         outputDir
     ) {
         outputDir = initDir(file.path(outputDir, "transcriptome"))
-        baseURL <- pasteURL(
-            releaseURL, "fasta", tolower(organism),
-            protocol = "none"
-        )
-        ## cDNA FASTA.
-        cdnaOutputDir <- initDir(file.path(outputDir, "cdna"))
-        cdnaBaseURL <-
-            pasteURL(baseURL, "cdna", protocol = "none")
-        cdnaReadmeURL <-
-            pasteURL(cdnaBaseURL, "README", protocol = "none")
-        cdnaReadmeFile <-
-            file.path(cdnaOutputDir, basename(cdnaReadmeURL))
-        cdnaChecksumsURL <-
-            pasteURL(cdnaBaseURL, "CHECKSUMS", protocol = "none")
-        cdnaChecksumsFile <-
-            file.path(cdnaOutputDir, basename(cdnaChecksumsURL))
-        cdnaFastaURL <-
-            pasteURL(
-                cdnaBaseURL,
-                paste(organism, genomeBuild, "cdna.all.fa.gz", sep = "."),
+        urls <- c(
+            "transcriptome" = pasteURL(
+                releaseURL,
+                paste0(
+                    "gencode.v", release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".transcripts.fa.gz"
+                ),
                 protocol = "none"
             )
-        cdnaFastaFile <-
-            file.path(cdnaOutputDir, basename(cdnaFastaURL))
-        ## ncRNA FASTA.
-        ncrnaOutputDir <- initDir(file.path(outputDir, "ncrna"))
-        ncrnaBaseURL <-
-            pasteURL(baseURL, "ncrna", protocol = "none")
-        ncrnaReadmeURL <-
-            pasteURL(ncrnaBaseURL, "README", protocol = "none")
-        ncrnaReadmeFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaReadmeURL))
-        ncrnaChecksumsURL <-
-            pasteURL(ncrnaBaseURL, "CHECKSUMS", protocol = "none")
-        ncrnaChecksumsFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaChecksumsURL))
-        ncrnaFastaURL <- pasteURL(
-            ncrnaBaseURL,
-            paste(organism, genomeBuild, "ncrna.fa.gz", sep = "."),
-            protocol = "none"
         )
-        ncrnaFastaFile <-
-            file.path(ncrnaOutputDir, basename(ncrnaFastaURL))
+        destfiles <- vapply(
+            X = urls,
+            FUN = function(url) {
+                file.path(outputDir, basename(url))
+            },
+            FUN.VALUE = character(1L)
+        )
         mapply(
-            url = c(
-                cdnaReadmeURL,
-                cdnaChecksumsURL,
-                cdnaFastaURL,
-                ncrnaReadmeURL,
-                ncrnaChecksumsURL,
-                ncrnaFastaURL
-            ),
-            destfile = c(
-                cdnaReadmeFile,
-                cdnaChecksumsFile,
-                cdnaFastaFile,
-                ncrnaReadmeFile,
-                ncrnaChecksumsFile,
-                ncrnaFastaFile
-            ),
+            url = urls,
+            destfile = destfiles,
             FUN = download,
             SIMPLIFY = FALSE,
             USE.NAMES = FALSE
-        )
-        # Create a merged transcriptome FASTA.
-        cdnaFasta <- import(file = cdnaFastaFile, format = "lines")
-        ncrnaFasta <- import(file = ncrnaFastaFile, format = "lines")
-        mergeFasta <- c(cdnaFasta, ncrnaFasta)
-        mergeFastaFile <- export(
-            object = mergeFasta,
-            file = file.path(outputDir, "transcriptome.fa"),
-            overwrite = TRUE
-        )
-        mergeFastaFile <- compress(
-            file = mergeFastaFile,
-            ext = "gz",
-            remove = !decompress,
-            overwrite = TRUE
-        )
-        tx2gene <- makeTx2GeneFromFASTA(
-            file = mergeFastaFile,
-            source = "gencode"
-        )
-        tx2geneFile <- file.path(outputDir, "tx2gene.csv")
-        if (isFALSE(decompress)) {
-            tx2geneFile <- paste0(tx2geneFile, ".gz")
-        }
-        export(
-            object = tx2gene,
-            file = tx2geneFile,
-            overwrite = TRUE
         )
         invisible(outputDir)
     }
