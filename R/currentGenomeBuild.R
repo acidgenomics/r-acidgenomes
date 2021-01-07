@@ -30,6 +30,21 @@ NULL
 
 
 
+#' Return a simple (minimal) genome build version
+#'
+#' @details
+#' For example, sanitize "GRCh38.p13" to simply "GRCh38".
+#'
+#' @note Updated 2021-01-07.
+#' @noRd
+.simpleGenomeBuild <- function(x) {
+    assert(isString(x))
+    x <- sub(pattern = "\\.[^\\.]+$", replacement = "", x = x)
+    x
+}
+
+
+
 ## Updated 2020-01-05.
 #' @rdname currentGenomeBuild
 #' @export
