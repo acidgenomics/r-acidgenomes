@@ -160,6 +160,6 @@ getEnsDb <- function(
     if (isString(list[["level"]])) {
         items <- c(items, "Level" = list[["level"]])
     }
-    dl(items = items)
+    dl(items)
     list
 }
