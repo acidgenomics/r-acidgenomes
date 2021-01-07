@@ -94,12 +94,11 @@ downloadGencodeGenome <-
             "databases",
             "gencode",
             paste("Gencode", organismShort, sep = "_"),
-            paste("release", release, sep = "_"),
-            protocol = "none"
+            paste("release", release, sep = "_")
         )
         if (genomeBuild == "GRCh37") {
             releaseURL <-
-                pasteURL(releaseURL, "GRCh37_mapping", protocol = "none")
+                pasteURL(releaseURL, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "gencode", release
@@ -124,10 +123,9 @@ downloadGencodeGenome <-
                     EXPR = genomeBuild,
                     "GRCh37" = "_README_GRCh37_mapping.txt",
                     "_README.TXT"
-                ),
-                protocol = "none"
+                )
             ),
-            "md5sums" = pasteURL(releaseURL, "MD5SUMS", protocol = "none")
+            "md5sums" = pasteURL(releaseURL, "MD5SUMS")
         )
         destfiles <- vapply(
             X = urls,
@@ -188,8 +186,7 @@ downloadGencodeGenome <-
         urls <- c(
             "genome" = pasteURL(
                 releaseURL,
-                paste0(genomeBuild, ".primary_assembly.genome.fa.gz"),
-                protocol = "none"
+                paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
         )
         destfiles <- vapply(
@@ -233,8 +230,7 @@ downloadGencodeGenome <-
                         ""
                     ),
                     ".transcripts.fa.gz"
-                ),
-                protocol = "none"
+                )
             )
         )
         destfiles <- vapply(
@@ -282,8 +278,7 @@ downloadGencodeGenome <-
                         ""
                     ),
                     ".annotation.gtf.gz"
-                ),
-                protocol = "none"
+                )
             )
         )
         destfiles <- vapply(
@@ -329,8 +324,7 @@ downloadGencodeGenome <-
                         ""
                     ),
                     ".annotation.gff3.gz"
-                ),
-                protocol = "none"
+                )
             )
         )
         destfiles <- vapply(
