@@ -4,7 +4,7 @@
 #'
 #' @importFrom AcidBase compress download forceDetach initDir matchArgsToDoCall
 #'   pasteURL printString requireNamespaces showSlotInfo
-#' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl
+#' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
 #'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
 #'   split tail
