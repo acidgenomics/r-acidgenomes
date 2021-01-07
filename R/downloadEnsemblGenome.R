@@ -75,12 +75,7 @@ downloadEnsemblGenome <-
         baseURL <- "ftp://ftp.ensembl.org/pub"
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblBuild(organism)
-            ## Simplify the build version (e.g. "GRCh38" from "GRCh38.p13").
-            genomeBuild <- sub(
-                pattern = "\\.[^\\.]+$",
-                replacement = "",
-                x = genomeBuild
-            )
+            genomeBuild <- .simpleGenomeBuild(genomeBuild)
         }
         if (genomeBuild == "GRCh37") {
             assert(is.null(release))
@@ -90,10 +85,6 @@ downloadEnsemblGenome <-
         if (is.null(release)) {
             release <- currentEnsemblVersion()
         }
-        h1(sprintf(
-            "Downloading Ensembl genome for {.emph %s} %s %d.",
-            organism, genomeBuild, release
-        ))
         releaseURL <- pasteURL(
             baseURL,
             paste0("release-", release),
@@ -103,6 +94,10 @@ downloadEnsemblGenome <-
             organism, genomeBuild, "ensembl", release
         )))
         outputDir <- file.path(outputDir, outputBasename)
+        h1(sprintf(
+            "Downloading Ensembl genome for {.emph %s} %s %d to {.path %s}.",
+            organism, genomeBuild, release, outputDir
+        ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
         args <- list(
