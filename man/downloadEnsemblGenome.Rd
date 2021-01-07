@@ -28,6 +28,15 @@ possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
+
+\item{type}{\code{character(1)}.
+Genome type to download.}
+
+\item{annotation}{\code{character(1)}.
+Annotation format to download.}
+
+\item{outputDir}{\code{character(1)}.
+Output directory path.}
 }
 \description{
 Download Ensembl reference genome

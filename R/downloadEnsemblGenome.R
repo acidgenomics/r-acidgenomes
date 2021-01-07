@@ -6,6 +6,13 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
+#' @param type `character(1)`.
+#'   Genome type to download.
+#' @param annotation `character(1)`.
+#'   Annotation format to download.
+#' @param outputDir `character(1)`.
+#'   Output directory path.
+#'
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadEnsemblGenome(
@@ -86,7 +93,7 @@ downloadEnsemblGenome <-
             release <- currentEnsemblVersion()
         }
         releaseURL <- pasteURL(baseURL, paste0("release-", release))
-        outputBasename = kebabCase(tolower(paste(
+        outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "ensembl", release
         )))
         outputDir <- file.path(outputDir, outputBasename)

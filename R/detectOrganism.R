@@ -19,7 +19,7 @@
 #' - *Saccharomyces cerevisiae* (yeast)
 #'
 #' @export
-#' @note [BiocGenerics::organism()] `character` method conflicts with annotate
+#' @note `BiocGenerics::organism()` `character` method conflicts with annotate
 #'   package, which gets loaded into the namespace when DESeq2 is attached.
 #'   Instead, we're exporting the character method here as a separate function
 #'   named `detectOrganism`.

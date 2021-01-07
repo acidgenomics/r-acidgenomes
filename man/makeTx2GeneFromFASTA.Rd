@@ -30,6 +30,9 @@ FASTA file source:
 }
 
 Assuming Ensembl transcriptome (i.e. cDNA) input by default.}
+
+\item{outputFile}{\code{character(1)}.
+Output file.}
 }
 \value{
 \code{Tx2Gene}.
