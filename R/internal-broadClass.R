@@ -149,10 +149,10 @@
     } else {
         ## FlyBase GTF will hit this step.
         ## Note that we're early returning without calculations in this case.
-        alertWarning(
-            "{.var GRanges} does not contain biotype in {.var mcols}.\n",
+        alertWarning(paste(
+            "{.var GRanges} does not contain biotype in {.var mcols}.",
             "Returning without broad class definitions."
-        )
+        ))
         ## Early `NA` return works successfully in `mcols()` construction.
         return(NA_character_)
     }
