@@ -46,7 +46,7 @@ currentUCSCGenomeBuild("Homo sapiens")
 \seealso{
 \itemize{
 \item \href{https://rest.ensembl.org}{Ensembl REST API}.
-\item \href{https://genome.ucsc.edu/goldenPath/help/api.html}{UCSC Genome Browser REST API}.
+\item \href{https://genome.ucsc.edu/goldenPath/help/api.html}{UCSC REST API}.
 \item \href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/}{RefSeq genomes}.
 }
 }

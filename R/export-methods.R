@@ -9,7 +9,7 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @examples
-#' object <- DataFrame(
+#' object <- S4Vectors::DataFrame(
 #'     transcriptID = c(
 #'         "tx0001",
 #'         "tx0002",

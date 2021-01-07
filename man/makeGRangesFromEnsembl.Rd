@@ -75,7 +75,7 @@ we're querying Ensembl and not UCSC.
 \itemize{
 \item \code{annotable}: Legacy convenience function that calls \code{\link[=makeGRangesFromEnsembl]{makeGRangesFromEnsembl()}} and returns
 a \code{tbl_df} (tibble) instead of \code{GRanges}. Note that \code{GRanges} can also be
-coercing using \code{\link[BiocGenerics:as.data.frame]{as.data.frame()}}.
+coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{

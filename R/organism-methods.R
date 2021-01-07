@@ -15,7 +15,7 @@
 #' rse <- RangedSummarizedExperiment
 #'
 #' ## SummarizedExperiment ====
-#' BiocGenerics::organism(rse)
+#' organism(rse)
 NULL
 
 

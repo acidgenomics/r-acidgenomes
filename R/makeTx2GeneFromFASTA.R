@@ -141,8 +141,10 @@ makeTx2GeneFromFASTA <- function(
 
 
 
-## Updated 2021-01-05.
+## Updated 2021-01-07.
 #' @rdname makeTx2GeneFromFASTA
+#' @param outputFile `character(1)`.
+#'   Output file.
 #' @export
 makeTx2GeneFileFromFASTA <- function(
     file,

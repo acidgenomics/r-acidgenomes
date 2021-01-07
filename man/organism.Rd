@@ -53,7 +53,7 @@ data(RangedSummarizedExperiment, package = "AcidTest")
 rse <- RangedSummarizedExperiment
 
 ## SummarizedExperiment ====
-BiocGenerics::organism(rse)
+organism(rse)
 }
 \seealso{
 [detectOrganism()][.
