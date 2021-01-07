@@ -18,7 +18,7 @@
 downloadEnsemblGenome <-
     function(
         organism,
-        genomeBuild,
+        genomeBuild = NULL,
         release = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
@@ -26,7 +26,7 @@ downloadEnsemblGenome <-
     ) {
         assert(
             isOrganism(organism),
-            isString(genomeBuild),
+            isString(genomeBuild, nullOK = TRUE),
             isInt(release, nullOK = TRUE),
             isString(outputDir)
         )
@@ -73,6 +73,15 @@ downloadEnsemblGenome <-
             }
         )
         baseURL <- "ftp://ftp.ensembl.org/pub"
+        if (is.null(genomeBuild)) {
+            genomeBuild <- currentEnsemblBuild(organism)
+            ## Simplify the build version (e.g. "GRCh38" from "GRCh38.p13").
+            genomeBuild <- sub(
+                pattern = "\\.[^\\.]+$",
+                replacement = "",
+                x = genomeBuild
+            )
+        }
         if (genomeBuild == "GRCh37") {
             assert(is.null(release))
             baseURL <- pasteURL(baseURL, "grch37", protocol = "none")
@@ -81,6 +90,10 @@ downloadEnsemblGenome <-
         if (is.null(release)) {
             release <- currentEnsemblVersion()
         }
+        h1(sprintf(
+            "Downloading Ensembl genome for {.emph %s} %s %d.",
+            organism, genomeBuild, release
+        ))
         releaseURL <- pasteURL(
             baseURL,
             paste0("release-", release),
