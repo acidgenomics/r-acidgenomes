@@ -29,6 +29,6 @@
 #'   getJSON getURL getURLDirList import removeNA sanitizeNA
 #' @importFrom purrr map_df
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
-#' @importFrom syntactic camelCase makeNames
+#' @importFrom syntactic camelCase kebabCase makeNames
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
 NULL
