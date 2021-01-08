@@ -19,7 +19,7 @@
 #' @importFrom ensembldb ensemblVersion genes transcripts
 #' @importFrom goalie allAreFiles allAreURLs areDisjointSets areSetEqual assert
 #'   bapply hasDuplicates hasInternet hasLength hasNoDuplicates hasNames
-#'   hasRownames hasRows isADir isAFile isAny isCharacter isFlag isInt
+#'   hasRownames hasRows isADir isAFile isAURL isAny isCharacter isFlag isInt
 #'   isMatchingRegex isOrganism isString isSubset validate
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
