@@ -24,7 +24,6 @@ downloadRefSeqGenome <-
     function(
         organism,
         taxonomicGroup = NULL,
-        genomeBuild = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
         outputDir = "."
@@ -41,15 +40,12 @@ downloadRefSeqGenome <-
             quiet = FALSE
         )
         taxonomicGroup <- basename(dirname(baseURL))
-        if (is.null(genomeBuild)) {
-            genomeBuild <- currentRefSeqGenomeBuild(
-                organism = organism,
-                taxonomicGroup = taxonomicGroup
-            )
-        }
         release <- currentRefSeqVersion()
-        releaseURL <- pasteURL(baseURL, "reference", genomeBuild)
-        assert(url.exists(releaseURL))
+        summary <- .getRefSeqAssemblySummary(baseURL)
+        assert(isSubset("ftp_path", names(summary)))
+        releaseURL <- summary[["ftp_path"]]
+        genomeBuild <- basename(releaseURL)
+        assert(isAURL(releaseURL))
         outputDir <- initDir(outputDir)
         type <- match.arg(type)
         annotation <- match.arg(annotation)
@@ -106,24 +102,24 @@ downloadRefSeqGenome <-
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        out <- list()
-
-
-
-
-
-
-        ## Download the metadata files first.
+        out <- list("summary" = summary)
         urls <- c(
-            "readme" = pasteURL(
+            "readme" = pasteURL(releaseURL, "README.txt"),
+            "annotationHashes" = pasteURL(releaseURL, "annotation_hashes.txt"),
+            "assemblyStatus" = pasteURL(releaseURL, "assembly_status.txt"),
+            "md5checksums" = pasteURL(releaseURL, "md5checksums.txt"),
+            "assemblyRegions" = pasteURL(
                 releaseURL,
-                switch(
-                    EXPR = genomeBuild,
-                    "GRCh37" = "_README_GRCh37_mapping.txt",
-                    "_README.TXT"
-                )
+                paste0(genomeBuild, "_assembly_regions.txt")
             ),
-            "md5sums" = pasteURL(releaseURL, "MD5SUMS")
+            "assemblyReport" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, "_assembly_report.txt")
+            ),
+            "assemblyStats" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, "_assembly_stats.txt")
+            )
         )
         out[["metadata"]] <- .downloadURLs(urls = urls, outputDir = outputDir)
         ## Now ready to download individual genome files.
@@ -134,21 +130,20 @@ downloadRefSeqGenome <-
         )
         if (isTRUE(dlList[["type"]][["genome"]])) {
             out[["type"]][["genome"]] <-
-                do.call(what = .downloadGencodeGenomeFASTA, args = args)
+                do.call(what = .downloadRefSeqFASTA, args = args)
         }
-        args <- c(args, "release" = release)
         if (isTRUE(dlList[["type"]][["transcriptome"]])) {
             out[["type"]][["transcriptome"]] <-
-                do.call(what = .downloadGencodeTranscriptomeFASTA, args = args)
+                do.call(what = .downloadRefSeqTranscriptomeFASTA, args = args)
         }
         args <- c(args, release = release)
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
             out[["annotation"]][["gtf"]] <-
-                do.call(what = .downloadGencodeGTF, args = args)
+                do.call(what = .downloadRefSeqGTF, args = args)
         }
         if (isTRUE(dlList[["annotation"]][["gff"]])) {
             out[["annotation"]][["gff"]] <-
-                do.call(what = .downloadGencodeGFF, args = args)
+                do.call(what = .downloadRefSeqGFF, args = args)
         }
         out[["args"]] <- args
         out[["call"]] <- match.call()
@@ -157,7 +152,7 @@ downloadRefSeqGenome <-
             file = file.path(outputDir, "sessionInfo.rds")
         )
         alertSuccess(sprintf(
-            "GENCODE genome downloaded successfully to {.path %s}.",
+            "RefSeq genome downloaded successfully to {.path %s}.",
             outputDir
         ))
         invisible(out)
@@ -165,27 +160,17 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeGFF <-
+## Updated 2021-01-08.
+.downloadRefSeqGFF <-
     function(
         genomeBuild,
-        release,
         releaseURL,
         outputDir
     ) {
         urls <- c(
             "gff" = pasteURL(
                 releaseURL,
-                paste0(
-                    "gencode.v",
-                    release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".annotation.gff3.gz"
-                )
+                paste0(genomeBuild, "_genomic.gff.gz")
             )
         )
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
@@ -193,27 +178,17 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeGTF <-
+## Updated 2021-01-08.
+.downloadRefSeqGTF <-
     function(
         genomeBuild,
-        release,
         releaseURL,
         outputDir
     ) {
         urls <- c(
             "gtf" = pasteURL(
                 releaseURL,
-                paste0(
-                    "gencode.v",
-                    release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".annotation.gtf.gz"
-                )
+                paste0(genomeBuild, "_genomic.gtf.gz")
             )
         )
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
@@ -221,8 +196,8 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeGenomeFASTA <-
+## Updated 2021-01-08.
+.downloadRefSeqGenomeFASTA <-
     function(
         genomeBuild,
         releaseURL,
@@ -231,7 +206,7 @@ downloadRefSeqGenome <-
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
-                paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
+                paste0(genomeBuild, "_genomic.fna.gz")
             )
         )
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
@@ -239,11 +214,10 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeTranscriptomeFASTA <-
+## Updated 2021-01-08.
+.downloadRefSeqTranscriptomeFASTA <-
     function(
         genomeBuild,
-        release,
         releaseURL,
         outputDir
     ) {
@@ -251,26 +225,19 @@ downloadRefSeqGenome <-
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
-                paste0(
-                    "gencode.v", release,
-                    switch(
-                        EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
-                        ""
-                    ),
-                    ".transcripts.fa.gz"
-                )
+                paste0(genomeBuild, "_rna.fna.gz")
             )
         )
         out[["fasta"]] <- .downloadURLs(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        fastaFile <- out[["fasta"]][["fasta"]]
+        fastaFile <- out[["fasta"]]
         assert(isAFile(fastaFile))
+        ## FIXME THIS ISNT SUPPORTED YET IN THE PACKAGE.
         out[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
             file = fastaFile,
-            source = "gencode"
+            source = "refseq"
         )
         invisible(out)
     }
