@@ -12,7 +12,7 @@ currentEnsemblBuild(organism)
 
 currentGencodeBuild(organism)
 
-currentRefSeqGenomeBuild(organism, subdir = "vertebrate_mammalian")
+currentRefSeqGenomeBuild(organism, taxonomicGroup = NULL)
 
 currentUCSCGenomeBuild(organism)
 }
@@ -20,9 +20,9 @@ currentUCSCGenomeBuild(organism)
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
-\item{subdir}{\code{character(1)}.
+\item{taxonomicGroup}{\code{character(1)}.
 \emph{Only applies to RefSeq}.
-FTP server subdirectory path (e.g. "vertebrate_mammalian").}
+FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").}
 }
 \value{
 \code{character(1)}.
@@ -39,7 +39,7 @@ currentEnsemblBuild("Homo sapiens")
 currentGencodeBuild("Homo sapiens")
 currentRefSeqGenomeBuild(
     organism = "Homo sapiens",
-    subdir = "vertebrate_mammalian"
+    taxonomicGroup = "vertebrate_mammalian"
 )
 currentUCSCGenomeBuild("Homo sapiens")
 }
