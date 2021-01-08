@@ -1,13 +1,10 @@
-## FIXME NEED TO ADD SUPPORT FOR REFSEQ.
-
-
-
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
-#' @note RefSeq transcript FASTA (e.g. "GRCh38_latest_rna.fna.gz") doesn't
-#'   contain gene identifiers, and is not supported.
-#' @note Updated 2021-01-07.
+#' @note RefSeq transcript FASTA
+#'   (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz") doesn't contain gene
+#'   identifiers, and is not supported.
+#' @note Updated 2021-01-08.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
@@ -91,54 +88,56 @@ makeTx2GeneFromFASTA <- function(
         stop("FASTA file does not contain '>' annotations.")
     }
     x <- substr(x, start = 2L, stop = nchar(x))
-    if (identical(source, "ensembl")) {
-        ## Ensembl -------------------------------------------------------------
-        x <- strsplit(x = x, split = " ", fixed = TRUE)
-        x <- lapply(
-            X = x,
-            FUN = function(x) {
-                x[c(1L, 4L)]
-            }
-        )
-        x <- do.call(what = rbind, args = x)
-        x[, 2L] <- gsub(pattern = "^gene:", replacement = "", x = x[, 2L])
-    } else if (identical(source, "gencode")) {
-        ## GENCODE -------------------------------------------------------------
-        x <- strsplit(x = x, split = "|", fixed = TRUE)
-        x <- lapply(
-            X = x,
-            FUN = function(x) {
-                x[c(1L, 2L)]
-            }
-        )
-        x <- do.call(what = rbind, args = x)
-    } else if (identical(source, "flybase")) {
-        ## FlyBase -------------------------------------------------------------
-        x <- strsplit(x = x, split = " ", fixed = TRUE)
-        x <- lapply(
-            X = x,
-            FUN = function(x) {
-                x[c(1L, 9L)]
-            }
-        )
-        x <- do.call(what = rbind, args = x)
-        x[, 2L] <- gsub(
-            pattern = "^.*\\b(FBgn[0-9]{7})\\b.*$",
-            replacement = "\\1",
-            x = x[, 2L]
-        )
-    } else if (identical(source, "wormbase")) {
-        ## WormBase ------------------------------------------------------------
-        x <- strsplit(x = x, split = " ", fixed = TRUE)
-        x <- lapply(
-            X = x,
-            FUN = function(x) {
-                x[c(1L, 2L)]
-            }
-        )
-        x <- do.call(what = rbind, args = x)
-        x[, 2L] <- gsub(pattern = "^gene=", replacement = "", x = x[, 2L])
-    }
+    switch(
+        EXPR = source,
+        "ensembl" = {
+            x <- strsplit(x = x, split = " ", fixed = TRUE)
+            x <- lapply(
+                X = x,
+                FUN = function(x) {
+                    x[c(1L, 4L)]
+                }
+            )
+            x <- do.call(what = rbind, args = x)
+            x[, 2L] <- gsub(pattern = "^gene:", replacement = "", x = x[, 2L])
+        },
+        "gencode" = {
+            x <- strsplit(x = x, split = "|", fixed = TRUE)
+            x <- lapply(
+                X = x,
+                FUN = function(x) {
+                    x[c(1L, 2L)]
+                }
+            )
+            x <- do.call(what = rbind, args = x)
+        },
+        "flybase" = {
+            x <- strsplit(x = x, split = " ", fixed = TRUE)
+            x <- lapply(
+                X = x,
+                FUN = function(x) {
+                    x[c(1L, 9L)]
+                }
+            )
+            x <- do.call(what = rbind, args = x)
+            x[, 2L] <- gsub(
+                pattern = "^.*\\b(FBgn[0-9]{7})\\b.*$",
+                replacement = "\\1",
+                x = x[, 2L]
+            )
+        },
+        "wormbase" = {
+            x <- strsplit(x = x, split = " ", fixed = TRUE)
+            x <- lapply(
+                X = x,
+                FUN = function(x) {
+                    x[c(1L, 2L)]
+                }
+            )
+            x <- do.call(what = rbind, args = x)
+            x[, 2L] <- gsub(pattern = "^gene=", replacement = "", x = x[, 2L])
+        }
+    )
     x <- unique(x)
     Tx2Gene(x)
 }
