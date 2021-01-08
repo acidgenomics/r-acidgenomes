@@ -26,7 +26,7 @@
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity
 #'   signature
 #' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export
-#'   getJSON getURL getURLDirList import removeNA sanitizeNA
+#'   getJSON getURL getURLDirList import removeNA sanitizeNA url.exists
 #' @importFrom purrr map_df
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase
