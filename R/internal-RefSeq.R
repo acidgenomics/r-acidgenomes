@@ -3,6 +3,9 @@
 #' @note Updated 2021-01-08.
 #' @noRd
 #'
+#' @seealso
+#' - ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt
+#'
 #' @return Named `character`.
 .getRefSeqAssemblySummary <-
     function(baseURL) {
