@@ -1,3 +1,7 @@
+## FIXME NEED TO ADD SUPPORT FOR REFSEQ.
+
+
+
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
