@@ -6,9 +6,9 @@
 #' @note Updated 2020-01-05.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @param subdir `character(1)`.
+#' @param taxonomicGroup `character(1)`.
 #'   *Only applies to RefSeq*.
-#'   FTP server subdirectory path (e.g. "vertebrate_mammalian").
+#'   FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 #'
 #' @return `character(1)`.
 #'   Genome assembly build version.
@@ -23,7 +23,7 @@
 #' currentGencodeBuild("Homo sapiens")
 #' currentRefSeqGenomeBuild(
 #'     organism = "Homo sapiens",
-#'     subdir = "vertebrate_mammalian"
+#'     taxonomicGroup = "vertebrate_mammalian"
 #' )
 #' currentUCSCGenomeBuild("Homo sapiens")
 NULL
@@ -79,31 +79,89 @@ currentGencodeBuild <- function(organism) {
 
 
 
-## FIXME SUBDIR INPUT HERE IS ANNOYING. TAKE THIS STEP OUT.
+#' Get the RefSeq organism directory structure on the FTP server
+#'
+#' @note Updated 2021-01-08.
+#' @noRd
+.getRefSeqGenomeURL <- function(
+    organism,
+    taxonomicGroup = NULL,
+    quiet = FALSE
+) {
+    assert(
+        isOrganism(organism),
+        isString(taxonomicGroup, nullOK = TRUE),
+        isFlag(quiet)
+    )
+    if (isFALSE(quiet)) {
+        alert(sprintf(
+            "Locating {.emph %s} genome on RefSeq FTP server.",
+            organism
+        ))
+    }
+    baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
+    if (is.null(taxonomicGroup)) {
+        taxonomicGroups <- getURLDirList(url = baseURL)
+        keep <- grepl(pattern = "^[a-z_]+$", x = taxonomicGroups)
+        taxonomicGroups <- sort(taxonomicGroups[keep])
+        list <- bplapply(
+            X = taxonomicGroups,
+            baseURL = baseURL,
+            FUN = function(taxonomicGroup, baseURL) {
+                url <- pasteURL(baseURL, taxonomicGroup)
+                x <- getURLDirList(url = url)
+                keep <- grepl(pattern = "^[A-Z][a-z]+_[a-z]+$", x = x)
+                x <- sort(x[keep])
+                x
+            }
+        )
+        names(list) <- taxonomicGroups
+        match <- vapply(
+            X = list,
+            organism = gsub(pattern = " ", replacement = "_", x = organism),
+            FUN = function(strings, organism) {
+                isSubset(x = organism, y = strings)
+            },
+            FUN.VALUE = logical(1L),
+            USE.NAMES = TRUE
+        )
+        taxonomicGroup <- names(match)[match]
+        assert(isString(taxonomicGroup))
+    }
+    url <- pasteURL(
+        baseURL,
+        taxonomicGroup,
+        gsub(pattern = " ", replacement = "_", x = organism)
+    )
+    assert(url.exists(url))
+    if (isFALSE(quiet)) {
+        dl(c("URL" = url))
+    }
+    url
+}
+
+
 
 ## Alternate approach using URL only:
-## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/<subdir>/<organism>/
+## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/<taxonomic_group>/<organism>/
 ##     latest_assembly_versions/
 
 #' @rdname currentGenomeBuild
 #' @export
 currentRefSeqGenomeBuild <- function(
     organism,
-    subdir = "vertebrate_mammalian"
+    taxonomicGroup = NULL
 ) {
     assert(
         isOrganism(organism),
-        isString(subdir)
+        isString(taxonomicGroup, nullOK = TRUE)
     )
-    url <- pasteURL(
-        "ftp.ncbi.nlm.nih.gov",
-        "genomes",
-        "refseq",
-        snakeCase(subdir),
-        gsub(pattern = " ", replacement = "_", x = organism),
-        "assembly_summary.txt",
-        protocol = "https"
+    baseURL <- .getRefSeqGenomeURL(
+        organism = organism,
+        taxonomicGroup = taxonomicGroup,
+        quiet = TRUE
     )
+    url <- pasteURL(baseURL, "assembly_summary.txt")
     df <- import(
         file = url,
         format = "tsv",
@@ -156,66 +214,4 @@ currentUCSCGenomeBuild <- function(organism) {
     out <- df[["build"]][[1L]]
     assert(isString(out))
     out
-}
-
-
-
-#' Get the RefSeq organism directory structure on the FTP server
-#'
-#' @note Updated 2021-01-08.
-#' @noRd
-.getRefSeqGenomeURL <- function(
-    organism,
-    subdir = NULL,
-    quiet = FALSE
-) {
-    assert(
-        isOrganism(organism),
-        isString(subdir, nullOK = TRUE),
-        isFlag(quiet)
-    )
-    if (isFALSE(quiet)) {
-        alert(sprintf(
-            "Locating {.emph %s} genome on RefSeq FTP server.",
-            organism
-        ))
-    }
-    baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
-    ## Match the organism to the top-level subdirectory, if necessary.
-    if (is.null(subdir)) {
-        subdirs <- getURLDirList(url = baseURL)
-        keep <- grepl(pattern = "^[a-z_]+$", x = subdirs)
-        subdirs <- sort(subdirs[keep])
-        list <- bplapply(
-            X = subdirs,
-            baseURL = baseURL,
-            FUN = function(subdir, baseURL) {
-                url <- pasteURL(baseURL, subdir)
-                x <- getURLDirList(url = url)
-                keep <- grepl(pattern = "^[A-Z][a-z]+_[a-z]+$", x = x)
-                x <- sort(x[keep])
-                x
-            }
-        )
-        names(list) <- subdirs
-        match <- vapply(
-            X = list,
-            organism = gsub(pattern = " ", replacement = "_", x = organism),
-            FUN = function(strings, organism) {
-                isSubset(x = organism, y = strings)
-            },
-            FUN.VALUE = logical(1L),
-            USE.NAMES = TRUE
-        )
-        subdir <- names(match)[match]
-        assert(isString(subdir))
-    }
-    url <- pasteURL(
-        baseURL, subdir, gsub(pattern = " ", replacement = "_", x = organism)
-    )
-    assert(url.exists(url))
-    if (isFALSE(quiet)) {
-        dl(c("URL" = url))
-    }
-    url
 }
