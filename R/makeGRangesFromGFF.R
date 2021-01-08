@@ -197,7 +197,6 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-
     ## Import ------------------------------------------------------------------
     ## This step uses `rtracklayer::import()` internally.
     ## Note that this can generate very large objects from GFF3.
@@ -212,14 +211,12 @@ makeGRangesFromGFF <- function(
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
-
     ## Pre-flight checks -------------------------------------------------------
     ## Not currently allowing FlyBase or WormBase GFF files. They're too
     ## complicated to parse, and the sites offer GTF files instead anyway.
     if (source %in% c("FlyBase", "WormBase") && type != "GTF") {
         stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
     }
-
     ## TxDb (GenomicFeatures) --------------------------------------------------
     ## Run this step prior to any GRanges sanitization steps.
     ## This check may be removed in a future update.
@@ -233,38 +230,45 @@ makeGRangesFromGFF <- function(
     } else {
         txdb <- NULL
     }
-
     ## Standardize -------------------------------------------------------------
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
     ## Ensembl-like naming conventions. This step must be run after
     ## `.makeTxDbFromGFF()` but prior to `.makeGenesFromGFF()` and/or
     ## `.makeTranscriptsFromGFF()` calls (see below).
     object <- switch(
-        EXPR     = source,
-        FlyBase  = .standardizeFlyBaseToEnsembl(object),
-        GENCODE  = .standardizeGencodeToEnsembl(object),
-        RefSeq   = .standardizeRefSeqToEnsembl(object),
+        EXPR = source,
+        "FlyBase" = .standardizeFlyBaseToEnsembl(object),
+        "GENCODE" = .standardizeGencodeToEnsembl(object),
+        "RefSeq" = .standardizeRefSeqToEnsembl(object),
         object
     )
-    mcolnames <- colnames(mcols(object))
     assert(
-        isSubset(x = c("gene_id", "transcript_id"), y = mcolnames),
+        isSubset(
+            x = c("gene_id", "transcript_id"),
+            y = colnames(mcols(object))
+        ),
         ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
-        areDisjointSets(x = c("gene", "gene_type"), y = mcolnames)
+        areDisjointSets(
+            x = c("gene", "gene_type"),
+            y = colnames(mcols(object))
+        )
     )
-    rm(mcolnames)
     genes <- object
     if (level == "transcripts") {
         transcripts <- object
     }
     rm(object)
-
     ## Genes -------------------------------------------------------------------
     ## `makeGRangesFromGFF()` attempts to always returns gene-level metadata,
     ## even when transcripts are requested. We'll merge this object into the
     ## transcript-level GRanges below, when possible.
-    genes <- genes[!is.na(mcols(genes)[["gene_id"]])]
-    genes <- genes[is.na(mcols(genes)[["transcript_id"]])]
+    ##
+    ## Note that we're using `sanitizeNA` here because empty string transcript
+    ## identifiers have been observed with rtracklayer import of RefSeq GTF.
+    keep <- !is.na(sanitizeNA(mcols(genes)[["gene_id"]]))
+    genes <- genes[keep]
+    keep <- is.na(sanitizeNA(mcols(genes)[["transcript_id"]]))
+    genes <- genes[keep]
     assert(hasLength(genes))
     if (source == "Ensembl" && type == "GFF3") {
         genes <- .makeGenesFromEnsemblGFF3(genes)
@@ -284,10 +288,11 @@ makeGRangesFromGFF <- function(
         genes <- .makeGenesFromWormBaseGTF(genes)
     } else {
         ## nocov start
-        stop(
-            "Failed to make gene-level GRanges.\n",
-            "Unsupported GFF source file."
-        )
+        stop(paste(
+            "Failed to make gene-level GRanges.",
+            "Unsupported GFF source file.",
+            sep = "\n"
+        ))
         ## nocov end
     }
     ## Remove GFF-specific parent columns, etc.
@@ -300,7 +305,6 @@ makeGRangesFromGFF <- function(
     if (level == "genes") {
         out <- genes
     }
-
     ## Transcripts -------------------------------------------------------------
     if (level == "transcripts") {
         transcripts <-
@@ -353,7 +357,6 @@ makeGRangesFromGFF <- function(
             out <- transcripts
         }
     }
-
     ## Return ------------------------------------------------------------------
     out <- .makeGRanges(
         object = out,
