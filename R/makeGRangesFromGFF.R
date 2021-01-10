@@ -219,42 +219,54 @@ makeGRangesFromGFF <- function(
     }
     ## Generate EnsDb or TxDb from input GFF/GTF file.
     ## Use `columns()` on EnsDb or TxDb to check for available metadata.
+    args <- list()
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
         db <- .makeEnsDbFromGFF(tmpfile)
-        columns <- switch(
+        switch(
             EXPR = level,
-            "genes" = c(
-                "gene_id",
-                "gene_name",
-                "gene_biotype"
-            ),
-            "transcripts" = c(
-                "tx_id",
-                "tx_name",
-                "tx_biotype",
-                "gene_id",
-                "gene_name",
-                "gene_biotype"
-            )
+            "genes" = {
+                fun <- ensembldb::genes
+                orderBy <- "gene_id"
+                columns <- c(
+                    "gene_id",
+                    "gene_name",
+                    "gene_biotype"
+                )
+            },
+            "transcripts" = {
+                fun <- ensembldb::transcripts
+                orderBy <- "transcript_id"
+                columns <- c(
+                    "tx_id",
+                    "tx_name",
+                    "tx_biotype",
+                    "gene_id",
+                    "gene_name",
+                    "gene_biotype"
+                )
+            }
         )
+        args[["order.by"]] <- orderBy
+        args[["return.type"]] <- "GRanges"
     } else {
         ## FIXME CHECK AGAINST COLUMNS AND DETERMINE WHICH ONES ARE OK TO USE.
         ## FIXME SOME ANNOTATION TYPES MAY SUPPORT GENE_NAME AND BIOTYPE...
         db <- .makeTxDbFromGFF(tmpfile)
-        columns <- switch(
+        switch(
             EXPR = level,
-            "genes" = "gene_id",
-            "transcripts" = c("tx_id", "tx_name", "gene_id")
+            "genes" = {
+                fun <- GenomicFeatures::genes
+                columns <- "gene_id"
+            },
+            "transcripts" = {
+                fun <- GenomicFeatures::transcripts
+                columns <- c("tx_id", "tx_name", "gene_id")
+            }
         )
     }
-    ## Extract annotations from database object.
-    what <- switch(
-        EXPR = level,
-        "genes" = genes,
-        "transcripts" = transcripts
-    )
-    args <- list("x" = db, "columns" = columns)
-    gr <- do.call(what = what, args = args)
+    args[["x"]] <- db
+    args[["columns"]] <- columns
+    gr <- do.call(what = fun, args = args)
     assert(is(gr, "GRanges"))
     out <- .makeGRanges(
         object = gr,

@@ -1,4 +1,9 @@
+## FIXME RETHINK THE APPROACH WITH THESE?
+
+
+
 #' Prototype metadata
+#'
 #' @note Updated 2020-10-06.
 #' @noRd
 .prototypeMetadata <- list(
@@ -9,6 +14,7 @@
 
 
 #' Slot genome metadata
+#'
 #' @note Updated 2020-10-06.
 #' @noRd
 .slotGenomeMetadata <- function(object) {
