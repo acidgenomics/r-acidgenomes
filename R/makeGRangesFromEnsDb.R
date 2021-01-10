@@ -1,4 +1,5 @@
 ## FIXME RETHINK METADATA RETURN STRUCTURE
+## FIXME RENAME FROM IGNORETXVERSION TO SIMPLY IGNOREVERSION.
 
 
 
@@ -9,7 +10,7 @@
 #' Alternatively, can pass in an EnsDb package name as a `character(1)`.
 #'
 #' @export
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -23,7 +24,8 @@
 makeGRangesFromEnsDb <- function(
     object,
     level = c("genes", "transcripts"),
-    ignoreTxVersion = TRUE,
+    ignoreTxVersion = TRUE,  # FIXME RENAME THIS.
+    ## FIXME CONSIDER RENAMING THIS TO SIMPLY FAST.
     broadClass = TRUE,
     synonyms = FALSE
 ) {
@@ -46,34 +48,47 @@ makeGRangesFromEnsDb <- function(
     }
     assert(is(object, "EnsDb"))
     metadata <- .getEnsDbMetadata(object, level = level)
-    genes <- genes(
-        x = object,
-        order.by = "gene_id",
-        return.type = "GRanges"
+    args <- list(
+        "x" = object,
+        "return.type" = "GRanges"
     )
-    if (level == "genes") {
-        out <- genes
-    }
-    if (level == "transcripts") {
-        ## FIXME RETHINK THIS...
-        transcripts <- transcripts(
-            x = object,
-            order.by = "tx_id",
-            return.type = "GRanges"
-        )
-        ## FIXME RETHINK THIS APPROACH.
-        out <- .mergeGenesIntoTranscripts(
-            transcripts = transcripts,
-            genes = genes
-        )
-    }
+    geneCols <- c(
+        "gene_id",
+        "gene_name",
+        "gene_biotype",
+        "seq_coord_system",
+        "entrezid"
+    )
+    switch(
+        EXPR = level,
+        "genes" = {
+            fun <- ensembldb::genes
+            args[["order.by"]] <- "gene_id"
+            args[["columns"]] <- geneCols
+        },
+        "transcripts" = {
+            fun <- ensembldb::transcripts
+            args[["order.by"]] <- "tx_id"
+            args[["columns"]] <- c(
+                "tx_id",
+                "tx_name",
+                "tx_biotype",
+                "tx_cds_seq_start",
+                "tx_cds_seq_end",
+                geneCols
+            )
+        }
+    )
+    gr <- do.call(what = fun, args = args)
+    assert(is(gr, "GRanges"))
     forceDetach(keep = userAttached)
-    metadata(out) <- metadata
-    out <- .makeGRanges(
-        object = out,
+    metadata(gr) <- metadata
+    .makeGRanges(
+        object = gr,
+        ## FIXME RENAME TO IGNOREVERSION?
         ignoreTxVersion = ignoreTxVersion,
+        ## FIXME SIMPLIFY THE PASSTHROUGH OF THIS...
         broadClass = broadClass,
         synonyms = synonyms
     )
-    out
 }
