@@ -1,3 +1,42 @@
+## FIXME NEED TO ENSURE CALL IS SLOTTED INTO OBJECT.
+
+## The tximeta is thinking about this approach very similarly.
+##
+## FIXME CONSIDER Returning useful Seqinfo, similar to tximeta.
+##
+## Useful functions to reference:
+## - tximeta:::gtf2RefSeq
+##
+## See also:
+## - https://github.com/mikelove/tximeta/blob/master/R/tximeta.R
+## - https://github.com/mikelove/tximeta/blob/master/tests/testthat/test_tximeta.R
+
+## Consider this for RefSeq:
+## > Seqinfo(seqnames=tab$refseqAccn,
+## >         seqlengths=tab$length,
+## >         isCircular=NA,
+## >         genome=genome)
+##
+## And assign back in:
+## > try(seqinfo(txps) <- refseq.genome[seqlevels(txps)])
+
+## FIXME NEW ISSUE POPPING UP WITH ENSEMBL 102:
+## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE) :
+##   GRanges object contains 1 out-of-bound range
+##   located on sequence LRG_432. Note that
+##   ranges located on a sequence whose length is
+##   unknown (NA) or on a circular sequence are
+##   not considered out-of-bound (use
+##   seqlengths() and isCircular() to get the
+##   lengths and circularity flags of the
+##   underlying sequences). You can use trim() to
+##   trim these ranges. See
+##   ?`trim,GenomicRanges-method` for more
+##   information.
+## Calls: makeGRangesFromEnsembl ... validityMethod -> method -> ## valid.GenomicRanges.seqinfo
+
+
+
 #' Make GRanges from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
@@ -82,7 +121,7 @@
 #' ```
 #'
 #' @export
-#' @note Updated 2020-10-06.
+#' @note Updated 2020-10-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -91,7 +130,10 @@
 #'
 #' @seealso
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
+#' - [GenomicFeatures](https://bioconductor.org/packages/GenomicFeatures/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
+#' - `ensembldb::ensDbFromGtf()`.
+#' - `GenomicFeatures::makeTxDbFromGFF()`.
 #'
 #' @examples
 #' ## Genes

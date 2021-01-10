@@ -79,7 +79,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2020-10-06.
+Updated 2020-10-10.
 }
 \section{Broad class definitions}{
 
@@ -159,6 +159,9 @@ summary(x)
 \seealso{
 \itemize{
 \item \href{https://bioconductor.org/packages/AnnotationHub/}{AnnotationHub}.
+\item \href{https://bioconductor.org/packages/GenomicFeatures/}{GenomicFeatures}.
 \item \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
+\item \code{ensembldb::ensDbFromGtf()}.
+\item \code{GenomicFeatures::makeTxDbFromGFF()}.
 }
 }
