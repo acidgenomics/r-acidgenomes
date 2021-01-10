@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-08.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -106,6 +106,5 @@ formals(makeTx2GeneFromGFF) <- f
 
 
 #' @rdname makeTx2Gene
-#' @usage NULL
 #' @export
 makeTx2GeneFromGTF <- makeTx2GeneFromGFF
