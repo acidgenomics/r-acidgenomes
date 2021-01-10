@@ -2,9 +2,10 @@
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase compress download forceDetach initDir matchArgsToDoCall
-#'   pasteURL printString requireNamespaces showSlotInfo
+#' @importFrom AcidBase compress download fileExt forceDetach initDir
+#'   matchArgsToDoCall pasteURL printString requireNamespaces showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
+#'   toInlineString
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
 #'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
 #'   split tail
