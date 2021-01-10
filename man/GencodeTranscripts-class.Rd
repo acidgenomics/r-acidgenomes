@@ -6,13 +6,21 @@
 \title{GENCODE transcript annotations}
 \value{
 \code{GencodeTranscripts}.
+
+\code{GencodeTranscripts}.
 }
 \description{
+GENCODE transcript annotations
+
 GENCODE transcript annotations
 }
 \details{
 Contains a \code{GRanges} with GENCODE transcript-level annotations.
+
+Contains a \code{GRanges} with GENCODE transcript-level annotations.
 }
 \note{
+Updated 2021-01-10.
+
 Updated 2021-01-10.
 }
