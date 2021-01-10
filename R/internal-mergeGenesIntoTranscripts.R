@@ -30,7 +30,7 @@
     if (length(geneCols) > 0L) {
         alert(sprintf(
             "Merging gene-level annotations: {.var %s}.",
-            toString(camelCase(geneCols), width = 100L)
+            toInlineString(camelCase(geneCols), n = 10L)
         ))
         geneCols <- c("gene_id", geneCols)
         ## x: transcripts; y: genes
