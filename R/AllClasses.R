@@ -1,6 +1,4 @@
 ## FIXME Consider making GRanges classes:
-## - FlyBaseGenes
-## - FlyBaseTranscripts
 ## - RefSeqGenes
 ## - RefSeqTranscripts
 ## - WormBaseGenes
@@ -8,58 +6,7 @@
 
 
 
-
-#' Ensembl-to-Entrez gene identifier mappings
-#'
-#' @details
-#' Contains a `DataFrame` with `ensembl` and `entrez` columns.
-#'
-#' @export
-#' @note Updated 2020-10-05.
-#'
-#' @return `Ensembl2Entrez`.
-setClass(
-    Class = "Ensembl2Entrez",
-    contains = "DataFrame"
-)
-setValidity(
-    Class = "Ensembl2Entrez",
-    method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("ensembl", "entrez"), colnames(object)),
-            is.integer(object[["entrez"]])
-        )
-    }
-)
-
-
-
-#' Entrez-to-Ensembl gene identifier mappings
-#'
-#' @inherit Ensembl2Entrez-class details
-#'
-#' @export
-#' @note Updated 2020-10-05.
-#'
-#' @return `Entrez2Ensembl`.
-setClass(
-    Class = "Entrez2Ensembl",
-    contains = "DataFrame"
-)
-setValidity(
-    Class = "Entrez2Ensembl",
-    method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("entrez", "ensembl"), colnames(object)),
-            is.integer(object[["entrez"]])
-        )
-    }
-)
-
-
-
+## Genome annotation classes ===================================================
 #' Ensembl gene annotations
 #'
 #' @details
@@ -107,35 +54,6 @@ setValidity(
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
         validate(
             hasRows(object)
-        )
-    }
-)
-
-
-
-
-
-
-
-#' Entrez-to-Ensembl gene identifier mappings
-#'
-#' @inherit Ensembl2Entrez-class details
-#'
-#' @export
-#' @note Updated 2020-10-05.
-#'
-#' @return `Entrez2Ensembl`.
-setClass(
-    Class = "Entrez2Ensembl",
-    contains = "DataFrame"
-)
-setValidity(
-    Class = "Entrez2Ensembl",
-    method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("entrez", "ensembl"), colnames(object)),
-            is.integer(object[["entrez"]])
         )
     }
 )
@@ -245,6 +163,134 @@ setValidity(
 
 
 
+#' RefSeq gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with RefSeq gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `RefSeqGenes`.
+setClass(
+    Class = "RefSeqGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "RefSeqGenes",
+    method = function(object) {
+        ## FIXME NEED TO ADD CHECKS HERE.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' GENCODE transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with GENCODE transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `GencodeTranscripts`.
+setClass(
+    Class = "GencodeTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "GencodeTranscripts",
+    method = function(object) {
+        ## FIXME Ensure identifiers match expected format.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+## Identifier classes ==========================================================
+#' HGNC complete set metadata
+#'
+#' @export
+#' @note Updated 2020-10-05.
+#'
+#' @return `HGNC`.
+setClass(
+    Class = "HGNC",
+    contains = "DataFrame"
+)
+setValidity(
+    Class = "HGNC",
+    method = function(object) {
+        validate(
+            hasRows(object),
+            isSubset(c("hgncID", "ensemblGeneID"), colnames(object)),
+            is.integer(object[["hgncID"]]),
+            hasNoDuplicates(object[["hgncID"]])
+        )
+    }
+)
+
+
+
+## Identifier mapping classes ==================================================
+#' Ensembl-to-Entrez gene identifier mappings
+#'
+#' @details
+#' Contains a `DataFrame` with `ensembl` and `entrez` columns.
+#'
+#' @export
+#' @note Updated 2020-10-05.
+#'
+#' @return `Ensembl2Entrez`.
+setClass(
+    Class = "Ensembl2Entrez",
+    contains = "DataFrame"
+)
+setValidity(
+    Class = "Ensembl2Entrez",
+    method = function(object) {
+        validate(
+            hasRows(object),
+            identical(c("ensembl", "entrez"), colnames(object)),
+            is.integer(object[["entrez"]])
+        )
+    }
+)
+
+
+
+#' Entrez-to-Ensembl gene identifier mappings
+#'
+#' @inherit Ensembl2Entrez-class details
+#'
+#' @export
+#' @note Updated 2020-10-05.
+#'
+#' @return `Entrez2Ensembl`.
+setClass(
+    Class = "Entrez2Ensembl",
+    contains = "DataFrame"
+)
+setValidity(
+    Class = "Entrez2Ensembl",
+    method = function(object) {
+        validate(
+            hasRows(object),
+            identical(c("entrez", "ensembl"), colnames(object)),
+            is.integer(object[["entrez"]])
+        )
+    }
+)
+
+
+
 #' Gene-to-symbol mappings
 #'
 #' @details
@@ -271,30 +317,6 @@ setValidity(
             identical(colnames(object), c("geneID", "geneName")),
             is.character(object[["geneID"]]),
             isAny(object[["geneName"]], c("character", "factor"))
-        )
-    }
-)
-
-
-
-#' HGNC complete set metadata
-#'
-#' @export
-#' @note Updated 2020-10-05.
-#'
-#' @return `HGNC`.
-setClass(
-    Class = "HGNC",
-    contains = "DataFrame"
-)
-setValidity(
-    Class = "HGNC",
-    method = function(object) {
-        validate(
-            hasRows(object),
-            isSubset(c("hgncID", "ensemblGeneID"), colnames(object)),
-            is.integer(object[["hgncID"]]),
-            hasNoDuplicates(object[["hgncID"]])
         )
     }
 )
