@@ -12,7 +12,7 @@ test_that("No version stripping", {
         what = importTx2Gene,
         args = c(
             args,
-            ignoreTxVersion = FALSE,
+            ignoreVersion = FALSE,
             ignoreGeneVersion = FALSE
         )
     )
@@ -31,7 +31,7 @@ test_that("Strip transcript and gene versions", {
         what = importTx2Gene,
         args = c(
             args,
-            ignoreTxVersion = TRUE,
+            ignoreVersion = TRUE,
             ignoreGeneVersion = TRUE
         )
     )
