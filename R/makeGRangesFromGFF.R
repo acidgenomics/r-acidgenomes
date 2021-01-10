@@ -2,6 +2,8 @@
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
 ## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
 
+
+
 ## nolint start
 
 #' Make GRanges from a GFF/GTF file
@@ -188,6 +190,7 @@ makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreVersion = TRUE,
+    ## FIXME REWORK THESE AS SIMPLY FAST.
     broadClass = TRUE,
     synonyms = FALSE
 ) {
@@ -212,67 +215,18 @@ makeGRangesFromGFF <- function(
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
-    ## Not currently allowing FlyBase or WormBase GFF files. They're too
-    ## complicated to parse, and the sites offer GTF files instead anyway.
-    ## FIXME CONSIDER TAKING THIS CHECK OUT...
     if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
         stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
     }
-    ## Generate EnsDb or TxDb from input GFF/GTF file.
-    ## Use `columns()` on EnsDb or TxDb to check for available metadata.
-    args <- list()
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
-
-        ## PASS TO makeGRangesFromEnsDb HERE.
-
-        db <- .makeEnsDbFromGFF(tmpfile)
         ## FIXME REWORK THIS APPROACH.
-        xx <- makeGRangesFromEnsDb(db)
-        switch(
-            EXPR = level,
-            "genes" = {
-                fun <- ensembldb::genes
-                orderBy <- "gene_id"
-                columns <- c(
-                    "gene_id",
-                    "gene_name",
-                    "gene_biotype"
-                )
-            },
-            "transcripts" = {
-                fun <- ensembldb::transcripts
-                orderBy <- "transcript_id"
-                columns <- c(
-                    "tx_id",
-                    "tx_name",
-                    "tx_biotype",
-                    "gene_id",
-                    "gene_name",
-                    "gene_biotype"
-                )
-            }
-        )
-        args[["order.by"]] <- orderBy
-        args[["return.type"]] <- "GRanges"
+        db <- .makeEnsDbFromGFF(tmpfile)
+        gr <- makeGRangesFromEnsDb(edb)
     } else {
-        ## FIXME CHECK AGAINST COLUMNS AND DETERMINE WHICH ONES ARE OK TO USE.
-        ## FIXME SOME ANNOTATION TYPES MAY SUPPORT GENE_NAME AND BIOTYPE...
+        ## FIXME REWORK THIS APPROACH.
         db <- .makeTxDbFromGFF(tmpfile)
-        switch(
-            EXPR = level,
-            "genes" = {
-                fun <- GenomicFeatures::genes
-                columns <- "gene_id"
-            },
-            "transcripts" = {
-                fun <- GenomicFeatures::transcripts
-                columns <- c("tx_id", "tx_name", "gene_id")
-            }
-        )
+        gr <- .makeGRangesFromTxDb(db)
     }
-    args[["x"]] <- db
-    args[["columns"]] <- columns
-    gr <- do.call(what = fun, args = args)
     assert(is(gr, "GRanges"))
     out <- .makeGRanges(
         object = gr,
