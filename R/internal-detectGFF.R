@@ -36,11 +36,11 @@
         any(grepl(pattern = "_knownGene$", x = source, ignore.case = FALSE))
     ) {
         ## nocov start
-        stop(
-            "UCSC is intentionally not supported.\n",
+        stop(paste0(
+            "UCSC genomes are intentionally not supported.\n",
             "Use a pre-built TxDb package instead ",
-            "(e.g. 'TxDb.Hsapiens.UCSC.hg38.knownGene')"
-        )
+            "(e.g. 'TxDb.Hsapiens.UCSC.hg38.knownGene')."
+        ))
         ## nocov end
     } else if (
         ## Check for GENCODE prior to Ensembl.
@@ -48,19 +48,19 @@
         any(source == "HAVANA") &&
         "gene_type" %in% colnames(mcols)
     ) {
-        "GENCODE"
+        out <- "GENCODE"
     } else if (
         any(grepl(pattern = "FlyBase", x = source, ignore.case = FALSE))
     ) {
-        "FlyBase"
+        out <- "FlyBase"
     } else if (
         any(grepl(pattern = "WormBase", x = source, ignore.case = FALSE))
     ) {
-        "WormBase"
+        out <- "WormBase"
     } else if (
         any(grepl(pattern = "RefSeq", x = source, ignore.case = FALSE))
     ) {
-        "RefSeq"
+        out <- "RefSeq"
     } else if (
         any(grepl(
             pattern = "ensembl|havana",
@@ -68,7 +68,7 @@
             ignore.case = FALSE
         ))
     ) {
-        "Ensembl"
+        out <- "Ensembl"
     } else {
         ## nocov start
         stop(sprintf(
@@ -81,19 +81,21 @@
         ))
         ## nocov end
     }
+    out
 }
 
 
 
 #' Determine if GFF or GTF
 #'
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-10.
 #' @noRd
 .detectGFFType <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
-        "GFF3"
+        out <- "GFF3"
     } else {
-        "GTF"
+        out <- "GTF"
     }
+    out
 }
