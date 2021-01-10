@@ -1,7 +1,3 @@
-## FIXME RETHINK THIS FUNCTIONS. ANY SAFE TO REMOVE?
-
-
-
 #' Add broad class annotations
 #'
 #' @note Updated 2020-10-05.
@@ -76,7 +72,7 @@
 
 #' Detect GRanges identifiers
 #'
-#' Note that this intentionally prioritizes transcripts over genes.
+#' @note This intentionally prioritizes transcripts over genes.
 #'
 #' @note Updated 2020-10-05.
 #' @noRd
@@ -102,8 +98,10 @@
 
 
 
+## FIXME NEED TO IMPROVE CONSISTENCY Of METADATA RETURN.
 ## FIXME NEED TO DETECT ORGANISM AUTOMATICALLY.
 ## FIXME NEED TO SLOT ARGUMENTS INTO OBJECT.
+## FIXME ORGANISM ALWAYS NEEDS TO BE DEFINED.
 
 #' Make GRanges
 #'
@@ -201,6 +199,10 @@
             msg2 = level                                  # genes
         )
     ))
+
+    ## FIXME ADD ASSERT FOR ORGANISM HERE.
+    ## FIXME ADD ASSERT FOR CALL HERE TOO.
+
     object
 }
 
@@ -262,8 +264,6 @@
 
 
 
-## FIXME REWORK THIS?
-
 #' Standardize the GRanges into desired conventions
 #'
 #' Note that this step makes GRanges imported via `rtracklayer::import()`
@@ -303,7 +303,6 @@
     ## Re-slot updated mcols back into object before calculating broad class
     ## biotype and/or assigning names.
     mcols(object) <- mcols
-    ## FIXME NEED TO RETHINK HERE?
     ## Ensure the ranges are sorted by identifier.
     idCol <- .detectGRangesIDs(object)
     alert(sprintf("Arranging by {.var %s}.", idCol))
