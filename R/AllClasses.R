@@ -1,3 +1,18 @@
+## FIXME Consider making GRanges classes:
+## - EnsemblGenes
+## - EnsemblTranscripts
+## - FlyBaseGenes
+## - FlyBaseTranscripts
+## - GencodeGenes
+## - GencodeTranscripts
+## - RefSeqGenes
+## - RefSeqTranscripts
+## - WormBaseGenes
+## - WormBaseTranscripts
+
+
+
+
 #' Ensembl-to-Entrez gene identifier mappings
 #'
 #' @details
@@ -43,6 +58,58 @@ setValidity(
             hasRows(object),
             identical(c("entrez", "ensembl"), colnames(object)),
             is.integer(object[["entrez"]])
+        )
+    }
+)
+
+
+
+#' Ensembl gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with Ensembl gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `EnsemblGenes`.
+setClass(
+    Class = "EnsemblGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "EnsemblGenes",
+    method = function(object) {
+        ## FIXME Ensure identifiers match expected format.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' Ensembl transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with Ensembl transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `EnsemblTranscripts`.
+setClass(
+    Class = "EnsemblTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "EnsemblTranscripts",
+    method = function(object) {
+        ## FIXME Ensure identifiers match expected format.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        validate(
+            hasRows(object)
         )
     }
 )
