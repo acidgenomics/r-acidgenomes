@@ -1,10 +1,6 @@
 ## FIXME Consider making GRanges classes:
-## - EnsemblGenes
-## - EnsemblTranscripts
 ## - FlyBaseGenes
 ## - FlyBaseTranscripts
-## - GencodeGenes
-## - GencodeTranscripts
 ## - RefSeqGenes
 ## - RefSeqTranscripts
 ## - WormBaseGenes
@@ -152,13 +148,13 @@ setValidity(
 #' @export
 #' @note Updated 2021-01-10.
 #'
-#' @return `EnsemblTranscripts`.
+#' @return `GencodeTranscripts`.
 setClass(
-    Class = "EnsemblTranscripts",
+    Class = "GencodeTranscripts",
     contains = "GRanges"
 )
 setValidity(
-    Class = "EnsemblTranscripts",
+    Class = "GencodeTranscripts",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
