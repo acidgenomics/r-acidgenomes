@@ -185,9 +185,9 @@
 
     ## Apply broad class -------------------------------------------------------
     alert(sprintf(
-        "Defining {.var broadClass} using: {.var %s}.",
+        "Defining {.var broadClass} using: %s.",
         ## Note that `c()` call here effectively removes `NULL` definitions.
-        toString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))
+        toInlineString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))
     ))
     ## Note that this method doesn't seem to work right with DataFrame class.
     data <- data.frame(
