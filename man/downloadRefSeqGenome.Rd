@@ -7,7 +7,6 @@
 downloadRefSeqGenome(
   organism,
   taxonomicGroup = NULL,
-  genomeBuild = NULL,
   type = c("all", "transcriptome", "genome", "none"),
   annotation = c("all", "gtf", "gff", "none"),
   outputDir = "."
@@ -20,11 +19,6 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 \item{taxonomicGroup}{\code{character(1)}.
 \emph{Only applies to RefSeq}.
 FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").}
-
-\item{genomeBuild}{\code{character(1)}.
-Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
-defaults to the most recent build available.
-Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{type}{\code{character(1)}.
 Genome type to download.}

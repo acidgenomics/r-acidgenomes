@@ -1,3 +1,7 @@
+## FIXME NEED TO ADD SUPPORT FOR A SPECIFIC VERSION.
+
+
+
 #' Download RefSeq reference genome
 #'
 #' @export
@@ -145,6 +149,15 @@ downloadRefSeqGenome <-
             out[["annotation"]][["gff"]] <-
                 do.call(what = .downloadRefSeqGFF, args = args)
         }
+        ## Export transcript-to-gene mappings.
+        if (isAFile(out[["annotation"]][["gtf"]])) {
+            makeTx2GeneFileFromGTF(file = out[["annotation"]][["gtf"]])
+        } else if (isAFile(out[["annotation"]][["gff"]])) {
+            makeTx2GeneFileFromGFF(file = out[["annotation"]][["gff"]])
+        }
+
+        ## FIXME NEED TO RETHINK TX2GENE HANDLING HERE...
+
         out[["args"]] <- args
         out[["call"]] <- match.call()
         saveRDS(
@@ -221,23 +234,15 @@ downloadRefSeqGenome <-
         releaseURL,
         outputDir
     ) {
-        out <- list()
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
                 paste0(genomeBuild, "_rna.fna.gz")
             )
         )
-        out[["fasta"]] <- .downloadURLs(
+        .downloadURLs(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
-        )
-        fastaFile <- out[["fasta"]]
-        assert(isAFile(fastaFile))
-        ## FIXME THIS ISNT SUPPORTED YET IN THE PACKAGE.
-        out[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
-            file = fastaFile,
-            source = "refseq"
         )
         invisible(out)
     }

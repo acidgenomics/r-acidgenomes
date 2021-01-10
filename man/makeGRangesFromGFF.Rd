@@ -10,8 +10,7 @@ makeGRangesFromGFF(
   level = c("genes", "transcripts"),
   ignoreTxVersion = TRUE,
   broadClass = TRUE,
-  synonyms = FALSE,
-  .checkAgainstTxDb = FALSE
+  synonyms = FALSE
 )
 
 makeGRangesFromGTF(
@@ -19,8 +18,7 @@ makeGRangesFromGTF(
   level = c("genes", "transcripts"),
   ignoreTxVersion = TRUE,
   broadClass = TRUE,
-  synonyms = FALSE,
-  .checkAgainstTxDb = FALSE
+  synonyms = FALSE
 )
 }
 \arguments{
@@ -68,7 +66,7 @@ Runs the same internal code as \code{\link[=makeGRangesFromGFF]{makeGRangesFromG
 }}
 
 \note{
-Updated 2020-10-06.
+Updated 2021-01-10.
 }
 \section{Recommendations}{
 
@@ -217,18 +215,19 @@ Related URLs:
 \section{Example URLs}{
 
 \itemize{
-\item Ensembl \emph{Homo sapiens} 95
-\href{ftp://ftp.ensembl.org/pub/release-95/gtf/homo_sapiens/Homo_sapiens.GRCh38.95.gtf.gz}{GTF},
-\href{ftp://ftp.ensembl.org/pub/release-95/gff3/homo_sapiens/Homo_sapiens.GRCh38.95.gff3.gz}{GFF3}
-\item GENCODE \emph{Homo sapiens} 29
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz}{GFF3}
-\item RefSeq \emph{Homo sapiens}
-\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/reference/}{GTF and GFF3}
+\item Ensembl \emph{Homo sapiens} GRCh38 102
+\href{ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh38 32
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz}{GFF3}
+\item RefSeq \emph{Homo sapiens} GCF_000001405.39 GRCh38
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gtf.gz}{GTF}
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz}{GFF3}
 \item FlyBase \emph{Drosophila melanogaster} r6.24
-\href{ftp://ftp.flybase.net/releases/FB2018_05/dmel_r6.24/gtf/dmel-all-r6.24.gtf.gz}{GTF}
+\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF}
 \item WormBase \emph{Caenorhabditis elegans} WS267
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS267/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS267.canonical_geneset.gtf.gz}{GTF}
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz}{GTF}
 }
 }
 
@@ -248,5 +247,7 @@ summary(x)
 \item \code{\link[rtracklayer:export]{rtracklayer::import()}}.
 \item \code{\link[GenomicFeatures:makeTxDbFromGRanges]{GenomicFeatures::makeTxDbFromGRanges()}}.
 \item \code{\link[GenomicFeatures:makeTxDbFromGFF]{GenomicFeatures::makeTxDbFromGFF()}}.
+\item \code{tximeta:::getRanges()}.
+\item \code{columns()}.
 }
 }
