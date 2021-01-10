@@ -53,7 +53,7 @@ makeProtein2GeneFromEnsembl <- function(
             "Match failure: %s.",
             toString(
                 sort(setdiff(ids, unique(df[["proteinID"]]))),
-                width = 500L
+                width = 200L
             )
         ))
     }
