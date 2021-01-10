@@ -24,8 +24,8 @@ setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
-        ## FIXME CHECK FOR NO PAR GENES.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        ## FIXME Check for no PAR genes (GENCODE only).
         validate(
             hasRows(object)
         )
@@ -51,7 +51,7 @@ setValidity(
     Class = "EnsemblTranscripts",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         validate(
             hasRows(object)
         )
@@ -127,8 +127,8 @@ setValidity(
     Class = "GencodeGenes",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
-        ## FIXME CHECK FOR PAR GENES HERE.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        ## FIXME Check for PAR genes here.
         validate(
             hasRows(object)
         )
@@ -154,7 +154,7 @@ setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         validate(
             hasRows(object)
         )
@@ -179,7 +179,7 @@ setClass(
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ## FIXME NEED TO ADD CHECKS HERE.
+        ## FIXME Need to add checks here.
         validate(
             hasRows(object)
         )
@@ -188,24 +188,74 @@ setValidity(
 
 
 
-#' GENCODE transcript annotations
+#' RefSeq transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with GENCODE transcript-level annotations.
+#' Contains a `GRanges` with RefSeq transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-01-10.
 #'
-#' @return `GencodeTranscripts`.
+#' @return `RefSeqTranscripts`.
 setClass(
-    Class = "GencodeTranscripts",
+    Class = "RefSeqTranscripts",
     contains = "GRanges"
 )
 setValidity(
-    Class = "GencodeTranscripts",
+    Class = "RefSeqTranscripts",
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' WormBase gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with WormBase gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `WormBaseGenes`.
+setClass(
+    Class = "WormBaseGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "WormBaseGenes",
+    method = function(object) {
+        ## FIXME Need to add checks here.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' WormBase transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with WormBase transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `WormBaseTranscripts`.
+setClass(
+    Class = "WormBaseTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "WormBaseTranscripts",
+    method = function(object) {
+        ## FIXME Need to add checks here.
         validate(
             hasRows(object)
         )
