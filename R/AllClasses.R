@@ -82,6 +82,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        ## FIXME CHECK FOR NO PAR GENES.
         validate(
             hasRows(object)
         )
@@ -94,6 +95,59 @@ setValidity(
 #'
 #' @details
 #' Contains a `GRanges` with Ensembl transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `EnsemblTranscripts`.
+setClass(
+    Class = "EnsemblTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "EnsemblTranscripts",
+    method = function(object) {
+        ## FIXME Ensure identifiers match expected format.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' GENCODE gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with GENCODE gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `GencodeGenes`.
+setClass(
+    Class = "GencodeGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "GencodeGenes",
+    method = function(object) {
+        ## FIXME Ensure identifiers match expected format.
+        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild
+        ## FIXME CHECK FOR PAR GENES HERE.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' GENCODE transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-01-10.
