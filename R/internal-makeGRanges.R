@@ -1,3 +1,7 @@
+## FIXME RETHINK THIS FUNCTIONS. ANY SAFE TO REMOVE?
+
+
+
 #' Add broad class annotations
 #'
 #' @note Updated 2020-10-05.
@@ -98,6 +102,9 @@
 
 
 
+## FIXME NEED TO DETECT ORGANISM AUTOMATICALLY.
+## FIXME NEED TO SLOT ARGUMENTS INTO OBJECT.
+
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
@@ -157,7 +164,7 @@
                 msg1 = "name",
                 msg2 = "names"
             ),
-            toString(invalid, width = 100L)
+            toInlineString(invalid, n = 10L)
         ))
     }
     rm(invalid)
@@ -165,10 +172,10 @@
     if (hasDuplicates(names)) {
         alertWarning(sprintf(
             fmt = paste(
-                "{.var GRanges} contains multiple ranges per '%s'.",
-                "Splitting into {.var GRangesList}."
+                "{.var %s} contains multiple ranges per '%s'.",
+                "Splitting into {.var %s}."
             ),
-            idCol
+            "GRanges", idCol, "GRangesList"
         ))
         ## Metadata will get dropped during `split()` call; stash and reassign.
         metadata <- metadata(object)
@@ -194,35 +201,6 @@
             msg2 = level                                  # genes
         )
     ))
-    object
-}
-
-
-
-#' Minimize GFF3 return
-#'
-#' Remove uninformative metadata columns from GFF3 before return.
-#' Always remove columns beginning with a capital letter.
-#'
-#' - Ensembl: Alias, ID, Name, Parent
-#' - GENCODE: ID, Parent
-#' - RefSeq: Dbxref, Gap, ID, Name, Note, Parent, Target
-#'
-#' @note Updated 2020-01-20.
-#' @noRd
-.minimizeGFF3 <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
-    mcolnames <- colnames(mcols)
-    ## Remove all columns beginning with a capital letter.
-    keep <- !grepl("^[A-Z]", mcolnames)
-    mcolnames <- mcolnames[keep]
-    ## Remove additional blacklisted columns.
-    blacklist <- "biotype"
-    mcolnames <- setdiff(mcolnames, blacklist)
-    ## Subset the metadata columns.
-    mcols <- mcols[, mcolnames, drop = FALSE]
-    mcols(object) <- mcols
     object
 }
 
@@ -284,6 +262,8 @@
 
 
 
+## FIXME REWORK THIS?
+
 #' Standardize the GRanges into desired conventions
 #'
 #' Note that this step makes GRanges imported via `rtracklayer::import()`
@@ -323,13 +303,7 @@
     ## Re-slot updated mcols back into object before calculating broad class
     ## biotype and/or assigning names.
     mcols(object) <- mcols
-
-
-
-
-
-
-
+    ## FIXME NEED TO RETHINK HERE?
     ## Ensure the ranges are sorted by identifier.
     idCol <- .detectGRangesIDs(object)
     alert(sprintf("Arranging by {.var %s}.", idCol))

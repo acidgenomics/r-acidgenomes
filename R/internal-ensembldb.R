@@ -42,7 +42,6 @@
     suppressWarnings({
         sqlite <- do.call(what = what, args = args)
     })
-    dl(c("SQLite" = sqlite))
     edb <- ensembldb::EnsDb(x = sqlite)
     assert(is(edb, "EnsDb"))
     validObject(edb)
