@@ -1,5 +1,32 @@
-## Report the source of the gene annotations.
-## Updated 2020-01-20.
+#' Detect the GFF source information
+#'
+#' @details
+#' Assuming we've already cached the URL using BiocFileCache here.
+#' This step will load into GRanges via rtracklayer.
+#'
+#' @note Updated 2021-01-09.
+#' @noRd
+.detectGFF <- function(file) {
+    assert(isAFile(file))
+    alert("Detecting annotation source.")
+    gr <- import(file)
+    assert(is(gr, "GRanges"))
+    source <- .detectGFFSource(gr)
+    type <- .detectGFFType(gr)
+    alertInfo(sprintf("%s %s detected.", source, type))
+    out <- c(
+        "source" = source,
+        "type" = type
+    )
+    out
+}
+
+
+
+#' Report the source of the gene annotations
+#'
+#' @note Updated 2021-01-10.
+#' @noRd
 .detectGFFSource <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
@@ -50,10 +77,7 @@
                 "Supported: %s",
                 sep = "\n"
             ),
-            toString(c(
-                "Ensembl", "GENCODE", "RefSeq",
-                "FlyBase", "WormBase"
-            ))
+            toString(c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase"))
         ))
         ## nocov end
     }
@@ -61,8 +85,10 @@
 
 
 
-## Determine if GFF or GTF.
-## Updated 2020-01-20.
+#' Determine if GFF or GTF
+#'
+#' @note Updated 2020-01-20.
+#' @noRd
 .detectGFFType <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
@@ -70,18 +96,4 @@
     } else {
         "GTF"
     }
-}
-
-
-
-## Updated 2021-01-06.
-.slotGFFDetectInfo <- function(object) {
-    source <- .detectGFFSource(object)
-    type <- .detectGFFType(object)
-    alertInfo(sprintf("%s %s detected.", source, type))
-    metadata(object)[["detect"]] <- c(
-        source = source,
-        type = type
-    )
-    object
 }
