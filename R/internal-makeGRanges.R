@@ -104,17 +104,18 @@
 ## FIXME ORGANISM ALWAYS NEEDS TO BE DEFINED.
 ## FIXME DONT ALLOW GRANGESLIST RETURN HERE.
 ## FIXME RETURN THE OBJECTS CLASSED BY GENOME.
+## FIXME HANDLE THE TXVERSION DIFFERENTLY HERE?
 
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-10.
 #' @noRd
 .makeGRanges <- function(
     object,
-    ignoreTxVersion = TRUE,
+    ignoreVersion = TRUE,
     broadClass = TRUE,
     synonyms = TRUE
 ) {
@@ -122,7 +123,7 @@
         is(object, "GRanges"),
         hasNames(object),
         hasLength(object),
-        isFlag(ignoreTxVersion),
+        isFlag(ignoreVersion),
         isFlag(broadClass),
         isFlag(synonyms)
     )
@@ -131,7 +132,7 @@
     assert(hasLength(object, n = length))
     object <- .standardizeGRanges(object)
     assert(hasLength(object, n = length))
-    if (isFALSE(ignoreTxVersion)) {
+    if (isFALSE(ignoreVersion)) {
         object <- .addTxVersion(object)
     }
     if (isTRUE(broadClass)) {

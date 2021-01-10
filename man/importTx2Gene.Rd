@@ -9,7 +9,7 @@ importTx2Gene(
   organism = NULL,
   genomeBuild = NULL,
   ensemblRelease = NULL,
-  ignoreTxVersion = FALSE,
+  ignoreVersion = FALSE,
   ignoreGeneVersion = TRUE
 )
 }
@@ -32,7 +32,7 @@ available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 
-\item{ignoreTxVersion}{\code{logical(1)}.
+\item{ignoreVersion}{\code{logical(1)}.
 Don't include the transcript version in the identifier.
 \strong{Not recommended} by default when handing off salmon or kallisto output
 to tximport-DESeq2 workflow.}

@@ -10,7 +10,7 @@ makeGRangesFromEnsembl(
   level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
-  ignoreTxVersion = TRUE,
+  ignoreVersion = TRUE,
   broadClass = TRUE,
   synonyms = FALSE
 )
@@ -35,10 +35,6 @@ possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
-
-\item{ignoreTxVersion}{\code{logical(1)}. Don't the include the transcript version
-in the identifier. Only applies when \code{level = "transcripts"}. This
-simplifies identifier matching when generating a \code{tx2gene} file.}
 
 \item{broadClass}{\code{logical(1)}.
 Include broad class definitions.}

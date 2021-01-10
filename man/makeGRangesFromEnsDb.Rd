@@ -7,7 +7,7 @@
 makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts"),
-  ignoreTxVersion = TRUE,
+  ignoreVersion = TRUE,
   broadClass = TRUE,
   synonyms = FALSE
 )
@@ -17,10 +17,6 @@ makeGRangesFromEnsDb(
 
 \item{level}{\code{character(1)}.
 Return as genes or transcripts.}
-
-\item{ignoreTxVersion}{\code{logical(1)}. Don't the include the transcript version
-in the identifier. Only applies when \code{level = "transcripts"}. This
-simplifies identifier matching when generating a \code{tx2gene} file.}
 
 \item{broadClass}{\code{logical(1)}.
 Include broad class definitions.}
@@ -40,7 +36,7 @@ Use specific \code{EnsDb} object as annotation source.
 Alternatively, can pass in an EnsDb package name as a \code{character(1)}.
 }
 \note{
-Updated 2020-10-06.
+Updated 2021-01-10.
 }
 \examples{
 if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {

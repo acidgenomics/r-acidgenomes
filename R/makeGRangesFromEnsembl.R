@@ -148,12 +148,12 @@ makeGRangesFromEnsembl <- function(
     level = c("genes", "transcripts"),
     genomeBuild = NULL,
     release = NULL,
-    ignoreTxVersion = TRUE,
+    ignoreVersion = TRUE,
     broadClass = TRUE,
     synonyms = FALSE
 ) {
     assert(
-        isFlag(ignoreTxVersion),
+        isFlag(ignoreVersion),
         isFlag(broadClass),
         isFlag(synonyms)
     )
@@ -171,7 +171,7 @@ makeGRangesFromEnsembl <- function(
     makeGRangesFromEnsDb(
         object = edb,
         level = level,
-        ignoreTxVersion = ignoreTxVersion,
+        ignoreVersion = ignoreVersion,
         broadClass = broadClass,
         synonyms = synonyms
     )

@@ -24,13 +24,13 @@
 makeGRangesFromEnsDb <- function(
     object,
     level = c("genes", "transcripts"),
-    ignoreTxVersion = TRUE,  # FIXME RENAME THIS.
+    ignoreVersion = TRUE,  # FIXME RENAME THIS.
     ## FIXME CONSIDER RENAMING THIS TO SIMPLY FAST.
     broadClass = TRUE,
     synonyms = FALSE
 ) {
     assert(
-        isFlag(ignoreTxVersion),
+        isFlag(ignoreVersion),
         isFlag(broadClass),
         isFlag(synonyms)
     )
@@ -86,7 +86,7 @@ makeGRangesFromEnsDb <- function(
     .makeGRanges(
         object = gr,
         ## FIXME RENAME TO IGNOREVERSION?
-        ignoreTxVersion = ignoreTxVersion,
+        ignoreVersion = ignoreVersion,
         ## FIXME SIMPLIFY THE PASSTHROUGH OF THIS...
         broadClass = broadClass,
         synonyms = synonyms

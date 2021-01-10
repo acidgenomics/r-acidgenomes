@@ -15,7 +15,7 @@ test_that("Transcripts", {
     x <- makeGRangesFromEnsDb(
         object = pkg,
         level = "transcripts",
-        ignoreTxVersion = TRUE
+        ignoreVersion = TRUE
     )
     expect_s4_class(x, "GRanges")
 })
@@ -36,7 +36,7 @@ test_that("Transcripts", {
     x <- makeGRangesFromEnsDb(
         object = edb,
         level = "transcripts",
-        ignoreTxVersion = FALSE
+        ignoreVersion = FALSE
     )
     expect_s4_class(x, "GRanges")
 })

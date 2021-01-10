@@ -1,5 +1,6 @@
 ## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
+## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
 
 ## nolint start
 
@@ -186,13 +187,13 @@
 makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
-    ignoreTxVersion = TRUE,
+    ignoreVersion = TRUE,
     broadClass = TRUE,
     synonyms = FALSE
 ) {
     assert(
         isString(file),
-        isFlag(ignoreTxVersion),
+        isFlag(ignoreVersion),
         isFlag(broadClass),
         isFlag(synonyms)
     )
@@ -221,7 +222,12 @@ makeGRangesFromGFF <- function(
     ## Use `columns()` on EnsDb or TxDb to check for available metadata.
     args <- list()
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
+
+        ## PASS TO makeGRangesFromEnsDb HERE.
+
         db <- .makeEnsDbFromGFF(tmpfile)
+        ## FIXME REWORK THIS APPROACH.
+        xx <- makeGRangesFromEnsDb(db)
         switch(
             EXPR = level,
             "genes" = {
@@ -270,7 +276,7 @@ makeGRangesFromGFF <- function(
     assert(is(gr, "GRanges"))
     out <- .makeGRanges(
         object = gr,
-        ignoreTxVersion = ignoreTxVersion,
+        ignoreVersion = ignoreVersion,
         broadClass = broadClass,
         synonyms = synonyms
     )
