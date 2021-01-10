@@ -8,7 +8,7 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #'
-#' @param ignoreTxVersion `logical(1)`.
+#' @param ignoreVersion `logical(1)`.
 #'   Don't include the transcript version in the identifier.
 #'   **Not recommended** by default when handing off salmon or kallisto output
 #'   to tximport-DESeq2 workflow.
@@ -38,17 +38,17 @@ importTx2Gene <- function(
     organism = NULL,
     genomeBuild = NULL,
     ensemblRelease = NULL,
-    ignoreTxVersion = FALSE,
+    ignoreVersion = FALSE,
     ignoreGeneVersion = TRUE
 ) {
     assert(
-        isFlag(ignoreTxVersion),
+        isFlag(ignoreVersion),
         isFlag(ignoreGeneVersion)
     )
     data <- import(file = file, rownames = FALSE, colnames = FALSE)
     colnames(data) <- c("transcriptID", "geneID")
     data <- as(data, "DataFrame")
-    if (isTRUE(ignoreTxVersion)) {
+    if (isTRUE(ignoreVersion)) {
         data[["transcriptID"]] <-
             stripTranscriptVersions(data[["transcriptID"]])
     }
