@@ -113,6 +113,85 @@ setValidity(
 
 
 
+
+
+
+
+#' Entrez-to-Ensembl gene identifier mappings
+#'
+#' @inherit Ensembl2Entrez-class details
+#'
+#' @export
+#' @note Updated 2020-10-05.
+#'
+#' @return `Entrez2Ensembl`.
+setClass(
+    Class = "Entrez2Ensembl",
+    contains = "DataFrame"
+)
+setValidity(
+    Class = "Entrez2Ensembl",
+    method = function(object) {
+        validate(
+            hasRows(object),
+            identical(c("entrez", "ensembl"), colnames(object)),
+            is.integer(object[["entrez"]])
+        )
+    }
+)
+
+
+
+#' FlyBase gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with FlyBase gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `FlyBaseGenes`.
+setClass(
+    Class = "FlyBaseGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "FlyBaseGenes",
+    method = function(object) {
+        ## FIXME Ensure we have the genome release version.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
+#' FlyBase transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with FlyBase transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-10.
+#'
+#' @return `FlyBaseTranscripts`.
+setClass(
+    Class = "FlyBaseTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "FlyBaseTranscripts",
+    method = function(object) {
+        ## FIXME Ensure we have the genome release version.
+        validate(
+            hasRows(object)
+        )
+    }
+)
+
+
+
 #' GENCODE gene annotations
 #'
 #' @details
