@@ -141,20 +141,3 @@ makeTx2GeneFromFASTA <- function(
     x <- unique(x)
     Tx2Gene(x)
 }
-
-
-
-## Updated 2021-01-07.
-#' @rdname makeTx2GeneFromFASTA
-#' @param outputFile `character(1)`.
-#'   Output file.
-#' @export
-makeTx2GeneFileFromFASTA <- function(
-    file,
-    outputFile = file.path(dirname(file), "tx2gene.csv.gz"),
-    source
-) {
-    t2g <- makeTx2GeneFromFASTA(file = file, source = source)
-    assert(is(t2g, "Tx2Gene"))
-    export(object = t2g, file = outputFile, overwrite = TRUE)
-}
