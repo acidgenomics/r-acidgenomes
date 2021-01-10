@@ -48,7 +48,7 @@ test_that("Transcripts", {
         organism = organism,
         level = "transcripts",
         release = release,
-        ignoreTxVersion = FALSE
+        ignoreVersion = FALSE
     )
     expect_s4_class(object, "GRanges")
     expect_identical(length(object), 248916L)
