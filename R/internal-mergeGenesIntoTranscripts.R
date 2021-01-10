@@ -1,6 +1,8 @@
-## Merge the gene-level annotations (`geneName`, `geneBiotype`) into a
-## transcript-level GRanges object.
-## Updated 2020-01-20.
+#' Merge the gene-level annotations (`geneName`, `geneBiotype`) into a
+#' transcript-level GRanges object.
+#'
+#' @note Updated 2020-01-20.
+#' @noRd
 .mergeGenesIntoTranscripts <- function(transcripts, genes) {
     ## Use `transcript_` prefix instead of `tx_` consistently.
     if (any(grepl("^tx_", colnames(mcols(transcripts))))) {

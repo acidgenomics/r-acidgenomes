@@ -51,11 +51,13 @@ makeGRangesFromEnsDb <- function(
         out <- genes
     }
     if (level == "transcripts") {
+        ## FIXME RETHINK THIS...
         transcripts <- transcripts(
             x = object,
             order.by = "tx_id",
             return.type = "GRanges"
         )
+        ## FIXME RETHINK THIS APPROACH.
         out <- .mergeGenesIntoTranscripts(
             transcripts = transcripts,
             genes = genes
