@@ -1,3 +1,7 @@
+## FIXME RETHINK METADATA RETURN STRUCTURE
+
+
+
 #' Make GRanges from EnsDb object
 #'
 #' @details
