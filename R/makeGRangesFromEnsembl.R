@@ -169,6 +169,7 @@ makeGRangesFromEnsembl <- function(
         is(edb, "EnsDb"),
         isString(attr(edb, "id"))
     )
+    ## FIXME RETHINK BROADCLASS AND SYNONYMS APPROACH HERE.
     makeGRangesFromEnsDb(
         object = edb,
         level = level,
