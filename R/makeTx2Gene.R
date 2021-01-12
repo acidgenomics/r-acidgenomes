@@ -37,6 +37,9 @@ NULL
 
 
 
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
+
 #' @rdname makeTx2Gene
 #' @export
 ## Updated 2020-10-06.
@@ -61,6 +64,9 @@ formals(makeTx2GeneFromEnsembl) <- f
 
 
 
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
+
 #' @rdname makeTx2Gene
 #' @export
 ## Updated 2020-10-06.
@@ -83,6 +89,9 @@ f <- f[setdiff(names(f), "level")]
 formals(makeTx2GeneFromEnsDb) <- f
 
 
+
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
 
 #' @rdname makeTx2Gene
 #' @export
