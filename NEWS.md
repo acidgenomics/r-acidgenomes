@@ -1,10 +1,15 @@
-## AcidGenomes 0.1.2 (2021-01-08)
+## AcidGenomes 0.2.0 (UNRELEASED)
 
 ### New functions
 
 - Added new genome download functions, migrated from previous Python approach
   defined in py-koopa package.
 - Switched from cli to AcidCLI for interactive messages.
+
+### Major changes
+
+- Now using BiocFileCache (via `pipette::cacheURL` internally) to automatically
+  cache GFF/GTF files when used in `makeGRangesFromGFF`.
 
 ## AcidGenomes 0.1.1 (2020-10-12)
 
