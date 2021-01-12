@@ -431,9 +431,9 @@
         isFlag(broadClass),
         isFlag(synonyms)
     )
+    object <- trim(object)
     length <- length(object)
     object <- .minimizeGRanges(object)
-    assert(hasLength(object, n = length))
     object <- .standardizeGRanges(object)
     assert(hasLength(object, n = length))
     if (isFALSE(ignoreVersion)) {
@@ -508,11 +508,12 @@
             msg2 = level                                  # genes
         )
     ))
-    ## FIXME ADD ASSERT FOR ORGANISM HERE.
+    ## FIXME ADD ASSERT FOR ORGANISM IN METADATA HERE.
     assert(
         !any(is.na(genome(object))),
         !any(is.na(seqlengths(object)))
     )
+    validObject(object)
     object
 }
 
