@@ -7,6 +7,11 @@
 ## FIXME CURRENT RELEASE VERSION DOESNT SLOT ORGANISM HERE CORRECTLY.
 ## RETHINK THAT FOR GFF.
 
+## FIXME MAKE SURE FILE IS CORRECT URL, NOT TMPFILE BEFORE RELEASING.
+
+## FIXME synonyms only works with Ensembl identifiers, consider making that more clear in documentation.
+## FIXME INDICATE TO THE USER MORE CLEARLY THAT THIS STEP IS SLOW.
+
 
 
 ## nolint start
@@ -154,20 +159,10 @@
 #'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz)
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
-#' @param .checkAgainstTxDb `logical(1)`.
-#'   Enable strict mode, intended for development and unit testing only.
-#'   Generate an internal `TxDb` using [GenomicFeatures::makeTxDbFromGRanges()]
-#'   and check that the [`ranges()`][IRanges::ranges],
-#'   [`seqnames()`][GenomeInfoDb::seqnames], and identifiers defined in
-#'   [`names()`][base::names] are identical. Doesn't work for all GFF/GTF files
-#'   due to some current limitations in the GenomicFeatures package, so this is
-#'   disabled by default. Generally, GenomicFeatures parses GTF files better
-#'   than GFF files. However, it's a useful sanity check and should be enabled
-#'   if possible.
 #'
 #' @return `GRanges`.
 #'
@@ -211,45 +206,93 @@ makeGRangesFromGFF <- function(
         basename(file)
     ))
     if (isAURL(file)) {
-        ## FIXME ENSURE THIS CACHES INTO ACIDGENOMES AND NOT PIPETTE BEFORE
-        ## PUSHING RELEASE.
-        ## MAY NEED TO SET HERE INTERNALLY.
-        tmpfile <- cacheURL(url = file)
+        tmpfile <- cacheURL(url = file, pkg = packageName())
     } else {
         tmpfile <- file
     }
-    detect <- .detectGFF(tmpfile)
-    meta[["detect"]] <- detect
+    ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`.
+    ## We're using this downstream for file source detection and extra metadata
+    ## that currently isn't maintained by GenomicFeatures TxDb generation.
+    raw <- import(tmpfile)
+    detect <- .detectGFF(raw)
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
     if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
         stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
     }
+    ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
+    ## GenomicFeatures and generate a TxDb object.
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
-        ## FIXME REWORK THIS APPROACH.
-        db <- .makeEnsDbFromGFF(tmpfile)
-        gr <- makeGRangesFromEnsDb(edb)
+        gr <- .makeGRangesFromEnsemblGFF(
+            file = tmpfile,
+            level = level,
+            ignoreVersion = ignoreVersion,
+            broadClass = broadClass,
+            synonyms = synonyms
+        )
     } else {
+        if (isTRUE(synonyms)) {
+            stop("Synonyms are only supported for Ensembl and GENCODE genomes.")
+        }
         ## FIXME REWORK THIS APPROACH.
         db <- .makeTxDbFromGFF(tmpfile)
-        gr <- .makeGRangesFromTxDb(db)
-        ## FIXME THIS DOESNT RETURN RICH ENOUGH METADATA FOR FLYBASE.
+
+        ## FIXME 47 sequences (1 circular) from an unspecified genomes; no seqlengths...argh
+        ## FIXME WE NEED TO IMPROVE THIS METADATA...
+
+        gr <- .makeGRangesFromTxDb(object = db, level = level)
+
+        ## FIXME NEED TO ADD RICHER METADATA HERE...
+
+
+
+        out <- .makeGRanges(
+            object = gr,
+            ignoreVersion = ignoreVersion,
+            broadClass = broadClass,
+            synonyms = synonyms
+        )
     }
     assert(is(gr, "GRanges"))
-    out <- .makeGRanges(
-        object = gr,
+    ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
+    ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
+    metadata(out)[["detect"]] <- detect
+    metadata(out)[["file"]] <- file
+    metadata(out)[["call"]] <- match.call()
+
+    ## FIXME ASSERT THAT SEQINFO IS DEFINED:
+    ## - seqlengths
+    ## - isCircular
+    ## - genome
+    ## (these are nicely returned by ensembldb)
+
+    out
+}
+
+
+
+#' Make GRanges from Ensembl/GENCODE GFF using ensembldb
+#'
+#' @note Updated 2021-01-12.
+#' @noRd
+.makeGRangesFromEnsemblGFF <- function(
+    file,
+    level,
+    ignoreVersion,
+    broadClass,
+    synonyms
+) {
+    db <- .makeEnsDbFromGFF(file)
+    gr <- makeGRangesFromEnsDb(
+        object = db,
+        level = level,
         ignoreVersion = ignoreVersion,
         broadClass = broadClass,
         synonyms = synonyms
     )
-    ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
-    ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
-    metadata(out)[["file"]] <- file
-    metadata(out)[["call"]] <- match.call()
-    out
+    gr
 }
-
 
 
 ## Aliases =====================================================================

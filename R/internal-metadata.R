@@ -1,4 +1,4 @@
-## FIXME RETHINK THE APPROACH WITH THESE?
+## FIXME RETHINK APPROACH WITH THESE, IMPROVING SUPPORT FOR REFSEQ.
 
 
 
@@ -12,6 +12,8 @@
 )
 
 
+
+## FIXME RETHINK `ensemblRelease` usage here
 
 #' Slot genome metadata
 #'
