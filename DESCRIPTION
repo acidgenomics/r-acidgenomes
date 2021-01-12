@@ -29,6 +29,7 @@ Imports:
     AnnotationDbi,
     AnnotationHub,
     BiocParallel,
+    GenomeInfoDb,
     GenomicRanges,
     IRanges,
     S4Vectors,
