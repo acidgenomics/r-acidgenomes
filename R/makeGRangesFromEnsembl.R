@@ -149,6 +149,7 @@ makeGRangesFromEnsembl <- function(
     genomeBuild = NULL,
     release = NULL,
     ignoreVersion = TRUE,
+    ## FIXME broadClass and synonyms should be a single call here.
     broadClass = TRUE,
     synonyms = FALSE
 ) {

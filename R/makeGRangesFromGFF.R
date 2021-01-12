@@ -226,6 +226,7 @@ makeGRangesFromGFF <- function(
         ## FIXME REWORK THIS APPROACH.
         db <- .makeTxDbFromGFF(tmpfile)
         gr <- .makeGRangesFromTxDb(db)
+        ## FIXME THIS DOESNT RETURN RICH ENOUGH METADATA FOR FLYBASE.
     }
     assert(is(gr, "GRanges"))
     out <- .makeGRanges(
