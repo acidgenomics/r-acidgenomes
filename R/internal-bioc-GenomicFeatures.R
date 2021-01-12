@@ -49,7 +49,7 @@
 
 #' Make GRanges from TxDb object
 #'
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-12.
 #' @noRd
 #'
 #' @return `GRanges`.
