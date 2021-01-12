@@ -34,17 +34,6 @@ Include broad class definitions.}
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
-
-\item{.checkAgainstTxDb}{\code{logical(1)}.
-Enable strict mode, intended for development and unit testing only.
-Generate an internal \code{TxDb} using \code{\link[GenomicFeatures:makeTxDbFromGRanges]{GenomicFeatures::makeTxDbFromGRanges()}}
-and check that the \code{\link[IRanges:range-squeezers]{ranges()}},
-\code{\link[GenomeInfoDb:seqinfo]{seqnames()}}, and identifiers defined in
-\code{\link[base:names]{names()}} are identical. Doesn't work for all GFF/GTF files
-due to some current limitations in the GenomicFeatures package, so this is
-disabled by default. Generally, GenomicFeatures parses GTF files better
-than GFF files. However, it's a useful sanity check and should be enabled
-if possible.}
 }
 \value{
 \code{GRanges}.
@@ -62,7 +51,7 @@ Runs the same internal code as \code{\link[=makeGRangesFromGFF]{makeGRangesFromG
 }}
 
 \note{
-Updated 2021-01-10.
+Updated 2021-01-12.
 }
 \section{Recommendations}{
 
