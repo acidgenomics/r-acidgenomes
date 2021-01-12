@@ -4,6 +4,9 @@
 
 ## FIXME RETHINK ALLOWING BROADCLASS AND SYNONYMS HERE.
 
+## FIXME CURRENT RELEASE VERSION DOESNT SLOT ORGANISM HERE CORRECTLY.
+## RETHINK THAT FOR GFF.
+
 
 
 ## nolint start
@@ -208,6 +211,9 @@ makeGRangesFromGFF <- function(
         basename(file)
     ))
     if (isAURL(file)) {
+        ## FIXME ENSURE THIS CACHES INTO ACIDGENOMES AND NOT PIPETTE BEFORE
+        ## PUSHING RELEASE.
+        ## MAY NEED TO SET HERE INTERNALLY.
         tmpfile <- cacheURL(url = file)
     } else {
         tmpfile <- file
