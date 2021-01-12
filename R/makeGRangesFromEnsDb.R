@@ -81,7 +81,10 @@ makeGRangesFromEnsDb <- function(
             )
         }
     )
-    gr <- do.call(what = fun, args = args)
+    ## This step can warn about out-of-bound ranges that need to be trimmed.
+    suppressWarnings({
+        gr <- do.call(what = fun, args = args)
+    })
     assert(is(gr, "GRanges"))
     forceDetach(keep = userAttached)
     metadata(gr) <- metadata

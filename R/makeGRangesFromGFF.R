@@ -224,8 +224,9 @@ makeGRangesFromGFF <- function(
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
-        gr <- .makeGRangesFromEnsemblGFF(
-            file = tmpfile,
+        db <- .makeEnsDbFromGFF(tmpfile)
+        gr <- makeGRangesFromEnsDb(
+            object = db,
             level = level,
             ignoreVersion = ignoreVersion,
             broadClass = broadClass,
@@ -233,15 +234,18 @@ makeGRangesFromGFF <- function(
         )
     } else {
         if (isTRUE(synonyms)) {
-            stop("Synonyms are only supported for Ensembl and GENCODE genomes.")
+            stop(paste(
+                "Synonyms are only supported for genomes from",
+                "Ensembl and GENCODE."
+            ))
         }
-        ## FIXME REWORK THIS APPROACH.
         db <- .makeTxDbFromGFF(tmpfile)
-
         ## FIXME 47 sequences (1 circular) from an unspecified genomes; no seqlengths...argh
         ## FIXME WE NEED TO IMPROVE THIS METADATA...
+        gr1 <- .makeGRangesFromTxDb(object = db, level = level)
+        gr2
 
-        gr <- .makeGRangesFromTxDb(object = db, level = level)
+        ## FIXME Need to define seqlengths here.
 
         ## FIXME NEED TO ADD RICHER METADATA HERE...
 
@@ -261,6 +265,12 @@ makeGRangesFromGFF <- function(
     metadata(out)[["file"]] <- file
     metadata(out)[["call"]] <- match.call()
 
+
+
+    seqinfo(gr)
+    seqlengths(gr)
+    genome(gr)
+
     ## FIXME ASSERT THAT SEQINFO IS DEFINED:
     ## - seqlengths
     ## - isCircular
@@ -270,29 +280,6 @@ makeGRangesFromGFF <- function(
     out
 }
 
-
-
-#' Make GRanges from Ensembl/GENCODE GFF using ensembldb
-#'
-#' @note Updated 2021-01-12.
-#' @noRd
-.makeGRangesFromEnsemblGFF <- function(
-    file,
-    level,
-    ignoreVersion,
-    broadClass,
-    synonyms
-) {
-    db <- .makeEnsDbFromGFF(file)
-    gr <- makeGRangesFromEnsDb(
-        object = db,
-        level = level,
-        ignoreVersion = ignoreVersion,
-        broadClass = broadClass,
-        synonyms = synonyms
-    )
-    gr
-}
 
 
 ## Aliases =====================================================================
