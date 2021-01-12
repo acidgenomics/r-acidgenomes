@@ -38,6 +38,9 @@ NULL
 
 
 
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
+
 #' @rdname makeGene2Symbol
 #' @export
 ## Updated 2020-10-06.
@@ -68,6 +71,9 @@ formals(makeGene2SymbolFromEnsembl) <- f
 
 
 
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
+
 #' @rdname makeGene2Symbol
 #' @export
 ## Updated 2020-10-06.
@@ -86,6 +92,9 @@ formals(makeGene2SymbolFromEnsDb)[["format"]] <-
     formals(makeGene2SymbolFromEnsembl)[["format"]]
 
 
+
+## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
+## BROADCLASS AND SYNONYMS OPTIONS.
 
 #' @rdname makeGene2Symbol
 #' @export
