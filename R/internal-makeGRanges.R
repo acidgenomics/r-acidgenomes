@@ -202,12 +202,24 @@
             msg2 = level                                  # genes
         )
     ))
-
     ## FIXME ADD ASSERT FOR ORGANISM HERE.
     ## FIXME ADD ASSERT FOR CALL HERE TOO.
-
     object
 }
+
+
+
+## FIXME ADD makeGRangesFromWormBase
+## FIXME ADD makeGRangesFromFlyBase
+## FIXME ADD makeGRangesFromRefSeq
+##
+## FIXME NEEDS TO REIMPORT GTF/GFF INTO GRANGES AND WORK FROM THERE.
+## FIXME (each of these need to support level argument)
+
+## Legacy code:
+## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-FlyBase.R
+## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-RefSeq.R
+## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-WormBase.R
 
 
 
