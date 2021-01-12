@@ -4,15 +4,13 @@
 #' Assuming we've already cached the URL using BiocFileCache here.
 #' This step will load into GRanges via rtracklayer.
 #'
-#' @note Updated 2021-01-09.
+#' @note Updated 2021-01-12.
 #' @noRd
-.detectGFF <- function(file) {
-    assert(isAFile(file))
+.detectGFF <- function(object) {
+    assert(is(object, "GRanges"))
     alert("Detecting annotation source.")
-    gr <- import(file)
-    assert(is(gr, "GRanges"))
-    source <- .detectGFFSource(gr)
-    type <- .detectGFFType(gr)
+    source <- .detectGFFSource(object)
+    type <- .detectGFFType(object)
     alertInfo(sprintf("%s %s detected.", source, type))
     out <- c(
         "source" = source,
