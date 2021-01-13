@@ -33,12 +33,13 @@
     genomeBuild = NULL
 ) {
     assert(isString(reportFile))
-    pattern <- "^(.+)_assembly_report.txt$"
+    pattern <- "^GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report.txt$"
     if (
         is.null(genomeBuild) &&
         grepl(pattern = pattern, x = basename(reportFile))
     ) {
-        ## e.g. GCF_000001405.39_GRCh38.p13.
+        ## e.g. GRCh38.p13, which is the format Seqinfo expects.
+        ## Refer to GenomeInfoDb documentation for details on NCBI.
         genomeBuild <- sub(
             pattern = pattern,
             replacement = "\\1",
