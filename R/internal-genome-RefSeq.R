@@ -13,6 +13,11 @@
 ##object, or use suppressMessages()
 ##to suppress this message.
 
+## transcripts don't use an identifier, which is confusing.
+## names should be defined as tx_name in this case instead.
+
+## FIXME tx_name contains duplicates, so need to figure out how to handle.
+
 
 
 #' Get the RefSeq assembly metadata
