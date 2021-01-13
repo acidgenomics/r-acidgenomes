@@ -207,7 +207,6 @@ Related URLs:
 \href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz}{GTF},
 \href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz}{GFF3}
 \item RefSeq \emph{Homo sapiens} GCF_000001405.39 GRCh38
-\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gtf.gz}{GTF}
 \href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz}{GFF3}
 \item FlyBase \emph{Drosophila melanogaster} r6.24
 \href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF}
@@ -245,7 +244,5 @@ summary(x)
 \item \code{AnnotationDbi::columns()}.
 \item \code{GenomeInfoDb::GenomeDescription-class}, which describes useful \code{organism},
 \code{commonName}, \code{providerVersion}, \code{provider}, and \code{releaseDate} accessors.
-\item https://github.com/LieberInstitute/SPEAQeasy/blob/master/scripts/
-unused/make_txdb_from_gtf.R
 }
 }
