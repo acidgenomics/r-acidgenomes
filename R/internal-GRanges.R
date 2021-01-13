@@ -509,10 +509,7 @@
         )
     ))
     ## FIXME ADD ASSERT FOR ORGANISM IN METADATA HERE.
-    assert(
-        !any(is.na(genome(object))),
-        !any(is.na(seqlengths(object)))
-    )
+    assert(!any(is.na(seqlengths(object))))
     validObject(object)
     object
 }

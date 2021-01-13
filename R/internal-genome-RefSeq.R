@@ -3,6 +3,11 @@
 #' @note Updated 2021-01-08.
 #' @noRd
 #'
+#' @param baseURL `character(1)`.
+#'   RefSeq organism base URL.
+#'   (e.g. "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/
+#'       "vertebrate_mammalian/Homo_sapiens).
+#'
 #' @seealso
 #' - ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt
 #'
@@ -28,7 +33,7 @@
 
 
 
-#' Get the RefSeq organism directory structure on the FTP server
+#' Get the RefSeq base genome URL for an organism
 #'
 #' @note Updated 2021-01-08.
 #' @noRd
