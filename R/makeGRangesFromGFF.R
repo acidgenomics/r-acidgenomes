@@ -151,7 +151,6 @@
 #'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz),
 #'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz)
 #' - RefSeq *Homo sapiens* GCF_000001405.39 GRCh38
-#'   [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gtf.gz)
 #'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz)
 #' - FlyBase *Drosophila melanogaster* r6.24
 #'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz)
@@ -179,8 +178,6 @@
 #' - `AnnotationDbi::columns()`.
 #' - `GenomeInfoDb::GenomeDescription-class`, which describes useful `organism`,
 #'   `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
-#' - https://github.com/LieberInstitute/SPEAQeasy/blob/master/scripts/
-#'       unused/make_txdb_from_gtf.R
 #'
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
@@ -227,21 +224,11 @@ makeGRangesFromGFF <- function(
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
-    if (
-        isSubset(source, c("FlyBase", "WormBase")) &&
-        type != "GTF"
-    ) {
+    if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
         stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
-    } else if (
-        source == "RefSeq" &&
-        grepl(pattern = "GCF_000001405.39_GRCh38.p13", x = basename(file))
-    ) {
+    } else if (source == "RefSeq" && type != "GFF") {
         ## https://github.com/Bioconductor/GenomicFeatures/issues/26
-        stop(sprintf(
-            "'%s' has parsing issues currently with '%s' package.",
-            "GCF_000001405.39_GRCh38.p13",
-            "GenomicFeatures"
-        ))
+        stop(sprintf("Only GFF files from %s are supported.", source))  # nocov
     }
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
