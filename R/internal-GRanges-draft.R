@@ -1,23 +1,83 @@
-#' Get RefSeq seqlengths
+#' Get RefSeq seqinfo
+#'
+#' Parse the assembly report file to get seqlengths per chromosome.
 #'
 #' @note Updated 2021-01-13.
 #' @noRd
 #'
-#' @rdname releaseURL `character(1)`.
-#'   RefSeq genome release URL
-#'   (e.g.
-#'   ).
+#' @rdname reportFile `character(1)`.
+#'   Assembly report file or URL.
+#' @rdname genome `character(1)` or `NULL`.
+#'   Genome build.
+#'   If left `NULL`, will be detected from file name.
 #'
-#' @seealso `tximeta:::gtf2RefSeq`.
+#' @seealso
+#' - `tximeta:::gtf2RefSeq`.
+#'
+#' @examples
+#' reportFile <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "all",
+#'     "GCF",
+#'     "000",
+#'     "001",
+#'     "405",
+#'     "GCF_000001405.39_GRCh38.p13",
+#'     "GCF_000001405.39_GRCh38.p13_assembly_report.txt",
+#'      protocol = "ftp"
+#' )
 .getRefSeqSeqinfo <- function(
-    releaseURL,
-    genome = NULL
+    reportFile,
+    genomeBuild = NULL
 ) {
-    ## ATTEMPT TO DEFINE THE GENOME FROM THE FILE NAME.
-    if (is.null(genome)) {
-
+    assert(isString(reportFile))
+    pattern <- "^(.+)_assembly_report.txt$"
+    if (
+        is.null(genomeBuild) &&
+        grepl(pattern = pattern, x = basename(reportFile))
+    ) {
+        ## e.g. GCF_000001405.39_GRCh38.p13.
+        genomeBuild <- sub(
+            pattern = pattern,
+            replacement = "\\1",
+            x = basename(reportFile)
+        )
     }
-
-    "assembly_report"
-
+    df <- import(
+        file = reportFile,
+        format = "tsv",
+        colnames = c(
+            "sequenceName",
+            "sequenceRole",
+            "assignedMolecule",
+            "assignedMoleculeLocation",
+            "genbankAccn",
+            "relationship",
+            "refseqAccn",
+            "assemblyUnit",
+            "sequenceLength",
+            "ucscStyleName"
+        ),
+        comment = "#"
+    )
+    cols <- c("refseqAccn", "sequenceLength")
+    df <- df[, cols]
+    df <- df[complete.cases(df), ]
+    seqnames <- df[["refseqAccn"]]
+    seqlengths <- df[["sequenceLength"]]
+    assert(
+        !any(is.na(seqnames)),
+        !any(is.na(seqlengths)),
+        hasNoDuplicates(seqnames)
+    )
+    seq <- Seqinfo(
+        seqnames = seqnames,
+        seqlengths = seqlengths,
+        isCircular = NA,
+        genome = genomeBuild
+    )
+    assert(is(seq, "Seqinfo"))
+    validObject(seq)
+    seq
 }
