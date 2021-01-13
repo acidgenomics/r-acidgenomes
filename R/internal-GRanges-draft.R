@@ -27,6 +27,7 @@
 #'     "GCF_000001405.39_GRCh38.p13_assembly_report.txt",
 #'      protocol = "ftp"
 #' )
+#' object <- .getRefSeqSeqinfo(reportFile = reportFile)
 .getRefSeqSeqinfo <- function(
     reportFile,
     genomeBuild = NULL
