@@ -1,6 +1,9 @@
 ## FIXME NEED TO ADD SUPPORT FOR A SPECIFIC VERSION.
 ## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE SUPPORT.
 
+## FIXME GCF_000001405.39_GRCh38.p13 has some parsing issues with
+## GenomicFeatures when generating a TxDb, so stick with GCF_000001405.38_GRCh38.p12 for the time being.
+
 
 
 #' Download RefSeq reference genome

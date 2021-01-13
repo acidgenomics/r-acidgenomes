@@ -51,7 +51,7 @@ Runs the same internal code as \code{\link[=makeGRangesFromGFF]{makeGRangesFromG
 }}
 
 \note{
-Updated 2021-01-12.
+Updated 2021-01-13.
 }
 \section{Recommendations}{
 
@@ -216,6 +216,14 @@ Related URLs:
 }
 }
 
+\section{Exons vs. CDS}{
+
+\itemize{
+\item Exons: \code{gene - introns}.
+\item CDS: \code{exons - UTRs}.
+}
+}
+
 \examples{
 file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
 
@@ -229,10 +237,15 @@ summary(x)
 }
 \seealso{
 \itemize{
-\item \code{\link[rtracklayer:export]{rtracklayer::import()}}.
-\item \code{\link[GenomicFeatures:makeTxDbFromGRanges]{GenomicFeatures::makeTxDbFromGRanges()}}.
-\item \code{\link[GenomicFeatures:makeTxDbFromGFF]{GenomicFeatures::makeTxDbFromGFF()}}.
+\item \code{rtracklayer::import()}.
+\item \code{GenomicFeatures::makeTxDbFromGRanges()}.
+\item \code{GenomicFeatures::makeTxDbFromGFF()}.
+\item \code{GenomicFeatures:::.make_splicings()}.
 \item \code{tximeta:::getRanges()}.
-\item \code{columns()}.
+\item \code{AnnotationDbi::columns()}.
+\item \code{GenomeInfoDb::GenomeDescription-class}, which describes useful \code{organism},
+\code{commonName}, \code{providerVersion}, \code{provider}, and \code{releaseDate} accessors.
+\item https://github.com/LieberInstitute/SPEAQeasy/blob/master/scripts/
+unused/make_txdb_from_gtf.R
 }
 }
