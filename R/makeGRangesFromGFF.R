@@ -227,8 +227,21 @@ makeGRangesFromGFF <- function(
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
-    if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
+    if (
+        isSubset(source, c("FlyBase", "WormBase")) &&
+        type != "GTF"
+    ) {
         stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
+    } else if (
+        source == "RefSeq" &&
+        grepl(pattern = "GCF_000001405.39_GRCh38.p13", x = basename(file))
+    ) {
+        ## https://github.com/Bioconductor/GenomicFeatures/issues/26
+        stop(sprintf(
+            "'%s' has parsing issues currently with '%s' package.",
+            "GCF_000001405.39_GRCh38.p13",
+            "GenomicFeatures"
+        ))
     }
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
