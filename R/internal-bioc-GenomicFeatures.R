@@ -31,40 +31,21 @@
     ))
     requireNamespaces("GenomicFeatures")
     assert(isAFile(file))
-    ## RefSeq GCF_000001405.39_GRCh38.p13 input is hitting this error:
-    ## some CDS cannot be mapped to an exon
-    ## https://github.com/Bioconductor/GenomicFeatures/issues/26
-    txdb <- withCallingHandlers(expr = {
-        tryCatch(
-            expr = {
-                GenomicFeatures::makeTxDbFromGFF(
-                    file = file,
-                    format = "auto",
-                    ## > dataSource = NA,
-                    organism = "FIXME",
-                    ## > taxonomyId = NA,
-                    ## > circ_seqs = NULL,
-                    chrominfo = "FIXME"
-                    ## This could be useful for future genome builds with miRs.
-                    ## > miRBaseBuild = NA,
-                    ## > metadata = NULL,
-                    ## This can help override feature name ("e.g. GeneID") used.
-                    ## > dbxrefTag = "GeneID")
-                )
-            },
-            error = function(e) {
-                warning(e)
-                stop(paste(
-                    "Failed to make TxDb using ",
-                    "'GenomicFeatures::makeTxDbFromGFF()'",
-                    sep = "\n"
-                ))
-            }
+    suppressWarnings({
+        txdb <- GenomicFeatures::makeTxDbFromGFF(
+            file = file,
+            format = "auto"
+            ## > dataSource = NA,
+            ## > organism = "FIXME",
+            ## > taxonomyId = NA,
+            ## > circ_seqs = NULL,
+            ## > chrominfo = "FIXME"
+            ## This could be useful for future genome builds with miRs.
+            ## > miRBaseBuild = NA,
+            ## > metadata = NULL,
+            ## This can help override feature name ("e.g. GeneID") used.
+            ## > dbxrefTag = "GeneID")
         )
-    }, warning = function(w) {
-        if (grepl(pattern = "stop_codon", x = conditionMessage(w))) {
-            invokeRestart("muffleWarning")
-        }
     })
     assert(is(txdb, "TxDb"))
     validObject(txdb)
