@@ -44,6 +44,7 @@
             ## > miRBaseBuild = NA,
             ## > metadata = NULL,
             ## This can help override feature name ("e.g. GeneID") used.
+            ## FIXME DO WE NEED TO RETHINK THIS FOR TRANSCRIPT IDs?
             ## > dbxrefTag = "GeneID")
         )
     })
