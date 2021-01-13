@@ -158,8 +158,12 @@
 #' - WormBase *Caenorhabditis elegans* WS267
 #'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz)
 #'
+#' @section Exons vs. CDS:
+#' - Exons: `gene - introns`.
+#' - CDS: `exons - UTRs`.
+#'
 #' @export
-#' @note Updated 2021-01-12.
+#' @note Updated 2021-01-13.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -167,11 +171,16 @@
 #' @return `GRanges`.
 #'
 #' @seealso
-#' - [rtracklayer::import()].
-#' - [GenomicFeatures::makeTxDbFromGRanges()].
-#' - [GenomicFeatures::makeTxDbFromGFF()].
+#' - `rtracklayer::import()`.
+#' - `GenomicFeatures::makeTxDbFromGRanges()`.
+#' - `GenomicFeatures::makeTxDbFromGFF()`.
+#' - `GenomicFeatures:::.make_splicings()`.
 #' - `tximeta:::getRanges()`.
-#' - `columns()`.
+#' - `AnnotationDbi::columns()`.
+#' - `GenomeInfoDb::GenomeDescription-class`, which describes useful `organism`,
+#'   `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
+#' - https://github.com/LieberInstitute/SPEAQeasy/blob/master/scripts/
+#'       unused/make_txdb_from_gtf.R
 #'
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
@@ -210,11 +219,11 @@ makeGRangesFromGFF <- function(
     } else {
         tmpfile <- file
     }
-    ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`.
-    ## We're using this downstream for file source detection and extra metadata
-    ## that currently isn't maintained by GenomicFeatures TxDb generation.
-    raw <- import(tmpfile)
-    detect <- .detectGFF(raw)
+    ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`. We're
+    ## using this downstream for file source detection and extra metadata that
+    ## currently isn't supported in GenomicFeatures TxDb generation.
+    rawGRanges <- import(tmpfile)
+    detect <- .detectGFF(rawGRanges)
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
@@ -268,16 +277,13 @@ makeGRangesFromGFF <- function(
     metadata(out)[["file"]] <- file
     metadata(out)[["call"]] <- match.call()
 
-
-    seqinfo(gr)
-    seqlengths(gr)
-    genome(gr)
-
-    ## FIXME ASSERT THAT SEQINFO IS DEFINED:
-    ## - seqlengths
-    ## - isCircular
-    ## - genome
-    ## (these are nicely returned by ensembldb)
+    ## FIXME RETHINK THIS.
+    ## Metadata assert checks before return.
+    if (!isSubset(source, "FlyBase")) {
+        seqinfo(gr)
+        seqlengths(gr)
+        genome(gr)
+    }
 
     out
 }
