@@ -47,6 +47,8 @@ downloadRefSeqGenome <-
         taxonomicGroup <- basename(dirname(baseURL))
         release <- currentRefSeqVersion()
         summary <- .getRefSeqAssemblySummary(baseURL)
+        ## FIXME CONSIDER MAKING THIS A FUNCTION?
+        ## FIXME NEED TO SHARE THIS CODE WITH REFSEQ GTF UTILS.
         assert(isSubset("ftp_path", names(summary)))
         releaseURL <- summary[["ftp_path"]]
         genomeBuild <- basename(releaseURL)

@@ -245,11 +245,12 @@ makeGRangesFromGFF <- function(
         gr1 <- .makeGRangesFromTxDb(object = db, level = level)
         gr2
 
+        ## FIXME FOR REFSEQ USE ASSEMBLY_REPORT
+        ## tximeta:::gtf2RefSeq
+
         ## FIXME Need to define seqlengths here.
-
         ## FIXME NEED TO ADD RICHER METADATA HERE...
-
-
+        ## FIXME NEED TO SLOT SEQLENGTHS HERE.
 
         out <- .makeGRanges(
             object = gr,
@@ -259,12 +260,13 @@ makeGRangesFromGFF <- function(
         )
     }
     assert(is(gr, "GRanges"))
+
+    ## FIXME ATTEMPT TO SLOT THE GENOME BUILD FROM THE FILE NAME HERE.
     ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
     ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
     metadata(out)[["detect"]] <- detect
     metadata(out)[["file"]] <- file
     metadata(out)[["call"]] <- match.call()
-
 
 
     seqinfo(gr)
