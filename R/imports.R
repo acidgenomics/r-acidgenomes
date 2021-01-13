@@ -13,7 +13,7 @@
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
-#' @importFrom GenomeInfoDb genome seqlengths seqnames
+#' @importFrom GenomeInfoDb Seqinfo genome seqlengths seqnames
 #' @importFrom GenomicRanges GRanges ranges trim
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
