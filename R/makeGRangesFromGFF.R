@@ -1,17 +1,13 @@
 ## FIXME REWORK, CALLING makeTxDbFromGFF internally.
-
 ## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
 ## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
-
 ## FIXME RETHINK ALLOWING BROADCLASS AND SYNONYMS HERE.
-
 ## FIXME CURRENT RELEASE VERSION DOESNT SLOT ORGANISM HERE CORRECTLY.
-## RETHINK THAT FOR GFF.
-
+##       RETHINK THAT FOR GFF.
 ## FIXME MAKE SURE FILE IS CORRECT URL, NOT TMPFILE BEFORE RELEASING.
-
-## FIXME synonyms only works with Ensembl identifiers, consider making that more clear in documentation.
+## FIXME synonyms only works with Ensembl identifiers, consider making that more
+##       clear in documentation.
 ## FIXME INDICATE TO THE USER MORE CLEARLY THAT THIS STEP IS SLOW.
 
 
@@ -163,8 +159,8 @@
 #' - Exons: `gene - introns`.
 #' - CDS: `exons - UTRs`.
 #'
-#' @export
-#' @note Updated 2021-01-13.
+#' @name makeGRangesFromGFF
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -184,29 +180,38 @@
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
 #'
-#' ## Genes
-#' x <- makeGRangesFromGFF(file = file, level = "genes")
-#' summary(x)
+#' ## Genes.
+#' genes <- makeGRangesFromGFF(file = file, level = "genes")
+#' summary(genes)
 #'
-#' ## Transcripts
-#' x <- makeGRangesFromGFF(file = file, level = "transcripts")
-#' summary(x)
+#' ## Transcripts.
+#' transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+#' summary(transcripts)
+NULL
 
 ## nolint end
 
-makeGRangesFromGFF <- function(
+
+
+#' Make GRanges from a GFF file
+#'
+#' Internal variant with more options that we don't want to expose to user.
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRangesFromGFF <- function(
     file,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    ## FIXME REWORK THESE AS SIMPLY FAST.
-    broadClass = TRUE,
-    synonyms = FALSE
+    level,
+    ignoreVersion,
+    synonyms,
+    ## Internal-only arguments:
+    broadClass = TRUE
 ) {
     assert(
         isString(file),
         isFlag(ignoreVersion),
-        isFlag(broadClass),
-        isFlag(synonyms)
+        isFlag(synonyms),
+        isFlag(broadClass)
     )
     level <- match.arg(level)
     alert(sprintf(
@@ -232,7 +237,7 @@ makeGRangesFromGFF <- function(
     ## GenomicFeatures and generate a TxDb object.
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
         db <- makeEnsDbFromGFF(tmpfile)
-        gr <- makeGRangesFromEnsDb(
+        gr <- .makeGRangesFromEnsDb(
             object = db,
             level = level,
             ignoreVersion = ignoreVersion,
@@ -288,8 +293,26 @@ makeGRangesFromGFF <- function(
 
 
 
-## Aliases =====================================================================
-#' @describeIn makeGRangesFromGFF GTF file extension alias.
-#'   Runs the same internal code as [makeGRangesFromGFF()].
+#' @describeIn makeGRangesFromGFF Primary function.
+#' @export
+makeGRangesFromGFF <- function(
+    file,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
+    ## Internal-only arguments:
+    broadClass = TRUE
+) {
+    .makeGRangesFromGFF(
+        file = file,
+        level = match.arg(level),
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
+}
+
+
+
+#' @describeIn makeGRangesFromGFF Alias for GTF files.
 #' @export
 makeGRangesFromGTF <- makeGRangesFromGFF
