@@ -5,9 +5,9 @@
 \alias{makeTxDbFromGTF}
 \title{Make TxDb from a GFF/GTF file}
 \usage{
-makeTxDbFromGFF(file, seqinfo, organism = NULL, source = file)
+makeTxDbFromGFF(file, seqinfo, organism = NULL, source = NULL)
 
-makeTxDbFromGTF(file, seqinfo, organism = NULL, source = file)
+makeTxDbFromGTF(file, seqinfo, organism = NULL, source = NULL)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -19,15 +19,15 @@ Information about the chromosomes.}
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
-\item{source}{\code{character(1)}.
+\item{source}{\code{character(1)} or \code{NULL}.
 Description of data source.
-Defaults to file name.}
+If left \code{NULL}, defaults to file name.}
 }
 \value{
 \code{TxDb}.
 }
 \description{
-Make TxDb from a GFF/GTF file
+Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }
 \details{
 This step can be noisy and generate expected warnings, which are
