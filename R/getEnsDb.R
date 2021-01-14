@@ -1,7 +1,7 @@
-#' Get EnsDb from Bioconductor AnnotationHub
+#' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -12,8 +12,8 @@
 #' @return `EnsDb`.
 #'
 #' @examples
-#' object <- getEnsDb(organism = "Homo sapiens", release = 100L)
-#' class(object)
+#' edb <- getEnsDb(organism = "Homo sapiens", release = 100L)
+#' print(edb)
 getEnsDb <- function(
     organism,
     genomeBuild = NULL,
@@ -53,7 +53,7 @@ getEnsDb <- function(
         id <- "EnsDb.Hsapiens.v75"
         edb <- .getEnsDbFromPackage(package = id)
     } else {
-        id <- .getAnnotationHubID(
+        id <- .getEnsDbAnnotationHubID(
             organism = organism,
             genomeBuild = genomeBuild,
             release = release
@@ -66,7 +66,156 @@ getEnsDb <- function(
 
 
 
-#' Get EnsDb from AnnotationHub
+#' Get the AnnotationHub ID for desired EnsDb
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+#'
+#' @examples
+#' .getAnnotationHubID("Homo sapiens")
+.getEnsDbAnnotationHubID <- function(
+    organism,
+    genomeBuild = NULL,
+    release = NULL,
+    ah = NULL
+) {
+    assert(
+        isOrganism(organism),
+        isString(genomeBuild, nullOK = TRUE),
+        isInt(release, nullOK = TRUE),
+        is(ah, "AnnotationHub") || is.null(ah)
+    )
+    userAttached <- .packages()
+    ## Standardize organism name, if necessary.
+    organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
+    ## ensembldb always uses two words for organisms, instead of matching the
+    ## Ensembl name exactly. This can mismatch with some organisms. For example,
+    ## the dog genome is named "Canis lupus familiaris" on Ensembl but matches
+    ## against "Canis familiaris" only with ensembldb. Check for this rare edge
+    ## case and inform the user.
+    pattern <- "^([a-z]+)\\s[a-z]+\\s([a-z]+)$"
+    if (isTRUE(grepl(pattern = pattern, x = organism, ignore.case = TRUE))) {
+        fullOrganism <- organism
+        organism <- sub(
+            pattern = pattern,
+            replacement = "\\1 \\2",
+            x = fullOrganism,
+            ignore.case = TRUE
+        )
+        alert(sprintf(
+            "Matching {.val %s} using {.val %s}.",
+            fullOrganism, organism
+        ))
+    }
+    ## Coerce integerish (e.g. 90) to integer (e.g. 90L).
+    if (isInt(release)) {
+        release <- as.integer(release)
+    }
+    ## Error on request of unsupported legacy Ensembl release.
+    if (
+        is.integer(release) &&
+        release < 87L
+    ) {
+        stop("ensembldb currently only supports Ensembl releases >= 87.")
+    }
+    ## Get AnnotationHub.
+    if (is.null(ah)) {
+        ah <- .annotationHub()
+    }
+    ## Matching EnsDb objects from ensembldb by default.
+    preparerclass <- "AHEnsDbs"
+    rdataclass <- "EnsDb"
+    alert(sprintf(
+        "Getting {.var %s} from {.pkg AnnotationHub} %s (%s).",
+        rdataclass,
+        packageVersion("AnnotationHub"),
+        snapshotDate(ah)
+    ))
+    ## Query AnnotationHub.
+    ahs <- query(
+        x = ah,
+        pattern = c(
+            "Ensembl",
+            organism,
+            genomeBuild,
+            preparerclass,
+            rdataclass,
+            release
+        ),
+        ignore.case = TRUE
+    )
+    assert(is(ahs, "AnnotationHub"))
+    ## Get the AnnotationHub from the metadata columns.
+    mcols <- mcols(ahs, use.names = TRUE)
+    assert(
+        all(mcols[["dataprovider"]] == "Ensembl"),
+        all(mcols[["preparerclass"]] == preparerclass),
+        all(mcols[["rdataclass"]] == rdataclass),
+        all(mcols[["sourcetype"]] == "ensembl"),
+        all(tolower(mcols[["genome"]]) == tolower(genomeBuild)),
+        all(tolower(mcols[["species"]]) == tolower(organism))
+    )
+    ## Sort the entries by Ensembl release as integer instead of AH identifier.
+    ## Updates can otherwise mess up the expected order, for example:
+    ## > AH73881 | Ensembl 97 EnsDb for Homo sapiens
+    ## > AH73986 | Ensembl 79 EnsDb for Homo sapiens
+    ## > AH79689 | Ensembl 100 EnsDb for Homo sapiens
+    match <- str_match(
+        string = mcols[["title"]],
+        pattern = "^Ensembl ([0-9]+) EnsDb.+$"
+    )
+    idx <- order(as.integer(match[, 2L]))
+    mcols <- mcols[idx, , drop = FALSE]
+    ## Abort if there's no match and working offline.
+    if (!isTRUE(hasInternet()) && !hasRows(mcols)) {
+        ## nocov start
+        stop("AnnotationHub requires an Internet connection.")
+        ## nocov end
+    }
+    ## Ensure genome build matches, if specified.
+    if (!is.null(genomeBuild)) {
+        assert(isSubset("genome", colnames(mcols)))
+        keep <- which(mcols[["genome"]] %in% genomeBuild)
+        mcols <- mcols[keep, , drop = FALSE]
+    }
+    ## Ensure Ensembl release matches, or pick the latest one.
+    if (!is.null(release)) {
+        assert(isSubset("title", colnames(mcols)))
+        keep <- which(grepl(paste("Ensembl", release), mcols[["title"]]))
+        mcols <- mcols[keep, , drop = FALSE]
+        assert(hasLength(nrow(mcols), n = 1L))
+    }
+    ## Error if filtering was unsuccessful.
+    if (!hasRows(mcols)) {
+        stop(sprintf(
+            fmt = paste(
+                "No ID matched on AnnotationHub %s.",
+                "  - Organism: %s",
+                "  - Genome build: %s",
+                "  - Ensembl release: %s",
+                sep = "\n"
+            ),
+            packageVersion("AnnotationHub"),
+            deparse(organism),
+            deparse(genomeBuild),
+            deparse(release)
+        ))
+    }
+    ## Select the most recent database (sorted by title, not ID!).
+    mcols <- tail(mcols, n = 1L)
+    id <- rownames(mcols)
+    assert(
+        isString(id),
+        unname(isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$"))
+    )
+    alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
+    forceDetach(keep = userAttached)
+    id
+}
+
+
+
+#' Get EnsDb from AnnotationHub ID
 #'
 #' @note Updated 2020-09-24.
 #' @noRd
@@ -78,7 +227,8 @@ getEnsDb <- function(
 #' mask some tidyverse functions (e.g. `select`).
 #'
 #' @examples
-#' .getEnsDbFromAnnotationHub("AH64923")
+#' edb <- .getEnsDbFromAnnotationHub("AH64923")
+#' print(edb)
 .getEnsDbFromAnnotationHub <- function(id, ah = NULL) {
     assert(
         isString(id),
