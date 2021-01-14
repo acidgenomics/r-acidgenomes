@@ -47,8 +47,8 @@ test_that("GTF transcripts", {
             "geneId" = Rle,
             "geneName" = Rle,
             "source" = Rle,
-            "transcriptId" = Rle,
-            "transcriptName" = Rle,
+            "txId" = Rle,
+            "txName" = Rle,
             "type" = Rle
         )
     )

@@ -47,10 +47,10 @@ test_that("GTF transcripts", {
             "proteinId" = Rle,
             "source" = Rle,
             "tag" = Rle,
-            "transcriptBiotype" = Rle,
-            "transcriptId" = Rle,
-            "transcriptName" = Rle,
-            "transcriptSupportLevel" = Rle,
+            "txBiotype" = Rle,
+            "txId" = Rle,
+            "txName" = Rle,
+            "txSupportLevel" = Rle,
             "type" = Rle
         )
     )
@@ -96,10 +96,10 @@ test_that("GFF3 transcripts", {
             "level" = Rle,
             "proteinId" = Rle,
             "source" = Rle,
-            "transcriptBiotype" = Rle,
-            "transcriptId" = Rle,
-            "transcriptName" = Rle,
-            "transcriptSupportLevel" = Rle,
+            "txBiotype" = Rle,
+            "txId" = Rle,
+            "txName" = Rle,
+            "txSupportLevel" = Rle,
             "type" = Rle
         )
     )

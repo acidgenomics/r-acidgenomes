@@ -49,8 +49,8 @@ test_that("GTF transcripts", {
             "note" = Rle,
             "product" = Rle,
             "source" = Rle,
-            "transcriptId" = Rle,
-            "transcriptName" = Rle,
+            "txId" = Rle,
+            "txName" = Rle,
             "type" = Rle
         )
     )
@@ -98,7 +98,7 @@ test_that("GFF3 transcripts", {
             "modelEvidence" = Rle,
             "product" = Rle,
             "source" = Rle,
-            "transcriptId" = Rle,
+            "txId" = Rle,
             "type" = Rle
         )
     )
