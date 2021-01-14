@@ -1,3 +1,5 @@
+## FIXME ADD SUPPORT FOR EXONS AND CDS.
+
 ## FIXME NEED TO ENSURE CALL IS SLOTTED INTO OBJECT.
 
 ## The tximeta is thinking about this approach very similarly.
