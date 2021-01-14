@@ -13,14 +13,22 @@ makeGene2SymbolFromEnsembl(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
 makeGene2SymbolFromEnsDb(object, format = c("makeUnique", "unmodified", "1:1"))
 
-makeGene2SymbolFromGFF(file, format = c("makeUnique", "unmodified", "1:1"))
+makeGene2SymbolFromGFF(
+  file,
+  ignoreVersion = TRUE,
+  format = c("makeUnique", "unmodified", "1:1")
+)
+
+makeGene2SymbolFromGTF(
+  file,
+  ignoreVersion = TRUE,
+  format = c("makeUnique", "unmodified", "1:1")
+)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -37,13 +45,6 @@ possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
-
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
-
-\item{synonyms}{\code{logical(1)}.
-Include gene synonyms.
-Queries the Ensembl web server, and is CPU intensive.}
 
 \item{format}{\code{character(1)}.
 Formatting method to apply:
@@ -68,8 +69,21 @@ File path.}
 \description{
 Make a Gene2Symbol object
 }
+\section{Functions}{
+\itemize{
+\item \code{makeGene2SymbolFromEnsembl}: Make a \code{Gene2Symbol} object from Ensembl using
+an AnnotationHub lookup.
+
+\item \code{makeGene2SymbolFromEnsDb}: Make a \code{Gene2Symbol} object from an \code{EnsDb}
+object or annotation package.
+
+\item \code{makeGene2SymbolFromGFF}: Make a \code{Gene2Symbol} object from a GFF file.
+
+\item \code{makeGene2SymbolFromGTF}: GTF alias for \code{makeGene2SymbolFromGFF}.
+}}
+
 \note{
-Updated 2020-10-06.
+Updated 2021-01-14.
 }
 \section{GFF/GTF file}{
 

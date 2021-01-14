@@ -9,16 +9,16 @@ makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE
+  synonyms = FALSE,
+  broadClass = TRUE
 )
 
 makeGRangesFromGTF(
   file,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE
+  synonyms = FALSE,
+  broadClass = TRUE
 )
 }
 \arguments{
@@ -28,12 +28,12 @@ File path.}
 \item{level}{\code{character(1)}.
 Return as genes or transcripts.}
 
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
-
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
+
+\item{broadClass}{\code{logical(1)}.
+Include broad class definitions.}
 }
 \value{
 \code{GRanges}.
@@ -46,12 +46,13 @@ Remote URLs and compressed files are supported.
 }
 \section{Functions}{
 \itemize{
-\item \code{makeGRangesFromGTF}: GTF file extension alias.
-Runs the same internal code as \code{\link[=makeGRangesFromGFF]{makeGRangesFromGFF()}}.
+\item \code{makeGRangesFromGFF}: Primary function.
+
+\item \code{makeGRangesFromGTF}: Alias for GTF files.
 }}
 
 \note{
-Updated 2021-01-13.
+Updated 2021-01-14.
 }
 \section{Recommendations}{
 
@@ -226,13 +227,13 @@ Related URLs:
 \examples{
 file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
 
-## Genes
-x <- makeGRangesFromGFF(file = file, level = "genes")
-summary(x)
+## Genes.
+genes <- makeGRangesFromGFF(file = file, level = "genes")
+summary(genes)
 
-## Transcripts
-x <- makeGRangesFromGFF(file = file, level = "transcripts")
-summary(x)
+## Transcripts.
+transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+summary(transcripts)
 }
 \seealso{
 \itemize{

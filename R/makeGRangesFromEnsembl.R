@@ -132,9 +132,9 @@ NULL
 #' @noRd
 .makeGRangesFromEnsDb <- function(
     object,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE,
+    level,
+    ignoreVersion,
+    synonyms,
     ## Internal-only arguments:
     broadClass = TRUE
 ) {
@@ -258,9 +258,6 @@ NULL
     )
 }
 
-formals(.makeGRangesFromEnsembl)[["level"]] <-
-    formals(.makeGRangesFromEnsDb)[["level"]]
-
 
 
 #' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
@@ -268,7 +265,7 @@ formals(.makeGRangesFromEnsembl)[["level"]] <-
 #' @export
 makeGRangesFromEnsembl <- function(
     organism,
-    level,
+    level = c("genes", "transcripts"),
     genomeBuild = NULL,
     release = NULL,
     ignoreVersion = TRUE,
@@ -283,9 +280,6 @@ makeGRangesFromEnsembl <- function(
         synonyms = synonyms
     )
 }
-
-formals(makeGRangesFromEnsembl)[["level"]] <-
-    formals(.makeGRangesFromEnsembl)[["level"]]
 
 
 
@@ -310,9 +304,6 @@ makeGRangesFromEnsDb <- function(
         synonyms = synonyms
     )
 }
-
-formals(makeGRangesFromEnsDb)[["level"]] <-
-    formals(.makeGRangesFromEnsDb)[["level"]]
 
 
 
