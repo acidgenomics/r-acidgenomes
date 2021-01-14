@@ -1,0 +1,5 @@
+#+TITLE: AcidGenomes
+#+STARTUP: content
+* Development
+** TODO Consider classing gene/transcript return from EnsDb and TxDb.
+** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
