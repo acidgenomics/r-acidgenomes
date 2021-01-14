@@ -5,6 +5,5 @@
 #' @keywords internal
 "_PACKAGE"
 
-
-
-## FIXME ENSURE THAT BCBIO PACKAGES UNCLASS THE GRANGES DEFINED IN OBJECT.
+## TODO Consider adding better support for CDS, exon, and promoter extraction
+## from EnsDb/TxDb objects in a future update.
