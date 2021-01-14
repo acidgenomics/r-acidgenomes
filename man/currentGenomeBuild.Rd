@@ -22,7 +22,8 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{taxonomicGroup}{\code{character(1)}.
 \emph{Only applies to RefSeq}.
-FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").}
+FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
+Defining this manually avoids having to query the FTP server.}
 }
 \value{
 \code{character(1)}.
@@ -32,7 +33,7 @@ Genome assembly build version.
 Fetch the current genome build (assembly) version from online resources.
 }
 \note{
-Updated 2020-01-05.
+Updated 2020-01-14.
 }
 \examples{
 currentEnsemblBuild("Homo sapiens")

@@ -206,8 +206,8 @@ Related URLs:
 \item GENCODE \emph{Homo sapiens} GRCh38 32
 \href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz}{GTF},
 \href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz}{GFF3}
-\item RefSeq \emph{Homo sapiens} GCF_000001405.39 GRCh38
-\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz}{GFF3}
+\item RefSeq \emph{Homo sapiens} GRCh38.p12
+\href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz}{GFF3}
 \item FlyBase \emph{Drosophila melanogaster} r6.24
 \href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF}
 \item WormBase \emph{Caenorhabditis elegans} WS267

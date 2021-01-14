@@ -38,9 +38,10 @@ Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI.
 Use the \href{https://r.acidgenomics.com/packages/wormbase/}{WormBase} package
 instead.
 
-Updated 2021-01-06.
+Updated 2021-01-14.
 }
 \examples{
-object <- geneSynonyms(organism = "Homo sapiens")
-print(object)
+## CPU intensive.
+## > object <- geneSynonyms(organism = "Homo sapiens")
+## > print(object)
 }
