@@ -1,4 +1,4 @@
-## FIXME ADD SUPPORT FOR EXONS AND CDS.
+## FIXME ADD SUPPORT FOR EXONS, CDS, AND PROMOTERS?.
 
 ## FIXME RETHINK METADATA RETURN STRUCTURE
 ## FIXME RENAME FROM IGNORETXVERSION TO SIMPLY IGNOREVERSION.
@@ -67,19 +67,30 @@ makeGRangesFromEnsDb <- function(
         EXPR = level,
         "genes" = {
             fun <- ensembldb::genes
-            args[["order.by"]] <- "gene_id"
-            args[["columns"]] <- geneCols
+            args <- append(
+                x = args,
+                values = list(
+                    "columns" = geneCols,
+                    "order.by" = "gene_id",
+                    "single.strand.genes.only" = TRUE
+                )
+            )
         },
         "transcripts" = {
             fun <- ensembldb::transcripts
-            args[["order.by"]] <- "tx_id"
-            args[["columns"]] <- c(
-                "tx_id",
-                "tx_name",
-                "tx_biotype",
-                "tx_cds_seq_start",
-                "tx_cds_seq_end",
-                geneCols
+            args <- append(
+                x = args,
+                values = list(
+                    "columns" = c(
+                        "tx_id",
+                        "tx_name",
+                        "tx_biotype",
+                        "tx_cds_seq_start",
+                        "tx_cds_seq_end",
+                        geneCols
+                    ),
+                    "order.by" = "tx_id"
+                )
             )
         }
     )
