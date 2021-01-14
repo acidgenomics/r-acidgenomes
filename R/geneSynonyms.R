@@ -16,14 +16,14 @@
 #'
 #' @return
 #' - `DataFrame`:
-#'   Returns unique row for each `geneID`.
-#'   Returns only `geneID` and `geneSynonyms` columns.
+#'   Returns unique row for each `geneId`.
+#'   Returns only `geneId` and `geneSynonyms` columns.
 #'   The `geneSynonyms` column returns as character vector, with synonyms
 #'   arranged alphabetically and delimited by `", "`.
 #' - `SplitDataFrameList`:
-#'   Split by `geneID` column.
-#'   Keeps duplicate rows mapping to same `geneID` (e.g. ENSG00000004866).
-#'   Returns `geneID`, `geneName`, and `geneSynonyms` columns in the split.
+#'   Split by `geneId` column.
+#'   Keeps duplicate rows mapping to same `geneId` (e.g. ENSG00000004866).
+#'   Returns `geneId`, `geneName`, and `geneSynonyms` columns in the split.
 #'
 #' @examples
 #' ## CPU intensive.
@@ -85,33 +85,33 @@ geneSynonyms <- function(
     } else {
         pattern <- "\\bENS[A-Z]+[0-9]{11}\\b"
     }
-    df[["geneID"]] <- str_extract(
+    df[["geneId"]] <- str_extract(
         string = df[["dbXrefs"]],
         pattern = pattern
     )
-    keep <- !is.na(df[["geneID"]])
+    keep <- !is.na(df[["geneId"]])
     df <- df[keep, , drop = FALSE]
-    df <- df[, c("geneID", "geneName", "geneSynonyms")]
-    df <- df[order(df[["geneID"]]), , drop = FALSE]
-    split <- split(df, f = df[["geneID"]])
+    df <- df[, c("geneId", "geneName", "geneSynonyms")]
+    df <- df[order(df[["geneId"]]), , drop = FALSE]
+    split <- split(df, f = df[["geneId"]])
     if (identical(return, "DataFrame")) {
         alert("Preparing unique synonyms per gene.")
         list <- bplapply(
             X = split,
             FUN = function(x) {
-                geneID <- x[["geneID"]][[1L]]
+                geneId <- x[["geneId"]][[1L]]
                 geneSynonyms <- strsplit(x[["geneSynonyms"]], split = ", ")
                 geneSynonyms <- unlist(geneSynonyms)
                 geneSynonyms <- c(geneSynonyms, x[["geneName"]])
                 geneSynonyms <- sort(unique(geneSynonyms))
                 geneSynonyms <- toString(geneSynonyms)
-                DataFrame("geneID" = geneID, "geneSynonyms" = geneSynonyms)
+                DataFrame("geneId" = geneId, "geneSynonyms" = geneSynonyms)
             }
         )
         df <- do.call(what = rbind, args = list)
-        assert(identical(names(split), df[["geneID"]]))
+        assert(identical(names(split), df[["geneId"]]))
         df <- df[complete.cases(df), ]
-        rownames(df) <- df[["geneID"]]
+        rownames(df) <- df[["geneId"]]
         out <- df
     } else {
         out <- split

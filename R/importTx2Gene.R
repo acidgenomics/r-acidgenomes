@@ -1,6 +1,6 @@
 #' Import transcript-to-gene annotations
 #'
-#' Generates a `Tx2Gene` object containing `transcriptID` and `geneID` columns.
+#' Generates a `Tx2Gene` object containing `transcriptId` and `geneId` columns.
 #'
 #' @note File should not contain column header names.
 #' @note Updated 2020-05-10.
@@ -46,15 +46,15 @@ importTx2Gene <- function(
         isFlag(ignoreGeneVersion)
     )
     data <- import(file = file, rownames = FALSE, colnames = FALSE)
-    colnames(data) <- c("transcriptID", "geneID")
+    colnames(data) <- c("transcriptId", "geneId")
     data <- as(data, "DataFrame")
     if (isTRUE(ignoreVersion)) {
-        data[["transcriptID"]] <-
-            stripTranscriptVersions(data[["transcriptID"]])
+        data[["transcriptId"]] <-
+            stripTranscriptVersions(data[["transcriptId"]])
     }
     if (isTRUE(ignoreGeneVersion)) {
-        data[["geneID"]] <-
-            stripGeneVersions(data[["geneID"]])
+        data[["geneId"]] <-
+            stripGeneVersions(data[["geneId"]])
     }
     metadata(data) <- list(
         organism = as.character(organism),

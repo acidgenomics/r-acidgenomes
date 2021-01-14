@@ -148,8 +148,8 @@ setMethod(
             return(organism)
         }
         ## Fall back to detecting from rowRanges or rownames.
-        if ("geneID" %in% colnames(rowData(object))) {
-            x <- as.character(rowData(object)[["geneID"]])
+        if ("geneId" %in% colnames(rowData(object))) {
+            x <- as.character(rowData(object)[["geneId"]])
         } else {
             x <- rownames(object)
         }

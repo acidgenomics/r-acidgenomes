@@ -48,11 +48,11 @@ makeProtein2GeneFromEnsembl <- function(
     colnames(df) <- camelCase(colnames(df))
     colnames(df) <- gsub("id$", "ID", colnames(df))
     colnames(df) <- gsub("name$", "Name", colnames(df))
-    if (!areSetEqual(ids, unique(df[["proteinID"]]))) {
+    if (!areSetEqual(ids, unique(df[["proteinId"]]))) {
         stop(sprintf(
             "Match failure: %s.",
             toString(
-                sort(setdiff(ids, unique(df[["proteinID"]]))),
+                sort(setdiff(ids, unique(df[["proteinId"]]))),
                 width = 200L
             )
         ))

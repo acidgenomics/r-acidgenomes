@@ -30,11 +30,11 @@ HGNC <-  # nolint
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df))
         assert(
-            isSubset("hgncID", colnames(df)),
-            hasNoDuplicates(df[["hgncID"]])
+            isSubset("hgncId", colnames(df)),
+            hasNoDuplicates(df[["hgncId"]])
         )
-        df[["hgncID"]] <- as.integer(gsub("^HGNC\\:", "", df[["hgncID"]]))
-        df <- df[order(df[["hgncID"]]), ]
-        rownames(df) <- df[["hgncID"]]
+        df[["hgncId"]] <- as.integer(gsub("^HGNC\\:", "", df[["hgncId"]]))
+        df <- df[order(df[["hgncId"]]), ]
+        rownames(df) <- df[["hgncId"]]
         new("HGNC", df)
     }

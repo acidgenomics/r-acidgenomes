@@ -20,11 +20,11 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            source = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "source" = Rle,
+            "type" = Rle
         )
     )
 })
@@ -43,13 +43,13 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            source = Rle,
-            transcriptID = Rle,
-            transcriptName = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "source" = Rle,
+            "transcriptId" = Rle,
+            "transcriptName" = Rle,
+            "type" = Rle
         )
     )
 })

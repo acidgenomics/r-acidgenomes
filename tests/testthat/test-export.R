@@ -2,13 +2,13 @@ context("export")
 
 test_that("Tx2Gene", {
     object <- DataFrame(
-        transcriptID = c(
+        "transcriptId" = c(
             "tx0001",
             "tx0002",
             "tx0003",
             "tx0004"
         ),
-        geneID = c(
+        "geneId" = c(
             "gene0001",
             "gene0001",
             "gene0002",

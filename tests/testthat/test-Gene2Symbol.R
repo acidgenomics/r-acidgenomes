@@ -5,7 +5,7 @@ test_that("Gene2Symbol", {
     for (format in formats) {
         object <- Gene2Symbol(rse, format = format)
         expect_s4_class(object, "Gene2Symbol")
-        expect_identical(colnames(object), c("geneID", "geneName"))
+        expect_identical(colnames(object), c("geneId", "geneName"))
     }
 })
 rm(formats)
