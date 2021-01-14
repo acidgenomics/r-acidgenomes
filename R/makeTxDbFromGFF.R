@@ -2,6 +2,8 @@
 
 #' Make TxDb from a GFF/GTF file
 #'
+#' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
+#'
 #' @name makeTxDbFromGFF
 #' @note Updated 2021-01-14.
 #' @note For Ensembl and GENCODE genomes, consider using
@@ -12,9 +14,9 @@
 #'
 #' @param seqinfo `Seqinfo`.
 #'   Information about the chromosomes.
-#' @param source `character(1)`.
+#' @param source `character(1)` or `NULL`.
 #'   Description of data source.
-#'   Defaults to file name.
+#'   If left `NULL`, defaults to file name.
 #'
 #' @details
 #' This step can be noisy and generate expected warnings, which are
@@ -67,7 +69,7 @@ makeTxDbFromGFF <- function(
     file,
     seqinfo,
     organism = NULL,
-    source = file
+    source = NULL
 ) {
     requireNamespaces("GenomicFeatures")
     assert(
@@ -75,21 +77,28 @@ makeTxDbFromGFF <- function(
         is(seqinfo, "Seqinfo"),
         isString(organism, nullOK = TRUE),
         isString(genomeBuild, nullOK = TRUE),
-        isString(source)
+        isString(source, nullOK = TRUE)
     )
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
+    ## e.g. "GRCh38.p12".
     genomeBuild <- genome(seqinfo)[[1L]]
     if (is.null(organism)) {
+        ## e.g. "Homo sapiens".
         organism <- detectOrganism(genomeBuild)
     }
     assert(
         isString(organism),
         isString(genomeBuild)
     )
+    if (is.null(source)) {
+        ## Ensure we resolve the file path, if defining as data source.
+        if (!isAURL(file)) file <- realpath(file)
+        source <- file
+    }
     file <- .cacheIt(file)
     args <- list(
         "file" = file,
