@@ -14,15 +14,14 @@ makeTx2GeneFromEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = TRUE,
-  synonyms = FALSE
+  ignoreVersion = TRUE
 )
 
-makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE, synonyms = FALSE)
+makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE)
 
-makeTx2GeneFromGFF(file, ignoreVersion = TRUE, synonyms = FALSE)
+makeTx2GeneFromGFF(file, ignoreVersion = TRUE)
 
-makeTx2GeneFromGTF(file, ignoreVersion = TRUE, synonyms = FALSE)
+makeTx2GeneFromGTF(file, ignoreVersion = TRUE)
 
 makeTx2GeneFileFromGFF(
   file,
@@ -50,10 +49,6 @@ available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 
-\item{synonyms}{\code{logical(1)}.
-Include gene synonyms.
-Queries the Ensembl web server, and is CPU intensive.}
-
 \item{object}{Object.}
 
 \item{file}{\code{character(1)}.
@@ -66,7 +61,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2021-01-08.
+Updated 2021-01-14.
 }
 \section{GFF/GTF file}{
 
