@@ -1,3 +1,7 @@
+## FIXME ENSURE IGNOREVERSIONS WORKS HERE AS EXPECTED.
+
+
+
 #' Make a Tx2Gene object
 #'
 #' @section GFF/GTF file:
@@ -5,7 +9,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2021-01-08.
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -37,79 +41,72 @@ NULL
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
-
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2020-10-06.
+## Updated 2021-01-14.
 makeTx2GeneFromEnsembl <-
     function() {
         gr <- do.call(
-            what = makeGRangesFromEnsembl,
+            what = .makeGRangesFromEnsembl,
             args = matchArgsToDoCall(
                 args = list(
-                    level = "transcripts",
-                    broadClass = FALSE,
-                    synonyms = FALSE
+                    "broadClass" = FALSE,
+                    "level" = "transcripts",
+                    "synonyms" = FALSE
                 )
             )
         )
         Tx2Gene(gr)
     }
 
-f <- formals(makeGRangesFromEnsembl)
-f <- f[setdiff(names(f), "level")]
+f <- formals(.makeGRangesFromEnsembl)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 formals(makeTx2GeneFromEnsembl) <- f
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
-
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2020-10-06.
+## Updated 2021-01-14.
 makeTx2GeneFromEnsDb <- function(object) {
     gr <- do.call(
-        what = makeGRangesFromEnsDb,
+        what = .makeGRangesFromEnsDb,
         args = matchArgsToDoCall(
             args = list(
-                level = "transcripts",
-                broadClass = FALSE,
-                synonyms = FALSE
+                "broadClass" = FALSE,
+                "level" = "transcripts",
+                "synonyms" = FALSE
             )
         )
     )
     Tx2Gene(gr)
 }
 
-f <- formals(makeGRangesFromEnsDb)
-f <- f[setdiff(names(f), "level")]
+f <- formals(.makeGRangesFromEnsDb)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 formals(makeTx2GeneFromEnsDb) <- f
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
-
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2020-10-06.
+## Updated 2021-01-14.
 makeTx2GeneFromGFF <- function(file) {
     gr <- do.call(
-        what = makeGRangesFromGFF,
-        args = matchArgsToDoCall(args = list(
-            level = "transcripts",
-            broadClass = FALSE,
-            synonyms = FALSE
-        ))
+        what = .makeGRangesFromGFF,
+        args = matchArgsToDoCall(
+            args = list(
+                "broadClass" = FALSE,
+                "level" = "transcripts",
+                "synonyms" = FALSE
+            )
+        )
     )
     Tx2Gene(gr)
 }
 
-f <- formals(makeGRangesFromGFF)
-f <- f[setdiff(names(f), c("level", ".checkAgainstTxDb"))]
+f <- formals(.makeGRangesFromGFF)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 formals(makeTx2GeneFromGFF) <- f
 
 
