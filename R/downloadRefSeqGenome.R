@@ -1,15 +1,19 @@
-## FIXME NEED TO ADD SUPPORT FOR A SPECIFIC VERSION.
-## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE SUPPORT.
-
-## FIXME GCF_000001405.39_GRCh38.p13 has some parsing issues with
-## GenomicFeatures when generating a TxDb, so stick with GCF_000001405.38_GRCh38.p12 for the time being.
+## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE SUPPORT?
+## Alternatively, don't output a tx2gene for this automatically?
 
 
 
 #' Download RefSeq reference genome
 #'
+#' @section Stable release:
+#' The latest assembly defined under the "release/" subdirectory is not
+#' considered "stable" by the RefSeq team. It is considered good practice to use
+#' a genome build one version behind as a stable release
+#' (e.g. "GCF_000001405.38_GRCh38.p12" instead of current
+#' "GCF_000001405.39_GRCh38.p13" build).
+#'
 #' @export
-#' @note Updated 2021-01-08.
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -23,8 +27,8 @@
 #' ## This example is bandwidth intensive.
 #' ## > downloadRefSeqGenome(
 #' ## >     organism = "Homo sapiens",
-#' ## >     taxonomicGroup = "vertebrate_mammalian"
-#' ## >     genomeBuild = "GRCh38",
+#' ## >     taxonomicGroup = "vertebrate_mammalian",
+#' ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
 #' ## >     type = "transcriptome",
 #' ## >     annotation = "gtf"
 #' ## > )
@@ -32,6 +36,7 @@ downloadRefSeqGenome <-
     function(
         organism,
         taxonomicGroup = NULL,
+        genomeBuild = NULL,
         type = c("all", "transcriptome", "genome", "none"),
         annotation = c("all", "gtf", "gff", "none"),
         outputDir = "."
@@ -42,20 +47,22 @@ downloadRefSeqGenome <-
             isString(genomeBuild, nullOK = TRUE),
             isString(outputDir)
         )
+        release <- currentRefSeqVersion()
         baseURL <- .getRefSeqGenomeURL(
             organism = organism,
             taxonomicGroup = taxonomicGroup,
             quiet = FALSE
         )
-        taxonomicGroup <- basename(dirname(baseURL))
-        release <- currentRefSeqVersion()
-        summary <- .getRefSeqAssemblySummary(baseURL)
-        ## FIXME CONSIDER MAKING THIS A FUNCTION?
-        ## FIXME NEED TO SHARE THIS CODE WITH REFSEQ GTF UTILS.
-        assert(isSubset("ftp_path", names(summary)))
-        releaseURL <- summary[["ftp_path"]]
-        genomeBuild <- basename(releaseURL)
-        assert(isAURL(releaseURL))
+        if (is.null(taxonomicGroup)) {
+            taxonomicGroup <- basename(dirname(baseURL))
+        }
+        if (is.null(genomeBuild)) {
+            genomeBuild <- currentRefSeqGenomeBuild(
+                organism = organism,
+                taxonomicGroup = taxonomicGroup
+            )
+        }
+        releaseURL <- pasteURL(baseURL, "all_assembly_versions", genomeBuild)
         outputDir <- initDir(outputDir)
         type <- match.arg(type)
         annotation <- match.arg(annotation)
