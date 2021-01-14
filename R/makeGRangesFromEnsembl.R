@@ -124,6 +124,72 @@ NULL
 
 
 
+#' Make GRanges from Ensembl via AnnotationHub query
+#'
+#' Internal variant with more options that we don't want to expose to user.
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRangesFromEnsembl <- function(
+    organism,
+    level = c("genes", "transcripts"),
+    genomeBuild = NULL,
+    release = NULL,
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
+    ## Internal-only arguments:
+    broadClass = TRUE
+) {
+    assert(
+        isFlag(ignoreVersion),
+        isFlag(broadClass),
+        isFlag(synonyms)
+    )
+    level <- match.arg(level)
+    alert("Making {.var GRanges} from Ensembl.")
+    edb <- getEnsDb(
+        organism = organism,
+        genomeBuild = genomeBuild,
+        release = release
+    )
+    assert(
+        is(edb, "EnsDb"),
+        isString(attr(edb, "id"))
+    )
+    .makeGRangesFromEnsDb(
+        object = edb,
+        level = level,
+        ignoreVersion = ignoreVersion,
+        broadClass = broadClass,
+        synonyms = synonyms
+    )
+}
+
+
+
+#' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
+#'   querying AnnotationHub.
+#' @export
+makeGRangesFromEnsembl <- function(
+    organism,
+    level = c("genes", "transcripts"),
+    genomeBuild = NULL,
+    release = NULL,
+    ignoreVersion = TRUE,
+    synonyms = FALSE
+) {
+    .makeGRangesFromEnsembl(
+        organism = organism,
+        level = match.arg(level),
+        genomeBuild = genomeBuild,
+        release = release,
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
+}
+
+
+
 #' Make GRanges from EnsDb object
 #'
 #' Internal variant with more options that we don't want to expose to user.
@@ -132,9 +198,9 @@ NULL
 #' @noRd
 .makeGRangesFromEnsDb <- function(
     object,
-    level,
-    ignoreVersion,
-    synonyms,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
     ## Internal-only arguments:
     broadClass = TRUE
 ) {
@@ -211,72 +277,6 @@ NULL
         object = gr,
         ignoreVersion = ignoreVersion,
         broadClass = broadClass,
-        synonyms = synonyms
-    )
-}
-
-
-
-#' Make GRanges from Ensembl via AnnotationHub query
-#'
-#' Internal variant with more options that we don't want to expose to user.
-#'
-#' @note Updated 2021-01-14.
-#' @noRd
-.makeGRangesFromEnsembl <- function(
-    organism,
-    level,
-    genomeBuild,
-    release,
-    ignoreVersion,
-    synonyms,
-    ## Internal-only arguments:
-    broadClass = TRUE
-) {
-    assert(
-        isFlag(ignoreVersion),
-        isFlag(broadClass),
-        isFlag(synonyms)
-    )
-    level <- match.arg(level)
-    alert("Making {.var GRanges} from Ensembl.")
-    edb <- getEnsDb(
-        organism = organism,
-        genomeBuild = genomeBuild,
-        release = release
-    )
-    assert(
-        is(edb, "EnsDb"),
-        isString(attr(edb, "id"))
-    )
-    .makeGRangesFromEnsDb(
-        object = edb,
-        level = level,
-        ignoreVersion = ignoreVersion,
-        broadClass = broadClass,
-        synonyms = synonyms
-    )
-}
-
-
-
-#' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
-#'   querying AnnotationHub.
-#' @export
-makeGRangesFromEnsembl <- function(
-    organism,
-    level = c("genes", "transcripts"),
-    genomeBuild = NULL,
-    release = NULL,
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    .makeGRangesFromEnsembl(
-        organism = organism,
-        level = match.arg(level),
-        genomeBuild = genomeBuild,
-        release = release,
-        ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
 }
