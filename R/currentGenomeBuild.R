@@ -3,12 +3,9 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2020-01-05.
+#' @note Updated 2020-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @param taxonomicGroup `character(1)`.
-#'   *Only applies to RefSeq*.
-#'   FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 #'
 #' @return `character(1)`.
 #'   Genome assembly build version.
@@ -45,7 +42,7 @@ NULL
 
 
 
-## Updated 2020-01-05.
+## Updated 2021-01-05.
 #' @rdname currentGenomeBuild
 #' @export
 currentEnsemblBuild <- function(organism) {
@@ -66,7 +63,7 @@ currentEnsemblBuild <- function(organism) {
 
 
 
-## Updated 2020-01-05.
+## Updated 2021-01-05.
 #' @rdname currentGenomeBuild
 #' @export
 currentGencodeBuild <- function(organism) {
@@ -83,7 +80,12 @@ currentGencodeBuild <- function(organism) {
 ## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/<taxonomic_group>/<organism>/
 ##     latest_assembly_versions/
 
+## Updated 2021-01-14.
 #' @rdname currentGenomeBuild
+#' @param taxonomicGroup `character(1)`.
+#'   *Only applies to RefSeq*.
+#'   FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
+#'   Defining this manually avoids having to query the FTP server.
 #' @export
 currentRefSeqGenomeBuild <- function(
     organism,
@@ -98,15 +100,17 @@ currentRefSeqGenomeBuild <- function(
         taxonomicGroup = taxonomicGroup,
         quiet = TRUE
     )
-    summary <- .getRefSeqAssemblySummary(baseURL = baseURL)
-    assert(isSubset("assembly_accession", names(summary)))
-    out <- summary[["assembly_accession"]]
+    summary <- getRefSeqAssemblySummary(
+        file = pasteURL(baseURL, "assembly_summary.txt")
+    )
+    assert(isSubset("ftp_path", names(summary)))
+    out <- basename(summary[["ftp_path"]])
     out
 }
 
 
 
-## Updated 2020-01-05.
+## Updated 2021-01-05.
 #' @rdname currentGenomeBuild
 #' @export
 currentUCSCGenomeBuild <- function(organism) {
