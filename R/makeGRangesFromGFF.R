@@ -273,12 +273,14 @@ NULL
     }
     assert(is(gr, "GRanges"))
 
+    ## FIXME SHOULD INCLUDE SHA256 FOR THE FILE HERE.
     ## FIXME ATTEMPT TO SLOT THE GENOME BUILD FROM THE FILE NAME HERE.
     ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
     ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
     metadata(out)[["detect"]] <- detect
     metadata(out)[["file"]] <- file
     metadata(out)[["call"]] <- match.call()
+
 
     ## FIXME RETHINK THIS.
     ## Metadata assert checks before return.
