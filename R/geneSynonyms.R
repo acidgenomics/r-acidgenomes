@@ -63,7 +63,7 @@ geneSynonyms <- function(
     df <- import(file = file, format = "tsv", colnames = TRUE)
     assert(hasLength(df))
     df <- as(df, "DataFrame")
-    colnames(df) <- camelCase(colnames(df))
+    colnames(df) <- camelCase(colnames(df), strict = TRUE)
     df <- df[, c("symbol", "synonyms", "dbXrefs")]
     colnames(df)[colnames(df) == "symbol"] <- "geneName"
     colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"

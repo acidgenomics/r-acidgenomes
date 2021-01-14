@@ -28,7 +28,7 @@ HGNC <-  # nolint
         file <- .cacheIt(url)
         df <- import(file, format = "tsv")
         df <- as(df, "DataFrame")
-        colnames(df) <- camelCase(colnames(df))
+        colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
             isSubset("hgncId", colnames(df)),
             hasNoDuplicates(df[["hgncId"]])
