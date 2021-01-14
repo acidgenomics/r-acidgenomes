@@ -1,3 +1,7 @@
+## FIXME THIS NEEDS TO SUPPORT IGNORE VERSION ARGUMENT.
+
+
+
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
