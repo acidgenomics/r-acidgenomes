@@ -20,7 +20,9 @@ URL:
 BugReports: https://github.com/acidgenomics/r-acidgenomes/issues/
 License: GPL-3
 Encoding: UTF-8
-Depends: R (>= 4.0)
+Depends:
+    R (>= 4.0),
+    GenomicRanges
 Imports:
     AcidBase (>= 0.3.1),
     AcidCLI (>= 0.0.2),
@@ -30,7 +32,6 @@ Imports:
     AnnotationHub,
     BiocParallel,
     GenomeInfoDb,
-    GenomicRanges,
     IRanges,
     S4Vectors,
     SummarizedExperiment,

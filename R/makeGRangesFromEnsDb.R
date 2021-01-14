@@ -44,7 +44,6 @@ NULL
     )
     level <- match.arg(level)
     alert("Making {.var GRanges} from {.var EnsDb}.")
-    userAttached <- .packages()
     if (isString(object)) {
         package <- object
         requireNamespaces(package)
@@ -58,8 +57,11 @@ NULL
     metadata <- .getEnsDbMetadata(object, level = level)
     args <- list(
         "x" = object,
+        "order.type" = "asc",
         "return.type" = "GRanges"
     )
+    ## FIXME USE LIST COLUMNS HERE INSTEAD.
+    geneCols <- listColumns(object, "gene")
     geneCols <- c(
         "gene_id",
         "gene_name",
@@ -75,8 +77,7 @@ NULL
                 x = args,
                 values = list(
                     "columns" = geneCols,
-                    "order.by" = "gene_id",
-                    "single.strand.genes.only" = TRUE
+                    "order.by" = "gene_id"
                 )
             )
         },
@@ -104,7 +105,6 @@ NULL
         gr <- do.call(what = fun, args = args)
     })
     assert(is(gr, "GRanges"))
-    forceDetach(keep = userAttached)
     metadata(gr) <- metadata
     .makeGRanges(
         object = gr,
