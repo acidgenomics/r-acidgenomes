@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' object <- S4Vectors::DataFrame(
-#'     "transcriptId" = c(
+#'     "txId" = c(
 #'         "tx0001",
 #'         "tx0002",
 #'         "tx0003",

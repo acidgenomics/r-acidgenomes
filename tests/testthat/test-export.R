@@ -2,7 +2,7 @@ context("export")
 
 test_that("Tx2Gene", {
     object <- DataFrame(
-        "transcriptId" = c(
+        "txId" = c(
             "tx0001",
             "tx0002",
             "tx0003",

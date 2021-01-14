@@ -51,20 +51,20 @@
     assert(
         is(object, "GRanges"),
         identical(metadata(object)[["level"]], "transcripts"),
-        isSubset("transcriptId", mcolnames)
+        isSubset("txId", mcolnames)
     )
-    if (isSubset("transcriptIdVersion", mcolnames)) {
+    if (isSubset("txIdVersion", mcolnames)) {
         ## `makeGRangesFromEnsembl()` output via ensembldb.
-        id <- mcols(object)[["transcriptIdVersion"]]
-    } else if (isSubset("transcriptVersion", mcolnames)) {
+        id <- mcols(object)[["txIdVersion"]]
+    } else if (isSubset("txVersion", mcolnames)) {
         ## `makeGRangesFromGFF()` output.
-        id <- mcols(object)[["transcriptId"]]
-        version <- mcols(object)[["transcriptVersion"]]
+        id <- mcols(object)[["txId"]]
+        version <- mcols(object)[["txVersion"]]
         id <- Rle(paste(id, version, sep = "."))
     } else {
         stop("Failed to locate transcript version metadata.")  # nolint
     }
-    mcols(object)[["transcriptId"]] <- id
+    mcols(object)[["txId"]] <- id
     ## Note that names are set by `.makeGRanges()`.
     object
 }
@@ -212,8 +212,8 @@
     ## Prioritizing transcript biotype over gene, if defined. This only applies
     ## for transcript-level GRanges. For gene-level GRanges, the gene biotypes
     ## will be used, as expected.
-    if ("transcriptBiotype" %in% colnames(data)) {
-        biotypeCol <- "transcriptBiotype"
+    if ("txBiotype" %in% colnames(data)) {
+        biotypeCol <- "txBiotype"
         biotypeData <- data[[biotypeCol]]
     } else if ("geneBiotype" %in% colnames(data)) {
         biotypeCol <- "geneBiotype"

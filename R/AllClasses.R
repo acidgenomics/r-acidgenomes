@@ -341,6 +341,8 @@ setValidity(
 
 
 
+## FIXME THIS NEEDS TO SLOT `ignoreVersions` in metadata.
+
 #' Gene-to-symbol mappings
 #'
 #' @details
@@ -461,10 +463,12 @@ setValidity(
 
 
 
+## FIXME THIS NEEDS TO SLOT `ignoreVersions` in metadata.
+
 #' Transcript-to-gene identifier mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `transcriptId` and `geneId` columns.
+#' Contains a `DataFrame` with `txId` and `geneId` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -484,13 +488,13 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(colnames(object), c("transcriptId", "geneId")),
+            identical(colnames(object), c("txId", "geneId")),
             all(vapply(
                 X = object,
                 FUN = is.character,
                 FUN.VALUE = logical(1L)
             )),
-            hasNoDuplicates(object[["transcriptId"]])
+            hasNoDuplicates(object[["txId"]])
         )
     }
 )
