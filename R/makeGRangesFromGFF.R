@@ -1,4 +1,4 @@
-## FIXME ADD SUPPORT FOR EXONS AND CDS.
+## FIXME REWORK, CALLING makeTxDbFromGFF internally.
 
 ## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
@@ -152,8 +152,8 @@
 #' - GENCODE *Homo sapiens* GRCh38 32
 #'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz),
 #'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz)
-#' - RefSeq *Homo sapiens* GCF_000001405.39 GRCh38
-#'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz)
+#' - RefSeq *Homo sapiens* GRCh38.p12
+#'   [GFF3](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
 #' - FlyBase *Drosophila melanogaster* r6.24
 #'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz)
 #' - WormBase *Caenorhabditis elegans* WS267
@@ -213,11 +213,7 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    if (isAURL(file)) {
-        tmpfile <- cacheURL(url = file, pkg = packageName())
-    } else {
-        tmpfile <- file
-    }
+    tmpfile <- .cacheIt(file)
     ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`. We're
     ## using this downstream for file source detection and extra metadata that
     ## currently isn't supported in GenomicFeatures TxDb generation.
@@ -235,7 +231,7 @@ makeGRangesFromGFF <- function(
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
-        db <- .makeEnsDbFromGFF(tmpfile)
+        db <- makeEnsDbFromGFF(tmpfile)
         gr <- makeGRangesFromEnsDb(
             object = db,
             level = level,
