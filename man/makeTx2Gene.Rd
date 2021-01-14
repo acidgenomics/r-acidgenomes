@@ -15,7 +15,6 @@ makeTx2GeneFromEnsembl(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
-  broadClass = TRUE,
   synonyms = FALSE
 )
 
@@ -24,15 +23,15 @@ makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE, synonyms = FALSE)
 makeTx2GeneFromGFF(
   file,
   ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE
+  synonyms = FALSE,
+  broadClass = TRUE
 )
 
 makeTx2GeneFromGTF(
   file,
   ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE
+  synonyms = FALSE,
+  broadClass = TRUE
 )
 
 makeTx2GeneFileFromGFF(
@@ -61,9 +60,6 @@ available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
-
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
@@ -72,6 +68,9 @@ Queries the Ensembl web server, and is CPU intensive.}
 
 \item{file}{\code{character(1)}.
 File path.}
+
+\item{broadClass}{\code{logical(1)}.
+Include broad class definitions.}
 }
 \value{
 \code{Tx2Gene}.
