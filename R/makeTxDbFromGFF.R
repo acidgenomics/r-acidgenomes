@@ -36,8 +36,28 @@
 #' - https://github.com/Bioconductor/GenomicFeatures/issues/26
 #'
 #' @examples
-#' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
-#' txdb <- makeTxDbFromGFF(file)
+#' ## RefSeq.
+#' gffFile <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "refseq",
+#'     "vertebrate_mammalian",
+#'     "Homo_sapiens",
+#'     "all_assembly_versions",
+#'     "GCF_000001405.38_GRCh38.p12",
+#'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+#'     protocol = "ftp"
+#' )
+#' reportFile <- sub(
+#'     pattern = "_genomic\\.gff\\.gz$",
+#'     replacement = "_assembly_report.txt",
+#'     x = gffFile
+#' )
+#' seqinfo <- getRefSeqSeqinfo(reportFile)
+#' txdb <- makeTxDbFromGFF(
+#'     file = gffFile,
+#'     seqinfo = seqinfo
+#' )
 #' print(txdb)
 NULL
 
@@ -49,9 +69,8 @@ NULL
 #' @export
 makeTxDbFromGFF <- function(
     file,
-    seqinfo,  ## Pass this in for RefSeq.
+    seqinfo,
     organism = NULL,
-    genomeBuild = NULL,
     source = file
 ) {
     requireNamespaces("GenomicFeatures")
@@ -67,10 +86,10 @@ makeTxDbFromGFF <- function(
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
-
-    ## FIXME ATTEMPT TO DETECT ORGANISM AND GENOME BUILD AUTOMATICALLY FROM
-    ## FILE NAME.
-
+    genomeBuild <- genome(seqinfo)[[1L]]
+    if (is.null(organism)) {
+        organism <- detectOrganism(genomeBuild)
+    }
     assert(
         isString(organism),
         isString(genomeBuild)
@@ -78,24 +97,17 @@ makeTxDbFromGFF <- function(
     file <- .cacheIt(file)
     args <- list(
         "file" = file,
-        ## Information about the chromosomes.
+        "format" = "auto",
         "chrominfo" = seqinfo,
-        ## Description string about the origin of the data file.
-        ## Can use URL input here.
+        "circ_seqs" = isCircular(seqinfo),
         "dataSource" = source,
-        ## Handle either GFF or GTF input automatically.
-        "format" = "auto"
-
-        ## > dataSource = NA,
-        ## > organism = "FIXME",
-        ## > circ_seqs = NULL,
-        ## > chrominfo = "FIXME"
-        ## This could be useful for future genome builds with miRs.
-        ## > miRBaseBuild = NA,
-        ## > metadata = NULL,
+        "organism" = organism,
         ## This can help override feature name ("e.g. GeneID") used.
-        ## FIXME DO WE NEED TO RETHINK THIS FOR TRANSCRIPT IDs?
         ## > dbxrefTag = "GeneID"
+        ## miRBase annotations could be useful for future genome builds.
+        ## Note that it's currently out of date with GRCh38.
+        ## https://github.com/Bioconductor/GenomicFeatures/issues/27
+        ## > miRBaseBuild = NA
     )
     what <- GenomicFeatures::makeTxDbFromGFF
     suppressWarnings({

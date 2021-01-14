@@ -5,21 +5,9 @@
 \alias{makeTxDbFromGTF}
 \title{Make TxDb from GRanges}
 \usage{
-makeTxDbFromGFF(
-  file,
-  seqinfo,
-  organism = NULL,
-  genomeBuild = NULL,
-  source = file
-)
+makeTxDbFromGFF(file, seqinfo, organism = NULL, source = file)
 
-makeTxDbFromGTF(
-  file,
-  seqinfo,
-  organism = NULL,
-  genomeBuild = NULL,
-  source = file
-)
+makeTxDbFromGTF(file, seqinfo, organism = NULL, source = file)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -30,11 +18,6 @@ Information about the chromosomes.}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
-
-\item{genomeBuild}{\code{character(1)}.
-Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
-defaults to the most recent build available.
-Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{source}{\code{character(1)}.
 Description of data source.
@@ -63,8 +46,28 @@ The following orphan CDS were dropped
 Updated 2021-01-14.
 }
 \examples{
-file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
-txdb <- makeTxDbFromGFF(file)
+## RefSeq.
+gffFile <- pasteURL(
+    "ftp.ncbi.nlm.nih.gov",
+    "genomes",
+    "refseq",
+    "vertebrate_mammalian",
+    "Homo_sapiens",
+    "all_assembly_versions",
+    "GCF_000001405.38_GRCh38.p12",
+    "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+    protocol = "ftp"
+)
+reportFile <- sub(
+    pattern = "_genomic\\\\.gff\\\\.gz$",
+    replacement = "_assembly_report.txt",
+    x = gffFile
+)
+seqinfo <- getRefSeqSeqinfo(reportFile)
+txdb <- makeTxDbFromGFF(
+    file = gffFile,
+    seqinfo = seqinfo
+)
 print(txdb)
 }
 \seealso{
