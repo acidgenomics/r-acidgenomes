@@ -246,12 +246,18 @@ NULL
         )
     } else {
         if (isTRUE(synonyms)) {
-            stop(paste(
-                "Synonyms are only supported for genomes from",
-                "Ensembl and GENCODE."
+            stop(sprintf(
+                "Synonyms only supported for genomes from: %s.",
+                toString(c("Ensembl", "GENCODE"))
             ))
         }
-        db <- .makeTxDbFromGFF(tmpfile)
+
+        ## FIXME CONSIDER HOW WE WANT TO HANDLE REFSEQ AND FLYBASE SEQINFO HERE.
+
+        ## FIXME THIS NEEDS SEQINFO, OTHERWISE ABORT.
+        db <- makeTxDbFromGFF(
+            file = tmpfile
+        )
         ## FIXME 47 sequences (1 circular) from an unspecified genomes; no seqlengths...argh
         ## FIXME WE NEED TO IMPROVE THIS METADATA...
         gr1 <- .makeGRangesFromTxDb(object = db, level = level)

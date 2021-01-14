@@ -5,16 +5,16 @@
 \alias{makeTxDbFromGTF}
 \title{Make TxDb from a GFF/GTF file}
 \usage{
-makeTxDbFromGFF(file, seqinfo, organism = NULL, source = NULL)
+makeTxDbFromGFF(file, seqinfo = NULL, organism = NULL, source = NULL)
 
-makeTxDbFromGTF(file, seqinfo, organism = NULL, source = NULL)
+makeTxDbFromGTF(file, seqinfo = NULL, organism = NULL, source = NULL)
 }
 \arguments{
 \item{file}{\code{character(1)}.
 File path.}
 
-\item{seqinfo}{\code{Seqinfo}.
-Information about the chromosomes.}
+\item{seqinfo}{\code{Seqinfo} or \code{NULL}.
+\strong{Recommended.} Information about the chromosomes.}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
