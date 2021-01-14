@@ -1,12 +1,18 @@
 #' Make EnsDb object from a GFF/GTF file
 #'
-#' @export
+#' Wrapper for ensembldb importer functions.
+#'
+#' @name makeEnsDbFromGFF
 #' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
 #' @return `EnsDb`.
+#'
+#' @seealso
+#' - `ensembldb::ensDbFromGff()`.
+#' - `ensembldb::ensDbFromGtf()`.
 #'
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
@@ -16,6 +22,12 @@
 #'     genomeBuild = "GRCh38",
 #'     release = 100L
 #' )
+NULL
+
+
+
+#' @describeIn makeEnsDbFromGFF Primary function.
+#' @export
 makeEnsDbFromGFF <- function(
     file,
     organism = NULL,
@@ -87,3 +99,9 @@ makeEnsDbFromGFF <- function(
     validObject(edb)
     edb
 }
+
+
+
+#' @describeIn makeEnsDbFromGFF Alias for GTF files.
+#' @export
+makeEnsDbFromGTF <- makeEnsDbFromGFF
