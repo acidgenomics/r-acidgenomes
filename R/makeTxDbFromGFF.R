@@ -65,62 +65,52 @@ NULL
 
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
-makeTxDbFromGFF <- function(
-    file,
-    seqinfo = NULL,
-    organism = NULL,
-    source = NULL
-) {
+makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     requireNamespaces("GenomicFeatures")
     assert(
         isString(file),
-        is(seqinfo, "Seqinfo") || is.null(seqinfo),
-        isString(organism, nullOK = TRUE),
-        isString(genomeBuild, nullOK = TRUE),
-        isString(source, nullOK = TRUE)
+        is(seqinfo, "Seqinfo") || is.null(seqinfo)
     )
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
+    dataSource <- file
+    if (!isAURL(dataSource)) {
+        dataSource <- realpath(dataSource)
+    }
     if (is.null(seqinfo)) {
-        alertWarning(sprintf(
-            "Input of {.var %s} is strongly recommended.",
-            "seqinfo"
+        alertWarning(paste(
+            "Input of {.var seqinfo} is recommended.",
+            "This helps define chromosome seqlengths and genome metadata."
         ))
+        genomeBuild <- NA_character_
+        organism <- NA_character_
     } else {
         ## e.g. "GRCh38.p12".
         genomeBuild <- genome(seqinfo)[[1L]]
         if (is.null(organism)) {
             ## e.g. "Homo sapiens".
-            organism <- detectOrganism(genomeBuild)
+            organism <- tryCatch(
+                expr = detectOrganism(genomeBuild),
+                error = function(e) NA_character_
+            )
         }
-        assert(
-            isString(organism),
-            isString(genomeBuild)
-        )
-    }
-    if (is.null(source)) {
-        ## Ensure we resolve the file path, if defining as data source.
-        if (!isAURL(file)) file <- realpath(file)
-        source <- file
     }
     file <- .cacheIt(file)
+    ## Additional arguments of potential future interest:
+    ## - dbxrefTag: This can help override feature name ("e.g. GeneID") used.
+    ## - miRBaseBuild: miRBase annotations could be useful for future genome
+    ##   builds. Note that it's currently out of date with GRCh38.
+    ##   https://github.com/Bioconductor/GenomicFeatures/issues/27
     args <- list(
         "file" = file,
         "chrominfo" = seqinfo,
-        "dataSource" = source,
+        "circ_seqs" = isCircular(seqinfo),
+        "dataSource" = dataSource,
         "format" = "auto",
         "organism" = organism
-        ## Don't think this is necessary when passing in seqinfo.
-        ## > "circ_seqs" = isCircular(seqinfo),
-        ## This can help override feature name ("e.g. GeneID") used.
-        ## > dbxrefTag = "GeneID"
-        ## miRBase annotations could be useful for future genome builds.
-        ## Note that it's currently out of date with GRCh38.
-        ## https://github.com/Bioconductor/GenomicFeatures/issues/27
-        ## > miRBaseBuild = NA
     )
     what <- GenomicFeatures::makeTxDbFromGFF
     suppressWarnings({
