@@ -7,6 +7,7 @@
 downloadRefSeqGenome(
   organism,
   taxonomicGroup = NULL,
+  genomeBuild = NULL,
   type = c("all", "transcriptome", "genome", "none"),
   annotation = c("all", "gtf", "gff", "none"),
   outputDir = "."
@@ -18,7 +19,13 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{taxonomicGroup}{\code{character(1)}.
 \emph{Only applies to RefSeq}.
-FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").}
+FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
+Defining this manually avoids having to query the FTP server.}
+
+\item{genomeBuild}{\code{character(1)}.
+Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
+defaults to the most recent build available.
+Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{type}{\code{character(1)}.
 Genome type to download.}
@@ -33,14 +40,23 @@ Output directory path.}
 Download RefSeq reference genome
 }
 \note{
-Updated 2021-01-08.
+Updated 2021-01-14.
 }
+\section{Stable release}{
+
+The latest assembly defined under the "release/" subdirectory is not
+considered "stable" by the RefSeq team. It is considered good practice to use
+a genome build one version behind as a stable release
+(e.g. "GCF_000001405.38_GRCh38.p12" instead of current
+"GCF_000001405.39_GRCh38.p13" build).
+}
+
 \examples{
 ## This example is bandwidth intensive.
 ## > downloadRefSeqGenome(
 ## >     organism = "Homo sapiens",
-## >     taxonomicGroup = "vertebrate_mammalian"
-## >     genomeBuild = "GRCh38",
+## >     taxonomicGroup = "vertebrate_mammalian",
+## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
 ## >     type = "transcriptome",
 ## >     annotation = "gtf"
 ## > )
