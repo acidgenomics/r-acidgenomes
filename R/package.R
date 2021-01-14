@@ -4,6 +4,3 @@
 #'
 #' @keywords internal
 "_PACKAGE"
-
-## TODO Consider adding better support for CDS, exon, and promoter extraction
-## from EnsDb/TxDb objects in a future update.
