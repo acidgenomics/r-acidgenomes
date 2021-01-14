@@ -184,7 +184,7 @@
 
 #' Broad class definitions factor return
 #'
-#' @note Updated 2020-10-07.
+#' @note Updated 2021-01-14.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -193,7 +193,7 @@
 #' @return `factor`.
 .broadClass <- function(object) {
     assert(is(object, "GRanges"))
-    colnames(mcols(object)) <- camelCase(colnames(mcols(object)))
+    colnames(mcols(object)) <- camelCase(colnames(mcols(object)), strict = TRUE)
     ## Early return if already defined in `mcols()`.
     if ("broadClass" %in% colnames(mcols(object))) {
         out <- mcols(object)[["broadClass"]]
@@ -260,9 +260,9 @@
     ))
     ## Note that this method doesn't seem to work right with DataFrame class.
     data <- data.frame(
-        biotype = biotypeData,
-        chromosome = seqnamesData,
-        geneName = geneNameData,
+        "biotype" = biotypeData,
+        "chromosome" = seqnamesData,
+        "geneName" = geneNameData,
         stringsAsFactors = TRUE
     )
     ## Consider adding BiocParallel support here for improved speed.
