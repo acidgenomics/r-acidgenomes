@@ -10,7 +10,7 @@ test_that("mapHumanOrthologs", {
     )
     object <- mapHumanOrthologs(genes, ensemblRelease = 87L)
     expected <- tibble(
-        geneID = c(
+        geneId = c(
             "ENSMUSG00000000001",
             "ENSMUSG00000000003",
             "ENSMUSG00000000028",
@@ -18,7 +18,7 @@ test_that("mapHumanOrthologs", {
             "ENSMUSG00000000037",
             "ENSMUSG00000000049"
         ),
-        hgncID = c(
+        hgncId = c(
             "ENSG00000065135",
             NA,
             "ENSG00000093009",

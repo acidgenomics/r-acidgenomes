@@ -8,8 +8,8 @@
 #'
 #'   - `"1:1"`: *Recommended.*
 #'       Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
-#'       Entrez, pick the oldest Entrez ID. Genes that don't map to Entrez will
-#'       contain `NA` in `entrezID` column.
+#'       Entrez, pick the oldest Entrez identifier. Genes that don't map to
+#'       Entrez will contain `NA` in `entrezId` column.
 #'   - `"long"`:
 #'       Return 1:many in long format.
 #'
@@ -164,8 +164,8 @@ setMethod(
         format = c("1:1", "long")
     ) {
         df <- as(object, "DataFrame")
-        colnames(df)[colnames(df) == "geneID"] <- "ensembl"
-        colnames(df)[colnames(df) == "entrezID"] <- "entrez"
+        colnames(df)[colnames(df) == "geneId"] <- "ensembl"
+        colnames(df)[colnames(df) == "entrezId"] <- "entrez"
         metadata(df) <- metadata(object)
         .makeEnsembl2Entrez(
             object = df,

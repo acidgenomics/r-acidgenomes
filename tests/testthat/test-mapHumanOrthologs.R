@@ -25,18 +25,18 @@ test_that("Mus musculus", {
     expect_identical(
         object = map,
         expected = DataFrame(
-            geneID = genes,
-            geneName = c(
+            "geneId" = genes,
+            "geneName" = c(
                 "Gnai3",
                 "Pbsn",
                 "Cdc45"
             ),
-            hgncID = c(
+            "hgncId" = c(
                 "ENSG00000065135",
                 NA,
                 "ENSG00000093009"
             ),
-            hgncName = c(
+            "hgncName" = c(
                 "GNAI3",
                 NA,
                 "CDC45"

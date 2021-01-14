@@ -280,9 +280,9 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            isSubset(c("hgncID", "ensemblGeneID"), colnames(object)),
-            is.integer(object[["hgncID"]]),
-            hasNoDuplicates(object[["hgncID"]])
+            isSubset(c("hgncId", "ensemblGeneId"), colnames(object)),
+            is.integer(object[["hgncId"]]),
+            hasNoDuplicates(object[["hgncId"]])
         )
     }
 )
@@ -344,7 +344,7 @@ setValidity(
 #' Gene-to-symbol mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `geneID` and `geneName` columns.
+#' Contains a `DataFrame` with `geneId` and `geneName` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -364,8 +364,8 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(colnames(object), c("geneID", "geneName")),
-            is.character(object[["geneID"]]),
+            identical(colnames(object), c("geneId", "geneName")),
+            is.character(object[["geneId"]]),
             isAny(object[["geneName"]], c("character", "factor"))
         )
     }
@@ -430,7 +430,7 @@ setValidity(
 #' Protein-to-gene mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `proteinID`, `geneID`, and `geneName` columns.
+#' Contains a `DataFrame` with `proteinId`, `geneId`, and `geneName` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -452,7 +452,7 @@ setValidity(
             hasRows(object),
             identical(
                 x = colnames(object),
-                y = c("proteinID", "geneID", "geneName")
+                y = c("proteinId", "geneId", "geneName")
             ),
             all(bapply(X = object, FUN = is.character))
         )
@@ -464,7 +464,7 @@ setValidity(
 #' Transcript-to-gene identifier mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `transcriptID` and `geneID` columns.
+#' Contains a `DataFrame` with `transcriptId` and `geneId` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -484,13 +484,13 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(colnames(object), c("transcriptID", "geneID")),
+            identical(colnames(object), c("transcriptId", "geneId")),
             all(vapply(
                 X = object,
                 FUN = is.character,
                 FUN.VALUE = logical(1L)
             )),
-            hasNoDuplicates(object[["transcriptID"]])
+            hasNoDuplicates(object[["transcriptId"]])
         )
     }
 )

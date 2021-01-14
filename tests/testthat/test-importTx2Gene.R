@@ -20,8 +20,8 @@ test_that("No version stripping", {
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
-            transcriptID = "ENST00000631435.1",
-            geneID = "ENSG00000282253.1"
+            "txId" = "ENST00000631435.1",
+            "geneId" = "ENSG00000282253.1"
         )
     )
 })
@@ -29,18 +29,20 @@ test_that("No version stripping", {
 test_that("Strip transcript and gene versions", {
     object <- do.call(
         what = importTx2Gene,
-        args = c(
-            args,
-            ignoreVersion = TRUE,
-            ignoreGeneVersion = TRUE
+        args = append(
+            x = args,
+            values = list(
+                "ignoreVersion" = TRUE,
+                "ignoreGeneVersion" = TRUE
+            )
         )
     )
     expect_is(object, "Tx2Gene")
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
-            transcriptID = "ENST00000631435",
-            geneID = "ENSG00000282253"
+            "txId" = "ENST00000631435",
+            "geneId" = "ENSG00000282253"
         )
     )
 })

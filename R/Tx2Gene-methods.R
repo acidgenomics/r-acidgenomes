@@ -49,7 +49,7 @@ setMethod(
 `Tx2Gene,data.frame` <-  # nolint
     function(object) {
         assert(identical(ncol(object), 2L))
-        colnames(object) <- c("transcriptID", "geneID")
+        colnames(object) <- c("transcriptId", "geneId")
         object <- as(object, "DataFrame")
         Tx2Gene(object = object, metadata = FALSE)
     }
@@ -70,7 +70,7 @@ setMethod(
 `Tx2Gene,DataFrame` <-  # nolint
     function(object, metadata = TRUE) {
         assert(isFlag(metadata))
-        cols <- c("transcriptID", "geneID")
+        cols <- c("transcriptId", "geneId")
         assert(
             isSubset(cols, colnames(object)),
             hasRows(object)

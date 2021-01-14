@@ -30,14 +30,14 @@ test_that("Genes", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            description = Rle,
-            entrezID = "list",
-            geneBiotype = Rle,
-            geneID = Rle,
-            geneIDVersion = Rle,
-            geneName = Rle,
-            seqCoordSystem = Rle
+            "broadClass" = Rle,
+            "description" = Rle,
+            "entrezId" = "list",
+            "geneBiotype" = Rle,
+            "geneId" = Rle,
+            "geneIdVersion" = Rle,
+            "geneName" = Rle,
+            "seqCoordSystem" = Rle
         )
     )
 })
@@ -59,21 +59,21 @@ test_that("Transcripts", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            description = Rle,
-            entrezID = "list",
-            geneBiotype = Rle,
-            geneID = Rle,
-            geneIDVersion = Rle,
-            geneName = Rle,
-            seqCoordSystem = Rle,
-            transcriptBiotype = Rle,
-            transcriptCdsSeqEnd = Rle,
-            transcriptCdsSeqStart = Rle,
-            transcriptID = Rle,
-            transcriptIDVersion = Rle,
-            transcriptName = Rle,
-            transcriptSupportLevel = Rle
+            "broadClass" = Rle,
+            "description" = Rle,
+            "entrezId" = "list",
+            "geneBiotype" = Rle,
+            "geneId" = Rle,
+            "geneIdVersion" = Rle,
+            "geneName = Rle,
+            "seqCoordSystem" = Rle,
+            "txBiotype" = Rle,
+            "txCdsSeqEnd" = Rle,
+            "txCdsSeqStart" = Rle,
+            "txId" = Rle,
+            "txIdVersion" = Rle,
+            "txName" = Rle,
+            "txSupportLevel" = Rle
         )
     )
 })
