@@ -1,5 +1,5 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-01-14.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
@@ -14,7 +14,7 @@ MGI2Ensembl <- function() {  # nolint
         "MGI_Gene_Model_Coord.rpt",
         protocol = "http"
     )
-    file <- cacheURL(url = url, pkg = packageName())
+    file <- .cacheIt(url)
     df <- import(file = file, format = "tsv", colnames = TRUE)
     df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgi", "ensembl")
