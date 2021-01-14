@@ -19,12 +19,7 @@ makeTx2GeneFromEnsembl(
   synonyms = FALSE
 )
 
-makeTx2GeneFromEnsDb(
-  object,
-  ignoreVersion = TRUE,
-  broadClass = TRUE,
-  synonyms = FALSE
-)
+makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE, synonyms = FALSE)
 
 makeTx2GeneFromGFF(
   file,
