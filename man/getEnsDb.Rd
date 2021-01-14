@@ -2,7 +2,7 @@
 % Please edit documentation in R/getEnsDb.R
 \name{getEnsDb}
 \alias{getEnsDb}
-\title{Get EnsDb from Bioconductor AnnotationHub}
+\title{Get EnsDb from Bioconductor}
 \usage{
 getEnsDb(organism, genomeBuild = NULL, release = NULL)
 }
@@ -26,16 +26,16 @@ ensembldb in use.}
 \code{EnsDb}.
 }
 \description{
-Get EnsDb from Bioconductor AnnotationHub
+Get EnsDb from Bioconductor
 }
 \details{
 Remaps UCSC genome build to Ensembl automatically, if necessary.
 Provides legacy support for GRCh37 (hg19).
 }
 \note{
-Updated 2021-01-06.
+Updated 2021-01-14.
 }
 \examples{
-object <- getEnsDb(organism = "Homo sapiens", release = 100L)
-class(object)
+edb <- getEnsDb(organism = "Homo sapiens", release = 100L)
+print(edb)
 }
