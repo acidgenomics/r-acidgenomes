@@ -1,3 +1,7 @@
+## FIXME ERROR OUT EARLY ON REFSEQ INPUT, UNSUPPORTED IDENTIFIERS.
+
+
+
 #' Gene synonyms
 #'
 #' Look up gene synonyms from NCBI.
