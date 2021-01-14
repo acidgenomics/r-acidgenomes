@@ -9,8 +9,8 @@
 #' Use specific `EnsDb` object as annotation source.
 #' Alternatively, can pass in an EnsDb package name as a `character(1)`.
 #'
-#' @export
-#' @note Updated 2021-01-10.
+#' @name makeGRangesFromEnsDb
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -21,18 +21,26 @@
 #' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
 #'     x <- makeGRangesFromEnsDb("EnsDb.Hsapiens.v75")
 #' }
-makeGRangesFromEnsDb <- function(
+NULL
+
+
+
+#' Internal variant with more options that we don't want to expose to user
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRangesFromEnsDb <- function(
     object,
     level = c("genes", "transcripts"),
     ignoreVersion = TRUE,  # FIXME RENAME THIS.
-    ## FIXME CONSIDER RENAMING THIS TO SIMPLY FAST.
-    broadClass = TRUE,
-    synonyms = FALSE
+    synonyms = FALSE,
+    ## Internal-specific options:
+    broadClass = TRUE
 ) {
     assert(
         isFlag(ignoreVersion),
-        isFlag(broadClass),
-        isFlag(synonyms)
+        isFlag(synonyms),
+        isFlag(broadClass)
     )
     level <- match.arg(level)
     alert("Making {.var GRanges} from {.var EnsDb}.")
@@ -91,6 +99,7 @@ makeGRangesFromEnsDb <- function(
         }
     )
     ## This step can warn about out-of-bound ranges that need to be trimmed.
+    ## We're taking care of trimming on the `.makeGRanges` call below.
     suppressWarnings({
         gr <- do.call(what = fun, args = args)
     })
@@ -99,10 +108,29 @@ makeGRangesFromEnsDb <- function(
     metadata(gr) <- metadata
     .makeGRanges(
         object = gr,
-        ## FIXME RENAME TO IGNOREVERSION?
         ignoreVersion = ignoreVersion,
-        ## FIXME SIMPLIFY THE PASSTHROUGH OF THIS...
         broadClass = broadClass,
         synonyms = synonyms
     )
 }
+
+
+
+#' @rdname makeGRangesFromEnsDb
+#' @export
+makeGRangesFromEnsDb <- function(
+    object,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE
+) {
+    .makeGRangesFromEnsDb(
+        object = object,
+        level = match.arg(level),
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
+}
+
+formals(makeGRangesFromEnsDb)[["level"]] <-
+    formals(.makeGRangesFromEnsDb)[["level"]]
