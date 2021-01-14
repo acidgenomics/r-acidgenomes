@@ -9,11 +9,11 @@ HGNC2Ensembl <-  # nolint
         hgnc <- HGNC()
         alert("Mapping HGNC identifiers to Ensembl.")
         df <- as(hgnc, "DataFrame")
-        cols <- c("hgncID", "ensemblGeneID")
+        cols <- c("hgncId", "ensemblGeneId")
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols]
-        colnames(df)[colnames(df) == "ensemblGeneID"] <- "ensembl"
-        colnames(df)[colnames(df) == "hgncID"] <- "hgnc"
+        colnames(df)[colnames(df) == "ensemblGeneId"] <- "ensembl"
+        colnames(df)[colnames(df) == "hgncId"] <- "hgnc"
         df <- df[complete.cases(df), ]
         metadata(df) <- metadata(hgnc)
         new(Class = "HGNC2Ensembl", df)

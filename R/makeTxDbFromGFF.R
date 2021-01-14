@@ -97,7 +97,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     }
     file <- .cacheIt(file)
     ## Additional arguments of potential future interest:
-    ## - dbxrefTag: This can help override feature name ("e.g. GeneID") used.
+    ## - dbxrefTag: This can help override primary identifier to use.
     ## - miRBaseBuild: miRBase annotations could be useful for future genome
     ##   builds. Note that it's currently out of date with GRCh38.
     ##   https://github.com/Bioconductor/GenomicFeatures/issues/27

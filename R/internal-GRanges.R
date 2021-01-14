@@ -17,8 +17,8 @@
 .addGeneSynonyms <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
-    assert(isSubset("geneID", colnames(mcols)))
-    if (!any(grepl(pattern = "^ENS", x = mcols[["geneID"]]))) {
+    assert(isSubset("geneId", colnames(mcols)))
+    if (!any(grepl(pattern = "^ENS", x = mcols[["geneId"]]))) {
         return(object)
     }
     organism <- organism(object)
@@ -30,8 +30,9 @@
         "geneSynonyms"
     ))
     synonyms <- geneSynonyms(organism = organism, return = "DataFrame")
-    assert(identical(c("geneID", "geneSynonyms"), colnames(synonyms)))
-    mcols <- leftJoin(x = mcols, y = synonyms, by = "geneID")
+    ## FIXME RETHINK THIS.
+    assert(identical(c("geneId", "geneSynonyms"), colnames(synonyms)))
+    mcols <- leftJoin(x = mcols, y = synonyms, by = "geneId")
     mcols(object) <- mcols
     object
 }
@@ -50,20 +51,20 @@
     assert(
         is(object, "GRanges"),
         identical(metadata(object)[["level"]], "transcripts"),
-        isSubset("transcriptID", mcolnames)
+        isSubset("transcriptId", mcolnames)
     )
-    if (isSubset("transcriptIDVersion", mcolnames)) {
+    if (isSubset("transcriptIdVersion", mcolnames)) {
         ## `makeGRangesFromEnsembl()` output via ensembldb.
-        id <- mcols(object)[["transcriptIDVersion"]]
+        id <- mcols(object)[["transcriptIdVersion"]]
     } else if (isSubset("transcriptVersion", mcolnames)) {
         ## `makeGRangesFromGFF()` output.
-        id <- mcols(object)[["transcriptID"]]
+        id <- mcols(object)[["transcriptId"]]
         version <- mcols(object)[["transcriptVersion"]]
         id <- Rle(paste(id, version, sep = "."))
     } else {
         stop("Failed to locate transcript version metadata.")  # nolint
     }
-    mcols(object)[["transcriptID"]] <- id
+    mcols(object)[["transcriptId"]] <- id
     ## Note that names are set by `.makeGRanges()`.
     object
 }
@@ -374,24 +375,37 @@
 
 
 
+## FIXME USE LEVEL AND THEN MAP TO IDENTIFIER...
+
 #' Detect GRanges identifiers
 #'
-#' @note This intentionally prioritizes transcripts over genes.
-#'
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-14.
 #' @noRd
 .detectGRangesIDs <- function(object) {
+    assert(isAny(object, c("GRanges", "GRangesList")))
+    level <- match.arg(
+        arg = metadata(object)[["level"]],
+        choices = c("genes", "transcripts")
+    )
+    print(level)
+    print(colnames(mcols(object)))
+    stop("FIXME")
+
+    ## FIXME SUPPORT transcriptID, geneID, txID, geneId, txId
+
+
+
     if (is(object, "GRangesList")) {
         object <- object[[1L]]
     }
     assert(is(object, "GRanges"))
     mcolnames <- colnames(mcols(object))
-    if ("transcriptID" %in% mcolnames) {
-        out <- "transcriptID"
+    if ("transcriptId" %in% mcolnames) {
+        out <- "transcriptId"
     } else if ("transcript_id" %in% mcolnames) {
         out <- "transcript_id"
-    } else if ("geneID" %in% mcolnames) {
-        out <- "geneID"
+    } else if ("geneId" %in% mcolnames) {
+        out <- "geneId"
     } else if ("gene_id" %in% mcolnames) {
         out <- "gene_id"
     } else {
@@ -410,6 +424,7 @@
 ## FIXME DONT ALLOW GRANGESLIST RETURN HERE.
 ## FIXME RETURN THE OBJECTS CLASSED BY GENOME.
 ## FIXME HANDLE THE TXVERSION DIFFERENTLY HERE?
+## FIXME SWITCH FROM "TRANSCRIPT" PREFIX TO "TX", FOR BIOC CONSISTENCY.
 
 #' Make GRanges
 #'
@@ -599,11 +614,12 @@
     ## Standardize the metadata columns.
     mcols <- mcols(object)
     ## Use `transcript` prefix instead of `tx` consistently.
-    colnames(mcols) <- gsub(
-        pattern = "^tx_",
-        replacement = "transcript_",
-        x = colnames(mcols)
-    )
+    ## Changed this in v0.2.0 release.
+    ## > colnames(mcols) <- gsub(
+    ## >     pattern = "^tx_",
+    ## >     replacement = "transcript_",
+    ## >     x = colnames(mcols)
+    ## > )
     ## Ensure "ID" is always capitalized (e.g. "entrezid").
     colnames(mcols) <- gsub(
         pattern = "(.+)id$",
@@ -611,7 +627,8 @@
         x = colnames(mcols)
     )
     ## Always return using camel case, even though GFF/GTF files use snake.
-    colnames(mcols) <- camelCase(colnames(mcols))
+    ## Changed to strict format in v0.2.0 release.
+    colnames(mcols) <- camelCase(colnames(mcols), strict = TRUE)
     ## Always use `geneName` instead of `symbol`.
     ## Note that ensembldb output duplicates these.
     if (all(c("geneName", "symbol") %in% colnames(mcols))) {

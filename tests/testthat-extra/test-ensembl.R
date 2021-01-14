@@ -14,12 +14,12 @@ map <- map[keep, , drop = FALSE]
 ##
 ## Potential issues:
 ## - *Caenorhabditis elegans*
-##     - Invalid transcript IDs.
+##     - Invalid transcript identifiers.
 ## - *Canis familiaris*
 ##     - Using the full *Canis lupus familiaris* won't match.
 ## - *Saccharomyces cerevisiae*
-##     - Invalid gene IDs.
-##     - Iinvalid transcript IDs.
+##     - Invalid gene identifiers.
+##     - Iinvalid transcript identifiers.
 ##     - No gene names.
 
 test_that("UCSC genome build remaps", {

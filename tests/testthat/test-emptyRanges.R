@@ -20,10 +20,10 @@ test_that("mcolnames", {
     object <- emptyRanges(
         "EGFP",
         seqname = "transgene",
-        mcolnames = c("geneID", "geneName")
+        mcolnames = c("geneId", "geneName")
     )
     expect_identical(
         object = names(mcols(object)),
-        expected = c("geneID", "geneName")
+        expected = c("geneId", "geneName")
     )
 })

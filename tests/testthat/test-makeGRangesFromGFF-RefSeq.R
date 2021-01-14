@@ -14,17 +14,17 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            dbXref = Rle,
-            description = Rle,
-            gbkey = Rle,
-            geneBiotype = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            geneSynonym = Rle,
-            pseudo = Rle,
-            source = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "dbXref" = Rle,
+            "description" = Rle,
+            "gbkey" = Rle,
+            "geneBiotype" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "geneSynonym" = Rle,
+            "pseudo" = Rle,
+            "source" = Rle,
+            "type" = Rle
         )
     )
 })
@@ -37,21 +37,21 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), class),
         expected = list(
-            broadClass = Rle,
-            dbXref = Rle,
-            exception = Rle,
-            exonNumber = Rle,
-            gbkey = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            inference = Rle,
-            modelEvidence = Rle,
-            note = Rle,
-            product = Rle,
-            source = Rle,
-            transcriptID = Rle,
-            transcriptName = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "dbXref" = Rle,
+            "exception" = Rle,
+            "exonNumber" = Rle,
+            "gbkey" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "inference" = Rle,
+            "modelEvidence" = Rle,
+            "note" = Rle,
+            "product" = Rle,
+            "source" = Rle,
+            "transcriptId" = Rle,
+            "transcriptName" = Rle,
+            "type" = Rle
         )
     )
 })
@@ -66,15 +66,15 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            description = Rle,
-            gbkey = Rle,
-            geneBiotype = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            pseudo = Rle,
-            source = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "description" = Rle,
+            "gbkey" = Rle,
+            "geneBiotype" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "pseudo" = Rle,
+            "source" = Rle,
+            "type" = Rle
         )
     )
 })
@@ -88,18 +88,18 @@ test_that("GFF3 transcripts", {
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            broadClass = Rle,
-            exception = Rle,
-            gbkey = Rle,
-            geneID = Rle,
-            geneName = Rle,
-            geneSynonym = AsIs,
-            inference = Rle,
-            modelEvidence = Rle,
-            product = Rle,
-            source = Rle,
-            transcriptID = Rle,
-            type = Rle
+            "broadClass" = Rle,
+            "exception" = Rle,
+            "gbkey" = Rle,
+            "geneId" = Rle,
+            "geneName" = Rle,
+            "geneSynonym" = AsIs,
+            "inference" = Rle,
+            "modelEvidence" = Rle,
+            "product" = Rle,
+            "source" = Rle,
+            "transcriptId" = Rle,
+            "type" = Rle
         )
     )
 })

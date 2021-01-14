@@ -8,8 +8,8 @@
 #' @return `DataFrame`.
 #'   Data frame containing mapping columns:
 #'
-#'   - geneID
-#'   - hgncID
+#'   - geneId
+#'   - hgncId
 #'   - geneName
 #'   - hgncName
 #'
@@ -90,7 +90,7 @@ mapHumanOrthologs <- function(
         }
     )
     map <- as(map, "DataFrame")
-    colnames(map) <- c("geneID", "hgncID")
+    colnames(map) <- c("geneId", "hgncId")
     map <- sanitizeNA(map)
     ## Get the corresponding gene-to-symbol mappings.
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
@@ -106,12 +106,12 @@ mapHumanOrthologs <- function(
         format = "unmodified"
     )
     g2shs <- as(g2shs, "DataFrame")
-    colnames(g2shs) <- c("hgncID", "hgncName")
+    colnames(g2shs) <- c("hgncId", "hgncName")
     ## Return.
     out <- map
-    out <- leftJoin(out, g2s, by = "geneID")
-    out <- leftJoin(out, g2shs, by = "hgncID")
-    rownames(out) <- out[["geneID"]]
+    out <- leftJoin(out, g2s, by = "geneId")
+    out <- leftJoin(out, g2shs, by = "hgncId")
+    rownames(out) <- out[["geneId"]]
     out <- out[, sort(colnames(out))]
     out
 }

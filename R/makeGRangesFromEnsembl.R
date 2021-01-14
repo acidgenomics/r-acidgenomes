@@ -1,3 +1,4 @@
+## FIXME ENSURE IGNOREVERSION APPLIES TO BOTH TRANSCRIPTS AND GENES.
 ## FIXME RETHINK METADATA RETURN STRUCTURE.
 ## FIXME NEED TO ENSURE CALL IS SLOTTED INTO OBJECT.
 
@@ -227,15 +228,23 @@ makeGRangesFromEnsembl <- function(
         "order.type" = "asc",
         "return.type" = "GRanges"
     )
-    ## FIXME USE LIST COLUMNS HERE INSTEAD.
-    geneCols <- listColumns(object, "gene")
-    geneCols <- c(
-        "gene_id",
-        "gene_name",
-        "gene_biotype",
-        "seq_coord_system",
-        "entrezid"
-    )
+    ## Ensembl 102 example (AH89180):
+    ##  [1] "canonical_transcript" "description"          "entrezid"
+    ##  [4] "gene_biotype"         "gene_id"              "gene_id_version"
+    ##  [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
+    ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
+    ## [13] "symbol"
+    geneCols <- sort(unique(c(listColumns(object, "gene"), "entrezid")))
+    ## Ensembl 102 example (AH89180):
+    ##  [1] "canonical_transcript" "description"          "entrezid"
+    ##  [4] "gc_content"           "gene_biotype"         "gene_id"
+    ##  [7] "gene_id_version"      "gene_name"            "gene_seq_end"
+    ## [10] "gene_seq_start"       "seq_coord_system"     "seq_name"
+    ## [13] "seq_strand"           "symbol"               "tx_biotype"
+    ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
+    ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
+    ## [22] "tx_seq_start"         "tx_support_level"
+    txCols <- sort(unique(c(listColumns(object, "tx"), geneCols)))
     switch(
         EXPR = level,
         "genes" = {
@@ -253,14 +262,7 @@ makeGRangesFromEnsembl <- function(
             args <- append(
                 x = args,
                 values = list(
-                    "columns" = c(
-                        "tx_id",
-                        "tx_name",
-                        "tx_biotype",
-                        "tx_cds_seq_start",
-                        "tx_cds_seq_end",
-                        geneCols
-                    ),
+                    "columns" = txCols,
                     "order.by" = "tx_id"
                 )
             )

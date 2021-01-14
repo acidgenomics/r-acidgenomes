@@ -14,11 +14,11 @@
 #'
 #'   - `"makeUnique"`: *Recommended.* Apply [`make.unique()`][base::make.unique]
 #'     to the `geneName` column. Gene symbols are made unique, while the gene
-#'     IDs remain unmodified.
-#'   - `"unmodified"`: Return `geneID` and `geneName` columns unmodified, in
+#'     identifiers remain unmodified.
+#'   - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
 #'     long format.
-#'   - `"1:1"`: For gene symbols that map to multiple gene IDs, select only the
-#'     first annotated gene ID.
+#'   - `"1:1"`: For gene symbols that map to multiple gene identifiers, select
+#"     only the first annotated gene identifier.
 #'
 #' @seealso [makeGene2Symbol()].
 #'
@@ -39,7 +39,7 @@ NULL
         assert(hasRows(object))
         format <- match.arg(format)
         ## Check for required columns.
-        cols <- c("geneID", "geneName")
+        cols <- c("geneId", "geneName")
         if (!all(cols %in% colnames(object))) {
             stop(sprintf(
                 "Object does not contain gene-to-symbol mappings: %s.",
@@ -47,7 +47,7 @@ NULL
             ))
         }
         data <- DataFrame(
-            geneID = as.character(decode(object[["geneID"]])),
+            geneId = as.character(decode(object[["geneId"]])),
             geneName = as.character(decode(object[["geneName"]])),
             row.names = rownames(object)
         )
@@ -79,12 +79,15 @@ NULL
                 "{.emph (may contain duplicates)}."
             ))
         } else if (format == "1:1") {
-            alert("Returning 1:1 mappings using oldest gene ID per symbol.")
+            alert(paste(
+                "Returning 1:1 mappings using oldest",
+                "gene identifier per symbol."
+            ))
             x <- split(data, f = data[["geneName"]])
             x <- bplapply(
                 X = x,
                 FUN = function(x) {
-                    x <- x[order(x[["geneID"]]), , drop = FALSE]
+                    x <- x[order(x[["geneId"]]), , drop = FALSE]
                     x <- head(x, n = 1L)
                     x
                 }

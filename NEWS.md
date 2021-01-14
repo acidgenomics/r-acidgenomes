@@ -8,6 +8,8 @@
 
 ### Major changes
 
+- In metadata columns, renamed "ID" to "Id", for stricter lower camel case
+  formatting.
 - Now ensuring GenomicRanges gets attached as a dependency.
 - Now using BiocFileCache (via `pipette::cacheURL` internally) to automatically
   cache GFF/GTF files when used in `makeGRangesFromGFF`.
@@ -15,6 +17,9 @@
   We want this setting to also apply at gene level.
 - No longer using `forceDetach` internally to force unload some Bioconductor
   annotation packages.
+- `GRanges` `mcols` now return with `tx` prefix instead of `transcript`.
+- `GRanges` `mcols` now use strict camel case formatting
+  (e.g. `geneId` instead of `geneID`).
 
 ## AcidGenomes 0.1.1 (2020-10-12)
 

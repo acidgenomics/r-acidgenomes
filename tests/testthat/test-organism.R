@@ -1,7 +1,7 @@
 context("organism")
 
 object <- rse
-rownames(object) <- as.character(rowData(rse)[["geneID"]])
+rownames(object) <- as.character(rowData(rse)[["geneId"]])
 
 ## nolint start
 matrix <- assay(object)

@@ -32,7 +32,7 @@ NULL
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            genes = length(unique(object[["geneID"]])),
+            genes = length(unique(object[["geneId"]])),
             symbols = length(unique(object[["geneName"]])),
             format = m[["format"]],
             organism = m[["organism"]],
@@ -61,8 +61,8 @@ setMethod(
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            transcripts = length(unique(object[["transcriptID"]])),
-            genes = length(unique(object[["geneID"]])),
+            transcripts = length(unique(object[["transcriptId"]])),
+            genes = length(unique(object[["geneId"]])),
             organism = m[["organism"]],
             genomeBuild = m[["genomeBuild"]],
             ensemblRelease = m[["ensemblRelease"]],

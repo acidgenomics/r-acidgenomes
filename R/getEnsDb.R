@@ -66,7 +66,7 @@ getEnsDb <- function(
 
 
 
-#' Get the AnnotationHub ID for desired EnsDb
+#' Get the AnnotationHub identifier for desired EnsDb
 #'
 #' @note Updated 2021-01-14.
 #' @noRd
@@ -188,7 +188,7 @@ getEnsDb <- function(
     if (!hasRows(mcols)) {
         stop(sprintf(
             fmt = paste(
-                "No ID matched on AnnotationHub %s.",
+                "No entry matched on AnnotationHub %s.",
                 "  - Organism: %s",
                 "  - Genome build: %s",
                 "  - Ensembl release: %s",
@@ -200,7 +200,7 @@ getEnsDb <- function(
             deparse(release)
         ))
     }
-    ## Select the most recent database (sorted by title, not ID!).
+    ## Select the most recent database (sorted by title, not identifier!).
     mcols <- tail(mcols, n = 1L)
     id <- rownames(mcols)
     assert(
@@ -213,7 +213,7 @@ getEnsDb <- function(
 
 
 
-#' Get EnsDb from AnnotationHub ID
+#' Get EnsDb from AnnotationHub identifier
 #'
 #' @note Updated 2021-01-14.
 #' @noRd
@@ -292,7 +292,7 @@ getEnsDb <- function(
     if (!is.null(level)) {
         list[["level"]] <- level
     }
-    ## AnnotationHub ID should be stashed in attributes, when possible.
+    ## AnnotationHub identifier should be stashed in attributes, when possible.
     if (isString(attr(object, "id"))) {
         list[["id"]] <- attr(object, "id")
     }
