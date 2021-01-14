@@ -3,7 +3,7 @@
 \name{makeTxDbFromGFF}
 \alias{makeTxDbFromGFF}
 \alias{makeTxDbFromGTF}
-\title{Make TxDb from GRanges}
+\title{Make TxDb from a GFF/GTF file}
 \usage{
 makeTxDbFromGFF(file, seqinfo, organism = NULL, source = file)
 
@@ -27,10 +27,11 @@ Defaults to file name.}
 \code{TxDb}.
 }
 \description{
-Make TxDb from GRanges
+Make TxDb from a GFF/GTF file
 }
 \details{
-This step can be noisy and generate expected warnings, which are suppressed:\preformatted{some exons are linked to transcripts not found in the file
+This step can be noisy and generate expected warnings, which are
+intentionally suppressed:\preformatted{some exons are linked to transcripts not found in the file
 The following orphan exon were dropped
 The following orphan CDS were dropped
 }
@@ -44,6 +45,9 @@ The following orphan CDS were dropped
 
 \note{
 Updated 2021-01-14.
+
+For Ensembl and GENCODE genomes, consider using
+\code{makeEnsDbFromGFF} instead.
 }
 \examples{
 ## RefSeq.
@@ -64,10 +68,7 @@ reportFile <- sub(
     x = gffFile
 )
 seqinfo <- getRefSeqSeqinfo(reportFile)
-txdb <- makeTxDbFromGFF(
-    file = gffFile,
-    seqinfo = seqinfo
-)
+txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
 print(txdb)
 }
 \seealso{
@@ -76,9 +77,5 @@ print(txdb)
 \item \code{GenomicFeatures::supportedMiRBaseBuildValues()}.
 Note that \emph{Homo sapiens} GRCh38 isn't currently supported in mirbase.db.
 \item \href{https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/}{TxDb.Hsapiens.UCSC.hg38.knownGene}.
-\item https://stackoverflow.com/questions/38603668
-\item https://stackoverflow.com/questions/16517795
-\item https://github.com/Bioconductor/GenomicFeatures/blob/master/R/makeTxDbFromGRanges.R
-\item https://github.com/Bioconductor/GenomicFeatures/issues/26
 }
 }

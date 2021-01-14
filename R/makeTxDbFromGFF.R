@@ -1,9 +1,11 @@
 ## nolint start
 
-#' Make TxDb from GRanges
+#' Make TxDb from a GFF/GTF file
 #'
 #' @name makeTxDbFromGFF
 #' @note Updated 2021-01-14.
+#' @note For Ensembl and GENCODE genomes, consider using
+#'   `makeEnsDbFromGFF` instead.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -15,7 +17,8 @@
 #'   Defaults to file name.
 #'
 #' @details
-#' This step can be noisy and generate expected warnings, which are suppressed:
+#' This step can be noisy and generate expected warnings, which are
+#' intentionally suppressed:
 #'
 #' ```
 #' some exons are linked to transcripts not found in the file
@@ -30,10 +33,6 @@
 #' - `GenomicFeatures::supportedMiRBaseBuildValues()`.
 #'   Note that *Homo sapiens* GRCh38 isn't currently supported in mirbase.db.
 #' - [TxDb.Hsapiens.UCSC.hg38.knownGene](https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/).
-#' - https://stackoverflow.com/questions/38603668
-#' - https://stackoverflow.com/questions/16517795
-#' - https://github.com/Bioconductor/GenomicFeatures/blob/master/R/makeTxDbFromGRanges.R
-#' - https://github.com/Bioconductor/GenomicFeatures/issues/26
 #'
 #' @examples
 #' ## RefSeq.
@@ -54,10 +53,7 @@
 #'     x = gffFile
 #' )
 #' seqinfo <- getRefSeqSeqinfo(reportFile)
-#' txdb <- makeTxDbFromGFF(
-#'     file = gffFile,
-#'     seqinfo = seqinfo
-#' )
+#' txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
 #' print(txdb)
 NULL
 
@@ -97,11 +93,12 @@ makeTxDbFromGFF <- function(
     file <- .cacheIt(file)
     args <- list(
         "file" = file,
-        "format" = "auto",
         "chrominfo" = seqinfo,
-        "circ_seqs" = isCircular(seqinfo),
         "dataSource" = source,
-        "organism" = organism,
+        "format" = "auto",
+        "organism" = organism
+        ## Don't think this is necessary when passing in seqinfo.
+        ## > "circ_seqs" = isCircular(seqinfo),
         ## This can help override feature name ("e.g. GeneID") used.
         ## > dbxrefTag = "GeneID"
         ## miRBase annotations could be useful for future genome builds.
