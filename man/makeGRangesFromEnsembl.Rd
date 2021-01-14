@@ -11,7 +11,6 @@ makeGRangesFromEnsembl(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
-  broadClass = TRUE,
   synonyms = FALSE
 )
 
@@ -35,9 +34,6 @@ possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
-
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
 
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
@@ -75,7 +71,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2020-10-10.
+Updated 2021-01-14.
 }
 \section{Broad class definitions}{
 
