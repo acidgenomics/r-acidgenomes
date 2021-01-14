@@ -8,7 +8,6 @@ makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  broadClass = TRUE,
   synonyms = FALSE
 )
 }
@@ -17,9 +16,6 @@ makeGRangesFromEnsDb(
 
 \item{level}{\code{character(1)}.
 Return as genes or transcripts.}
-
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
 
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
@@ -36,7 +32,7 @@ Use specific \code{EnsDb} object as annotation source.
 Alternatively, can pass in an EnsDb package name as a \code{character(1)}.
 }
 \note{
-Updated 2021-01-10.
+Updated 2021-01-14.
 }
 \examples{
 if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {

@@ -10,6 +10,8 @@
 
 - Now using BiocFileCache (via `pipette::cacheURL` internally) to automatically
   cache GFF/GTF files when used in `makeGRangesFromGFF`.
+- Renamed `ignoreTxVersion` to simply `ignoreVersion`, where applicable.
+  We want this setting to also apply at gene level.
 
 ## AcidGenomes 0.1.1 (2020-10-12)
 
