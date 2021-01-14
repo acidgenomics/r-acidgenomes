@@ -5,7 +5,7 @@
 #' @export
 #' @note Updated 2021-01-14.
 #'
-#' @param reportFile `character(1)`.
+#' @param file `character(1)`.
 #'   Assembly report file or URL.
 #' @param genome `character(1)` or `NULL`.
 #'   Genome build.
@@ -17,7 +17,7 @@
 #' - `tximeta:::gtf2RefSeq`.
 #'
 #' @examples
-#' reportFile <- pasteURL(
+#' file <- pasteURL(
 #'     "ftp.ncbi.nlm.nih.gov",
 #'     "genomes",
 #'     "refseq",
@@ -28,33 +28,24 @@
 #'     "GCF_000001405.38_GRCh38.p12_assembly_report.txt",
 #'     protocol = "ftp"
 #' )
-#' seqinfo <- getRefSeqSeqinfo(reportFile = reportFile)
+#' seqinfo <- getRefSeqSeqinfo(file)
 #' print(seqinfo)
-getRefSeqSeqinfo <- function(
-    reportFile,
-    genomeBuild = NULL
-) {
-    assert(
-        isString(reportFile),
-        isString(genomeBuild, nullOK = TRUE)
-    )
-    reportFile <- .cacheIt(reportFile)
+getRefSeqSeqinfo <- function(file) {
     pattern <- "^(.+)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report.txt$"
-    if (
-        is.null(genomeBuild) &&
-        grepl(pattern = pattern, x = basename(reportFile))
-    ) {
-        ## e.g. GRCh38.p13, which is the format Seqinfo expects.
-        ## Refer to GenomeInfoDb documentation for details on NCBI.
-        genomeBuild <- sub(
-            pattern = pattern,
-            replacement = "\\2",
-            x = basename(reportFile)
-        )
-    }
-    assert(isString(genomeBuild))
+    assert(
+        isString(file),
+        isMatchingRegex(pattern = pattern, x = file)
+    )
+    file <- .cacheIt(file)
+    ## e.g. GRCh38.p13, which is the format Seqinfo expects.
+    ## Refer to GenomeInfoDb documentation for details on NCBI.
+    genomeBuild <- sub(
+        pattern = pattern,
+        replacement = "\\2",
+        x = basename(file)
+    )
     df <- import(
-        file = reportFile,
+        file = file,
         format = "tsv",
         colnames = c(
             "sequenceName",
