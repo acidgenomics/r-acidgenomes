@@ -201,9 +201,9 @@ NULL
 #' @noRd
 .makeGRangesFromGFF <- function(
     file,
-    level,
-    ignoreVersion,
-    synonyms,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
     ## Internal-only arguments:
     broadClass = TRUE
 ) {
@@ -299,9 +299,7 @@ makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreVersion = TRUE,
-    synonyms = FALSE,
-    ## Internal-only arguments:
-    broadClass = TRUE
+    synonyms = FALSE
 ) {
     .makeGRangesFromGFF(
         file = file,

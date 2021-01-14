@@ -24,13 +24,13 @@ makeGene2SymbolFromEnsDb(
 
 makeGene2SymbolFromGFF(
   file,
-  ignoreVersion,
+  ignoreVersion = TRUE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
 makeGene2SymbolFromGTF(
   file,
-  ignoreVersion,
+  ignoreVersion = TRUE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 }
