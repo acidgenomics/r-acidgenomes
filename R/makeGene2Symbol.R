@@ -1,3 +1,7 @@
+## FIXME NEED TO INCLUDE IGNOREVERSION HERE...
+
+
+
 #' Make a Gene2Symbol object
 #'
 #' @section GFF/GTF file:
@@ -5,7 +9,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGene2Symbol
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
@@ -38,20 +42,17 @@ NULL
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
-
-#' @rdname makeGene2Symbol
+#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from Ensembl using
+#'   an AnnotationHub lookup.
 #' @export
-## Updated 2020-10-06.
+## Updated 2021-01-14.
 makeGene2SymbolFromEnsembl <-
     function(
         organism,
         ...
     ) {
-        format <- match.arg(format)
         gr <- do.call(
-            what = makeGRangesFromEnsembl,
+            what = .makeGRangesFromEnsembl,
             args = matchArgsToDoCall(
                 args = list(
                     level = "genes",
@@ -61,31 +62,28 @@ makeGene2SymbolFromEnsembl <-
                 removeFormals = "format"
             )
         )
-        Gene2Symbol(gr, format = format)
+        Gene2Symbol(object = gr, format = match.arg(format))
     }
 
 f <- formals(makeGRangesFromEnsembl)
-f <- f[setdiff(names(f), "level")]
+f <- f[setdiff(names(f), c("level", "synonyms"))]
 f[["format"]] <- formals(`Gene2Symbol,DataFrame`)[["format"]]
 formals(makeGene2SymbolFromEnsembl) <- f
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
-
-#' @rdname makeGene2Symbol
+#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from an `EnsDb`
+#'   object or annotation package.
 #' @export
-## Updated 2020-10-06.
+## Updated 2021-01-14.
 makeGene2SymbolFromEnsDb <-
     function(object, format) {
-        format <- match.arg(format)
-        gr <- makeGRangesFromEnsDb(
+        gr <- .makeGRangesFromEnsDb(
             object = object,
             broadClass = FALSE,
             synonyms = FALSE
         )
-        Gene2Symbol(gr, format = format)
+        Gene2Symbol(object = gr, format = match.arg(format))
     }
 
 formals(makeGene2SymbolFromEnsDb)[["format"]] <-
@@ -93,22 +91,25 @@ formals(makeGene2SymbolFromEnsDb)[["format"]] <-
 
 
 
-## FIXME RETHINK THIS, CALLING AN INTERNAL GENERATOR WITHOUT THE
-## BROADCLASS AND SYNONYMS OPTIONS.
+## FIXME NEED TO CREATE A UNIT TEST TO ENSURE VERSION REMOVAL WORKS HERE.
 
-#' @rdname makeGene2Symbol
+#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from a GFF file.
 #' @export
-## Updated 2020-10-06.
+## Updated 2020-01-14.
 makeGene2SymbolFromGFF <-
-    function(file, format) {
-        format <- match.arg(format)
-        gr <- makeGRangesFromGFF(
+    function(
+        file,
+        ignoreVersion = TRUE,
+        format
+    ) {
+        gr <- .makeGRangesFromGFF(
             file = file,
             level = "genes",
+            ignoreVersion = ignoreVersion,
             broadClass = FALSE,
             synonyms = FALSE
         )
-        Gene2Symbol(gr, format = format)
+        Gene2Symbol(object = gr, format = match.arg(format))
     }
 
 formals(makeGene2SymbolFromGFF)[["format"]] <-
@@ -116,7 +117,6 @@ formals(makeGene2SymbolFromGFF)[["format"]] <-
 
 
 
-#' @rdname makeGene2Symbol
-#' @usage NULL
+#' @describeIn makeGene2Symbol GTF alias for `makeGene2SymbolFromGFF`.
 #' @export
 makeGene2SymbolFromGTF <- makeGene2SymbolFromGFF
