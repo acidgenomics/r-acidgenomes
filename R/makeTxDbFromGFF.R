@@ -12,8 +12,8 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @param seqinfo `Seqinfo`.
-#'   Information about the chromosomes.
+#' @param seqinfo `Seqinfo` or `NULL`.
+#'   **Recommended.** Information about the chromosomes.
 #' @param source `character(1)` or `NULL`.
 #'   Description of data source.
 #'   If left `NULL`, defaults to file name.
@@ -67,14 +67,14 @@ NULL
 #' @export
 makeTxDbFromGFF <- function(
     file,
-    seqinfo,
+    seqinfo = NULL,
     organism = NULL,
     source = NULL
 ) {
     requireNamespaces("GenomicFeatures")
     assert(
         isString(file),
-        is(seqinfo, "Seqinfo"),
+        is(seqinfo, "Seqinfo") || is.null(seqinfo),
         isString(organism, nullOK = TRUE),
         isString(genomeBuild, nullOK = TRUE),
         isString(source, nullOK = TRUE)
@@ -84,16 +84,23 @@ makeTxDbFromGFF <- function(
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
-    ## e.g. "GRCh38.p12".
-    genomeBuild <- genome(seqinfo)[[1L]]
-    if (is.null(organism)) {
-        ## e.g. "Homo sapiens".
-        organism <- detectOrganism(genomeBuild)
+    if (is.null(seqinfo)) {
+        alertWarning(sprintf(
+            "Input of {.var %s} is strongly recommended.",
+            "seqinfo"
+        ))
+    } else {
+        ## e.g. "GRCh38.p12".
+        genomeBuild <- genome(seqinfo)[[1L]]
+        if (is.null(organism)) {
+            ## e.g. "Homo sapiens".
+            organism <- detectOrganism(genomeBuild)
+        }
+        assert(
+            isString(organism),
+            isString(genomeBuild)
+        )
     }
-    assert(
-        isString(organism),
-        isString(genomeBuild)
-    )
     if (is.null(source)) {
         ## Ensure we resolve the file path, if defining as data source.
         if (!isAURL(file)) file <- realpath(file)
