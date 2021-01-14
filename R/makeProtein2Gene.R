@@ -45,7 +45,7 @@ makeProtein2GeneFromEnsembl <- function(
         columns = c("GENEID", "GENENAME")
     )
     df <- as(df, "DataFrame")
-    colnames(df) <- camelCase(colnames(df))
+    colnames(df) <- camelCase(colnames(df), strict = TRUE)
     colnames(df) <- gsub("id$", "ID", colnames(df))
     colnames(df) <- gsub("name$", "Name", colnames(df))
     if (!areSetEqual(ids, unique(df[["proteinId"]]))) {
