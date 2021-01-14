@@ -61,7 +61,7 @@ setMethod(
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            transcripts = length(unique(object[["transcriptId"]])),
+            transcripts = length(unique(object[["txId"]])),
             genes = length(unique(object[["geneId"]])),
             organism = m[["organism"]],
             genomeBuild = m[["genomeBuild"]],
