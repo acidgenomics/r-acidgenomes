@@ -2,6 +2,7 @@
 % Please edit documentation in R/makeGRangesFromEnsembl.R
 \name{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsembl}
+\alias{makeGRangesFromEnsDb}
 \alias{annotable}
 \title{Make GRanges from Ensembl}
 \usage{
@@ -10,6 +11,13 @@ makeGRangesFromEnsembl(
   level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
+  ignoreVersion = TRUE,
+  synonyms = FALSE
+)
+
+makeGRangesFromEnsDb(
+  object,
+  level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
   synonyms = FALSE
 )
@@ -39,6 +47,10 @@ ensembldb in use.}
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
 
+\item{object}{\code{EnsDb} or \code{character(1)}.
+\code{EnsDb} object or name of specific annotation package containing a
+versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").}
+
 \item{...}{Additional arguments.}
 }
 \value{
@@ -51,7 +63,7 @@ Quickly obtain gene and transcript annotations from
 \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
 }
 \details{
-Simply specify the desired organism, using the full latin name. For example,
+Simply specify the desired organism, using the full Latin name. For example,
 we can obtain human annotations with \verb{Homo sapiens}. Optionally, specific
 Ensembl genome builds (e.g. \code{GRCh38}) and release versions (e.g. \code{87}) are
 supported.
@@ -65,6 +77,13 @@ we're querying Ensembl and not UCSC.
 }
 \section{Functions}{
 \itemize{
+\item \code{makeGRangesFromEnsembl}: Obtain annotations from Ensembl by
+querying AnnotationHub.
+
+\item \code{makeGRangesFromEnsDb}: Use a specific \code{EnsDb} object as the
+annotation source. Alternatively, can pass in an EnsDb package name as
+a \code{character(1)}.
+
 \item \code{annotable}: Legacy convenience function that calls \code{\link[=makeGRangesFromEnsembl]{makeGRangesFromEnsembl()}} and returns
 a \code{tbl_df} (tibble) instead of \code{GRanges}. Note that \code{GRanges} can also be
 coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
@@ -140,20 +159,31 @@ ah[["AH52260"]]
 }
 
 \examples{
-## Genes
-x <- makeGRangesFromEnsembl("Homo sapiens", level = "genes")
-summary(x)
+## Get annotations from Ensembl via AnnotationHub query.
+genes <- makeGRangesFromEnsembl(
+    organism = "Homo sapiens",
+    level = "genes"
+)
+summary(genes)
+transcripts <- makeGRangesFromEnsembl(
+    organism = "Homo sapiens",
+    level = "transcripts"
+)
+summary(transcripts)
 
-## Transcripts
-x <- makeGRangesFromEnsembl("Homo sapiens", level = "transcripts")
-summary(x)
+## Get annotations from specific EnsDb object or package.
+if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {
+    genes <- makeGRangesFromEnsDb(
+        object = "EnsDb.Hsapiens.v75",
+        level = "genes"
+    )
+    summary(genes)
+}
 }
 \seealso{
 \itemize{
 \item \href{https://bioconductor.org/packages/AnnotationHub/}{AnnotationHub}.
-\item \href{https://bioconductor.org/packages/GenomicFeatures/}{GenomicFeatures}.
 \item \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
 \item \code{ensembldb::ensDbFromGtf()}.
-\item \code{GenomicFeatures::makeTxDbFromGFF()}.
 }
 }
