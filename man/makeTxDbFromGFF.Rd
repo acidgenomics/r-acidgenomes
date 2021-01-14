@@ -15,10 +15,6 @@ File path.}
 
 \item{seqinfo}{\code{Seqinfo} or \code{NULL}.
 \strong{Recommended.} Information about the chromosomes.}
-
-\item{source}{\code{character(1)} or \code{NULL}.
-Description of data source.
-If left \code{NULL}, defaults to file name.}
 }
 \value{
 \code{TxDb}.
