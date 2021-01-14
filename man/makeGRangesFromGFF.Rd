@@ -9,16 +9,14 @@ makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  synonyms = FALSE,
-  broadClass = TRUE
+  synonyms = FALSE
 )
 
 makeGRangesFromGTF(
   file,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  synonyms = FALSE,
-  broadClass = TRUE
+  synonyms = FALSE
 )
 }
 \arguments{
@@ -31,9 +29,6 @@ Return as genes or transcripts.}
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
-
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
 }
 \value{
 \code{GRanges}.

@@ -20,19 +20,9 @@ makeTx2GeneFromEnsembl(
 
 makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE, synonyms = FALSE)
 
-makeTx2GeneFromGFF(
-  file,
-  ignoreVersion = TRUE,
-  synonyms = FALSE,
-  broadClass = TRUE
-)
+makeTx2GeneFromGFF(file, ignoreVersion = TRUE, synonyms = FALSE)
 
-makeTx2GeneFromGTF(
-  file,
-  ignoreVersion = TRUE,
-  synonyms = FALSE,
-  broadClass = TRUE
-)
+makeTx2GeneFromGTF(file, ignoreVersion = TRUE, synonyms = FALSE)
 
 makeTx2GeneFileFromGFF(
   file,
@@ -68,9 +58,6 @@ Queries the Ensembl web server, and is CPU intensive.}
 
 \item{file}{\code{character(1)}.
 File path.}
-
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
 }
 \value{
 \code{Tx2Gene}.
