@@ -1,4 +1,4 @@
-## FIXME NEED TO INCLUDE IGNOREVERSION HERE...
+## FIXME Ensure `ignoreVersion` works as intended here.
 
 
 
@@ -47,17 +47,14 @@ NULL
 #' @export
 ## Updated 2021-01-14.
 makeGene2SymbolFromEnsembl <-
-    function(
-        organism,
-        ...
-    ) {
+    function() {
         gr <- do.call(
             what = .makeGRangesFromEnsembl,
             args = matchArgsToDoCall(
                 args = list(
-                    level = "genes",
-                    broadClass = FALSE,
-                    synonyms = FALSE
+                    "broadClass" = FALSE,
+                    "level" = "genes",
+                    "synonyms" = FALSE
                 ),
                 removeFormals = "format"
             )
@@ -65,8 +62,8 @@ makeGene2SymbolFromEnsembl <-
         Gene2Symbol(object = gr, format = match.arg(format))
     }
 
-f <- formals(makeGRangesFromEnsembl)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
+f <- formals(.makeGRangesFromEnsembl)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 f[["format"]] <- formals(`Gene2Symbol,DataFrame`)[["format"]]
 formals(makeGene2SymbolFromEnsembl) <- f
 
@@ -77,43 +74,51 @@ formals(makeGene2SymbolFromEnsembl) <- f
 #' @export
 ## Updated 2021-01-14.
 makeGene2SymbolFromEnsDb <-
-    function(object, format) {
-        gr <- .makeGRangesFromEnsDb(
-            object = object,
-            broadClass = FALSE,
-            synonyms = FALSE
+    function() {
+        gr <- do.call(
+            what = .makeGRangesFromEnsDb,
+            args = matchArgsToDoCall(
+                args = list(
+                    "broadClass" = FALSE,
+                    "level" = "genes",
+                    "synonyms" = FALSE
+                ),
+                removeFormals = "format"
+            )
         )
         Gene2Symbol(object = gr, format = match.arg(format))
     }
 
-formals(makeGene2SymbolFromEnsDb)[["format"]] <-
-    formals(makeGene2SymbolFromEnsembl)[["format"]]
+f <- formals(.makeGRangesFromEnsDb)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
+f[["format"]] <- formals(makeGene2SymbolFromEnsembl)[["format"]]
+formals(makeGene2SymbolFromEnsDb) <- f
 
 
-
-## FIXME NEED TO CREATE A UNIT TEST TO ENSURE VERSION REMOVAL WORKS HERE.
 
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from a GFF file.
 #' @export
 ## Updated 2020-01-14.
 makeGene2SymbolFromGFF <-
-    function(
-        file,
-        ignoreVersion = TRUE,
-        format
-    ) {
-        gr <- .makeGRangesFromGFF(
-            file = file,
-            level = "genes",
-            ignoreVersion = ignoreVersion,
-            broadClass = FALSE,
-            synonyms = FALSE
+    function() {
+        gr <- do.call(
+            what = .makeGRangesFromGFF,
+            args = matchArgsToDoCall(
+                args = list(
+                    "broadClass" = FALSE,
+                    "level" = "genes",
+                    "synonyms" = FALSE
+                ),
+                removeFormals = "format"
+            )
         )
         Gene2Symbol(object = gr, format = match.arg(format))
     }
 
-formals(makeGene2SymbolFromGFF)[["format"]] <-
-    formals(makeGene2SymbolFromEnsembl)[["format"]]
+f <- formals(.makeGRangesFromGFF)
+f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
+f[["format"]] <- formals(makeGene2SymbolFromEnsembl)[["format"]]
+formals(makeGene2SymbolFromGFF) <- f
 
 
 
