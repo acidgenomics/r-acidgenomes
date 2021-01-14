@@ -415,7 +415,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-12.
+#' @note Updated 2021-01-14.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -463,7 +463,7 @@
     if (hasLength(invalid)) {
         invalid <- sort(unique(invalid))
         alertWarning(sprintf(
-            fmt = "%d invalid %s: {.var %s}.",
+            fmt = "%d invalid %s: %s.",
             length(invalid),
             ngettext(
                 n = length(invalid),

@@ -1,17 +1,5 @@
-## FIXME ADD SUPPORT FOR EXONS AND CDS.
-
+## FIXME RETHINK METADATA RETURN STRUCTURE.
 ## FIXME NEED TO ENSURE CALL IS SLOTTED INTO OBJECT.
-
-## The tximeta is thinking about this approach very similarly.
-##
-## FIXME CONSIDER Returning useful Seqinfo, similar to tximeta.
-##
-## Useful functions to reference:
-## - tximeta:::gtf2RefSeq
-##
-## See also:
-## - https://github.com/mikelove/tximeta/blob/master/R/tximeta.R
-## - https://github.com/mikelove/tximeta/blob/master/tests/testthat/test_tximeta.R
 
 
 
@@ -22,7 +10,7 @@
 #' [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/) and
 #' [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #'
-#' Simply specify the desired organism, using the full latin name. For example,
+#' Simply specify the desired organism, using the full Latin name. For example,
 #' we can obtain human annotations with `Homo sapiens`. Optionally, specific
 #' Ensembl genome builds (e.g. `GRCh38`) and release versions (e.g. `87`) are
 #' supported.
@@ -108,24 +96,130 @@
 #'
 #' @seealso
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
-#' - [GenomicFeatures](https://bioconductor.org/packages/GenomicFeatures/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #' - `ensembldb::ensDbFromGtf()`.
-#' - `GenomicFeatures::makeTxDbFromGFF()`.
 #'
 #' @examples
-#' ## Genes
-#' x <- makeGRangesFromEnsembl("Homo sapiens", level = "genes")
-#' summary(x)
+#' ## Get annotations from Ensembl via AnnotationHub query.
+#' genes <- makeGRangesFromEnsembl(
+#'     organism = "Homo sapiens",
+#'     level = "genes"
+#' )
+#' summary(genes)
+#' transcripts <- makeGRangesFromEnsembl(
+#'     organism = "Homo sapiens",
+#'     level = "transcripts"
+#' )
+#' summary(transcripts)
 #'
-#' ## Transcripts
-#' x <- makeGRangesFromEnsembl("Homo sapiens", level = "transcripts")
-#' summary(x)
+#' ## Get annotations from specific EnsDb object or package.
+#' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
+#'     genes <- makeGRangesFromEnsDb(
+#'         object = "EnsDb.Hsapiens.v75",
+#'         level = "genes"
+#'     )
+#'     summary(genes)
+#' }
 NULL
 
 
 
-#' Internal GRanges from Ensembl generator with additional options
+#' Make GRanges from EnsDb object
+#'
+#' Internal variant with more options that we don't want to expose to user.
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRangesFromEnsDb <- function(
+    object,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
+    ## Internal-only arguments:
+    broadClass = TRUE
+) {
+    assert(
+        isFlag(ignoreVersion),
+        isFlag(synonyms),
+        isFlag(broadClass)
+    )
+    level <- match.arg(level)
+    alert("Making {.var GRanges} from {.var EnsDb}.")
+    if (isString(object)) {
+        package <- object
+        requireNamespaces(package)
+        object <- get(
+            x = package,
+            envir = asNamespace(package),
+            inherits = FALSE
+        )
+    }
+    assert(is(object, "EnsDb"))
+    metadata <- .getEnsDbMetadata(object, level = level)
+    args <- list(
+        "x" = object,
+        "order.type" = "asc",
+        "return.type" = "GRanges"
+    )
+    ## FIXME USE LIST COLUMNS HERE INSTEAD.
+    geneCols <- listColumns(object, "gene")
+    geneCols <- c(
+        "gene_id",
+        "gene_name",
+        "gene_biotype",
+        "seq_coord_system",
+        "entrezid"
+    )
+    switch(
+        EXPR = level,
+        "genes" = {
+            fun <- ensembldb::genes
+            args <- append(
+                x = args,
+                values = list(
+                    "columns" = geneCols,
+                    "order.by" = "gene_id"
+                )
+            )
+        },
+        "transcripts" = {
+            fun <- ensembldb::transcripts
+            args <- append(
+                x = args,
+                values = list(
+                    "columns" = c(
+                        "tx_id",
+                        "tx_name",
+                        "tx_biotype",
+                        "tx_cds_seq_start",
+                        "tx_cds_seq_end",
+                        geneCols
+                    ),
+                    "order.by" = "tx_id"
+                )
+            )
+        }
+    )
+    ## This step can warn about out-of-bound ranges that need to be trimmed.
+    ## We're taking care of trimming on the `.makeGRanges` call below.
+    suppressWarnings({
+        gr <- do.call(what = fun, args = args)
+    })
+    assert(is(gr, "GRanges"))
+    metadata(gr) <- metadata
+    .makeGRanges(
+        object = gr,
+        ignoreVersion = ignoreVersion,
+        broadClass = broadClass,
+        synonyms = synonyms
+    )
+}
+
+
+
+#' Make GRanges from Ensembl via AnnotationHub query
+#'
+#' Internal variant with more options that we don't want to expose to user.
 #'
 #' @note Updated 2021-01-14.
 #' @noRd
@@ -169,7 +263,8 @@ formals(.makeGRangesFromEnsembl)[["level"]] <-
 
 
 
-#' @rdname makeGRangesFromEnsembl
+#' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
+#'   querying AnnotationHub.
 #' @export
 makeGRangesFromEnsembl <- function(
     organism,
@@ -191,6 +286,33 @@ makeGRangesFromEnsembl <- function(
 
 formals(makeGRangesFromEnsembl)[["level"]] <-
     formals(.makeGRangesFromEnsembl)[["level"]]
+
+
+
+#' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
+#'   annotation source. Alternatively, can pass in an EnsDb package name as
+#'   a `character(1)`.
+#' @export
+#'
+#' @param object `EnsDb` or `character(1)`.
+#'   `EnsDb` object or name of specific annotation package containing a
+#'   versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
+makeGRangesFromEnsDb <- function(
+    object,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE
+) {
+    .makeGRangesFromEnsDb(
+        object = object,
+        level = match.arg(level),
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
+}
+
+formals(makeGRangesFromEnsDb)[["level"]] <-
+    formals(.makeGRangesFromEnsDb)[["level"]]
 
 
 
