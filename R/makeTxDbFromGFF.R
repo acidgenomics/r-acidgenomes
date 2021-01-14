@@ -14,9 +14,6 @@
 #'
 #' @param seqinfo `Seqinfo` or `NULL`.
 #'   **Recommended.** Information about the chromosomes.
-#' @param source `character(1)` or `NULL`.
-#'   Description of data source.
-#'   If left `NULL`, defaults to file name.
 #'
 #' @details
 #' This step can be noisy and generate expected warnings, which are
