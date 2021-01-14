@@ -8,12 +8,10 @@
 #' using [utils::capture.output()] here to suppress the console output, since
 #' it's not very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
-    userAttached <- .packages()
     invisible(capture.output({
         ah <- suppressMessages(AnnotationHub())
     }))
     assert(is(ah, "AnnotationHub"))
-    forceDetach(keep = userAttached)
     ah
 }
 
@@ -44,7 +42,6 @@
         "AnnotationHub",
         packageVersion("AnnotationHub")
     ))
-    userAttached <- .packages()
     ah <- .annotationHub()
     ahs <- query(ah, pattern = c(organism, "NCBI", "OrgDb"))
     id <- tail(names(ahs), n = 1L)
@@ -80,6 +77,5 @@
     colnames(df)[colnames(df) == "ENSEMBL"] <- "ensembl"
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrez"
     df[["entrez"]] <- as.integer(df[["entrez"]])
-    forceDetach(keep = userAttached)
     df
 }

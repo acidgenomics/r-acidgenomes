@@ -8,6 +8,7 @@
 
 ### Major changes
 
+- Now ensuring GenomicRanges gets attached as a dependency.
 - Now using BiocFileCache (via `pipette::cacheURL` internally) to automatically
   cache GFF/GTF files when used in `makeGRangesFromGFF`.
 - Renamed `ignoreTxVersion` to simply `ignoreVersion`, where applicable.
