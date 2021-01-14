@@ -13,30 +13,6 @@
 ## - https://github.com/mikelove/tximeta/blob/master/R/tximeta.R
 ## - https://github.com/mikelove/tximeta/blob/master/tests/testthat/test_tximeta.R
 
-## Consider this for RefSeq:
-## > Seqinfo(seqnames=tab$refseqAccn,
-## >         seqlengths=tab$length,
-## >         isCircular=NA,
-## >         genome=genome)
-##
-## And assign back in:
-## > try(seqinfo(txps) <- refseq.genome[seqlevels(txps)])
-
-## FIXME NEW ISSUE POPPING UP WITH ENSEMBL 102:
-## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE) :
-##   GRanges object contains 1 out-of-bound range
-##   located on sequence LRG_432. Note that
-##   ranges located on a sequence whose length is
-##   unknown (NA) or on a circular sequence are
-##   not considered out-of-bound (use
-##   seqlengths() and isCircular() to get the
-##   lengths and circularity flags of the
-##   underlying sequences). You can use trim() to
-##   trim these ranges. See
-##   ?`trim,GenomicRanges-method` for more
-##   information.
-## Calls: makeGRangesFromEnsembl ... validityMethod -> method -> ## valid.GenomicRanges.seqinfo
-
 
 
 #' Make GRanges from Ensembl
@@ -122,8 +98,8 @@
 #' ah[["AH52260"]]
 #' ```
 #'
-#' @export
-#' @note Updated 2020-10-10.
+#' @name makeGRangesFromEnsembl
+#' @note Updated 2021-01-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -145,15 +121,23 @@
 #' ## Transcripts
 #' x <- makeGRangesFromEnsembl("Homo sapiens", level = "transcripts")
 #' summary(x)
-makeGRangesFromEnsembl <- function(
+NULL
+
+
+
+#' Internal GRanges from Ensembl generator with additional options
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRangesFromEnsembl <- function(
     organism,
-    level = c("genes", "transcripts"),
-    genomeBuild = NULL,
-    release = NULL,
-    ignoreVersion = TRUE,
-    ## FIXME broadClass and synonyms should be a single call here.
-    broadClass = TRUE,
-    synonyms = FALSE
+    level,
+    genomeBuild,
+    release,
+    ignoreVersion,
+    synonyms,
+    ## Internal-only arguments:
+    broadClass = TRUE
 ) {
     assert(
         isFlag(ignoreVersion),
@@ -171,8 +155,7 @@ makeGRangesFromEnsembl <- function(
         is(edb, "EnsDb"),
         isString(attr(edb, "id"))
     )
-    ## FIXME RETHINK BROADCLASS AND SYNONYMS APPROACH HERE.
-    makeGRangesFromEnsDb(
+    .makeGRangesFromEnsDb(
         object = edb,
         level = level,
         ignoreVersion = ignoreVersion,
@@ -181,8 +164,33 @@ makeGRangesFromEnsembl <- function(
     )
 }
 
+formals(.makeGRangesFromEnsembl)[["level"]] <-
+    formals(.makeGRangesFromEnsDb)[["level"]]
+
+
+
+#' @rdname makeGRangesFromEnsembl
+#' @export
+makeGRangesFromEnsembl <- function(
+    organism,
+    level,
+    genomeBuild = NULL,
+    release = NULL,
+    ignoreVersion = TRUE,
+    synonyms = FALSE
+) {
+    .makeGRangesFromEnsembl(
+        organism = organism,
+        level = match.arg(level),
+        genomeBuild = genomeBuild,
+        release = release,
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
+}
+
 formals(makeGRangesFromEnsembl)[["level"]] <-
-    formals(makeGRangesFromEnsDb)[["level"]]
+    formals(.makeGRangesFromEnsembl)[["level"]]
 
 
 
