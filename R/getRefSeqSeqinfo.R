@@ -6,10 +6,7 @@
 #' @note Updated 2021-01-14.
 #'
 #' @param file `character(1)`.
-#'   Assembly report file or URL.
-#' @param genome `character(1)` or `NULL`.
-#'   Genome build.
-#'   If left `NULL`, will be detected from file name.
+#'   RefSeq assembly report file or URL.
 #'
 #' @return `Seqinfo`.
 #'
@@ -31,10 +28,10 @@
 #' seqinfo <- getRefSeqSeqinfo(file)
 #' print(seqinfo)
 getRefSeqSeqinfo <- function(file) {
-    pattern <- "^(.+)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report.txt$"
+    pattern <- "^(.+)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
     assert(
         isString(file),
-        isMatchingRegex(pattern = pattern, x = file)
+        isMatchingRegex(pattern = pattern, x = basename(file))
     )
     file <- .cacheIt(file)
     ## e.g. GRCh38.p13, which is the format Seqinfo expects.
