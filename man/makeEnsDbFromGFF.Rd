@@ -2,9 +2,12 @@
 % Please edit documentation in R/makeEnsDbFromGFF.R
 \name{makeEnsDbFromGFF}
 \alias{makeEnsDbFromGFF}
+\alias{makeEnsDbFromGTF}
 \title{Make EnsDb object from a GFF/GTF file}
 \usage{
 makeEnsDbFromGFF(file, organism = NULL, genomeBuild = NULL, release = NULL)
+
+makeEnsDbFromGTF(file, organism = NULL, genomeBuild = NULL, release = NULL)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -29,8 +32,15 @@ ensembldb in use.}
 \code{EnsDb}.
 }
 \description{
-Make EnsDb object from a GFF/GTF file
+Wrapper for ensembldb importer functions.
 }
+\section{Functions}{
+\itemize{
+\item \code{makeEnsDbFromGFF}: Primary function.
+
+\item \code{makeEnsDbFromGTF}: Alias for GTF files.
+}}
+
 \note{
 Updated 2021-01-14.
 }
@@ -42,4 +52,10 @@ edb <- makeEnsDbFromGFF(
     genomeBuild = "GRCh38",
     release = 100L
 )
+}
+\seealso{
+\itemize{
+\item \code{ensembldb::ensDbFromGff()}.
+\item \code{ensembldb::ensDbFromGtf()}.
+}
 }
