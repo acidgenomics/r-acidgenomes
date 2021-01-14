@@ -2,8 +2,8 @@
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase compress download fileExt forceDetach initDir
-#'   matchArgsToDoCall pasteURL printString requireNamespaces showSlotInfo
+#' @importFrom AcidBase compress download fileExt initDir matchArgsToDoCall
+#'   pasteURL printString requireNamespaces showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
@@ -18,7 +18,7 @@
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom SummarizedExperiment rowData rowRanges
-#' @importFrom ensembldb ensemblVersion genes transcripts
+#' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreFiles allAreURLs areDisjointSets areSetEqual assert
 #'   bapply hasDuplicates hasInternet hasLength hasNoDuplicates hasNames
 #'   hasRownames hasRows isADir isAFile isAURL isAny isCharacter isFlag isInt

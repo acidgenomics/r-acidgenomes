@@ -85,7 +85,6 @@ getEnsDb <- function(
         isInt(release, nullOK = TRUE),
         is(ah, "AnnotationHub") || is.null(ah)
     )
-    userAttached <- .packages()
     ## Standardize organism name, if necessary.
     organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
     ## ensembldb always uses two words for organisms, instead of matching the
@@ -209,7 +208,6 @@ getEnsDb <- function(
         unname(isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$"))
     )
     alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
-    forceDetach(keep = userAttached)
     id
 }
 
@@ -217,7 +215,7 @@ getEnsDb <- function(
 
 #' Get EnsDb from AnnotationHub ID
 #'
-#' @note Updated 2020-09-24.
+#' @note Updated 2021-01-14.
 #' @noRd
 #'
 #' @details
@@ -234,7 +232,6 @@ getEnsDb <- function(
         isString(id),
         is(ah, "AnnotationHub") || is.null(ah)
     )
-    userAttached <- .packages()
     if (is.null(ah)) {
         ah <- .annotationHub()
     }
@@ -243,7 +240,6 @@ getEnsDb <- function(
         edb <- suppressMessages(ah[[id]])
     }))
     assert(is(edb, "EnsDb"))
-    forceDetach(keep = userAttached)
     edb
 }
 
@@ -257,7 +253,6 @@ getEnsDb <- function(
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
     alert(sprintf("Getting {.var EnsDb} from {.pkg %s}.", package))
-    userAttached <- .packages()
     assert(isString(package))
     require(package, character.only = TRUE)
     edb <- get(
@@ -266,7 +261,6 @@ getEnsDb <- function(
         inherits = FALSE
     )
     assert(is(edb, "EnsDb"))
-    forceDetach(keep = userAttached)
     edb
 }
 
