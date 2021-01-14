@@ -16,17 +16,21 @@ makeGene2SymbolFromEnsembl(
   format = c("makeUnique", "unmodified", "1:1")
 )
 
-makeGene2SymbolFromEnsDb(object, format = c("makeUnique", "unmodified", "1:1"))
+makeGene2SymbolFromEnsDb(
+  object,
+  ignoreVersion = TRUE,
+  format = c("makeUnique", "unmodified", "1:1")
+)
 
 makeGene2SymbolFromGFF(
   file,
-  ignoreVersion = TRUE,
+  ignoreVersion,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
 makeGene2SymbolFromGTF(
   file,
-  ignoreVersion = TRUE,
+  ignoreVersion,
   format = c("makeUnique", "unmodified", "1:1")
 )
 }
