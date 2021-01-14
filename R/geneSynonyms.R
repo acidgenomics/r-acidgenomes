@@ -5,7 +5,7 @@
 #' @note Synonym support for *Caenorhabditis elegans* is poor on NCBI.
 #' Use the [WormBase](https://r.acidgenomics.com/packages/wormbase/) package
 #' instead.
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-01-14.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -22,8 +22,9 @@
 #'   Returns `geneID`, `geneName`, and `geneSynonyms` columns in the split.
 #'
 #' @examples
-#' object <- geneSynonyms(organism = "Homo sapiens")
-#' print(object)
+#' ## CPU intensive.
+#' ## > object <- geneSynonyms(organism = "Homo sapiens")
+#' ## > print(object)
 geneSynonyms <- function(
     organism = c(
         "Homo sapiens",
@@ -54,7 +55,7 @@ geneSynonyms <- function(
         paste0(genome[["species"]], ".gene_info.gz"),
         protocol = "ftp"
     )
-    file <- cacheURL(url = url, pkg = packageName())
+    file <- .cacheIt(url)
     df <- import(file = file, format = "tsv", colnames = TRUE)
     assert(hasLength(df))
     df <- as(df, "DataFrame")
