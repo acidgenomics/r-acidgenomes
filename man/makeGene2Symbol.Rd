@@ -55,11 +55,10 @@ Formatting method to apply:
 \itemize{
 \item \code{"makeUnique"}: \emph{Recommended.} Apply \code{\link[base:make.unique]{make.unique()}}
 to the \code{geneName} column. Gene symbols are made unique, while the gene
-IDs remain unmodified.
-\item \code{"unmodified"}: Return \code{geneID} and \code{geneName} columns unmodified, in
+identifiers remain unmodified.
+\item \code{"unmodified"}: Return \code{geneId} and \code{geneName} columns unmodified, in
 long format.
-\item \code{"1:1"}: For gene symbols that map to multiple gene IDs, select only the
-first annotated gene ID.
+\item \code{"1:1"}: For gene symbols that map to multiple gene identifiers, select
 }}
 
 \item{object}{Object.}
