@@ -28,8 +28,8 @@ mapply(
     },
     file = files,
     MoreArgs = list(
-        remoteDir = AcidGenomesTestsURL,
-        envir = environment()
+        "remoteDir" = AcidGenomesTestsURL,
+        "envir" = environment()
     )
 )
 rm(files)
