@@ -1,5 +1,5 @@
-#' @inherit Gene2Symbol-class title description return
 #' @name Gene2Symbol
+#' @inherit Gene2Symbol-class title description return
 #'
 #' @note For some organisms, gene names and gene symbols do not map 1:1 (e.g.
 #'   *Homo sapiens* and *Mus musculus*). Refer to the `format` argument here in
@@ -40,12 +40,10 @@ NULL
         format <- match.arg(format)
         colnames(object) <- camelCase(colnames(object), strict = TRUE)
         cols <- c("geneId", "geneName")
-        if (!all(cols %in% colnames(object))) {
-            stop(sprintf(
-                "Object does not contain gene-to-symbol mappings: %s.",
-                toString(cols)
-            ))
-        }
+        assert(
+            isSubset(cols, colnames(object)),
+            hasRows(object)
+        )
         df <- DataFrame(
             "geneId" = as.character(decode(object[["geneId"]])),
             "geneName" = as.character(decode(object[["geneName"]])),
