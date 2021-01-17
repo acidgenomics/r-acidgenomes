@@ -11,7 +11,7 @@
 Gene-to-symbol mappings
 }
 \details{
-Contains a \code{DataFrame} with \code{geneID} and \code{geneName} columns.
+Contains a \code{DataFrame} with \code{geneId} and \code{geneName} columns.
 }
 \note{
 Updated 2019-08-08.

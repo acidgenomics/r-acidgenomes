@@ -20,14 +20,14 @@ to the first argument in the \code{character} vector.}
 \value{
 \itemize{
 \item \code{DataFrame}:
-Returns unique row for each \code{geneID}.
-Returns only \code{geneID} and \code{geneSynonyms} columns.
+Returns unique row for each \code{geneId}.
+Returns only \code{geneId} and \code{geneSynonyms} columns.
 The \code{geneSynonyms} column returns as character vector, with synonyms
 arranged alphabetically and delimited by \code{", "}.
 \item \code{SplitDataFrameList}:
-Split by \code{geneID} column.
-Keeps duplicate rows mapping to same \code{geneID} (e.g. ENSG00000004866).
-Returns \code{geneID}, \code{geneName}, and \code{geneSynonyms} columns in the split.
+Split by \code{geneId} column.
+Keeps duplicate rows mapping to same \code{geneId} (e.g. ENSG00000004866).
+Returns \code{geneId}, \code{geneName}, and \code{geneSynonyms} columns in the split.
 }
 }
 \description{
