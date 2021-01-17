@@ -108,10 +108,10 @@ downloadEnsemblGenome <-
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
         args <- list(
-            organism = organism,
-            genomeBuild = genomeBuild,
-            releaseURL = releaseURL,
-            outputDir = outputDir
+            "organism" = organism,
+            "genomeBuild" = genomeBuild,
+            "releaseURL" = releaseURL,
+            "outputDir" = outputDir
         )
         out <- list()
         if (isTRUE(dlList[["type"]][["genome"]])) {
