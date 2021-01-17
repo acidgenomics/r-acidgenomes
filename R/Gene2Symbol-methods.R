@@ -33,12 +33,12 @@ NULL
 
 
 
-## Updated 2020-01-20.
+## Updated 2021-01-17.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(object, format = c("makeUnique", "unmodified", "1:1")) {
         assert(hasRows(object))
         format <- match.arg(format)
-        ## Check for required columns.
+        colnames(object) <- camelCase(colnames(object), strict = TRUE)
         cols <- c("geneId", "geneName")
         if (!all(cols %in% colnames(object))) {
             stop(sprintf(
@@ -46,17 +46,17 @@ NULL
                 toString(cols)
             ))
         }
-        data <- DataFrame(
-            geneId = as.character(decode(object[["geneId"]])),
-            geneName = as.character(decode(object[["geneName"]])),
+        df <- DataFrame(
+            "geneId" = as.character(decode(object[["geneId"]])),
+            "geneName" = as.character(decode(object[["geneName"]])),
             row.names = rownames(object)
         )
         ## Inform the user about how many symbols multi-map.
         ## Note that `duplicated` doesn't work on Rle, so we have to coerce
         ## columns to character first (see `as_tibble` call above).
-        duplicated <- duplicated(data[["geneName"]])
+        duplicated <- duplicated(df[["geneName"]])
         if (any(duplicated)) {
-            dupes <- unique(data[["geneName"]][duplicated])
+            dupes <- unique(df[["geneName"]][duplicated])
             alertInfo(sprintf(
                 "%d non-unique gene %s detected.",
                 length(dupes),
@@ -72,7 +72,7 @@ NULL
             ## Returning 1:1 mappings with renamed gene symbols.
             ## This is the default, and including a message is too noisy, since
             ## it is used heavily in other functions.
-            data[["geneName"]] <- make.unique(data[["geneName"]])
+            df[["geneName"]] <- make.unique(df[["geneName"]])
         } else if (format == "unmodified") {
             alertWarning(paste(
                 "Returning with unmodified gene symbols",
@@ -83,7 +83,7 @@ NULL
                 "Returning 1:1 mappings using oldest",
                 "gene identifier per symbol."
             ))
-            x <- split(data, f = data[["geneName"]])
+            x <- split(df, f = df[["geneName"]])
             x <- bplapply(
                 X = x,
                 FUN = function(x) {
@@ -94,12 +94,12 @@ NULL
             )
             x <- DataFrameList(x)
             x <- unlist(x, recursive = FALSE, use.names = FALSE)
-            data <- x
-            assert(is(data, "DataFrame"))
+            df <- x
+            assert(is(df, "DataFrame"))
         }
-        metadata(data) <- .slotGenomeMetadata(object)
-        metadata(data)[["format"]] <- format
-        new(Class = "Gene2Symbol", data)
+        metadata(df) <- .slotGenomeMetadata(object)
+        metadata(df)[["format"]] <- format
+        new(Class = "Gene2Symbol", df)
     }
 
 
@@ -117,10 +117,10 @@ setMethod(
 ## Updated 2019-07-22.
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, format) {
-        data <- as(object, "DataFrame")
-        data <- unique(data)
-        metadata(data) <- metadata(object)
-        do.call(what = Gene2Symbol, args = list(object = data, format = format))
+        df <- as(object, "DataFrame")
+        df <- unique(df)
+        metadata(df) <- metadata(object)
+        do.call(what = Gene2Symbol, args = list(object = df, format = format))
     }
 
 formals(`Gene2Symbol,GRanges`) <- formals(`Gene2Symbol,DataFrame`)
@@ -141,9 +141,9 @@ setMethod(
 `Gene2Symbol,SummarizedExperiment` <-  # nolint
     function(object, format) {
         object <- as.SummarizedExperiment(object)
-        data <- rowData(object)
-        rownames(data) <- rownames(object)
-        do.call(what = Gene2Symbol, args = list(object = data, format = format))
+        df <- rowData(object)
+        rownames(df) <- rownames(object)
+        do.call(what = Gene2Symbol, args = list(object = df, format = format))
     }
 
 formals(`Gene2Symbol,SummarizedExperiment`) <- formals(`Gene2Symbol,DataFrame`)
