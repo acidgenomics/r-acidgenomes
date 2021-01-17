@@ -24,8 +24,8 @@ ensembldb in use.}
 \code{DataFrame}.
 Data frame containing mapping columns:
 \itemize{
-\item geneID
-\item hgncID
+\item geneId
+\item hgncId
 \item geneName
 \item hgncName
 }

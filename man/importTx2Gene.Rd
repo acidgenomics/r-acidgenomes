@@ -46,12 +46,12 @@ tximport-DESeq2 workflow.}
 \code{Tx2Gene}.
 }
 \description{
-Generates a \code{Tx2Gene} object containing \code{transcriptID} and \code{geneID} columns.
+Generates a \code{Tx2Gene} object containing \code{txId} and \code{geneId} columns.
 }
 \note{
 File should not contain column header names.
 
-Updated 2020-05-10.
+Updated 2021-01-14.
 }
 \examples{
 file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")
