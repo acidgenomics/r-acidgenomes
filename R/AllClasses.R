@@ -1,11 +1,3 @@
-## FIXME Consider making GRanges classes:
-## - RefSeqGenes
-## - RefSeqTranscripts
-## - WormBaseGenes
-## - WormBaseTranscripts
-
-
-
 ## Genome annotation classes ===================================================
 #' Ensembl gene annotations
 #'
@@ -26,6 +18,7 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for no PAR genes (GENCODE only).
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -52,6 +45,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -77,6 +71,7 @@ setValidity(
     Class = "FlyBaseGenes",
     method = function(object) {
         ## FIXME Ensure we have the genome release version.
+        ## FIXME Don't check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -102,6 +97,7 @@ setValidity(
     Class = "FlyBaseTranscripts",
     method = function(object) {
         ## FIXME Ensure we have the genome release version.
+        ## FIXME Don't check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -129,6 +125,7 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for PAR genes here.
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -155,6 +152,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -180,6 +178,7 @@ setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
         ## FIXME Need to add checks here.
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -206,6 +205,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
+        ## FIXME Check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -231,6 +231,7 @@ setValidity(
     Class = "WormBaseGenes",
     method = function(object) {
         ## FIXME Need to add checks here.
+        ## FIXME Don't check for seqinfo here.
         validate(
             hasRows(object)
         )
@@ -256,6 +257,7 @@ setValidity(
     Class = "WormBaseTranscripts",
     method = function(object) {
         ## FIXME Need to add checks here.
+        ## FIXME Don't check for seqinfo here.
         validate(
             hasRows(object)
         )
