@@ -1,6 +1,6 @@
 #' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
-#' @note Updated 2020-10-01.
+#' @note Updated 2021-01-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -44,14 +44,15 @@ NULL
     function(
         object,
         format = c("1:1", "long"),
+        ## Internal-only args:
         return = c("Ensembl2Entrez", "Entrez2Ensembl")
     ) {
         format <- match.arg(format)
         return <- match.arg(return)
         cols <- switch(
             EXPR = return,
-            "Ensembl2Entrez" = c("ensembl", "entrez"),
-            "Entrez2Ensembl" = c("entrez", "ensembl")
+            "Ensembl2Entrez" = c("ensemblId", "entrezId"),
+            "Entrez2Ensembl" = c("entrezId", "ensemblId")
         )
         assert(
             is(object, "DataFrame"),
@@ -62,8 +63,8 @@ NULL
         rownames(df) <- NULL
         df <- decode(expand(df))
         assert(
-            is.character(df[["ensembl"]]),
-            is.integer(df[["entrez"]])
+            is.character(df[["ensemblId"]]),
+            is.integer(df[["entrezId"]])
         )
         if (identical(format, "1:1")) {
             split <- split(x = df, f = df[[1L]])
@@ -82,12 +83,10 @@ NULL
                 use.names = FALSE
             )
             df <- DataFrame("a" = names(split), "b" = unique)
-            ## This will check the return values for duplicates.
-            ## > assert(all(bapply(X = df, FUN = hasNoDuplicates)))
             rownames(df) <- df[[1L]]
             colnames(df) <- cols
         }
-        df[["entrez"]] <- as.integer(df[["entrez"]])
+        df[["entrezId"]] <- as.integer(df[["entrezId"]])
         df <- df[complete.cases(df), ]
         assert(hasRows(df))
         metadata(df) <- metadata(object)
@@ -97,26 +96,32 @@ NULL
 
 
 
-## Updated 2020-10-01.
+## Updated 2021-01-18.
 `Ensembl2Entrez,character` <-  # nolint
     function(
         object,
         organism = NULL,
-        format = c("1:1", "long")
+        format
     ) {
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
+        df <- .getEnsembl2EntrezFromOrgDb(
+            keys = object,
+            keytype = "ENSEMBL",
+            columns = "ENTREZID",
+            organism = organism
+        )
         .makeEnsembl2Entrez(
-            object = .getEnsembl2EntrezFromOrgDb(
-                keys = object,
-                keytype = "ENSEMBL",
-                columns = "ENTREZID",
-                organism = organism
-            ),
+            object = df,
             format = match.arg(format)
         )
     }
+
+formals(`Ensembl2Entrez,character`)[["format"]] <-
+    formals(.makeEnsembl2Entrez)[["format"]]
+
+
 
 #' @rdname Ensembl2Entrez
 #' @export
@@ -128,24 +133,26 @@ setMethod(
 
 
 
-## Updated 2020-10-01.
+## Updated 2021-01-18.
 `Entrez2Ensembl,integer` <-  # nolint
-    function(
-        object,
-        organism = "Homo sapiens",
-        format = c("1:1", "long")
-    ) {
+    function(object, organism, format) {
+        df <- .getEnsembl2EntrezFromOrgDb(
+            keys = as.character(object),
+            keytype = "ENTREZID",
+            columns = "ENSEMBL",
+            organism = organism
+        )
         .makeEnsembl2Entrez(
-            object = .getEnsembl2EntrezFromOrgDb(
-                keys = as.character(object),
-                keytype = "ENTREZID",
-                columns = "ENSEMBL",
-                organism = organism
-            ),
+            object = df,
             format = match.arg(format),
             return = "Entrez2Ensembl"
         )
     }
+
+formals(`Entrez2Ensembl,integer`)[["format"]] <-
+    formals(.makeEnsembl2Entrez)[["format"]]
+
+
 
 #' @rdname Ensembl2Entrez
 #' @export
@@ -157,21 +164,26 @@ setMethod(
 
 
 
-## Updated 2020-10-01.
+## Updated 2021-01-18.
 `Ensembl2Entrez,GRanges` <-  # nolint
-    function(
-        object,
-        format = c("1:1", "long")
-    ) {
-        df <- as(object, "DataFrame")
-        colnames(df)[colnames(df) == "geneId"] <- "ensembl"
-        colnames(df)[colnames(df) == "entrezId"] <- "entrez"
+    function(object, format) {
+        assert(
+            isSubset(
+                x = c("geneId", "entrezId"),
+                y = colnames(mcols(object))
+            )
+        )
+        df <- mcols(object)
+        colnames(df)[colnames(df) == "geneId"] <- "ensemblId"
         metadata(df) <- metadata(object)
         .makeEnsembl2Entrez(
             object = df,
             format = match.arg(format)
         )
     }
+
+formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
+    formals(.makeEnsembl2Entrez)[["format"]]
 
 
 
@@ -187,9 +199,15 @@ setMethod(
 
 ## Updated 2020-10-01.
 `Ensembl2Entrez,RangedSummarizedExperiment` <-  # nolint
-    function(object, ...) {
-        Ensembl2Entrez(rowRanges(object), ...)
+    function(object, format) {
+        Ensembl2Entrez(
+            object = rowRanges(object),
+            format = match.arg(format)
+        )
     }
+
+formals(`Ensembl2Entrez,RangedSummarizedExperiment`)[["format"]] <-
+    formals(.makeEnsembl2Entrez)[["format"]]
 
 
 
