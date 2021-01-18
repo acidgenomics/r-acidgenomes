@@ -60,10 +60,10 @@ setValidity(
                 y = camelCase(colnames(mcols(object)), strict = TRUE)
             ),
             identical(metadata(object)[["source"]], "Ensembl"),
-            isInt(metadata(object)[["ensemblRelease"]]),
             isString(metadata(object)[["genomeBuild"]]),
-            isOrganism(metadata(object)[["organism"]]),
             isFlag(metadata(object)[["ignoreVersion"]]),
+            isOrganism(metadata(object)[["organism"]]),
+            isInt(metadata(object)[["release"]]),
             identical(metadata(object)[["level"]], "transcripts")
         )
     }
@@ -125,12 +125,12 @@ setValidity(
 #' Contains a `GRanges` with GENCODE gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #'
 #' @return `GencodeGenes`.
 setClass(
     Class = "GencodeGenes",
-    contains = "GRanges"
+    contains = "EnsemblGenes"
 )
 setValidity(
     Class = "GencodeGenes",

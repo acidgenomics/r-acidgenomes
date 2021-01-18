@@ -285,10 +285,10 @@ getEnsDb <- function(
     ]
     assert(isString(genomeBuild))
     list <- list(
-        "ensemblRelease" = as.integer(ensemblVersion(object)),
         "ensembldb" = metadata,
         "genomeBuild" = genomeBuild,
         "organism" = organism(object),
+        "release" = as.integer(ensemblVersion(object)),
         "source" = "Ensembl"
     )
     if (!is.null(level)) {
@@ -301,7 +301,7 @@ getEnsDb <- function(
     items <- c(
         "Organism" = list[["organism"]],
         "Genome build" = list[["genomeBuild"]],
-        "Ensembl release" = list[["ensemblRelease"]]
+        "Release" = list[["release"]]
     )
     if (isString(list[["level"]])) {
         items <- c(items, "Level" = list[["level"]])
