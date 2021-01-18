@@ -269,14 +269,17 @@
         seqnamesData <- df[[seqnamesCol]]
     } else {
         ## Don't think this is currently possible to hit, but keep just in case.
-        alertWarning("{.var GRanges} does not contain {.fun seqnames}.")
+        alertWarning(sprintf(
+            "{.var %s} does not contain {.fun %s}.",
+            "GRanges", "seqnames"
+        ))
         seqnamesCol <- NULL
         seqnamesData <- NA_character_
     }
     ## Apply broad class -------------------------------------------------------
     alert(sprintf(
         "Defining {.var %s} using: %s.",
-        broadClass,
+        "broadClass",
         toInlineString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))
     ))
     ## Note that this method doesn't seem to work right with DataFrame class.
@@ -631,12 +634,7 @@
             y = names(metadata(object))
         )
     )
-    if (!isSubset(
-        x = metadata(object)[["source"]],
-        y = c("FlyBase", "WormBase")
-    )) {
-        assert(!any(is.na(seqlengths(object))))
-    }
+    source <- metadata(object)[["source"]]
     validObject(object)
-    object
+    new(Class = upperCamelCase(paste(source, level)), object)
 }

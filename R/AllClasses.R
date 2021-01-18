@@ -19,9 +19,7 @@ setValidity(
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for no PAR genes (GENCODE only).
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -46,9 +44,7 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -72,9 +68,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure we have the genome release version.
         ## FIXME Don't check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -98,9 +92,7 @@ setValidity(
     method = function(object) {
         ## FIXME Ensure we have the genome release version.
         ## FIXME Don't check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -126,9 +118,7 @@ setValidity(
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for PAR genes here.
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -153,9 +143,7 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -179,9 +167,7 @@ setValidity(
     method = function(object) {
         ## FIXME Need to add checks here.
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -206,9 +192,7 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -232,9 +216,7 @@ setValidity(
     method = function(object) {
         ## FIXME Need to add checks here.
         ## FIXME Don't check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
@@ -258,9 +240,7 @@ setValidity(
     method = function(object) {
         ## FIXME Need to add checks here.
         ## FIXME Don't check for seqinfo here.
-        validate(
-            hasRows(object)
-        )
+        TRUE
     }
 )
 
