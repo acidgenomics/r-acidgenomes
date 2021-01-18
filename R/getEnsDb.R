@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -60,7 +60,7 @@ getEnsDb <- function(
         )
         edb <- .getEnsDbFromAnnotationHub(id = id)
     }
-    attr(edb, "id") <- id
+    attr(edb, "annotationHubId") <- id
     edb
 }
 
@@ -268,7 +268,7 @@ getEnsDb <- function(
 
 #' Get metadata inside EnsDb object
 #'
-#' @note Updated 2020-10-07.
+#' @note Updated 2021-01-18.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
     assert(
@@ -293,8 +293,8 @@ getEnsDb <- function(
         list[["level"]] <- level
     }
     ## AnnotationHub identifier should be stashed in attributes, when possible.
-    if (isString(attr(object, "id"))) {
-        list[["id"]] <- attr(object, "id")
+    if (isString(attr(object, "annotationHubId"))) {
+        list[["annotationHubId"]] <- attr(object, "annotationHubId")
     }
     items <- c(
         "Organism" = list[["organism"]],
