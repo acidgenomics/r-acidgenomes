@@ -1,30 +1,25 @@
-## Detection ===================================================================
+## GFF metadata detection ======================================================
 #' Detect the GFF source information
 #'
 #' @details
 #' Assuming we've already cached the URL using BiocFileCache here.
 #' This step will load into GRanges via rtracklayer.
 #'
-#' @note Updated 2021-01-12.
+#' @note Updated 2021-01-18.
 #' @noRd
 .detectGFF <- function(object) {
     assert(is(object, "GRanges"))
-    alert("Detecting annotation source.")
-    source <- .detectGFFSource(object)
-    type <- .detectGFFType(object)
-    alertInfo(sprintf("%s %s detected.", source, type))
-    out <- c(
-        "source" = source,
-        "type" = type
+    c(
+        "source" = .detectGFFSource(object),
+        "type" = .detectGFFType(object)
     )
-    out
 }
 
 
 
-#' Report the source of the gene annotations
+#' Detect the database source of the genome annotations
 #'
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #' @noRd
 .detectGFFSource <- function(object) {
     assert(is(object, "GRanges"))
@@ -85,9 +80,9 @@
 
 
 
-#' Determine if GFF or GTF
+#' Determine if input is GFF3 or GTF (GFF2)
 #'
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #' @noRd
 .detectGFFType <- function(object) {
     assert(is(object, "GRanges"))
@@ -101,48 +96,7 @@
 
 
 
-## FIXME USE LEVEL AND THEN MAP TO IDENTIFIER...
-
-#' Detect GRanges identifiers
-#'
-#' @note Updated 2021-01-14.
-#' @noRd
-.detectGRangesIDs <- function(object) {
-    assert(isAny(object, c("GRanges", "GRangesList")))
-    level <- match.arg(
-        arg = metadata(object)[["level"]],
-        choices = c("genes", "transcripts")
-    )
-    print(level)
-    print(colnames(mcols(object)))
-    stop("FIXME")
-
-    ## FIXME SUPPORT transcriptID, geneID, txID, geneId, txId
-
-
-
-    if (is(object, "GRangesList")) {
-        object <- object[[1L]]
-    }
-    assert(is(object, "GRanges"))
-    mcolnames <- colnames(mcols(object))
-    if ("transcriptId" %in% mcolnames) {
-        out <- "transcriptId"
-    } else if ("transcript_id" %in% mcolnames) {
-        out <- "transcript_id"
-    } else if ("geneId" %in% mcolnames) {
-        out <- "geneId"
-    } else if ("gene_id" %in% mcolnames) {
-        out <- "gene_id"
-    } else {
-        stop("Failed to detect ID column.")
-    }
-    out
-}
-
-
-
-## Metadata ====================================================================
+## Metadata modification =======================================================
 #' Apply broad class definitions
 #'
 #' This function is intended to work rowwise on the GRanges mcols.
@@ -483,6 +437,47 @@
     mcols <- as(mcols, "DataFrame")
     mcols(object) <- mcols
     object
+}
+
+
+
+## FIXME USE LEVEL AND THEN MAP TO IDENTIFIER...
+
+#' Detect GRanges identifiers
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.detectGRangesIDs <- function(object) {
+    assert(isAny(object, c("GRanges", "GRangesList")))
+    level <- match.arg(
+        arg = metadata(object)[["level"]],
+        choices = c("genes", "transcripts")
+    )
+    print(level)
+    print(colnames(mcols(object)))
+    stop("FIXME")
+
+    ## FIXME SUPPORT transcriptID, geneID, txID, geneId, txId
+
+
+
+    if (is(object, "GRangesList")) {
+        object <- object[[1L]]
+    }
+    assert(is(object, "GRanges"))
+    mcolnames <- colnames(mcols(object))
+    if ("transcriptId" %in% mcolnames) {
+        out <- "transcriptId"
+    } else if ("transcript_id" %in% mcolnames) {
+        out <- "transcript_id"
+    } else if ("geneId" %in% mcolnames) {
+        out <- "geneId"
+    } else if ("gene_id" %in% mcolnames) {
+        out <- "gene_id"
+    } else {
+        stop("Failed to detect ID column.")
+    }
+    out
 }
 
 
