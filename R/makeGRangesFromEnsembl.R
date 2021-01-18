@@ -129,7 +129,7 @@ NULL
 #'
 #' Internal variant with more options that we don't want to expose to user.
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
 .makeGRangesFromEnsembl <- function(
     organism,
@@ -152,10 +152,6 @@ NULL
         organism = organism,
         genomeBuild = genomeBuild,
         release = release
-    )
-    assert(
-        is(edb, "EnsDb"),
-        isString(attr(edb, "id"))
     )
     .makeGRangesFromEnsDb(
         object = edb,
