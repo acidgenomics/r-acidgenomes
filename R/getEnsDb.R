@@ -190,15 +190,15 @@ getEnsDb <- function(
         stop(sprintf(
             fmt = paste(
                 "No entry matched on AnnotationHub %s.",
-                "  - Organism: %s",
-                "  - Genome build: %s",
-                "  - Ensembl release: %s",
+                "  - %s: %s",
+                "  - %s: %s",
+                "  - %s: %s",
                 sep = "\n"
             ),
             packageVersion("AnnotationHub"),
-            deparse(organism),
-            deparse(genomeBuild),
-            deparse(release)
+            "Organism", deparse(organism),
+            "Genome build", deparse(genomeBuild),
+            "Ensembl release", deparse(release)
         ))
     }
     ## Select the most recent database (sorted by title, not identifier!).
