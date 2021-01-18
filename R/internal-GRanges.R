@@ -415,7 +415,7 @@
 
 
 
-## Source-specific parsers =====================================================
+## Source-specific metadata parsers ============================================
 ## FIXME ADD makeGRangesFromWormBase
 ## FIXME ADD makeGRangesFromFlyBase
 ## FIXME ADD makeGRangesFromRefSeq
@@ -430,123 +430,7 @@
 
 
 
-## Main generator ==============================================================
-## FIXME ignoreVersion = FALSE needs to return gene ID versions.
-## FIXME NEED TO IMPROVE CONSISTENCY Of METADATA RETURN.
-## FIXME NEED TO DETECT ORGANISM AUTOMATICALLY.
-## FIXME NEED TO SLOT ARGUMENTS INTO OBJECT.
-## FIXME ORGANISM ALWAYS NEEDS TO BE DEFINED.
-## FIXME DONT ALLOW GRANGESLIST RETURN HERE.
-## FIXME RETURN THE OBJECTS CLASSED BY GENOME.
-## FIXME HANDLE THE TXVERSION DIFFERENTLY HERE?
-## FIXME SWITCH FROM "TRANSCRIPT" PREFIX TO "TX", FOR BIOC CONSISTENCY.
-
-#' Make GRanges
-#'
-#' This is the main GRanges final return generator, used by
-#' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
-#'
-#' @note Updated 2021-01-14.
-#' @noRd
-.makeGRanges <- function(
-    object,
-    ignoreVersion = TRUE,
-    broadClass = TRUE,
-    synonyms = TRUE
-) {
-    assert(
-        is(object, "GRanges"),
-        hasNames(object),
-        hasLength(object),
-        isFlag(ignoreVersion),
-        isFlag(broadClass),
-        isFlag(synonyms)
-    )
-    object <- trim(object)
-    length <- length(object)
-    object <- .minimizeGRanges(object)
-    object <- .standardizeGRanges(object)
-    assert(hasLength(object, n = length))
-    if (isFALSE(ignoreVersion)) {
-        object <- .addTxVersion(object)
-    }
-    if (isTRUE(broadClass)) {
-        object <- .addBroadClass(object)
-    }
-    if (isTRUE(synonyms)) {
-        object <- .addGeneSynonyms(object)
-    }
-    ## Sort the metadata columns alphabetically.
-    mcols(object) <-
-        mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
-    ## Prepare the metadata.
-    ## Slot organism into metadata.
-    ## FIXME SHOULD WE RETHINK THIS STEP?
-    object <- .slotOrganism(object)
-    ## Ensure object contains prototype metadata.
-    metadata(object) <- c(.prototypeMetadata, metadata(object))
-    idCol <- .detectGRangesIDs(object)
-    assert(isSubset(idCol, colnames(mcols(object))))
-    names <- as.character(mcols(object)[[idCol]])
-    assert(!any(is.na(names)))
-    ## Inform the user if the object contains invalid names, showing offenders.
-    invalid <- setdiff(names, make.names(names, unique = TRUE))
-    if (hasLength(invalid)) {
-        invalid <- sort(unique(invalid))
-        alertWarning(sprintf(
-            fmt = "%d invalid %s: %s.",
-            length(invalid),
-            ngettext(
-                n = length(invalid),
-                msg1 = "name",
-                msg2 = "names"
-            ),
-            toInlineString(invalid, n = 10L)
-        ))
-    }
-    rm(invalid)
-    ## Split into GRangesList if object contains multiple ranges per feature.
-    ## FIXME RETHINK THIS, UNNECESSARY ONCE WE FIX REFSEQ...
-    if (hasDuplicates(names)) {
-        alertWarning(sprintf(
-            fmt = paste(
-                "{.var %s} contains multiple ranges per '%s'.",
-                "Splitting into {.var %s}."
-            ),
-            "GRanges", idCol, "GRangesList"
-        ))
-        ## Metadata will get dropped during `split()` call; stash and reassign.
-        metadata <- metadata(object)
-        object <- split(x = object, f = as.factor(names))
-        metadata(object) <- metadata
-        rm(metadata)
-    } else {
-        names(object) <- names
-    }
-    ## Ensure the ranges are sorted by gene identifier.
-    object <- object[sort(names(object))]
-    ## Inform the user about the number of features returned.
-    level <- match.arg(
-        arg = metadata(object)[["level"]],
-        choices = c("genes", "transcripts")
-    )
-    alertInfo(sprintf(
-        "%d %s detected.",
-        length(object),
-        ngettext(
-            n = length(object),
-            msg1 = substr(level, 1L, nchar(level) - 1L),  # gene
-            msg2 = level                                  # genes
-        )
-    ))
-    ## FIXME ADD ASSERT FOR ORGANISM IN METADATA HERE.
-    assert(!any(is.na(seqlengths(object))))
-    validObject(object)
-    object
-}
-
-
-
+## Standardization =============================================================
 #' Minimize GRanges
 #'
 #' This step drops extra columns in `mcols()` and applies run-length encoding,
@@ -649,5 +533,124 @@
     alert(sprintf("Arranging by {.var %s}.", idCol))
     names(object) <- mcols(object)[[idCol]]
     object <- object[sort(names(object))]
+    object
+}
+
+
+
+## Main generator ==============================================================
+## FIXME ignoreVersion = FALSE needs to return gene ID versions.
+## FIXME NEED TO IMPROVE CONSISTENCY Of METADATA RETURN.
+## FIXME NEED TO DETECT ORGANISM AUTOMATICALLY.
+## FIXME NEED TO SLOT ARGUMENTS INTO OBJECT.
+## FIXME ORGANISM ALWAYS NEEDS TO BE DEFINED.
+## FIXME DONT ALLOW GRANGESLIST RETURN HERE.
+## FIXME RETURN THE OBJECTS CLASSED BY GENOME.
+## FIXME HANDLE THE TXVERSION DIFFERENTLY HERE?
+## FIXME SWITCH FROM "TRANSCRIPT" PREFIX TO "TX", FOR BIOC CONSISTENCY.
+
+#' Make GRanges
+#'
+#' This is the main GRanges final return generator, used by
+#' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
+#'
+#' @note Updated 2021-01-14.
+#' @noRd
+.makeGRanges <- function(
+    object,
+    ignoreVersion = TRUE,
+    broadClass = TRUE,
+    synonyms = TRUE
+) {
+    assert(
+        is(object, "GRanges"),
+        hasNames(object),
+        hasLength(object),
+        isFlag(ignoreVersion),
+        isFlag(broadClass),
+        isFlag(synonyms)
+    )
+    ## FIXME RETHINK THESE STEPS >>>
+    object <- trim(object)
+    length <- length(object)
+    object <- .minimizeGRanges(object)
+    object <- .standardizeGRanges(object)
+    assert(hasLength(object, n = length))
+    ## FIXME RETHINK THESE STEPS <<<
+    if (isFALSE(ignoreVersion)) {
+        object <- .addTxVersion(object)
+    }
+    if (isTRUE(broadClass)) {
+        object <- .addBroadClass(object)
+    }
+    if (isTRUE(synonyms)) {
+        object <- .addGeneSynonyms(object)
+    }
+    ## Sort the metadata columns alphabetically.
+    mcols(object) <-
+        mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
+    ## Prepare the metadata.
+    ## Slot organism into metadata.
+    ## FIXME SHOULD WE RETHINK THIS STEP?
+    object <- .slotOrganism(object)
+    ## Ensure object contains prototype metadata.
+    metadata(object) <- c(.prototypeMetadata, metadata(object))
+    idCol <- .detectGRangesIDs(object)
+    assert(isSubset(idCol, colnames(mcols(object))))
+    names <- as.character(mcols(object)[[idCol]])
+    assert(!any(is.na(names)))
+    ## Inform the user if the object contains invalid names, showing offenders.
+    invalid <- setdiff(names, make.names(names, unique = TRUE))
+    if (hasLength(invalid)) {
+        invalid <- sort(unique(invalid))
+        alertWarning(sprintf(
+            fmt = "%d invalid %s: %s.",
+            length(invalid),
+            ngettext(
+                n = length(invalid),
+                msg1 = "name",
+                msg2 = "names"
+            ),
+            toInlineString(invalid, n = 10L)
+        ))
+    }
+    rm(invalid)
+    ## Split into GRangesList if object contains multiple ranges per feature.
+    ## FIXME RETHINK THIS, UNNECESSARY ONCE WE FIX REFSEQ...
+    if (hasDuplicates(names)) {
+        alertWarning(sprintf(
+            fmt = paste(
+                "{.var %s} contains multiple ranges per '%s'.",
+                "Splitting into {.var %s}."
+            ),
+            "GRanges", idCol, "GRangesList"
+        ))
+        ## Metadata will get dropped during `split()` call; stash and reassign.
+        metadata <- metadata(object)
+        object <- split(x = object, f = as.factor(names))
+        metadata(object) <- metadata
+        rm(metadata)
+    } else {
+        names(object) <- names
+    }
+    ## Ensure the ranges are sorted by gene identifier.
+    object <- object[sort(names(object))]
+    ## Inform the user about the number of features returned.
+    level <- match.arg(
+        arg = metadata(object)[["level"]],
+        choices = c("genes", "transcripts")
+    )
+    alertInfo(sprintf(
+        "%d %s detected.",
+        length(object),
+        ngettext(
+            n = length(object),
+            msg1 = substr(level, 1L, nchar(level) - 1L),  # gene
+            msg2 = level                                  # genes
+        )
+    ))
+    ## FIXME ADD ASSERT FOR ORGANISM IN METADATA HERE.
+    assert(!any(is.na(seqlengths(object))))
+    validObject(object)
     object
 }
