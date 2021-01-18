@@ -339,8 +339,8 @@
         ## `makeGRangesFromEnsembl()` output via ensembldb.
         id <- mcols(object)[["geneIdVersion"]]
     } else if (isSubset("geneVersion", mcolnames)) {
-        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
         ## `makeGRangesFromGFF()` output.
+        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
         id <- mcols(object)[["geneId"]]
         version <- mcols(object)[["geneVersion"]]
         id <- Rle(paste(id, version, sep = "."))
@@ -353,9 +353,9 @@
 
 
 
-## FIXME This needs to be called when `ignoreVersion` is changed.
-## FIXME WE SHOULD ALSO MODIFY THE GENE VERSION HERE, NO?
-## FIXME THIS NEEDS TO MATCH UP WITH TX2GENE OUTPUT...
+## NOTE Doesn't bcbio return the transcript identifier version but not the
+## gene identifier version in the tx2gene.csv? If so, may need to rethink this
+## step in a future update.
 
 #' Add the transcript identifier version
 #'
@@ -364,10 +364,10 @@
 #' @note Updated 2021-01-18.
 #' @noRd
 .addTxVersion <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset("txId", colnames(mcols(object)))
-    )
+    assert(is(object, "GRanges"))
+    if (!isSubset("txId", colnames(mcols(object)))) {
+        return(object)
+    }
     alert("Adding version to transcript identifiers.")
     mcolnames <- colnames(mcols(object))
     if (isSubset("txIdVersion", mcolnames)) {
@@ -375,6 +375,7 @@
         id <- mcols(object)[["txIdVersion"]]
     } else if (isSubset("txVersion", mcolnames)) {
         ## `makeGRangesFromGFF()` output.
+        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
         id <- mcols(object)[["txId"]]
         version <- mcols(object)[["txVersion"]]
         id <- Rle(paste(id, version, sep = "."))
@@ -433,6 +434,8 @@
 #' @noRd
 .minimizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
+    ## This trimming step was added to handle GRanges from Ensembl 102, which
+    ## won't return valid otherwise from ensembldb.
     length <- length(object)
     object <- trim(object)
     assert(hasLength(object, n = length))
@@ -526,7 +529,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
 .makeGRanges <- function(
     object,
