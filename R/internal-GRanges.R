@@ -121,7 +121,7 @@
 #' @note Can return `NA_character_` here instead. Keeping this as "other", to
 #'   main consistency with previous data sets. Also note that `NA` can behave
 #'   inconsistently in plotting engines.
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-18.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
 #' @noRd
@@ -132,8 +132,7 @@
 #' @return `character(1)`.
 .applyBroadClass <- function(x) {
     if (
-        isTRUE(grepl(
-            pattern = "^MT",
+        isTRUE(grepl(pattern = "^MT",
             x = x[["chromosome"]],
             ignore.case = TRUE
         )) ||
@@ -190,8 +189,7 @@
             ignore.case = TRUE
         ))
     ) {
-        ## immunoglobulin
-        "ig"
+        "ig"  ## immunoglobulin
     } else if (
         isTRUE(grepl(
             pattern = "^tr_",
@@ -199,8 +197,7 @@
             ignore.case = TRUE
         ))
     ) {
-        ## T cell receptor
-        "tcr"
+        "tcr"  ## T cell receptor
     } else {
         "other"
     }
@@ -333,11 +330,44 @@
 
 
 
-## FIXME NEED TO ADD `.addGeneVersion` function here.
+## FIXME This needs to be called when `ignoreVersion` is changed.
+
+#' Add the gene identifier version
+#'
+#' Append the transcript version to the identifier (e.g. ENST00000000233.10).
+#'
+#' @note Updated 2021-01-18.
+#' @noRd
+.addGeneVersion <- function(object) {
+    assert(
+        is(object, "GRanges"),
+        isSubset("geneId", colnames(mcols(object)))
+    )
+    alert("Adding version to gene identifiers.")
+    mcolnames <- colnames(mcols(object))
+    if (isSubset("geneIdVersion", mcolnames)) {
+        ## `makeGRangesFromEnsembl()` output via ensembldb.
+        id <- mcols(object)[["geneIdVersion"]]
+    } else if (isSubset("geneVersion", mcolnames)) {
+        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
+        ## `makeGRangesFromGFF()` output.
+        id <- mcols(object)[["geneId"]]
+        version <- mcols(object)[["geneVersion"]]
+        id <- Rle(paste(id, version, sep = "."))
+    } else {
+        stop("Failed to locate gene identifier version.")  # nolint
+    }
+    mcols(object)[["geneId"]] <- id
+    object
+}
 
 
 
-#' Add the transcript version
+## FIXME This needs to be called when `ignoreVersion` is changed.
+## FIXME WE SHOULD ALSO MODIFY THE GENE VERSION HERE, NO?
+## FIXME THIS NEEDS TO MATCH UP WITH TX2GENE OUTPUT...
+
+#' Add the transcript identifier version
 #'
 #' Append the transcript version to the identifier (e.g. ENST00000000233.10).
 #'
@@ -346,7 +376,6 @@
 .addTxVersion <- function(object) {
     assert(
         is(object, "GRanges"),
-        identical(metadata(object)[["level"]], "transcripts"),
         isSubset("txId", colnames(mcols(object)))
     )
     alert("Adding version to transcript identifiers.")
@@ -360,10 +389,9 @@
         version <- mcols(object)[["txVersion"]]
         id <- Rle(paste(id, version, sep = "."))
     } else {
-        stop("Failed to locate transcript version metadata.")  # nolint
+        stop("Failed to locate transcript identifier version.")  # nolint
     }
     mcols(object)[["txId"]] <- id
-    ## Note that names are set by `.makeGRanges()`.
     object
 }
 
@@ -443,41 +471,23 @@
 
 ## FIXME USE LEVEL AND THEN MAP TO IDENTIFIER...
 
-#' Detect GRanges identifiers
+#' Match the identifier column in GRanges to use for names.
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
-.detectGRangesIDs <- function(object) {
-    assert(isAny(object, c("GRanges", "GRangesList")))
+.matchGRangesNamesColumn <- function(object) {
+    assert(is(object, "GRanges"))
     level <- match.arg(
         arg = metadata(object)[["level"]],
         choices = c("genes", "transcripts")
     )
-    print(level)
-    print(colnames(mcols(object)))
-    stop("FIXME")
-
-    ## FIXME SUPPORT transcriptID, geneID, txID, geneId, txId
-
-
-
-    if (is(object, "GRangesList")) {
-        object <- object[[1L]]
-    }
-    assert(is(object, "GRanges"))
-    mcolnames <- colnames(mcols(object))
-    if ("transcriptId" %in% mcolnames) {
-        out <- "transcriptId"
-    } else if ("transcript_id" %in% mcolnames) {
-        out <- "transcript_id"
-    } else if ("geneId" %in% mcolnames) {
-        out <- "geneId"
-    } else if ("gene_id" %in% mcolnames) {
-        out <- "gene_id"
-    } else {
-        stop("Failed to detect ID column.")
-    }
-    out
+    x <- switch(
+        EXPR = level,
+        "genes" = "geneId",
+        "transcripts" = "txId"
+    )
+    assert(isSubset(x, colnames(mcols(object))))
+    x
 }
 
 
@@ -501,10 +511,8 @@
     ## >     x = colnames(mcols)
     ## > )
     ## Ensure "ID" is always capitalized (e.g. "entrezid").
-    colnames(mcols) <- gsub(
-        pattern = "(.+)id$",
-        replacement = "\\1ID",
-        x = colnames(mcols)
+    colnames(mcols) <-
+        gsub(pattern = "(.+)id$", replacement = "\\1ID", x = colnames(mcols)
     )
     ## Always return using camel case, even though GFF/GTF files use snake.
     ## Changed to strict format in v0.2.0 release.
@@ -524,7 +532,7 @@
     ## biotype and/or assigning names.
     mcols(object) <- mcols
     ## Ensure the ranges are sorted by identifier.
-    idCol <- .detectGRangesIDs(object)
+    idCol <- .matchGRangesNamesColumn(object)
     alert(sprintf("Arranging by {.var %s}.", idCol))
     names(object) <- mcols(object)[[idCol]]
     object <- object[sort(names(object))]
@@ -591,7 +599,7 @@
     object <- .slotOrganism(object)
     ## Ensure object contains prototype metadata.
     metadata(object) <- c(.prototypeMetadata, metadata(object))
-    idCol <- .detectGRangesIDs(object)
+    idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, colnames(mcols(object))))
     names <- as.character(mcols(object)[[idCol]])
     assert(!any(is.na(names)))
