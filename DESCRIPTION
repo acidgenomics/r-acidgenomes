@@ -24,9 +24,9 @@ Depends:
     R (>= 4.0),
     GenomicRanges
 Imports:
-    AcidBase (>= 0.3.1),
-    AcidCLI (>= 0.0.2),
-    AcidGenerics (>= 0.5.0),
+    AcidBase (>= 0.3.2),
+    AcidCLI (>= 0.0.5),
+    AcidGenerics (>= 0.5.1),
     AcidPlyr (>= 0.1.6),
     AnnotationDbi,
     AnnotationHub,
@@ -40,7 +40,7 @@ Imports:
     httr (>= 1.4),
     jsonlite (>= 1.7),
     methods,
-    pipette (>= 0.5.1),
+    pipette (>= 0.5.2),
     purrr (>= 0.3),
     stringr (>= 1.4),
     syntactic (>= 0.4.3),
