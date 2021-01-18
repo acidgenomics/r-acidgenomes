@@ -17,11 +17,9 @@
 
 
 
-## FIXME Renamed output to include "Id" suffix.
-
 #' Get Ensembl/Entrez mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
 .getEnsembl2EntrezFromOrgDb <- function(
     keys,
@@ -78,6 +76,6 @@
     }
     colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblId"
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
-    df[["entrez"]] <- as.integer(df[["entrez"]])
+    df[["entrezId"]] <- as.integer(df[["entrezId"]])
     df
 }
