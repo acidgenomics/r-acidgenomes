@@ -2,6 +2,55 @@
 
 
 
+## Example comment lines:
+##
+## Homo_sapiens.GRCh38.102.gtf.gz
+## [1] "#!genome-build GRCh38.p13"
+## [2] "#!genome-version GRCh38"
+## [3] "#!genome-date 2013-12"
+## [4] "#!genome-build-accession NCBI:GCA_000001405.28"
+## [5] "#!genebuild-last-updated 2020-09"
+##
+## Homo_sapiens.GRCh38.102.gff3.gz
+## [1] "#!genome-build  GRCh38.p13"
+## [2] "#!genome-version GRCh38"
+## [3] "#!genome-date 2013-12"
+## [4] "#!genome-build-accession NCBI:GCA_000001405.28"
+## [5] "#!genebuild-last-updated 2020-09"
+##
+## "Homo_sapiens.GRCh37.87.gtf.gz"
+## [1] "#!genome-build GRCh37.p13"
+## [2] "#!genome-version GRCh37"
+## [3] "#!genome-date 2009-02"
+## [4] "#!genome-build-accession NCBI:GCA_000001405.14"
+## [5] "#!genebuild-last-updated 2013-09"
+##
+## "Homo_sapiens.GRCh37.87.gff3.gz"
+## [1] "#!genome-build  GRCh37.p13"
+## [2] "#!genome-version GRCh37"
+## [3] "#!genome-date 2009-02"
+## [4] "#!genome-build-accession NCBI:GCA_000001405.14"
+## [5] "#!genebuild-last-updated 2013-09"
+##
+##
+
+.getGFFComments <- function(file) {
+    assert(isAFile(file))
+    lines <- import(
+        file = file,
+        format = "lines",
+        nMax = 1000L,  # Need high limit for GFF3.
+        quiet = TRUE
+    )
+    lines <- grep(pattern = "^(#!|##[^:]+:\\s)", x = lines, value = TRUE)
+    if (!hasLength(lines)) {
+        stop(sprintf("'%s' does not contain metadata comments.", file))  # nocov
+    }
+    lines
+}
+
+
+
 #' Get genome metadata from a GFF file
 #'
 #' @note Updated 2021-01-18.
@@ -175,8 +224,14 @@
 #'     )
 #' )
 #' lapply(X = files, FUN = .getGenomeMetadataFromGFF)
+
+
+
+
+
 .getGenomeMetadataFromGFF <- function(file) {
-    assert(isAFile(file))
+    lines <- .getGFFComments(file)
+
     patterns <- c(
         "ensembl" = paste0(
             "^([a-z0-9]+_)?",          # temp prefix from BiocFileCache.
@@ -300,8 +355,10 @@
         isInt(release) || isString(release)
     )
     list(
+        "comments" = lines,
         "organism" = organism,
         "genomeBuild" = genomeBuild,
+        "accession" = "FIXME",  # GCA_000001405.28
         "release" = release,
         "source" = "FIXME"
     )
