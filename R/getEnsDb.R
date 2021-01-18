@@ -125,8 +125,9 @@ getEnsDb <- function(
     preparerclass <- "AHEnsDbs"
     rdataclass <- "EnsDb"
     alert(sprintf(
-        "Getting {.var %s} from {.pkg AnnotationHub} %s (%s).",
+        "Getting {.var %s} from {.pkg %s} %s (%s).",
         rdataclass,
+        "AnnotationHub",
         packageVersion("AnnotationHub"),
         snapshotDate(ah)
     ))
@@ -284,11 +285,11 @@ getEnsDb <- function(
     ]
     assert(isString(genomeBuild))
     list <- list(
-        "source" = "Ensembl",
-        "organism" = organism(object),
-        "genomeBuild" = genomeBuild,
         "ensemblRelease" = as.integer(ensemblVersion(object)),
-        "ensembldb" = metadata
+        "ensembldb" = metadata,
+        "genomeBuild" = genomeBuild,
+        "organism" = organism(object),
+        "source" = "Ensembl"
     )
     if (!is.null(level)) {
         list[["level"]] <- level
