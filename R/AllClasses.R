@@ -23,12 +23,11 @@ setValidity(
                 x = colnames(mcols(object)),
                 y = camelCase(colnames(mcols(object)), strict = TRUE)
             ),
-            identical(metadata(object)[["source"]], "Ensembl"),
-            isInt(metadata(object)[["ensemblRelease"]]),
             isString(metadata(object)[["genomeBuild"]]),
             isOrganism(metadata(object)[["organism"]]),
             isFlag(metadata(object)[["ignoreVersion"]]),
-            identical(metadata(object)[["level"]], "genes")
+            identical(metadata(object)[["level"]], "genes"),
+            isInt(metadata(object)[["release"]])
         )
     }
 )
@@ -59,12 +58,11 @@ setValidity(
                 x = colnames(mcols(object)),
                 y = camelCase(colnames(mcols(object)), strict = TRUE)
             ),
-            identical(metadata(object)[["source"]], "Ensembl"),
             isString(metadata(object)[["genomeBuild"]]),
             isFlag(metadata(object)[["ignoreVersion"]]),
+            identical(metadata(object)[["level"]], "transcripts"),
             isOrganism(metadata(object)[["organism"]]),
-            isInt(metadata(object)[["release"]]),
-            identical(metadata(object)[["level"]], "transcripts")
+            isInt(metadata(object)[["release"]])
         )
     }
 )

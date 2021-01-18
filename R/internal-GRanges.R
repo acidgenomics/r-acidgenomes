@@ -551,7 +551,8 @@
         hasLength(object),
         isFlag(ignoreVersion),
         isFlag(synonyms),
-        isFlag(broadClass)
+        isFlag(broadClass),
+        isString(metadata(object)[["source"]])
     )
     level <- match.arg(
         arg = metadata(object)[["level"]],
@@ -629,13 +630,7 @@
     metadata(object) <-
         metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
-    assert(
-        isSubset(
-            x = c("level", "organism", "source"),
-            y = names(metadata(object))
-        )
-    )
-    source <- metadata(object)[["source"]]
     validObject(object)
+    source <- metadata(object)[["source"]]
     new(Class = upperCamelCase(paste(source, level)), object)
 }

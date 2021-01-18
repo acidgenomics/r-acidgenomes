@@ -160,7 +160,7 @@
 #' - CDS: `exons - UTRs`.
 #'
 #' @name makeGRangesFromGFF
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -218,20 +218,37 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
+    meta <- list()
+    meta[["file"]] <- file
     tmpfile <- .cacheIt(file)
+    ## Generate MD5 and SHA256 checksums for GFF file We may store these in an
+    ## internal database, similar to the approach used in tximeta, in a
+    ## future update.
+    meta[["md5"]] <- .md5(file = tmpfile)
+    meta[["sha256"]] <- .sha256(file = tmpfile)
     ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`. We're
     ## using this downstream for file source detection and extra metadata that
     ## currently isn't supported in GenomicFeatures TxDb generation.
-    rawGRanges <- import(tmpfile)
-    detect <- .detectGFF(rawGRanges)
+    rawRanges <- import(tmpfile)
+    detect <- .detectGFF(rawRanges)
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
     if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
-        stop(sprintf("Only GTF files from %s are supported.", source))  # nocov
+        ## nocov start
+        stop(sprintf(
+            "Only %s files from %s are supported.",
+            "GTF", source
+        ))
+        ## nocov end
     } else if (source == "RefSeq" && type != "GFF") {
+        ## nocov start
         ## https://github.com/Bioconductor/GenomicFeatures/issues/26
-        stop(sprintf("Only GFF files from %s are supported.", source))  # nocov
+        stop(sprintf(
+            "Only %s files from %s are supported.",
+            "GFF", source
+        ))
+        ## nocov end
     }
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
@@ -244,6 +261,7 @@ NULL
             broadClass = broadClass,
             synonyms = synonyms
         )
+        metadata(gr)[["source"]] <- source
     } else {
         if (isTRUE(synonyms)) {
             stop(sprintf(
