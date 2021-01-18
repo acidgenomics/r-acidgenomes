@@ -45,22 +45,83 @@ makeEnsDbFromGFF <- function(
     tmpfile <- .cacheIt(file)
     ext <- fileExt(file)
     args <- list("outfile" = tempfile())
-    ## e.g. 11f4650926be_Homo_sapiens.GRCh38.102.gtf.gz
-    pattern <- paste0(
-        "^([a-z0-9]+_)?",        # temp prefix from BiocFileCache.
-        "([A-Z][a-z]+_[a-z]+)",  # organism (e.g. "Homo_sapiens").
-        "\\.([A-Za-z0-9]+)",     # genomeVersion (e.g. "GRCh38").
-        "\\.([0-9]+)",           # (Ensembl release) version (e.g. "102").
-        "\\.g[ft]f",
-        "(\\.gz)?$"
-    )
-    if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-        alert("Detecting genome metadata from file name.")
-        match <- str_match(string = basename(file), pattern = pattern)
-        organism <- gsub(pattern = "_", replacement = " ", x = match[1L, 3L])
-        genomeBuild <- match[1L, 4L]
-        release <- as.integer(match[1L, 5L])
-    } else if (any(is.null(organism), is.null(genomeBuild), is.null(release))) {
+    ## Attempt to detect the genome metadata from the file name, if possible.
+    if (
+        is.null(organism) &&
+        is.null(genomeBuild) &&
+        is.null(release)
+    ) {
+        ## Ensembl file name metadata pattern.
+        ## e.g. 11f4650926be_Homo_sapiens.GRCh38.102.gtf.gz
+        ensemblPattern <- paste0(
+            "^([a-z0-9]+_)?",        # temp prefix from BiocFileCache.
+            "([A-Z][a-z]+_[a-z]+)",  # organism (e.g. "Homo_sapiens").
+            "\\.([A-Za-z0-9]+)",     # genomeVersion (e.g. "GRCh38").
+            "\\.([0-9]+)",           # (Ensembl release) version (e.g. "102").
+            "\\.g[ft]f",
+            "(\\.gz)?$"
+        )
+        ## GENCODE file name metadata pattern.
+        ## - Human: gencode.v32.annotation.gtf.gz
+        ## - Mouse: gencode.vM25.annotation.gtf.gz
+        gencodePattern <- paste0(
+            "gencode",
+            "\\.v([M0-9]+)",
+            "(lift37)?",
+            "\\.annotation",
+            "\\.g[ft]f",
+            "(\\.gz)?$"
+        )
+        if (isTRUE(grepl(
+            pattern = ensemblPattern,
+            x = basename(file)
+        ))) {
+            alert("Detecting Ensembl genome metadata from file name.")
+            match <- str_match(
+                string = basename(file),
+                pattern = ensemblPattern
+            )
+            organism <- gsub(
+                pattern = "_",
+                replacement = " ",
+                x = match[1L, 3L]
+            )
+            genomeBuild <- match[1L, 4L]
+            release <- as.integer(match[1L, 5L])
+        } else if (isTRUE(grepl(
+            pattern = gencodePattern,
+            x = basename(file)
+        ))) {
+            alert("Detecting GENCODE genome metadata from file name.")
+            match <- str_match(
+                string = basename(file),
+                pattern = gencodePattern
+            )
+            release <- match[1L, 2L]
+            if (grepl("^M", release)) {
+                organism <- "Mus musculus"
+            } else {
+                organism <- "Homo sapiens"
+                release <- as.integer(release)
+                ## GRCh38
+                if (match[1L, 3L] == "lift37") {
+                    genomeBuild <- "GRCh37"
+                }
+            }
+            ## Assembly (genome build) is documented in the first commented
+            ## lines of the file (line 1 for GTF; line 2 for GFF3).
+            if (is.null(genomeBuild)) {
+                x <- import(file, format = "lines", nMax = 2L)
+                x <- grep(pattern = "description:", x = x, value = TRUE)
+                match <- str_match(
+                    string = x,
+                    pattern = "\\sgenome\\s\\(([^\\)]+)\\),"
+                )
+                genomeBuild <- match[1L, 2L]
+            }
+        }
+    }
+    if (any(is.null(organism), is.null(genomeBuild), is.null(release))) {
         ## nocov start
         stop(sprintf(
             paste(
