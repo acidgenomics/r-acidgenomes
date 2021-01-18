@@ -15,11 +15,16 @@ setClass(
 setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
-        ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
-        ## FIXME Check for no PAR genes (GENCODE only).
-        ## FIXME Check for seqinfo here.
-        TRUE
+        validate(
+            any(grepl(pattern = "^ENS", x = names(object))),
+            !all(is.na(seqlengths(object))),
+            !all(is.na(genome(object))),
+            isInt(metadata(object)[["ensemblRelease"]]),
+            isString(metadata(object)[["genomeBuild"]]),
+            isOrganism(metadata(object)[["organism"]]),
+            identical(metadata(object)[["level"]], "genes"),
+            identical(metadata(object)[["source"]], "Ensembl")
+        )
     }
 )
 
