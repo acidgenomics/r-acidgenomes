@@ -191,7 +191,7 @@ makeGRangesFromEnsembl <- function(
 #'
 #' Internal variant with more options that we don't want to expose to user.
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
 .makeGRangesFromEnsDb <- function(
     object,
@@ -218,7 +218,6 @@ makeGRangesFromEnsembl <- function(
         )
     }
     assert(is(object, "EnsDb"))
-    metadata <- .getEnsDbMetadata(object, level = level)
     args <- list(
         "x" = object,
         "order.type" = "asc",
@@ -270,7 +269,7 @@ makeGRangesFromEnsembl <- function(
         gr <- do.call(what = fun, args = args)
     })
     assert(is(gr, "GRanges"))
-    metadata(gr) <- metadata
+    metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,

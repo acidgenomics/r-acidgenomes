@@ -284,6 +284,7 @@ getEnsDb <- function(
     ]
     assert(isString(genomeBuild))
     list <- list(
+        "source" = "Ensembl",
         "organism" = organism(object),
         "genomeBuild" = genomeBuild,
         "ensemblRelease" = as.integer(ensemblVersion(object)),
