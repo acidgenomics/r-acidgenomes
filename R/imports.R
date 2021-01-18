@@ -18,6 +18,7 @@
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom SummarizedExperiment rowData rowRanges
+#' @importFrom digest digest
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreFiles allAreMatchingRegex allAreURLs areDisjointSets
 #'   areSetEqual assert bapply hasDuplicates hasInternet hasLength

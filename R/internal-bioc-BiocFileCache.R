@@ -21,3 +21,29 @@
     assert(isAFile(x))
     x
 }
+
+
+
+#' Generate MD5 checksum from file
+#'
+#' @note Updated 2021-01-18.
+#' @noRd
+.md5 <- function(file) {
+    assert(isAFile(file))
+    x <- digest(object = file, algo = "md5", file = TRUE)
+    assert(isString(x))
+    x
+}
+
+
+
+#' Generate SHA256 checksum from file
+#'
+#' @note Updated 2021-01-18.
+#' @noRd
+.sha256 <- function(file) {
+    assert(isAFile(file))
+    x <- digest(object = file, algo = "sha256", file = TRUE)
+    assert(isString(x))
+    x
+}
