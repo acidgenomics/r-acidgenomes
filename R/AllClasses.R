@@ -5,7 +5,7 @@
 #' Contains a `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -23,7 +23,8 @@ setValidity(
             isString(metadata(object)[["genomeBuild"]]),
             isOrganism(metadata(object)[["organism"]]),
             identical(metadata(object)[["level"]], "genes"),
-            identical(metadata(object)[["source"]], "Ensembl")
+            identical(metadata(object)[["source"]], "Ensembl"),
+            isFlag(metadata(object)[["ignoreVersion"]])
         )
     }
 )
