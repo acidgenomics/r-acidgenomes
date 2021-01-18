@@ -238,9 +238,12 @@
     } else {
         ## FlyBase GTF will hit this step.
         ## Note that we're early returning without calculations in this case.
-        alertWarning(paste(
-            "{.var GRanges} does not contain biotype in {.var mcols}.",
-            "Returning without broad class definitions."
+        alertWarning(sprintf(
+            paste(
+                "{.var %s} does not contain biotype in {.var %s}.",
+                "Returning without broad class definitions."
+            ),
+            "GRanges", "mcols"
         ))
         ## Early `NA` return works successfully in `mcols()` construction.
         return(NA_character_)
@@ -250,9 +253,10 @@
         geneNameCol <- "geneName"
         geneNameData <- df[[geneNameCol]]
     } else {
-        alertWarning(
-            "{.var GRanges} does not contain gene names in {.fun mcols}."
-        )
+        alertWarning(sprintf(
+            "{.var %s} does not contain gene names in {.fun %s}.",
+            "GRanges", "mcols"
+        ))
         geneNameCol <- NULL
         geneNameData <- NA_character_
     }
@@ -271,8 +275,8 @@
     }
     ## Apply broad class -------------------------------------------------------
     alert(sprintf(
-        "Defining {.var broadClass} using: %s.",
-        ## Note that `c()` call here effectively removes `NULL` definitions.
+        "Defining {.var %s} using: %s.",
+        broadClass,
         toInlineString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))
     ))
     ## Note that this method doesn't seem to work right with DataFrame class.
@@ -590,7 +594,7 @@
     if (hasDuplicates(names)) {
         alertWarning(sprintf(
             fmt = paste(
-                "{.var %s} contains multiple ranges per '%s'.",
+                "{.var %s} contains multiple ranges per {.var %s}.",
                 "Splitting into {.var %s}."
             ),
             "GRanges", idCol, "GRangesList"

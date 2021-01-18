@@ -207,7 +207,7 @@ makeGRangesFromEnsembl <- function(
         isFlag(broadClass)
     )
     level <- match.arg(level)
-    alert("Making {.var GRanges} from {.var EnsDb}.")
+    alert(sprintf("Making {.var %s} from {.var %s}.", "GRanges", "EnsDb"))
     if (isString(object)) {
         package <- object
         requireNamespaces(package)
