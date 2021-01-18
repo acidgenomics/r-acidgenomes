@@ -3,7 +3,7 @@
 #' Parse the assembly report file to get `seqlengths` per chromosome.
 #'
 #' @export
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #'
 #' @param file `character(1)`.
 #'   RefSeq assembly report file or URL.
@@ -28,7 +28,7 @@
 #' seqinfo <- getRefSeqSeqinfo(file)
 #' print(seqinfo)
 getRefSeqSeqinfo <- function(file) {
-    pattern <- "^(.+)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
+    pattern <- "^([a-z0-9]+_)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
     assert(
         isString(file),
         isMatchingRegex(pattern = pattern, x = basename(file))
