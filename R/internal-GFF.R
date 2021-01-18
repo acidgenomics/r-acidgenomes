@@ -1,3 +1,7 @@
+## FIXME PARSE BASED ON THE GTF FILE ITSELF INSTEAD.
+
+
+
 #' Get genome metadata from a GFF file
 #'
 #' @note Updated 2021-01-18.
@@ -172,23 +176,31 @@
 #' )
 #' lapply(X = files, FUN = .getGenomeMetadataFromGFF)
 .getGenomeMetadataFromGFF <- function(file) {
-    file <- .cacheIt(file)
+    assert(isAFile(file))
     patterns <- c(
         "ensembl" = paste0(
-            "^([a-z0-9]+_)?",        # temp prefix from BiocFileCache.
-            "([A-Z][a-z]+_[a-z]+)",  # organism (e.g. "Homo_sapiens").
-            "\\.([A-Za-z0-9]+)",     # genomeVersion (e.g. "GRCh38").
-            "\\.([0-9]+)",           # (Ensembl release) version (e.g. "102").
+            "^([a-z0-9]+_)?",          # temp prefix from BiocFileCache.
+            "([A-Z][a-z]+_[a-z]+)",    # organism (e.g. "Homo_sapiens").
+            "\\.([A-Za-z0-9]+)",       # genomeVersion (e.g. "GRCh38").
+            "\\.([0-9]+)",             # (Ensembl release) version (e.g. "102").
             "\\.(gff3|gtf)",
             "(\\.gz)?$"
         ),
         "gencode" = paste0(
-            "^([a-z0-9]+_)?",        # temp prefix from BiocFileCache.
+            "^([a-z0-9]+_)?",          # temp prefix from BiocFileCache.
             "gencode",
-            "\\.v([M0-9]+)",         # v32 (human) or vM25 (mouse).
-            "(lift37)?",             # GRCh37 liftover.
+            "\\.v([M0-9]+)",           # v32 (human) or vM25 (mouse).
+            "(lift37)?",               # GRCh37 liftover.
             "\\.annotation",
             "\\.(gff3|gtf)",
+            "(\\.gz)?$"
+        ),
+        "refseq" = paste0(
+            "^([a-z0-9]+_)?",          # temp prefix from BiocFileCache.
+            "(GCF_[0-9]+\\.[0-9]+)",   # Accession (e.g. GCF_000001405.38).
+            "_(.+)",                   # Genome build (e.g. GRCh38.p12).
+            "_genomic",
+            "\\.(gff|gtf)",
             "(\\.gz)?$"
         )
     )
@@ -213,55 +225,73 @@
         ## nocov end
     }
     source <- names(patterns)[hits][[1L]]
+    match <- str_match(
+        string = basename(file),
+        pattern = patterns[[source]]
+    )
+    match <- match[1L, , drop = TRUE]
     switch(
         EXPR = source,
         "ensembl" = {
             alert("Detecting Ensembl genome metadata from file name.")
-            match <- str_match(
-                string = basename(file),
-                pattern = patterns[["ensembl"]]
-            )
             organism <- gsub(
                 pattern = "_",
                 replacement = " ",
-                x = match[1L, 3L]
+                x = match[[3L]]
             )
-            genomeBuild <- match[1L, 4L]
-            release <- as.integer(match[1L, 5L])
+            genomeBuild <- match[[4L]]
+            release <- as.integer(match[[5L]])
         },
         "gencode" = {
             alert("Detecting GENCODE genome metadata from file name.")
-            match <- str_match(
-                string = basename(file),
-                pattern = patterns[["gencode"]]
-            )
-            release <- match[1L, 3L]
+            release <- match[[3L]]
             if (grepl("^M", release)) {
                 organism <- "Mus musculus"
             } else {
                 organism <- "Homo sapiens"
                 release <- as.integer(release)
                 ## GRCh38
-                if (identical(match[1L, 4L], "lift37")) {
+                if (identical(match[[4L]], "lift37")) {
                     genomeBuild <- "GRCh37"
                 }
             }
             ## Assembly (genome build) is documented in the first commented
             ## lines of the file (line 1 for GTF; line 2 for GFF3).
             if (is.null(genomeBuild)) {
-                x <- import(
-                    file = tmpfile,
+                lines <- import(
+                    file = file,
                     format = "lines",
                     nMax = 2L,
                     quiet = TRUE
                 )
-                x <- grep(pattern = "description:", x = x, value = TRUE)
-                match <- str_match(
-                    string = x,
-                    pattern = "\\sgenome\\s\\(([^\\)]+)\\),"
-                )
-                genomeBuild <- match[1L, 2L]
+                genomeBuild <- str_match(
+                    string = grep(
+                        ## FIXME TIGHTEN UP THIS MATCH.
+                        pattern = "description:",
+                        x = lines,
+                        value = TRUE
+                    ),
+                    pattern = " genome \\(([^\\)]+)\\),"
+                )[1L, 2L]
             }
+        },
+        "refseq" = {
+            lines <- import(
+                file = file,
+                format = "lines",
+                nMax = 4L,
+                quiet = TRUE
+            )
+            release <- as.integer(str_match(
+                string = grep(
+                    pattern = "^#!annotation-source",
+                    x = lines,
+                    value = TRUE
+                ),
+                pattern = "Annotation Release ([0-9]+)"
+            )[1L, 2L])
+            genomeBuild <- match[[4L]]
+            release <- NA_integer_
         }
     )
     assert(
@@ -272,6 +302,7 @@
     list(
         "organism" = organism,
         "genomeBuild" = genomeBuild,
-        "release" = release
+        "release" = release,
+        "source" = "FIXME"
     )
 }
