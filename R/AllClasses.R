@@ -19,12 +19,16 @@ setValidity(
             any(grepl(pattern = "^ENS", x = names(object))),
             !all(is.na(seqlengths(object))),
             !all(is.na(genome(object))),
+            identical(
+                x = colnames(mcols(object)),
+                y = camelCase(colnames(mcols(object)), strict = TRUE)
+            ),
+            identical(metadata(object)[["source"]], "Ensembl"),
             isInt(metadata(object)[["ensemblRelease"]]),
             isString(metadata(object)[["genomeBuild"]]),
             isOrganism(metadata(object)[["organism"]]),
-            identical(metadata(object)[["level"]], "genes"),
-            identical(metadata(object)[["source"]], "Ensembl"),
-            isFlag(metadata(object)[["ignoreVersion"]])
+            isFlag(metadata(object)[["ignoreVersion"]]),
+            identical(metadata(object)[["level"]], "genes")
         )
     }
 )
@@ -37,7 +41,7 @@ setValidity(
 #' Contains a `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -47,10 +51,21 @@ setClass(
 setValidity(
     Class = "EnsemblTranscripts",
     method = function(object) {
-        ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
-        ## FIXME Check for seqinfo here.
-        TRUE
+        validate(
+            any(grepl(pattern = "^ENS", x = names(object))),
+            !all(is.na(seqlengths(object))),
+            !all(is.na(genome(object))),
+            identical(
+                x = colnames(mcols(object)),
+                y = camelCase(colnames(mcols(object)), strict = TRUE)
+            ),
+            identical(metadata(object)[["source"]], "Ensembl"),
+            isInt(metadata(object)[["ensemblRelease"]]),
+            isString(metadata(object)[["genomeBuild"]]),
+            isOrganism(metadata(object)[["organism"]]),
+            isFlag(metadata(object)[["ignoreVersion"]]),
+            identical(metadata(object)[["level"]], "transcripts")
+        )
     }
 )
 
