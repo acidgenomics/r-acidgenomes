@@ -617,23 +617,22 @@
     ## Sort the metadata columns alphabetically.
     mcols(object) <-
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
+    ## Ensure metadata elements are all sorted alphabetically.
+    metadata(object) <-
+        metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
-    ## FIXME NEED TO RETHINK THESE SHARED CHECKS.
-    ## > assert(
-    ## >     isSubset(
-    ## >         x = c("detect", "level", "organism"),
-    ## >         y = names(metadata(object))
-    ## >     )
-    ## > )
-    ## > source <- metadata(object)[["detect"]][["source"]]
-    ## > assert(isString(source))
-    ## Prepare the metadata.
-    ## > object <- .slotOrganism(object)
-    ## FIXME RETHINK THIS, AND USE APPEND INSTEAD OF C FOR LISTS.
-    ## > metadata(object) <- c(.prototypeMetadata, metadata(object))
-    ## > if (!isSubset(source, c("FlyBase", "WormBase"))) {
-    ## >     assert(!any(is.na(seqlengths(object))))
-    ## > }
+    assert(
+        isSubset(
+            x = c("level", "organism", "source"),
+            y = names(metadata(object))
+        )
+    )
+    if (!isSubset(
+        x = metadata(object)[["source"]],
+        y = c("FlyBase", "WormBase")
+    )) {
+        assert(!any(is.na(seqlengths(object))))
+    }
     validObject(object)
     object
 }
