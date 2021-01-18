@@ -625,6 +625,7 @@
     mcols(object) <-
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
     ## Ensure metadata elements are all sorted alphabetically.
+    metadata(object)[["ignoreVersion"]] <- ignoreVersion
     metadata(object) <-
         metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
