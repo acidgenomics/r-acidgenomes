@@ -15,11 +15,11 @@ Entrez2Ensembl(object, ...)
 
 \S4method{Ensembl2Entrez}{character}(object, organism = NULL, format = c("1:1", "long"))
 
-\S4method{Entrez2Ensembl}{integer}(object, organism = "Homo sapiens", format = c("1:1", "long"))
+\S4method{Entrez2Ensembl}{integer}(object, organism, format = c("1:1", "long"))
 
 \S4method{Ensembl2Entrez}{GRanges}(object, format = c("1:1", "long"))
 
-\S4method{Ensembl2Entrez}{RangedSummarizedExperiment}(object, ...)
+\S4method{Ensembl2Entrez}{RangedSummarizedExperiment}(object, format = c("1:1", "long"))
 }
 \arguments{
 \item{object}{Object.}
@@ -47,7 +47,7 @@ Return 1:many in long format.
 Ensembl-to-Entrez gene identifier mappings
 }
 \note{
-Updated 2020-10-01.
+Updated 2021-01-18.
 }
 \examples{
 data(RangedSummarizedExperiment, package = "AcidTest")
