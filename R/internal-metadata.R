@@ -1,36 +1,32 @@
-## FIXME RETHINK APPROACH WITH THESE, IMPROVING SUPPORT FOR REFSEQ.
-
-
-
 #' Prototype metadata
 #'
 #' @note Updated 2020-10-06.
 #' @noRd
 .prototypeMetadata <- list(
-    version = .version,
-    date = Sys.Date()
+    "date" = Sys.Date(),
+    "version" = .version
 )
 
 
 
-## FIXME RETHINK `ensemblRelease` usage here
-
 #' Slot genome metadata
 #'
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-18.
 #' @noRd
 .slotGenomeMetadata <- function(object) {
     metadata <- metadata(object)
-    proto <- c(
-        .prototypeMetadata,
-        list(
-            organism = character(),
-            genomeBuild = character(),
-            ensemblRelease = integer()
+    proto <- append(
+        x = .prototypeMetadata,
+        values = list(
+            "genomeBuild" = character(),
+            "organism" = character(),
+            "release" = integer()
         )
     )
     proto <- proto[setdiff(names(proto), names(metadata))]
-    c(proto, metadata)
+    out <- append(x = proto, values = metadata)
+    out <- out[sort(unique(names(out)))]
+    out
 }
 
 
