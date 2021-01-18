@@ -135,11 +135,9 @@ setClass(
 setValidity(
     Class = "GencodeGenes",
     method = function(object) {
-        ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
-        ## FIXME Check for PAR genes here.
-        ## FIXME Check for seqinfo here.
-        TRUE
+        validate(
+            identical(metadata(object)[["source"]], "GENCODE")
+        )
     }
 )
 
@@ -151,20 +149,19 @@ setValidity(
 #' Contains a `GRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-18.
 #'
 #' @return `GencodeTranscripts`.
 setClass(
     Class = "GencodeTranscripts",
-    contains = "GRanges"
+    contains = "EnsemblTranscripts"
 )
 setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
-        ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
-        ## FIXME Check for seqinfo here.
-        TRUE
+        validate(
+            identical(metadata(object)[["source"]], "GENCODE")
+        )
     }
 )
 
