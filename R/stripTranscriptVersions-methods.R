@@ -1,3 +1,7 @@
+## FIXME Need to add a corresponding `stripGeneVersions` function.
+
+
+
 #' @name stripTranscriptVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
 #' @note Updated 2019-10-09.
