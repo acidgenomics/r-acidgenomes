@@ -299,27 +299,19 @@
 #' @note Updated 2021-01-18.
 #' @noRd
 .addGeneSynonyms <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        hasNoDuplicates(names(object)),
-        identical(
-            x = colnames(mcols(object)),
-            y = camelCase(colnames(mcols(object)), strict = TRUE)
-        ),
-        !isSubset("geneSynonyms", colnames(mcols(object))),
-        isSubset("geneId", colnames(mcols))
-    )
+    assert(is(object, "GRanges"))
     mcols <- mcols(object)
-    if (!any(grepl(pattern = "^ENS", x = mcols[["geneId"]]))) {
-        return(object)
-    }
-    organism <- organism(object)
-    if (!isSubset(organism, eval(formals(geneSynonyms)[["organism"]]))) {
-        return(object)
-    }
+    assert(
+        isSubset("geneId", colnames(mcols)),
+        allAreMatchingRegex(x = mcols[["geneId"]], pattern = "^ENS"),
+    )
+    organism <- match.arg(
+        arg = organism(object),
+        choices = eval(formals(geneSynonyms)[["organism"]])
+    )
     alert(sprintf(
-        "Adding gene synonyms to {.var %s} column.",
-        "geneSynonyms"
+        "Adding gene synonyms for {.var %s} to {.var %s} column.",
+        organism, "geneSynonyms"
     ))
     synonyms <- geneSynonyms(organism = organism, return = "DataFrame")
     assert(identical(c("geneId", "geneSynonyms"), colnames(synonyms)))
@@ -330,8 +322,6 @@
 
 
 
-## FIXME This needs to be called when `ignoreVersion` is changed.
-
 #' Add the gene identifier version
 #'
 #' Append the transcript version to the identifier (e.g. ENST00000000233.10).
@@ -339,10 +329,10 @@
 #' @note Updated 2021-01-18.
 #' @noRd
 .addGeneVersion <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset("geneId", colnames(mcols(object)))
-    )
+    assert(is(object, "GRanges"))
+    if (!isSubset("geneId", colnames(mcols(object)))) {
+        return(object)
+    }
     alert("Adding version to gene identifiers.")
     mcolnames <- colnames(mcols(object))
     if (isSubset("geneIdVersion", mcolnames)) {
@@ -413,64 +403,6 @@
 
 
 ## Standardization =============================================================
-#' Minimize GRanges
-#'
-#' This step drops extra columns in `mcols()` and applies run-length encoding,
-#' to reduce memory overhead.
-#'
-#' Note that `removeNA()` call currently will error on complex columns. For
-#' example, this will error on `CharacterList` columns returned from GENCODE
-#' GFF3 file.
-#'
-#' @note Updated 2020-01-20.
-#' @noRd
-.minimizeGRanges <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
-    ## Drop any complex S4 columns that aren't either atomic or list.
-    keep <- bapply(
-        X = mcols,
-        FUN = function(x) {
-            is.atomic(x) || is.list(x)
-        }
-    )
-    mcols <- mcols[, keep, drop = FALSE]
-    ## Ensure NA values are properly set, prior to `removeNA()` call.
-    mcols <- sanitizeNA(mcols)
-    ## Remove columns that are all `NA`. This step will remove all
-    ## transcript-level columns from gene-level ranges.
-    mcols <- removeNA(mcols)
-    ## Apply run-length encoding on all atomic columns.
-    mcols <- lapply(
-        X = mcols,
-        FUN = function(x) {
-            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
-                ## `I()` inhibits reinterpretation and returns `AsIs` class.
-                ## This keeps complex columns (e.g. Entrez list) intact.
-                ## Recommended in the `DataFrame` documentation.
-                I(x)
-            } else {
-                ## Ensure factor levels get correctly reset, to save memory.
-                if (is.factor(x)) {
-                    x <- droplevels(x)
-                }
-                ## Use S4 run length encoding (Rle) for atomic metadata columns.
-                ## Many of these elements are repetitive, and this makes
-                ## operations faster.
-                Rle(x)
-            }
-        }
-    )
-    ## `lapply()` returns as list, so we need to coerce back to DataFrame.
-    mcols <- as(mcols, "DataFrame")
-    mcols(object) <- mcols
-    object
-}
-
-
-
-## FIXME USE LEVEL AND THEN MAP TO IDENTIFIER...
-
 #' Match the identifier column in GRanges to use for names.
 #'
 #' @note Updated 2021-01-18.
@@ -492,50 +424,86 @@
 
 
 
-#' Standardize the GRanges into desired conventions
+#' Minimize GRanges mcols
+#'
+#' This step sanitizes NA values, applies run-length encoding (to reduce memory
+#' overhead), and trims any invalid ranges.
+#'
+#' @note Updated 2021-01-18.
+#' @noRd
+.minimizeGRanges <- function(object) {
+    assert(is(object, "GRanges"))
+    length <- length(object)
+    object <- trim(object)
+    assert(hasLength(object, n = length))
+    mcols <- mcols(object)
+    mcolsList <- lapply(
+        X = mcols,
+        FUN = function(x) {
+            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
+                I(x)
+            } else {
+                x <- sanitizeNA(x)
+                if (is.factor(x)) {
+                    x <- droplevels(x)
+                }
+                x <- Rle(x)
+                x
+            }
+        }
+    )
+    mcols <- as(mcolsList, "DataFrame")
+    mcols(object) <- mcols
+    object
+}
+
+
+
+#' Standardize the GRanges mcols into desired naming conventions
+#'
+#' @details
+#' Always return using camel case, even though GFF/GTF files use snake.
 #'
 #' Note that this step makes GRanges imported via `rtracklayer::import()`
-#' incompatible with `GenomicFeatures::makeTxDbFromGRanges()`.
+#' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
+#' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-18.
 #' @noRd
 .standardizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
-    ## Standardize the metadata columns.
     mcols <- mcols(object)
-    ## Use `transcript` prefix instead of `tx` consistently.
-    ## Changed this in v0.2.0 release.
-    ## > colnames(mcols) <- gsub(
-    ## >     pattern = "^tx_",
-    ## >     replacement = "transcript_",
-    ## >     x = colnames(mcols)
-    ## > )
-    ## Ensure "ID" is always capitalized (e.g. "entrezid").
-    colnames(mcols) <-
-        gsub(pattern = "(.+)id$", replacement = "\\1ID", x = colnames(mcols)
-    )
-    ## Always return using camel case, even though GFF/GTF files use snake.
-    ## Changed to strict format in v0.2.0 release.
+    ## Changed to strict format here in v0.2.0 release.
+    ## This results in returning "Id" identifier suffix instead of "ID".
     colnames(mcols) <- camelCase(colnames(mcols), strict = TRUE)
-    ## Always use `geneName` instead of `symbol`.
-    ## Note that ensembldb output duplicates these.
-    if (all(c("geneName", "symbol") %in% colnames(mcols))) {
+    ## Ensure "tx" prefix is used consistently instead of "transcript".
+    ## This convention was changed in v0.2.0 release.
+    colnames(mcols) <- gsub(
+        pattern = "^transcript",
+        replacement = "tx",
+        x = colnames(mcols),
+        ignore.case = FALSE
+    )
+    ## Ensure "Id" is always capitalized (e.g. "entrezid" to "entrezId").
+    colnames(mcols) <-
+        gsub(
+            pattern = "(.+)id$",
+            replacement = "\\1Id",
+            x = colnames(mcols),
+            ignore.case = FALSE
+    )
+    ## Always prefer use "geneName" instead of "symbol".
+    ## Note that ensembldb output duplicates these by default.
+    if (isSubset(c("geneName", "symbol"), colnames(mcols))) {
         mcols[["symbol"]] <- NULL
-    } else if ("symbol" %in% colnames(mcols)) {
+    } else if (isSubset("symbol", colnames(mcols))) {
         alert(
             "Renaming {.var symbol} to {.var geneName} in {.fun mcols}."
         )
         mcols[["geneName"]] <- mcols[["symbol"]]
         mcols[["symbol"]] <- NULL
     }
-    ## Re-slot updated mcols back into object before calculating broad class
-    ## biotype and/or assigning names.
     mcols(object) <- mcols
-    ## Ensure the ranges are sorted by identifier.
-    idCol <- .matchGRangesNamesColumn(object)
-    alert(sprintf("Arranging by {.var %s}.", idCol))
-    names(object) <- mcols(object)[[idCol]]
-    object <- object[sort(names(object))]
     object
 }
 
@@ -574,14 +542,12 @@
         isFlag(broadClass),
         isFlag(synonyms)
     )
-    ## FIXME RETHINK THESE STEPS >>>
-    object <- trim(object)
-    length <- length(object)
     object <- .minimizeGRanges(object)
     object <- .standardizeGRanges(object)
-    assert(hasLength(object, n = length))
     ## FIXME RETHINK THESE STEPS <<<
     if (isFALSE(ignoreVersion)) {
+        ## FIXME REWORK THIS STEP.
+        object <- .addGeneVersion(object)
         object <- .addTxVersion(object)
     }
     if (isTRUE(broadClass)) {
@@ -590,6 +556,20 @@
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
+
+
+    ## FIXME RETHINK THIS APPROACH.
+    ## Ensure the ranges are sorted by identifier.
+    ## FIXME NEED TO APPLY IDENTIFIER VERSION HANDLING PRIOR TO THIS STEP.
+    idCol <- .matchGRangesNamesColumn(object)
+    alert(sprintf("Arranging by {.var %s}.", idCol))
+    names(object) <- mcols(object)[[idCol]]
+    object <- object[sort(names(object))]
+
+
+
+
+
     ## Sort the metadata columns alphabetically.
     mcols(object) <-
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
