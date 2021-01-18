@@ -68,7 +68,7 @@ getEnsDb <- function(
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-18.
 #' @noRd
 #'
 #' @examples
@@ -247,12 +247,12 @@ getEnsDb <- function(
 
 #' Get EnsDb from Package
 #'
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-01-18.
 #' @noRd
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
-    alert(sprintf("Getting {.var EnsDb} from {.pkg %s}.", package))
+    alert(sprintf("Getting {.var %s} from {.pkg %s}.", "EnsDb", package))
     assert(isString(package))
     require(package, character.only = TRUE)
     edb <- get(
