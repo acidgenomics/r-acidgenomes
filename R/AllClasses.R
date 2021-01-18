@@ -295,10 +295,10 @@ setValidity(
 #' Ensembl-to-Entrez gene identifier mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `ensembl` and `entrez` columns.
+#' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-18.
 #'
 #' @return `Ensembl2Entrez`.
 setClass(
@@ -310,8 +310,8 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(c("ensembl", "entrez"), colnames(object)),
-            is.integer(object[["entrez"]])
+            identical(c("ensemblId", "entrezId"), colnames(object)),
+            is.integer(object[["entrezId"]])
         )
     }
 )
@@ -323,7 +323,7 @@ setValidity(
 #' @inherit Ensembl2Entrez-class details
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-18.
 #'
 #' @return `Entrez2Ensembl`.
 setClass(
@@ -335,8 +335,8 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(c("entrez", "ensembl"), colnames(object)),
-            is.integer(object[["entrez"]])
+            identical(c("entrezId", "ensemblId"), colnames(object)),
+            is.integer(object[["entrezId"]])
         )
     }
 )
