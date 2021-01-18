@@ -65,6 +65,7 @@ makeEnsDbFromGFF <- function(
         ## - Human: gencode.v32.annotation.gtf.gz
         ## - Mouse: gencode.vM25.annotation.gtf.gz
         gencodePattern <- paste0(
+            "^([a-z0-9]+_)?",        # temp prefix from BiocFileCache.
             "gencode",
             "\\.v([M0-9]+)",
             "(lift37)?",
@@ -97,21 +98,21 @@ makeEnsDbFromGFF <- function(
                 string = basename(file),
                 pattern = gencodePattern
             )
-            release <- match[1L, 2L]
+            release <- match[1L, 3L]
             if (grepl("^M", release)) {
                 organism <- "Mus musculus"
             } else {
                 organism <- "Homo sapiens"
                 release <- as.integer(release)
                 ## GRCh38
-                if (match[1L, 3L] == "lift37") {
+                if (identical(match[1L, 4L], "lift37")) {
                     genomeBuild <- "GRCh37"
                 }
             }
             ## Assembly (genome build) is documented in the first commented
             ## lines of the file (line 1 for GTF; line 2 for GFF3).
             if (is.null(genomeBuild)) {
-                x <- import(file, format = "lines", nMax = 2L)
+                x <- import(file = tmpfile, format = "lines", nMax = 2L)
                 x <- grep(pattern = "description:", x = x, value = TRUE)
                 match <- str_match(
                     string = x,
@@ -150,6 +151,8 @@ makeEnsDbFromGFF <- function(
     } else {
         stop("Unsupported file extension.")  # nocov
     }
+    ## FIXME THIS ISNT WORKING
+    ## Error: UNIQUE constraint failed: exon.exon_id
     suppressWarnings({
         suppressMessages({
             sqlite <- do.call(what = what, args = args)
