@@ -8,6 +8,9 @@
 makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
+  organism = NULL,
+  genomeBuild = NULL,
+  release = NULL,
   ignoreVersion = TRUE,
   synonyms = FALSE
 )
@@ -15,6 +18,9 @@ makeGRangesFromGFF(
 makeGRangesFromGTF(
   file,
   level = c("genes", "transcripts"),
+  organism = NULL,
+  genomeBuild = NULL,
+  release = NULL,
   ignoreVersion = TRUE,
   synonyms = FALSE
 )
@@ -25,6 +31,21 @@ File path.}
 
 \item{level}{\code{character(1)}.
 Return as genes or transcripts.}
+
+\item{organism}{\code{character(1)}.
+Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{genomeBuild}{\code{character(1)}.
+Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
+defaults to the most recent build available.
+Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
+
+\item{release}{\code{integer(1)}.
+Ensembl release version (e.g. \code{90}). We recommend setting this value if
+possible, for improved reproducibility. When left unset, the latest release
+available via AnnotationHub/ensembldb is used. Note that the latest version
+available can vary, depending on the versions of AnnotationHub and
+ensembldb in use.}
 
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
@@ -196,12 +217,21 @@ Related URLs:
 \section{Example URLs}{
 
 \itemize{
-\item Ensembl \emph{Homo sapiens} GRCh38 102
+\item Ensembl \emph{Homo sapiens} GRCh38.p13, release 102
 \href{ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz}{GTF},
 \href{ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz}{GFF3}
-\item GENCODE \emph{Homo sapiens} GRCh38 32
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz}{GFF3}
+\item Ensembl \emph{Homo sapiens} GRCh37, release 102 (87)
+\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh38.p13, release 36
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh37, release 36
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Mus musculus} GRCm38.p6, release M25
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz}{GFF3}
 \item RefSeq \emph{Homo sapiens} GRCh38.p12
 \href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz}{GFF3}
 \item FlyBase \emph{Drosophila melanogaster} r6.24

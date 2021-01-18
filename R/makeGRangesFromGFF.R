@@ -142,12 +142,21 @@
 #'
 #' @section Example URLs:
 #'
-#' - Ensembl *Homo sapiens* GRCh38 102
+#' - Ensembl *Homo sapiens* GRCh38.p13, release 102
 #'   [GTF](ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz),
 #'   [GFF3](ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz)
-#' - GENCODE *Homo sapiens* GRCh38 32
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_32/gencode.v32.annotation.gff3.gz)
+#' - Ensembl *Homo sapiens* GRCh37, release 102 (87)
+#'   [GTF](ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
+#'   [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
+#' - GENCODE *Homo sapiens* GRCh38.p13, release 36
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz)
+#' - GENCODE *Homo sapiens* GRCh37, release 36
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz)
+#' - GENCODE *Mus musculus* GRCm38.p6, release M25
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
 #' - RefSeq *Homo sapiens* GRCh38.p12
 #'   [GFF3](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
 #' - FlyBase *Drosophila melanogaster* r6.24
@@ -202,6 +211,9 @@ NULL
 .makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
+    organism = NULL,
+    genomeBuild = NULL,
+    release = NULL,
     ignoreVersion = TRUE,
     synonyms = FALSE,
     ## Internal-only arguments:
@@ -209,6 +221,9 @@ NULL
 ) {
     assert(
         isString(file),
+        isOrganism(organism, nullOK = TRUE),
+        isString(genomeBuild, nullOK = TRUE),
+        isString(release, nullOK = TRUE) || isInt(release, nullOK = TRUE),
         isFlag(ignoreVersion),
         isFlag(synonyms),
         isFlag(broadClass)
@@ -250,10 +265,26 @@ NULL
         ))
         ## nocov end
     }
+    if (
+        isTRUE(synonyms) &&
+        !isSubset(source, c("Ensembl", "GENCODE"))
+    ) {
+        ## nocov start
+        stop(sprintf(
+            "Synonyms only supported for genomes from: %s.",
+            toString(c("Ensembl", "GENCODE"))
+        ))
+        ## nocov end
+    }
     ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
     ## GenomicFeatures and generate a TxDb object.
     if (isSubset(source, c("Ensembl", "GENCODE"))) {
-        db <- makeEnsDbFromGFF(tmpfile)
+        db <- makeEnsDbFromGFF(
+            file = tmpfile,
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release
+        )
         gr <- .makeGRangesFromEnsDb(
             object = db,
             level = level,
@@ -261,17 +292,9 @@ NULL
             broadClass = broadClass,
             synonyms = synonyms
         )
-        metadata(gr)[["source"]] <- source
+        ## FIXME Where to put this?
+        ## > metadata(gr)[["source"]] <- source
     } else {
-        if (isTRUE(synonyms)) {
-            stop(sprintf(
-                "Synonyms only supported for genomes from: %s.",
-                toString(c("Ensembl", "GENCODE"))
-            ))
-        }
-
-        ## FIXME CONSIDER HOW WE WANT TO HANDLE REFSEQ AND FLYBASE SEQINFO HERE.
-
         ## FIXME THIS NEEDS SEQINFO, OTHERWISE ABORT.
         db <- makeTxDbFromGFF(
             file = tmpfile
@@ -324,12 +347,18 @@ NULL
 makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
+    organism = NULL,
+    genomeBuild = NULL,
+    release = NULL,
     ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
     .makeGRangesFromGFF(
         file = file,
         level = match.arg(level),
+        organism = organism,
+        genomeBuild = genomeBuild,
+        release = release,
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
