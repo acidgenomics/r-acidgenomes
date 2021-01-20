@@ -32,7 +32,3 @@ makeTx2GeneFileFromGFF <- function(
     assert(is(t2g, "Tx2Gene"))
     export(object = t2g, file = outputFile, overwrite = TRUE)
 }
-
-#' @rdname makeTx2Gene
-#' @export
-makeTx2GeneFileFromGTF <- makeTx2GeneFileFromGFF

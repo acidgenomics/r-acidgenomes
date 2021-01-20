@@ -119,9 +119,3 @@ f <- formals(.makeGRangesFromGFF)
 f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 f[["format"]] <- formals(makeGene2SymbolFromEnsembl)[["format"]]
 formals(makeGene2SymbolFromGFF) <- f
-
-
-
-#' @describeIn makeGene2Symbol GTF alias for `makeGene2SymbolFromGFF`.
-#' @export
-makeGene2SymbolFromGTF <- makeGene2SymbolFromGFF

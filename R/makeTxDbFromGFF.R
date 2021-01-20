@@ -1,4 +1,5 @@
 ## FIXME ATTEMPT TO DETECT THE GENOME BUILD FROM THE FILE HEADER...
+## FIXME CAN WE STASH METADATA IN THE TXDB?
 
 
 
@@ -26,8 +27,7 @@
 #' - [TxDb.Hsapiens.UCSC.hg38.knownGene](https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/).
 #'
 #' @examples
-#' ## UCSC.
-#'
+#' ## Ensembl
 #'
 #' ## RefSeq.
 #' gffFile <- pasteURL(
@@ -55,16 +55,16 @@ NULL
 
 
 
+## FIXME COME BACK TO THIS WHEN WE IMPROVE THE GENOME DETECTION FROM THE FILE.
 ## FIXME FOR SEQINFO INPUT, DO WE NEED TO MATCH SEQLEVELS?
+## FIXME DETECT THIS AUTOMATICALLY FOR REFSEQ AND GET THE SEQINFO...
+## SEQINFO SUPPORTS NCBI AND UCSC GENOMES.
+## FIXME PICK UP IF THIS IS FROM REFSEQ AND THEN CALL SEQINFO BELOW...
 
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     requireNamespaces("GenomicFeatures")
-    assert(
-        isString(file),
-        is(seqinfo, "Seqinfo") || is.null(seqinfo)
-    )
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
@@ -74,6 +74,15 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     if (!isAURL(dataSource)) {
         dataSource <- realpath(dataSource)
     }
+    file <- .cacheIt(file)
+
+
+
+
+
+    ## FIXME ATTEMPT TO GET THIS AUTOMATICALLY.
+    ## FIXME DO WE NEED TO MATCH AGAINST SEQLEVELS HERE?
+    ## FIXME CAN DETECT THE GENOME BUILD FROM THE GFF HEADER.
     if (is.null(seqinfo)) {
         alertWarning(paste(
             "Input of {.var seqinfo} is recommended.",
@@ -83,7 +92,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         organism <- NA_character_
     } else {
         ## e.g. "GRCh38.p12".
-        genomeBuild <- genome(seqinfo)[[1L]]
+        genomeBuild <- genomte(seqinfo)[[1L]]
         if (is.null(organism)) {
             ## e.g. "Homo sapiens".
             organism <- tryCatch(
@@ -92,7 +101,6 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
             )
         }
     }
-    file <- .cacheIt(file)
     ## Additional arguments of potential future interest:
     ## - dbxrefTag: This can help override primary identifier to use.
     ## - miRBaseBuild: miRBase annotations could be useful for future genome
@@ -101,16 +109,12 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     args <- list(
         "file" = file,
         "dataSource" = dataSource,
-        "format" = "auto",
         "organism" = organism
     )
     if (!is.null(seqinfo)) {
         args <- append(
             x = args,
-            values = list(
-                "chrominfo" = seqinfo,
-                "circ_seqs" = isCircular(seqinfo),
-            )
+            values = list("chrominfo" = seqinfo)
         )
     }
     what <- GenomicFeatures::makeTxDbFromGFF
@@ -121,9 +125,3 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     validObject(txdb)
     txdb
 }
-
-
-
-#' @describeIn makeTxDbFromGFF Alias for GTF files.
-#' @export
-makeTxDbFromGTF <- makeTxDbFromGFF

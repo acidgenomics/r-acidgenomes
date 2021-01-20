@@ -108,9 +108,3 @@ makeTx2GeneFromGFF <- function(file) {
 f <- formals(.makeGRangesFromGFF)
 f <- f[setdiff(names(f), c("broadClass", "level", "synonyms"))]
 formals(makeTx2GeneFromGFF) <- f
-
-
-
-#' @rdname makeTx2Gene
-#' @export
-makeTx2GeneFromGTF <- makeTx2GeneFromGFF

@@ -248,9 +248,8 @@ NULL
     ## using this downstream for file source detection and extra metadata that
     ## currently isn't supported in GenomicFeatures TxDb generation.
     rawRanges <- import(tmpfile)
-    detect <- .detectGFF(rawRanges)
-    source <- detect[["source"]]
-    type <- detect[["type"]]
+    source <- .detectGRangesSource(rawRanges)
+    type <- .detectGRangesType(rawRanges)
     assert(isString(source), isString(type))
     if (
         isTRUE(synonyms) &&
@@ -350,9 +349,3 @@ makeGRangesFromGFF <- function(
         synonyms = synonyms
     )
 }
-
-
-
-#' @describeIn makeGRangesFromGFF Alias for GTF files.
-#' @export
-makeGRangesFromGTF <- makeGRangesFromGFF
