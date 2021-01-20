@@ -233,7 +233,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2020-01-07.
+## Updated 2021-01-20.
 .downloadEnsemblGenomeFASTA <-
     function(
         organism,
@@ -268,10 +268,8 @@ downloadEnsemblGenome <-
         )
         fastaFile <- files[["fasta"]]
         assert(isAFile(fastaFile))
-        fastaSymlink <- file.path(
-            outputDir,
-            paste0("genome.", fileExt(fastaFile))
-        )
+        fastaSymlink <-
+            file.path(outputDir, paste0("genome.", fileExt(fastaFile)))
         file.symlink(from = fastaFile, to = fastaSymlink)
         files[["fastaSymlink"]] <- fastaSymlink
         invisible(files)
@@ -340,17 +338,23 @@ downloadEnsemblGenome <-
             file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
+        fastaSymlink <- file.path(outputDir, basename(mergeFastaFile))
+        file.symlink(from = mergeFastaFile, to = fastaSymlink)
         tx2geneFile <-
             makeTx2GeneFileFromFASTA(file = mergeFastaFile, source = "ensembl")
-        out <- list(
+        tx2geneSymlink <- file.path(outputDir, basename(tx2geneFile))
+        file.symlink(from = tx2geneFile, to = tx2geneSymlink)
+        files <- list(
             "fasta" = list(
                 "cdna" = cdnaFiles,
                 "ncrna" = ncrnaFiles,
                 "merge" = mergeFastaFile
             ),
-            "tx2gene" = tx2geneFile
+            "fastaSymlink" = fastaSymlink,
+            "tx2gene" = tx2geneFile,
+            "tx2geneSymlink" = tx2geneSymlink
         )
-        invisible(out)
+        invisible(files)
     }
 
 
