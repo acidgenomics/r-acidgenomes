@@ -130,7 +130,7 @@ downloadEnsemblGenome <-
         )
         file.symlink(from = gffFile, to = gffSymlink)
         files[["gffSymlink"]] <- gffSymlink
-        invisible(files)
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
@@ -178,7 +178,7 @@ downloadEnsemblGenome <-
         )
         file.symlink(from = gtfFile, to = gtfSymlink)
         files[["gtfSymlink"]] <- gtfSymlink
-        invisible(files)
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
@@ -222,7 +222,7 @@ downloadEnsemblGenome <-
             file.path(outputDir, paste0("genome.", fileExt(fastaFile)))
         file.symlink(from = fastaFile, to = fastaSymlink)
         files[["fastaSymlink"]] <- fastaSymlink
-        invisible(files)
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
@@ -304,5 +304,5 @@ downloadEnsemblGenome <-
             "tx2gene" = tx2geneFile,
             "tx2geneSymlink" = tx2geneSymlink
         )
-        invisible(files)
+        invisible(list("files" = files, "urls" = urls))
     }
