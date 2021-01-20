@@ -16,6 +16,9 @@
 
 #' Make GRanges from a GFF/GTF file
 #'
+#' @name makeGRangesFromGFF
+#' @note Updated 2021-01-20.
+#'
 #' @details
 #' Remote URLs and compressed files are supported.
 #'
@@ -74,6 +77,29 @@
 #'
 #' If you must load a GFF/GTF file directly, then use [makeGRangesFromGFF()].
 #'
+#' Example URLs:
+#'
+#' - Ensembl *Homo sapiens* GRCh38.p13, release 102
+#'   [GTF](ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz),
+#'   [GFF3](ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz)
+#' - Ensembl *Homo sapiens* GRCh37, release 102 (87)
+#'   [GTF](ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
+#'   [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
+#'
+#' @section GENCODE:
+#'
+#' Example URLs:
+#'
+#' - GENCODE *Homo sapiens* GRCh38.p13, release 36
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz)
+#' - GENCODE *Homo sapiens* GRCh37, release 36
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz)
+#' - GENCODE *Mus musculus* GRCm38.p6, release M25
+#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
+#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
+#'
 #' @section GENCODE vs. Ensembl:
 #'
 #' Annotations available from Ensembl and GENCODE are very similar.
@@ -105,75 +131,48 @@
 #' [current RefSeq spec](ftp://ftp.ncbi.nlm.nih.gov/genomes/README_GFF3.txt)
 #' for details.
 #'
+#' Example URLs:
+#'
+#' - RefSeq *Homo sapiens* GRCh38.p12
+#'   [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz),
+#'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
+#'
 #' See also:
 #'
 #' - [RefSeq FAQ](https://www.ncbi.nlm.nih.gov/books/NBK50679/)
 #' - ftp://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
 #'
-#' @section UCSC:
+#' @section UCSC Genome Browser:
 #'
-#' Loading UCSC genome annotations from a GFF/GTF file are
-#' *intentionally not supported* by this function.
+#' Example URLs:
 #'
-#' We recommend using a pre-built `TxDb` package from Bioconductor instead.
-#' For example, load `TxDb.Hsapiens.UCSC.hg38.knownGene` for hg38.
-#'
-#' For reference, note that UCSC doesn't provide direct GFF/GTF file downloads.
-#' Use of the [hgTables](https://genome.ucsc.edu/cgi-bin/hgTables) table
-#' browser is required in a web browser.
-#'
-#' Select the following options to download hg38:
-#'
-#' - clade: `Mammal`
-#' - genome: `Human`
-#' - assembly: `Dec. 2013 (GRCh38/hg38)`
-#' - group: `Genes and Gene Predictions`
-#' - track: `GENCODE v29`
-#' - table: `knownGene`
-#' - region: `genome`
-#' - output format: `GTF - gene transfer format`
-#' - output file: `<Enter a file name>`
-#'
-#' Related URLs:
-#'
-#' - [UCSC hgTables](http://genome.ucsc.edu/cgi-bin/hgTables)
-#' - [UCSC downloads](http://hgdownload.soe.ucsc.edu/downloads.html)
-#' - [UCSC hg38 FTP](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/)
-#'
-#' @section Example URLs:
-#'
-#' - Ensembl *Homo sapiens* GRCh38.p13, release 102
-#'   [GTF](ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz),
-#'   [GFF3](ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz)
-#' - Ensembl *Homo sapiens* GRCh37, release 102 (87)
-#'   [GTF](ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
-#'   [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
-#' - GENCODE *Homo sapiens* GRCh38.p13, release 36
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz)
-#' - GENCODE *Homo sapiens* GRCh37, release 36
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz)
-#' - GENCODE *Mus musculus* GRCm38.p6, release M25
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
-#' - RefSeq *Homo sapiens* GRCh38.p12
-#'   [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz),
-#'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
-#' - FlyBase *Drosophila melanogaster* r6.24
-#'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz),
-#'   [GFF3](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz)
-#' - WormBase *Caenorhabditis elegans* WS267
-#'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz),
-#'   [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz)
-#' - UCSC hg38 GTF files:
+#' - UCSC *Homo sapiens* hg38 GTF files:
 #'   [hg38.ensGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
 #'   [hg38.knownGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
 #'   [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
 #'   [hg38.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
-#' @name makeGRangesFromGFF
-#' @note Updated 2021-01-20.
+#' Related URLs:
+#'
+#' - [UCSC downloads](http://hgdownload.soe.ucsc.edu/downloads.html)
+#' - [UCSC hg38 bigZips FTP](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
+#' - [UCSC hgTables](http://genome.ucsc.edu/cgi-bin/hgTables)
+#'
+#' @section FlyBase:
+#'
+#' Example URLs:
+#'
+#' - FlyBase *Drosophila melanogaster* r6.24
+#'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz),
+#'   [GFF3](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz)
+#'
+#' @section WormBase:
+#'
+#' Example URLs:
+#'
+#' - WormBase *Caenorhabditis elegans* WS267
+#'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz),
+#'   [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz)
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
