@@ -1,12 +1,7 @@
-## FIXME CREATE STANDARDIZED SYMLINKS AT TOP LEVEL.
-## FIXME DOWNLOAD ANNOTATIONS INTO "ANNOTATIONS" DIR.
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-07.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -24,8 +19,6 @@ downloadGencodeGenome <-
         organism,
         genomeBuild = NULL,
         release = NULL,
-        type = c("all", "transcriptome", "genome", "none"),
-        annotation = c("all", "gtf", "gff", "none"),
         outputDir = "."
     ) {
         assert(
@@ -46,47 +39,6 @@ downloadGencodeGenome <-
             release <- currentGencodeVersion(organism = organism)
         }
         outputDir <- initDir(outputDir)
-        type <- match.arg(type)
-        annotation <- match.arg(annotation)
-        if (type == "none" && annotation == "none") {
-            stop("'type' or 'annotation' argument is required.")
-        }
-        dlList <- list(
-            "type" = c(
-                "genome" = FALSE,
-                "transcriptome" = FALSE
-            ),
-            "annotation" = c(
-                "gff" = FALSE,
-                "gtf" = FALSE
-            )
-        )
-        switch(
-            EXPR = type,
-            "all" = {
-                dlList[["type"]][["genome"]] <- TRUE
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            },
-            "genome" = {
-                dlList[["type"]][["genome"]] <- TRUE
-            },
-            "transcriptome" = {
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            }
-        )
-        switch(
-            EXPR = annotation,
-            "all" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            },
-            "gff" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-            },
-            "gtf" = {
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            }
-        )
         organismShort <- switch(
             EXPR = organism,
             "Homo sapiens" = "human",
@@ -118,61 +70,39 @@ downloadGencodeGenome <-
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        out <- list()
-        ## Download the metadata files first.
-        urls <- c(
-            "readme" = pasteURL(
-                releaseURL,
-                switch(
-                    EXPR = genomeBuild,
-                    "GRCh37" = "_README_GRCh37_mapping.txt",
-                    "_README.TXT"
-                )
-            ),
-            "md5sums" = pasteURL(releaseURL, "MD5SUMS")
-        )
-        out[["metadata"]] <- .downloadURLs(urls = urls, outputDir = outputDir)
-        ## Now ready to download individual genome files.
         args <- list(
-            genomeBuild = genomeBuild,
-            releaseURL = releaseURL,
-            outputDir = outputDir
+            "genomeBuild" = genomeBuild,
+            "releaseURL" = releaseURL,
+            "outputDir" = outputDir
         )
-        if (isTRUE(dlList[["type"]][["genome"]])) {
-            out[["type"]][["genome"]] <-
-                do.call(what = .downloadGencodeGenomeFASTA, args = args)
-        }
-        args <- c(args, "release" = release)
-        if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            out[["type"]][["transcriptome"]] <-
-                do.call(what = .downloadGencodeTranscriptomeFASTA, args = args)
-        }
-        args <- c(args, release = release)
-        if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            out[["annotation"]][["gtf"]] <-
-                do.call(what = .downloadGencodeGTF, args = args)
-        }
-        if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            out[["annotation"]][["gff"]] <-
-                do.call(what = .downloadGencodeGFF, args = args)
-        }
-        out[["args"]] <- args
-        out[["call"]] <- match.call()
-        saveRDS(
-            object = sessionInfo(),
-            file = file.path(outputDir, "sessionInfo.rds")
-        )
+        info <- list()
+        info[["date"]] <- Sys.Date()
+        info[["metadata"]] <-
+            do.call(what = .downloadGencodeMetadata, args = args)
+        info[["genome"]] <-
+            do.call(what = .downloadGencodeGenomeFASTA, args = args)
+        info[["transcriptome"]] <-
+            do.call(what = .downloadGencodeTranscriptomeFASTA, args = args)
+        args <- append(x = args, values = list("release" = release))
+        info[["annotation"]][["gtf"]] <-
+            do.call(what = .downloadGencodeGTF, args = args)
+        info[["annotation"]][["gff"]] <-
+            do.call(what = .downloadGencodeGFF, args = args)
+        info[["args"]] <- args
+        info[["call"]] <- match.call()
+        info[["sessionInfo"]] <- sessionInfo()
+        saveRDS(object = info, file = file.path(outputDir, "info.rds"))
         alertSuccess(sprintf(
             "GENCODE genome downloaded successfully to {.path %s}.",
             outputDir
         ))
-        invisible(out)
+        invisible(info)
     }
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeGFF <-
+## Updated 2021-01-20.
+.downloadGencodeAnnotation <-
     function(
         genomeBuild,
         release,
@@ -192,22 +122,7 @@ downloadGencodeGenome <-
                     ),
                     ".annotation.gff3.gz"
                 )
-            )
-        )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
-    }
-
-
-
-## Updated 2021-01-07.
-.downloadGencodeGTF <-
-    function(
-        genomeBuild,
-        release,
-        releaseURL,
-        outputDir
-    ) {
-        urls <- c(
+            ),
             "gtf" = pasteURL(
                 releaseURL,
                 paste0(
@@ -222,12 +137,15 @@ downloadGencodeGenome <-
                 )
             )
         )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "annotation")
+        )
     }
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-20.
 .downloadGencodeGenomeFASTA <-
     function(
         genomeBuild,
@@ -245,6 +163,30 @@ downloadGencodeGenome <-
 
 
 
+## Updated 2021-01-20.
+.downloadGencodeMetadata <-
+    function(
+        releaseURL,
+        genomeBuild,
+        outputDir
+    ) {
+        urls <- c(
+            "readme" = pasteURL(
+                releaseURL,
+                switch(
+                    EXPR = genomeBuild,
+                    "GRCh37" = "_README_GRCh37_mapping.txt",
+                    "_README.TXT"
+                )
+            ),
+            "md5sums" = pasteURL(releaseURL, "MD5SUMS")
+        )
+        files <- .downloadURLs(urls = urls, outputDir = outputDir)
+        invisible(list("files" = files, "urls" = urls))
+    }
+
+
+
 ## Updated 2021-01-07.
 .downloadGencodeTranscriptomeFASTA <-
     function(
@@ -253,7 +195,7 @@ downloadGencodeGenome <-
         releaseURL,
         outputDir
     ) {
-        out <- list()
+        files <- list()
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
@@ -268,15 +210,15 @@ downloadGencodeGenome <-
                 )
             )
         )
-        out[["fasta"]] <- .downloadURLs(
+        files[["fasta"]] <- .downloadURLs(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        fastaFile <- out[["fasta"]][["fasta"]]
+        fastaFile <- files[["fasta"]][["fasta"]]
         assert(isAFile(fastaFile))
-        out[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
+        files[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
             file = fastaFile,
             source = "gencode"
         )
-        invisible(out)
+        invisible(files)
     }
