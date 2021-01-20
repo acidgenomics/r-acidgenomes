@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -26,7 +26,7 @@ getEnsDb <- function(
     )
     if (isString(genomeBuild)) {
         remap <- tryCatch(
-            expr = mapUCSCBuildToEnsembl(genomeBuild),
+            expr = mapUCSCBuildToNCBI(genomeBuild),
             error = function(e) NULL
         )
         if (hasLength(remap)) {
@@ -42,6 +42,12 @@ getEnsDb <- function(
             genomeBuild <- ensembl
             rm(remap, ucsc, ensembl)
         }
+        ## Sanitize patch builds (e.g. "GRCh38.p13" to simply "GRCh38")
+        genomeBuild <- sub(
+            pattern = "\\.p[0-9]+$",
+            replacement = "",
+            x = genomeBuild
+        )
     }
     if (
         identical(tolower(organism), "homo sapiens") &&
