@@ -294,9 +294,11 @@ downloadEnsemblGenome <-
         fastaSymlink <- file.path(outputDir, basename(mergeFastaFile))
         file.symlink(from = mergeFastaFile, to = fastaSymlink)
         tx2geneFile <-
-            makeTx2GeneFileFromFASTA(file = mergeFastaFile, source = "ensembl")
-        tx2geneSymlink <- file.path(outputDir, basename(tx2geneFile))
-        file.symlink(from = tx2geneFile, to = tx2geneSymlink)
+            makeTx2GeneFileFromFASTA(
+                file = mergeFastaFile,
+                outputFile = file.path(outputDir, "tx2gene.csv.gz"),
+                source = "ensembl"
+            )
         files <- list(
             "fasta" = list(
                 "cdna" = cdnaFiles,
@@ -304,8 +306,7 @@ downloadEnsemblGenome <-
                 "merge" = mergeFastaFile
             ),
             "fastaSymlink" = fastaSymlink,
-            "tx2gene" = tx2geneFile,
-            "tx2geneSymlink" = tx2geneSymlink
+            "tx2gene" = tx2geneFile
         )
         invisible(list("files" = files, "urls" = urls))
     }

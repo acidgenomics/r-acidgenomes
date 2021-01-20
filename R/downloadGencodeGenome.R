@@ -252,11 +252,9 @@ downloadGencodeGenome <-
         files[["fastaSymlink"]] <- fastaSymlink
         tx2geneFile <- makeTx2GeneFileFromFASTA(
             file = fastaFile,
+            outputFile = file.path(outputDir, "tx2gene.csv.gz"),
             source = "gencode"
         )
         files[["tx2gene"]] <- tx2geneFile
-        tx2geneSymlink <- file.path(outputDir, basename(tx2geneFile))
-        file.symlink(from = tx2geneFile, to = tx2geneSymlink)
-        files[["tx2geneSymlink"]] <- tx2geneSymlink
         invisible(list("files" = files, "urls" = urls))
     }
