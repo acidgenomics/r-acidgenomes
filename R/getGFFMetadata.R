@@ -218,7 +218,7 @@
 #' ## 19  sequence-region   X 1 17718942
 #' ## 20  sequence-region   V 1 20924180
 getGFFMetadata <- function(file, nMax = Inf) {
-    assert(isAFile(file))
+    file <- .cacheIt(file)
     lines <- import(
         file = file,
         format = "lines",
