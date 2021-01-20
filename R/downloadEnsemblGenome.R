@@ -1,3 +1,8 @@
+## FIXME CREATE STANDARDIZED SYMLINKS AT TOP LEVEL.
+## FIXME DOWNLOAD ANNOTATIONS INTO "ANNOTATIONS" DIR.
+
+
+
 #' Download Ensembl reference genome
 #'
 #' @export
