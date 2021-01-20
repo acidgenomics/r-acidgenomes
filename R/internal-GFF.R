@@ -1,7 +1,7 @@
 ## Updated 2021-01-20.
 .gffMetadataForTxDb <- function(file) {
     df <- getGFFMetadata(file, nMax = 2000L)
-    if (is.null(db)) return(NULL)
+    if (is.null(df)) return(NULL)
     list(
         "genomeBuild" = .gffGenomeBuild(df),
         "source" = .gffSource(df)
@@ -43,7 +43,7 @@
         df[df[["key"]] == "annotation-source", "value", drop = TRUE]
     provider <-
         df[df[["key"]] == "provider", "value", drop = TRUE]
-    if (provider == "GENCODE") {
+    if (identical(provider, "GENCODE")) {
         return("GENCODE")
     } else if (isTRUE(grepl(pattern = "^NCBI", x = annoSource))) {
         return("RefSeq")
