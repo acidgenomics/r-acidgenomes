@@ -20,6 +20,10 @@
     }
     baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
     if (is.null(taxonomicGroup)) {
+        alertWarning(sprintf(
+            "Set {.var %s} manually to speed up this step.",
+            "taxonimicGroup"
+        ))
         taxonomicGroups <- getURLDirList(url = baseURL)
         keep <- grepl(pattern = "^[a-z_]+$", x = taxonomicGroups)
         taxonomicGroups <- sort(taxonomicGroups[keep])
