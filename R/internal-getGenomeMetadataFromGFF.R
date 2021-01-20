@@ -1,56 +1,3 @@
-## FIXME PARSE BASED ON THE GTF FILE ITSELF INSTEAD.
-
-
-
-## Example comment lines:
-##
-## Homo_sapiens.GRCh38.102.gtf.gz
-## [1] "#!genome-build GRCh38.p13"
-## [2] "#!genome-version GRCh38"
-## [3] "#!genome-date 2013-12"
-## [4] "#!genome-build-accession NCBI:GCA_000001405.28"
-## [5] "#!genebuild-last-updated 2020-09"
-##
-## Homo_sapiens.GRCh38.102.gff3.gz
-## [1] "#!genome-build  GRCh38.p13"
-## [2] "#!genome-version GRCh38"
-## [3] "#!genome-date 2013-12"
-## [4] "#!genome-build-accession NCBI:GCA_000001405.28"
-## [5] "#!genebuild-last-updated 2020-09"
-##
-## "Homo_sapiens.GRCh37.87.gtf.gz"
-## [1] "#!genome-build GRCh37.p13"
-## [2] "#!genome-version GRCh37"
-## [3] "#!genome-date 2009-02"
-## [4] "#!genome-build-accession NCBI:GCA_000001405.14"
-## [5] "#!genebuild-last-updated 2013-09"
-##
-## "Homo_sapiens.GRCh37.87.gff3.gz"
-## [1] "#!genome-build  GRCh37.p13"
-## [2] "#!genome-version GRCh37"
-## [3] "#!genome-date 2009-02"
-## [4] "#!genome-build-accession NCBI:GCA_000001405.14"
-## [5] "#!genebuild-last-updated 2013-09"
-##
-##
-
-.getGFFComments <- function(file) {
-    assert(isAFile(file))
-    lines <- import(
-        file = file,
-        format = "lines",
-        nMax = 1000L,  # Need high limit for GFF3.
-        quiet = TRUE
-    )
-    lines <- grep(pattern = "^(#!|##[^:]+:\\s)", x = lines, value = TRUE)
-    if (!hasLength(lines)) {
-        stop(sprintf("'%s' does not contain metadata comments.", file))  # nocov
-    }
-    lines
-}
-
-
-
 #' Get genome metadata from a GFF file
 #'
 #' @note Updated 2021-01-18.
@@ -180,6 +127,7 @@
 #'         "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
 #'         protocol = "ftp"
 #'     ),
+#'     ## Note that this file doesn't contain any metadata comments.
 #'     pasteURL(
 #'         "ftp.flybase.net",
 #'         "releases",
@@ -189,6 +137,7 @@
 #'         "dmel-all-r6.37.gtf.gz",
 #'         protocol = "ftp"
 #'     ),
+#'     ## This file is very large and slow to parse.
 #'     pasteURL(
 #'         "ftp.flybase.net",
 #'         "releases",
@@ -207,7 +156,7 @@
 #'         "species",
 #'         "c_elegans",
 #'         "PRJNA13758",
-#'         "c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz",
+#'         "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz",
 #'         protocol = "ftp"
 #'     ),
 #'     pasteURL(
@@ -225,13 +174,15 @@
 #' )
 #' lapply(X = files, FUN = .getGenomeMetadataFromGFF)
 
-
-
-
-
 .getGenomeMetadataFromGFF <- function(file) {
-    lines <- .getGFFComments(file)
+    meta <- .getGFFMetadata(file, nMax = 100L)
+    assert(is(meta, "DataFrame"))
 
+    ## FIXME DROP SEQUENCE REGIONS
+    ## FIXME SORT ALPHABETICALLY AND MAKE UNIQUE?
+    ## FIXME ENSURE KEYS ARE UNIQUE...
+
+    ## FIXME How to handle sequence region comments here?
     patterns <- c(
         "ensembl" = paste0(
             "^([a-z0-9]+_)?",          # temp prefix from BiocFileCache.
