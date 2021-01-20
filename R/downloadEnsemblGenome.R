@@ -125,6 +125,7 @@ downloadEnsemblGenome <-
             outputDir = file.path(outputDir, "annotation", "gff3")
         )
         gffFile <- files[["gff"]]
+        assert(isAFile(gffFile))
         gffSymlink <- file.path(
             outputDir,
             paste0("annotation.", fileExt(gffFile))
@@ -173,6 +174,7 @@ downloadEnsemblGenome <-
             outputDir = file.path(outputDir, "annotation", "gtf")
         )
         gtfFile <- files[["gtf"]]
+        assert(isAFile(gtfFile))
         gtfSymlink <- file.path(
             outputDir,
             paste0("annotation.", fileExt(gtfFile))
