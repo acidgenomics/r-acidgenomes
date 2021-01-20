@@ -158,18 +158,22 @@
 #'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
 #'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
 #' - RefSeq *Homo sapiens* GRCh38.p12
-#'   [GFF3](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
+#'   [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz),
+#'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
 #' - FlyBase *Drosophila melanogaster* r6.24
-#'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz)
+#'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz),
+#'   [GFF3](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz)
 #' - WormBase *Caenorhabditis elegans* WS267
-#'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz)
-#'
-#' @section Exons vs. CDS:
-#' - Exons: `gene - introns`.
-#' - CDS: `exons - UTRs`.
+#'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz),
+#'   [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz)
+#' - UCSC hg38 GTF files:
+#'   [hg38.ensGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
+#'   [hg38.knownGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
+#'   [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
+#'   [hg38.refGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
 #' @name makeGRangesFromGFF
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -249,22 +253,6 @@ NULL
     source <- detect[["source"]]
     type <- detect[["type"]]
     assert(isString(source), isString(type))
-    if (isSubset(source, c("FlyBase", "WormBase")) && type != "GTF") {
-        ## nocov start
-        stop(sprintf(
-            "Only %s files from %s are supported.",
-            "GTF", source
-        ))
-        ## nocov end
-    } else if (source == "RefSeq" && type != "GFF") {
-        ## nocov start
-        ## https://github.com/Bioconductor/GenomicFeatures/issues/26
-        stop(sprintf(
-            "Only %s files from %s are supported.",
-            "GFF", source
-        ))
-        ## nocov end
-    }
     if (
         isTRUE(synonyms) &&
         !isSubset(source, c("Ensembl", "GENCODE"))
