@@ -285,17 +285,12 @@ NULL
         db <- makeTxDbFromGFF(
             file = tmpfile
         )
-        ## FIXME 47 sequences (1 circular) from an unspecified genomes; no seqlengths...argh
         ## FIXME WE NEED TO IMPROVE THIS METADATA...
         gr1 <- .makeGRangesFromTxDb(object = db, level = level)
         gr2
 
         ## FIXME FOR REFSEQ USE ASSEMBLY_REPORT
         ## tximeta:::gtf2RefSeq
-
-        ## FIXME Need to define seqlengths here.
-        ## FIXME NEED TO ADD RICHER METADATA HERE...
-        ## FIXME NEED TO SLOT SEQLENGTHS HERE.
 
         out <- .makeGRanges(
             object = gr,
