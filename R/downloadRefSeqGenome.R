@@ -1,13 +1,14 @@
+## FIXME NEED TO PARSE THE REFSEQ GTF HEADER TO GET THE RELEASE VERSION...
 ## FIXME GET THE RELEASE VERSION FROM THE GTF METADATA?
-## OTHERWISE THIS CAN BE INCORRECT...
-
-## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE SUPPORT?
-## Alternatively, don't output a tx2gene for this automatically?
-
+##       OTHERWISE THIS CAN BE INCORRECT...
+## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE
+##       SUPPORT? Alternatively, don't output a tx2gene for this automatically?
 ## FIXME CREATE STANDARDIZED SYMLINKS AT TOP LEVEL.
 ## FIXME DOWNLOAD ANNOTATIONS INTO "ANNOTATIONS" DIR.
 
 
+
+## nolint start
 
 #' Download RefSeq reference genome
 #'
@@ -19,15 +20,18 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
 #'
 #' @seealso
-#' - [RefSeq Genomes FTP server](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/)
 #' - [Human Genome Resources at NCBI](https://www.ncbi.nlm.nih.gov/projects/genome/guide/human/)
+#' - [RefSeq Genomes FTP server](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/)
 #' - [Genomes Download (FTP) FAQ](https://www.ncbi.nlm.nih.gov/genome/doc/ftpfaq/)
+#' - [bcbio hg38 reference genome](https://steinbaugh.com/posts/bcbio-hg38.html)
+#' - [Heng Li: Which human reference genome to use?](http://lh3.github.io/2017/11/13/which-human-reference-genome-to-use)
+#' - [GRCh38 assembly for alignment pipelines](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/)
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
@@ -35,16 +39,15 @@
 #' ## >     organism = "Homo sapiens",
 #' ## >     taxonomicGroup = "vertebrate_mammalian",
 #' ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
-#' ## >     type = "transcriptome",
-#' ## >     annotation = "gtf"
 #' ## > )
+
+## nolint end
+
 downloadRefSeqGenome <-
     function(
         organism,
         taxonomicGroup = NULL,
         genomeBuild = NULL,
-        type = c("all", "transcriptome", "genome", "none"),
-        annotation = c("all", "gtf", "gff", "none"),
         outputDir = "."
     ) {
         assert(
@@ -70,47 +73,6 @@ downloadRefSeqGenome <-
         }
         releaseURL <- pasteURL(baseURL, "all_assembly_versions", genomeBuild)
         outputDir <- initDir(outputDir)
-        type <- match.arg(type)
-        annotation <- match.arg(annotation)
-        if (type == "none" && annotation == "none") {
-            stop("'type' or 'annotation' argument is required.")
-        }
-        dlList <- list(
-            "type" = c(
-                "genome" = FALSE,
-                "transcriptome" = FALSE
-            ),
-            "annotation" = c(
-                "gff" = FALSE,
-                "gtf" = FALSE
-            )
-        )
-        switch(
-            EXPR = type,
-            "all" = {
-                dlList[["type"]][["genome"]] <- TRUE
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            },
-            "genome" = {
-                dlList[["type"]][["genome"]] <- TRUE
-            },
-            "transcriptome" = {
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            }
-        )
-        switch(
-            EXPR = annotation,
-            "all" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            },
-            "gff" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-            },
-            "gtf" = {
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            }
-        )
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "refseq", release
         )))
@@ -125,55 +87,23 @@ downloadRefSeqGenome <-
         ))
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
-        out <- list("summary" = summary)
-        urls <- c(
-            "readme" = pasteURL(releaseURL, "README.txt"),
-            "annotationHashes" = pasteURL(releaseURL, "annotation_hashes.txt"),
-            "assemblyStatus" = pasteURL(releaseURL, "assembly_status.txt"),
-            "md5checksums" = pasteURL(releaseURL, "md5checksums.txt"),
-            "assemblyRegions" = pasteURL(
-                releaseURL,
-                paste0(genomeBuild, "_assembly_regions.txt")
-            ),
-            "assemblyReport" = pasteURL(
-                releaseURL,
-                paste0(genomeBuild, "_assembly_report.txt")
-            ),
-            "assemblyStats" = pasteURL(
-                releaseURL,
-                paste0(genomeBuild, "_assembly_stats.txt")
-            )
-        )
-        out[["metadata"]] <- .downloadURLs(urls = urls, outputDir = outputDir)
-        ## Now ready to download individual genome files.
         args <- list(
-            genomeBuild = genomeBuild,
-            releaseURL = releaseURL,
-            outputDir = outputDir
+            "genomeBuild" = genomeBuild,
+            "outputDir" = outputDir,
+            "releaseURL" = releaseURL
         )
-        if (isTRUE(dlList[["type"]][["genome"]])) {
-            out[["type"]][["genome"]] <-
-                do.call(what = .downloadRefSeqFASTA, args = args)
-        }
-        if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            out[["type"]][["transcriptome"]] <-
-                do.call(what = .downloadRefSeqTranscriptomeFASTA, args = args)
-        }
+        info <- list()
+        info[["metadata"]] <-
+            do.call(what = .downloadRefSeqMetadata, args = args)
+        info[["genome"]] <-
+            do.call(what = .downloadRefSeqGenome, args = args)
+        info[["transcriptome"]] <-
+            do.call(what = .downloadRefSeqTranscriptome, args = args)
         args <- c(args, release = release)
-        if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            out[["annotation"]][["gtf"]] <-
-                do.call(what = .downloadRefSeqGTF, args = args)
-        }
-        if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            out[["annotation"]][["gff"]] <-
-                do.call(what = .downloadRefSeqGFF, args = args)
-        }
+        out[["annotation"]] <-
+            do.call(what = .downloadRefSeqAnnotation, args = args)
         ## Export transcript-to-gene mappings.
-        if (isAFile(out[["annotation"]][["gtf"]])) {
-            makeTx2GeneFileFromGTF(file = out[["annotation"]][["gtf"]])
-        } else if (isAFile(out[["annotation"]][["gff"]])) {
-            makeTx2GeneFileFromGFF(file = out[["annotation"]][["gff"]])
-        }
+
 
         ## FIXME NEED TO RETHINK TX2GENE HANDLING HERE...
 
@@ -192,48 +122,58 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-08.
-.downloadRefSeqGFF <-
+## Updated 2021-01-20.
+.downloadRefSeqAnnotation <-
     function(
         genomeBuild,
-        releaseURL,
-        outputDir
+        outputDir,
+        releaseURL
     ) {
         urls <- c(
             "gff" = pasteURL(
                 releaseURL,
                 paste0(genomeBuild, "_genomic.gff.gz")
-            )
-        )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
-    }
-
-
-
-## Updated 2021-01-08.
-.downloadRefSeqGTF <-
-    function(
-        genomeBuild,
-        releaseURL,
-        outputDir
-    ) {
-        urls <- c(
+            ),
             "gtf" = pasteURL(
                 releaseURL,
                 paste0(genomeBuild, "_genomic.gtf.gz")
             )
+        )
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "annotation")
+        )
+        ## FIXME INCLUDE SYMLINKS.
+        ##
+        ##
+        ## FIXME MAKE THE TX2GENE FROM THE GFF?
+        ## > tx2gene <- makeTx2GeneFileFromGFF(file = out[["annotation"]][["gff"]])
+        ##
+        invisible(list("files" = files, "urls" = urls))
+    }
+
+## FIXME MOVE THIS INTO ANNOTATION.
+## Updated 2021-01-08.
+.downloadRefSeqGTF <-
+    function(
+        releaseURL,
+        genomeBuild,
+        outputDir
+    ) {
+        urls <- c(
+
         )
         .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
     }
 
 
 
-## Updated 2021-01-08.
-.downloadRefSeqGenomeFASTA <-
+## Updated 2021-01-20.
+.downloadRefSeqGenome <-
     function(
         genomeBuild,
-        releaseURL,
-        outputDir
+        outputDir,
+        releaseURL
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -241,17 +181,55 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_genomic.fna.gz")
             )
         )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "genome")
+        )
+        ## FIXME Need to add symlink.
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-08.
-.downloadRefSeqTranscriptomeFASTA <-
+## Updated 2021-01-20.
+.downloadRefSeqMetadata <-
     function(
         genomeBuild,
-        releaseURL,
-        outputDir
+        outputDir,
+        releaseURL
+    ) {
+        urls <- c(
+            "readme" = pasteURL(releaseURL, "README.txt"),
+            "annotationHashes" = pasteURL(releaseURL, "annotation_hashes.txt"),
+            "assemblyStatus" = pasteURL(releaseURL, "assembly_status.txt"),
+            "md5checksums" = pasteURL(releaseURL, "md5checksums.txt"),
+            "assemblyRegions" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, "_assembly_regions.txt")
+            ),
+            "assemblyReport" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, "_assembly_report.txt")
+            ),
+            "assemblyStats" = pasteURL(
+                releaseURL,
+                paste0(genomeBuild, "_assembly_stats.txt")
+            )
+        )
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "metadata")
+        )
+        invisible(list("files" = files, "urls" = urls))
+    }
+
+
+## Updated 2021-01-20.
+.downloadRefSeqTranscriptome <-
+    function(
+        genomeBuild,
+        outputDir,
+        releaseURL
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -259,9 +237,12 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_rna.fna.gz")
             )
         )
-        .downloadURLs(
+        files <- .downloadURLs(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        invisible(out)
+        ## FIXME NEED TO HANDLE TX2GENE HERE...
+
+        ## FIXME Need to add symlink.
+        invisible(list("files" = files, "urls" = urls))
     }
