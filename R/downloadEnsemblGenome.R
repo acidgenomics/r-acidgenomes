@@ -1,8 +1,3 @@
-## FIXME CREATE STANDARDIZED SYMLINKS AT TOP LEVEL.
-## FIXME DOWNLOAD ANNOTATIONS INTO "ANNOTATIONS" DIR.
-
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
@@ -11,10 +6,6 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @param type `character(1)`.
-#'   Genome type to download.
-#' @param annotation `character(1)`.
-#'   Annotation format to download.
 #' @param outputDir `character(1)`.
 #'   Output directory path.
 #'
@@ -32,8 +23,6 @@ downloadEnsemblGenome <-
         organism,
         genomeBuild = NULL,
         release = NULL,
-        type = c("all", "transcriptome", "genome", "none"),
-        annotation = c("all", "gtf", "gff", "none"),
         outputDir = "."
     ) {
         assert(
@@ -43,47 +32,6 @@ downloadEnsemblGenome <-
             isString(outputDir)
         )
         outputDir <- initDir(outputDir)
-        type <- match.arg(type)
-        annotation <- match.arg(annotation)
-        if (type == "none" && annotation == "none") {
-            stop("'type' or 'annotation' argument is required.")
-        }
-        dlList <- list(
-            "type" = c(
-                "genome" = FALSE,
-                "transcriptome" = FALSE
-            ),
-            "annotation" = c(
-                "gff" = FALSE,
-                "gtf" = FALSE
-            )
-        )
-        switch(
-            EXPR = type,
-            "all" = {
-                dlList[["type"]][["genome"]] <- TRUE
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            },
-            "genome" = {
-                dlList[["type"]][["genome"]] <- TRUE
-            },
-            "transcriptome" = {
-                dlList[["type"]][["transcriptome"]] <- TRUE
-            }
-        )
-        switch(
-            EXPR = annotation,
-            "all" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            },
-            "gff" = {
-                dlList[["annotation"]][["gff"]] <- TRUE
-            },
-            "gtf" = {
-                dlList[["annotation"]][["gtf"]] <- TRUE
-            }
-        )
         baseURL <- "ftp://ftp.ensembl.org/pub"
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblBuild(organism)
@@ -118,35 +66,25 @@ downloadEnsemblGenome <-
             "releaseURL" = releaseURL,
             "outputDir" = outputDir
         )
-        out <- list()
-        if (isTRUE(dlList[["type"]][["genome"]])) {
-            out[["type"]][["genome"]] <-
-                do.call(what = .downloadEnsemblGenomeFASTA, args = args)
-        }
-        if (isTRUE(dlList[["type"]][["transcriptome"]])) {
-            out[["type"]][["transcriptome"]] <-
-                do.call(what = .downloadEnsemblTranscriptomeFASTA, args = args)
-        }
+        info <- list()
+        info[["genome"]] <-
+            do.call(what = .downloadEnsemblGenomeFASTA, args = args)
+        info[["transcriptome"]] <-
+            do.call(what = .downloadEnsemblTranscriptomeFASTA, args = args)
         args <- append(x = args, values = list("release" = release))
-        if (isTRUE(dlList[["annotation"]][["gtf"]])) {
-            out[["annotation"]][["gtf"]] <-
-                do.call(what = .downloadEnsemblGTF, args = args)
-        }
-        if (isTRUE(dlList[["annotation"]][["gff"]])) {
-            out[["annotation"]][["gff"]] <-
-                do.call(what = .downloadEnsemblGFF, args = args)
-        }
-        out[["args"]] <- args
-        out[["call"]] <- match.call()
-        saveRDS(
-            object = sessionInfo(),
-            file = file.path(outputDir, "sessionInfo.rds")
-        )
+        info[["annotation"]][["gff"]] <-
+            do.call(what = .downloadEnsemblGFF, args = args)
+        info[["annotation"]][["gtf"]] <-
+            do.call(what = .downloadEnsemblGTF, args = args)
+        info[["args"]] <- args
+        info[["call"]] <- match.call()
+        info[["sessionInfo"]] <- sessionInfo()
+        saveRDS(object = info, file = file.path(outputDir, "info.rds"))
         alertSuccess(sprintf(
             "Ensembl genome downloaded successfully to {.path %s}.",
             outputDir
         ))
-        invisible(out)
+        invisible(info)
     }
 
 
@@ -185,8 +123,15 @@ downloadEnsemblGenome <-
         }
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation")
+            outputDir = file.path(outputDir, "annotation", "gff3")
         )
+        gffFile <- files[["gff"]]
+        gffSymlink <- file.path(
+            outputDir,
+            paste0("annotation.", fileExt(gffFile))
+        )
+        file.symlink(from = gffFile, to = gffSymlink)
+        files[["gffSymlink"]] <- gffSymlink
         invisible(files)
     }
 
@@ -226,8 +171,15 @@ downloadEnsemblGenome <-
         }
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation")
+            outputDir = file.path(outputDir, "annotation", "gtf")
         )
+        gtfFile <- files[["gtf"]]
+        gtfSymlink <- file.path(
+            outputDir,
+            paste0("annotation.", fileExt(gtfFile))
+        )
+        file.symlink(from = gtfFile, to = gtfSymlink)
+        files[["gtfSymlink"]] <- gtfSymlink
         invisible(files)
     }
 
@@ -356,38 +308,3 @@ downloadEnsemblGenome <-
         )
         invisible(files)
     }
-
-
-
-#' Download multiple genome files in a single call
-#'
-#' @note Updated 2021-01-07.
-#' @noRd
-#'
-#' @return `character`
-#'   Destination files.
-.downloadURLs <- function(urls, outputDir) {
-    assert(
-        allAreURLs(urls),
-        isString(outputDir)
-    )
-    outputDir <- initDir(outputDir)
-    destfiles <- vapply(
-        X = urls,
-        FUN = function(url) {
-            file.path(outputDir, basename(url))
-        },
-        FUN.VALUE = character(1L)
-    )
-    assert(identical(names(urls), names(destfiles)))
-    out <- mapply(
-        url = urls,
-        destfile = destfiles,
-        FUN = download,
-        SIMPLIFY = TRUE,
-        USE.NAMES = FALSE
-    )
-    names(out) <- names(urls)
-    assert(allAreFiles(out))
-    invisible(out)
-}
