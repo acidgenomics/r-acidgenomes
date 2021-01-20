@@ -81,9 +81,9 @@ downloadGencodeGenome <-
             do.call(what = .downloadGencodeMetadata, args = args)
         info[["genome"]] <-
             do.call(what = .downloadGencodeGenome, args = args)
+        args <- append(x = args, values = list("release" = release))
         info[["transcriptome"]] <-
             do.call(what = .downloadGencodeTranscriptome, args = args)
-        args <- append(x = args, values = list("release" = release))
         info[["annotation"]] <-
             do.call(what = .downloadGencodeAnnotation, args = args)
         info[["args"]] <- args
