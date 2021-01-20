@@ -59,10 +59,10 @@ downloadEnsemblGenome <-
         assert(!isADir(outputDir))
         outputDir <- initDir(outputDir)
         args <- list(
-            "organism" = organism,
             "genomeBuild" = genomeBuild,
-            "releaseURL" = releaseURL,
-            "outputDir" = outputDir
+            "organism" = organism,
+            "outputDir" = outputDir,
+            "releaseURL" = releaseURL
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -91,11 +91,11 @@ downloadEnsemblGenome <-
 ## Updated 2021-01-20.
 .downloadEnsemblGFF <-
     function(
-        organism,
         genomeBuild,
-        release,
+        organism,
+        outputDir,
         releaseURL,
-        outputDir
+        release
     ) {
         baseURL <- pasteURL(releaseURL, "gff3", snakeCase(organism))
         urls <- c(
@@ -140,11 +140,11 @@ downloadEnsemblGenome <-
 ## Updated 2021-01-20.
 .downloadEnsemblGTF <-
     function(
-        organism,
         genomeBuild,
+        organism,
+        outputDir,
         release,
-        releaseURL,
-        outputDir
+        releaseURL
     ) {
         baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
         urls <- c(
@@ -189,10 +189,10 @@ downloadEnsemblGenome <-
 ## Updated 2021-01-20.
 .downloadEnsemblGenome <-
     function(
-        organism,
         genomeBuild,
-        releaseURL,
-        outputDir
+        organism,
+        outputDir,
+        releaseURL
     ) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
         urls <- c(
@@ -233,10 +233,10 @@ downloadEnsemblGenome <-
 ## Updated 2021-01-20.
 .downloadEnsemblTranscriptome <-
     function(
-        organism,
         genomeBuild,
-        releaseURL,
-        outputDir
+        organism,
+        outputDir,
+        releaseURL
     ) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
         ## Download cDNA FASTA files.
