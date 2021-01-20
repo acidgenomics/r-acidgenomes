@@ -38,6 +38,7 @@ getGFFMetadata <- function(file, nMax = Inf) {
     lines <- import(
         file = file,
         format = "lines",
+        comment = "",
         nMax = nMax,
         quiet = TRUE
     )
