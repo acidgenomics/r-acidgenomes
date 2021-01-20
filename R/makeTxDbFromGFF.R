@@ -102,16 +102,25 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     suppressWarnings({
         txdb <- do.call(what = what, args = args)
     })
-    ## Now hitting this annoying error:
+
+    ## FIXME Now hitting this annoying error:
     ## Error in .normarg_new2old_and_check_new_seqinfo(new2old, value, seqinfo(x),  :
     ## seqlengths() and isCircular() of the supplied
     ## 'seqinfo' must be identical to seqlengths() and
     ## isCircular() of the current 'seqinfo' when replacing the 'seqinfo' of a TxDb object
     ## Calls: makeTxDbFromGFF ... seqinfo<- -> .normarg_new2old_and_check_new_seqinfo
-    if (!is.null(seqinfo)) {
-        assert(areIntersectingSets(names(seqinfo), names(seqinfo(txdb))))
-        seqinfo(txdb) <- seqinfo[names(seqinfo(txdb))]
-    }
+
+
+    ## > if (!is.null(seqinfo)) {
+    ## >     assert(areIntersectingSets(names(seqinfo), names(seqinfo(txdb))))
+    ## >     seqinfo(txdb) <- seqinfo[names(seqinfo(txdb))]
+    ## > }
+
+    ## FIXME ARE THE UCSC SEQLENGTHS BETTER HERE?
+    ## https://github.com/mikelove/tximeta/blob/master/R/tximeta.R#L444
+    ## ucsc.genome <- genome2UCSC(txomeInfo$genome)
+    ## try(seqinfo(txps) <- Seqinfo(genome=ucsc.genome)[seqlevels(txps)])
+
     assert(is(txdb, "TxDb"))
     validObject(txdb)
     txdb
