@@ -67,9 +67,9 @@ downloadEnsemblGenome <-
         info <- list()
         info[["date"]] <- Sys.Date()
         info[["genome"]] <-
-            do.call(what = .downloadEnsemblGenomeFASTA, args = args)
+            do.call(what = .downloadEnsemblGenome, args = args)
         info[["transcriptome"]] <-
-            do.call(what = .downloadEnsemblTranscriptomeFASTA, args = args)
+            do.call(what = .downloadEnsemblTranscriptome, args = args)
         args <- append(x = args, values = list("release" = release))
         info[["annotation"]][["gff"]] <-
             do.call(what = .downloadEnsemblGFF, args = args)
@@ -185,7 +185,7 @@ downloadEnsemblGenome <-
 
 
 ## Updated 2021-01-20.
-.downloadEnsemblGenomeFASTA <-
+.downloadEnsemblGenome <-
     function(
         organism,
         genomeBuild,
@@ -229,7 +229,7 @@ downloadEnsemblGenome <-
 
 
 ## Updated 2021-01-20.
-.downloadEnsemblTranscriptomeFASTA <-
+.downloadEnsemblTranscriptome <-
     function(
         organism,
         genomeBuild,
