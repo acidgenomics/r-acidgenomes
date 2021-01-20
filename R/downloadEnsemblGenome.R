@@ -14,9 +14,7 @@
 #' ## > downloadEnsemblGenome(
 #' ## >     organism = "Homo sapiens",
 #' ## >     genomeBuild = "GRCh38",
-#' ## >     release = 100L,
-#' ## >     type = "transcriptome",
-#' ## >     annotation = "gtf"
+#' ## >     release = 100L
 #' ## > )
 downloadEnsemblGenome <-
     function(
