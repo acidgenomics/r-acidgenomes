@@ -1,3 +1,5 @@
+## FIXME CONSIDER EXPORTING THIS...PRETTY USEFUL.
+
 #' Get genome metadata from a GFF file
 #'
 #' @note Updated 2021-01-18.
@@ -174,9 +176,33 @@
 #' )
 #' lapply(X = files, FUN = .getGenomeMetadataFromGFF)
 
-.getGenomeMetadataFromGFF <- function(file) {
-    meta <- .getGFFMetadata(file, nMax = 100L)
-    assert(is(meta, "DataFrame"))
+.detectGenomeBuildFromGFF <- function(file) {
+    df <- getGFFMetadata(file, nMax = 100L)
+    assert(is(df, "DataFrame"))
+    ## FIXME NEED TO HANDLE INPUT OF MULTIPLE KEYS?
+    .getValue <- function(key) {
+        x <- df[match(x = key, table = df[["key"]]), "value", drop = TRUE]
+        if (is.na(x)) return(NULL)
+        x
+    }
+    x <- .getValue("genome-build")
+    if (isString(x)) return(x)
+    NULL
+
+    l <- list(
+        "genomeBuild" = NULL,
+        "organism" = NULL
+    )
+    l[["genomeBuild"]] <-
+    ## Ensembl:
+    ## > l[["genomeBuildAccession"]] <- .getValue("genome-build-accession")
+
+
+
+
+
+
+
 
     ## FIXME DROP SEQUENCE REGIONS
     ## FIXME SORT ALPHABETICALLY AND MAKE UNIQUE?
