@@ -1,27 +1,9 @@
 ## GFF metadata detection ======================================================
-#' Detect the GFF source information
-#'
-#' @details
-#' Assuming we've already cached the URL using BiocFileCache here.
-#' This step will load into GRanges via rtracklayer.
-#'
-#' @note Updated 2021-01-18.
-#' @noRd
-.detectGFF <- function(object) {
-    assert(is(object, "GRanges"))
-    c(
-        "source" = .detectGFFSource(object),
-        "type" = .detectGFFType(object)
-    )
-}
-
-
-
 #' Detect the database source of the genome annotations
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-20.
 #' @noRd
-.detectGFFSource <- function(object) {
+.detectGRangesSource <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
     source <- mcols[["source"]]
@@ -84,7 +66,7 @@
 #'
 #' @note Updated 2021-01-18.
 #' @noRd
-.detectGFFType <- function(object) {
+.detectGRangesType <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
         out <- "GFF3"
