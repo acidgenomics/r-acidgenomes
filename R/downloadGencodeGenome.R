@@ -72,8 +72,8 @@ downloadGencodeGenome <-
         outputDir <- initDir(outputDir)
         args <- list(
             "genomeBuild" = genomeBuild,
-            "releaseURL" = releaseURL,
-            "outputDir" = outputDir
+            "outputDir" = outputDir,
+            "releaseURL" = releaseURL
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -103,9 +103,9 @@ downloadGencodeGenome <-
 .downloadGencodeAnnotation <-
     function(
         genomeBuild,
+        outputDir,
         release,
-        releaseURL,
-        outputDir
+        releaseURL
     ) {
         urls <- c(
             "gff" = pasteURL(
@@ -166,8 +166,8 @@ downloadGencodeGenome <-
 .downloadGencodeGenome <-
     function(
         genomeBuild,
-        releaseURL,
-        outputDir
+        outputDir,
+        releaseURL
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -195,9 +195,9 @@ downloadGencodeGenome <-
 ## Updated 2021-01-20.
 .downloadGencodeMetadata <-
     function(
-        releaseURL,
         genomeBuild,
-        outputDir
+        outputDir,
+        releaseURL
     ) {
         urls <- c(
             "readme" = pasteURL(
@@ -210,7 +210,10 @@ downloadGencodeGenome <-
             ),
             "md5sums" = pasteURL(releaseURL, "MD5SUMS")
         )
-        files <- .downloadURLs(urls = urls, outputDir = outputDir)
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "metadata")
+        )
         invisible(list("files" = files, "urls" = urls))
     }
 
@@ -220,9 +223,9 @@ downloadGencodeGenome <-
 .downloadGencodeTranscriptome <-
     function(
         genomeBuild,
+        outputDir,
         release,
-        releaseURL,
-        outputDir
+        releaseURL
     ) {
         urls <- c(
             "fasta" = pasteURL(
