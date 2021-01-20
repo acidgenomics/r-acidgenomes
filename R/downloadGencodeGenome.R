@@ -80,14 +80,12 @@ downloadGencodeGenome <-
         info[["metadata"]] <-
             do.call(what = .downloadGencodeMetadata, args = args)
         info[["genome"]] <-
-            do.call(what = .downloadGencodeGenomeFASTA, args = args)
+            do.call(what = .downloadGencodeGenome, args = args)
         info[["transcriptome"]] <-
-            do.call(what = .downloadGencodeTranscriptomeFASTA, args = args)
+            do.call(what = .downloadGencodeTranscriptome, args = args)
         args <- append(x = args, values = list("release" = release))
-        info[["annotation"]][["gtf"]] <-
-            do.call(what = .downloadGencodeGTF, args = args)
-        info[["annotation"]][["gff"]] <-
-            do.call(what = .downloadGencodeGFF, args = args)
+        info[["annotation"]] <-
+            do.call(what = .downloadGencodeAnnotation, args = args)
         info[["args"]] <- args
         info[["call"]] <- match.call()
         info[["sessionInfo"]] <- sessionInfo()
@@ -141,12 +139,31 @@ downloadGencodeGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
+        ## Generate GFF symlink.
+        gffFile <- files[["gff"]]
+        assert(isAFile(gffFile))
+        gffSymlink <- file.path(
+            outputDir,
+            paste0("annotation.", fileExt(gffFile))
+        )
+        file.symlink(from = gffFile, to = gffSymlink)
+        files[["gffSymlink"]] <- gffSymlink
+        ## Generate GTF symlink.
+        gtfFile <- files[["gtf"]]
+        assert(isAFile(gtfFile))
+        gtfSymlink <- file.path(
+            outputDir,
+            paste0("annotation.", fileExt(gtfFile))
+        )
+        file.symlink(from = gtfFile, to = gtfSymlink)
+        files[["gtfSymlink"]] <- gtfSymlink
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
 
 ## Updated 2021-01-20.
-.downloadGencodeGenomeFASTA <-
+.downloadGencodeGenome <-
     function(
         genomeBuild,
         releaseURL,
@@ -158,7 +175,19 @@ downloadGencodeGenome <-
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
         )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "genome")
+        )
+        fastaFile <- files[["fasta"]]
+        assert(isAFile(fastaFile))
+        fastaSymlink <- file.path(
+            outputDir,
+            paste0("genome.", fileExt(fastaFile))
+        )
+        file.symlink(from = fastaFile, to = fastaSymlink)
+        files[["fastaSymlink"]] <- fastaSymlink
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
@@ -187,15 +216,14 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-07.
-.downloadGencodeTranscriptomeFASTA <-
+## Updated 2021-01-20.
+.downloadGencodeTranscriptome <-
     function(
         genomeBuild,
         release,
         releaseURL,
         outputDir
     ) {
-        files <- list()
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
@@ -210,15 +238,25 @@ downloadGencodeGenome <-
                 )
             )
         )
-        files[["fasta"]] <- .downloadURLs(
+        files <- .downloadURLs(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        fastaFile <- files[["fasta"]][["fasta"]]
+        fastaFile <- files[["fasta"]]
         assert(isAFile(fastaFile))
-        files[["tx2gene"]] <- makeTx2GeneFileFromFASTA(
+        fastaSymlink <- file.path(
+            outputDir,
+            paste0("transcriptome.", fileExt(fastaFile))
+        )
+        file.symlink(from = fastaFile, to = fastaSymlink)
+        files[["fastaSymlink"]] <- fastaSymlink
+        tx2geneFile <- makeTx2GeneFileFromFASTA(
             file = fastaFile,
             source = "gencode"
         )
-        invisible(files)
+        files[["tx2gene"]] <- tx2geneFile
+        tx2geneSymlink <- file.path(outputDir, basename(tx2geneFile))
+        file.symlink(from = tx2geneFile, to = tx2geneSymlink)
+        files[["tx2geneSymlink"]] <- tx2geneSymlink
+        invisible(list("files" = files, "urls" = urls))
     }
