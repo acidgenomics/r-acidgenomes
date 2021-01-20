@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' ## GENCODE.
-#' gffFile <- pasteURL(
+#' gtfFile <- pasteURL(
 #'     "ftp.ebi.ac.uk",
 #'     "pub",
 #'     "databases",
@@ -33,7 +33,7 @@
 #'     "gencode.v36.annotation.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
+#' txdb <- makeTxDbFromGFF(gtfFile)
 #' print(txdb)
 #' seqinfo(txdb)
 #'
@@ -89,8 +89,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
                 genome <- switch(
                     EXPR = source,
                     "GENCODE" = mapNCBIBuildToUCSC(genomeBuild),
-                    "RefSeq" = NULL,
-                    genomeBuild
+                    NULL
                 )
                 Seqinfo(genome = genome)
             },
