@@ -3,3 +3,4 @@
 * Development
 ** TODO Consider classing gene/transcript return from EnsDb and TxDb.
 ** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
+** TODO Add automatic tx2gene output for RefSeq genome download.

@@ -1,13 +1,3 @@
-## FIXME NEED TO PARSE THE REFSEQ GTF HEADER TO GET THE RELEASE VERSION...
-## FIXME GET THE RELEASE VERSION FROM THE GTF METADATA?
-##       OTHERWISE THIS CAN BE INCORRECT...
-## FIXME NEED TO GET TRANSCRIPTS TO FLAT GRANGES, THEN WE CAN ADD TX2GENE
-##       SUPPORT? Alternatively, don't output a tx2gene for this automatically?
-## FIXME CREATE STANDARDIZED SYMLINKS AT TOP LEVEL.
-## FIXME DOWNLOAD ANNOTATIONS INTO "ANNOTATIONS" DIR.
-
-
-
 ## nolint start
 
 #' Download RefSeq reference genome
@@ -93,26 +83,19 @@ downloadRefSeqGenome <-
             "releaseURL" = releaseURL
         )
         info <- list()
+        info[["date"]] <- Sys.Date()
         info[["metadata"]] <-
             do.call(what = .downloadRefSeqMetadata, args = args)
         info[["genome"]] <-
             do.call(what = .downloadRefSeqGenome, args = args)
         info[["transcriptome"]] <-
             do.call(what = .downloadRefSeqTranscriptome, args = args)
-        args <- c(args, release = release)
-        out[["annotation"]] <-
+        info[["annotation"]] <-
             do.call(what = .downloadRefSeqAnnotation, args = args)
-        ## Export transcript-to-gene mappings.
-
-
-        ## FIXME NEED TO RETHINK TX2GENE HANDLING HERE...
-
-        out[["args"]] <- args
-        out[["call"]] <- match.call()
-        saveRDS(
-            object = sessionInfo(),
-            file = file.path(outputDir, "sessionInfo.rds")
-        )
+        info[["args"]] <- args
+        info[["call"]] <- match.call()
+        info[["sessionInfo"]] <- sessionInfo()
+        saveRDS(object = info, file = file.path(outputDir, "metadata.rds"))
         alertSuccess(sprintf(
             "RefSeq genome downloaded successfully to {.path %s}.",
             outputDir
@@ -143,27 +126,22 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
-        ## FIXME INCLUDE SYMLINKS.
-        ##
-        ##
-        ## FIXME MAKE THE TX2GENE FROM THE GFF?
-        ## > tx2gene <- makeTx2GeneFileFromGFF(file = out[["annotation"]][["gff"]])
-        ##
-        invisible(list("files" = files, "urls" = urls))
-    }
-
-## FIXME MOVE THIS INTO ANNOTATION.
-## Updated 2021-01-08.
-.downloadRefSeqGTF <-
-    function(
-        releaseURL,
-        genomeBuild,
-        outputDir
-    ) {
-        urls <- c(
-
+        ## Generate GFF symlink.
+        gffFile <- files[["gff"]]
+        assert(isAFile(gffFile))
+        gffSymlink <- file.path(outputDir, "annotation.gff3.gz")
+        file.symlink(from = gffFile, to = gffSymlink)
+        files[["gffSymlink"]] <- gffSymlink
+        ## Generate GTF symlink.
+        gtfFile <- files[["gtf"]]
+        assert(isAFile(gtfFile))
+        gtfSymlink <- file.path(
+            outputDir,
+            paste0("annotation.", fileExt(gtfFile))
         )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
+        file.symlink(from = gtfFile, to = gtfSymlink)
+        files[["gtfSymlink"]] <- gtfSymlink
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
@@ -185,7 +163,11 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "genome")
         )
-        ## FIXME Need to add symlink.
+        fastaFile <- files[["fasta"]]
+        assert(isAFile(fastaFile))
+        fastaSymlink <- file.path(outputDir, "genome.fa.gz")
+        file.symlink(from = fastaFile, to = fastaSymlink)
+        files[["fastaSymlink"]] <- fastaSymlink
         invisible(list("files" = files, "urls" = urls))
     }
 
@@ -241,8 +223,10 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        ## FIXME NEED TO HANDLE TX2GENE HERE...
-
-        ## FIXME Need to add symlink.
+        fastaFile <- files[["fasta"]]
+        assert(isAFile(fastaFile))
+        fastaSymlink <- file.path(outputDir, "transcriptome.fa.gz")
+        file.symlink(from = fastaFile, to = fastaSymlink)
+        files[["fastaSymlink"]] <- fastaSymlink
         invisible(list("files" = files, "urls" = urls))
     }
