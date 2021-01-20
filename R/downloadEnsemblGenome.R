@@ -6,7 +6,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-01-07.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -127,7 +127,7 @@ downloadEnsemblGenome <-
             out[["type"]][["transcriptome"]] <-
                 do.call(what = .downloadEnsemblTranscriptomeFASTA, args = args)
         }
-        args <- c(args, "release" = release)
+        args <- append(x = args, values = list("release" = release))
         if (isTRUE(dlList[["annotation"]][["gtf"]])) {
             out[["annotation"]][["gtf"]] <-
                 do.call(what = .downloadEnsemblGTF, args = args)
@@ -151,7 +151,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-20.
 .downloadEnsemblGFF <-
     function(
         organism,
@@ -183,12 +183,16 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gff"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "annotation")
+        )
+        invisible(files)
     }
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-20.
 .downloadEnsemblGTF <-
     function(
         organism,
@@ -220,7 +224,11 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "gtf"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "annotation")
+        )
+        invisible(files)
     }
 
 
@@ -254,12 +262,24 @@ downloadEnsemblGenome <-
                 sep = "."
             )
         )
-        .downloadURLs(urls = urls, outputDir = file.path(outputDir, "genome"))
+        files <- .downloadURLs(
+            urls = urls,
+            outputDir = file.path(outputDir, "genome")
+        )
+        fastaFile <- files[["fasta"]]
+        assert(isAFile(fastaFile))
+        fastaSymlink <- file.path(
+            outputDir,
+            paste0("genome.", fileExt(fastaFile))
+        )
+        file.symlink(from = fastaFile, to = fastaSymlink)
+        files[["fastaSymlink"]] <- fastaSymlink
+        invisible(files)
     }
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-20.
 .downloadEnsemblTranscriptomeFASTA <-
     function(
         organism,
@@ -284,7 +304,7 @@ downloadEnsemblGenome <-
         )
         cdnaFiles <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "cdna")
+            outputDir = file.path(outputDir, "transcriptome", "cdna")
         )
         ## Download ncRNA FASTA files.
         ncrnaBaseURL <- pasteURL(baseURL, "ncrna")
@@ -302,7 +322,7 @@ downloadEnsemblGenome <-
         )
         ncrnaFiles <- .downloadURLs(
             urls =  urls,
-            outputDir = file.path(outputDir, "ncrna")
+            outputDir = file.path(outputDir, "transcriptome", "ncrna")
         )
         ## Create a merged transcriptome FASTA.
         alert("Creating a merged transcriptome FASTA file.")
@@ -317,13 +337,11 @@ downloadEnsemblGenome <-
         mergeFasta <- do.call(what = c, args = fastaList)
         mergeFastaFile <- export(
             object = mergeFasta,
-            file = file.path(outputDir, "transcriptome.fa.gz"),
+            file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
-        tx2geneFile <- makeTx2GeneFileFromFASTA(
-            file = mergeFastaFile,
-            source = "ensembl"
-        )
+        tx2geneFile <-
+            makeTx2GeneFileFromFASTA(file = mergeFastaFile, source = "ensembl")
         out <- list(
             "fasta" = list(
                 "cdna" = cdnaFiles,
