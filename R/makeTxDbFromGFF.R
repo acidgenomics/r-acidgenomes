@@ -1,8 +1,3 @@
-## FIXME ATTEMPT TO DETECT THE GENOME BUILD FROM THE FILE HEADER...
-## FIXME CAN WE STASH METADATA IN THE TXDB?
-
-
-
 ## nolint start
 
 #' Make TxDb from a GFF/GTF file
@@ -53,14 +48,6 @@ NULL
 
 ## nolint end
 
-
-
-## FIXME COME BACK TO THIS WHEN WE IMPROVE THE GENOME DETECTION FROM THE FILE.
-## FIXME FOR SEQINFO INPUT, DO WE NEED TO MATCH SEQLEVELS?
-## FIXME DETECT THIS AUTOMATICALLY FOR REFSEQ AND GET THE SEQINFO...
-## SEQINFO SUPPORTS NCBI AND UCSC GENOMES.
-## FIXME PICK UP IF THIS IS FROM REFSEQ AND THEN CALL SEQINFO BELOW...
-
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file, seqinfo = NULL) {
@@ -75,31 +62,25 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         dataSource <- realpath(dataSource)
     }
     file <- .cacheIt(file)
-
-
-
-
-
-    ## FIXME ATTEMPT TO GET THIS AUTOMATICALLY.
-    ## FIXME DO WE NEED TO MATCH AGAINST SEQLEVELS HERE?
-    ## FIXME CAN DETECT THE GENOME BUILD FROM THE GFF HEADER.
+    ## Attempt to get seqinfo automatically if not manually defined (e.g.
+    ## for RefSeq). This is supported for most NCBI (e.g. GRCh38 or GRCh38.p13)
+    ## and UCSC (e.g. hg38) genome builds.
     if (is.null(seqinfo)) {
-        alertWarning(paste(
-            "Input of {.var seqinfo} is recommended.",
-            "This helps define chromosome seqlengths and genome metadata."
-        ))
-        genomeBuild <- NA_character_
-        organism <- NA_character_
-    } else {
-        ## e.g. "GRCh38.p12".
-        genomeBuild <- genomte(seqinfo)[[1L]]
-        if (is.null(organism)) {
-            ## e.g. "Homo sapiens".
-            organism <- tryCatch(
-                expr = detectOrganism(genomeBuild),
-                error = function(e) NA_character_
-            )
-        }
+        genomeBuild <- .detectGenomeBuildFromGFF(file)
+        organism <- tryCatch(
+            expr = detectOrganism(genomeBuild),
+            error = function(e) NA_character_
+        )
+        seqinfo <- tryCatch(
+            expr = Seqinfo(genome = genomeBuild),
+            error = function(e) {
+                alertWarning(paste(
+                    "Automatic seqinfo detection failed.",
+                    "Manual input of {.var seqinfo} is recommended."
+                ))
+                NULL
+            }
+        )
     }
     ## Additional arguments of potential future interest:
     ## - dbxrefTag: This can help override primary identifier to use.
@@ -111,16 +92,20 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         "dataSource" = dataSource,
         "organism" = organism
     )
-    if (!is.null(seqinfo)) {
-        args <- append(
-            x = args,
-            values = list("chrominfo" = seqinfo)
-        )
-    }
+    ## This step will call `.tidy_seqinfo()` to check that all chromosomes
+    ## map in the seqinfo, which can be overly strict. Using a manual assignment
+    ## approach below instead, inspired by similar approach in tximeta.
+    ## > if (!is.null(seqinfo)) {
+    ## >     args <- append(x = args, values = list("chrominfo" = seqinfo))
+    ## > }
     what <- GenomicFeatures::makeTxDbFromGFF
     suppressWarnings({
         txdb <- do.call(what = what, args = args)
     })
+    if (!is.null(seqinfo)) {
+        assert(areIntersectingSets(names(seqinfo), names(seqinfo(txdb))))
+        seqinfo(txdb) <- seqinfo[names(seqinfo(txdb))]
+    }
     assert(is(txdb, "TxDb"))
     validObject(txdb)
     txdb

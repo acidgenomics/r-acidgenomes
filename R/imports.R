@@ -3,7 +3,7 @@
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
 #' @importFrom AcidBase compress download fileExt initDir matchArgsToDoCall
-#'   pasteURL printString requireNamespaces showSlotInfo
+#'   pasteURL printString realpath requireNamespaces showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
@@ -13,7 +13,8 @@
 #' @importFrom AnnotationDbi select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
-#' @importFrom GenomeInfoDb Seqinfo genome isCircular seqlengths seqnames
+#' @importFrom GenomeInfoDb Seqinfo genome isCircular seqinfo<- seqlengths
+#'   seqnames
 #' @importFrom GenomicRanges GRanges ranges trim
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
@@ -21,10 +22,10 @@
 #' @importFrom digest digest
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreFiles allAreMatchingRegex allAreURLs areDisjointSets
-#'   areSetEqual assert bapply hasDuplicates hasInternet hasLength
-#'   hasNoDuplicates hasNames hasRownames hasRows isADir isAFile isAURL isAny
-#'   isCharacter isFlag isInt isMatchingFixed isMatchingRegex isOrganism
-#'   isString isSubset validate
+#'   areIntersectingSets areSetEqual assert bapply hasDuplicates hasInternet
+#'   hasLength hasNoDuplicates hasNames hasRownames hasRows isADir isAFile
+#'   isAURL isAny isCharacter isFlag isInt isMatchingFixed isMatchingRegex
+#'   isOrganism isString isSubset validate
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is new setClass setGeneric setMethod setValidity
