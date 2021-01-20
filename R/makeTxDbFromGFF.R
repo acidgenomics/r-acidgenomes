@@ -1,3 +1,7 @@
+## FIXME ATTEMPT TO DETECT THE GENOME BUILD FROM THE FILE HEADER...
+
+
+
 ## nolint start
 
 #' Make TxDb from a GFF/GTF file
@@ -5,25 +9,13 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-14.
-#' @note For Ensembl and GENCODE genomes, consider using
-#'   `makeEnsDbFromGFF` instead.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
 #' @param seqinfo `Seqinfo` or `NULL`.
 #'   **Recommended.** Information about the chromosomes.
-#'
-#' @details
-#' This step can be noisy and generate expected warnings, which are
-#' intentionally suppressed:
-#'
-#' ```
-#' some exons are linked to transcripts not found in the file
-#' The following orphan exon were dropped
-#' The following orphan CDS were dropped
-#' ```
 #'
 #' @return `TxDb`.
 #'
@@ -34,6 +26,9 @@
 #' - [TxDb.Hsapiens.UCSC.hg38.knownGene](https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/).
 #'
 #' @examples
+#' ## UCSC.
+#'
+#'
 #' ## RefSeq.
 #' gffFile <- pasteURL(
 #'     "ftp.ncbi.nlm.nih.gov",
@@ -59,6 +54,8 @@ NULL
 ## nolint end
 
 
+
+## FIXME FOR SEQINFO INPUT, DO WE NEED TO MATCH SEQLEVELS?
 
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
@@ -103,12 +100,19 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     ##   https://github.com/Bioconductor/GenomicFeatures/issues/27
     args <- list(
         "file" = file,
-        "chrominfo" = seqinfo,
-        "circ_seqs" = isCircular(seqinfo),
         "dataSource" = dataSource,
         "format" = "auto",
         "organism" = organism
     )
+    if (!is.null(seqinfo)) {
+        args <- append(
+            x = args,
+            values = list(
+                "chrominfo" = seqinfo,
+                "circ_seqs" = isCircular(seqinfo),
+            )
+        )
+    }
     what <- GenomicFeatures::makeTxDbFromGFF
     suppressWarnings({
         txdb <- do.call(what = what, args = args)
