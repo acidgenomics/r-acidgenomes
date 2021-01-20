@@ -86,12 +86,12 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         )
         seqinfo <- tryCatch(
             expr = {
-                if (source == "GENCODE") {
-                    ## FIXME COME BACK TO THIS.
-                    genomeBuild <- mapNCBIBuildToUCSC(genomeBuild)
-                } else {
-                    genome <- genomeBuild
-                }
+                genome <- switch(
+                    EXPR = source,
+                    "GENCODE" = mapNCBIBuildToUCSC(genomeBuild),
+                    "RefSeq" = NULL,
+                    genomeBuild
+                )
                 Seqinfo(genome = genome)
             },
             error = function(e) {
@@ -102,8 +102,6 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
                 NULL
             }
         )
-        ## FIXME REWORK THIS FOR GENCODE IN UPDATE...
-        seqinfo <- Seqinfo(genome = "hg38")
     }
     ## Additional arguments of potential future interest:
     ## - dbxrefTag: This can help override primary identifier to use.
