@@ -88,7 +88,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -98,7 +98,7 @@
 #' @seealso
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
-#' - `ensembldb::ensDbFromGtf()`.
+#' - `ensembldb::ensDbFromGff()`, `ensembldb::ensDbFromGtf()`.
 #'
 #' @examples
 #' ## Get annotations from Ensembl via AnnotationHub query.
