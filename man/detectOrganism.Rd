@@ -27,7 +27,7 @@ package, which gets loaded into the namespace when DESeq2 is attached.
 Instead, we're exporting the character method here as a separate function
 named \code{detectOrganism}.
 
-Updated 2020-10-06.
+Updated 2021-01-20.
 }
 \section{Supported organisms}{
 

@@ -8,8 +8,6 @@ downloadRefSeqGenome(
   organism,
   taxonomicGroup = NULL,
   genomeBuild = NULL,
-  type = c("all", "transcriptome", "genome", "none"),
-  annotation = c("all", "gtf", "gff", "none"),
   outputDir = "."
 )
 }
@@ -27,12 +25,6 @@ Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
 defaults to the most recent build available.
 Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
-\item{type}{\code{character(1)}.
-Genome type to download.}
-
-\item{annotation}{\code{character(1)}.
-Annotation format to download.}
-
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
 }
@@ -40,7 +32,7 @@ Output directory path.}
 Download RefSeq reference genome
 }
 \note{
-Updated 2021-01-14.
+Updated 2021-01-20.
 }
 \section{Stable release}{
 
@@ -57,14 +49,16 @@ a genome build one version behind as a stable release
 ## >     organism = "Homo sapiens",
 ## >     taxonomicGroup = "vertebrate_mammalian",
 ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
-## >     type = "transcriptome",
-## >     annotation = "gtf"
 ## > )
 }
 \seealso{
 \itemize{
-\item \href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/}{RefSeq Genomes FTP server}
 \item \href{https://www.ncbi.nlm.nih.gov/projects/genome/guide/human/}{Human Genome Resources at NCBI}
+\item \href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/}{RefSeq Genomes FTP server}
 \item \href{https://www.ncbi.nlm.nih.gov/genome/doc/ftpfaq/}{Genomes Download (FTP) FAQ}
+\item \href{https://steinbaugh.com/posts/bcbio-hg38.html}{bcbio hg38 reference genome}
+\item \href{http://lh3.github.io/2017/11/13/which-human-reference-genome-to-use}{Heng Li: Which human reference genome to use?}
+\item \href{ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/}{GRCh38 assembly for alignment pipelines}
+\item \href{https://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/}{UCSC hg38 bigZips}
 }
 }
