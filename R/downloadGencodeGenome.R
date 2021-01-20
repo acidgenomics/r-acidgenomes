@@ -89,7 +89,7 @@ downloadGencodeGenome <-
         info[["args"]] <- args
         info[["call"]] <- match.call()
         info[["sessionInfo"]] <- sessionInfo()
-        saveRDS(object = info, file = file.path(outputDir, "info.rds"))
+        saveRDS(object = info, file = file.path(outputDir, "metadata.rds"))
         alertSuccess(sprintf(
             "GENCODE genome downloaded successfully to {.path %s}.",
             outputDir
