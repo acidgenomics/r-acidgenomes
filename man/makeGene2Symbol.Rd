@@ -5,7 +5,6 @@
 \alias{makeGene2SymbolFromEnsembl}
 \alias{makeGene2SymbolFromEnsDb}
 \alias{makeGene2SymbolFromGFF}
-\alias{makeGene2SymbolFromGTF}
 \title{Make a Gene2Symbol object}
 \usage{
 makeGene2SymbolFromEnsembl(
@@ -23,15 +22,6 @@ makeGene2SymbolFromEnsDb(
 )
 
 makeGene2SymbolFromGFF(
-  file,
-  organism = NULL,
-  genomeBuild = NULL,
-  release = NULL,
-  ignoreVersion = TRUE,
-  format = c("makeUnique", "unmodified", "1:1")
-)
-
-makeGene2SymbolFromGTF(
   file,
   organism = NULL,
   genomeBuild = NULL,
@@ -87,8 +77,6 @@ an AnnotationHub lookup.
 object or annotation package.
 
 \item \code{makeGene2SymbolFromGFF}: Make a \code{Gene2Symbol} object from a GFF file.
-
-\item \code{makeGene2SymbolFromGTF}: GTF alias for \code{makeGene2SymbolFromGFF}.
 }}
 
 \note{

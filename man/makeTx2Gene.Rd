@@ -5,9 +5,7 @@
 \alias{makeTx2GeneFromEnsembl}
 \alias{makeTx2GeneFromEnsDb}
 \alias{makeTx2GeneFromGFF}
-\alias{makeTx2GeneFromGTF}
 \alias{makeTx2GeneFileFromGFF}
-\alias{makeTx2GeneFileFromGTF}
 \title{Make a Tx2Gene object}
 \usage{
 makeTx2GeneFromEnsembl(
@@ -27,20 +25,7 @@ makeTx2GeneFromGFF(
   ignoreVersion = TRUE
 )
 
-makeTx2GeneFromGTF(
-  file,
-  organism = NULL,
-  genomeBuild = NULL,
-  release = NULL,
-  ignoreVersion = TRUE
-)
-
 makeTx2GeneFileFromGFF(
-  file,
-  outputFile = file.path(dirname(file), "tx2gene.csv.gz")
-)
-
-makeTx2GeneFileFromGTF(
   file,
   outputFile = file.path(dirname(file), "tx2gene.csv.gz")
 )

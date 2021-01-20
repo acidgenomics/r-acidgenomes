@@ -8,8 +8,6 @@ downloadGencodeGenome(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  type = c("all", "transcriptome", "genome", "none"),
-  annotation = c("all", "gtf", "gff", "none"),
   outputDir = "."
 )
 }
@@ -29,12 +27,6 @@ available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 
-\item{type}{\code{character(1)}.
-Genome type to download.}
-
-\item{annotation}{\code{character(1)}.
-Annotation format to download.}
-
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
 }
@@ -42,7 +34,7 @@ Output directory path.}
 Download GENCODE reference genome
 }
 \note{
-Updated 2021-01-07.
+Updated 2021-01-20.
 }
 \examples{
 ## This example is bandwidth intensive.
