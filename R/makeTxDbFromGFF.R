@@ -22,7 +22,20 @@
 #' - [TxDb.Hsapiens.UCSC.hg38.knownGene](https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/).
 #'
 #' @examples
-#' ## Ensembl
+#' ## GENCODE.
+#' gffFile <- pasteURL(
+#'     "ftp.ebi.ac.uk",
+#'     "pub",
+#'     "databases",
+#'     "gencode",
+#'     "Gencode_human",
+#'     "release_36",
+#'     "gencode.v36.annotation.gtf.gz",
+#'     protocol = "ftp"
+#' )
+#' txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
+#' print(txdb)
+#' seqinfo(txdb)
 #'
 #' ## RefSeq.
 #' gffFile <- pasteURL(
@@ -44,6 +57,7 @@
 #' seqinfo <- getRefSeqSeqinfo(reportFile)
 #' txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
 #' print(txdb)
+#' seqinfo(txdb)
 NULL
 
 ## nolint end
@@ -62,17 +76,24 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         dataSource <- realpath(dataSource)
     }
     file <- .cacheIt(file)
-    ## Attempt to get seqinfo automatically if not manually defined (e.g.
-    ## for RefSeq). This is supported for most NCBI (e.g. GRCh38 or GRCh38.p13)
-    ## and UCSC (e.g. hg38) genome builds.
     if (is.null(seqinfo)) {
-        genomeBuild <- .detectGenomeBuildFromGFF(file)
+        meta <- .gffMetadataForTxDb(file)
+        source <- meta[["source"]]
+        genomeBuild <- meta[["genomeBuild"]]
         organism <- tryCatch(
             expr = detectOrganism(genomeBuild),
             error = function(e) NA_character_
         )
         seqinfo <- tryCatch(
-            expr = Seqinfo(genome = genomeBuild),
+            expr = {
+                if (source == "GENCODE") {
+                    ## FIXME COME BACK TO THIS.
+                    genomeBuild <- mapNCBIBuildToUCSC(genomeBuild)
+                } else {
+                    genome <- genomeBuild
+                }
+                Seqinfo(genome = genome)
+            },
             error = function(e) {
                 alertWarning(paste(
                     "Automatic seqinfo detection failed.",
@@ -81,6 +102,8 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
                 NULL
             }
         )
+        ## FIXME REWORK THIS FOR GENCODE IN UPDATE...
+        seqinfo <- Seqinfo(genome = "hg38")
     }
     ## Additional arguments of potential future interest:
     ## - dbxrefTag: This can help override primary identifier to use.
@@ -92,35 +115,13 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         "dataSource" = dataSource,
         "organism" = organism
     )
-    ## This step will call `.tidy_seqinfo()` to check that all chromosomes
-    ## map in the seqinfo, which can be overly strict. Using a manual assignment
-    ## approach below instead, inspired by similar approach in tximeta.
-    ## > if (!is.null(seqinfo)) {
-    ## >     args <- append(x = args, values = list("chrominfo" = seqinfo))
-    ## > }
+    if (!is.null(seqinfo)) {
+        args <- append(x = args, values = list("chrominfo" = seqinfo))
+    }
     what <- GenomicFeatures::makeTxDbFromGFF
     suppressWarnings({
         txdb <- do.call(what = what, args = args)
     })
-
-    ## FIXME Now hitting this annoying error:
-    ## Error in .normarg_new2old_and_check_new_seqinfo(new2old, value, seqinfo(x),  :
-    ## seqlengths() and isCircular() of the supplied
-    ## 'seqinfo' must be identical to seqlengths() and
-    ## isCircular() of the current 'seqinfo' when replacing the 'seqinfo' of a TxDb object
-    ## Calls: makeTxDbFromGFF ... seqinfo<- -> .normarg_new2old_and_check_new_seqinfo
-
-
-    ## > if (!is.null(seqinfo)) {
-    ## >     assert(areIntersectingSets(names(seqinfo), names(seqinfo(txdb))))
-    ## >     seqinfo(txdb) <- seqinfo[names(seqinfo(txdb))]
-    ## > }
-
-    ## FIXME ARE THE UCSC SEQLENGTHS BETTER HERE?
-    ## https://github.com/mikelove/tximeta/blob/master/R/tximeta.R#L444
-    ## ucsc.genome <- genome2UCSC(txomeInfo$genome)
-    ## try(seqinfo(txps) <- Seqinfo(genome=ucsc.genome)[seqlevels(txps)])
-
     assert(is(txdb, "TxDb"))
     validObject(txdb)
     txdb
