@@ -28,7 +28,20 @@ Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 Updated 2021-01-20.
 }
 \examples{
-## Ensembl
+## GENCODE.
+gtfFile <- pasteURL(
+    "ftp.ebi.ac.uk",
+    "pub",
+    "databases",
+    "gencode",
+    "Gencode_human",
+    "release_36",
+    "gencode.v36.annotation.gtf.gz",
+    protocol = "ftp"
+)
+txdb <- makeTxDbFromGFF(gtfFile)
+print(txdb)
+seqinfo(txdb)
 
 ## RefSeq.
 gffFile <- pasteURL(
@@ -50,6 +63,7 @@ reportFile <- sub(
 seqinfo <- getRefSeqSeqinfo(reportFile)
 txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
 print(txdb)
+seqinfo(txdb)
 }
 \seealso{
 \itemize{
