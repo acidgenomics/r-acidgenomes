@@ -102,6 +102,12 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     suppressWarnings({
         txdb <- do.call(what = what, args = args)
     })
+    ## Now hitting this annoying error:
+    ## Error in .normarg_new2old_and_check_new_seqinfo(new2old, value, seqinfo(x),  :
+    ## seqlengths() and isCircular() of the supplied
+    ## 'seqinfo' must be identical to seqlengths() and
+    ## isCircular() of the current 'seqinfo' when replacing the 'seqinfo' of a TxDb object
+    ## Calls: makeTxDbFromGFF ... seqinfo<- -> .normarg_new2old_and_check_new_seqinfo
     if (!is.null(seqinfo)) {
         assert(areIntersectingSets(names(seqinfo), names(seqinfo(txdb))))
         seqinfo(txdb) <- seqinfo[names(seqinfo(txdb))]
