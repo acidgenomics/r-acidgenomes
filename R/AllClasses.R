@@ -18,6 +18,7 @@ setValidity(
         validate(
             any(grepl(pattern = "^ENS", x = names(object))),
             !all(is.na(seqlengths(object))),
+            !all(is.na(seqnames(object))),
             !all(is.na(genome(object))),
             identical(
                 x = colnames(mcols(object)),
