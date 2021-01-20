@@ -65,7 +65,7 @@ downloadEnsemblGenome <-
             "outputDir" = outputDir
         )
         info <- list()
-        info[["date"]] <- Sys.date()
+        info[["date"]] <- Sys.Date()
         info[["genome"]] <-
             do.call(what = .downloadEnsemblGenomeFASTA, args = args)
         info[["transcriptome"]] <-
