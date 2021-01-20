@@ -2,20 +2,9 @@
 % Please edit documentation in R/makeGRangesFromGFF.R
 \name{makeGRangesFromGFF}
 \alias{makeGRangesFromGFF}
-\alias{makeGRangesFromGTF}
 \title{Make GRanges from a GFF/GTF file}
 \usage{
 makeGRangesFromGFF(
-  file,
-  level = c("genes", "transcripts"),
-  organism = NULL,
-  genomeBuild = NULL,
-  release = NULL,
-  ignoreVersion = TRUE,
-  synonyms = FALSE
-)
-
-makeGRangesFromGTF(
   file,
   level = c("genes", "transcripts"),
   organism = NULL,
@@ -63,12 +52,10 @@ Remote URLs and compressed files are supported.
 \section{Functions}{
 \itemize{
 \item \code{makeGRangesFromGFF}: Primary function.
-
-\item \code{makeGRangesFromGTF}: Alias for GTF files.
 }}
 
 \note{
-Updated 2021-01-18.
+Updated 2021-01-20.
 }
 \section{Recommendations}{
 
@@ -137,6 +124,33 @@ builds and returns additional useful metadata that isn't defined inside a
 GFF/GTF file.
 
 If you must load a GFF/GTF file directly, then use \code{\link[=makeGRangesFromGFF]{makeGRangesFromGFF()}}.
+
+Example URLs:
+\itemize{
+\item Ensembl \emph{Homo sapiens} GRCh38.p13, release 102
+\href{ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz}{GFF3}
+\item Ensembl \emph{Homo sapiens} GRCh37, release 102 (87)
+\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz}{GFF3}
+}
+}
+
+\section{GENCODE}{
+
+
+Example URLs:
+\itemize{
+\item GENCODE \emph{Homo sapiens} GRCh38.p13, release 36
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh37, release 36
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Mus musculus} GRCm38.p6, release M25
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz}{GFF3}
+}
 }
 
 \section{GENCODE vs. Ensembl}{
@@ -173,6 +187,13 @@ Refer to the
 \href{ftp://ftp.ncbi.nlm.nih.gov/genomes/README_GFF3.txt}{current RefSeq spec}
 for details.
 
+Example URLs:
+\itemize{
+\item RefSeq \emph{Homo sapiens} GRCh38.p12
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz}{GTF},
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz}{GFF3}
+}
+
 See also:
 \itemize{
 \item \href{https://www.ncbi.nlm.nih.gov/books/NBK50679/}{RefSeq FAQ}
@@ -180,72 +201,45 @@ See also:
 }
 }
 
-\section{UCSC}{
+\section{UCSC Genome Browser}{
 
 
-Loading UCSC genome annotations from a GFF/GTF file are
-\emph{intentionally not supported} by this function.
-
-We recommend using a pre-built \code{TxDb} package from Bioconductor instead.
-For example, load \code{TxDb.Hsapiens.UCSC.hg38.knownGene} for hg38.
-
-For reference, note that UCSC doesn't provide direct GFF/GTF file downloads.
-Use of the \href{https://genome.ucsc.edu/cgi-bin/hgTables}{hgTables} table
-browser is required in a web browser.
-
-Select the following options to download hg38:
+Example URLs:
 \itemize{
-\item clade: \code{Mammal}
-\item genome: \code{Human}
-\item assembly: \verb{Dec. 2013 (GRCh38/hg38)}
-\item group: \verb{Genes and Gene Predictions}
-\item track: \verb{GENCODE v29}
-\item table: \code{knownGene}
-\item region: \code{genome}
-\item output format: \verb{GTF - gene transfer format}
-\item output file: \verb{<Enter a file name>}
+\item UCSC \emph{Homo sapiens} hg38 GTF files:
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz}{hg38.ensGene.gtf.gz},
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz}{hg38.refGene.gtf.gz}
 }
 
 Related URLs:
 \itemize{
-\item \href{http://genome.ucsc.edu/cgi-bin/hgTables}{UCSC hgTables}
 \item \href{http://hgdownload.soe.ucsc.edu/downloads.html}{UCSC downloads}
-\item \href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/}{UCSC hg38 FTP}
+\item \href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/}{UCSC hg38 bigZips FTP}
+\item \href{http://genome.ucsc.edu/cgi-bin/hgTables}{UCSC hgTables}
 }
 }
 
-\section{Example URLs}{
+\section{FlyBase}{
 
+
+Example URLs:
 \itemize{
-\item Ensembl \emph{Homo sapiens} GRCh38.p13, release 102
-\href{ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz}{GTF},
-\href{ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz}{GFF3}
-\item Ensembl \emph{Homo sapiens} GRCh37, release 102 (87)
-\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz}{GTF},
-\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz}{GFF3}
-\item GENCODE \emph{Homo sapiens} GRCh38.p13, release 36
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz}{GFF3}
-\item GENCODE \emph{Homo sapiens} GRCh37, release 36
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz}{GFF3}
-\item GENCODE \emph{Mus musculus} GRCm38.p6, release M25
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz}{GFF3}
-\item RefSeq \emph{Homo sapiens} GRCh38.p12
-\href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz}{GFF3}
 \item FlyBase \emph{Drosophila melanogaster} r6.24
-\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF}
-\item WormBase \emph{Caenorhabditis elegans} WS267
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz}{GTF}
+\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF},
+\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz}{GFF3}
 }
 }
 
-\section{Exons vs. CDS}{
+\section{WormBase}{
 
+
+Example URLs:
 \itemize{
-\item Exons: \code{gene - introns}.
-\item CDS: \code{exons - UTRs}.
+\item WormBase \emph{Caenorhabditis elegans} WS267
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz}{GTF},
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz}{GFF3}
 }
 }
 

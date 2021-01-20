@@ -90,7 +90,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2021-01-14.
+Updated 2021-01-20.
 }
 \section{Broad class definitions}{
 
@@ -184,6 +184,6 @@ if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {
 \itemize{
 \item \href{https://bioconductor.org/packages/AnnotationHub/}{AnnotationHub}.
 \item \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
-\item \code{ensembldb::ensDbFromGtf()}.
+\item \code{ensembldb::ensDbFromGff()}, \code{ensembldb::ensDbFromGtf()}.
 }
 }

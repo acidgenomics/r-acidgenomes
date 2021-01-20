@@ -17,7 +17,7 @@ RefSeq assembly report file or URL.}
 Parse the assembly report file to get \code{seqlengths} per chromosome.
 }
 \note{
-Updated 2021-01-14.
+Updated 2021-01-18.
 }
 \examples{
 file <- pasteURL(

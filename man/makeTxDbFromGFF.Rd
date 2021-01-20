@@ -2,12 +2,9 @@
 % Please edit documentation in R/makeTxDbFromGFF.R
 \name{makeTxDbFromGFF}
 \alias{makeTxDbFromGFF}
-\alias{makeTxDbFromGTF}
 \title{Make TxDb from a GFF/GTF file}
 \usage{
 makeTxDbFromGFF(file, seqinfo = NULL)
-
-makeTxDbFromGTF(file, seqinfo = NULL)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -22,27 +19,17 @@ File path.}
 \description{
 Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }
-\details{
-This step can be noisy and generate expected warnings, which are
-intentionally suppressed:\preformatted{some exons are linked to transcripts not found in the file
-The following orphan exon were dropped
-The following orphan CDS were dropped
-}
-}
 \section{Functions}{
 \itemize{
 \item \code{makeTxDbFromGFF}: Primary function.
-
-\item \code{makeTxDbFromGTF}: Alias for GTF files.
 }}
 
 \note{
-Updated 2021-01-14.
-
-For Ensembl and GENCODE genomes, consider using
-\code{makeEnsDbFromGFF} instead.
+Updated 2021-01-20.
 }
 \examples{
+## Ensembl
+
 ## RefSeq.
 gffFile <- pasteURL(
     "ftp.ncbi.nlm.nih.gov",
