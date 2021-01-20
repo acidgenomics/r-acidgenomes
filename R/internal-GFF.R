@@ -1,26 +1,18 @@
-#' Get genome metadata from a GFF file
-#'
-#' @note Updated 2021-01-18.
-#' @noRd
-#'
-#' @examples
-#' url <- pasteURL(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-102",
-#'     "gtf",
-#'     "homo_sapiens",
-#'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
-#' )
-#' genomeBuild <- .detectGenomeBuildFromGFF(url)
-#' print(genomeBuild)
+## Updated 2021-01-20.
+.gffMetadataForTxDb <- function(file) {
+    df <- getGFFMetadata(file, nMax = 2000L)
+    if (is.null(db)) return(NULL)
+    list(
+        "genomeBuild" = .gffGenomeBuild(df),
+        "source" = .gffSource(df)
+    )
+}
 
-## Ensembl genomes
 
-.detectGenomeBuildFromGFF <- function(file) {
-    df <- getGFFMetadata(file, nMax = 500L)
-    if (!is(df, "DataFrame")) return(NULL)
+
+## Updated 2021-01-20.
+.gffGenomeBuild <- function(df) {
+    assert(is(df, "DataFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (isTRUE("description" %in% df[["key"]])) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
@@ -39,5 +31,33 @@
     }
     x <- .getValue("genome-build")
     if (isString(x)) return(x)
+    NULL
+}
+
+
+
+## Updated 2021-01-20.
+.gffSource <- function(df) {
+    assert(is(df, "DataFrame"))
+    annoSource <-
+        df[df[["key"]] == "annotation-source", "value", drop = TRUE]
+    provider <-
+        df[df[["key"]] == "provider", "value", drop = TRUE]
+    if (provider == "GENCODE") {
+        return("GENCODE")
+    } else if (isTRUE(grepl(pattern = "^NCBI", x = annoSource))) {
+        return("RefSeq")
+    } else if (isSubset(
+        x = c(
+            "genebuild-last-updated",
+            "genome-build",
+            "genome-build-accession",
+            "genome-date",
+            "genome-version"
+        ),
+        y = df[["key"]]
+    )) {
+        return("Ensembl")
+    }
     NULL
 }
