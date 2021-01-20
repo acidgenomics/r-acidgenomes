@@ -1,7 +1,7 @@
-#' Map UCSC genome build to Ensembl
+#' Map UCSC genome build to NCBI
 #'
 #' @export
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -16,11 +16,11 @@
 #' from <- c("hg19", "hg38")
 #' to <- mapUCSCBuildToEnsembl(from)
 #' print(to)
-mapUCSCBuildToEnsembl <- function(object) {
+mapUCSCBuildToNCBI <- function(object) {
     assert(isCharacter(object))
     map <- import(
         file = system.file(
-            "extdata", "mapUCSCBuildToEnsembl.rds",
+            "extdata", "ncbi-to-ucsc.rds",
             package = packageName()
         ),
         quiet = TRUE
@@ -36,4 +36,14 @@ mapUCSCBuildToEnsembl <- function(object) {
     out <- map[["ensembl"]][match]
     names(out) <- map[["ucsc"]][match]
     out
+}
+
+
+
+## NOTE This is safe to deprecate and remove once we update basejump.
+
+#' @rdname mapUCSCBuildToNCBI
+#' @export
+mapUCSCBuildToEnsembl <- function(...) {
+    mapUCSCBuildToNCBI(...)
 }
