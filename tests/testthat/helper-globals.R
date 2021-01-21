@@ -39,36 +39,8 @@ str_pad <- stringr::str_pad
 tibble <- tibble::tibble
 ## nolint end
 
-gffUrls <- c(
-    pasteURL(
-        "ftp.ensembl.org",
-        "pub",
-        "release-102",
-        "gtf",
-        "homo_sapiens",
-        "Homo_sapiens.GRCh38.102.gtf.gz",
-        protocol = "ftp"
-    ),
-    pasteURL(
-        "ftp.ensembl.org",
-        "pub",
-        "release-102",
-        "gff3",
-        "homo_sapiens",
-        "Homo_sapiens.GRCh38.102.gff3.gz",
-        protocol = "ftp"
-    ),
-    pasteURL(
-        "ftp.ensembl.org",
-        "pub",
-        "grch37",
-        "release-102",
-        "gtf",
-        "homo_sapiens",
-        "Homo_sapiens.GRCh37.87.gtf.gz",
-        protocol = "ftp"
-    ),
-    pasteURL(
+gffs <- c(
+    "ensembl_grch37_gff3" = pasteURL(
         "ftp.ensembl.org",
         "pub",
         "grch37",
@@ -78,38 +50,35 @@ gffUrls <- c(
         "Homo_sapiens.GRCh37.87.gff3.gz",
         protocol = "ftp"
     ),
-    pasteURL(
-        "ftp.ebi.ac.uk",
+    "ensembl_grch37_gtf" = pasteURL(
+        "ftp.ensembl.org",
         "pub",
-        "databases",
-        "gencode",
-        "Gencode_human",
-        "release_36",
-        "gencode.v36.annotation.gtf.gz",
+        "grch37",
+        "release-102",
+        "gtf",
+        "homo_sapiens",
+        "Homo_sapiens.GRCh37.87.gtf.gz",
         protocol = "ftp"
     ),
-    pasteURL(
-        "ftp.ebi.ac.uk",
+    "ensembl_grch38_gff3" = pasteURL(
+        "ftp.ensembl.org",
         "pub",
-        "databases",
-        "gencode",
-        "Gencode_human",
-        "release_36",
-        "gencode.v36.annotation.gff3.gz",
+        "release-102",
+        "gff3",
+        "homo_sapiens",
+        "Homo_sapiens.GRCh38.102.gff3.gz",
         protocol = "ftp"
     ),
-    pasteURL(
-        "ftp.ebi.ac.uk",
+    "ensembl_grch38_gtf" = pasteURL(
+        "ftp.ensembl.org",
         "pub",
-        "databases",
-        "gencode",
-        "Gencode_human",
-        "release_36",
-        "GRCh37_mapping",
-        "gencode.v36lift37.annotation.gtf.gz",
+        "release-102",
+        "gtf",
+        "homo_sapiens",
+        "Homo_sapiens.GRCh38.102.gtf.gz",
         protocol = "ftp"
     ),
-    pasteURL(
+    "gencode_grch37_gff3" = pasteURL(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -120,7 +89,38 @@ gffUrls <- c(
         "gencode.v36lift37.annotation.gff3.gz",
         protocol = "ftp"
     ),
-    pasteURL(
+    "gencode_grch37_gtf" = pasteURL(
+        "ftp.ebi.ac.uk",
+        "pub",
+        "databases",
+        "gencode",
+        "Gencode_human",
+        "release_36",
+        "GRCh37_mapping",
+        "gencode.v36lift37.annotation.gtf.gz",
+        protocol = "ftp"
+    ),
+    "gencode_grch38_gff3" = pasteURL(
+        "ftp.ebi.ac.uk",
+        "pub",
+        "databases",
+        "gencode",
+        "Gencode_human",
+        "release_36",
+        "gencode.v36.annotation.gff3.gz",
+        protocol = "ftp"
+    ),
+    "gencode_grch38_gtf" = pasteURL(
+        "ftp.ebi.ac.uk",
+        "pub",
+        "databases",
+        "gencode",
+        "Gencode_human",
+        "release_36",
+        "gencode.v36.annotation.gtf.gz",
+        protocol = "ftp"
+    ),
+    "gencode_grcm38_gtf" = pasteURL(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -130,7 +130,7 @@ gffUrls <- c(
         "gencode.vM25.annotation.gtf.gz",
         protocol = "ftp"
     ),
-    pasteURL(
+    "gencode_grcm38_gff3" = pasteURL(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -140,18 +140,7 @@ gffUrls <- c(
         "gencode.vM25.annotation.gff3.gz",
         protocol = "ftp"
     ),
-    pasteURL(
-        "ftp.ncbi.nlm.nih.gov",
-        "genomes",
-        "refseq",
-        "vertebrate_mammalian",
-        "Homo_sapiens",
-        "all_assembly_versions",
-        "GCF_000001405.38_GRCh38.p12",
-        "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz",
-        protocol = "ftp"
-    ),
-    pasteURL(
+    "refseq_grch38_gff3" = pasteURL(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
         "refseq",
@@ -162,8 +151,19 @@ gffUrls <- c(
         "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
         protocol = "ftp"
     ),
+    "refseq_grch38_gtf" = pasteURL(
+        "ftp.ncbi.nlm.nih.gov",
+        "genomes",
+        "refseq",
+        "vertebrate_mammalian",
+        "Homo_sapiens",
+        "all_assembly_versions",
+        "GCF_000001405.38_GRCh38.p12",
+        "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz",
+        protocol = "ftp"
+    ),
     ## Note that this file doesn't contain any metadata comments.
-    pasteURL(
+    "flybase_gtf" = pasteURL(
         "ftp.flybase.net",
         "releases",
         "FB2020_06",
@@ -173,7 +173,7 @@ gffUrls <- c(
         protocol = "ftp"
     ),
     ## This file is very large and slow to parse.
-    pasteURL(
+    "flybase_gff3" = pasteURL(
         "ftp.flybase.net",
         "releases",
         "FB2020_06",
@@ -182,7 +182,7 @@ gffUrls <- c(
         "dmel-all-r6.37.gff.gz",
         protocol = "ftp"
     ),
-    pasteURL(
+    "wormbase_gtf" = pasteURL(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
@@ -194,7 +194,19 @@ gffUrls <- c(
         "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz",
         protocol = "ftp"
     ),
-    pasteURL(
+    "wormbase_gff2" = pasteURL(
+        "ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "WS279",
+        "species",
+        "c_elegans",
+        "PRJNA13758",
+        "c_elegans.PRJNA13758.WS279.annotations.gff2.gz",
+        protocol = "ftp"
+    ),
+    "wormbase_gff3" = pasteURL(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
@@ -207,6 +219,5 @@ gffUrls <- c(
         protocol = "ftp"
     )
 )
-
 
 options(acid.test = TRUE)
