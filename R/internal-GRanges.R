@@ -395,7 +395,7 @@
 ## Standardization =============================================================
 #' Match the identifier column in GRanges to use for names.
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-20.
 #' @noRd
 .matchGRangesNamesColumn <- function(object) {
     assert(is(object, "GRanges"))
@@ -403,12 +403,11 @@
         arg = metadata(object)[["level"]],
         choices = c("genes", "transcripts")
     )
-    x <- switch(
-        EXPR = level,
-        "genes" = "geneId",
-        "transcripts" = "txId"
-    )
-    assert(isSubset(x, colnames(mcols(object))))
+    x <- camelCase(colnames(mcols(object)), strict = TRUE)
+    table <- switch(EXPR = level, "genes" = "geneId", "transcripts" = "txId")
+    idx <- which(x %in% table)
+    x <- colnames(mcols(object))[idx]
+    assert(isString(x))
     x
 }
 
@@ -502,17 +501,6 @@
 
 
 ## Main generator ==============================================================
-## FIXME ignoreVersion = FALSE needs to return gene ID versions.
-## FIXME NEED TO IMPROVE CONSISTENCY Of METADATA RETURN.
-## FIXME NEED TO DETECT ORGANISM AUTOMATICALLY.
-## FIXME NEED TO SLOT ARGUMENTS INTO OBJECT.
-## FIXME ORGANISM ALWAYS NEEDS TO BE DEFINED.
-## FIXME DONT ALLOW GRANGESLIST RETURN HERE.
-## FIXME RETURN THE OBJECTS CLASSED BY GENOME.
-## FIXME HANDLE THE TXVERSION DIFFERENTLY HERE?
-## FIXME SWITCH FROM "TRANSCRIPT" PREFIX TO "TX", FOR BIOC CONSISTENCY.
-## FIXME Rework how we return these objects classed by source and level.
-
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
