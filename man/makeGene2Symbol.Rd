@@ -27,6 +27,7 @@ makeGene2SymbolFromGFF(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
+  seqinfo = NULL,
   format = c("makeUnique", "unmodified", "1:1")
 )
 }

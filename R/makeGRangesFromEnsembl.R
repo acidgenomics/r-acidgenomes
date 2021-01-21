@@ -1,9 +1,3 @@
-## FIXME ENSURE IGNOREVERSION APPLIES TO BOTH TRANSCRIPTS AND GENES.
-## FIXME RETHINK METADATA RETURN STRUCTURE.
-## FIXME NEED TO ENSURE CALL IS SLOTTED INTO OBJECT.
-
-
-
 #' Make GRanges from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
@@ -175,7 +169,7 @@ makeGRangesFromEnsembl <- function(
     ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
-    .makeGRangesFromEnsembl(
+    gr <- .makeGRangesFromEnsembl(
         organism = organism,
         level = match.arg(level),
         genomeBuild = genomeBuild,
@@ -183,6 +177,8 @@ makeGRangesFromEnsembl <- function(
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
+    metadata(gr)[["call"]] <- match.call()
+    gr
 }
 
 
@@ -294,12 +290,14 @@ makeGRangesFromEnsDb <- function(
     ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
-    .makeGRangesFromEnsDb(
+    gr <- .makeGRangesFromEnsDb(
         object = object,
         level = match.arg(level),
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
+    metadata(gr)[["call"]] <- match.call()
+    gr
 }
 
 
@@ -310,7 +308,7 @@ makeGRangesFromEnsDb <- function(
 #' coerced using [`as.data.frame()`][base::as.data.frame].
 #' @export
 annotable <- function(...) {
-        gr <- makeGRangesFromEnsembl(...)
-        mcols(gr) <- decode(mcols(gr))
-        as_tibble(gr, rownames = NULL)
-    }
+    gr <- makeGRangesFromEnsembl(...)
+    mcols(gr) <- decode(mcols(gr))
+    as_tibble(gr, rownames = NULL)
+}

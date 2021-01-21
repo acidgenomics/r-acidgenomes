@@ -11,7 +11,8 @@ makeGRangesFromGFF(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
-  synonyms = FALSE
+  synonyms = FALSE,
+  seqinfo = NULL
 )
 }
 \arguments{

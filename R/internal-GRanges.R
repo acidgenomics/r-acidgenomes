@@ -3,7 +3,7 @@
 #'
 #' @note Updated 2021-01-20.
 #' @noRd
-.detectGRangesSource <- function(object) {
+.grangesSource <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
     source <- mcols[["source"]]
@@ -64,9 +64,9 @@
 
 #' Determine if input is GFF3 or GTF (GFF2)
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-20.
 #' @noRd
-.detectGRangesType <- function(object) {
+.grangesType <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
         out <- "GFF3"
