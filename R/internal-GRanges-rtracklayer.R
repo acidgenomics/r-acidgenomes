@@ -70,18 +70,20 @@
 
 
 
-#' Determine if input is GFF3 or GTF (GFF2)
+## FIXME WHAT ABOUT WORMBASE GFF2 HERE?
+
+#' Determine if input is GFF3 or GTF (GFFv2)
 #'
 #' @note Updated 2021-01-20.
 #' @noRd
 .grangesType <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
-        out <- "GFF3"
+        x <- "GFF3"
     } else {
-        out <- "GTF"
+        x <- "GTF"
     }
-    out
+    x
 }
 
 
