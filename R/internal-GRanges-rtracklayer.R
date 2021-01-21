@@ -32,13 +32,9 @@
             y = colnames(mcols(object))
         )
     )
-    genes <- object
-    if (level == "transcripts") {
-        transcripts <- object
-    }
-    rm(object)
     ## Genes -------------------------------------------------------------------
     ## These annotations will be included at transcript level (see below).
+    genes <- object
     genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
     genes <- genes[is.na(sanitizeNA(mcols(genes)[["transcript_id"]]))]
     assert(hasLength(genes))
@@ -75,58 +71,43 @@
     }
     mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
-        out <- genes
+        return(genes)
     }
     ## Transcripts -------------------------------------------------------------
-    if (level == "transcripts") {
-        transcripts <-
-            transcripts[!is.na(sanitizeNA(mcols(transcripts)[["transcript_id"]]))]
-        assert(hasLength(transcripts))
-        if (source == "Ensembl" && type == "GFF3") {
-            transcripts <- .makeTranscriptsFromEnsemblGFF3(transcripts)
-        } else if (source == "Ensembl" && type == "GTF") {
-            transcripts <- .makeTranscriptsFromEnsemblGTF(transcripts)
-        } else if (source == "FlyBase" && type == "GTF") {
-            transcripts <- .makeTranscriptsFromFlyBaseGTF(transcripts)
-        } else if (source == "GENCODE" && type == "GFF3") {
-            transcripts <- .makeTranscriptsFromGencodeGFF3(transcripts)
-        } else if (source == "GENCODE" && type == "GTF") {
-            transcripts <- .makeTranscriptsFromGencodeGTF(transcripts)
-        } else if (source == "RefSeq" && type == "GFF3") {
-            transcripts <- .makeTranscriptsFromRefSeqGFF3(transcripts)
-        } else if (source == "RefSeq" && type == "GTF") {
-            transcripts <- .makeTranscriptsFromRefSeqGTF(transcripts)
-        } else if (source == "WormBase" && type == "GTF") {
-            transcripts <- .makeTranscriptsFromWormBaseGTF(transcripts)
-        } else {
-            ## nocov start
-            stop(
-                "Failed to make transcript-level GRanges.\n",
-                "Unsupported GFF file format."
-            )
-            ## nocov end
-        }
-        ## Remove GFF-specific parent columns, etc.
-        if (type == "GFF3") {
-            transcripts <- .minimizeGFF3(transcripts)
-        }
-        ## Set names and stash metadata.
-        names(transcripts) <- mcols(transcripts)[["transcript_id"]]
-        metadata(transcripts)[["level"]] <- "transcripts"
-        ## Skip gene-level metadata merge for GRanges that have been split
-        ## into GRangesList.
-        if (
-            is(genes, "GRanges") &&
-            ## This step is necessary for RefSeq GFF3.
-            !anyDuplicated(mcols(genes)[["gene_id"]])
-        ) {
-            ## By default, merge the gene-level annotations into the
-            ## transcript-level ones, for objects that have ranges 1:1 with the
-            ## identifiers.
-            out <- .mergeGenesIntoTranscripts(transcripts, genes)
-        } else {
-            cli_alert_warning("Skipping gene metadata merge.")
-            out <- transcripts
-        }
+    tx <- object
+    colnames(mcols(tx)) <-
+        gsub(
+            pattern = "^transcript_",
+            replacement = "tx_",
+            x = colnames(mcols(tx))
+        )
+    tx <- tx[!is.na(sanitizeNA(mcols(tx)[["tx_id"]]))]
+    assert(hasLength(tx))
+    what <- switch(
+        EXPR = type,
+        "GFF3" = switch(
+            EXPR = source,
+            "Ensembl" = .makeTranscriptsFromEnsemblGFF3,
+            "GENCODE" = .makeTranscriptsFromGencodeGFF3,
+            "RefSeq" = .makeTranscriptsFromRefSeqGFF3
+        ),
+        "GTF" = switch(
+            EXPR = source,
+            "Ensembl" = .makeTranscriptsFromEnsemblGTF,
+            "FlyBase" = .makeTranscriptsFromFlyBaseGTF,
+            "GENCODE" = .makeTranscriptsFromGencodeGTF,
+            "RefSeq" = .makeTranscriptsFromRefSeqGTF,
+            "WormBase" = .makeTranscriptsFromWormBaseGTF
+        )
+    )
+    if (!is.function(what)) {
+        stop(sprintf("Unsupported genome file: %s %s.", source, type))
     }
+    tx <- do.call(what = what, args = list(object = tx))
+    ## Remove GFF-specific parent columns, etc.
+    if (type == "GFF3") {
+        tx <- .minimizeGFF3(tx)
+    }
+    tx <- .mergeGenesIntoTranscripts(tx, genes)
+    tx
 }
