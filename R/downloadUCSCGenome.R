@@ -32,13 +32,11 @@
 #' @return Invisible `list`.
 #'
 #' @seealso
-#' - [GRCh38 pinned analysis set (for NGS pipelines)](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/).
+#' - [hg38 pinned analysis set (for NGS pipelines)](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/).
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
-#' ## > downloadUCSCGenome(
-#' ## >     organism = "Homo sapiens"
-#' ## > )
+#' ## > downloadUCSCGenome(organism = "Homo sapiens")
 
 ## nolint end
 
@@ -260,7 +258,7 @@ downloadUCSCGenome <-
                 paste0("transcriptome.", fileExt(fastaFile))
             )
             file.symlink(from = fastaFile, to = fastaSymlink)
-            files[["fastaSymlink"]] <- fasta
+            files[["fastaSymlink"]] <- fastaSymlink
         }
         invisible(list("files" = files, "urls" = urls))
     }
