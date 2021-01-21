@@ -151,7 +151,7 @@ downloadUCSCGenome <-
             assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
                 outputDir,
-                "annotation.", fileExt(gtfFile)
+                paste0("annotation.", fileExt(gtfFile))
             )
             file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
