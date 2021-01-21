@@ -9,6 +9,8 @@
 #' @param outputDir `character(1)`.
 #'   Output directory path.
 #'
+#' @return Invisible `list`.
+#'
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadEnsemblGenome(
@@ -30,9 +32,9 @@ downloadEnsemblGenome <-
             isString(outputDir)
         )
         outputDir <- initDir(outputDir)
-        baseURL <- "ftp://ftp.ensembl.org/pub"
+        baseURL <- "ftp://hgdownload.soe.ucsc.edu/goldenPath"
         if (is.null(genomeBuild)) {
-            genomeBuild <- currentEnsemblBuild(organism)
+            genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
         }
         if (genomeBuild == "GRCh37") {
@@ -88,7 +90,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadEnsemblGFF <-
     function(
         genomeBuild,
@@ -124,20 +126,23 @@ downloadEnsemblGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation", "gff3")
         )
-        gffFile <- files[["gff"]]
-        assert(isAFile(gffFile))
-        gffSymlink <- file.path(
-            outputDir,
-            paste0("annotation.", fileExt(gffFile))
-        )
-        file.symlink(from = gffFile, to = gffSymlink)
-        files[["gffSymlink"]] <- gffSymlink
+        ## Create symlink.
+        if (!isWindows()) {
+            gffFile <- files[["gff"]]
+            assert(isAFile(gffFile))
+            gffSymlink <- file.path(
+                outputDir,
+                paste0("annotation.", fileExt(gffFile))
+            )
+            file.symlink(from = gffFile, to = gffSymlink)
+            files[["gffSymlink"]] <- gffSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadEnsemblGTF <-
     function(
         genomeBuild,
@@ -173,20 +178,23 @@ downloadEnsemblGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation", "gtf")
         )
-        gtfFile <- files[["gtf"]]
-        assert(isAFile(gtfFile))
-        gtfSymlink <- file.path(
-            outputDir,
-            paste0("annotation.", fileExt(gtfFile))
-        )
-        file.symlink(from = gtfFile, to = gtfSymlink)
-        files[["gtfSymlink"]] <- gtfSymlink
+        ## Create symlink.
+        if (!isWindows()) {
+            gtfFile <- files[["gtf"]]
+            assert(isAFile(gtfFile))
+            gtfSymlink <- file.path(
+                outputDir,
+                paste0("annotation.", fileExt(gtfFile))
+            )
+            file.symlink(from = gtfFile, to = gtfSymlink)
+            files[["gtfSymlink"]] <- gtfSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadEnsemblGenome <-
     function(
         genomeBuild,
@@ -219,18 +227,21 @@ downloadEnsemblGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "genome")
         )
-        fastaFile <- files[["fasta"]]
-        assert(isAFile(fastaFile))
-        fastaSymlink <-
-            file.path(outputDir, paste0("genome.", fileExt(fastaFile)))
-        file.symlink(from = fastaFile, to = fastaSymlink)
-        files[["fastaSymlink"]] <- fastaSymlink
+        ## Create symlink.
+        if (!isWindows()) {
+            fastaFile <- files[["fasta"]]
+            assert(isAFile(fastaFile))
+            fastaSymlink <-
+                file.path(outputDir, paste0("genome.", fileExt(fastaFile)))
+            file.symlink(from = fastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadEnsemblTranscriptome <-
     function(
         genomeBuild,
@@ -291,8 +302,6 @@ downloadEnsemblGenome <-
             file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
-        fastaSymlink <- file.path(outputDir, basename(mergeFastaFile))
-        file.symlink(from = mergeFastaFile, to = fastaSymlink)
         tx2geneFile <-
             makeTx2GeneFileFromFASTA(
                 file = mergeFastaFile,
@@ -305,8 +314,13 @@ downloadEnsemblGenome <-
                 "ncrna" = ncrnaFiles,
                 "merge" = mergeFastaFile
             ),
-            "fastaSymlink" = fastaSymlink,
             "tx2gene" = tx2geneFile
         )
+        ## Create FASTA symlink.
+        if (!isWindows()) {
+            fastaSymlink <- file.path(outputDir, basename(mergeFastaFile))
+            file.symlink(from = mergeFastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
