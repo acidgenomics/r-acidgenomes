@@ -238,19 +238,11 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    meta <- list()
-    meta[["date"]] <- Sys.Date()
-    meta[["file"]] <- file
-    meta[["call"]] <- match.call()
     tmpfile <- .cacheIt(file)
-    meta[["md5"]] <- .md5(file = tmpfile)
-    meta[["sha256"]] <- .sha256(file = tmpfile)
     rawRanges <- import(tmpfile)
     source <- .grangesSource(rawRanges)
     type <- .grangesType(rawRanges)
     assert(isString(source), isString(type))
-    meta[["source"]] <- source
-    meta[["type"]] <- type
     if (isTRUE(synonyms) && !isSubset(source, c("Ensembl", "GENCODE"))) {
         ## nocov start
         stop(sprintf(
@@ -259,33 +251,43 @@ NULL
         ))
         ## nocov end
     }
+    meta <- list(
+        "date" = Sys.Date(),
+        "file" = file,
+        "level" = level,
+        "md5" = .md5(file = tmpfile),
+        "sha256" = .sha256(file = tmpfile),
+        "source" = source,
+        "type" =  type,
+        "call" = match.call()
+    )
     txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
-    gr <- .makeGRangesFromTxDb(object = txdb, level = level)
+    gr1 <- .makeGRangesFromTxDb(object = txdb, level = level)
+    metadata(gr1) <- meta
     gr2 <- .makeGRangesFromRtracklayer(
         object = rawRanges,
         level = level,
-        source = source
+        source = source,
+        type = type
     )
-    metadata(gr) <- meta
-    ## FIXME ADD STEP HERE JOINING METADATA FOR EACH GENOME.
-    ## FIXME gr2 <- .makeGRangesFromXXX
-    ## FIXME LEFTJOIN THE GR2 MCOLS.
-
-    out <- .makeGRanges(
+    metadata(gr2) <- meta
+    idCol1 <- .matchGRangesNamesColumn(gr1)
+    idCol2 <- .matchGRangesNamesColumn(gr2)
+    assert(identical(idCol1, idCol2))
+    idCol <- idCol1
+    mcols1 <- mcols(gr1)
+    mcols2 <- mcols(gr2)
+    extra <- setdiff(colnames(mcols2), colnames(mcols1))
+    mcols <- leftJoin(x = mcols1, y = mcols2[c(idCol, extra)], by = idCol)
+    assert(identical(mcols[[idCol]], mcols1[[idCol]]))
+    gr <- gr1
+    mcols(gr) <- mcols
+    .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
         broadClass = broadClass,
         synonyms = synonyms
     )
-    assert(is(gr, "GRanges"))
-
-    ## FIXME SHOULD INCLUDE SHA256 FOR THE FILE HERE.
-    ## FIXME ATTEMPT TO SLOT THE GENOME BUILD FROM THE FILE NAME HERE.
-    ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
-    ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
-
-    ## FIXME RETURN BY CLASS.
-    out
 }
 
 
