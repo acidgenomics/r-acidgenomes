@@ -58,12 +58,10 @@ ncbiRefSeq, refGene, ensGene, knownGene.
 
 \examples{
 ## This example is bandwidth intensive.
-## > downloadUCSCGenome(
-## >     organism = "Homo sapiens"
-## > )
+## > downloadUCSCGenome(organism = "Homo sapiens")
 }
 \seealso{
 \itemize{
-\item \href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/}{GRCh38 pinned analysis set (for NGS pipelines)}.
+\item \href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/}{hg38 pinned analysis set (for NGS pipelines)}.
 }
 }
