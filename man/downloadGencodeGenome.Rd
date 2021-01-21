@@ -30,11 +30,14 @@ ensembldb in use.}
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
 }
+\value{
+Invisible \code{list}.
+}
 \description{
 Download GENCODE reference genome
 }
 \note{
-Updated 2021-01-20.
+Updated 2021-01-21.
 }
 \examples{
 ## This example is bandwidth intensive.

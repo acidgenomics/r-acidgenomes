@@ -2,15 +2,15 @@
 % Please edit documentation in R/currentGenomeBuild.R
 \name{currentGenomeBuild}
 \alias{currentGenomeBuild}
-\alias{currentEnsemblBuild}
-\alias{currentGencodeBuild}
+\alias{currentEnsemblGenomeBuild}
+\alias{currentGencodeGenomeBuild}
 \alias{currentRefSeqGenomeBuild}
 \alias{currentUCSCGenomeBuild}
 \title{Current genome build}
 \usage{
-currentEnsemblBuild(organism)
+currentEnsemblGenomeBuild(organism)
 
-currentGencodeBuild(organism)
+currentGencodeGenomeBuild(organism)
 
 currentRefSeqGenomeBuild(organism, taxonomicGroup = NULL)
 

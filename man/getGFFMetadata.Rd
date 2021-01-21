@@ -9,6 +9,10 @@ getGFFMetadata(file, nMax = Inf)
 \arguments{
 \item{file}{\code{character(1)}.
 File path.}
+
+\item{nMax}{\code{integer(1)}. or \code{Inf}.
+Maximum number (i.e. of lines) to include.
+Use \code{Inf} to not apply a limit.}
 }
 \value{
 \code{DataFrame} or \code{NULL}.

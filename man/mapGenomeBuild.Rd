@@ -4,7 +4,7 @@
 \alias{mapGenomeBuild}
 \alias{mapUCSCBuildToEnsembl}
 \alias{mapEnsemblBuildToUCSC}
-\title{Interconvert NCBI and UCSC genome build names}
+\title{Interconvert between EBI (Ensembl), NCBI, and UCSC genome build names}
 \usage{
 mapUCSCBuildToEnsembl(...)
 
@@ -18,7 +18,7 @@ mapEnsemblBuildToUCSC(...)
 name. Stops on match failure.
 }
 \description{
-Interconvert NCBI and UCSC genome build names
+Interconvert between EBI (Ensembl), NCBI, and UCSC genome build names
 }
 \note{
 Updated 2021-01-20.
