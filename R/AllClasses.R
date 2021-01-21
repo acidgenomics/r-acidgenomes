@@ -1,3 +1,7 @@
+## FIXME ADD UCSC
+
+
+
 ## Genome annotation classes ===================================================
 #' Ensembl gene annotations
 #'
@@ -65,54 +69,6 @@ setValidity(
             isOrganism(metadata(object)[["organism"]]),
             isInt(metadata(object)[["release"]])
         )
-    }
-)
-
-
-
-#' FlyBase gene annotations
-#'
-#' @details
-#' Contains a `GRanges` with FlyBase gene-level annotations.
-#'
-#' @export
-#' @note Updated 2021-01-10.
-#'
-#' @return `FlyBaseGenes`.
-setClass(
-    Class = "FlyBaseGenes",
-    contains = "GRanges"
-)
-setValidity(
-    Class = "FlyBaseGenes",
-    method = function(object) {
-        ## FIXME Ensure we have the genome release version.
-        ## FIXME Don't check for seqinfo here.
-        TRUE
-    }
-)
-
-
-
-#' FlyBase transcript annotations
-#'
-#' @details
-#' Contains a `GRanges` with FlyBase transcript-level annotations.
-#'
-#' @export
-#' @note Updated 2021-01-10.
-#'
-#' @return `FlyBaseTranscripts`.
-setClass(
-    Class = "FlyBaseTranscripts",
-    contains = "GRanges"
-)
-setValidity(
-    Class = "FlyBaseTranscripts",
-    method = function(object) {
-        ## FIXME Ensure we have the genome release version.
-        ## FIXME Don't check for seqinfo here.
-        TRUE
     }
 )
 
@@ -209,54 +165,6 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for seqinfo here.
-        TRUE
-    }
-)
-
-
-
-#' WormBase gene annotations
-#'
-#' @details
-#' Contains a `GRanges` with WormBase gene-level annotations.
-#'
-#' @export
-#' @note Updated 2021-01-10.
-#'
-#' @return `WormBaseGenes`.
-setClass(
-    Class = "WormBaseGenes",
-    contains = "GRanges"
-)
-setValidity(
-    Class = "WormBaseGenes",
-    method = function(object) {
-        ## FIXME Need to add checks here.
-        ## FIXME Don't check for seqinfo here.
-        TRUE
-    }
-)
-
-
-
-#' WormBase transcript annotations
-#'
-#' @details
-#' Contains a `GRanges` with WormBase transcript-level annotations.
-#'
-#' @export
-#' @note Updated 2021-01-10.
-#'
-#' @return `WormBaseTranscripts`.
-setClass(
-    Class = "WormBaseTranscripts",
-    contains = "GRanges"
-)
-setValidity(
-    Class = "WormBaseTranscripts",
-    method = function(object) {
-        ## FIXME Need to add checks here.
-        ## FIXME Don't check for seqinfo here.
         TRUE
     }
 )
