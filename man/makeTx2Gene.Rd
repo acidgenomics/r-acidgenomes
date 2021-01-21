@@ -22,7 +22,8 @@ makeTx2GeneFromGFF(
   organism = NULL,
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = TRUE
+  ignoreVersion = TRUE,
+  seqinfo = NULL
 )
 
 makeTx2GeneFileFromGFF(
