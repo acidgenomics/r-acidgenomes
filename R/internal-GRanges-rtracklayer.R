@@ -1,7 +1,8 @@
 .makeGRangesFromRtracklayer <- function(
     object,
     level = c("genes", "transcripts"),
-    source
+    source,
+    type
 ) {
     assert(is(object, "GRanges"))
     level <- match.arg(level)
@@ -9,6 +10,7 @@
         arg = source,
         choices = c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase")
     )
+    type <- match.arg(arg = type, choices = c("GFF3", "GTF"))
     ## Standardize -------------------------------------------------------------
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
     ## Ensembl-like naming conventions.
@@ -19,63 +21,66 @@
         "RefSeq"  = .standardizeRefSeqToEnsembl(object),
         object
     )
-    mcolnames <- colnames(mcols(object))
     assert(
-        isSubset(x = c("gene_id", "transcript_id"), y = mcolnames),
+        isSubset(
+            x = c("gene_id", "transcript_id"),
+            y = colnames(mcols(object))
+        ),
         ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
-        areDisjointSets(x = c("gene", "gene_type"), y = mcolnames)
+        areDisjointSets(
+            x = c("gene", "gene_type"),
+            y = colnames(mcols(object))
+        )
     )
-    rm(mcolnames)
     genes <- object
     if (level == "transcripts") {
         transcripts <- object
     }
     rm(object)
     ## Genes -------------------------------------------------------------------
-    ## `makeGRangesFromGFF()` attempts to always returns gene-level metadata,
-    ## even when transcripts are requested. We'll merge this object into the
-    ## transcript-level GRanges below, when possible.
-    genes <- genes[!is.na(mcols(genes)[["gene_id"]])]
-    genes <- genes[is.na(mcols(genes)[["transcript_id"]])]
+    ## These annotations will be included at transcript level (see below).
+    genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
+    genes <- genes[is.na(sanitizeNA(mcols(genes)[["transcript_id"]]))]
     assert(hasLength(genes))
-    if (source == "Ensembl" && type == "GFF3") {
-        genes <- .makeGenesFromEnsemblGFF3(genes)
-    } else if (source == "Ensembl" && type == "GTF") {
-        genes <- .makeGenesFromEnsemblGTF(genes)
-    } else if (source == "FlyBase" && type == "GTF") {
-        genes <- .makeGenesFromFlyBaseGTF(genes)
-    } else if (source == "GENCODE" && type == "GFF3") {
-        genes <- .makeGenesFromGencodeGFF3(genes)
-    } else if (source == "GENCODE" && type == "GTF") {
-        genes <- .makeGenesFromGencodeGTF(genes)
-    } else if (source == "RefSeq" && type == "GFF3") {
-        genes <- .makeGenesFromRefSeqGFF3(genes)
-    } else if (source == "RefSeq" && type == "GTF") {
-        genes <- .makeGenesFromRefSeqGTF(genes)
-    } else if (source == "WormBase" && type == "GTF") {
-        genes <- .makeGenesFromWormBaseGTF(genes)
-    } else {
-        ## nocov start
-        stop(
-            "Failed to make gene-level GRanges.\n",
-            "Unsupported GFF source file."
-        )
-        ## nocov end
+    what <- switch(
+        EXPR = type,
+        "GFF3" = {
+            switch(
+                EXPR = source,
+                "Ensembl" = .makeGenesFromEnsemblGFF3,
+                "GENCODE" = .makeGenesFromGencodeGFF3,
+                "RefSeq" = .makeGenesFromRefSeqGFF3,
+                NULL
+            )
+        },
+        "GTF" = {
+            switch(
+                EXPR = source,
+                "Ensembl" = .makeGenesFromEnsemblGTF,
+                "FlyBase" = .makeGenesFromFlyBaseGTF,
+                "GENCODE" = .makeGenesFromGencodeGTF,
+                "RefSeq" = .makeGenesFromRefSeqGTF,
+                "WormBase" = .makeGenesFromWormBaseGTF,
+                NULL
+            )
+        }
+    )
+    if (!is.function(what)) {
+        stop(sprintf("Unsupported genome file: %s %s.", source, type))
     }
+    genes <- do.call(what = what, args = list(object = genes))
     ## Remove GFF-specific parent columns, etc.
     if (type == "GFF3") {
         genes <- .minimizeGFF3(genes)
     }
-    ## Set names and stash metadata.
-    names(genes) <- mcols(genes)[["gene_id"]]
-    metadata(genes)[["level"]] <- "genes"
+    mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
         out <- genes
     }
     ## Transcripts -------------------------------------------------------------
     if (level == "transcripts") {
         transcripts <-
-            transcripts[!is.na(mcols(transcripts)[["transcript_id"]])]
+            transcripts[!is.na(sanitizeNA(mcols(transcripts)[["transcript_id"]]))]
         assert(hasLength(transcripts))
         if (source == "Ensembl" && type == "GFF3") {
             transcripts <- .makeTranscriptsFromEnsemblGFF3(transcripts)
