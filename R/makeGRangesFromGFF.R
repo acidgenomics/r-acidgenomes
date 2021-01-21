@@ -261,6 +261,11 @@ NULL
     }
     txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
     gr <- .makeGRangesFromTxDb(object = txdb, level = level)
+    gr2 <- .makeGRangesFromRtracklayer(
+        object = rawRanges,
+        level = level,
+        source = source
+    )
     metadata(gr) <- meta
     ## FIXME ADD STEP HERE JOINING METADATA FOR EACH GENOME.
     ## FIXME gr2 <- .makeGRangesFromXXX
