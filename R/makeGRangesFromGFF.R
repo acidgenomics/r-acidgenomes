@@ -283,6 +283,7 @@ NULL
     gr <- gr1
     mcols(gr) <- mcols
     ## FIXME Need to handle genomeBuild, organism, release for Ensembl here.
+    ## FIXME Need to call detectOrganism here internally to slot?
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
