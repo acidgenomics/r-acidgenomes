@@ -1,4 +1,4 @@
-#' Interconvert NCBI and UCSC genome build names
+#' Interconvert between EBI (Ensembl), NCBI, and UCSC genome build names
 #'
 #' @name mapGenomeBuild
 #' @note Updated 2021-01-20.
