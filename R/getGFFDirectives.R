@@ -1,7 +1,7 @@
-#' Get the metadata (directives) from a GFF file
+#' Get the directives from a GFF file
 #'
 #' @export
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -33,7 +33,7 @@
 #' )
 #' df <- getGFFMetadata(url)
 #' print(df)
-getGFFMetadata <- function(file, nMax = Inf) {
+getGFFDirectives <- function(file, nMax = Inf) {
     file <- .cacheIt(file)
     lines <- import(
         file = file,
