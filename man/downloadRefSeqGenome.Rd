@@ -28,11 +28,14 @@ Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
 }
+\value{
+Invisible \code{list}.
+}
 \description{
 Download RefSeq reference genome
 }
 \note{
-Updated 2021-01-20.
+Updated 2021-01-21.
 }
 \section{Stable release}{
 
