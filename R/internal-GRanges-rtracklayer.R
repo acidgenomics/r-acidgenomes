@@ -1,3 +1,92 @@
+.rtracklayerSources <-
+    c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase")
+
+.rtracklayerTypes <- c("GFF3", "GTF")
+
+
+
+## GFF metadata detection ======================================================
+#' Detect the database source of the genome annotations
+#'
+#' @note Updated 2021-01-20.
+#' @noRd
+.grangesSource <- function(object) {
+    assert(is(object, "GRanges"))
+    mcols <- mcols(object)
+    source <- mcols[["source"]]
+    ## FIXME RETHINK THIS AND ATTEMPT TO ADD UCSC SUPPORT?
+    if (
+        ## UCSC (e.g. hg38_knownGene)
+        any(grepl(pattern = "_knownGene$", x = source, ignore.case = FALSE))
+    ) {
+        ## nocov start
+        stop(paste0(
+            "UCSC knownGene annotations are intentionally not supported.\n",
+            "Use a pre-built TxDb package instead ",
+            "(e.g. 'TxDb.Hsapiens.UCSC.hg38.knownGene')."
+        ))
+        ## nocov end
+    } else if (
+        ## Check for GENCODE prior to Ensembl.
+        any(source == "ENSEMBL") &&
+        any(source == "HAVANA") &&
+        "gene_type" %in% colnames(mcols)
+    ) {
+        out <- "GENCODE"
+    } else if (
+        any(grepl(pattern = "FlyBase", x = source, ignore.case = FALSE))
+    ) {
+        out <- "FlyBase"
+    } else if (
+        any(grepl(pattern = "WormBase", x = source, ignore.case = FALSE))
+    ) {
+        out <- "WormBase"
+    } else if (
+        any(grepl(pattern = "RefSeq", x = source, ignore.case = FALSE))
+    ) {
+        out <- "RefSeq"
+    } else if (
+        any(grepl(
+            pattern = "ensembl|havana",
+            x = source,
+            ignore.case = FALSE
+        ))
+    ) {
+        out <- "Ensembl"
+    } else {
+        ## nocov start
+        stop(sprintf(
+            fmt = paste(
+                "Failed to detect valid GFF/GTF source.",
+                "Supported: %s",
+                sep = "\n"
+            ),
+            toString(.rtracklayerSources)
+        ))
+        ## nocov end
+    }
+    out
+}
+
+
+
+#' Determine if input is GFF3 or GTF (GFF2)
+#'
+#' @note Updated 2021-01-20.
+#' @noRd
+.grangesType <- function(object) {
+    assert(is(object, "GRanges"))
+    if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
+        out <- "GFF3"
+    } else {
+        out <- "GTF"
+    }
+    out
+}
+
+
+
+## Updated 2021-01-21.
 .makeGRangesFromRtracklayer <- function(
     object,
     level = c("genes", "transcripts"),
@@ -7,10 +96,13 @@
     assert(is(object, "GRanges"))
     level <- match.arg(level)
     source <- match.arg(
-        arg = source,
-        choices = c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase")
+        arg = .grangesSource(object),
+        choices = .rtracklayerSources
     )
-    type <- match.arg(arg = type, choices = c("GFF3", "GTF"))
+    type <- match.arg(
+        arg = .grangesType(object),
+        choices = .rtracklayerTypes
+    )
     ## Standardize -------------------------------------------------------------
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
     ## Ensembl-like naming conventions.

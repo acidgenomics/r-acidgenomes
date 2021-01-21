@@ -238,8 +238,18 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
+
+    ## FIXME TAKE THIS OUT AND CALL IN OTHER FUNCTIONS INSTEAD.
     tmpfile <- .cacheIt(file)
+
+    ## FIXME SAFE TO TAKE THIS OUT AND JUST CALL DIRECTLY BELOW IN
+    ##       RTRACKLAYER IMPORT STEP INSTEAD?
     rawRanges <- import(tmpfile)
+
+    ## FIXME PARSE THE GFF FILE DIRECTLY AND GET THE METADATA THAT WAY\
+    ##       INSTEAD. REWORK THE INTERNAL TXDB FUNCTION TO ALSO DETECT IF
+    ##       GTF OR GFF3. CAN USE FILE NAME....
+    ## FIXME CALL THESE IN THE RTRACKLAYER IMPORT STEP INSTEAD....
     source <- .grangesSource(rawRanges)
     type <- .grangesType(rawRanges)
     assert(isString(source), isString(type))
@@ -271,6 +281,11 @@ NULL
         type = type
     )
     metadata(gr2) <- meta
+
+    ## FIXME SPLIT THIS OUT TO SEPARATE FUNCTION.
+    ## FIXME NEED TO CHECK THAT ALL IDS DEFINED IN LEFT SIDE ARE IN RIGHT SIDE.
+    ##       USE ISSUBSET FOR THIS...
+
     idCol1 <- .matchGRangesNamesColumn(gr1)
     idCol2 <- .matchGRangesNamesColumn(gr2)
     assert(identical(idCol1, idCol2))
