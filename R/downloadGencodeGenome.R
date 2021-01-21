@@ -1,9 +1,11 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-21.
 #'
 #' @inheritParams downloadEnsemblGenome
+#'
+#' @return Invisible `list`.
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
@@ -32,7 +34,7 @@ downloadGencodeGenome <-
             choices = c("Homo sapiens", "Mus musculus")
         )
         if (is.null(genomeBuild)) {
-            genomeBuild <- currentGencodeBuild(organism)
+            genomeBuild <- currentGencodeGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
         }
         if (is.null(release)) {
@@ -99,7 +101,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadGencodeAnnotation <-
     function(
         genomeBuild,
@@ -139,30 +141,31 @@ downloadGencodeGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
-        ## Generate GFF symlink.
-        gffFile <- files[["gff"]]
-        assert(isAFile(gffFile))
-        gffSymlink <- file.path(
-            outputDir,
-            paste0("annotation.", fileExt(gffFile))
-        )
-        file.symlink(from = gffFile, to = gffSymlink)
-        files[["gffSymlink"]] <- gffSymlink
-        ## Generate GTF symlink.
-        gtfFile <- files[["gtf"]]
-        assert(isAFile(gtfFile))
-        gtfSymlink <- file.path(
-            outputDir,
-            paste0("annotation.", fileExt(gtfFile))
-        )
-        file.symlink(from = gtfFile, to = gtfSymlink)
-        files[["gtfSymlink"]] <- gtfSymlink
+        ## Create symlinks.
+        if (!isWindows()) {
+            gffFile <- files[["gff"]]
+            assert(isAFile(gffFile))
+            gffSymlink <- file.path(
+                outputDir,
+                paste0("annotation.", fileExt(gffFile))
+            )
+            file.symlink(from = gffFile, to = gffSymlink)
+            files[["gffSymlink"]] <- gffSymlink
+            gtfFile <- files[["gtf"]]
+            assert(isAFile(gtfFile))
+            gtfSymlink <- file.path(
+                outputDir,
+                paste0("annotation.", fileExt(gtfFile))
+            )
+            file.symlink(from = gtfFile, to = gtfSymlink)
+            files[["gtfSymlink"]] <- gtfSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadGencodeGenome <-
     function(
         genomeBuild,
@@ -179,20 +182,23 @@ downloadGencodeGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "genome")
         )
-        fastaFile <- files[["fasta"]]
-        assert(isAFile(fastaFile))
-        fastaSymlink <- file.path(
-            outputDir,
-            paste0("genome.", fileExt(fastaFile))
-        )
-        file.symlink(from = fastaFile, to = fastaSymlink)
-        files[["fastaSymlink"]] <- fastaSymlink
+        ## Create symlink.
+        if (!isWindows()) {
+            fastaFile <- files[["fasta"]]
+            assert(isAFile(fastaFile))
+            fastaSymlink <- file.path(
+                outputDir,
+                paste0("genome.", fileExt(fastaFile))
+            )
+            file.symlink(from = fastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadGencodeMetadata <-
     function(
         genomeBuild,
@@ -219,7 +225,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-21.
 .downloadGencodeTranscriptome <-
     function(
         genomeBuild,
@@ -246,18 +252,22 @@ downloadGencodeGenome <-
             outputDir = file.path(outputDir, "transcriptome")
         )
         fastaFile <- files[["fasta"]]
-        assert(isAFile(fastaFile))
-        fastaSymlink <- file.path(
-            outputDir,
-            paste0("transcriptome.", fileExt(fastaFile))
-        )
-        file.symlink(from = fastaFile, to = fastaSymlink)
-        files[["fastaSymlink"]] <- fastaSymlink
+        ## Create tx2gene.
         tx2geneFile <- makeTx2GeneFileFromFASTA(
             file = fastaFile,
             outputFile = file.path(outputDir, "tx2gene.csv.gz"),
             source = "gencode"
         )
         files[["tx2gene"]] <- tx2geneFile
+        ## Create symlink.
+        if (!isWindows()) {
+            assert(isAFile(fastaFile))
+            fastaSymlink <- file.path(
+                outputDir,
+                paste0("transcriptome.", fileExt(fastaFile))
+            )
+            file.symlink(from = fastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }

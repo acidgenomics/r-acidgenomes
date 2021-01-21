@@ -15,6 +15,8 @@
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
 #'
+#' @return Invisible `list`.
+#'
 #' @seealso
 #' - [Human Genome Resources at NCBI](https://www.ncbi.nlm.nih.gov/projects/genome/guide/human/)
 #' - [RefSeq Genomes FTP server](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/)
@@ -127,21 +129,23 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
-        ## Generate GFF symlink.
-        gffFile <- files[["gff"]]
-        assert(isAFile(gffFile))
-        gffSymlink <- file.path(outputDir, "annotation.gff3.gz")
-        file.symlink(from = gffFile, to = gffSymlink)
-        files[["gffSymlink"]] <- gffSymlink
-        ## Generate GTF symlink.
-        gtfFile <- files[["gtf"]]
-        assert(isAFile(gtfFile))
-        gtfSymlink <- file.path(
-            outputDir,
-            paste0("annotation.", fileExt(gtfFile))
-        )
-        file.symlink(from = gtfFile, to = gtfSymlink)
-        files[["gtfSymlink"]] <- gtfSymlink
+        ## Create GFF and GTF symlinks.
+        if (!isWindows()) {
+            gffFile <- files[["gff"]]
+            assert(isAFile(gffFile))
+            gffSymlink <- file.path(outputDir, "annotation.gff3.gz")
+            file.symlink(from = gffFile, to = gffSymlink)
+            files[["gffSymlink"]] <- gffSymlink
+            ## Generate GTF symlink.
+            gtfFile <- files[["gtf"]]
+            assert(isAFile(gtfFile))
+            gtfSymlink <- file.path(
+                outputDir,
+                paste0("annotation.", fileExt(gtfFile))
+            )
+            file.symlink(from = gtfFile, to = gtfSymlink)
+            files[["gtfSymlink"]] <- gtfSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
@@ -164,11 +168,14 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "genome")
         )
-        fastaFile <- files[["fasta"]]
-        assert(isAFile(fastaFile))
-        fastaSymlink <- file.path(outputDir, "genome.fa.gz")
-        file.symlink(from = fastaFile, to = fastaSymlink)
-        files[["fastaSymlink"]] <- fastaSymlink
+        ## Create FASTA symlink.
+        if (!isWindows()) {
+            fastaFile <- files[["fasta"]]
+            assert(isAFile(fastaFile))
+            fastaSymlink <- file.path(outputDir, "genome.fa.gz")
+            file.symlink(from = fastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
 
@@ -224,10 +231,13 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome")
         )
-        fastaFile <- files[["fasta"]]
-        assert(isAFile(fastaFile))
-        fastaSymlink <- file.path(outputDir, "transcriptome.fa.gz")
-        file.symlink(from = fastaFile, to = fastaSymlink)
-        files[["fastaSymlink"]] <- fastaSymlink
+        ## Create FASTA symlink.
+        if (!isWindows()) {
+            fastaFile <- files[["fasta"]]
+            assert(isAFile(fastaFile))
+            fastaSymlink <- file.path(outputDir, "transcriptome.fa.gz")
+            file.symlink(from = fastaFile, to = fastaSymlink)
+            files[["fastaSymlink"]] <- fastaSymlink
+        }
         invisible(list("files" = files, "urls" = urls))
     }
