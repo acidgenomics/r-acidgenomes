@@ -42,10 +42,10 @@ NULL
 
 
 
-## Updated 2021-01-05.
+## Updated 2021-01-21.
 #' @rdname currentGenomeBuild
 #' @export
-currentEnsemblBuild <- function(organism) {
+currentEnsemblGenomeBuild <- function(organism) {
     assert(isOrganism(organism))
     organism <- snakeCase(organism)
     json <- getJSON(pasteURL(
@@ -66,7 +66,7 @@ currentEnsemblBuild <- function(organism) {
 ## Updated 2021-01-05.
 #' @rdname currentGenomeBuild
 #' @export
-currentGencodeBuild <- function(organism) {
+currentGencodeGenomeBuild <- function(organism) {
     organism <- match.arg(
         arg = organism,
         choices = c("Homo sapiens", "Mus musculus")
