@@ -282,6 +282,7 @@ NULL
     assert(identical(mcols[[idCol]], mcols1[[idCol]]))
     gr <- gr1
     mcols(gr) <- mcols
+    ## FIXME Need to handle genomeBuild, organism, release for Ensembl here.
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
