@@ -302,6 +302,7 @@ downloadEnsemblGenome <-
             file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
+        ## Create tx2gene.
         tx2geneFile <-
             makeTx2GeneFileFromFASTA(
                 file = mergeFastaFile,
