@@ -63,11 +63,12 @@
 #'
 #' Currently [makeGRangesFromGFF()] supports genomes from these sources:
 #'
-#' - Ensembl (GTF, GFF3).
-#' - GENCODE (GTF, GFF3).
-#' - RefSeq (GTF, GFF3).
-#' - FlyBase (GTF).
-#' - WormBase (GTF).
+#' - Ensembl
+#' - GENCODE
+#' - RefSeq
+#' - UCSC
+#' - FlyBase
+#' - WormBase
 #'
 #' @section Ensembl:
 #'
@@ -142,7 +143,7 @@
 #' - [RefSeq FAQ](https://www.ncbi.nlm.nih.gov/books/NBK50679/)
 #' - ftp://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
 #'
-#' @section UCSC Genome Browser:
+#' @section UCSC:
 #'
 #' Example URLs:
 #'
@@ -248,7 +249,7 @@ NULL
 
     ## FIXME PARSE THE GFF FILE DIRECTLY AND GET THE METADATA THAT WAY\
     ##       INSTEAD. REWORK THE INTERNAL TXDB FUNCTION TO ALSO DETECT IF
-    ##       GTF OR GFF3. CAN USE FILE NAME....
+    ##       GTF OR GFF. CAN USE FILE NAME....
     ## FIXME CALL THESE IN THE RTRACKLAYER IMPORT STEP INSTEAD....
     source <- .grangesSource(rawRanges)
     type <- .grangesType(rawRanges)
@@ -271,6 +272,13 @@ NULL
         "type" =  type,
         "call" = match.call()
     )
+
+
+
+    ## FIXME HAND OFF TO ENSEMBLDB FOR ENSEMBL FILES...
+
+
+
     txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
     gr1 <- .makeGRangesFromTxDb(object = txdb, level = level)
     metadata(gr1) <- meta
