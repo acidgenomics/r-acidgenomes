@@ -209,7 +209,7 @@ NULL
 #'
 #' Internal variant with more options that we don't want to expose to user.
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-20.
 #' @noRd
 .makeGRangesFromGFF <- function(
     file,
@@ -219,6 +219,7 @@ NULL
     release = NULL,
     ignoreVersion = TRUE,
     synonyms = FALSE,
+    seqinfo = NULL,
     ## Internal-only arguments:
     broadClass = TRUE
 ) {
@@ -229,6 +230,7 @@ NULL
         isString(release, nullOK = TRUE) || isInt(release, nullOK = TRUE),
         isFlag(ignoreVersion),
         isFlag(synonyms),
+        is(seqinfo, "Seqinfo") || is.null(seqinfo),
         isFlag(broadClass)
     )
     level <- match.arg(level)
@@ -237,24 +239,19 @@ NULL
         basename(file)
     ))
     meta <- list()
+    meta[["date"]] <- Sys.Date()
     meta[["file"]] <- file
+    meta[["call"]] <- match.call()
     tmpfile <- .cacheIt(file)
-    ## Generate MD5 and SHA256 checksums for GFF file We may store these in an
-    ## internal database, similar to the approach used in tximeta, in a
-    ## future update.
     meta[["md5"]] <- .md5(file = tmpfile)
     meta[["sha256"]] <- .sha256(file = tmpfile)
-    ## Load raw GFF/GTF ranges into memory using `rtracklayer::import()`. We're
-    ## using this downstream for file source detection and extra metadata that
-    ## currently isn't supported in GenomicFeatures TxDb generation.
     rawRanges <- import(tmpfile)
-    source <- .detectGRangesSource(rawRanges)
-    type <- .detectGRangesType(rawRanges)
+    source <- .grangesSource(rawRanges)
+    type <- .grangesType(rawRanges)
     assert(isString(source), isString(type))
-    if (
-        isTRUE(synonyms) &&
-        !isSubset(source, c("Ensembl", "GENCODE"))
-    ) {
+    meta[["source"]] <- source
+    meta[["type"]] <- type
+    if (isTRUE(synonyms) && !isSubset(source, c("Ensembl", "GENCODE"))) {
         ## nocov start
         stop(sprintf(
             "Synonyms only supported for genomes from: %s.",
@@ -262,62 +259,27 @@ NULL
         ))
         ## nocov end
     }
-    ## Use ensembldb for Ensembl and GENCODE files, otherwise handoff to
-    ## GenomicFeatures and generate a TxDb object.
-    if (isSubset(source, c("Ensembl", "GENCODE"))) {
-        db <- makeEnsDbFromGFF(
-            file = tmpfile,
-            organism = organism,
-            genomeBuild = genomeBuild,
-            release = release
-        )
-        gr <- .makeGRangesFromEnsDb(
-            object = db,
-            level = level,
-            ignoreVersion = ignoreVersion,
-            broadClass = broadClass,
-            synonyms = synonyms
-        )
-        ## FIXME Where to put this?
-        ## > metadata(gr)[["source"]] <- source
-    } else {
-        ## FIXME THIS NEEDS SEQINFO, OTHERWISE ABORT.
-        db <- makeTxDbFromGFF(
-            file = tmpfile
-        )
-        ## FIXME WE NEED TO IMPROVE THIS METADATA...
-        gr1 <- .makeGRangesFromTxDb(object = db, level = level)
-        gr2
+    txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
+    gr <- .makeGRangesFromTxDb(object = txdb, level = level)
+    metadata(gr) <- meta
+    ## FIXME ADD STEP HERE JOINING METADATA FOR EACH GENOME.
+    ## FIXME gr2 <- .makeGRangesFromXXX
+    ## FIXME LEFTJOIN THE GR2 MCOLS.
 
-        ## FIXME FOR REFSEQ USE ASSEMBLY_REPORT
-        ## tximeta:::gtf2RefSeq
-
-        out <- .makeGRanges(
-            object = gr,
-            ignoreVersion = ignoreVersion,
-            broadClass = broadClass,
-            synonyms = synonyms
-        )
-    }
+    out <- .makeGRanges(
+        object = gr,
+        ignoreVersion = ignoreVersion,
+        broadClass = broadClass,
+        synonyms = synonyms
+    )
     assert(is(gr, "GRanges"))
 
     ## FIXME SHOULD INCLUDE SHA256 FOR THE FILE HERE.
     ## FIXME ATTEMPT TO SLOT THE GENOME BUILD FROM THE FILE NAME HERE.
     ## FIXME WE NEED TO DECLARE WHICH PACKAGE GENERATED THIS RANGES.
     ## FIXME THIS NEEDS TO INCLUDE ORGANISM.
-    metadata(out)[["detect"]] <- detect
-    metadata(out)[["file"]] <- file
-    metadata(out)[["call"]] <- match.call()
 
-
-    ## FIXME RETHINK THIS.
-    ## Metadata assert checks before return.
-    if (!isSubset(source, "FlyBase")) {
-        seqinfo(gr)
-        seqlengths(gr)
-        genome(gr)
-    }
-
+    ## FIXME RETURN BY CLASS.
     out
 }
 
@@ -332,7 +294,8 @@ makeGRangesFromGFF <- function(
     genomeBuild = NULL,
     release = NULL,
     ignoreVersion = TRUE,
-    synonyms = FALSE
+    synonyms = FALSE,
+    seqinfo = NULL
 ) {
     .makeGRangesFromGFF(
         file = file,
@@ -341,6 +304,7 @@ makeGRangesFromGFF <- function(
         genomeBuild = genomeBuild,
         release = release,
         ignoreVersion = ignoreVersion,
-        synonyms = synonyms
+        synonyms = synonyms,
+        seqinfo = seqinfo
     )
 }
