@@ -233,82 +233,62 @@
 
 #' Add the gene identifier version
 #'
-#' Append the transcript version to the identifier (e.g. ENST00000000233.10).
+#' Append the gene version to the identifier (e.g. ENSG00000000003.15).
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-21.
 #' @noRd
 .addGeneVersion <- function(object) {
     assert(is(object, "GRanges"))
     if (!isSubset("geneId", colnames(mcols(object)))) {
         return(object)
     }
-    alert("Adding version to gene identifiers.")
-    mcolnames <- colnames(mcols(object))
-    if (isSubset("geneIdVersion", mcolnames)) {
-        ## `makeGRangesFromEnsembl()` output via ensembldb.
+    alert("Including version in gene identifiers.")
+    if (isSubset("geneIdVersion", colnames(mcols(object)))) {
         id <- mcols(object)[["geneIdVersion"]]
-    } else if (isSubset("geneVersion", mcolnames)) {
-        ## `makeGRangesFromGFF()` output.
-        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
-        id <- mcols(object)[["geneId"]]
-        version <- mcols(object)[["geneVersion"]]
-        id <- Rle(paste(id, version, sep = "."))
+    } else if (isSubset("geneVersion", colnames(mcols(object)))) {
+        id <- Rle(paste(
+            mcols(object)[["geneId"]],
+            mcols(object)[["geneVersion"]],
+            sep = "."
+        ))
     } else {
-        stop("Failed to locate gene identifier version.")  # nolint
+        stop("Failed to locate gene identifier version.")  # nocov
     }
+    mcols(object)[["geneIdNoVersion"]] <- mcols(object)[["geneId"]]
     mcols(object)[["geneId"]] <- id
     object
 }
 
 
 
-## NOTE Doesn't bcbio return the transcript identifier version but not the
-## gene identifier version in the tx2gene.csv? If so, may need to rethink this
-## step in a future update.
-
 #' Add the transcript identifier version
 #'
 #' Append the transcript version to the identifier (e.g. ENST00000000233.10).
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-21.
 #' @noRd
 .addTxVersion <- function(object) {
     assert(is(object, "GRanges"))
     if (!isSubset("txId", colnames(mcols(object)))) {
         return(object)
     }
-    alert("Adding version to transcript identifiers.")
-    mcolnames <- colnames(mcols(object))
-    if (isSubset("txIdVersion", mcolnames)) {
-        ## `makeGRangesFromEnsembl()` output via ensembldb.
+    alert("Including version in transcript identifiers.")
+
+    if (isSubset("txIdVersion", colnames(mcols(object)))) {
         id <- mcols(object)[["txIdVersion"]]
-    } else if (isSubset("txVersion", mcolnames)) {
-        ## `makeGRangesFromGFF()` output.
-        ## FIXME NEED TO RECHECK THIS FOLLOWING TxDb approach update.
-        id <- mcols(object)[["txId"]]
-        version <- mcols(object)[["txVersion"]]
-        id <- Rle(paste(id, version, sep = "."))
+    } else if (isSubset("txVersion", colnames(mcols(object)))) {
+        id <- Rle(paste(
+            mcols(object)[["txId"]],
+            mcols(object)[["txVersion"]],
+            sep = "."
+        ))
     } else {
-        stop("Failed to locate transcript identifier version.")  # nolint
+        stop("Failed to locate transcript identifier version.")  # nocov
     }
+    mcols(object)[["txIdNoVersion"]] <- mcols(object)[["txId"]]
     mcols(object)[["txId"]] <- id
     object
 }
-
-
-
-## Source-specific metadata parsers ============================================
-## FIXME ADD makeGRangesFromWormBase
-## FIXME ADD makeGRangesFromFlyBase
-## FIXME ADD makeGRangesFromRefSeq
-##
-## FIXME NEEDS TO REIMPORT GTF/GFF INTO GRANGES AND WORK FROM THERE.
-## FIXME (each of these need to support level argument)
-
-## Legacy code:
-## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-FlyBase.R
-## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-RefSeq.R
-## https://github.com/acidgenomics/r-acidgenomes/blob/main/R/makeGRangesFromGFF-WormBase.R
 
 
 
@@ -421,12 +401,16 @@
 
 
 ## Main generator ==============================================================
+
+## FIXME `ignoreVersions = FALSE` needs to rename column with version to something else?
+##       `geneIdNoVersion`, `txIdNoVersion`
+
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-21.
 #' @noRd
 .makeGRanges <- function(
     object,
