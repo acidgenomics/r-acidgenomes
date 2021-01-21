@@ -10,7 +10,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-21.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -101,7 +101,7 @@ downloadRefSeqGenome <-
             "RefSeq genome downloaded successfully to {.path %s}.",
             outputDir
         ))
-        invisible(out)
+        invisible(info)
     }
 
 
