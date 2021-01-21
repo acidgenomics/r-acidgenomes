@@ -1,10 +1,46 @@
-## Updated 2021-01-20.
-.gffMetadataForTxDb <- function(file) {
+## Updated 2021-01-21.
+.gffMetadata <- function(file) {
+    genomeBuild <- NULL
+    source <- NULL
+    type <- .gffType(file)
     df <- getGFFMetadata(file, nMax = 2000L)
-    if (is.null(df)) return(NULL)
+    if (is(df, "DataFrame")) {
+        genomeBuild <- .gffGenomeBuild(df)
+        source <- .gffSource(df)
+    } else {
+        lines <- import(
+            file = .cacheIt(file),
+            format = "lines",
+            nMax = 5L,
+            quiet = TRUE
+        )
+        ## UCSC GTF file detection.
+        if (any(grepl(
+            pattern = paste0(
+                "\t(",
+                "ensGene",
+                "|knownGene",
+                "|ncbiRefSeq",
+                "|refGene",
+                ")\t"
+            ),
+            x = lines
+        ))) {
+            source <- "UCSC"
+            genomeBuild <- str_match(
+                string = basename(file),
+                pattern = paste0(
+                    "^([0-9a-z]_)?",            # BiocFileCache prefix.
+                    "([a-z]+[A-Za-z]+[0-9]+)",  # Genome build (e.g. hg38).
+                    "\\."
+                )
+            )[1L, 3L]
+        }
+    }
     list(
-        "genomeBuild" = .gffGenomeBuild(df),
-        "source" = .gffSource(df)
+        "genomeBuild" = genomeBuild,
+        "source" = source,
+        "type" = type
     )
 }
 
@@ -60,4 +96,19 @@
         return("Ensembl")
     }
     NULL
+}
+
+
+
+## Updated 2021-01-21.
+.gffType <- function(file) {
+    ifelse(
+        test = grepl(
+            pattern = "^gtf",
+            x = fileExt(file),
+            ignore.case = TRUE
+        ),
+        yes = "GTF",
+        no = "GFF3"
+    )
 }
