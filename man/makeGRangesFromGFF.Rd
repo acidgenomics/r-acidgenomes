@@ -109,11 +109,12 @@ See also:
 
 Currently \code{\link[=makeGRangesFromGFF]{makeGRangesFromGFF()}} supports genomes from these sources:
 \itemize{
-\item Ensembl (GTF, GFF3).
-\item GENCODE (GTF, GFF3).
-\item RefSeq (GTF, GFF3).
-\item FlyBase (GTF).
-\item WormBase (GTF).
+\item Ensembl
+\item GENCODE
+\item RefSeq
+\item UCSC
+\item FlyBase
+\item WormBase
 }
 }
 
@@ -202,7 +203,7 @@ See also:
 }
 }
 
-\section{UCSC Genome Browser}{
+\section{UCSC}{
 
 
 Example URLs:
@@ -240,6 +241,7 @@ Example URLs:
 \itemize{
 \item WormBase \emph{Caenorhabditis elegans} WS267
 \href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.279.canonical_geneset.gtf.gz}{GTF},
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff2.gz}{GFF2},
 \href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz}{GFF3}
 }
 }
