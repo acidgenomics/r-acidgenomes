@@ -70,11 +70,9 @@
 
 
 
-## FIXME WHAT ABOUT WORMBASE GFF2 HERE?
-
 #' Determine if input is GFF3 or GTF (GFFv2)
 #'
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-21.
 #' @noRd
 .grangesType <- function(object) {
     assert(is(object, "GRanges"))
