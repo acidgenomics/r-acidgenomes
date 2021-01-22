@@ -103,7 +103,7 @@ getGFFMetadata <- function(file) {
                     "^([^-]+)",             # "dmel"
                     "-([^-]+)",             # "all"
                     "-(r[0-9]+\\.[0-9]+)",  # "r6.37"
-                    "\\.(gff3|gtf)",
+                    "\\.(gff|gtf)",
                     "(\\.gz)?$"
                 )
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
@@ -120,6 +120,12 @@ getGFFMetadata <- function(file) {
                 }
                 if (!isString(l[["providerVersion"]])) {
                     l[["providerVersion"]] <- x[[5L]]
+                }
+                if (!isString(l[["genomeBuild"]])) {
+                    ## This matches the convention defined in GFF.
+                    l[["genomeBuild"]] <- paste(
+                        provider, providerVersion
+                    )
                 }
             },
             "GENCODE" = {
