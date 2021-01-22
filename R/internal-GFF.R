@@ -1,47 +1,82 @@
-## Updated 2021-01-21.
+## Updated 2021-01-22.
 .gffMetadata <- function(file) {
-    genomeBuild <- NULL
-    source <- NULL
-    type <- .gffType(file)
+    l <- list()
+    l[["type"]] <- .gffType(file)
+    ## Attempt to get genome build and source from GFF directives.
     df <- getGFFDirectives(file, nMax = 2000L)
     if (is(df, "DataFrame")) {
-        genomeBuild <- .gffGenomeBuild(df)
-        source <- .gffSource(df)
+        l[["genomeBuild"]] <- .gffGenomeBuild(df)
+        l[["source"]] <- .gffSource(df)
     } else {
+        ## Otherwise, fall back to attempting to get the source from the
+        ## first lines of the file.
         lines <- import(
             file = .cacheIt(file),
             format = "lines",
             nMax = 5L,
             quiet = TRUE
         )
-        ## UCSC GTF file detection.
         if (any(grepl(
-            pattern = paste0(
-                "\t(",
-                "ensGene",
-                "|knownGene",
-                "|ncbiRefSeq",
-                "|refGene",
-                ")\t"
-            ),
+            pattern = "\t(ensGene|knownGene|ncbiRefSeq|refGene)\t",
             x = lines
         ))) {
-            source <- "UCSC"
-            genomeBuild <- str_match(
-                string = basename(file),
-                pattern = paste0(
-                    "^([0-9a-z]_)?",            # BiocFileCache prefix.
-                    "([a-z]+[A-Za-z]+[0-9]+)",  # Genome build (e.g. hg38).
-                    "\\."
-                )
-            )[1L, 3L]
+            l[["source"]] <- "UCSC"
         }
     }
-    list(
-        "genomeBuild" = genomeBuild,
-        "source" = source,
-        "type" = type
-    )
+    ## Attempt to parse file names for useful values.
+    if (!is.null(l[["source"]])) {
+        switch(
+            EXPR = l[["source"]],
+            "Ensembl" = {
+                pattern <- paste0(
+                    "^([a-z0-9]+_)?",                # BiocFileCache
+                    "^([A-Z][a-z]+_[a-z]+)",         # "Homo_sapiens"
+                    "\\.([A-Za-z0-9]+)",             # "GRCh38"
+                    "\\.([0-9]+)",                   # "102"
+                    "(\\.chr_patch_hapl_scaff)?",
+                    "\\.(gff3|gtf)",
+                    "(\\.gz)?$"
+                )
+                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                    x <- str_match(
+                        string = basename(file),
+                        pattern = pattern
+                    )[1L, , drop = TRUE]
+                    if (is.null(l[["organism"]])) {
+                        l[["organism"]] <- gsub("_", " ", x[[3L]])
+                    }
+                    if (is.null(l[["genomeBuild"]])) {
+                        l[["genomeBuild"]] <- x[[4L]]
+                    }
+                    if (is.null(l[["release"]])) {
+                        l[["release"]] <- as.integer(x[[5L]])
+                    }
+                }
+            },
+            "UCSC" = {
+                if (is.null(l[["genomeBuild"]])) {
+                    l[["genomeBuild"]] <- str_match(
+                        string = basename(file),
+                        pattern = paste0(
+                            "^([0-9a-z]_)?",            # BiocFileCache.
+                            "([a-z]+[A-Za-z]+[0-9]+)",  # "hg38"
+                            "\\."
+                        )
+                    )[1L, 3L]
+                }
+            }
+        )
+    }
+    ## Attempt to get the organism from the genome build, if necessary.
+    if (is.null(l[["organism"]])) {
+        l[["organism"]] <- tryCatch(
+            expr = detectOrganism(l[["genomeBuild"]]),
+            error = function(e) NULL
+        )
+    }
+    l <- Filter(f = Negate(is.null), x = l)
+    l <- l[sort(names(l))]
+    l
 }
 
 
