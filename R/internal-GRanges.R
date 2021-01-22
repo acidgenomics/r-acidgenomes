@@ -402,6 +402,8 @@
 
 ## Main generator ==============================================================
 
+## FIXME If id column just contains numbers (i.e. RefSeq), attempt to use
+##       names column to define the names instead.
 ## FIXME `ignoreVersions = FALSE` needs to rename column with version to something else?
 ##       `geneIdNoVersion`, `txIdNoVersion`
 
@@ -466,6 +468,9 @@
             toInlineString(invalidNames, n = 10L)
         ))
     }
+
+    ## FIXME RATHER THAN SPLITTING HERE, JUST MAKE THE ID COLUMN/NAMES UNIQUE.
+
     ## Split into GRangesList if object contains multiple ranges per feature.
     ## NOTE If this safe to take out once we update our RefSeq
     ##      transcripts approach?
