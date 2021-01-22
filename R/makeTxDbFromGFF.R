@@ -1,4 +1,8 @@
-## FIXME WORK ON A GFF BLACKLIST
+## FIXME Consider setting a GFF file blacklist here.
+## FIXME CAN YOU SET ATTRIBUTES ON THE TXDB?
+## FIXME SET THE ENSEMBL RELEASE FROM THE FILE NAME, IF POSSIBLE.
+
+
 
 ## nolint start
 
@@ -7,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-22.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -79,7 +83,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     }
     file <- .cacheIt(file)
     if (is.null(seqinfo)) {
-        meta <- .gffMetadata(file)
+        meta <- getGFFMetadata(file)
         source <- meta[["source"]]
         genomeBuild <- meta[["genomeBuild"]]
         organism <- tryCatch(
@@ -111,7 +115,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     ##   builds. Note that it's currently out of date with GRCh38.
     ##   https://github.com/Bioconductor/GenomicFeatures/issues/27
     args <- list(
-        "file" = file,
+        "file" = .cacheIt(file),
         "dataSource" = dataSource,
         "organism" = organism
     )
@@ -123,6 +127,8 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
         txdb <- do.call(what = what, args = args)
     })
     assert(is(txdb, "TxDb"))
+    ## Stash the GFF metadata, so we can access in `makeGRangesFromGFF()`.
+    attr(x, which = "gffMetadata") <- meta
     validObject(txdb)
     txdb
 }
