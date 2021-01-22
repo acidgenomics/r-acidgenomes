@@ -48,9 +48,11 @@ getGFFMetadata <- function(file) {
         lines <- import(
             file = .cacheIt(file),
             format = "lines",
-            nMax = 5L,
+            nMax = 1000L,
             quiet = TRUE
         )
+        lines <- lines[!grepl(pattern = "^#", x = lines)]
+        lines <- head(lines, n = 10L)
         if (any(grepl(
             pattern = "\t(ensGene|knownGene|ncbiRefSeq|refGene)\t",
             x = lines
