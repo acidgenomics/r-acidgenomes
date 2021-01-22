@@ -54,5 +54,7 @@ getGFFDirectives <- function(file, nMax = Inf) {
     df <- as(mat, "DataFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
     colnames(df) <- c("key", "value")
+    df <- unique(df)
+    df <- df[order(df[["key"]]), , drop = FALSE]
     df
 }
