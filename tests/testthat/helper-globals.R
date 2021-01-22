@@ -78,6 +78,24 @@ gffs <- c(
         "Homo_sapiens.GRCh38.102.gtf.gz",
         protocol = "ftp"
     ),
+    "flybase_gff3" = pasteURL(
+        "ftp.flybase.net",
+        "releases",
+        "FB2020_06",
+        "dmel_r6.37",
+        "gff",
+        "dmel-all-r6.37.gff.gz",
+        protocol = "ftp"
+    ),
+    "flybase_gtf" = pasteURL(
+        "ftp.flybase.net",
+        "releases",
+        "FB2020_06",
+        "dmel_r6.37",
+        "gtf",
+        "dmel-all-r6.37.gtf.gz",
+        protocol = "ftp"
+    ),
     "gencode_grch37_gff3" = pasteURL(
         "ftp.ebi.ac.uk",
         "pub",
@@ -120,16 +138,6 @@ gffs <- c(
         "gencode.v36.annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "gencode_grcm38_gtf" = pasteURL(
-        "ftp.ebi.ac.uk",
-        "pub",
-        "databases",
-        "gencode",
-        "Gencode_mouse",
-        "release_M25",
-        "gencode.vM25.annotation.gtf.gz",
-        protocol = "ftp"
-    ),
     "gencode_grcm38_gff3" = pasteURL(
         "ftp.ebi.ac.uk",
         "pub",
@@ -138,6 +146,16 @@ gffs <- c(
         "Gencode_mouse",
         "release_M25",
         "gencode.vM25.annotation.gff3.gz",
+        protocol = "ftp"
+    ),
+    "gencode_grcm38_gtf" = pasteURL(
+        "ftp.ebi.ac.uk",
+        "pub",
+        "databases",
+        "gencode",
+        "Gencode_mouse",
+        "release_M25",
+        "gencode.vM25.annotation.gtf.gz",
         protocol = "ftp"
     ),
     "refseq_grch38_gff3" = pasteURL(
@@ -162,36 +180,40 @@ gffs <- c(
         "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz",
         protocol = "ftp"
     ),
-    ## Note that this file doesn't contain any metadata comments.
-    "flybase_gtf" = pasteURL(
-        "ftp.flybase.net",
-        "releases",
-        "FB2020_06",
-        "dmel_r6.37",
-        "gtf",
-        "dmel-all-r6.37.gtf.gz",
+    "ucsc_hg38_ensgene_gtf" = pasteURL(
+        "hgdownload.soe.ucsc.edu",
+        "goldenPath",
+        "hg38",
+        "bigZips",
+        "genes",
+        "hg38.ensGene.gtf.gz",
         protocol = "ftp"
     ),
-    ## This file is very large and slow to parse.
-    "flybase_gff3" = pasteURL(
-        "ftp.flybase.net",
-        "releases",
-        "FB2020_06",
-        "dmel_r6.37",
-        "gff",
-        "dmel-all-r6.37.gff.gz",
+    "ucsc_hg38_knowngene_gtf" = pasteURL(
+        "hgdownload.soe.ucsc.edu",
+        "goldenPath",
+        "hg38",
+        "bigZips",
+        "genes",
+        "hg38.knownGene.gtf.gz",
         protocol = "ftp"
     ),
-    "wormbase_gtf" = pasteURL(
-        "ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        "WS279",
-        "species",
-        "c_elegans",
-        "PRJNA13758",
-        "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz",
+    "ucsc_hg38_ncbirefseq_gtf" = pasteURL(
+        "hgdownload.soe.ucsc.edu",
+        "goldenPath",
+        "hg38",
+        "bigZips",
+        "genes",
+        "hg38.ncbiRefSeq.gtf.gz",
+        protocol = "ftp"
+    ),
+    "ucsc_hg38_refgene_gtf" = pasteURL(
+        "hgdownload.soe.ucsc.edu",
+        "goldenPath",
+        "hg38",
+        "bigZips",
+        "genes",
+        "hg38.refGene.gtf.gz",
         protocol = "ftp"
     ),
     "wormbase_gff3" = pasteURL(
@@ -204,6 +226,18 @@ gffs <- c(
         "c_elegans",
         "PRJNA13758",
         "c_elegans.PRJNA13758.WS279.annotations.gff3.gz",
+        protocol = "ftp"
+    ),
+    "wormbase_gtf" = pasteURL(
+        "ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "WS279",
+        "species",
+        "c_elegans",
+        "PRJNA13758",
+        "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz",
         protocol = "ftp"
     )
 )
