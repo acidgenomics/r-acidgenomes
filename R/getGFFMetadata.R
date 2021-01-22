@@ -6,6 +6,14 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `list`.
+#'   Containing values, if defined:
+#'   - `directives`
+#'   - `format`
+#'   - `genomeBuild`
+#'   - `gffVersion`
+#'   - `organism`
+#'   - `provider`
+#'   - `providerVersion`
 #'
 #' @seealso
 #' - [getGFFDirectives()].
@@ -25,7 +33,7 @@
 getGFFMetadata <- function(file) {
     l <- list()
     ## Attempt to get genome build and provider from GFF directives.
-    df <- getGFFDirectives(file, nMax = 2000L)
+    df <- getGFFDirectives(file)
     if (is(df, "DataFrame")) {
         l[["directives"]] <- df
         ## These are GFF specific (not defined in GTF), but useful:
@@ -35,9 +43,8 @@ getGFFMetadata <- function(file) {
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
-    } else {
-        ## Otherwise, fall back to attempting to get the provider from the
-        ## first lines of the file.
+    }
+    if (!isString(l[["provider"]])) {
         lines <- import(
             file = .cacheIt(file),
             format = "lines",
@@ -49,6 +56,8 @@ getGFFMetadata <- function(file) {
             x = lines
         ))) {
             l[["provider"]] <- "UCSC"
+        } else if (any(grepl(pattern = "\tFlyBase\t", x = lines))) {
+            l[["provider"]] <- "FlyBase"
         }
     }
     if (!isString(l[["format"]])) {
@@ -88,6 +97,31 @@ getGFFMetadata <- function(file) {
                     }
                 }
             },
+            "FlyBase" = {
+                pattern <- paste0(
+                    "^([a-z0-9]+_)?",       # BiocFileCache
+                    "^([^-]+)",             # "dmel"
+                    "-([^-]+)",             # "all"
+                    "-(r[0-9]+\\.[0-9]+)",  # "r6.37"
+                    "\\.(gff3|gtf)",
+                    "(\\.gz)?$"
+                )
+                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                    x <- str_match(
+                        string = basename(file),
+                        pattern = pattern
+                    )[1L, , drop = TRUE]
+                    if (
+                        !isString(l[["organism"]]) &&
+                        identical(x[[3L]], "dmel")
+                    ) {
+                        l[["organism"]] <- "Drosophila melanogaster"
+                    }
+                }
+                if (!isString(l[["providerVersion"]])) {
+                    l[["providerVersion"]] <- x[[5L]]
+                }
+            },
             "GENCODE" = {
                 pattern <- paste0(
                     "^([a-z0-9]+_)?",                # BiocFileCache
@@ -113,6 +147,18 @@ getGFFMetadata <- function(file) {
                                 as.integer(l[["providerVersion"]])
                         }
                     }
+                }
+            },
+            "RefSeq" = {
+                if (!isInt(l[["providerVersion"]])) {
+                    l[["providerVersion"]] <- as.integer(str_match(
+                        string = df[
+                            df[["key"]] == "annotation-source",
+                            "value",
+                            drop = TRUE
+                        ],
+                        pattern = "^NCBI.+Annotation\\sRelease\\s([0-9]+)$"
+                    )[1L, 2L])
                 }
             },
             "UCSC" = {
