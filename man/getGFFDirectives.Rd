@@ -28,6 +28,7 @@ Updated 2021-01-21.
 }
 \section{GFF3}{
 
+
 Lines beginning with '##' are directives (sometimes called pragmas or
 meta-data) and provide meta-information about the document as a whole. Blank
 lines should be ignored by parsers and lines beginning with a single '#' are
@@ -46,7 +47,7 @@ url <- pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-df <- getGFFMetadata(url)
+df <- getGFFDirectives(url)
 print(df)
 }
 \seealso{

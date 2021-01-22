@@ -14,5 +14,5 @@ Ensembl gene annotations
 Contains a \code{GRanges} with Ensembl gene-level annotations.
 }
 \note{
-Updated 2021-01-18.
+Updated 2021-01-22.
 }
