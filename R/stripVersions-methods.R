@@ -1,10 +1,14 @@
 ## FIXME Need to add a corresponding `stripGeneVersions` function.
+## FIXME Need to add corresponding `stripGeneVersions` support.
+## FIXME `stripVersions` should work on `GRanges` and `SummarizedExperiment`.
+## FIXME FOR GRANGES, SE, CAN CHECK FOR METADATA COLUMNS THAT CONTAIN VERSION
+##       AND COMPARE?
 
 
 
 #' @name stripTranscriptVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
-#' @note Updated 2019-10-09.
+#' @note Updated 2021-01-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
