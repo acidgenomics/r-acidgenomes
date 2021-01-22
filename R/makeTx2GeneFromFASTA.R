@@ -1,4 +1,5 @@
 ## FIXME THIS NEEDS TO SUPPORT IGNORE VERSION ARGUMENT.
+## FIXME DETECT THE SOURCE HERE AUTOMATICALLY.
 
 
 
@@ -8,7 +9,7 @@
 #' @note RefSeq transcript FASTA
 #'   (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz") doesn't contain gene
 #'   identifiers, and is not supported.
-#' @note Updated 2021-01-08.
+#' @note Updated 2021-01-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param source `character(1)`.
@@ -85,6 +86,7 @@ makeTx2GeneFromFASTA <- function(
         "wormbase"
     )
 ) {
+    file <- .cacheIt(file)
     x <- import(file, format = "lines")
     source <- match.arg(source)
     x <- grep(pattern = "^>", x = x, value = TRUE)
