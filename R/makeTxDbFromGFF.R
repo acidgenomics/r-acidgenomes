@@ -77,7 +77,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     }
     file <- .cacheIt(file)
     if (is.null(seqinfo)) {
-        meta <- .gffMetadataForTxDb(file)
+        meta <- .gffMetadata(file)
         source <- meta[["source"]]
         genomeBuild <- meta[["genomeBuild"]]
         organism <- tryCatch(
@@ -89,6 +89,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
                 genome <- switch(
                     EXPR = source,
                     "GENCODE" = mapNCBIBuildToUCSC(genomeBuild),
+                    "UCSC" = genomeBuild,
                     NULL
                 )
                 Seqinfo(genome = genome)
