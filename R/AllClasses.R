@@ -1,15 +1,38 @@
-## FIXME ADD UCSC
+## FIXME ADD UCSC CLASSES.
 
 
 
 ## Genome annotation classes ===================================================
+#' Shared Ensembl validity checks
+#'
+#' @note Updated 2021-01-22.
+#' @noRd
+.ensemblValidity <- function(object) {
+    validate(
+        !all(is.na(seqlengths(object))),
+        !all(is.na(seqnames(object))),
+        !all(is.na(genome(object))),
+        identical(
+            x = colnames(mcols(object)),
+            y = camelCase(colnames(mcols(object)), strict = TRUE)
+        ),
+        isString(metadata(object)[["genomeBuild"]]),
+        isFlag(metadata(object)[["ignoreVersion"]]),
+        isOrganism(metadata(object)[["organism"]])
+        ## Not necessarily defined in GFF file.
+        ## > isInt(metadata(object)[["release"]])
+    )
+}
+
+
+
 #' Ensembl gene annotations
 #'
 #' @details
 #' Contains a `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-22.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -19,21 +42,17 @@ setClass(
 setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
-        validate(
-            any(grepl(pattern = "^ENS", x = names(object))),
-            !all(is.na(seqlengths(object))),
-            !all(is.na(seqnames(object))),
-            !all(is.na(genome(object))),
-            identical(
-                x = colnames(mcols(object)),
-                y = camelCase(colnames(mcols(object)), strict = TRUE)
-            ),
-            isString(metadata(object)[["genomeBuild"]]),
-            isOrganism(metadata(object)[["organism"]]),
-            isFlag(metadata(object)[["ignoreVersion"]]),
-            identical(metadata(object)[["level"]], "genes"),
-            isInt(metadata(object)[["release"]])
+        ok <- .ensemblValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        ok <- validate(
+            any(grepl(
+                pattern = "^ENS([A-Z]+)?G[0-9]{11}(\\.[0-9]+)?$",
+                x = names(object)
+            )),
+            identical(metadata(object)[["level"]], "genes")
         )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -45,7 +64,7 @@ setValidity(
 #' Contains a `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-22.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -55,20 +74,17 @@ setClass(
 setValidity(
     Class = "EnsemblTranscripts",
     method = function(object) {
-        validate(
-            any(grepl(pattern = "^ENS", x = names(object))),
-            !all(is.na(seqlengths(object))),
-            !all(is.na(genome(object))),
-            identical(
-                x = colnames(mcols(object)),
-                y = camelCase(colnames(mcols(object)), strict = TRUE)
-            ),
-            isString(metadata(object)[["genomeBuild"]]),
-            isFlag(metadata(object)[["ignoreVersion"]]),
-            identical(metadata(object)[["level"]], "transcripts"),
-            isOrganism(metadata(object)[["organism"]]),
-            isInt(metadata(object)[["release"]])
+        ok <- .ensemblValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        ok <- validate(
+            any(grepl(
+                pattern = "^ENS([A-Z]+)?T[0-9]{11}(\\.[0-9]+)?$",
+                x = names(object)
+            )),
+            identical(metadata(object)[["level"]], "transcripts")
         )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -85,12 +101,13 @@ setValidity(
 #' @return `GencodeGenes`.
 setClass(
     Class = "GencodeGenes",
-    contains = "EnsemblGenes"
+    contains = "GRanges"
 )
 setValidity(
     Class = "GencodeGenes",
     method = function(object) {
         validate(
+            ## FIXME CHECK FOR "CHR" IN SEQINFO.
             identical(metadata(object)[["source"]], "GENCODE")
         )
     }
