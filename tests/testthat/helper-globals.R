@@ -194,18 +194,6 @@ gffs <- c(
         "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz",
         protocol = "ftp"
     ),
-    "wormbase_gff2" = pasteURL(
-        "ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        "WS279",
-        "species",
-        "c_elegans",
-        "PRJNA13758",
-        "c_elegans.PRJNA13758.WS279.annotations.gff2.gz",
-        protocol = "ftp"
-    ),
     "wormbase_gff3" = pasteURL(
         "ftp.wormbase.org",
         "pub",
