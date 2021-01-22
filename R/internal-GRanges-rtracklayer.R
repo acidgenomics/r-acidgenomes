@@ -1,11 +1,27 @@
+.rtracklayerFormats <- c("GFF3", "GTF")
+
 .rtracklayerSources <-
     c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase")
-
-.rtracklayerTypes <- c("GFF3", "GTF")
 
 
 
 ## GFF metadata detection ======================================================
+#' Determine if input is GFF3 or GTF (GFFv2)
+#'
+#' @note Updated 2021-01-21.
+#' @noRd
+.grangesFormat <- function(object) {
+    assert(is(object, "GRanges"))
+    if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
+        x <- "GFF3"
+    } else {
+        x <- "GTF"
+    }
+    x
+}
+
+
+
 #' Detect the database source of the genome annotations
 #'
 #' @note Updated 2021-01-20.
@@ -70,38 +86,22 @@
 
 
 
-#' Determine if input is GFF3 or GTF (GFFv2)
-#'
-#' @note Updated 2021-01-21.
-#' @noRd
-.grangesType <- function(object) {
-    assert(is(object, "GRanges"))
-    if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
-        x <- "GFF3"
-    } else {
-        x <- "GTF"
-    }
-    x
-}
-
-
-
-## Updated 2021-01-21.
+## Updated 2021-01-22.
 .makeGRangesFromRtracklayer <- function(
     object,
     level = c("genes", "transcripts"),
-    source,
-    type
+    format,
+    source
 ) {
     assert(is(object, "GRanges"))
     level <- match.arg(level)
+    format <- match.arg(
+        arg = .grangesType(object),
+        choices = .rtracklayerFormats
+    )
     source <- match.arg(
         arg = .grangesSource(object),
         choices = .rtracklayerSources
-    )
-    type <- match.arg(
-        arg = .grangesType(object),
-        choices = .rtracklayerTypes
     )
     ## Standardize -------------------------------------------------------------
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
@@ -131,7 +131,7 @@
     genes <- genes[is.na(sanitizeNA(mcols(genes)[["transcript_id"]]))]
     assert(hasLength(genes))
     what <- switch(
-        EXPR = type,
+        EXPR = format,
         "GFF3" = {
             switch(
                 EXPR = source,
@@ -158,7 +158,7 @@
     }
     genes <- do.call(what = what, args = list(object = genes))
     ## Remove GFF-specific parent columns, etc.
-    if (type == "GFF3") {
+    if (format == "GFF3") {
         genes <- .minimizeGFF3(genes)
     }
     mcols(genes) <- removeNA(mcols(genes))
@@ -176,7 +176,7 @@
     tx <- tx[!is.na(sanitizeNA(mcols(tx)[["tx_id"]]))]
     assert(hasLength(tx))
     what <- switch(
-        EXPR = type,
+        EXPR = format,
         "GFF3" = switch(
             EXPR = source,
             "Ensembl" = .makeTranscriptsFromEnsemblGFF3,
@@ -197,7 +197,7 @@
     }
     tx <- do.call(what = what, args = list(object = tx))
     ## Remove GFF-specific parent columns, etc.
-    if (type == "GFF3") {
+    if (format == "GFF3") {
         tx <- .minimizeGFF3(tx)
     }
     tx <- .mergeGenesIntoTranscripts(tx, genes)

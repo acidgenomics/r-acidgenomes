@@ -31,7 +31,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' df <- getGFFMetadata(url)
+#' df <- getGFFDirectives(url)
 #' print(df)
 getGFFDirectives <- function(file, nMax = Inf) {
     file <- .cacheIt(file)
