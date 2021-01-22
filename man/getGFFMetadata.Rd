@@ -12,6 +12,16 @@ File path.}
 }
 \value{
 \code{list}.
+Containing values, if defined:
+\itemize{
+\item \code{directives}
+\item \code{format}
+\item \code{genomeBuild}
+\item \code{gffVersion}
+\item \code{organism}
+\item \code{provider}
+\item \code{providerVersion}
+}
 }
 \description{
 Get metadata about a GFF file
