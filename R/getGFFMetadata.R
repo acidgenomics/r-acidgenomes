@@ -1,9 +1,39 @@
-## Updated 2021-01-22.
-.gffMetadata <- function(file) {
+#' Get metadata about a GFF file
+#'
+#' @note Updated 2021-01-22.
+#' @export
+#'
+#' @inheritParams AcidRoxygen::params
+#'
+#' @return `list`.
+#'
+#' @seealso
+#' - [getGFFDirectives()].
+#'
+#' @examples
+#' url <- pasteURL(
+#'     "ftp.ensembl.org",
+#'     "pub",
+#'     "release-102",
+#'     "gtf",
+#'     "homo_sapiens",
+#'     "Homo_sapiens.GRCh38.102.gtf.gz",
+#'     protocol = "ftp"
+#' )
+#' x <- getGFFMetadata(url)
+#' print(x)
+getGFFMetadata <- function(file) {
     l <- list()
-    l[["type"]] <- .gffType(file)
     ## Attempt to get genome build and source from GFF directives.
     df <- getGFFDirectives(file, nMax = 2000L)
+
+    ## FIXME RETHINK APPROACH USING THESE.
+    ## GENCODE directives:
+    ## gff-version    3
+    ## format         gff3
+
+    l[["format"]] <- .gffFormat(file)
+
     if (is(df, "DataFrame")) {
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["source"]] <- .gffSource(df)
@@ -107,6 +137,21 @@
 
 
 
+## Updated 2021-01-21.
+.gffFormat <- function(file) {
+    ifelse(
+        test = grepl(
+            pattern = "^gtf",
+            x = fileExt(file),
+            ignore.case = TRUE
+        ),
+        yes = "GTF",
+        no = "GFF3"
+    )
+}
+
+
+
 ## Updated 2021-01-20.
 .gffSource <- function(df) {
     assert(is(df, "DataFrame"))
@@ -131,19 +176,4 @@
         return("Ensembl")
     }
     NULL
-}
-
-
-
-## Updated 2021-01-21.
-.gffType <- function(file) {
-    ifelse(
-        test = grepl(
-            pattern = "^gtf",
-            x = fileExt(file),
-            ignore.case = TRUE
-        ),
-        yes = "GTF",
-        no = "GFF3"
-    )
 }
