@@ -210,7 +210,7 @@ NULL
 #'
 #' Internal variant with more options that we don't want to expose to user.
 #'
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-22.
 #' @noRd
 .makeGRangesFromGFF <- function(
     file,
@@ -239,21 +239,23 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
+    txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
+    gffMeta <- attr(x = txdb, which = "gffMetadata", exact = TRUE)
 
-    ## FIXME TAKE THIS OUT AND CALL IN OTHER FUNCTIONS INSTEAD.
-    tmpfile <- .cacheIt(file)
+
 
     ## FIXME SAFE TO TAKE THIS OUT AND JUST CALL DIRECTLY BELOW IN
     ##       RTRACKLAYER IMPORT STEP INSTEAD?
     rawRanges <- import(tmpfile)
 
+    ## FIXME RETHINK THIS....
     ## FIXME PARSE THE GFF FILE DIRECTLY AND GET THE METADATA THAT WAY\
     ##       INSTEAD. REWORK THE INTERNAL TXDB FUNCTION TO ALSO DETECT IF
     ##       GTF OR GFF. CAN USE FILE NAME....
     ## FIXME CALL THESE IN THE RTRACKLAYER IMPORT STEP INSTEAD....
     source <- .grangesSource(rawRanges)
-    type <- .grangesType(rawRanges)
-    assert(isString(source), isString(type))
+    format <- .grangesFormat(rawRanges)
+    assert(isString(source), isString(format))
     if (isTRUE(synonyms) && !isSubset(source, c("Ensembl", "GENCODE"))) {
         ## nocov start
         stop(sprintf(
@@ -263,14 +265,14 @@ NULL
         ## nocov end
     }
     meta <- list(
+        "call" = match.call(),
         "date" = Sys.Date(),
         "file" = file,
+        "format" = format,
         "level" = level,
         "md5" = .md5(file = tmpfile),
         "sha256" = .sha256(file = tmpfile),
-        "source" = source,
-        "type" =  type,
-        "call" = match.call()
+        "source" = source
     )
 
 
@@ -279,14 +281,14 @@ NULL
 
 
 
-    txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
+
     gr1 <- .makeGRangesFromTxDb(object = txdb, level = level)
     metadata(gr1) <- meta
     gr2 <- .makeGRangesFromRtracklayer(
         object = rawRanges,
         level = level,
-        source = source,
-        type = type
+        format = format,
+        source = source
     )
     metadata(gr2) <- meta
 
