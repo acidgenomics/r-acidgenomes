@@ -58,6 +58,8 @@ getGFFMetadata <- function(file) {
             l[["provider"]] <- "UCSC"
         } else if (any(grepl(pattern = "\tFlyBase\t", x = lines))) {
             l[["provider"]] <- "FlyBase"
+        } else if (any(grepl(pattern = "\tWormBase\t", x = lines))) {
+            l[["provider"]] <- "WormBase"
         }
     }
     if (!isString(l[["format"]])) {
@@ -130,10 +132,10 @@ getGFFMetadata <- function(file) {
             },
             "GENCODE" = {
                 pattern <- paste0(
-                    "^([a-z0-9]+_)?",                # BiocFileCache
+                    "^([a-z0-9]+_)?",  # BiocFileCache
                     "gencode",
-                    "\\.v([M0-9]+)",                 # 36 (human) / M25 (mouse)
-                    "(lift37)?",                     # GRCh37-specific
+                    "\\.v([M0-9]+)",   # 36 (human) / M25 (mouse)
+                    "(lift37)?",       # GRCh37-specific
                     "\\.annotation",
                     "\\.(gff3|gtf)",
                     "(\\.gz)?$"
@@ -177,6 +179,39 @@ getGFFMetadata <- function(file) {
                             "\\."
                         )
                     )[1L, 3L]
+                }
+            },
+            "WormBase" = {
+                if (!isString(l[["providerVersion"]])) {
+                    l[["providerVersion"]] <- df[
+                        df[["key"]] == "genebuild-version",
+                        "value",
+                        drop = TRUE
+                    ]
+                }
+                pattern <- paste0(
+                    "^([a-z0-9]+_)?",   # BiocFileCache
+                    "^([a-z]_[a-z]+)",  # "c_elegans"
+                    "\\.([A-Z0-9]+)",   # "PRJNA13758"
+                    "\\.(WS[0-9]+)",    # "WS279"
+                    "\\.([a-z_]+)",     # canonical_geneset
+                    "\\.(gff3|gtf)",
+                    "(\\.gz)?$"
+                )
+                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                    x <- str_match(
+                        string = basename(file),
+                        pattern = pattern
+                    )[1L, , drop = TRUE]
+                    if (
+                        !isString(l[["organism"]]) &&
+                        identical(x[[3L]], "c_elegans")
+                    ) {
+                        l[["organism"]] <- "Caenorhabditis elegans"
+                    }
+                    if (!isString(l[["providerVersion"]])) {
+                        l[["providerVersion"]] <- x[[5L]]
+                    }
                 }
             }
         )
@@ -241,6 +276,8 @@ getGFFMetadata <- function(file) {
     assert(is(df, "DataFrame"))
     annoSource <-
         df[df[["key"]] == "annotation-source", "value", drop = TRUE]
+    geneBuildVersion <-
+        df[df[["key"]] == "genebuild-version", "value", drop = TRUE]
     provider <-
         df[df[["key"]] == "provider", "value", drop = TRUE]
     if (identical(provider, "GENCODE")) {
@@ -258,6 +295,8 @@ getGFFMetadata <- function(file) {
         y = df[["key"]]
     )) {
         return("Ensembl")
+    } else if (isTRUE(grepl(pattern = "^WS[0-9]+$", x = geneBuildVersion))) {
+        return("WormBase")
     }
     NULL
 }
