@@ -1,7 +1,3 @@
-## FIXME Ensure `ignoreVersion` works as intended here.
-
-
-
 #' Make a Gene2Symbol object
 #'
 #' @section GFF/GTF file:
