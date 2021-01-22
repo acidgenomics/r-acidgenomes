@@ -1,3 +1,7 @@
+## FIXME RETHINK THE USE OF THESE.
+
+
+
 #' Prototype metadata
 #'
 #' @note Updated 2020-10-06.
