@@ -3,7 +3,7 @@
     genomeBuild <- NULL
     source <- NULL
     type <- .gffType(file)
-    df <- getGFFMetadata(file, nMax = 2000L)
+    df <- getGFFDirectives(file, nMax = 2000L)
     if (is(df, "DataFrame")) {
         genomeBuild <- .gffGenomeBuild(df)
         source <- .gffSource(df)
