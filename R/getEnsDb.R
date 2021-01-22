@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-22.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -294,8 +294,8 @@ getEnsDb <- function(
         "ensembldb" = metadata,
         "genomeBuild" = genomeBuild,
         "organism" = organism(object),
-        "release" = as.integer(ensemblVersion(object)),
-        "source" = "Ensembl"
+        "provider" = "Ensembl",
+        "release" = as.integer(ensemblVersion(object))
     )
     if (!is.null(level)) {
         list[["level"]] <- level

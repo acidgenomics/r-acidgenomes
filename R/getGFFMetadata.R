@@ -6,14 +6,16 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `list`.
-#'   Containing values, if defined:
+#'   Containing values, when possible:
 #'   - `directives`
 #'   - `format`
 #'   - `genomeBuild`
 #'   - `gffVersion`
+#'   - `md5`
 #'   - `organism`
 #'   - `provider`
-#'   - `providerVersion`
+#'   - `release`
+#'   - `sha256`
 #'
 #' @seealso
 #' - [getGFFDirectives()].
@@ -32,6 +34,12 @@
 #' print(x)
 getGFFMetadata <- function(file) {
     l <- list()
+    if (isAFile(file)) {
+        file <- realpath(file)
+    }
+    l[["file"]] <- file
+    l[["md5"]] <- .md5(file)
+    l[["sha256"]] <- .sha256(file)
     ## Attempt to get genome build and provider from GFF directives.
     df <- getGFFDirectives(file)
     if (is(df, "DataFrame")) {
@@ -96,8 +104,8 @@ getGFFMetadata <- function(file) {
                     if (!isString(l[["genomeBuild"]])) {
                         l[["genomeBuild"]] <- x[[4L]]
                     }
-                    if (!isInt(l[["providerVersion"]])) {
-                        l[["providerVersion"]] <- as.integer(x[[5L]])
+                    if (!isInt(l[["release"]])) {
+                        l[["release"]] <- as.integer(x[[5L]])
                     }
                 }
             },
@@ -122,13 +130,13 @@ getGFFMetadata <- function(file) {
                         l[["organism"]] <- "Drosophila melanogaster"
                     }
                 }
-                if (!isString(l[["providerVersion"]])) {
-                    l[["providerVersion"]] <- x[[5L]]
+                if (!isString(l[["release"]])) {
+                    l[["release"]] <- x[[5L]]
                 }
                 if (!isString(l[["genomeBuild"]])) {
                     ## This matches the convention defined in GFF.
                     l[["genomeBuild"]] <- paste(
-                        provider, providerVersion
+                        provider, release
                     )
                 }
             },
@@ -147,21 +155,21 @@ getGFFMetadata <- function(file) {
                         string = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
-                    if (!isScalar(l[["providerVersion"]])) {
-                        l[["providerVersion"]] <- x[[3L]]
+                    if (!isScalar(l[["release"]])) {
+                        l[["release"]] <- x[[3L]]
                         if (grepl(
                             pattern = "^[0-9]+",
-                            x = l[["providerVersion"]]
+                            x = l[["release"]]
                         )) {
-                            l[["providerVersion"]] <-
-                                as.integer(l[["providerVersion"]])
+                            l[["release"]] <-
+                                as.integer(l[["release"]])
                         }
                     }
                 }
             },
             "RefSeq" = {
-                if (!isInt(l[["providerVersion"]])) {
-                    l[["providerVersion"]] <- as.integer(str_match(
+                if (!isInt(l[["release"]])) {
+                    l[["release"]] <- as.integer(str_match(
                         string = df[
                             df[["key"]] == "annotation-source",
                             "value",
@@ -184,8 +192,8 @@ getGFFMetadata <- function(file) {
                 }
             },
             "WormBase" = {
-                if (!isString(l[["providerVersion"]])) {
-                    l[["providerVersion"]] <- df[
+                if (!isString(l[["release"]])) {
+                    l[["release"]] <- df[
                         df[["key"]] == "genebuild-version",
                         "value",
                         drop = TRUE
@@ -211,8 +219,8 @@ getGFFMetadata <- function(file) {
                     ) {
                         l[["organism"]] <- "Caenorhabditis elegans"
                     }
-                    if (!isString(l[["providerVersion"]])) {
-                        l[["providerVersion"]] <- x[[5L]]
+                    if (!isString(l[["release"]])) {
+                        l[["release"]] <- x[[5L]]
                     }
                 }
             }
