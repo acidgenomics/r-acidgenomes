@@ -4,6 +4,22 @@ NULL
 
 
 
+## Updated 2021-01-22.
+.gffFormats <- c("GFF3", "GTF")
+
+
+
+## Updated 2021-01-22.
+.rtracklayerFormats <- c("GFF3", "GTF")
+
+
+
+## Updated 2021-01-22.
+.rtracklayerProviders <-
+    c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "UCSC", "WormBase")
+
+
+
 #' Package version
 #'
 #' @note Updated 2020-10-06.
