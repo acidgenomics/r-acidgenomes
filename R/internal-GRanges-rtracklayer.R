@@ -1,10 +1,3 @@
-.rtracklayerFormats <- c("GFF3", "GTF")
-
-.rtracklayerSources <-
-    c("Ensembl", "FlyBase", "GENCODE", "RefSeq", "WormBase")
-
-
-
 ## GFF metadata detection ======================================================
 #' Determine if input is GFF3 or GTF (GFFv2)
 #'
@@ -22,45 +15,42 @@
 
 
 
-#' Detect the database source of the genome annotations
+#' Detect the provider (i.e. source) of the genome annotations
 #'
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-22.
 #' @noRd
-.grangesSource <- function(object) {
+.grangesProvider <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
     source <- mcols[["source"]]
-    ## FIXME RETHINK THIS AND ATTEMPT TO ADD UCSC SUPPORT?
     if (
-        ## UCSC (e.g. hg38_knownGene)
-        any(grepl(pattern = "_knownGene$", x = source, ignore.case = FALSE))
-    ) {
-        ## nocov start
-        stop(paste0(
-            "UCSC knownGene annotations are intentionally not supported.\n",
-            "Use a pre-built TxDb package instead ",
-            "(e.g. 'TxDb.Hsapiens.UCSC.hg38.knownGene')."
+        ## UCSC (e.g. hg38_knownGene).
+        any(grepl(
+            pattern = "_(ensGene|knownGene|ncbiRefSeq|refGene)$",
+            x = source,
+            ignore.case = FALSE
         ))
-        ## nocov end
+    ) {
+        x <- "UCSC"
     } else if (
         ## Check for GENCODE prior to Ensembl.
         any(source == "ENSEMBL") &&
         any(source == "HAVANA") &&
         "gene_type" %in% colnames(mcols)
     ) {
-        out <- "GENCODE"
+        x <- "GENCODE"
     } else if (
         any(grepl(pattern = "FlyBase", x = source, ignore.case = FALSE))
     ) {
-        out <- "FlyBase"
+        x <- "FlyBase"
     } else if (
         any(grepl(pattern = "WormBase", x = source, ignore.case = FALSE))
     ) {
-        out <- "WormBase"
+        x <- "WormBase"
     } else if (
         any(grepl(pattern = "RefSeq", x = source, ignore.case = FALSE))
     ) {
-        out <- "RefSeq"
+        x <- "RefSeq"
     } else if (
         any(grepl(
             pattern = "ensembl|havana",
@@ -68,7 +58,7 @@
             ignore.case = FALSE
         ))
     ) {
-        out <- "Ensembl"
+        x <- "Ensembl"
     } else {
         ## nocov start
         stop(sprintf(
@@ -77,11 +67,11 @@
                 "Supported: %s",
                 sep = "\n"
             ),
-            toString(.rtracklayerSources)
+            toString(.rtracklayerProviders)
         ))
         ## nocov end
     }
-    out
+    x
 }
 
 
