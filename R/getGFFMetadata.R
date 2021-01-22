@@ -26,15 +26,12 @@ getGFFMetadata <- function(file) {
     l <- list()
     ## Attempt to get genome build and source from GFF directives.
     df <- getGFFDirectives(file, nMax = 2000L)
-
-    ## FIXME RETHINK APPROACH USING THESE.
-    ## GENCODE directives:
-    ## gff-version    3
-    ## format         gff3
-
-    l[["format"]] <- .gffFormat(file)
-
     if (is(df, "DataFrame")) {
+        ## These are GFF specific (not defined in GTF), but useful:
+        l[["gffVersion"]] <-
+            df[df[["key"]] == "gff-version", "value", drop = TRUE]
+        l[["format"]] <-
+            toupper(df[df[["key"]] == "format", "value", drop = TRUE])
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["source"]] <- .gffSource(df)
     } else {
@@ -53,8 +50,15 @@ getGFFMetadata <- function(file) {
             l[["source"]] <- "UCSC"
         }
     }
+    if (!isString(l[["format"]])) {
+        l[["format"]] <- .gffFormat(file)
+    }
+    assert(isSubset(l[["format"]], .gffFormats))
+    if (isString(l[["gffVersion"]])) {
+        l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
+    }
     ## Attempt to parse file names for useful values.
-    if (!is.null(l[["source"]])) {
+    if (isString(l[["source"]])) {
         switch(
             EXPR = l[["source"]],
             "Ensembl" = {
@@ -72,19 +76,42 @@ getGFFMetadata <- function(file) {
                         string = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
-                    if (is.null(l[["organism"]])) {
+                    if (!isOrganism(l[["organism"]])) {
                         l[["organism"]] <- gsub("_", " ", x[[3L]])
                     }
-                    if (is.null(l[["genomeBuild"]])) {
+                    if (!isString(l[["genomeBuild"]])) {
                         l[["genomeBuild"]] <- x[[4L]]
                     }
-                    if (is.null(l[["release"]])) {
+                    if (!isInt(l[["release"]])) {
                         l[["release"]] <- as.integer(x[[5L]])
                     }
                 }
             },
+            "GENCODE" = {
+                pattern <- paste0(
+                    "^([a-z0-9]+_)?",                # BiocFileCache
+                    "gencode",
+                    "\\.v([M0-9]+)",                 # 36 (human) / M25 (mouse)
+                    "(lift37)?",                     # GRCh37-specific
+                    "\\.annotation",
+                    "\\.(gff3|gtf)",
+                    "(\\.gz)?$"
+                )
+                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                    x <- str_match(
+                        string = basename(file),
+                        pattern = pattern
+                    )[1L, , drop = TRUE]
+                    if (!isScalar(l[["release"]])) {
+                        l[["release"]] <- x[[3L]]
+                        if (grepl(pattern = "^[0-9]+", x = l[["release"]])) {
+                            l[["release"]] <- as.integer(l[["release"]])
+                        }
+                    }
+                }
+            },
             "UCSC" = {
-                if (is.null(l[["genomeBuild"]])) {
+                if (!isString(l[["genomeBuild"]])) {
                     l[["genomeBuild"]] <- str_match(
                         string = basename(file),
                         pattern = paste0(
@@ -98,13 +125,13 @@ getGFFMetadata <- function(file) {
         )
     }
     ## Attempt to get the organism from the genome build, if necessary.
-    if (is.null(l[["organism"]])) {
+    if (!isOrganism(l[["organism"]])) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
             error = function(e) NULL
         )
     }
-    l <- Filter(f = Negate(is.null), x = l)
+    l <- Filter(f = hasLength, x = l)
     l <- l[sort(names(l))]
     l
 }
@@ -149,6 +176,12 @@ getGFFMetadata <- function(file) {
         no = "GFF3"
     )
 }
+
+
+
+## Updated 2021-01-22.
+.gffFormats <- c("GFF3", "GTF")
+
 
 
 
