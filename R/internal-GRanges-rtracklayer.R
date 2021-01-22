@@ -1,12 +1,11 @@
-## GFF metadata detection ======================================================
-#' Determine if input is GFF3 or GTF (GFFv2)
+#' Determine if input is GFF (GFF3) or GTF (GFFv2)
 #'
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-22.
 #' @noRd
 .grangesFormat <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
-        x <- "GFF3"
+        x <- "GFF"
     } else {
         x <- "GTF"
     }
@@ -76,6 +75,35 @@
 
 
 
+#' Minimize GFF (GFFv3) return
+#'
+#' Remove uninformative metadata columns from GFF3 before return.
+#' Always remove columns beginning with a capital letter.
+#'
+#' - Ensembl: Alias, ID, Name, Parent
+#' - GENCODE: ID, Parent
+#' - RefSeq: Dbxref, Gap, ID, Name, Note, Parent, Target
+#'
+#' @note Updated 2020-01-22.
+#' @noRd
+.minimizeGFF <- function(object) {
+    assert(is(object, "GRanges"))
+    mcols <- mcols(object)
+    mcolnames <- colnames(mcols)
+    ## Remove all columns beginning with a capital letter.
+    keep <- !grepl("^[A-Z]", mcolnames)
+    mcolnames <- mcolnames[keep]
+    ## Remove additional blacklisted columns.
+    blacklist <- "biotype"
+    mcolnames <- setdiff(mcolnames, blacklist)
+    ## Subset the metadata columns.
+    mcols <- mcols[, mcolnames, drop = FALSE]
+    mcols(object) <- mcols
+    object
+}
+
+
+
 ## Updated 2021-01-22.
 .makeGRangesFromRtracklayer <- function(
     object,
@@ -122,12 +150,12 @@
     assert(hasLength(genes))
     what <- switch(
         EXPR = format,
-        "GFF3" = {
+        "GFF" = {
             switch(
                 EXPR = source,
-                "Ensembl" = .makeGenesFromEnsemblGFF3,
-                "GENCODE" = .makeGenesFromGencodeGFF3,
-                "RefSeq" = .makeGenesFromRefSeqGFF3,
+                "Ensembl" = .makeGenesFromEnsemblGFF,
+                "GENCODE" = .makeGenesFromGencodeGFF,
+                "RefSeq" = .makeGenesFromRefSeqGFF,
                 NULL
             )
         },
@@ -148,8 +176,8 @@
     }
     genes <- do.call(what = what, args = list(object = genes))
     ## Remove GFF-specific parent columns, etc.
-    if (format == "GFF3") {
-        genes <- .minimizeGFF3(genes)
+    if (format == "GFF") {
+        genes <- .minimizeGFF(genes)
     }
     mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
@@ -167,11 +195,11 @@
     assert(hasLength(tx))
     what <- switch(
         EXPR = format,
-        "GFF3" = switch(
+        "GFF" = switch(
             EXPR = source,
-            "Ensembl" = .makeTranscriptsFromEnsemblGFF3,
-            "GENCODE" = .makeTranscriptsFromGencodeGFF3,
-            "RefSeq" = .makeTranscriptsFromRefSeqGFF3
+            "Ensembl" = .makeTranscriptsFromEnsemblGFF,
+            "GENCODE" = .makeTranscriptsFromGencodeGFF,
+            "RefSeq" = .makeTranscriptsFromRefSeqGFF
         ),
         "GTF" = switch(
             EXPR = source,
@@ -187,8 +215,8 @@
     }
     tx <- do.call(what = what, args = list(object = tx))
     ## Remove GFF-specific parent columns, etc.
-    if (format == "GFF3") {
-        tx <- .minimizeGFF3(tx)
+    if (format == "GFF") {
+        tx <- .minimizeGFF(tx)
     }
     tx <- .mergeGenesIntoTranscripts(tx, genes)
     tx
@@ -229,7 +257,7 @@
 
 ## Note that call upstream in `.makeGenesFromGFF()` will prepare the rows
 ## properly already, by filtering aganist `gene_id` and `transcript_id`.
-.makeGenesFromEnsemblGFF3 <- function(object) {
+.makeGenesFromEnsemblGFF <- function(object) {
     assert(is(object, "GRanges"))
     ## Assign `gene_name` from `Name` column.
     assert(
@@ -262,7 +290,7 @@
 
 
 
-.makeTranscriptsFromEnsemblGFF3 <- function(object) {
+.makeTranscriptsFromEnsemblGFF <- function(object) {
     assert(is(object, "GRanges"))
     ## Assign `transcript_name` from `Name` column.
     assert(
@@ -420,7 +448,7 @@
 
 
 
-.makeGenesFromGencodeGFF3 <- function(object) {
+.makeGenesFromGencodeGFF <- function(object) {
     assert(
         is(object, "GRanges"),
         isSubset(
@@ -443,7 +471,7 @@
 
 
 
-.makeTranscriptsFromGencodeGFF3 <- function(object) {
+.makeTranscriptsFromGencodeGFF <- function(object) {
     assert(
         is(object, "GRanges"),
         isSubset(
@@ -573,7 +601,7 @@
 
 
 ## Updated 2020-01-20.
-.makeGenesFromRefSeqGFF3 <- function(object) {
+.makeGenesFromRefSeqGFF <- function(object) {
     assert(
         is(object, "GRanges"),
         isSubset(
@@ -615,7 +643,7 @@
 
 
 ## Updated 2020-01-20.
-.makeTranscriptsFromRefSeqGFF3 <- function(object) {
+.makeTranscriptsFromRefSeqGFF <- function(object) {
     assert(
         is(object, "GRanges"),
         isSubset("Name", colnames(mcols(object))),
