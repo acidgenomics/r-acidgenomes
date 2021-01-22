@@ -24,18 +24,19 @@
 #' print(x)
 getGFFMetadata <- function(file) {
     l <- list()
-    ## Attempt to get genome build and source from GFF directives.
+    ## Attempt to get genome build and provider from GFF directives.
     df <- getGFFDirectives(file, nMax = 2000L)
     if (is(df, "DataFrame")) {
+        l[["directives"]] <- df
         ## These are GFF specific (not defined in GTF), but useful:
         l[["gffVersion"]] <-
             df[df[["key"]] == "gff-version", "value", drop = TRUE]
         l[["format"]] <-
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
-        l[["source"]] <- .gffSource(df)
+        l[["provider"]] <- .gffProvider(df)
     } else {
-        ## Otherwise, fall back to attempting to get the source from the
+        ## Otherwise, fall back to attempting to get the provider from the
         ## first lines of the file.
         lines <- import(
             file = .cacheIt(file),
@@ -47,7 +48,7 @@ getGFFMetadata <- function(file) {
             pattern = "\t(ensGene|knownGene|ncbiRefSeq|refGene)\t",
             x = lines
         ))) {
-            l[["source"]] <- "UCSC"
+            l[["provider"]] <- "UCSC"
         }
     }
     if (!isString(l[["format"]])) {
@@ -58,9 +59,9 @@ getGFFMetadata <- function(file) {
         l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
     }
     ## Attempt to parse file names for useful values.
-    if (isString(l[["source"]])) {
+    if (isString(l[["provider"]])) {
         switch(
-            EXPR = l[["source"]],
+            EXPR = l[["provider"]],
             "Ensembl" = {
                 pattern <- paste0(
                     "^([a-z0-9]+_)?",                # BiocFileCache
@@ -82,8 +83,8 @@ getGFFMetadata <- function(file) {
                     if (!isString(l[["genomeBuild"]])) {
                         l[["genomeBuild"]] <- x[[4L]]
                     }
-                    if (!isInt(l[["release"]])) {
-                        l[["release"]] <- as.integer(x[[5L]])
+                    if (!isInt(l[["providerVersion"]])) {
+                        l[["providerVersion"]] <- as.integer(x[[5L]])
                     }
                 }
             },
@@ -102,10 +103,14 @@ getGFFMetadata <- function(file) {
                         string = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
-                    if (!isScalar(l[["release"]])) {
-                        l[["release"]] <- x[[3L]]
-                        if (grepl(pattern = "^[0-9]+", x = l[["release"]])) {
-                            l[["release"]] <- as.integer(l[["release"]])
+                    if (!isScalar(l[["providerVersion"]])) {
+                        l[["providerVersion"]] <- x[[3L]]
+                        if (grepl(
+                            pattern = "^[0-9]+",
+                            x = l[["providerVersion"]]
+                        )) {
+                            l[["providerVersion"]] <-
+                                as.integer(l[["providerVersion"]])
                         }
                     }
                 }
@@ -180,13 +185,7 @@ getGFFMetadata <- function(file) {
 
 
 ## Updated 2021-01-22.
-.gffFormats <- c("GFF3", "GTF")
-
-
-
-
-## Updated 2021-01-20.
-.gffSource <- function(df) {
+.gffProvider <- function(df) {
     assert(is(df, "DataFrame"))
     annoSource <-
         df[df[["key"]] == "annotation-source", "value", drop = TRUE]
