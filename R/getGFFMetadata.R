@@ -75,24 +75,16 @@ getGFFMetadata <- function(file) {
     if (!isString(l[["format"]])) {
         l[["format"]] <- .gffFormat(file)
     }
-    assert(isSubset(l[["format"]], .gffFormats))
+    assert(isSubset(l[["format"]], c("GFF3", "GTF")))
     if (isString(l[["gffVersion"]])) {
         l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
     }
     ## Attempt to parse file names for useful values.
     if (isString(l[["provider"]])) {
+        pattern <- .gffPatterns[[tolower(l[["provider"]])]]
         switch(
             EXPR = l[["provider"]],
             "Ensembl" = {
-                pattern <- paste0(
-                    "^([a-z0-9]+_)?",                # BiocFileCache
-                    "^([A-Z][a-z]+_[a-z]+)",         # "Homo_sapiens"
-                    "\\.([A-Za-z0-9]+)",             # "GRCh38"
-                    "\\.([0-9]+)",                   # "102"
-                    "(\\.chr_patch_hapl_scaff)?",
-                    "\\.(gff3|gtf)",
-                    "(\\.gz)?$"
-                )
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                     x <- str_match(
                         string = basename(file),
@@ -110,14 +102,6 @@ getGFFMetadata <- function(file) {
                 }
             },
             "FlyBase" = {
-                pattern <- paste0(
-                    "^([a-z0-9]+_)?",       # BiocFileCache
-                    "^([^-]+)",             # "dmel"
-                    "-([^-]+)",             # "all"
-                    "-(r[0-9]+\\.[0-9]+)",  # "r6.37"
-                    "\\.(gff|gtf)",
-                    "(\\.gz)?$"
-                )
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                     x <- str_match(
                         string = basename(file),
@@ -141,15 +125,6 @@ getGFFMetadata <- function(file) {
                 }
             },
             "GENCODE" = {
-                pattern <- paste0(
-                    "^([a-z0-9]+_)?",  # BiocFileCache
-                    "gencode",
-                    "\\.v([M0-9]+)",   # 36 (human) / M25 (mouse)
-                    "(lift37)?",       # GRCh37-specific
-                    "\\.annotation",
-                    "\\.(gff3|gtf)",
-                    "(\\.gz)?$"
-                )
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                     x <- str_match(
                         string = basename(file),
@@ -183,11 +158,7 @@ getGFFMetadata <- function(file) {
                 if (!isString(l[["genomeBuild"]])) {
                     l[["genomeBuild"]] <- str_match(
                         string = basename(file),
-                        pattern = paste0(
-                            "^([0-9a-z]_)?",            # BiocFileCache.
-                            "([a-z]+[A-Za-z]+[0-9]+)",  # "hg38"
-                            "\\."
-                        )
+                        pattern = pattern
                     )[1L, 3L]
                 }
             },
@@ -199,15 +170,6 @@ getGFFMetadata <- function(file) {
                         drop = TRUE
                     ]
                 }
-                pattern <- paste0(
-                    "^([a-z0-9]+_)?",   # BiocFileCache
-                    "^([a-z]_[a-z]+)",  # "c_elegans"
-                    "\\.([A-Z0-9]+)",   # "PRJNA13758"
-                    "\\.(WS[0-9]+)",    # "WS279"
-                    "\\.([a-z_]+)",     # canonical_geneset
-                    "\\.(gff3|gtf)",
-                    "(\\.gz)?$"
-                )
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                     x <- str_match(
                         string = basename(file),
