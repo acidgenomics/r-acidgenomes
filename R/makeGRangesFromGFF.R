@@ -8,7 +8,6 @@
 ## FIXME MAKE SURE FILE IS CORRECT URL, NOT TMPFILE BEFORE RELEASING.
 ## FIXME synonyms only works with Ensembl identifiers, consider making that more
 ##       clear in documentation.
-## FIXME INDICATE TO THE USER MORE CLEARLY THAT THIS STEP IS SLOW.
 
 
 
@@ -17,7 +16,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @name makeGRangesFromGFF
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-23.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -191,7 +190,17 @@
 #'   `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
 #'
 #' @examples
-#' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
+#' ## GENCODE ====
+#' file <- pasteURL(
+#'     "ftp.ebi.ac.uk",
+#'     "pub",
+#'     "databases",
+#'     "gencode",
+#'     "Gencode_human",
+#'     "release_36",
+#'     "gencode.v36.annotation.gtf.gz",
+#'     protocol = "ftp"
+#' )
 #'
 #' ## Genes.
 #' genes <- makeGRangesFromGFF(file = file, level = "genes")
@@ -237,23 +246,16 @@ NULL
     if (isMatchingRegex(
         pattern = .gffPatterns[["ensembl"]], x = basename(file)
     )) {
+        ensembl <- TRUE
         what <- makeEnsDbFromGFF
     } else {
+        ensembl <- FALSE
         what <- makeTxDbFromGFF
         args <- append(x = args, values = list("seqinfo" = seqinfo))
     }
     db <- do.call(what = what, args = args)
-    meta1 <- attr(x = db, which = "gffMetadata", exact = TRUE)
-    meta2 <- list(
-        "call" = match.call(),
-        "date" = Sys.Date(),
-        "level" = level
-    )
-    areDisjointSets(names(meta1), names(meta2))
-    meta <- append(x = meta1, values = meta2)
-    meta <- meta[sort(names(meta))]
     if (is(db, "EnsDb")) {
-        what <- .makeGRangesFromEnsDb
+        what <- .makeGRangesFromEnsDbSimple
     } else {
         what <- .makeGRangesFromTxDb
     }
@@ -261,13 +263,39 @@ NULL
         what = what,
         args = list("object" = db, "level" = level)
     )
-    ## FIXME REWORK THIS, PASSING IN FILE INSTEAD.
-    gr2 <- .makeGRangesFromRtracklayer(
-        object = file,  ## FIXME NEED TO REWORK
-        level = level,
-        format = format,
-        source = source
+    gr2 <- .makeGRangesFromRtracklayer(file = file, level = level)
+
+
+
+
+    ## FIXME NEED TO SET NAMES HERE.
+    ## FIXME NEED TO DEFINE THIS INSIDE THE MERGE FUNCTION INSTEAD.
+    ## FIXME NEED TO CHECK RANGES ARE IDENTICAL.
+
+    ranges(gr1)
+    ranges(gr2)
+
+
+
+
+
+    ## Prepare the metadata to return.
+    meta1 <- metadata(gr1)
+    meta2 <- attr(x = db, which = "gffMetadata", exact = TRUE)
+    meta3 <- list(
+        "call" = match.call(),
+        "date" = Sys.Date(),
+        "level" = level
     )
+    meta <- meta1
+    meta <- append(x = meta, values = meta2[setdiff(names(meta2), names(meta))])
+    meta <- append(x = meta, values = meta3[setdiff(names(meta3), names(meta))])
+    meta <- meta[sort(names(meta))]
+
+
+    ## FIXME REWORK THIS, PASSING IN FILE INSTEAD.
+
+
     metadata(gr1) <- meta
     metadata(gr2) <- meta
 

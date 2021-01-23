@@ -12,15 +12,17 @@ File path.}
 }
 \value{
 \code{list}.
-Containing values, if defined:
+Containing values, when possible:
 \itemize{
 \item \code{directives}
 \item \code{format}
 \item \code{genomeBuild}
 \item \code{gffVersion}
+\item \code{md5}
 \item \code{organism}
 \item \code{provider}
-\item \code{providerVersion}
+\item \code{release}
+\item \code{sha256}
 }
 }
 \description{
