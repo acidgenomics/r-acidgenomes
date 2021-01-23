@@ -108,7 +108,7 @@ setValidity(
     method = function(object) {
         validate(
             ## FIXME CHECK FOR "CHR" IN SEQINFO.
-            identical(metadata(object)[["source"]], "GENCODE")
+            identical(metadata(object)[["provider"]], "GENCODE")
         )
     }
 )
@@ -132,7 +132,7 @@ setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
         validate(
-            identical(metadata(object)[["source"]], "GENCODE")
+            identical(metadata(object)[["provider"]], "GENCODE")
         )
     }
 )
