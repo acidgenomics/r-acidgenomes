@@ -187,15 +187,11 @@ makeGRangesFromEnsembl <- function(
 #'
 #' Internal variant with more options that we don't want to expose to user.
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-23.
 #' @noRd
-.makeGRangesFromEnsDb <- function(
+.makeGRangesFromEnsDbSimple <- function(
     object,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE,
-    ## Internal-only arguments:
-    broadClass = TRUE
+    level = c("genes", "transcripts")
 ) {
     assert(
         isFlag(ignoreVersion),
@@ -266,12 +262,31 @@ makeGRangesFromEnsembl <- function(
     })
     assert(is(gr, "GRanges"))
     metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-    .makeGRanges(
-        object = gr,
-        ignoreVersion = ignoreVersion,
-        broadClass = broadClass,
-        synonyms = synonyms
+    gr
+}
+
+
+
+## Updated 2021-01-23.
+.makeGRangesFromEnsDb <- function(
+    object,
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE,
+    ## Internal-only arguments:
+    broadClass = TRUE
+) {
+    gr <- .makeGRangesFromEnsDbSimple(
+        object = object,
+        level = match.arg(level)
     )
+    gr <- .makeGRanges(
+            object = gr,
+            ignoreVersion = ignoreVersion,
+            broadClass = broadClass,
+            synonyms = synonyms
+        )
+    gr
 }
 
 
