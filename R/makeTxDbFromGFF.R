@@ -1,9 +1,3 @@
-## FIXME Consider setting a GFF file blacklist here.
-## FIXME CAN YOU SET ATTRIBUTES ON THE TXDB?
-## FIXME SET THE ENSEMBL RELEASE FROM THE FILE NAME, IF POSSIBLE.
-
-
-
 ## nolint start
 
 #' Make TxDb from a GFF/GTF file
@@ -11,7 +5,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-01-23.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -71,34 +65,33 @@ NULL
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file, seqinfo = NULL) {
-    requireNamespaces("GenomicFeatures")
+    assert(
+        isString(file),
+        isAny(seqinfo, c("Seqinfo", "NULL"))
+    )
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
-    dataSource <- file
-    if (!isAURL(dataSource)) {
-        dataSource <- realpath(dataSource)
+    requireNamespaces("GenomicFeatures")
+    if (isAFile(file)) {
+        file <- realpath(file)
     }
-    file <- .cacheIt(file)
     if (is.null(seqinfo)) {
         meta <- getGFFMetadata(file)
-        source <- meta[["source"]]
         genomeBuild <- meta[["genomeBuild"]]
-        organism <- tryCatch(
-            expr = detectOrganism(genomeBuild),
-            error = function(e) NA_character_
-        )
+        organism <- meta[["organism"]]
+        provider <- meta[["provider"]]
         seqinfo <- tryCatch(
             expr = {
                 genome <- switch(
-                    EXPR = source,
+                    EXPR = provider,
                     "GENCODE" = mapNCBIBuildToUCSC(genomeBuild),
                     "UCSC" = genomeBuild,
                     NULL
                 )
-                Seqinfo(genome = genome)
+                Seqinfo(genome = unname(genome))
             },
             error = function(e) {
                 alertWarning(paste(
@@ -116,7 +109,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     ##   https://github.com/Bioconductor/GenomicFeatures/issues/27
     args <- list(
         "file" = .cacheIt(file),
-        "dataSource" = dataSource,
+        "dataSource" = file,
         "organism" = organism
     )
     if (!is.null(seqinfo)) {
@@ -128,7 +121,7 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     })
     assert(is(txdb, "TxDb"))
     ## Stash the GFF metadata, so we can access in `makeGRangesFromGFF()`.
-    attr(x, which = "gffMetadata") <- meta
+    attr(txdb, which = "gffMetadata") <- meta
     validObject(txdb)
     txdb
 }
