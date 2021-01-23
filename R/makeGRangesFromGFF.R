@@ -215,9 +215,6 @@ NULL
 .makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
-    organism = NULL,
-    genomeBuild = NULL,
-    release = NULL,
     ignoreVersion = TRUE,
     synonyms = FALSE,
     seqinfo = NULL,
@@ -226,9 +223,6 @@ NULL
 ) {
     assert(
         isString(file),
-        isOrganism(organism, nullOK = TRUE),
-        isString(genomeBuild, nullOK = TRUE),
-        isString(release, nullOK = TRUE) || isInt(release, nullOK = TRUE),
         isFlag(ignoreVersion),
         isFlag(synonyms),
         is(seqinfo, "Seqinfo") || is.null(seqinfo),
@@ -239,57 +233,42 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    txdb <- makeTxDbFromGFF(file = tmpfile, seqinfo = seqinfo)
-    gffMeta <- attr(x = txdb, which = "gffMetadata", exact = TRUE)
-
-
-
-    ## FIXME SAFE TO TAKE THIS OUT AND JUST CALL DIRECTLY BELOW IN
-    ##       RTRACKLAYER IMPORT STEP INSTEAD?
-    rawRanges <- import(tmpfile)
-
-    ## FIXME RETHINK THIS....
-    ## FIXME PARSE THE GFF FILE DIRECTLY AND GET THE METADATA THAT WAY\
-    ##       INSTEAD. REWORK THE INTERNAL TXDB FUNCTION TO ALSO DETECT IF
-    ##       GTF OR GFF. CAN USE FILE NAME....
-    ## FIXME CALL THESE IN THE RTRACKLAYER IMPORT STEP INSTEAD....
-    source <- .grangesSource(rawRanges)
-    format <- .grangesFormat(rawRanges)
-    assert(isString(source), isString(format))
-    if (isTRUE(synonyms) && !isSubset(source, c("Ensembl", "GENCODE"))) {
-        ## nocov start
-        stop(sprintf(
-            "Synonyms only supported for genomes from: %s.",
-            toString(c("Ensembl", "GENCODE"))
-        ))
-        ## nocov end
+    args <- list("file" = file)
+    if (isMatchingRegex(
+        pattern = .gffPatterns[["ensembl"]], x = basename(file)
+    )) {
+        what <- makeEnsDbFromGFF
+    } else {
+        what <- makeTxDbFromGFF
+        args <- append(x = args, values = list("seqinfo" = seqinfo))
     }
-    meta <- list(
+    db <- do.call(what = what, args = args)
+    meta1 <- attr(x = db, which = "gffMetadata", exact = TRUE)
+    meta2 <- list(
         "call" = match.call(),
         "date" = Sys.Date(),
-        "file" = file,
-        "format" = format,
-        "level" = level,
-        "md5" = .md5(file = tmpfile),
-        "sha256" = .sha256(file = tmpfile),
-        "source" = source
+        "level" = level
     )
-
-
-
-    ## FIXME HAND OFF TO ENSEMBLDB FOR ENSEMBL FILES...
-
-
-
-
-    gr1 <- .makeGRangesFromTxDb(object = txdb, level = level)
-    metadata(gr1) <- meta
+    areDisjointSets(names(meta1), names(meta2))
+    meta <- append(x = meta1, values = meta2)
+    meta <- meta[sort(names(meta))]
+    if (is(db, "EnsDb")) {
+        what <- .makeGRangesFromEnsDb
+    } else {
+        what <- .makeGRangesFromTxDb
+    }
+    gr1 <- do.call(
+        what = what,
+        args = list("object" = db, "level" = level)
+    )
+    ## FIXME REWORK THIS, PASSING IN FILE INSTEAD.
     gr2 <- .makeGRangesFromRtracklayer(
-        object = rawRanges,
+        object = file,  ## FIXME NEED TO REWORK
         level = level,
         format = format,
         source = source
     )
+    metadata(gr1) <- meta
     metadata(gr2) <- meta
 
     ## FIXME SPLIT THIS OUT TO SEPARATE FUNCTION.
@@ -324,9 +303,6 @@ NULL
 makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
-    organism = NULL,
-    genomeBuild = NULL,
-    release = NULL,
     ignoreVersion = TRUE,
     synonyms = FALSE,
     seqinfo = NULL
@@ -334,9 +310,6 @@ makeGRangesFromGFF <- function(
     .makeGRangesFromGFF(
         file = file,
         level = match.arg(level),
-        organism = organism,
-        genomeBuild = genomeBuild,
-        release = release,
         ignoreVersion = ignoreVersion,
         synonyms = synonyms,
         seqinfo = seqinfo
