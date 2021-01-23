@@ -1,3 +1,7 @@
+## FIXME REWORK THIS, INCORPORATING RTRACKLAYER.
+
+
+
 #' Make GRanges from TxDb object
 #'
 #' @note Updated 2021-01-22.

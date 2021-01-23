@@ -318,7 +318,7 @@
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-23.
 #' @noRd
 .minimizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
@@ -335,6 +335,9 @@
                 I(x)
             } else {
                 x <- sanitizeNA(x)
+                if (all(is.na(x))) {
+                    return(NULL)
+                }
                 if (is.factor(x)) {
                     x <- droplevels(x)
                 }
@@ -343,6 +346,7 @@
             }
         }
     )
+    mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
     mcols <- as(mcolsList, "DataFrame")
     mcols(object) <- mcols
     object
@@ -401,18 +405,12 @@
 
 
 ## Main generator ==============================================================
-
-## FIXME If id column just contains numbers (i.e. RefSeq), attempt to use
-##       names column to define the names instead.
-## FIXME `ignoreVersions = FALSE` needs to rename column with version to something else?
-##       `geneIdNoVersion`, `txIdNoVersion`
-
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-23.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -428,7 +426,7 @@
         isFlag(ignoreVersion),
         isFlag(synonyms),
         isFlag(broadClass),
-        isString(metadata(object)[["source"]])
+        isString(metadata(object)[["provider"]])
     )
     level <- match.arg(
         arg = metadata(object)[["level"]],
@@ -510,6 +508,6 @@
         metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    source <- metadata(object)[["source"]]
-    new(Class = upperCamelCase(paste(source, level)), object)
+    provider <- metadata(object)[["provider"]]
+    new(Class = upperCamelCase(paste(provider, level)), object)
 }

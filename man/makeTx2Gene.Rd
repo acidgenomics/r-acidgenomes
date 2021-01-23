@@ -17,14 +17,7 @@ makeTx2GeneFromEnsembl(
 
 makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE)
 
-makeTx2GeneFromGFF(
-  file,
-  organism = NULL,
-  genomeBuild = NULL,
-  release = NULL,
-  ignoreVersion = TRUE,
-  seqinfo = NULL
-)
+makeTx2GeneFromGFF(file, ignoreVersion = TRUE, seqinfo = NULL)
 
 makeTx2GeneFileFromGFF(
   file,

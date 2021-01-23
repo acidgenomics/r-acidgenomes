@@ -103,21 +103,20 @@
 
 
 
-## Updated 2021-01-22.
+## Updated 2021-01-23.
 .makeGRangesFromRtracklayer <- function(
-    object,
-    level = c("genes", "transcripts"),
-    format,
-    source
+    file,
+    level = c("genes", "transcripts")
 ) {
+    object <- import(file = .cacheIt(file))
     assert(is(object, "GRanges"))
     level <- match.arg(level)
     format <- match.arg(
-        arg = .grangesType(object),
+        arg = .grangesFormat(object),
         choices = c("GFF", "GTF")
     )
-    source <- match.arg(
-        arg = .grangesSource(object),
+    provider <- match.arg(
+        arg = .grangesProvider(object),
         choices = c(
             "Ensembl",
             "FlyBase",
@@ -131,7 +130,7 @@
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
     ## Ensembl-like naming conventions.
     object <- switch(
-        EXPR = source,
+        EXPR = provider,
         "FlyBase" = .standardizeFlyBaseToEnsembl(object),
         "GENCODE" = .standardizeGencodeToEnsembl(object),
         "RefSeq"  = .standardizeRefSeqToEnsembl(object),
@@ -158,7 +157,7 @@
         EXPR = format,
         "GFF" = {
             switch(
-                EXPR = source,
+                EXPR = provider,
                 "Ensembl" = .makeGenesFromEnsemblGFF,
                 "GENCODE" = .makeGenesFromGencodeGFF,
                 "RefSeq" = .makeGenesFromRefSeqGFF,
@@ -167,7 +166,7 @@
         },
         "GTF" = {
             switch(
-                EXPR = source,
+                EXPR = provider,
                 "Ensembl" = .makeGenesFromEnsemblGTF,
                 "FlyBase" = .makeGenesFromFlyBaseGTF,
                 "GENCODE" = .makeGenesFromGencodeGTF,
@@ -178,14 +177,13 @@
         }
     )
     if (!is.function(what)) {
-        stop(sprintf("Unsupported genome file: %s %s.", source, type))
+        stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     genes <- do.call(what = what, args = list(object = genes))
     ## Remove GFF-specific parent columns, etc.
     if (format == "GFF") {
         genes <- .minimizeGFF(genes)
     }
-    mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
         return(genes)
     }
@@ -202,13 +200,13 @@
     what <- switch(
         EXPR = format,
         "GFF" = switch(
-            EXPR = source,
+            EXPR = provider,
             "Ensembl" = .makeTranscriptsFromEnsemblGFF,
             "GENCODE" = .makeTranscriptsFromGencodeGFF,
             "RefSeq" = .makeTranscriptsFromRefSeqGFF
         ),
         "GTF" = switch(
-            EXPR = source,
+            EXPR = provider,
             "Ensembl" = .makeTranscriptsFromEnsemblGTF,
             "FlyBase" = .makeTranscriptsFromFlyBaseGTF,
             "GENCODE" = .makeTranscriptsFromGencodeGTF,
@@ -217,7 +215,7 @@
         )
     )
     if (!is.function(what)) {
-        stop(sprintf("Unsupported genome file: %s %s.", source, type))
+        stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     tx <- do.call(what = what, args = list(object = tx))
     ## Remove GFF-specific parent columns, etc.
