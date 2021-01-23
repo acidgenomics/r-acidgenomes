@@ -66,7 +66,6 @@
                 "Supported: %s",
                 sep = "\n"
             ),
-            toString(.rtracklayerProviders)
         ))
         ## nocov end
     }
@@ -115,11 +114,18 @@
     level <- match.arg(level)
     format <- match.arg(
         arg = .grangesType(object),
-        choices = .rtracklayerFormats
+        choices = c("GFF", "GTF")
     )
     source <- match.arg(
         arg = .grangesSource(object),
-        choices = .rtracklayerSources
+        choices = c(
+            "Ensembl",
+            "FlyBase",
+            "GENCODE",
+            "RefSeq",
+            "UCSC",
+            "WormBase"
+        )
     )
     ## Standardize -------------------------------------------------------------
     ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
