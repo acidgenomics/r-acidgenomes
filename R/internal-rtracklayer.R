@@ -103,7 +103,7 @@
 
 
 
-## Updated 2021-01-23.
+## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts")
@@ -179,11 +179,12 @@
     if (!is.function(what)) {
         stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
-    genes <- do.call(what = what, args = list(object = genes))
+    genes <- do.call(what = what, args = list("object" = genes))
     ## Remove GFF-specific parent columns, etc.
     if (format == "GFF") {
         genes <- .minimizeGFF(genes)
     }
+    mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
         return(genes)
     }
@@ -222,6 +223,7 @@
     if (format == "GFF") {
         tx <- .minimizeGFF(tx)
     }
+    mcols(tx) <- removeNA(mcols(tx))
     tx <- .mergeGenesIntoTranscripts(tx, genes)
     tx
 }
