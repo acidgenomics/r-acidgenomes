@@ -143,15 +143,16 @@ getGFFMetadata <- function(file) {
                 }
             },
             "RefSeq" = {
-                if (!isInt(l[["release"]])) {
-                    l[["release"]] <- as.integer(str_match(
+                if (!isScalar(l[["release"]])) {
+                    ## e.g. "109.20190125".
+                    l[["release"]] <- str_match(
                         string = df[
                             df[["key"]] == "annotation-source",
                             "value",
                             drop = TRUE
                         ],
-                        pattern = "^NCBI.+Annotation\\sRelease\\s([0-9]+)$"
-                    )[1L, 2L])
+                        pattern = "^NCBI.+Annotation\\sRelease\\s([.0-9]+)$"
+                    )[1L, 2L]
                 }
             },
             "UCSC" = {
