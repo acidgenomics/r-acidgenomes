@@ -1,3 +1,11 @@
+## NOTE Can consider using ensembldb to parse GFF files once v2.15.2 is
+##      available on Bioconductor. Current stable version has issues parsing
+##      compressed GFF3 files.
+##      See issue:
+##      - https://github.com/jorainer/ensembldb/issues/114
+
+
+
 ## nolint start
 
 #' Make GRanges from a GFF/GTF file
