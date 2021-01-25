@@ -10,7 +10,7 @@
 #'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
 #'   split tail
 #' @importFrom AcidPlyr leftJoin
-#' @importFrom AnnotationDbi select
+#' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
 #' @importFrom GenomeInfoDb Seqinfo genome isCircular seqinfo<- seqlengths
