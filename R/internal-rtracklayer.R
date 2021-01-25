@@ -2,6 +2,8 @@
 ## FIXME NEED TO SANITIZE COLS FOR REFSEQ
 ## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
 ## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
+## FIXME NEED TO GET THE METADATA HERE FROM THE FILE IF POSSIBLE, AND PASS.
+## GENOME BUILD IS USEFUL TO SET SEQLENGTHS.
 
 ## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
@@ -26,6 +28,11 @@
             "WormBase"
         )
     )
+    metadata(gr) <- list(
+        "format" = format,
+        "level" = level,
+        "provider" = provider
+    )
     funName <- paste0(
         ".",
         camelCase(
@@ -35,11 +42,6 @@
     )
     what <- .getFun(funName)
     gr <- do.call(what = what, args = list("object" = gr))
-    metadata(gr) <- list(
-        "format" = format,
-        "level" = level,
-        "provider" = provider
-    )
     mcols(gr) <- removeNA(mcols(gr))
     if (identical(format, "GFF")) {
         ## Remove capitalized keys in mcols.
@@ -76,6 +78,7 @@
     idCol <- .matchGRangesNamesColumn(gr)
     assert(hasNoDuplicates(mcols(gr)[[idCol]]))
     names(gr) <- mcols(gr)[[idCol]]
+    ## FIXME ATTEMPT TO SET SEQINFO HERE IF POSSIBLE.
     gr
 }
 
@@ -190,40 +193,6 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerGenesFromEnsemblGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c("gene_id", "type"),
-                y = colnames(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "gene"
-        object <- object[keep]
-        object
-    }
-
-
-
-## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c("transcript_id", "type"),
-                y = colnames(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "transcript"
-        object <- object[keep]
-        object
-    }
-
-
-
-## Updated 2021-01-25.
 .rtracklayerGenesFromEnsemblGff <-
     function(object) {
         assert(
@@ -242,6 +211,23 @@
         object <- object[keep]
         mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
         mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
+        object
+    }
+
+
+
+## Updated 2021-01-25.
+.rtracklayerGenesFromEnsemblGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "type"),
+                y = colnames(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
         object
     }
 
@@ -281,6 +267,23 @@
 
 
 
+## Updated 2021-01-25.
+.rtracklayerTranscriptsFromEnsemblGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("transcript_id", "type"),
+                y = colnames(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
+        object
+    }
+
+
+
 ## FlyBase =====================================================================
 
 ## GTF:
@@ -288,21 +291,21 @@
 ## > [4] "phase"             "gene_id"           "gene_symbol"
 ## > [7] "transcript_id"     "transcript_symbol" "#"
 
-## Compatible with Ensembl importer after we run `.standardizeFlyBaseGFF()`,
-## which is called in `.makeGenesFromGFF()`.
-.makeGenesFromFlyBaseGtf <-
+
+
+## Updated 2021-01-25.
+.rtracklayerGenesFromFlyBaseGtf <-
     function(object) {
-        assert(is(object, "GRanges"))
-        object <- .makeGenesFromEnsemblGTF(object)
-        object
+        object <- .standardizeFlyBaseToEnsembl(object)
+        .rtracklayerGenesFromEnsemblGtf(object)
     }
 
 
 
-.makeTranscriptsFromFlyBaseGtf <-
+## Updated 2021-01-25.
+.rtracklayerTranscriptsFromFlyBaseGtf <-
     function(object) {
-        assert(is(object, "GRanges"))
-        ## Note that FlyBase uses non-standard transcript types.
+        object <- .standardizeFlyBaseToEnsembl(object)
         keep <- grepl(
             pattern = paste(c("^pseudogene$", "RNA$"), collapse = "|"),
             x = mcols(object)[["type"]],
@@ -314,23 +317,20 @@
 
 
 
-## FIXME RETHINK THIS APPROACH.
+## Updated 2021-01-25.
 .standardizeFlyBaseToEnsembl <-
     function(object) {
         assert(is(object, "GRanges"))
-        mcolnames <- colnames(mcols(object))
-        ## Match Ensembl spec by renaming `*_symbol` to `*_name`.
-        mcolnames <- sub(
+        colnames(mcols(object)) <- sub(
             pattern = "^gene_symbol$",
             replacement = "gene_name",
-            x = mcolnames
+            x = colnames(mcols(object))
         )
-        mcolnames <- sub(
+        colnames(mcols(object)) <- sub(
             pattern = "^transcript_symbol$",
             replacement = "transcript_name",
-            x = mcolnames
+            x = colnames(mcols(object))
         )
-        colnames(mcols(object)) <- mcolnames
         object
     }
 
@@ -369,41 +369,9 @@
 
 
 
-#' Detect PAR duplicates
-#'
-#' Match Ensembl spec by removing the duplicate PAR Y chromosome annotations.
-#'
-#' @note Updated 2021-01-24.
-#' @noRd
-.detectPARDupes <-
-    function(object, idCol) {
-        assert(is(object, "GRanges"))
-        idCol <- match.arg(
-            arg = idCol,
-            choices = c("ID", "gene_id", "transcript_id")
-        )
-        dupes <- grep(
-            pattern = "_PAR_Y$",
-            x = mcols(object)[[idCol]],
-            value = TRUE
-        )
-        if (hasLength(dupes)) {
-            alertWarning(sprintf(
-                "%d pseudoautosomal region (PAR) Y chromosome %s: {.var %s}.",
-                length(dupes),
-                ngettext(
-                    n = length(dupes),
-                    msg1 = "duplicate",
-                    msg2 = "duplicates"
-                ),
-                toString(dupes, width = 100L)
-            ))
-        }
-        invisible(object)
-    }
+## FIXME CAN SET SEQINFO HERE.
 
-
-
+## Updated 2021-01-25.
 .makeGenesFromGencodeGff <-
     function(object) {
         assert(
@@ -413,23 +381,27 @@
                 y = colnames(mcols(object))
             )
         )
-        object <- object[mcols(object)[["type"]] == "gene"]
-        .detectPARDupes(object, idCol = "ID")
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
         object
     }
 
 
 
-.makeGenesFromGencodeGtf <-
+## FIXME CAN SET SEQINFO HERE.
+
+## Updated 2021-01-25.
+.rtracklayerGenesFromGencodeGtf <-
     function(object) {
-        object <- .makeGenesFromEnsemblGTF(object)
-        .detectPARDupes(object, idCol = "gene_id")
-        object
+        .rtracklayerGenesFromEnsemblGtf(object)
     }
 
 
 
-.makeTranscriptsFromGencodeGff <-
+## FIXME CAN SET SEQINFO HERE.
+
+## Updated 2021-01-25.
+.rtracklayerTranscriptsFromGencodeGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -441,18 +413,19 @@
                 y = colnames(mcols(object))
             )
         )
-        object <- object[mcols(object)[["type"]] == "transcript"]
-        .detectPARDupes(object, idCol = "ID")
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
         object
     }
 
 
 
+## FIXME CAN SET SEQINFO HERE.
+
+## Updated 2021-01-25.
 .makeTranscriptsFromGencodeGtf <-
     function(object) {
-        object <- .makeTranscriptsFromEnsemblGTF(object)
-        .detectPARDupes(object, idCol = "transcript_id")
-        object
+        .rtracklayerTranscriptsFromEnsemblGtf(object)
     }
 
 
