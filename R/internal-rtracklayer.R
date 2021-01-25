@@ -14,11 +14,12 @@
 
 
 
-## Updated 2021-01-24.
+## Updated 2021-01-25.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts"),
-    ignoreVersion = TRUE
+    ignoreVersion = TRUE,
+    synonyms = FALSE
 ) {
     level <- match.arg(level)
     meta <- getGFFMetadata(file)
@@ -84,7 +85,8 @@
         ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
         "biotype",
         ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
-        "logic_name"
+        "logic_name",
+        "type"
         ## FIXME Other values to consider:
         ## "biotype",
         ## "end_range",
@@ -105,11 +107,11 @@
     if (is(seqinfo, "Seqinfo")) {
         seqinfo(gr) <- seqinfo[seqlevels(gr)]
     }
-    gr <- .makeGRanges(
+    .makeGRanges(
         object = gr,
-        ignoreVersion = ignoreVersion
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
     )
-    gr
 }
 
 
