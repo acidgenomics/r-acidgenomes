@@ -80,47 +80,40 @@
         isString(x[["provider"]]),
         isScalar(x[["release"]]) || is.null(x[["release"]])
     )
-    out <- tryCatch(
-        expr = {
-            genome <- switch(
-                EXPR = provider,
-                "Ensembl" = {
-                    ## This may support a `use.grch37` flag, but it's not
-                    ## currently tested well according to documentation.
-                    assert(
-                        isNotMatchingFixed(
-                            pattern = "GRCh37",
-                            x = x[["genomeBuild"]]
-                        ),
-                        isInt(x[["release"]])
-                    )
-                    getChromInfoFromEnsembl(
-                        species = x[["organism"]],
-                        release = x[["release"]],
-                        as.Seqinfo = TRUE
-                    )
-                },
-                "GENCODE" = {
-                    Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
-                },
-                "RefSeq" = {
-                    .getRefSeqSeqinfo(x[["file"]])
-                },
-                "UCSC" = {
-                    Seqinfo(genome = x[["genomeBuild"]])
-                },
-                NULL
-            )
-
-        },
+    seq <- tryCatch(
+        expr = switch(
+            EXPR = x[["provider"]],
+            "Ensembl" = {
+                assert(
+                    isNotMatchingFixed(
+                        pattern = "GRCh37",
+                        x = x[["genomeBuild"]]
+                    ),
+                    isInt(x[["release"]])
+                )
+                ## This may support a `use.grch37` flag, but it's not
+                ## currently tested well according to documentation.
+                getChromInfoFromEnsembl(
+                    species = x[["organism"]],
+                    release = x[["release"]],
+                    as.Seqinfo = TRUE
+                )
+            },
+            "GENCODE" = {
+                Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
+            },
+            "RefSeq" = {
+                .getRefSeqSeqinfo(x[["file"]])
+            },
+            "UCSC" = {
+                Seqinfo(genome = x[["genomeBuild"]])
+            }
+        ),
         error = function(e) {
-            alertWarning(paste(
-                "Automatic seqinfo detection failed.",
-                "Manual input of {.var seqinfo} is recommended."
-            ))
+            alertWarning("Automatic {.var seqinfo} assignment failed.")
             NULL
         }
     )
-    assert(isAny(out, c("Seqinfo", "NULL")))
-    out
+    assert(isAny(seq, c("Seqinfo", "NULL")))
+    seq
 }
