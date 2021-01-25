@@ -109,7 +109,7 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-25.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -138,16 +138,6 @@
         biotypeCol <- "geneBiotype"
         biotypeData <- df[[biotypeCol]]
     } else {
-        ## FlyBase GTF will hit this step.
-        ## Note that we're early returning without calculations in this case.
-        alertWarning(sprintf(
-            paste(
-                "{.var %s} does not contain biotype in {.var %s}.",
-                "Returning without broad class definitions."
-            ),
-            "GRanges", "mcols"
-        ))
-        ## Early `NA` return works successfully in `mcols()` construction.
         return(NA_character_)
     }
     ## Gene names --------------------------------------------------------------
@@ -155,10 +145,6 @@
         geneNameCol <- "geneName"
         geneNameData <- df[[geneNameCol]]
     } else {
-        alertWarning(sprintf(
-            "{.var %s} does not contain gene names in {.fun %s}.",
-            "GRanges", "mcols"
-        ))
         geneNameCol <- NULL
         geneNameData <- NA_character_
     }
@@ -170,20 +156,10 @@
         seqnamesCol <- "seqnames"
         seqnamesData <- df[[seqnamesCol]]
     } else {
-        ## Don't think this is currently possible to hit, but keep just in case.
-        alertWarning(sprintf(
-            "{.var %s} does not contain {.fun %s}.",
-            "GRanges", "seqnames"
-        ))
         seqnamesCol <- NULL
         seqnamesData <- NA_character_
     }
     ## Apply broad class -------------------------------------------------------
-    alert(sprintf(
-        "Defining {.var %s} using: %s.",
-        "broadClass",
-        toInlineString(sort(c(biotypeCol, geneNameCol, seqnamesCol)))
-    ))
     ## Note that this method doesn't seem to work right with DataFrame class.
     df <- data.frame(
         "biotype" = biotypeData,
@@ -192,11 +168,8 @@
         stringsAsFactors = TRUE
     )
     ## Consider adding BiocParallel support here for improved speed.
-    mcols(object)[["broadClass"]] <- Rle(as.factor(apply(
-        X = df,
-        MARGIN = 1L,
-        FUN = .applyBroadClass
-        )))
+    mcols(object)[["broadClass"]] <-
+        Rle(as.factor(apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)))
     validObject(object)
     object
 }
@@ -298,13 +271,27 @@
 #' @note Updated 2021-01-20.
 #' @noRd
 .matchGRangesNamesColumn <- function(object) {
-    assert(is(object, "GRanges"))
+    assert(
+        is(object, "GRanges"),
+        isString(metadata(object)[["level"]])
+    )
     level <- match.arg(
         arg = metadata(object)[["level"]],
-        choices = c("genes", "transcripts")
+        choices = c(
+            "cds",
+            "exons",
+            "genes",
+            "transcripts"
+        )
     )
     x <- camelCase(colnames(mcols(object)), strict = TRUE)
-    table <- switch(EXPR = level, "genes" = "geneId", "transcripts" = "txId")
+    table <- switch(
+        EXPR = level,
+        "cds" = "cdsId",
+        "exons" = "exonId",
+        "genes" = "geneId",
+        "transcripts" = "txId"
+    )
     idx <- which(x %in% table)
     x <- colnames(mcols(object))[idx]
     assert(isString(x))
