@@ -100,7 +100,7 @@ currentRefSeqGenomeBuild <- function(
         taxonomicGroup = taxonomicGroup,
         quiet = TRUE
     )
-    summary <- getRefSeqAssemblySummary(
+    summary <- .getRefSeqAssemblySummary(
         file = pasteURL(baseURL, "assembly_summary.txt")
     )
     assert(isSubset("ftp_path", names(summary)))
