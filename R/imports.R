@@ -13,8 +13,8 @@
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom BiocParallel bplapply
-#' @importFrom GenomeInfoDb Seqinfo genome isCircular seqinfo<- seqlengths
-#'   seqnames
+#' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
+#'   seqinfo<- seqlengths seqnames
 #' @importFrom GenomicRanges GRanges ranges trim
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
