@@ -1,3 +1,14 @@
+## NOTE Don't allow parsing of Ensembl GFF3 with either
+## ensembldb or GenomicFeatures at the moment. Both of these parsing engines
+## have fatal issues.
+##
+## See related on GitHub:
+## - https://github.com/Bioconductor/GenomicFeatures/issues/28
+## - https://github.com/jorainer/ensembldb/issues/114
+
+## FIXME CONSIDER BLACKLISTING ENSEMBL GFF3.
+##       Report a bug that this isn't returning correctly for TxDb.
+##
 ## FIXME REWORK, CALLING makeTxDbFromGFF internally.
 ## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
@@ -242,6 +253,8 @@ NULL
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
+    ## Alternatively can consider `makeEnsDbFromGFF()` for Ensembl GFFs here,
+    ## but the parsers in ensembldb are a bit buggy at the moment.
     args <- list("file" = file)
     if (isMatchingRegex(
         pattern = .gffPatterns[["ensembl"]], x = basename(file)
