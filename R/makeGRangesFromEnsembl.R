@@ -82,7 +82,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-25.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -119,21 +119,16 @@ NULL
 
 
 
-#' Make GRanges from Ensembl via AnnotationHub query
-#'
-#' Internal variant with more options that we don't want to expose to user.
-#'
-#' @note Updated 2021-01-18.
-#' @noRd
-.makeGRangesFromEnsembl <- function(
+#' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
+#'   querying AnnotationHub.
+#' @export
+makeGRangesFromEnsembl <- function(
     organism,
     level = c("genes", "transcripts"),
     genomeBuild = NULL,
     release = NULL,
     ignoreVersion = TRUE,
-    synonyms = FALSE,
-    ## Internal-only arguments:
-    broadClass = TRUE
+    synonyms = FALSE
 ) {
     assert(
         isFlag(ignoreVersion),
@@ -147,33 +142,9 @@ NULL
         genomeBuild = genomeBuild,
         release = release
     )
-    .makeGRangesFromEnsDb(
+    gr <- makeGRangesFromEnsDb(
         object = edb,
         level = level,
-        ignoreVersion = ignoreVersion,
-        broadClass = broadClass,
-        synonyms = synonyms
-    )
-}
-
-
-
-#' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
-#'   querying AnnotationHub.
-#' @export
-makeGRangesFromEnsembl <- function(
-    organism,
-    level = c("genes", "transcripts"),
-    genomeBuild = NULL,
-    release = NULL,
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    gr <- .makeGRangesFromEnsembl(
-        organism = organism,
-        level = match.arg(level),
-        genomeBuild = genomeBuild,
-        release = release,
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
@@ -183,15 +154,19 @@ makeGRangesFromEnsembl <- function(
 
 
 
-#' Make GRanges from EnsDb object
+#' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
+#'   annotation source. Alternatively, can pass in an EnsDb package name as
+#'   a `character(1)`.
+#' @export
 #'
-#' Internal variant with more options that we don't want to expose to user.
-#'
-#' @note Updated 2021-01-23.
-#' @noRd
-.makeGRangesFromEnsDbSimple <- function(
+#' @param object `EnsDb` or `character(1)`.
+#'   `EnsDb` object or name of specific annotation package containing a
+#'   versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
+makeGRangesFromEnsDb <- function(
     object,
-    level = c("genes", "transcripts")
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE,
+    synonyms = FALSE
 ) {
     assert(
         isFlag(ignoreVersion),
@@ -262,52 +237,8 @@ makeGRangesFromEnsembl <- function(
     })
     assert(is(gr, "GRanges"))
     metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-    gr
-}
-
-
-
-## Updated 2021-01-23.
-.makeGRangesFromEnsDb <- function(
-    object,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE,
-    ## Internal-only arguments:
-    broadClass = TRUE
-) {
-    gr <- .makeGRangesFromEnsDbSimple(
-        object = object,
-        level = match.arg(level)
-    )
     gr <- .makeGRanges(
-            object = gr,
-            ignoreVersion = ignoreVersion,
-            broadClass = broadClass,
-            synonyms = synonyms
-        )
-    gr
-}
-
-
-
-#' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
-#'   annotation source. Alternatively, can pass in an EnsDb package name as
-#'   a `character(1)`.
-#' @export
-#'
-#' @param object `EnsDb` or `character(1)`.
-#'   `EnsDb` object or name of specific annotation package containing a
-#'   versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
-makeGRangesFromEnsDb <- function(
-    object,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    gr <- .makeGRangesFromEnsDb(
-        object = object,
-        level = match.arg(level),
+        object = gr,
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
@@ -325,5 +256,6 @@ makeGRangesFromEnsDb <- function(
 annotable <- function(...) {
     gr <- makeGRangesFromEnsembl(...)
     mcols(gr) <- decode(mcols(gr))
-    as_tibble(gr, rownames = NULL)
+    df <- as_tibble(x = gr, rownames = NULL)
+    df
 }
