@@ -397,7 +397,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-24.
+#' @note Updated 2021-01-25.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -408,17 +408,18 @@
 ) {
     assert(
         is(object, "GRanges"),
-        hasNames(object),
         hasLength(object),
         isFlag(ignoreVersion),
         isFlag(synonyms),
         isFlag(broadClass),
+        isString(metadata(object)[["level"]]),
         isString(metadata(object)[["provider"]])
     )
     level <- match.arg(
         arg = metadata(object)[["level"]],
-        choices = c("genes", "transcripts")
+        choices = .grangesLevels
     )
+    ## FIXME THIS STEP IS BREAKING FOR TXDB RETURN.
     object <- .minimizeGRanges(object)
     object <- .standardizeGRanges(object)
     if (isFALSE(ignoreVersion)) {
