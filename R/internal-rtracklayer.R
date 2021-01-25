@@ -2,21 +2,7 @@
 ## FIXME NEED TO SANITIZE COLS FOR REFSEQ
 ## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
 ## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
-## FIXME NEED TO GET THE METADATA HERE FROM THE FILE IF POSSIBLE, AND PASS.
-## GENOME BUILD IS USEFUL TO SET SEQLENGTHS.
-
-## NOTE Don't allow parsing of Ensembl GFF3 with either
-## ensembldb or GenomicFeatures at the moment. Both of these parsing engines
-## have fatal issues.
 ##
-## See related on GitHub:
-## - https://github.com/Bioconductor/GenomicFeatures/issues/28
-## - https://github.com/jorainer/ensembldb/issues/114
-##
-## FIXME CONSIDER BLACKLISTING ENSEMBL GFF3.
-##       Report a bug that this isn't returning correctly for TxDb.
-##
-## FIXME REWORK, CALLING makeTxDbFromGFF internally.
 ## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
 ## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
@@ -31,17 +17,25 @@
 ## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
     file,
-    level = c("genes", "transcripts")
+    level = c("genes", "transcripts"),
+    ignoreVersion = TRUE
 ) {
-    gr <- import(file = .cacheIt(file))
-    assert(is(gr, "GRanges"))
     level <- match.arg(level)
-    format <- match.arg(
-        arg = .rtracklayerFormat(gr),
-        choices = c("GFF", "GTF")
+    meta <- getGFFMetadata(file)
+    meta[["level"]] <- level
+    gr <- import(file = .cacheIt(file))
+    assert(
+        is(gr, "GRanges"),
+        isString(meta[["format"]]),
+        isString(meta[["provider"]])
+    )
+    format <- ifelse(
+        test = grepl(pattern = "GTF", x = meta[["format"]]),
+        yes = "GTF",
+        no = "GFF"
     )
     provider <- match.arg(
-        arg = .rtracklayerProvider(gr),
+        arg = meta[["provider"]],
         choices = c(
             "Ensembl",
             "FlyBase",
@@ -50,11 +44,6 @@
             "UCSC",
             "WormBase"
         )
-    )
-    metadata(gr) <- list(
-        "format" = format,
-        "level" = level,
-        "provider" = provider
     )
     funName <- paste0(
         ".",
@@ -65,6 +54,7 @@
     )
     what <- .getFun(funName)
     gr <- do.call(what = what, args = list("object" = gr))
+    metadata(gr) <- meta
     mcols(gr) <- removeNA(mcols(gr))
     if (identical(format, "GFF")) {
         ## Remove capitalized keys in mcols.
@@ -111,85 +101,15 @@
     idCol <- .matchGRangesNamesColumn(gr)
     assert(hasNoDuplicates(mcols(gr)[[idCol]]))
     names(gr) <- mcols(gr)[[idCol]]
-    ## FIXME ATTEMPT TO SET SEQINFO HERE IF POSSIBLE.
+    seqinfo <- .getSeqinfo(meta)
+    if (is(seqinfo, "Seqinfo")) {
+        seqinfo(gr) <- seqinfo[seqlevels(gr)]
+    }
+    gr <- .makeGRanges(
+        object = gr,
+        ignoreVersion = ignoreVersion
+    )
     gr
-}
-
-
-
-## rtracklayer metadata parsers ================================================
-#' Determine if input is GFF (GFF3) or GTF (GFFv2)
-#'
-#' @note Updated 2021-01-25.
-#' @noRd
-.rtracklayerFormat <- function(object) {
-    assert(is(object, "GRanges"))
-    if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
-        x <- "GFF"
-    } else {
-        x <- "GTF"
-    }
-    x
-}
-
-
-
-#' Detect the provider (i.e. source) of the genome annotations
-#'
-#' @note Updated 2021-01-25.
-#' @noRd
-.rtracklayerProvider <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
-    source <- mcols[["source"]]
-    if (
-        ## UCSC (e.g. hg38_knownGene).
-        any(grepl(
-            pattern = "_(ensGene|knownGene|ncbiRefSeq|refGene)$",
-            x = source,
-            ignore.case = FALSE
-        ))
-    ) {
-        x <- "UCSC"
-    } else if (
-        ## Check for GENCODE prior to Ensembl.
-        any(source == "ENSEMBL") &&
-        any(source == "HAVANA") &&
-        "gene_type" %in% colnames(mcols)
-    ) {
-        x <- "GENCODE"
-    } else if (
-        any(grepl(pattern = "FlyBase", x = source, ignore.case = FALSE))
-    ) {
-        x <- "FlyBase"
-    } else if (
-        any(grepl(pattern = "WormBase", x = source, ignore.case = FALSE))
-    ) {
-        x <- "WormBase"
-    } else if (
-        any(grepl(pattern = "RefSeq", x = source, ignore.case = FALSE))
-    ) {
-        x <- "RefSeq"
-    } else if (
-        any(grepl(
-            pattern = "ensembl|havana",
-            x = source,
-            ignore.case = FALSE
-        ))
-    ) {
-        x <- "Ensembl"
-    } else {
-        ## nocov start
-        stop(sprintf(
-            fmt = paste(
-                "Failed to detect valid GFF/GTF source.",
-                "Supported: %s",
-                sep = "\n"
-            ),
-        ))
-        ## nocov end
-    }
-    x
 }
 
 
