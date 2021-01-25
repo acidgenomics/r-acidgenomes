@@ -146,7 +146,7 @@
 #' @noRd
 #'
 #' @param file `character(1)`.
-#'   RefSeq assembly report file or URL.
+#'   RefSeq GFF file.
 #'
 #' @return `Seqinfo`.
 #'
@@ -162,17 +162,14 @@
 #'     "Homo_sapiens",
 #'     "all_assembly_versions",
 #'     "GCF_000001405.38_GRCh38.p12",
-#'     "GCF_000001405.38_GRCh38.p12_assembly_report.txt",
+#'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
 #'     protocol = "ftp"
 #' )
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
 .getRefSeqSeqinfo <- function(file) {
-    pattern <- "^([a-z0-9]+_)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
-    assert(
-        isString(file),
-        isMatchingRegex(pattern = pattern, x = basename(file))
-    )
+    ## Locate the "*_assembly_report.txt" file from the GFF file path.
+    file <- .locateRefSeqAssemblyReport(file)
     file <- .cacheIt(file)
     ## e.g. GRCh38.p13, which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
@@ -217,4 +214,60 @@
     assert(is(seq, "Seqinfo"))
     validObject(seq)
     seq
+}
+
+
+
+#' Locate RefSeq assembly report, from GFF file
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+#'
+#' @examples
+#' ## RefSeq FTP URL.
+#' file <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "refseq",
+#'     "vertebrate_mammalian",
+#'     "Homo_sapiens",
+#'     "all_assembly_versions",
+#'     "GCF_000001405.38_GRCh38.p12",
+#'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+#'     protocol = "ftp"
+#' )
+#' x <- .locateRefSeqAssemblyReport(file)
+#' print(x)
+#'
+#' ## `download-refseq-genome` convention.
+#' file <- file.path(
+#'     "homo-sapiens-gcf-000001405-39-grch38-p13-refseq-204",
+#'     "annotation.gff3.gz"
+#' )
+#' x <- .locateRefSeqAssemblyReport(file)
+#' print(x)
+.locateRefSeqAssemblyReport <- function(file) {
+    if (isAFile(file)) {
+        file <- realpath(file)
+    }
+    assert(isMatchingRegex(
+        pattern = .gffPatterns[["refseq"]],
+        x = basename(file)
+    ))
+    reportBasename <- sub(
+        pattern = "_genomic\\.(gff|gz)(\\.gz)?$",
+        replacement = "_assembly_report\\.txt",
+        basename(file)
+    )
+    if (isAURL(file)) {
+        x <- pasteURL(dirname(file), reportBasename)
+        return(x)
+    }
+    ## Full local FTP pulldown.
+    x <- file.path(dirname(file), reportBasename)
+    if (isAFile(x)) return(x)
+    ## `download-refseq-genome` download.
+    x <- file.path(dirname(dirname(file)), "metadata", reportBasename)
+    if (isAFile(x)) return(x)
+    stop(sprintf("Failed to locate RefSeq assembly report from '%s'.", file))
 }
