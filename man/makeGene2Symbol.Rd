@@ -59,8 +59,6 @@ long format.
 
 \item{file}{\code{character(1)}.
 File path.}
-
-\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
 }
 \value{
 \code{Gene2Symbol}.
