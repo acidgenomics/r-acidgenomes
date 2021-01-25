@@ -5,13 +5,10 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-23.
+#' @note Updated 2021-01-25.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
-#'
-#' @param seqinfo `Seqinfo` or `NULL`.
-#'   **Recommended.** Information about the chromosomes.
 #'
 #' @return `TxDb`.
 #'
@@ -49,13 +46,7 @@
 #'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
 #'     protocol = "ftp"
 #' )
-#' reportFile <- sub(
-#'     pattern = "_genomic\\.gff\\.gz$",
-#'     replacement = "_assembly_report.txt",
-#'     x = gffFile
-#' )
-#' seqinfo <- getRefSeqSeqinfo(reportFile)
-#' txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
+#' txdb <- makeTxDbFromGFF(file = gffFile)
 #' print(txdb)
 #' seqinfo(txdb)
 NULL
@@ -64,11 +55,8 @@ NULL
 
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
-makeTxDbFromGFF <- function(file, seqinfo = NULL) {
-    assert(
-        isString(file),
-        isAny(seqinfo, c("Seqinfo", "NULL"))
-    )
+makeTxDbFromGFF <- function(file) {
+    assert(isString(file))
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
@@ -78,30 +66,13 @@ makeTxDbFromGFF <- function(file, seqinfo = NULL) {
     if (isAFile(file)) {
         file <- realpath(file)
     }
-    if (is.null(seqinfo)) {
-        meta <- getGFFMetadata(file)
-        genomeBuild <- meta[["genomeBuild"]]
-        organism <- meta[["organism"]]
-        provider <- meta[["provider"]]
-        seqinfo <- tryCatch(
-            expr = {
-                genome <- switch(
-                    EXPR = provider,
-                    "GENCODE" = mapNCBIBuildToUCSC(genomeBuild),
-                    "UCSC" = genomeBuild,
-                    NULL
-                )
-                Seqinfo(genome = unname(genome))
-            },
-            error = function(e) {
-                alertWarning(paste(
-                    "Automatic seqinfo detection failed.",
-                    "Manual input of {.var seqinfo} is recommended."
-                ))
-                NULL
-            }
-        )
-    }
+    meta <- getGFFMetadata(file)
+    organism <- meta[["organism"]]
+    seqinfo <- .getSeqinfo(meta)
+    assert(
+        isString(organism),
+        isAny(seqinfo, c("Seqinfo", "NULL"))
+    )
     ## Additional arguments of potential future interest:
     ## - dbxrefTag: This can help override primary identifier to use.
     ## - miRBaseBuild: miRBase annotations could be useful for future genome

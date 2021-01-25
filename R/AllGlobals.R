@@ -38,6 +38,15 @@ NULL
         "\\.(gff3|gtf)",
         "(\\.gz)?$"
     ),
+    "refseq" = paste0(
+        ## e.g. "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
+        "^([0-9a-z]_)?",          # BiocFileCache.
+        "(GCF_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
+        "_([^_]+)",               # "GRCh38.p12".
+        "_genomic",
+        "\\.(gff|gtf)",
+        "(\\.gz)?$"
+    ),
     "ucsc" = paste0(
         ## e.g. "hg38.ensGene.gtf.gz"
         "^([0-9a-z]_)?",                           # BiocFileCache.
