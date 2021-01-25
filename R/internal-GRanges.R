@@ -432,19 +432,18 @@
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
-    ## Ensure the names contain and are sorted by desired identifier.
+    ## Define the names by desired identifier column.
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, colnames(mcols(object))))
-    alert(sprintf("Defining and sorting names by {.var %s} column.", idCol))
+    alert(sprintf("Defining names by {.var %s} column.", idCol))
     names <- as.character(mcols(object)[[idCol]])
-    assert(!any(is.na(names)))
-
-    ## FIXME BE STRICTER ABOUT DUPLICATES HERE.
-
-
-
+    assert(
+        hasNoDuplicates(names),
+        !any(is.na(names))
+    )
     ## Inform the user if the object contains invalid names, showing offenders.
-    ## This happens with RefSeq genes, but should be clean for Ensembl/GENCODE.
+    ## This can happen with RefSeq genes, WormBase transcripts, but should be
+    ## clean for Ensembl and GENCODE.
     invalidNames <- setdiff(names, make.names(names, unique = TRUE))
     if (hasLength(invalidNames)) {
         invalidNames <- sort(unique(invalidNames))
@@ -459,31 +458,10 @@
             toInlineString(invalidNames, n = 10L)
         ))
     }
-
-    ## FIXME RATHER THAN SPLITTING HERE, JUST MAKE THE ID COLUMN/NAMES UNIQUE.
-
-    ## Split into GRangesList if object contains multiple ranges per feature.
-    ## NOTE If this safe to take out once we update our RefSeq
-    ##      transcripts approach?
-    if (hasDuplicates(names)) {
-        alertWarning(sprintf(
-            fmt = paste(
-                "{.var %s} contains multiple ranges per {.var %s}.",
-                "Splitting into {.var %s}."
-            ),
-            "GRanges", idCol, "GRangesList"
-        ))
-        ## Metadata will get dropped during `split()` call; stash and reassign.
-        m <- metadata(object)
-        object <- split(x = object, f = as.factor(names))
-        metadata(object) <- m
-    } else {
-        names(object) <- names
-    }
-    ## Ensure the ranges are sorted alphabetically by identifier.
-    ## > object <- object[sort(names(object))]
+    names(object) <- names
     ## Ensure the ranges are sorted by genomic position.
     object <- sort(object)
+    assert(isFALSE(is.unsorted(object)))
     ## Inform the user about the number of features returned.
     alertInfo(sprintf(
         "%d %s detected.",
@@ -504,5 +482,6 @@
     ## Run final assert checks before returning.
     validObject(object)
     provider <- metadata(object)[["provider"]]
+    assert(isString(provider))
     new(Class = upperCamelCase(paste(provider, level)), object)
 }
