@@ -4,14 +4,11 @@
 \alias{makeTxDbFromGFF}
 \title{Make TxDb from a GFF/GTF file}
 \usage{
-makeTxDbFromGFF(file, seqinfo = NULL)
+makeTxDbFromGFF(file)
 }
 \arguments{
 \item{file}{\code{character(1)}.
 File path.}
-
-\item{seqinfo}{\code{Seqinfo} or \code{NULL}.
-\strong{Recommended.} Information about the chromosomes.}
 }
 \value{
 \code{TxDb}.
@@ -25,7 +22,7 @@ Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }}
 
 \note{
-Updated 2021-01-23.
+Updated 2021-01-25.
 }
 \examples{
 ## GENCODE.
@@ -55,13 +52,7 @@ gffFile <- pasteURL(
     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
     protocol = "ftp"
 )
-reportFile <- sub(
-    pattern = "_genomic\\\\.gff\\\\.gz$",
-    replacement = "_assembly_report.txt",
-    x = gffFile
-)
-seqinfo <- getRefSeqSeqinfo(reportFile)
-txdb <- makeTxDbFromGFF(file = gffFile, seqinfo = seqinfo)
+txdb <- makeTxDbFromGFF(file = gffFile)
 print(txdb)
 seqinfo(txdb)
 }
