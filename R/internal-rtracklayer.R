@@ -198,7 +198,8 @@
                 y = colnames(mcols(object))
             )
         )
-        object <- object[mcols(object)[["type"]] == "gene"]
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
         object
     }
 
@@ -214,14 +215,14 @@
                 y = colnames(mcols(object))
             )
         )
-        object <- object[mcols(object)[["type"]] == "transcript"]
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
         object
     }
 
 
 
-## Note that call upstream in `.makeGenesFromGFF()` will prepare the rows
-## properly already, by filtering aganist `gene_id` and `transcript_id`.
+## Updated 2021-01-25.
 .rtracklayerGenesFromEnsemblGFF <- function(object) {
     assert(
         is(object, "GRanges"),
@@ -235,38 +236,42 @@
         ),
         areDisjointSets("gene_biotype", colnames(mcols(object)))
     )
+    keep <- !is.na(mcols(object)[["gene_id"]])
+    object <- object[keep]
     mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
     mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
-    object <- object[!is.na(mcols(object)[["gene_id"]])]
     object
 }
 
 
 
+## Updated 2021-01-25.
 .rtracklayerTranscriptsFromEnsemblGFF <- function(object) {
-    assert(is(object, "GRanges"))
-    ## Assign `transcript_name` from `Name` column.
     assert(
-        isSubset("Name", colnames(mcols(object))),
-        areDisjointSets("transcript_name", colnames(mcols(object)))
+        is(object, "GRanges"),
+        isSubset(
+            x = c("Name", "Parent", "biotype"),
+            y = colnames(mcols(object))
+        ),
+        areDisjointSets(
+            x = c("transcript_biotype", "transcript_name"),
+            y = colnames(mcols(object))
+        )
     )
-    mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
-    ## Assign `transcript_biotype` from `biotype` column.
+    keep <- !is.na(mcols(object)[["transcript_id"]])
+    object <- object[keep]
     assert(
-        isSubset("biotype", colnames(mcols(object))),
-        areDisjointSets("transcript_biotype", colnames(mcols(object)))
+        allAreMatchingRegex(
+            pattern = "^gene:",
+            x = as.character(mcols(object)[["Parent"]])
+        )
     )
     mcols(object)[["transcript_biotype"]] <- mcols(object)[["biotype"]]
-    ## Assign `gene_id` from `Parent` column.
-    assert(
-        isSubset("Parent", colnames(mcols(object))),
-        all(grepl("^gene:", mcols(object)[["Parent"]]))
-    )
-    mcols(object)[["gene_id"]] <- as.character(mcols(object)[["Parent"]])
+    mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
     mcols(object)[["gene_id"]] <- gsub(
         pattern = "^gene:",
         replacement = "",
-        x = mcols(object)[["gene_id"]]
+        x = as.character(mcols(object)[["Parent"]])
     )
     object
 }
