@@ -73,43 +73,41 @@
             y = names(x)
         )
     )
-    genomeBuild <- x[["genomeBuild"]]
-    organism <- x[["organism"]]
-    provider <- x[["provider"]]
-    release <- x[["release"]]
     assert(
-        isString(genomeBuild),
-        isString(organism),
-        isString(provider),
-        isScalar(release) || is.null(release)
+        isString(x[["file"]]),
+        isString(x[["genomeBuild"]]),
+        isString(x[["organism"]]),
+        isString(x[["provider"]]),
+        isScalar(x[["release"]]) || is.null(x[["release"]])
     )
     out <- tryCatch(
         expr = {
             genome <- switch(
                 EXPR = provider,
                 "Ensembl" = {
-                    assert(isInt(release))
                     ## This may support a `use.grch37` flag, but it's not
                     ## currently tested well according to documentation.
-                    if (isMatchingFixed(pattern = "GRCh37", x = genomeBuild)) {
-                        return(NULL)
-                    }
+                    assert(
+                        isNotMatchingFixed(
+                            pattern = "GRCh37",
+                            x = x[["genomeBuild"]]
+                        ),
+                        isInt(x[["release"]])
+                    )
                     getChromInfoFromEnsembl(
-                        species = organism,
-                        release = release,
+                        species = x[["organism"]],
+                        release = x[["release"]],
                         as.Seqinfo = TRUE
                     )
                 },
                 "GENCODE" = {
-                    genome <- unname(mapNCBIBuildToUCSC(genomeBuild))
-                    Seqinfo(genome = genome)
+                    Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
                 },
                 "RefSeq" = {
-                    .getRefSeqSeqinfo(file)
+                    .getRefSeqSeqinfo(x[["file"]])
                 },
                 "UCSC" = {
-                    genome <- genomeBuild
-                    Seqinfo(genome = genome)
+                    Seqinfo(genome = x[["genomeBuild"]])
                 },
                 NULL
             )
