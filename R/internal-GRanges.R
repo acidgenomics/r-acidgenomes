@@ -305,7 +305,7 @@
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' @note Updated 2021-01-23.
+#' @note Updated 2021-01-25.
 #' @noRd
 .minimizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
@@ -350,7 +350,7 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-25.
 #' @noRd
 .standardizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
@@ -385,6 +385,30 @@
         mcols[["geneName"]] <- mcols[["symbol"]]
         mcols[["symbol"]] <- NULL
     }
+    ## Remove any uninformative blacklisted columns.
+    blacklistCols <- c(
+        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
+        "biotype",
+        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
+        "logic_name",
+        "type"
+        ## FIXME Other values to consider:
+        ## "end_range",
+        ## "exception",
+        ## "gbkey",
+        ## "partial",
+        ## "pseudo",
+        ## "start_range",
+        ## "transl_except"
+    )
+    keep <- !colnames(mcols) %in% blacklistCols
+    mcols <- mcols[keep]
+    assert(
+        areDisjointSets(
+            x = c("geneType"),
+            y = colnames(mcols)
+        )
+    )
     mcols(object) <- mcols
     object
 }
@@ -419,7 +443,6 @@
         arg = metadata(object)[["level"]],
         choices = .grangesLevels
     )
-    ## FIXME THIS STEP IS BREAKING FOR TXDB RETURN.
     object <- .minimizeGRanges(object)
     object <- .standardizeGRanges(object)
     if (isFALSE(ignoreVersion)) {
@@ -437,10 +460,7 @@
     assert(isSubset(idCol, colnames(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
     names <- as.character(mcols(object)[[idCol]])
-    assert(
-        hasNoDuplicates(names),
-        !any(is.na(names))
-    )
+    assert(hasNoDuplicates(names), !any(is.na(names)))
     ## Inform the user if the object contains invalid names, showing offenders.
     ## This can happen with RefSeq genes, WormBase transcripts, but should be
     ## clean for Ensembl and GENCODE.
@@ -477,8 +497,7 @@
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
     ## Ensure metadata elements are all sorted alphabetically.
     metadata(object)[["ignoreVersion"]] <- ignoreVersion
-    metadata(object) <-
-        metadata(object)[sort(names(metadata(object)))]
+    metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
     provider <- metadata(object)[["provider"]]
