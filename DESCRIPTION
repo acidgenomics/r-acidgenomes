@@ -26,7 +26,7 @@ Depends:
 Imports:
     AcidBase (>= 0.3.2),
     AcidCLI (>= 0.0.5),
-    AcidGenerics (>= 0.5.1),
+    AcidGenerics (>= 0.5.3),
     AcidPlyr (>= 0.1.6),
     AnnotationDbi,
     AnnotationHub,
