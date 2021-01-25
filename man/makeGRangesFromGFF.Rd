@@ -22,6 +22,8 @@ Return as genes or transcripts.}
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
+
+\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
 }
 \value{
 \code{GRanges}.
@@ -32,25 +34,9 @@ Make GRanges from a GFF/GTF file
 \details{
 Remote URLs and compressed files are supported.
 }
-\section{Functions}{
-\itemize{
-\item \code{makeGRangesFromGFF}: Primary function.
-}}
-
 \note{
-Updated 2021-01-23.
+Updated 2021-01-25.
 }
-\section{Recommendations}{
-
-\itemize{
-\item \strong{Use GTF over GFF3.} We recommend using a GTF file instead of a GFF3
-file, when possible. The file format is more compact and easier to parse.
-\item \strong{Use Ensembl over RefSeq.} We generally recommend using Ensembl over
-RefSeq, if possible. It's better supported in R and generally used by most
-NGS vendors.
-}
-}
-
 \section{GFF/GTF specification}{
 
 
@@ -228,6 +214,25 @@ Example URLs:
 }
 
 \examples{
+## Ensembl ====
+file <- pasteURL(
+    "ftp.ensembl.org",
+    "pub",
+    "release-102",
+    "gtf",
+    "homo_sapiens",
+    "Homo_sapiens.GRCh38.102.gtf.gz",
+    protocol = "ftp"
+)
+
+## Genes.
+genes <- makeGRangesFromGFF(file = file, level = "genes")
+summary(genes)
+
+## Transcripts.
+transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+summary(transcripts)
+
 ## GENCODE ====
 file <- pasteURL(
     "ftp.ebi.ac.uk",
@@ -247,6 +252,12 @@ summary(genes)
 ## Transcripts.
 transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 summary(transcripts)
+
+## RefSeq ====
+## FIXME NEED TO ADD THIS.
+
+## UCSC ====
+## FIXME NEED TO ADD THIS.
 }
 \seealso{
 \itemize{

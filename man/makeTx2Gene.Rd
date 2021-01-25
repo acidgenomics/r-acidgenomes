@@ -44,6 +44,8 @@ ensembldb in use.}
 
 \item{file}{\code{character(1)}.
 File path.}
+
+\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
 }
 \value{
 \code{Tx2Gene}.
@@ -52,7 +54,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2021-01-14.
+Updated 2021-01-25.
 }
 \section{GFF/GTF file}{
 
