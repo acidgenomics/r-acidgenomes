@@ -1,6 +1,6 @@
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-01-25.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
