@@ -21,8 +21,8 @@ geneNames(object, ...)
 \code{character}.
 }
 \description{
-Convenience function for quickly returning unique gene symbols that map to
-the stable gene IDs.
+Convenience function for quickly returning gene names
+(a.k.a gene symbols) that map to the stable gene identifiers.
 }
 \note{
 Updated 2019-07-28.
