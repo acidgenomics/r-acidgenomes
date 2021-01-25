@@ -84,20 +84,21 @@
         expr = switch(
             EXPR = x[["provider"]],
             "Ensembl" = {
-                assert(
-                    isNotMatchingFixed(
-                        pattern = "GRCh37",
-                        x = x[["genomeBuild"]]
-                    ),
-                    isInt(x[["release"]])
+                assert(isInt(x[["release"]]))
+                args <- list(
+                    "species" = x[["organism"]],
+                    "release" = x[["release"]],
+                    "as.Seqinfo" = TRUE
                 )
-                ## This may support a `use.grch37` flag, but it's not
-                ## currently tested well according to documentation.
-                getChromInfoFromEnsembl(
-                    species = x[["organism"]],
-                    release = x[["release"]],
-                    as.Seqinfo = TRUE
-                )
+                ## The `use.grch37` flag isn't currently working with
+                ## GenomeInfoDb v1.26.2, but may be improved in the future.
+                if (isMatchingFixed(
+                    pattern = "GRCh37",
+                    x = x[["genomeBuild"]])
+                ) {
+                    args[["use.grch37"]] <- TRUE
+                }
+                do.call(what = getChromInfoFromEnsembl, args = args)
             },
             "GENCODE" = {
                 Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
