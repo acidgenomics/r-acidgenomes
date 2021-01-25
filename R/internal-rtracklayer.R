@@ -1,3 +1,77 @@
+## FIXME ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
+## FIXME NEED TO SANITIZE COLS FOR REFSEQ
+## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
+## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
+
+## Updated 2021-01-24.
+.makeGRangesFromRtracklayer <- function(
+    file,
+    level = c("genes", "transcripts")
+) {
+    gr <- import(file = .cacheIt(file))
+    assert(is(gr, "GRanges"))
+    level <- match.arg(level)
+    format <- match.arg(
+        arg = .rtracklayerFormat(gr),
+        choices = c("GFF", "GTF")
+    )
+    provider <- match.arg(
+        arg = .rtracklayerProvider(gr),
+        choices = c(
+            "Ensembl",
+            "FlyBase",
+            "GENCODE",
+            "RefSeq",
+            "UCSC",
+            "WormBase"
+        )
+    )
+    funName <- paste0(
+        ".",
+        camelCase(
+            object = paste("rtracklayer", level, "from", provider, format),
+            strict = FALSE
+        )
+    )
+    what <- .getFun(funName)
+    gr <- do.call(what = what, args = list("object" = gr))
+    metadata(gr) <- list(
+        "format" = format,
+        "level" = level,
+        "provider" = provider
+    )
+    if (identical(format, "GFF")) {
+        ## Remove capitalized keys in mcols.
+        keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
+        mcols(gr) <- mcols(gr)[keep]
+    }
+    if (identical(level, "transcripts")) {
+        colnames(mcols(gr)) <-
+            gsub(
+                pattern = "^transcript_",
+                replacement = "tx_",
+                x = colnames(mcols(gr))
+            )
+    }
+    ## Remove any uninformative blacklisted columns.
+    blacklistCols <- c(
+        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
+        "biotype",
+        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
+        "logic_name"
+    )
+    keep <- !colnames(mcols(gr)) %in% blacklistCols
+    mcols(gr) <- mcols(gr)[keep]
+    mcols(gr) <- removeNA(mcols(gr))
+    idCol <- .matchGRangesNamesColumn(gr)
+    assert(hasNoDuplicates(mcols(gr)[[idCol]]))
+    names(gr) <- mcols(gr)[[idCol]]
+    gr
+}
+
+
+
+## rtracklayer metadata parsers ================================================
 #' Determine if input is GFF (GFF3) or GTF (GFFv2)
 #'
 #' @note Updated 2021-01-25.
@@ -70,75 +144,6 @@
         ## nocov end
     }
     x
-}
-
-
-
-## FIXME ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
-
-## FIXME NEED TO SANITIZE COLS FOR REFSEQ
-## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
-## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
-
-## Updated 2021-01-24.
-.makeGRangesFromRtracklayer <- function(
-    file,
-    level = c("genes", "transcripts")
-) {
-    gr <- import(file = .cacheIt(file))
-    assert(is(gr, "GRanges"))
-    level <- match.arg(level)
-    format <- match.arg(
-        arg = .rtracklayerFormat(gr),
-        choices = c("GFF", "GTF")
-    )
-    provider <- match.arg(
-        arg = .rtracklayerProvider(gr),
-        choices = c(
-            "Ensembl",
-            "FlyBase",
-            "GENCODE",
-            "RefSeq",
-            "UCSC",
-            "WormBase"
-        )
-    )
-    funName <- paste0(
-        ".",
-        camelCase(
-            object = paste("rtracklayer", level, "from", provider, format),
-            strict = FALSE
-        )
-    )
-    what <- .getFun(funName)
-    gr <- do.call(what = what, args = list("object" = gr))
-    if (identical(format, "GFF")) {
-        ## Remove capitalized keys in mcols.
-        keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
-        mcols(gr) <- mcols(gr)[keep]
-    }
-    if (identical(level, "transcripts")) {
-        colnames(mcols(gr)) <-
-            gsub(
-                pattern = "^transcript_",
-                replacement = "tx_",
-                x = colnames(mcols(gr))
-            )
-    }
-    ## Remove any uninformative blacklisted columns.
-    blacklistCols <- c(
-        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
-        "biotype",
-        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
-        "logic_name"
-    )
-    keep <- !colnames(mcols(gr)) %in% blacklistCols
-    mcols(gr) <- mcols(gr)[keep]
-    mcols(gr) <- removeNA(mcols(gr))
-    idCol <- .matchGRangesNamesColumn(gr)
-    assert(hasNoDuplicates(mcols(gr)[[idCol]]))
-    names(gr) <- mcols(gr)[[idCol]]
-    gr
 }
 
 
