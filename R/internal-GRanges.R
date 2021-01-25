@@ -410,7 +410,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-23.
+#' @note Updated 2021-01-24.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -450,6 +450,11 @@
     alert(sprintf("Defining and sorting names by {.var %s} column.", idCol))
     names <- as.character(mcols(object)[[idCol]])
     assert(!any(is.na(names)))
+
+    ## FIXME BE STRICTER ABOUT DUPLICATES HERE.
+
+
+
     ## Inform the user if the object contains invalid names, showing offenders.
     ## This happens with RefSeq genes, but should be clean for Ensembl/GENCODE.
     invalidNames <- setdiff(names, make.names(names, unique = TRUE))
@@ -488,7 +493,9 @@
         names(object) <- names
     }
     ## Ensure the ranges are sorted alphabetically by identifier.
-    object <- object[sort(names(object))]
+    ## > object <- object[sort(names(object))]
+    ## Ensure the ranges are sorted by genomic position.
+    object <- sort(object)
     ## Inform the user about the number of features returned.
     alertInfo(sprintf(
         "%d %s detected.",
