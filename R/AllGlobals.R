@@ -60,6 +60,19 @@ NULL
 
 
 
+#' GRanges annotation levels
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.grangesLevels <- c(
+    "cds",
+    "exons",
+    "genes",
+    "transcripts"
+)
+
+
+
 #' Package version
 #'
 #' @note Updated 2020-10-06.
