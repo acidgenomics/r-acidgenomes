@@ -22,8 +22,6 @@ Return as genes or transcripts.}
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
-
-\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
 }
 \value{
 \code{GRanges}.

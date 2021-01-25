@@ -4,11 +4,6 @@
 \alias{params}
 \title{Shared parameter documentation}
 \arguments{
-\item{broadClass}{\code{logical(1)}.
-Include broad class definitions.}
-
-\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
-
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
