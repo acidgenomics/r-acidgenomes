@@ -74,32 +74,47 @@
 
 
 
-#' Minimize GFF (GFFv3) return
+#' Merge gene-level annotations into transcript-level GRanges
 #'
-#' Remove uninformative metadata columns from GFF3 before return.
-#' Always remove columns beginning with a capital letter.
-#'
-#' - Ensembl: Alias, ID, Name, Parent
-#' - GENCODE: ID, Parent
-#' - RefSeq: Dbxref, Gap, ID, Name, Note, Parent, Target
-#'
-#' @note Updated 2020-01-24.
+#' @note Updated 2021-01-24.
 #' @noRd
-.minimizeGFF <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
-    mcolnames <- colnames(mcols)
-    ## Remove all columns beginning with a capital letter.
-    keep <- !grepl("^[A-Z]", mcolnames)
-    mcolnames <- mcolnames[keep]
-    ## Remove additional blacklisted columns.
-    ## Consider: "gbkey", "source".
-    blacklist <- "biotype"
-    mcolnames <- setdiff(mcolnames, blacklist)
-    ## Subset the metadata columns.
-    mcols <- mcols[, mcolnames, drop = FALSE]
-    mcols(object) <- mcols
-    object
+#'
+#' @note `hasValidNames()` will error on WormBase transcripts.
+.mergeGenesIntoTranscripts <- function(transcripts, genes) {
+    assert(
+        is(transcripts, "GRanges"),
+        is(genes, "GRanges")
+    )
+    txCol <- .matchGRangesNamesColumn(transcripts)
+    geneCol <- .matchGRangesNamesColumn(genes)
+    assert(
+        isSubset(txCol, colnames(mcols(transcripts))),
+        hasNoDuplicates(mcols(transcripts)[[txCol]]),
+        isSubset(geneCol, colnames(mcols(transcripts))),
+        isSubset(geneCol, colnames(mcols(genes)))
+    )
+    geneCols <- setdiff(
+        x = colnames(mcols(genes)),
+        y = colnames(mcols(transcripts))
+    )
+    if (hasLength(geneCols)) {
+        alert(sprintf(
+            "Merging gene-level annotations: {.var %s}.",
+            toString(camelCase(geneCols), width = 100L)
+        ))
+        geneCols <- c(geneCol, geneCols)
+        ## x: transcripts; y: genes
+        x <- mcols(transcripts)
+        y <- mcols(genes)[, geneCols, drop = FALSE]
+        assert(
+            isSubset(unique(x[[geneCol]]), unique(y[[geneCol]])),
+            hasNoDuplicates(y[[geneCol]])
+        )
+        merge <- leftJoin(x = x, y = y, by = geneCol)
+        assert(identical(x[[txCol]], merge[[txCol]]))
+        mcols(transcripts) <- merge
+    }
+    transcripts
 }
 
 
@@ -419,7 +434,7 @@
 #'
 #' Match Ensembl spec by removing the duplicate PAR Y chromosome annotations.
 #'
-#' @note Updated 2020-01-20.
+#' @note Updated 2021-01-24.
 #' @noRd
 .detectPARDupes <- function(object, idCol) {
     assert(is(object, "GRanges"))
@@ -429,7 +444,7 @@
     )
     dupes <- grep(pattern = "_PAR_Y$", x = mcols(object)[[idCol]], value = TRUE)
     if (hasLength(dupes)) {
-        cli_alert_warning(sprintf(
+        alertWarning(sprintf(
             "%d pseudoautosomal region (PAR) Y chromosome %s: {.var %s}.",
             length(dupes),
             ngettext(
@@ -668,7 +683,7 @@
     keep <- mcols(object)[["type"]] == "exon"
     assert(any(keep))
     n <- sum(keep, na.rm = TRUE)
-    cli_alert_info(sprintf(
+    alertInfo(sprintf(
         "%d %s detected.",
         n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
     ))

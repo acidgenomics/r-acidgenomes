@@ -259,10 +259,12 @@ NULL
     } else {
         what <- .makeGRangesFromTxDb
     }
+    ## This is the primary GRanges we'll use for return.
     gr1 <- do.call(
         what = what,
         args = list("object" = db, "level" = level)
     )
+    ## This is a secondary GRanges that we'll use for improved metadata.
     gr2 <- .makeGRangesFromRtracklayer(file = file, level = level)
     ## Prepare the metadata to return.
     meta1 <- metadata(gr1)
@@ -339,7 +341,8 @@ NULL
     match(x = ranges1, table = ranges2)
 
 
-
+    ## FIXME RETHINK THIS.
+    mcols(genes) <- removeNA(mcols(genes))
 
 
 
