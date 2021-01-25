@@ -283,8 +283,8 @@
 ## Updated 2021-01-25.
 .rtracklayerGenesFromGencodeGff <-
     function(object) {
+        object <- .standardizeGencodeToEnsembl(object)
         assert(
-            is(object, "GRanges"),
             isSubset(
                 x = c("ID", "gene_biotype", "gene_id", "gene_name", "type"),
                 y = colnames(mcols(object))
@@ -300,6 +300,7 @@
 ## Updated 2021-01-25.
 .rtracklayerGenesFromGencodeGtf <-
     function(object) {
+        object <- .standardizeGencodeToEnsembl(object)
         .rtracklayerGenesFromEnsemblGtf(object)
     }
 
@@ -308,8 +309,8 @@
 ## Updated 2021-01-25.
 .rtracklayerTranscriptsFromGencodeGff <-
     function(object) {
+        object <- .standardizeGencodeToEnsembl(object)
         assert(
-            is(object, "GRanges"),
             isSubset(
                 x = c(
                     "gene_biotype", "gene_id",
@@ -328,6 +329,7 @@
 ## Updated 2021-01-25.
 .rtracklayerTranscriptsFromGencodeGtf <-
     function(object) {
+        object <- .standardizeGencodeToEnsembl(object)
         .rtracklayerTranscriptsFromEnsemblGtf(object)
     }
 
