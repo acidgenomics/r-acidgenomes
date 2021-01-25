@@ -7,8 +7,8 @@
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
-#'   expand head lapply match mcols mcols<- metadata metadata<- order setdiff
-#'   split tail
+#'   expand head is.unsorted lapply match mcols mcols<- metadata metadata<-
+#'   order setdiff sort split tail
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
