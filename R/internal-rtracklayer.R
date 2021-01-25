@@ -55,6 +55,7 @@
             ))
         },
         "transcripts" = {
+            assert(isSubset("gene_id", colnames(mcols(gr))))
             colnames(mcols(gr)) <-
                 gsub(
                     pattern = "^transcript_",
@@ -223,62 +224,60 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerGenesFromEnsemblGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("Name", "biotype", "gene_id"),
-            y = colnames(mcols(object))
-        ),
-        areDisjointSets(
-            x = c("gene_biotype", "gene_name"),
-            y = colnames(mcols(object))
-        ),
-        areDisjointSets("gene_biotype", colnames(mcols(object)))
-    )
-    keep <- !is.na(mcols(object)[["gene_id"]])
-    object <- object[keep]
-    mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
-    mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
-    object
-}
+.rtracklayerGenesFromEnsemblGFF <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Name", "biotype", "gene_id"),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("gene_biotype", "gene_name"),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets("gene_biotype", colnames(mcols(object)))
+        )
+        keep <- !is.na(mcols(object)[["gene_id"]])
+        object <- object[keep]
+        mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
+        mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
+        object
+    }
 
 
 
 ## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("Name", "Parent", "biotype"),
-            y = colnames(mcols(object))
-        ),
-        areDisjointSets(
-            x = c("transcript_biotype", "transcript_name"),
-            y = colnames(mcols(object))
+.rtracklayerTranscriptsFromEnsemblGFF <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Name", "Parent", "biotype"),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("transcript_biotype", "transcript_name"),
+                y = colnames(mcols(object))
+            )
         )
-    )
-    keep <- !is.na(mcols(object)[["transcript_id"]])
-    object <- object[keep]
-    assert(
-        allAreMatchingRegex(
+        keep <- !is.na(mcols(object)[["transcript_id"]])
+        object <- object[keep]
+        assert(
+            allAreMatchingRegex(
+                pattern = "^gene:",
+                x = as.character(mcols(object)[["Parent"]])
+            )
+        )
+        mcols(object)[["transcript_biotype"]] <- mcols(object)[["biotype"]]
+        mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
+        mcols(object)[["gene_id"]] <- gsub(
             pattern = "^gene:",
+            replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-    )
-    mcols(object)[["transcript_biotype"]] <- mcols(object)[["biotype"]]
-    mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
-    mcols(object)[["gene_id"]] <- gsub(
-        pattern = "^gene:",
-        replacement = "",
-        x = as.character(mcols(object)[["Parent"]])
-    )
-    object
-}
-
-
-
-
+        object
+    }
 
 
 
