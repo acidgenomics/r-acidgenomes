@@ -379,9 +379,6 @@
     if (isSubset(c("geneName", "symbol"), colnames(mcols))) {
         mcols[["symbol"]] <- NULL
     } else if (isSubset("symbol", colnames(mcols))) {
-        alert(
-            "Renaming {.var symbol} to {.var geneName} in {.fun mcols}."
-        )
         mcols[["geneName"]] <- mcols[["symbol"]]
         mcols[["symbol"]] <- NULL
     }
@@ -400,6 +397,7 @@
         ## "pseudo",
         ## "start_range",
         ## "transl_except"
+
     )
     keep <- !colnames(mcols) %in% blacklistCols
     mcols <- mcols[keep]
