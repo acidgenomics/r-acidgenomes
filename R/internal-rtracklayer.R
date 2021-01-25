@@ -83,7 +83,7 @@
 #' - GENCODE: ID, Parent
 #' - RefSeq: Dbxref, Gap, ID, Name, Note, Parent, Target
 #'
-#' @note Updated 2020-01-22.
+#' @note Updated 2020-01-24.
 #' @noRd
 .minimizeGFF <- function(object) {
     assert(is(object, "GRanges"))
@@ -93,6 +93,7 @@
     keep <- !grepl("^[A-Z]", mcolnames)
     mcolnames <- mcolnames[keep]
     ## Remove additional blacklisted columns.
+    ## Consider: "gbkey", "source".
     blacklist <- "biotype"
     mcolnames <- setdiff(mcolnames, blacklist)
     ## Subset the metadata columns.
