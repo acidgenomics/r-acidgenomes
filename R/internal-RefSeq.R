@@ -171,6 +171,8 @@
     ## Locate the "*_assembly_report.txt" file from the GFF file path.
     file <- .locateRefSeqAssemblyReport(file)
     file <- .cacheIt(file)
+    pattern <- "^([a-z0-9]+_)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
+    assert(isMatchingRegex(pattern = pattern, x = basename(file)))
     ## e.g. GRCh38.p13, which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
     genomeBuild <- sub(
