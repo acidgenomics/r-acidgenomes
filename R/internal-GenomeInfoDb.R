@@ -8,6 +8,19 @@
 #' @return `Seqinfo` or `NULL` (on failure).
 #'
 #' @examples
+#' ## Ensembl ====
+#' file <- pasteURL(
+#'     "ftp.ensembl.org",
+#'     "pub",
+#'     "release-102",
+#'     "gtf",
+#'     "homo_sapiens",
+#'     "Homo_sapiens.GRCh38.102.gtf.gz",
+#'     protocol = "ftp"
+#' )
+#' seq <- .getSeqinfo(file)
+#' print(seq)
+#'
 #' ## GENCODE ====
 #' file <- pasteURL(
 #'     "ftp.ebi.ac.uk",
@@ -63,15 +76,29 @@
     genomeBuild <- x[["genomeBuild"]]
     organism <- x[["organism"]]
     provider <- x[["provider"]]
+    release <- x[["release"]]
     assert(
         isString(genomeBuild),
         isString(organism),
-        isString(provider)
+        isString(provider),
+        isScalar(release) || is.null(release)
     )
-    tryCatch(
+    out <- tryCatch(
         expr = {
             genome <- switch(
                 EXPR = provider,
+                "Ensembl" = {
+                    ## This may support a `use.grch37` flag, but it's not
+                    ## currently tested well according to documentation.
+                    if (isMatchingFixed(pattern = "GRCh37", x = genomeBuild)) {
+                        return(NULL)
+                    }
+                    getChromInfoFromEnsembl(
+                        species = organism,
+                        release = release,
+                        as.Seqinfo = TRUE
+                    )
+                },
                 "GENCODE" = {
                     genome <- unname(mapNCBIBuildToUCSC(genomeBuild))
                     Seqinfo(genome = genome)
@@ -95,4 +122,6 @@
             NULL
         }
     )
+    assert(isAny(out, c("Seqinfo", "NULL")))
+    out
 }
