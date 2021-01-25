@@ -119,6 +119,8 @@
 
 
 
+## FIXME Is it possible to return this without the gene-level merge step?
+
 ## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
     file,
@@ -152,9 +154,15 @@
         "RefSeq"  = .standardizeRefSeqToEnsembl(object),
         object
     )
+    colnames(mcols(object)) <-
+        gsub(
+            pattern = "^transcript_",
+            replacement = "tx_",
+            x = colnames(mcols(object))
+        )
     assert(
         isSubset(
-            x = c("gene_id", "transcript_id"),
+            x = c("gene_id", "tx_id"),
             y = colnames(mcols(object))
         ),
         ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
@@ -167,7 +175,7 @@
     ## These annotations will be included at transcript level (see below).
     genes <- object
     genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
-    genes <- genes[is.na(sanitizeNA(mcols(genes)[["transcript_id"]]))]
+    genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
     assert(hasLength(genes))
     what <- switch(
         EXPR = format,
@@ -196,17 +204,14 @@
         stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     genes <- do.call(what = what, args = list("object" = genes))
+    mcols(genes) <- removeNA(mcols(genes))
+    geneCol <- .matchGRangesNamesColumn(genes)
+    assert(hasNoDuplicates(mcols(genes)[[geneCol]]))
     if (level == "genes") {
         return(genes)
     }
     ## Transcripts -------------------------------------------------------------
     tx <- object
-    colnames(mcols(tx)) <-
-        gsub(
-            pattern = "^transcript_",
-            replacement = "tx_",
-            x = colnames(mcols(tx))
-        )
     tx <- tx[!is.na(sanitizeNA(mcols(tx)[["tx_id"]]))]
     assert(hasLength(tx))
     what <- switch(
@@ -230,6 +235,7 @@
         stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     tx <- do.call(what = what, args = list(object = tx))
+    mcols(tx) <- removeNA(mcols(tx))
     tx <- .mergeGenesIntoTranscripts(tx, genes)
     tx
 }
