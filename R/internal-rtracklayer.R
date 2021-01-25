@@ -40,6 +40,7 @@
         "level" = level,
         "provider" = provider
     )
+    mcols(gr) <- removeNA(mcols(gr))
     if (identical(format, "GFF")) {
         ## Remove capitalized keys in mcols.
         keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
@@ -71,7 +72,6 @@
     )
     keep <- !colnames(mcols(gr)) %in% blacklistCols
     mcols(gr) <- mcols(gr)[keep]
-    mcols(gr) <- removeNA(mcols(gr))
     idCol <- .matchGRangesNamesColumn(gr)
     assert(hasNoDuplicates(mcols(gr)[[idCol]]))
     names(gr) <- mcols(gr)[[idCol]]
