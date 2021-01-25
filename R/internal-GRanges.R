@@ -403,12 +403,6 @@
     )
     keep <- !colnames(mcols) %in% blacklistCols
     mcols <- mcols[keep]
-    assert(
-        areDisjointSets(
-            x = c("geneType"),
-            y = colnames(mcols)
-        )
-    )
     mcols(object) <- mcols
     object
 }
