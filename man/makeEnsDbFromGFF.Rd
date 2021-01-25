@@ -17,7 +17,7 @@ File path.}
 Wrapper for ensembldb importer functions.
 }
 \note{
-Updated 2021-01-23.
+Updated 2021-01-25.
 }
 \examples{
 file <- pasteURL(

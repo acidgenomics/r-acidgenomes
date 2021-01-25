@@ -59,6 +59,8 @@ long format.
 
 \item{file}{\code{character(1)}.
 File path.}
+
+\item{seqinfo}{\code{Seqinfo} or \code{NULL}.}
 }
 \value{
 \code{Gene2Symbol}.
@@ -78,7 +80,7 @@ object or annotation package.
 }}
 
 \note{
-Updated 2021-01-14.
+Updated 2021-01-25.
 }
 \section{GFF/GTF file}{
 
