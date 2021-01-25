@@ -52,6 +52,13 @@ getGFFMetadata <- function(file) {
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
     }
+    if (!isString(l[["format"]])) {
+        l[["format"]] <- .gffFormat(file)
+    }
+    assert(isSubset(l[["format"]], c("GFF3", "GTF")))
+    if (isString(l[["gffVersion"]])) {
+        l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
+    }
     if (!isString(l[["provider"]])) {
         lines <- import(
             file = .cacheIt(file),
@@ -71,13 +78,6 @@ getGFFMetadata <- function(file) {
         } else if (any(grepl(pattern = "\tWormBase\t", x = lines))) {
             l[["provider"]] <- "WormBase"
         }
-    }
-    if (!isString(l[["format"]])) {
-        l[["format"]] <- .gffFormat(file)
-    }
-    assert(isSubset(l[["format"]], c("GFF3", "GTF")))
-    if (isString(l[["gffVersion"]])) {
-        l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
     }
     ## Attempt to parse file names for useful values.
     if (isString(l[["provider"]])) {
@@ -113,15 +113,15 @@ getGFFMetadata <- function(file) {
                     ) {
                         l[["organism"]] <- "Drosophila melanogaster"
                     }
-                }
-                if (!isString(l[["release"]])) {
-                    l[["release"]] <- x[[5L]]
-                }
-                if (!isString(l[["genomeBuild"]])) {
-                    ## This matches the convention defined in GFF.
-                    l[["genomeBuild"]] <- paste(
-                        provider, release
-                    )
+                    if (!isString(l[["release"]])) {
+                        l[["release"]] <- x[[5L]]
+                    }
+                    if (!isString(l[["genomeBuild"]])) {
+                        ## This matches the convention defined in GFF.
+                        l[["genomeBuild"]] <- paste(
+                            l[["provider"]], l[["release"]]
+                        )
+                    }
                 }
             },
             "GENCODE" = {
