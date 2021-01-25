@@ -20,7 +20,8 @@
 #' print(gr)
 makeGRangesFromTxDb <- function(
     object,
-    level = c("transcripts", "genes", "exons", "cds")
+    level = c("transcripts", "genes", "exons", "cds"),
+    ignoreVersion = TRUE
 ) {
     assert(is(object, "TxDb"))
     level <- match.arg(level)
@@ -69,22 +70,17 @@ makeGRangesFromTxDb <- function(
     suppressMessages({
         gr <- do.call(what = what, args = args)
     })
-    ## This will return metadata slotted into `genomeInfo`.
-    ##  [1] "Db type"
-    ##  [2] "Supporting package"
-    ##  [3] "Data source"
-    ##  [4] "Organism"
-    ##  [5] "Taxonomy ID"
-    ##  [6] "miRBase build ID"
-    ##  [7] "Genome"
-    ##  [8] "Nb of transcripts"
-    ##  [9] "Db created by"
-    ## [10] "Creation time"
-    ## [11] "GenomicFeatures version at creation time"
-    ## [12] "RSQLite version at creation time"
-    ## [13] "DBSCHEMAVERSION"
-
-    idCol <- .matchGRangesNamesColumn(gr)
-    assert(is(gr, "GRanges"))
+    ## This will also return metadata slotted into `genomeInfo`.
+    meta <- metadata(gr)
+    gffMeta <- attr(x = txdb, which = "gffMetadata", exact = TRUE)
+    if (is.list(gffMeta)) {
+        meta <- append(x = meta, values = gffMeta)
+    }
+    meta[["level"]] <- level
+    metadata(gr) <- meta
+    gr <- .makeGRanges(
+        object = gr,
+        ignoreVersion = ignoreVersion
+    )
     gr
 }
