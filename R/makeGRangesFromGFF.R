@@ -193,8 +193,8 @@
 #' summary(genes)
 #'
 #' ## Transcripts.
-#' transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
-#' summary(transcripts)
+#' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+#' ## > summary(transcripts)
 #'
 #' ## GENCODE ====
 #' file <- pasteURL(
@@ -228,44 +228,24 @@ makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreVersion = TRUE,
-    synonyms = FALSE,
-    seqinfo = NULL
+    synonyms = FALSE
 ) {
     assert(
         isString(file),
         isFlag(ignoreVersion),
-        isFlag(synonyms),
-        isAny(seqinfo, c("Seqinfo", "NULL")),
+        isFlag(synonyms)
     )
     level <- match.arg(level)
     alert(sprintf(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    if (
-        isMatchingRegex(
-            pattern = .gffPatterns[["ensembl"]],
-            x = basename(file)
-        ) &&
-        isMatchingRegex(
-            pattern = "^gtf",
-            x = tolower(fileExt(file))
-        )
-    ) {
-        edb <- makeEnsDbFromGFF(file)
-        gr <- makeGRangesFromEnsDb(
-            object = edb,
-            level = level,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
-        )
-    } else {
-        gr <- .makeGRangesFromRtracklayer(
-            file = file,
-            level = level,
-            seqinfo = seqinfo
-        )
-    }
+    gr <- .makeGRangesFromRtracklayer(
+        file = file,
+        level = level,
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
+    )
     metadata(gr)[["call"]] <- match.call()
     gr
 }

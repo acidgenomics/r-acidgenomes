@@ -8,8 +8,7 @@ makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
   ignoreVersion = TRUE,
-  synonyms = FALSE,
-  seqinfo = NULL
+  synonyms = FALSE
 )
 }
 \arguments{

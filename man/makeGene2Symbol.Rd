@@ -24,7 +24,6 @@ makeGene2SymbolFromEnsDb(
 makeGene2SymbolFromGFF(
   file,
   ignoreVersion = TRUE,
-  seqinfo = NULL,
   format = c("makeUnique", "unmodified", "1:1")
 )
 }
