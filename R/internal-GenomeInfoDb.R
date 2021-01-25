@@ -88,6 +88,7 @@
             genome <- switch(
                 EXPR = provider,
                 "Ensembl" = {
+                    assert(isInt(release))
                     ## This may support a `use.grch37` flag, but it's not
                     ## currently tested well according to documentation.
                     if (isMatchingFixed(pattern = "GRCh37", x = genomeBuild)) {
