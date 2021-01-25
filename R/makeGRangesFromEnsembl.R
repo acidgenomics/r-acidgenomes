@@ -132,7 +132,6 @@ makeGRangesFromEnsembl <- function(
 ) {
     assert(
         isFlag(ignoreVersion),
-        isFlag(broadClass),
         isFlag(synonyms)
     )
     level <- match.arg(level)
@@ -170,8 +169,7 @@ makeGRangesFromEnsDb <- function(
 ) {
     assert(
         isFlag(ignoreVersion),
-        isFlag(synonyms),
-        isFlag(broadClass)
+        isFlag(synonyms)
     )
     level <- match.arg(level)
     alert(sprintf("Making {.var %s} from {.var %s}.", "GRanges", "EnsDb"))
