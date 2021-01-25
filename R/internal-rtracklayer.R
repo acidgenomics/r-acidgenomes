@@ -49,7 +49,14 @@
             strict = TRUE
         )
     )
-    what <- .getFun(funName)
+    tryCatch(
+        expr = {
+            what <- .getFun(funName)
+        },
+        error = function(e) {
+            stop(sprintf("Unsupported GFF: '%s'.", basename(file)))
+        }
+    )
     gr <- do.call(what = what, args = list("object" = gr))
     metadata(gr) <- meta
     seqinfo <- .getSeqinfo(meta)
@@ -273,10 +280,8 @@
 
 
 
-## FIXME CAN SET SEQINFO HERE.
-
 ## Updated 2021-01-25.
-.makeGenesFromGencodeGff <-
+.rtracklayerGenesFromGencodeGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -292,8 +297,6 @@
 
 
 
-## FIXME CAN SET SEQINFO HERE.
-
 ## Updated 2021-01-25.
 .rtracklayerGenesFromGencodeGtf <-
     function(object) {
@@ -301,8 +304,6 @@
     }
 
 
-
-## FIXME CAN SET SEQINFO HERE.
 
 ## Updated 2021-01-25.
 .rtracklayerTranscriptsFromGencodeGff <-
@@ -324,17 +325,15 @@
 
 
 
-## FIXME CAN SET SEQINFO HERE.
-
 ## Updated 2021-01-25.
-.makeTranscriptsFromGencodeGtf <-
+.rtracklayerTranscriptsFromGencodeGtf <-
     function(object) {
         .rtracklayerTranscriptsFromEnsemblGtf(object)
     }
 
 
 
-## FIXME RETHINK THIS APPROACH.
+## Updated 2021-01-25.
 .standardizeGencodeToEnsembl <-
     function(object) {
         assert(is(object, "GRanges"))
