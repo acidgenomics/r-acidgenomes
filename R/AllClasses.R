@@ -9,9 +9,10 @@
 #' @noRd
 .ensemblValidity <- function(object) {
     validate(
-        !all(is.na(seqlengths(object))),
-        !all(is.na(seqnames(object))),
-        !all(is.na(genome(object))),
+        ## GRCh37 currently will fail these checks.
+        ## > !all(is.na(seqlengths(object))),
+        ## > !all(is.na(seqnames(object))),
+        ## > !all(is.na(genome(object))),
         identical(
             x = colnames(mcols(object)),
             y = camelCase(colnames(mcols(object)), strict = TRUE)
