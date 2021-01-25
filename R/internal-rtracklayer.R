@@ -1,8 +1,8 @@
 #' Determine if input is GFF (GFF3) or GTF (GFFv2)
 #'
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-01-25.
 #' @noRd
-.grangesFormat <- function(object) {
+.rtracklayerFormat <- function(object) {
     assert(is(object, "GRanges"))
     if (any(c("ID", "Name", "Parent") %in% colnames(mcols(object)))) {
         x <- "GFF"
@@ -16,9 +16,9 @@
 
 #' Detect the provider (i.e. source) of the genome annotations
 #'
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-01-25.
 #' @noRd
-.grangesProvider <- function(object) {
+.rtracklayerProvider <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
     source <- mcols[["source"]]
@@ -70,51 +70,6 @@
         ## nocov end
     }
     x
-}
-
-
-
-#' Merge gene-level annotations into transcript-level GRanges
-#'
-#' @note Updated 2021-01-24.
-#' @noRd
-#'
-#' @note `hasValidNames()` will error on WormBase transcripts.
-.mergeGenesIntoTranscripts <- function(transcripts, genes) {
-    assert(
-        is(transcripts, "GRanges"),
-        is(genes, "GRanges")
-    )
-    txCol <- .matchGRangesNamesColumn(transcripts)
-    geneCol <- .matchGRangesNamesColumn(genes)
-    assert(
-        isSubset(txCol, colnames(mcols(transcripts))),
-        hasNoDuplicates(mcols(transcripts)[[txCol]]),
-        isSubset(geneCol, colnames(mcols(transcripts))),
-        isSubset(geneCol, colnames(mcols(genes)))
-    )
-    geneCols <- setdiff(
-        x = colnames(mcols(genes)),
-        y = colnames(mcols(transcripts))
-    )
-    if (hasLength(geneCols)) {
-        alert(sprintf(
-            "Merging gene-level annotations: {.var %s}.",
-            toString(camelCase(geneCols), width = 100L)
-        ))
-        geneCols <- c(geneCol, geneCols)
-        ## x: transcripts; y: genes
-        x <- mcols(transcripts)
-        y <- mcols(genes)[, geneCols, drop = FALSE]
-        assert(
-            isSubset(unique(x[[geneCol]]), unique(y[[geneCol]])),
-            hasNoDuplicates(y[[geneCol]])
-        )
-        merge <- leftJoin(x = x, y = y, by = geneCol)
-        assert(identical(x[[txCol]], merge[[txCol]]))
-        mcols(transcripts) <- merge
-    }
-    transcripts
 }
 
 
