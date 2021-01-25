@@ -181,11 +181,6 @@
         stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     genes <- do.call(what = what, args = list("object" = genes))
-    ## Remove GFF-specific parent columns, etc.
-    if (format == "GFF") {
-        genes <- .minimizeGFF(genes)
-    }
-    mcols(genes) <- removeNA(mcols(genes))
     if (level == "genes") {
         return(genes)
     }
@@ -220,11 +215,6 @@
         stop(sprintf("Unsupported genome file: %s %s.", provider, type))
     }
     tx <- do.call(what = what, args = list(object = tx))
-    ## Remove GFF-specific parent columns, etc.
-    if (format == "GFF") {
-        tx <- .minimizeGFF(tx)
-    }
-    mcols(tx) <- removeNA(mcols(tx))
     tx <- .mergeGenesIntoTranscripts(tx, genes)
     tx
 }
