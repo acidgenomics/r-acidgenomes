@@ -45,14 +45,23 @@
         keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
         mcols(gr) <- mcols(gr)[keep]
     }
-    if (identical(level, "transcripts")) {
-        colnames(mcols(gr)) <-
-            gsub(
-                pattern = "^transcript_",
-                replacement = "tx_",
+    switch(
+        EXPR = level,
+        "genes" = {
+            assert(allAreNotMatchingRegex(
+                pattern = "^(transcript|tx)_",
                 x = colnames(mcols(gr))
-            )
-    }
+            ))
+        },
+        "transcripts" = {
+            colnames(mcols(gr)) <-
+                gsub(
+                    pattern = "^transcript_",
+                    replacement = "tx_",
+                    x = colnames(mcols(gr))
+                )
+        }
+    )
     ## Remove any uninformative blacklisted columns.
     blacklistCols <- c(
         ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
