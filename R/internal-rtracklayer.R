@@ -5,6 +5,29 @@
 ## FIXME NEED TO GET THE METADATA HERE FROM THE FILE IF POSSIBLE, AND PASS.
 ## GENOME BUILD IS USEFUL TO SET SEQLENGTHS.
 
+## NOTE Don't allow parsing of Ensembl GFF3 with either
+## ensembldb or GenomicFeatures at the moment. Both of these parsing engines
+## have fatal issues.
+##
+## See related on GitHub:
+## - https://github.com/Bioconductor/GenomicFeatures/issues/28
+## - https://github.com/jorainer/ensembldb/issues/114
+##
+## FIXME CONSIDER BLACKLISTING ENSEMBL GFF3.
+##       Report a bug that this isn't returning correctly for TxDb.
+##
+## FIXME REWORK, CALLING makeTxDbFromGFF internally.
+## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
+## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
+## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
+## FIXME CURRENT RELEASE VERSION DOESNT SLOT ORGANISM HERE CORRECTLY.
+##       RETHINK THAT FOR GFF.
+## FIXME MAKE SURE FILE IS CORRECT URL, NOT TMPFILE BEFORE RELEASING.
+## FIXME synonyms only works with Ensembl identifiers, consider making that more
+##       clear in documentation.
+
+
+
 ## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
     file,
@@ -72,6 +95,16 @@
         "biotype",
         ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
         "logic_name"
+        ## FIXME Other values to consider:
+        ## "biotype",
+        ## "end_range",
+        ## "exception",
+        ## "gbkey",
+        ## "partial",
+        ## "pseudo",
+        ## "source",
+        ## "start_range",
+        ## "transl_except"
     )
     keep <- !colnames(mcols(gr)) %in% blacklistCols
     mcols(gr) <- mcols(gr)[keep]
