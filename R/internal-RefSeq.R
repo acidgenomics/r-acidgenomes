@@ -1,7 +1,81 @@
+## nolint start
+
+#' Get the RefSeq assembly metadata
+#'
+#' @section Stable reference assembly:
+#' The latest reference assembly, linked under the `reference/`
+#' subdirectory changes over time and is not considered "stable". For improved
+#' reproduciblity, track a reference one version behind
+#' (e.g. use "GCF_000001405.39_GRCh38.p12" instead of current
+#' "GCF_000001405.39_GRCh38.p13" build).
+#'
+#' This approach to maintaining a current reference build differs on NCBI RefSeq
+#' compared to other sources such as Ensembl and GENCODE, which track a stable
+#' release as the latest "reference" assembly.
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+#'
+#' @param file `character(1)`.
+#'   RefSeq assembly summary file or URL.
+#'
+#' @seealso
+#' - [File format details](ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt).
+#'
+#' @return Named `character`.
+#'
+#' @examples
+#' file <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "refseq",
+#'     "vertebrate_mammalian",
+#'     "Homo_sapiens",
+#'     "assembly_summary.txt",
+#'     protocol = "ftp"
+#' )
+#' x <- .getRefSeqAssemblySummary(file)
+#' names(x)
+
+## nolint end
+
+.getRefSeqAssemblySummary <-
+    function(file) {
+        pattern <- "assembly_summary.txt"
+        assert(
+            isString(file),
+            isMatchingFixed(pattern = pattern, x = basename(file))
+        )
+        file <- .cacheIt(file)
+        lines <- import(
+            file = file,
+            format = "lines",
+            skip = 1L,
+            quiet = TRUE
+        )
+        names <- strsplit(
+            x = sub(pattern = "^#\\s", replacement = "", x = lines[[1L]]),
+            split = "\\t"
+        )[[1L]]
+        values <- strsplit(x = lines[[2L]], split = "\\t")[[1L]]
+        x <- as.character(values[seq_len(20L)])
+        names(x) <- names[seq_len(20L)]
+        x <- x[nzchar(x)]
+        x
+    }
+
+
+
 #' Get the RefSeq base genome URL for an organism
 #'
 #' @note Updated 2021-01-08.
 #' @noRd
+#'
+#' @examples
+#' .getRefSeqGenomeURL(
+#'     organism = "Homo sapiens",
+#'     taxonomicGroup = "vertebrate_mammalian"
+#' )
 .getRefSeqGenomeURL <- function(
     organism,
     taxonomicGroup = NULL,
@@ -60,4 +134,87 @@
         dl(c("URL" = url))
     }
     url
+}
+
+
+
+#' Get RefSeq genome assembly seqinfo
+#'
+#' Parse the assembly report file to get `seqlengths` per chromosome.
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+#'
+#' @param file `character(1)`.
+#'   RefSeq assembly report file or URL.
+#'
+#' @return `Seqinfo`.
+#'
+#' @seealso
+#' - `tximeta:::gtf2RefSeq`.
+#'
+#' @examples
+#' file <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "refseq",
+#'     "vertebrate_mammalian",
+#'     "Homo_sapiens",
+#'     "all_assembly_versions",
+#'     "GCF_000001405.38_GRCh38.p12",
+#'     "GCF_000001405.38_GRCh38.p12_assembly_report.txt",
+#'     protocol = "ftp"
+#' )
+#' seqinfo <- .getRefSeqSeqinfo(file)
+#' print(seqinfo)
+.getRefSeqSeqinfo <- function(file) {
+    pattern <- "^([a-z0-9]+_)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
+    assert(
+        isString(file),
+        isMatchingRegex(pattern = pattern, x = basename(file))
+    )
+    file <- .cacheIt(file)
+    ## e.g. GRCh38.p13, which is the format Seqinfo expects.
+    ## Refer to GenomeInfoDb documentation for details on NCBI.
+    genomeBuild <- sub(
+        pattern = pattern,
+        replacement = "\\2",
+        x = basename(file)
+    )
+    df <- import(
+        file = file,
+        format = "tsv",
+        colnames = c(
+            "sequenceName",
+            "sequenceRole",
+            "assignedMolecule",
+            "assignedMoleculeLocation",
+            "genbankAccn",
+            "relationship",
+            "refseqAccn",
+            "assemblyUnit",
+            "sequenceLength",
+            "ucscStyleName"
+        ),
+        comment = "#"
+    )
+    cols <- c("refseqAccn", "sequenceLength")
+    df <- df[, cols]
+    df <- df[complete.cases(df), ]
+    seqnames <- df[["refseqAccn"]]
+    seqlengths <- df[["sequenceLength"]]
+    assert(
+        !any(is.na(seqnames)),
+        !any(is.na(seqlengths)),
+        hasNoDuplicates(seqnames)
+    )
+    seq <- Seqinfo(
+        seqnames = seqnames,
+        seqlengths = seqlengths,
+        isCircular = NA,
+        genome = genomeBuild
+    )
+    assert(is(seq, "Seqinfo"))
+    validObject(seq)
+    seq
 }
