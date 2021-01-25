@@ -292,6 +292,8 @@
         )
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
+        ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
+        mcols(object)[["gene_id"]] <- mcols(object)[["ID"]]
         object
     }
 
@@ -321,6 +323,8 @@
         )
         keep <- mcols(object)[["type"]] == "transcript"
         object <- object[keep]
+        ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
+        mcols(object)[["transcript_id"]] <- mcols(object)[["ID"]]
         object
     }
 
