@@ -418,16 +418,15 @@
 .makeGRanges <- function(
     object,
     ignoreVersion = TRUE,
-    synonyms = FALSE,
-    ## Internal-only arguments:
-    broadClass = TRUE
+    broadClass = TRUE,
+    synonyms = FALSE
 ) {
     assert(
         is(object, "GRanges"),
         hasLength(object),
         isFlag(ignoreVersion),
-        isFlag(synonyms),
         isFlag(broadClass),
+        isFlag(synonyms),
         isString(metadata(object)[["level"]]),
         isString(metadata(object)[["provider"]])
     )
@@ -442,6 +441,7 @@
         object <- .addTxVersion(object)
     }
     if (isTRUE(broadClass)) {
+        ## FIXME THIS IS RETURNING NA FOR FLYBASE...
         object <- .addBroadClass(object)
     }
     if (isTRUE(synonyms)) {
