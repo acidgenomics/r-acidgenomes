@@ -1,21 +1,9 @@
-## NOTE Need to resolve/suppress this warning:
-## Warning in for (i in (1L:cols)[do]) { :
-##   closing unused connection 3 (ftp://ftp.ensembl.org/pub/release-102/mysql/)
-##
-## NOTE Also need to suppress this unwanted warning:
-## Warning: call dbDisconnect() when finished working with a connection
-##
-## Issue filed here on ensembldb repo:
-## https://github.com/jorainer/ensembldb/issues/113
-
-
-
 #' Make EnsDb object from a GFF/GTF file
 #'
 #' Wrapper for ensembldb importer functions.
 #'
 #' @name makeEnsDbFromGFF
-#' @note Updated 2021-01-23.
+#' @note Updated 2021-01-25.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
