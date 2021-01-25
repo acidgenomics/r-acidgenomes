@@ -30,7 +30,7 @@
         ".",
         camelCase(
             object = paste("rtracklayer", level, "from", provider, format),
-            strict = FALSE
+            strict = TRUE
         )
     )
     what <- .getFun(funName)
@@ -190,7 +190,7 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerGenesFromEnsemblGTF <-
+.rtracklayerGenesFromEnsemblGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -207,7 +207,7 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGTF <-
+.rtracklayerTranscriptsFromEnsemblGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -224,7 +224,7 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerGenesFromEnsemblGFF <-
+.rtracklayerGenesFromEnsemblGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -248,7 +248,7 @@
 
 
 ## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGFF <-
+.rtracklayerTranscriptsFromEnsemblGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -290,46 +290,49 @@
 
 ## Compatible with Ensembl importer after we run `.standardizeFlyBaseGFF()`,
 ## which is called in `.makeGenesFromGFF()`.
-.makeGenesFromFlyBaseGTF <- function(object) {
-    assert(is(object, "GRanges"))
-    object <- .makeGenesFromEnsemblGTF(object)
-    object
-}
+.makeGenesFromFlyBaseGtf <-
+    function(object) {
+        assert(is(object, "GRanges"))
+        object <- .makeGenesFromEnsemblGTF(object)
+        object
+    }
 
 
 
-.makeTranscriptsFromFlyBaseGTF <- function(object) {
-    assert(is(object, "GRanges"))
-    ## Note that FlyBase uses non-standard transcript types.
-    keep <- grepl(
-        pattern = paste(c("^pseudogene$", "RNA$"), collapse = "|"),
-        x = mcols(object)[["type"]],
-        ignore.case = TRUE
-    )
-    object <- object[keep]
-    object
-}
+.makeTranscriptsFromFlyBaseGtf <-
+    function(object) {
+        assert(is(object, "GRanges"))
+        ## Note that FlyBase uses non-standard transcript types.
+        keep <- grepl(
+            pattern = paste(c("^pseudogene$", "RNA$"), collapse = "|"),
+            x = mcols(object)[["type"]],
+            ignore.case = TRUE
+        )
+        object <- object[keep]
+        object
+    }
 
 
 
 ## FIXME RETHINK THIS APPROACH.
-.standardizeFlyBaseToEnsembl <- function(object) {
-    assert(is(object, "GRanges"))
-    mcolnames <- colnames(mcols(object))
-    ## Match Ensembl spec by renaming `*_symbol` to `*_name`.
-    mcolnames <- sub(
-        pattern = "^gene_symbol$",
-        replacement = "gene_name",
-        x = mcolnames
-    )
-    mcolnames <- sub(
-        pattern = "^transcript_symbol$",
-        replacement = "transcript_name",
-        x = mcolnames
-    )
-    colnames(mcols(object)) <- mcolnames
-    object
-}
+.standardizeFlyBaseToEnsembl <-
+    function(object) {
+        assert(is(object, "GRanges"))
+        mcolnames <- colnames(mcols(object))
+        ## Match Ensembl spec by renaming `*_symbol` to `*_name`.
+        mcolnames <- sub(
+            pattern = "^gene_symbol$",
+            replacement = "gene_name",
+            x = mcolnames
+        )
+        mcolnames <- sub(
+            pattern = "^transcript_symbol$",
+            replacement = "transcript_name",
+            x = mcolnames
+        )
+        colnames(mcols(object)) <- mcolnames
+        object
+    }
 
 
 
@@ -372,97 +375,107 @@
 #'
 #' @note Updated 2021-01-24.
 #' @noRd
-.detectPARDupes <- function(object, idCol) {
-    assert(is(object, "GRanges"))
-    idCol <- match.arg(
-        arg = idCol,
-        choices = c("ID", "gene_id", "transcript_id")
-    )
-    dupes <- grep(pattern = "_PAR_Y$", x = mcols(object)[[idCol]], value = TRUE)
-    if (hasLength(dupes)) {
-        alertWarning(sprintf(
-            "%d pseudoautosomal region (PAR) Y chromosome %s: {.var %s}.",
-            length(dupes),
-            ngettext(
-                n = length(dupes),
-                msg1 = "duplicate",
-                msg2 = "duplicates"
-            ),
-            toString(dupes, width = 100L)
-        ))
+.detectPARDupes <-
+    function(object, idCol) {
+        assert(is(object, "GRanges"))
+        idCol <- match.arg(
+            arg = idCol,
+            choices = c("ID", "gene_id", "transcript_id")
+        )
+        dupes <- grep(
+            pattern = "_PAR_Y$",
+            x = mcols(object)[[idCol]],
+            value = TRUE
+        )
+        if (hasLength(dupes)) {
+            alertWarning(sprintf(
+                "%d pseudoautosomal region (PAR) Y chromosome %s: {.var %s}.",
+                length(dupes),
+                ngettext(
+                    n = length(dupes),
+                    msg1 = "duplicate",
+                    msg2 = "duplicates"
+                ),
+                toString(dupes, width = 100L)
+            ))
+        }
+        invisible(object)
     }
-    invisible(object)
-}
 
 
 
-.makeGenesFromGencodeGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("ID", "gene_biotype", "gene_id", "gene_name", "type"),
-            y = colnames(mcols(object))
+.makeGenesFromGencodeGff <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("ID", "gene_biotype", "gene_id", "gene_name", "type"),
+                y = colnames(mcols(object))
+            )
         )
-    )
-    object <- object[mcols(object)[["type"]] == "gene"]
-    .detectPARDupes(object, idCol = "ID")
-    object
-}
+        object <- object[mcols(object)[["type"]] == "gene"]
+        .detectPARDupes(object, idCol = "ID")
+        object
+    }
 
 
 
-.makeGenesFromGencodeGTF <- function(object) {
-    object <- .makeGenesFromEnsemblGTF(object)
-    .detectPARDupes(object, idCol = "gene_id")
-    object
-}
+.makeGenesFromGencodeGtf <-
+    function(object) {
+        object <- .makeGenesFromEnsemblGTF(object)
+        .detectPARDupes(object, idCol = "gene_id")
+        object
+    }
 
 
 
-.makeTranscriptsFromGencodeGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c(
-                "gene_biotype", "gene_id",
-                "transcript_biotype", "transcript_id"
-            ),
-            y = colnames(mcols(object))
+.makeTranscriptsFromGencodeGff <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "gene_biotype", "gene_id",
+                    "transcript_biotype", "transcript_id"
+                ),
+                y = colnames(mcols(object))
+            )
         )
-    )
-    object <- object[mcols(object)[["type"]] == "transcript"]
-    .detectPARDupes(object, idCol = "ID")
-    object
-}
+        object <- object[mcols(object)[["type"]] == "transcript"]
+        .detectPARDupes(object, idCol = "ID")
+        object
+    }
 
 
 
-.makeTranscriptsFromGencodeGTF <- function(object) {
-    object <- .makeTranscriptsFromEnsemblGTF(object)
-    .detectPARDupes(object, idCol = "transcript_id")
-    object
-}
+.makeTranscriptsFromGencodeGtf <-
+    function(object) {
+        object <- .makeTranscriptsFromEnsemblGTF(object)
+        .detectPARDupes(object, idCol = "transcript_id")
+        object
+    }
 
 
 
 ## FIXME RETHINK THIS APPROACH.
-.standardizeGencodeToEnsembl <- function(object) {
-    assert(is(object, "GRanges"))
-    mcolnames <- colnames(mcols(object))
-    ## Match Ensembl spec, which uses `*_biotype` instead of `*_type`.
-    mcolnames <- sub(
-        pattern = "^gene_type$",
-        replacement = "gene_biotype",
-        x = mcolnames
-    )
-    mcolnames <- sub(
-        pattern = "^transcript_type$",
-        replacement = "transcript_biotype",
-        x = mcolnames
-    )
-    colnames(mcols(object)) <- mcolnames
-    object
-}
+.standardizeGencodeToEnsembl <-
+    function(object) {
+        assert(is(object, "GRanges"))
+        mcolnames <- colnames(mcols(object))
+        ## Match Ensembl spec, which uses `*_biotype` instead of `*_type`.
+        mcolnames <- sub(
+            pattern = "^gene_type$",
+            replacement = "gene_biotype",
+            x = mcolnames
+        )
+        mcolnames <- sub(
+            pattern = "^transcript_type$",
+            replacement = "transcript_biotype",
+            x = mcolnames
+        )
+        colnames(mcols(object)) <- mcolnames
+        object
+    }
 
 
 
@@ -550,123 +563,140 @@
 
 
 ## Updated 2020-01-20.
-.makeGenesFromRefSeqGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("Name", "gene_biotype", "gene_id", "type"),
-            y = colnames(mcols(object))
+.makeGenesFromRefSeqGff <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Name", "gene_biotype", "gene_id", "type"),
+                y = colnames(mcols(object))
+            )
         )
-    )
-    ## Only keep annotations that map to `Name` column.
-    keep <- !is.na(mcols(object)[["Name"]])
-    object <- object[keep]
-    ## Drop rows that contain a `Parent` element.
-    keep <- bapply(
-        X = mcols(object)[["Parent"]],
-        FUN = function(x) {
-            identical(x, character(0L))
-        }
-    )
-    object <- object[keep]
-    ## Define `gene_name` from `gene_id`.
-    mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-    object
-}
-
-
-
-## Updated 2020-01-20.
-.makeGenesFromRefSeqGTF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(c("gene_biotype", "gene_id", "type"), colnames(mcols(object))),
-        areDisjointSets("gene_name", colnames(mcols(object)))
-    )
-    ## Define `gene_name` from `gene_id`.
-    mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-    object <- object[mcols(object)[["type"]] == "gene"]
-    object
-}
-
-
-
-## Updated 2020-01-20.
-.makeTranscriptsFromRefSeqGFF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset("Name", colnames(mcols(object))),
-        areDisjointSets("transcript_name", colnames(mcols(object)))
-    )
-    ## Only keep annotations that map to `Name` column.
-    keep <- !is.na(mcols(object)[["Name"]])
-    object <- object[keep]
-    object
-}
-
-
-
-## Updated 2020-01-20.
-.makeTranscriptsFromRefSeqGTF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(c("transcript_id", "type"), colnames(mcols(object))),
-        areDisjointSets(
-            x = c("gene_name", "transcript_biotype", "transcript_name"),
-            y = colnames(mcols(object))
+        ## Only keep annotations that map to `Name` column.
+        keep <- !is.na(mcols(object)[["Name"]])
+        object <- object[keep]
+        ## Drop rows that contain a `Parent` element.
+        keep <- bapply(
+            X = mcols(object)[["Parent"]],
+            FUN = function(x) {
+                identical(x, character(0L))
+            }
         )
-    )
-    ## Note that we're filtering by "exon" instead of "transcript" here.
-    keep <- mcols(object)[["type"]] == "exon"
-    assert(any(keep))
-    n <- sum(keep, na.rm = TRUE)
-    alertInfo(sprintf(
-        "%d %s detected.",
-        n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
-    ))
-    object <- object[keep]
-    ## Define `gene_name` from `gene_id`.
-    mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-    ## Define `transcript_biotype` from `gene_biotype`.
-    mcols(object)[["transcript_biotype"]] <- mcols(object)[["gene_biotype"]]
-    ## Define `transcript_name` from `transcript_id`.
-    mcols(object)[["transcript_name"]] <- mcols(object)[["transcript_id"]]
-    object
-}
+        object <- object[keep]
+        ## Define `gene_name` from `gene_id`.
+        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
+        object
+    }
+
+
+
+## Updated 2020-01-20.
+.makeGenesFromRefSeqGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_biotype", "gene_id", "type"),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets("gene_name", colnames(mcols(object)))
+        )
+        ## Define `gene_name` from `gene_id`.
+        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
+        object <- object[mcols(object)[["type"]] == "gene"]
+        object
+    }
+
+
+
+## Updated 2020-01-20.
+.makeTranscriptsFromRefSeqGff <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset("Name", colnames(mcols(object))),
+            areDisjointSets("transcript_name", colnames(mcols(object)))
+        )
+        ## Only keep annotations that map to `Name` column.
+        keep <- !is.na(mcols(object)[["Name"]])
+        object <- object[keep]
+        object
+    }
+
+
+
+## Updated 2020-01-20.
+.makeTranscriptsFromRefSeqGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(c("transcript_id", "type"), colnames(mcols(object))),
+            areDisjointSets(
+                x = c("gene_name", "transcript_biotype", "transcript_name"),
+                y = colnames(mcols(object))
+            )
+        )
+        ## Note that we're filtering by "exon" instead of "transcript" here.
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(any(keep))
+        n <- sum(keep, na.rm = TRUE)
+        alertInfo(sprintf(
+            "%d %s detected.",
+            n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
+        ))
+        object <- object[keep]
+        ## Define `gene_name` from `gene_id`.
+        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
+        ## Define `transcript_biotype` from `gene_biotype`.
+        mcols(object)[["transcript_biotype"]] <- mcols(object)[["gene_biotype"]]
+        ## Define `transcript_name` from `transcript_id`.
+        mcols(object)[["transcript_name"]] <- mcols(object)[["transcript_id"]]
+        object
+    }
 
 
 
 ## FIXME RETHINK THIS APPROACH.
 ## This step ensures that `gene_id` and `transcript_id` columns are defined.
 ## Updated 2020-01-20.
-.standardizeRefSeqToEnsembl <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
-    assert(
-        isSubset(
-            x = c("gene", "transcript_id"),
-            y = colnames(mcols)
-        ),
-        areDisjointSets(
-            x = c("gene_name", "transcript_name"),
-            y = colnames(mcols)
+.standardizeRefSeqToEnsembl <-
+    function(object) {
+        assert(is(object, "GRanges"))
+        mcols <- mcols(object)
+        assert(
+            isSubset(
+                x = c("gene", "transcript_id"),
+                y = colnames(mcols)
+            ),
+            areDisjointSets(
+                x = c("gene_name", "transcript_name"),
+                y = colnames(mcols)
+            )
         )
-    )
-    ## Ensure `gene_id` is defined.
-    if (isTRUE(all(c("gene", "gene_id") %in% colnames(mcols)))) {
-        ## Pick `gene_id` over `gene` column, if both are defined.
-        ## This applies to GTF spec.
-        keep <- setdiff(colnames(mcols), "gene")
-        mcols <- mcols[keep]
-    } else if ("gene" %in% colnames(mcols)) {
-        ## Rename `gene` column to `gene_id`, matching Ensembl spec.
-        ## This applies to GFF3 spec.
-        colnames(mcols) <- sub("^gene$", "gene_id", colnames(mcols))
+        ## Ensure `gene_id` is defined.
+        if (isTRUE(all(c("gene", "gene_id") %in% colnames(mcols)))) {
+            ## Pick `gene_id` over `gene` column, if both are defined.
+            ## This applies to GTF spec.
+            keep <- setdiff(colnames(mcols), "gene")
+            mcols <- mcols[keep]
+        } else if ("gene" %in% colnames(mcols)) {
+            ## Rename `gene` column to `gene_id`, matching Ensembl spec.
+            ## This applies to GFF3 spec.
+            colnames(mcols) <- sub("^gene$", "gene_id", colnames(mcols))
+        }
+        assert(isSubset(c("gene_id", "transcript_id"), colnames(mcols)))
+        mcols(object) <- mcols
+        object
     }
-    assert(isSubset(c("gene_id", "transcript_id"), colnames(mcols)))
-    mcols(object) <- mcols
-    object
-}
+
+
+
+## UCSC ========================================================================
+
+## FIXME NEED TO ADD SUPPORT FOR THIS.
+
+## .makeGenesFromUcscGtf
+## .makeTranscriptsFromUcscGtf
 
 
 
@@ -686,54 +716,56 @@
 
 
 
-.makeGenesFromWormBaseGTF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(x = "gene_id", y = colnames(mcols(object))),
-        areDisjointSets(x = "gene_name", y = colnames(mcols(object)))
-    )
-    ## Sanitize the `gene_id` column, which can contain some malformed entries
-    ## prefixed with "Gene:". We want to keep these entries.
-    mcols(object)[["gene_id"]] <- gsub(
-        pattern = "^Gene:",
-        replacement = "",
-        x = mcols(object)[["gene_id"]]
-    )
-    ## Now safe to only keep rows that match "WBGene" in `gene_id`.
-    ## Note that WormBase GTF currently contains some malformed "Transcript:"
-    ## entries that we want to drop with this step.
-    keep <- grepl(
-        pattern = "^WBGene[[:digit:]]{8}$",
-        x = mcols(object)[["gene_id"]]
-    )
-    object <- object[keep, , drop = FALSE]
-    ## Process using Ensembl conventions.
-    object <- .makeGenesFromEnsemblGTF(object)
-    object
-}
-
-
-
-.makeTranscriptsFromWormBaseGTF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("gene_id", "transcript_id"),
-            y = colnames(mcols(object))
-        ),
-        areDisjointSets(
-            x = c("gene_name", "transcript_name"),
-            y = colnames(mcols(object))
+.makeGenesFromWormBaseGTF <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(x = "gene_id", y = colnames(mcols(object))),
+            areDisjointSets(x = "gene_name", y = colnames(mcols(object)))
         )
-    )
-    ## Sanitize the `gene_id` column, which can contain some malformed entries
-    ## prefixed with "Gene:". We want to keep these entries.
-    mcols(object)[["gene_id"]] <- gsub(
-        pattern = "^Gene:",
-        replacement = "",
-        x = mcols(object)[["gene_id"]]
-    )
-    ## Process using Ensembl conventions.
-    object <- .makeTranscriptsFromEnsemblGTF(object)
-    object
-}
+        ## Sanitize the `gene_id` column, which can contain some malformed entries
+        ## prefixed with "Gene:". We want to keep these entries.
+        mcols(object)[["gene_id"]] <- gsub(
+            pattern = "^Gene:",
+            replacement = "",
+            x = mcols(object)[["gene_id"]]
+        )
+        ## Now safe to only keep rows that match "WBGene" in `gene_id`.
+        ## Note that WormBase GTF currently contains some malformed "Transcript:"
+        ## entries that we want to drop with this step.
+        keep <- grepl(
+            pattern = "^WBGene[[:digit:]]{8}$",
+            x = mcols(object)[["gene_id"]]
+        )
+        object <- object[keep, , drop = FALSE]
+        ## Process using Ensembl conventions.
+        object <- .makeGenesFromEnsemblGTF(object)
+        object
+    }
+
+
+
+.makeTranscriptsFromWormBaseGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "transcript_id"),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("gene_name", "transcript_name"),
+                y = colnames(mcols(object))
+            )
+        )
+        ## Sanitize the `gene_id` column, which can contain some malformed entries
+        ## prefixed with "Gene:". We want to keep these entries.
+        mcols(object)[["gene_id"]] <- gsub(
+            pattern = "^Gene:",
+            replacement = "",
+            x = mcols(object)[["gene_id"]]
+        )
+        ## Process using Ensembl conventions.
+        object <- .makeTranscriptsFromEnsemblGTF(object)
+        object
+    }
