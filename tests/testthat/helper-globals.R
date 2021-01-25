@@ -180,6 +180,32 @@ gffs <- c(
         "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz",
         protocol = "ftp"
     ),
+    "refseq_grch38_pipeline_gff3" = pasteURL(
+        "ftp.ncbi.nlm.nih.gov",
+        "genomes",
+        "all",
+        "GCA",
+        "000",
+        "001",
+        "405",
+        "GCA_000001405.15_GRCh38",
+        "seqs_for_alignment_pipelines.ucsc_ids",
+        "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
+        protocol = "ftp"
+    ),
+    "refseq_grch38_pipeline_gtf" = pasteURL(
+        "ftp.ncbi.nlm.nih.gov",
+        "genomes",
+        "all",
+        "GCA",
+        "000",
+        "001",
+        "405",
+        "GCA_000001405.15_GRCh38",
+        "seqs_for_alignment_pipelines.ucsc_ids",
+        "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gtf.gz",
+        protocol = "ftp"
+    ),
     "ucsc_hg38_ensgene_gtf" = pasteURL(
         "hgdownload.soe.ucsc.edu",
         "goldenPath",

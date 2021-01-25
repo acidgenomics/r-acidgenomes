@@ -264,21 +264,6 @@ NULL
         args = list("object" = db, "level" = level)
     )
     gr2 <- .makeGRangesFromRtracklayer(file = file, level = level)
-
-
-
-
-    ## FIXME NEED TO SET NAMES HERE.
-    ## FIXME NEED TO DEFINE THIS INSIDE THE MERGE FUNCTION INSTEAD.
-    ## FIXME NEED TO CHECK RANGES ARE IDENTICAL.
-
-    ranges(gr1)
-    ranges(gr2)
-
-
-
-
-
     ## Prepare the metadata to return.
     meta1 <- metadata(gr1)
     meta2 <- attr(x = db, which = "gffMetadata", exact = TRUE)
@@ -291,37 +276,96 @@ NULL
     meta <- append(x = meta, values = meta2[setdiff(names(meta2), names(meta))])
     meta <- append(x = meta, values = meta3[setdiff(names(meta3), names(meta))])
     meta <- meta[sort(names(meta))]
-
-
-    ## FIXME REWORK THIS, PASSING IN FILE INSTEAD.
-
-
     metadata(gr1) <- meta
     metadata(gr2) <- meta
-
-    ## FIXME SPLIT THIS OUT TO SEPARATE FUNCTION.
-    ## FIXME NEED TO CHECK THAT ALL IDS DEFINED IN LEFT SIDE ARE IN RIGHT SIDE.
-    ##       USE ISSUBSET FOR THIS...
-
-    idCol1 <- .matchGRangesNamesColumn(gr1)
-    idCol2 <- .matchGRangesNamesColumn(gr2)
-    assert(identical(idCol1, idCol2))
-    idCol <- idCol1
-    mcols1 <- mcols(gr1)
-    mcols2 <- mcols(gr2)
-    extra <- setdiff(colnames(mcols2), colnames(mcols1))
-    mcols <- leftJoin(x = mcols1, y = mcols2[c(idCol, extra)], by = idCol)
-    assert(identical(mcols[[idCol]], mcols1[[idCol]]))
-    gr <- gr1
-    mcols(gr) <- mcols
-    ## FIXME Need to handle genomeBuild, organism, release for Ensembl here.
-    ## FIXME Need to call detectOrganism here internally to slot?
+    gr <- .mergeGRanges(x = gr1, y = gr2)
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
         broadClass = broadClass,
         synonyms = synonyms
     )
+}
+
+
+
+## FIXME HOW TO MERGE REFSEQ UNIQUES HERE?
+
+## FIXME CONSIDER RETURNING SUMMARIZED EXPERIMENT BY GENOMIC LOCATION.
+
+## FIXME RETHINK THIS....MATCH BY THE RANGE INSTEAD.
+## FIXME CONSIDER THIS approach: unique(x[order(x)])
+
+## is.unsorted(gr, ignore.strand=TRUE)
+## gr2 <- sort(gr, ignore.strand=TRUE)
+## is.unsorted(gr2)  # TRUE
+## is.unsorted(gr2, ignore.strand=TRUE)  # FALSE
+
+## > rank(gr, ties.method="first")
+## > rank(gr, ties.method="first", ignore.strand=TRUE)
+
+#' Merge GRanges into a single object
+#'
+#' @note Updated 2021-01-24.
+#' @noRd
+#'
+#' @seealso
+#' - `help("GenomicRanges-comparison", package = "GenomicRanges")`.
+#' - `sort`, `is.unsorted`, `order`, `rank`.
+.mergeGRanges <- function(x, y) {
+    x <- sort(x)
+    y <- sort(y)
+    idCol1 <- .matchGRangesNamesColumn(x)
+    idCol2 <- .matchGRangesNamesColumn(y)
+    idCol <- idCol1
+    assert(
+        isFALSE(is.unsorted(x)),
+        isFALSE(is.unsorted(y)),
+        identical(idCol1, idCol2),
+        identical(metadata(x)[["genomeBuild"]], metadata(y)[["genomeBuild"]]),
+        identical(metadata(x)[["level"]], metadata(y)[["level"]]),
+        identical(metadata(x)[["provider"]], metadata(y)[["provider"]]),
+        hasNoDuplicates(mcols(x)[[idCol]]),
+        isSubset(mcols(x)[[idCol]], mcols(y)[[idCol]])
+    )
+
+    ranges1 <- ranges(x)
+    ranges2 <- ranges(y)
+
+
+
+
+    ## FIXME HOW TO USE MATCHING HERE...
+    match(x = ranges1, table = ranges2)
+
+
+
+
+
+
+    mcols1 <- mcols(x)
+    mcols2 <- mcols(y)
+    extra <- setdiff(colnames(mcols2), colnames(mcols1))
+    blacklist <- c(
+        "biotype",
+        "end_range",
+        "exception",
+        "gbkey",
+        "partial",
+        "pseudo",
+        "source",
+        "start_range",
+        "transl_except"
+    )
+    extra <- setdiff(extra, blacklist)
+    mcols2 <- mcols2[c(idCol, extra)]
+    mcols2 <- unique(mcols2)
+    assert(hasNoDuplicates(mcols2[[idCol]]))
+    mcols <- leftJoin(x = mcols1, y = mcols2, by = idCol)
+    assert(identical(mcols[[idCol]], mcols1[[idCol]]))
+    out <- x
+    mcols(out) <- mcols
+    out
 }
 
 
