@@ -3,12 +3,8 @@
 ## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
 ## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
 ##
-## FIXME ENSURE REFSEQ TRANSCRIPTS RETURN AS FLAT GRANGES OBJECT.
 ## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
 ## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
-## FIXME CURRENT RELEASE VERSION DOESNT SLOT ORGANISM HERE CORRECTLY.
-##       RETHINK THAT FOR GFF.
-## FIXME MAKE SURE FILE IS CORRECT URL, NOT TMPFILE BEFORE RELEASING.
 ## FIXME synonyms only works with Ensembl identifiers, consider making that more
 ##       clear in documentation.
 
@@ -56,53 +52,6 @@
     what <- .getFun(funName)
     gr <- do.call(what = what, args = list("object" = gr))
     metadata(gr) <- meta
-    mcols(gr) <- removeNA(mcols(gr))
-    if (identical(format, "GFF")) {
-        ## Remove capitalized keys in mcols.
-        keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
-        mcols(gr) <- mcols(gr)[keep]
-    }
-    switch(
-        EXPR = level,
-        "genes" = {
-            assert(allAreNotMatchingRegex(
-                pattern = "^(transcript|tx)_",
-                x = colnames(mcols(gr))
-            ))
-        },
-        "transcripts" = {
-            assert(isSubset("gene_id", colnames(mcols(gr))))
-            colnames(mcols(gr)) <-
-                gsub(
-                    pattern = "^transcript_",
-                    replacement = "tx_",
-                    x = colnames(mcols(gr))
-                )
-        }
-    )
-    ## Remove any uninformative blacklisted columns.
-    blacklistCols <- c(
-        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
-        "biotype",
-        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
-        "logic_name",
-        "type"
-        ## FIXME Other values to consider:
-        ## "biotype",
-        ## "end_range",
-        ## "exception",
-        ## "gbkey",
-        ## "partial",
-        ## "pseudo",
-        ## "source",
-        ## "start_range",
-        ## "transl_except"
-    )
-    keep <- !colnames(mcols(gr)) %in% blacklistCols
-    mcols(gr) <- mcols(gr)[keep]
-    idCol <- .matchGRangesNamesColumn(gr)
-    assert(hasNoDuplicates(mcols(gr)[[idCol]]))
-    names(gr) <- mcols(gr)[[idCol]]
     seqinfo <- .getSeqinfo(meta)
     if (is(seqinfo, "Seqinfo")) {
         seqinfo(gr) <- seqinfo[seqlevels(gr)]
