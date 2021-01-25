@@ -74,22 +74,26 @@
 
 
 
-## FIXME Is it possible to return this without the gene-level merge step?
+## FIXME ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
+
+## FIXME NEED TO SANITIZE COLS FOR REFSEQ
+## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
+## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
 
 ## Updated 2021-01-24.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts")
 ) {
-    object <- import(file = .cacheIt(file))
-    assert(is(object, "GRanges"))
+    gr <- import(file = .cacheIt(file))
+    assert(is(gr, "GRanges"))
     level <- match.arg(level)
     format <- match.arg(
-        arg = .grangesFormat(object),
+        arg = .rtracklayerFormat(gr),
         choices = c("GFF", "GTF")
     )
     provider <- match.arg(
-        arg = .grangesProvider(object),
+        arg = .rtracklayerProvider(gr),
         choices = c(
             "Ensembl",
             "FlyBase",
@@ -99,100 +103,42 @@
             "WormBase"
         )
     )
-    ## Standardize -------------------------------------------------------------
-    ## Standardize FlyBase, GENCODE, and RefSeq files to follow expected
-    ## Ensembl-like naming conventions.
-    object <- switch(
-        EXPR = provider,
-        "FlyBase" = .standardizeFlyBaseToEnsembl(object),
-        "GENCODE" = .standardizeGencodeToEnsembl(object),
-        "RefSeq"  = .standardizeRefSeqToEnsembl(object),
-        object
-    )
-    colnames(mcols(object)) <-
-        gsub(
-            pattern = "^transcript_",
-            replacement = "tx_",
-            x = colnames(mcols(object))
-        )
-    assert(
-        isSubset(
-            x = c("gene_id", "tx_id"),
-            y = colnames(mcols(object))
-        ),
-        ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
-        areDisjointSets(
-            x = c("gene", "gene_type"),
-            y = colnames(mcols(object))
+    funName <- paste0(
+        ".",
+        camelCase(
+            object = paste("rtracklayer", level, "from", provider, format),
+            strict = FALSE
         )
     )
-    ## Genes -------------------------------------------------------------------
-    ## These annotations will be included at transcript level (see below).
-    genes <- object
-    genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
-    genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
-    assert(hasLength(genes))
-    what <- switch(
-        EXPR = format,
-        "GFF" = {
-            switch(
-                EXPR = provider,
-                "Ensembl" = .makeGenesFromEnsemblGFF,
-                "GENCODE" = .makeGenesFromGencodeGFF,
-                "RefSeq" = .makeGenesFromRefSeqGFF,
-                NULL
+    what <- .getFun(funName)
+    gr <- do.call(what = what, args = list("object" = gr))
+    if (identical(format, "GFF")) {
+        ## Remove capitalized keys in mcols.
+        keep <- !grepl(pattern = "^[A-Z]", x = colnames(mcols(gr)))
+        mcols(gr) <- mcols(gr)[keep]
+    }
+    if (identical(level, "transcripts")) {
+        colnames(mcols(gr)) <-
+            gsub(
+                pattern = "^transcript_",
+                replacement = "tx_",
+                x = colnames(mcols(gr))
             )
-        },
-        "GTF" = {
-            switch(
-                EXPR = provider,
-                "Ensembl" = .makeGenesFromEnsemblGTF,
-                "FlyBase" = .makeGenesFromFlyBaseGTF,
-                "GENCODE" = .makeGenesFromGencodeGTF,
-                "RefSeq" = .makeGenesFromRefSeqGTF,
-                "WormBase" = .makeGenesFromWormBaseGTF,
-                NULL
-            )
-        }
+    }
+    ## Remove any uninformative blacklisted columns.
+    blacklistCols <- c(
+        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
+        "biotype",
+        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
+        "logic_name"
     )
-    if (!is.function(what)) {
-        stop(sprintf("Unsupported genome file: %s %s.", provider, type))
-    }
-    genes <- do.call(what = what, args = list("object" = genes))
-    mcols(genes) <- removeNA(mcols(genes))
-    geneCol <- .matchGRangesNamesColumn(genes)
-    assert(hasNoDuplicates(mcols(genes)[[geneCol]]))
-    if (level == "genes") {
-        return(genes)
-    }
-    ## Transcripts -------------------------------------------------------------
-    tx <- object
-    tx <- tx[!is.na(sanitizeNA(mcols(tx)[["tx_id"]]))]
-    assert(hasLength(tx))
-    what <- switch(
-        EXPR = format,
-        "GFF" = switch(
-            EXPR = provider,
-            "Ensembl" = .makeTranscriptsFromEnsemblGFF,
-            "GENCODE" = .makeTranscriptsFromGencodeGFF,
-            "RefSeq" = .makeTranscriptsFromRefSeqGFF
-        ),
-        "GTF" = switch(
-            EXPR = provider,
-            "Ensembl" = .makeTranscriptsFromEnsemblGTF,
-            "FlyBase" = .makeTranscriptsFromFlyBaseGTF,
-            "GENCODE" = .makeTranscriptsFromGencodeGTF,
-            "RefSeq" = .makeTranscriptsFromRefSeqGTF,
-            "WormBase" = .makeTranscriptsFromWormBaseGTF
-        )
-    )
-    if (!is.function(what)) {
-        stop(sprintf("Unsupported genome file: %s %s.", provider, type))
-    }
-    tx <- do.call(what = what, args = list(object = tx))
-    mcols(tx) <- removeNA(mcols(tx))
-    tx <- .mergeGenesIntoTranscripts(tx, genes)
-    tx
+    keep <- !colnames(mcols(gr)) %in% blacklistCols
+    mcols(gr) <- mcols(gr)[keep]
+    mcols(gr) <- removeNA(mcols(gr))
+    idCol <- .matchGRangesNamesColumn(gr)
+    assert(hasNoDuplicates(mcols(gr)[[idCol]]))
+    names(gr) <- mcols(gr)[[idCol]]
+    gr
 }
 
 
@@ -228,42 +174,62 @@
 
 
 
+## Updated 2021-01-25.
+.rtracklayerGenesFromEnsemblGTF <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "type"),
+                y = colnames(mcols(object))
+            )
+        )
+        object <- object[mcols(object)[["type"]] == "gene"]
+        object
+    }
+
+
+
+## Updated 2021-01-25.
+.rtracklayerTranscriptsFromEnsemblGTF <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("transcript_id", "type"),
+                y = colnames(mcols(object))
+            )
+        )
+        object <- object[mcols(object)[["type"]] == "transcript"]
+        object
+    }
+
+
+
 ## Note that call upstream in `.makeGenesFromGFF()` will prepare the rows
 ## properly already, by filtering aganist `gene_id` and `transcript_id`.
-.makeGenesFromEnsemblGFF <- function(object) {
-    assert(is(object, "GRanges"))
-    ## Assign `gene_name` from `Name` column.
-    assert(
-        isSubset("Name", colnames(mcols(object))),
-        areDisjointSets("gene_name", colnames(mcols(object)))
-    )
-    mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
-    ## Assign `gene_biotype` from `biotype` column.
-    assert(
-        isSubset("biotype", colnames(mcols(object))),
-        areDisjointSets("gene_biotype", colnames(mcols(object)))
-    )
-    mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
-    object
-}
-
-
-
-.makeGenesFromEnsemblGTF <- function(object) {
+.rtracklayerGenesFromEnsemblGFF <- function(object) {
     assert(
         is(object, "GRanges"),
         isSubset(
-            x = c("gene_id", "type"),
+            x = c("Name", "biotype", "gene_id"),
             y = colnames(mcols(object))
-        )
+        ),
+        areDisjointSets(
+            x = c("gene_biotype", "gene_name"),
+            y = colnames(mcols(object))
+        ),
+        areDisjointSets("gene_biotype", colnames(mcols(object)))
     )
-    object <- object[mcols(object)[["type"]] == "gene"]
+    mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
+    mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
+    object <- object[!is.na(mcols(object)[["gene_id"]])]
     object
 }
 
 
 
-.makeTranscriptsFromEnsemblGFF <- function(object) {
+.rtracklayerTranscriptsFromEnsemblGFF <- function(object) {
     assert(is(object, "GRanges"))
     ## Assign `transcript_name` from `Name` column.
     assert(
@@ -293,17 +259,7 @@
 
 
 
-.makeTranscriptsFromEnsemblGTF <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        isSubset(
-            x = c("transcript_id", "type"),
-            y = colnames(mcols(object))
-        )
-    )
-    object <- object[mcols(object)[["type"]] == "transcript"]
-    object
-}
+
 
 
 
@@ -338,6 +294,7 @@
 
 
 
+## FIXME RETHINK THIS APPROACH.
 .standardizeFlyBaseToEnsembl <- function(object) {
     assert(is(object, "GRanges"))
     mcolnames <- colnames(mcols(object))
@@ -470,6 +427,7 @@
 
 
 
+## FIXME RETHINK THIS APPROACH.
 .standardizeGencodeToEnsembl <- function(object) {
     assert(is(object, "GRanges"))
     mcolnames <- colnames(mcols(object))
@@ -660,6 +618,7 @@
 
 
 
+## FIXME RETHINK THIS APPROACH.
 ## This step ensures that `gene_id` and `transcript_id` columns are defined.
 ## Updated 2020-01-20.
 .standardizeRefSeqToEnsembl <- function(object) {
