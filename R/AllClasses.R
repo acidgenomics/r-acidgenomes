@@ -282,7 +282,7 @@ setValidity(
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "GRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
