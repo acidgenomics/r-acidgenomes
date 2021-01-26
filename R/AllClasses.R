@@ -277,12 +277,12 @@ setValidity(
 #' Contains a `GRanges` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "GRanges"
+    contains = "GRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
