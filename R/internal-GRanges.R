@@ -110,7 +110,6 @@
 
 
 
-## FIXME Is this not working for RefSeq?
 ## FIXME Make this tighter and ONLY return if biotype column is defined.
 
 #' Add broad class annotations
@@ -170,9 +169,13 @@
         "geneName" = geneNameData,
         stringsAsFactors = TRUE
     )
-    ## Consider adding BiocParallel support here for improved speed.
-    mcols(object)[["broadClass"]] <-
-        Rle(as.factor(apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)))
+    ## NOTE Consider using BiocParallel here for improved speed.
+    x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
+    x <- as.factor(x)
+    if (all(x == "other")) {
+        return(object)
+    }
+    mcols(object)[["broadClass"]] <- Rle(x)
     object
 }
 
@@ -419,14 +422,12 @@
 .makeGRanges <- function(
     object,
     ignoreVersion = TRUE,
-    broadClass = TRUE,
     synonyms = FALSE
 ) {
     assert(
         is(object, "GRanges"),
         hasLength(object),
         isFlag(ignoreVersion),
-        isFlag(broadClass),
         isFlag(synonyms),
         isString(metadata(object)[["level"]]),
         isString(metadata(object)[["provider"]])
@@ -442,23 +443,20 @@
         object <- .addGeneVersion(object)
         object <- .addTxVersion(object)
     }
-    if (isTRUE(broadClass)) {
-        object <- .addBroadClass(object)
-    }
+    object <- .addBroadClass(object)
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, colnames(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
-    names <- as.character(mcols(object)[[idCol]])
     if (
         identical(provider, "RefSeq") &&
         identical(level, "transcripts")
     ) {
         alertInfo(sprintf(
             fmt = paste(
-                "{.var %s} contains multiple ranges per '%s'.",
+                "{.var %s} contains multiple ranges per {.var %s}.",
                 "Splitting into {.var %s}."
             ),
             "GRanges", idCol, "GRangesList"
@@ -467,12 +465,13 @@
         meta <- metadata(object)
         object <- split(x = object, f = as.factor(names))
         metadata(object) <- meta
+    } else {
+        names <- as.character(mcols(object)[[idCol]])
+        assert(hasNoDuplicates(names), !any(is.na(names)))
+        names(object) <- names
+        object <- sort(object)
+        assert(isFALSE(is.unsorted(object)))
     }
-    assert(hasNoDuplicates(names), !any(is.na(names)))
-    names(object) <- names
-    ## Sort the ranges by genomic position.
-    object <- sort(object)
-    assert(isFALSE(is.unsorted(object)))
     ## Inform the user about the number of features returned.
     alertInfo(sprintf(
         "%d %s detected.",

@@ -1,4 +1,4 @@
-#' @importClassesFrom GenomicRanges GRanges
+#' @importClassesFrom GenomicRanges CompressedGRangesList GRanges
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
@@ -37,4 +37,6 @@
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
+#'
+#' @importMethodsFrom GenomicRanges is.unsorted sort
 NULL
