@@ -573,15 +573,6 @@
 
 
 
-## UCSC ========================================================================
-
-## FIXME NEED TO ADD SUPPORT FOR THIS.
-
-## .makeGenesFromUcscGtf
-## .makeTranscriptsFromUcscGtf
-
-
-
 ## WormBase ====================================================================
 
 ## WormBase identifier fix may be needed. WormBase GTF currently imports
@@ -598,7 +589,9 @@
 
 
 
-.makeGenesFromWormBaseGTF <-
+## FIXME NEED TO CHECK THAT THIS WORKS.
+## Updated 2021-01-15.
+.rtracklayerGenesFromWormBaseGTF <-
     function(object) {
         assert(
             is(object, "GRanges"),
@@ -627,7 +620,9 @@
 
 
 
-.makeTranscriptsFromWormBaseGtf <-
+## FIXME NEED TO CHECK THAT THIS WORKS.
+## Updated 2021-01-15.
+.rtracklayersTranscriptsFromWormBaseGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
