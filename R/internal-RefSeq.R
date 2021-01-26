@@ -138,6 +138,9 @@
 
 
 
+## FIXME "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz" is currently failing
+##       seqinfo detection here....
+
 #' Get RefSeq genome assembly seqinfo
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
