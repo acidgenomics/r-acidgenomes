@@ -463,7 +463,7 @@
         ))
         ## Metadata will get dropped during `split()` call; stash and reassign.
         meta <- metadata(object)
-        object <- split(x = object, f = as.factor(names))
+        object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
         metadata(object) <- meta
     } else {
         names <- as.character(mcols(object)[[idCol]])
