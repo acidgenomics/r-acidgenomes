@@ -23,7 +23,7 @@
 #' @note Can return `NA_character_` here instead. Keeping this as "other", to
 #'   main consistency with previous data sets. Also note that `NA` can behave
 #'   inconsistently in plotting engines.
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-25.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
 #' @noRd
@@ -45,7 +45,10 @@
         ))
     ) {
         "mito"
-    } else if (x[["biotype"]] == "protein_coding") {
+    } else if (identical(
+        x = x[["biotype"]],
+        y = "protein_coding"
+    )) {
         "coding"
     } else if (
         x[["biotype"]] %in% c(
@@ -156,8 +159,8 @@
         seqnamesCol <- NULL
         seqnamesData <- NA_character_
     }
-    ## Apply broad class -------------------------------------------------------
-    ## Note that this method doesn't seem to work right with DataFrame class.
+    ## Apply broad class. Note that this method doesn't seem to work right with
+    ## DataFrame class.
     df <- data.frame(
         "biotype" = biotypeData,
         "chromosome" = seqnamesData,
@@ -242,7 +245,6 @@
         return(object)
     }
     alert("Including version in transcript identifiers.")
-
     if (isSubset("txIdVersion", colnames(mcols(object)))) {
         id <- mcols(object)[["txIdVersion"]]
     } else if (isSubset("txVersion", colnames(mcols(object)))) {
