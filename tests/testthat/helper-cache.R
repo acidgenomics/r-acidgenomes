@@ -1,3 +1,5 @@
+## FIXME NUKE THE USE OF "EXAMPLE.GTF" HERE...TOO VAGUE.
+
 if (!isTRUE(goalie::hasInternet())) {
     warning("No Internet connection detected.")
     return(invisible(NULL))

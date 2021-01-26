@@ -358,6 +358,12 @@
 
 
 
+## FIXME NEED TO AUTOMATICALLY NUKE CAPITZLIED COLUMNS.
+
+## FIXME NEED TO ADD WHITELIST COLUMNS.
+##       Dbxref, db_xref from RefSeq...need to standardize the convention here.
+##       Then safe to nuke all capital columns.
+
 #' Standardize the GRanges mcols into desired naming conventions
 #'
 #' @details
@@ -372,6 +378,12 @@
 .standardizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
+
+
+    ## FIXME AUTOMATICALLY REMOVE CAPITALIZED COLUMNS, EXCEPT FOR A WHITELIST.
+
+
+
     ## Changed to strict format here in v0.2.0 release.
     ## This results in returning "Id" identifier suffix instead of "ID".
     colnames(mcols) <- camelCase(colnames(mcols), strict = TRUE)
@@ -391,6 +403,24 @@
             x = colnames(mcols),
             ignore.case = FALSE
     )
+    ## Remove any uninformative blacklisted columns.
+    blacklistCols <- c(
+        ## e.g. Ensembl GFF. Use "(gene|tx)_biotype" instead.
+        "biotype",
+        ## e.g. RefSeq GFF.
+        "gbkey",
+        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
+        "logic_name",
+        "type"
+        ## FIXME Other values to consider:
+        ## "end_range",
+        ## "exception",
+        ## "partial",
+        ## "pseudo",
+        ## "start_range",
+        ## "transl_except"
+    )
+    keep <- !colnames(mcols) %in% blacklistCols
     ## Always prefer use "geneName" instead of "symbol".
     ## Note that ensembldb output duplicates these by default.
     if (isSubset(c("geneName", "symbol"), colnames(mcols))) {
@@ -399,24 +429,20 @@
         mcols[["geneName"]] <- mcols[["symbol"]]
         mcols[["symbol"]] <- NULL
     }
-    ## Remove any uninformative blacklisted columns.
-    blacklistCols <- c(
-        ## e.g. Ensembl GFF. Use "gene_biotype", "tx_biotype" instead.
-        "biotype",
-        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
-        "logic_name",
-        "type"
-        ## FIXME Other values to consider:
-        ## "end_range",
-        ## "exception",
-        ## "gbkey",
-        ## "partial",
-        ## "pseudo",
-        ## "start_range",
-        ## "transl_except"
-
-    )
-    keep <- !colnames(mcols) %in% blacklistCols
+    ## Add geneName column if missing.
+    if (
+        isSubset("geneId", colnames(mcols)) &&
+        !isSubset("geneName", colnames(mcols))
+    ) {
+        mcols[["geneName"]] <- mcols[["geneId"]]
+    }
+    ## Add txName column if missing.
+    if (
+        isSubset("txId", colnames(mcols)) &&
+        !isSubset("txName", colnames(mcols))
+    ) {
+        mcols[["txName"]] <- mcols[["txId"]]
+    }
     mcols <- mcols[keep]
     mcols(object) <- mcols
     object
