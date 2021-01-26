@@ -250,7 +250,7 @@ setValidity(
 #' RefSeq gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with RefSeq gene-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-01-26.
@@ -275,7 +275,7 @@ setValidity(
 #' RefSeq transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with RefSeq transcript-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-01-26.
