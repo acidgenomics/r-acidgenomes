@@ -454,20 +454,20 @@
     ## Inform the user if the object contains invalid names, showing offenders.
     ## This can happen with RefSeq genes, WormBase transcripts, but should be
     ## clean for Ensembl and GENCODE.
-    invalidNames <- setdiff(names, make.names(names, unique = TRUE))
-    if (hasLength(invalidNames)) {
-        invalidNames <- sort(unique(invalidNames))
-        alertWarning(sprintf(
-            fmt = "%d invalid %s: %s.",
-            length(invalidNames),
-            ngettext(
-                n = length(invalidNames),
-                msg1 = "name",
-                msg2 = "names"
-            ),
-            toInlineString(invalidNames, n = 10L)
-        ))
-    }
+    ## > invalidNames <- setdiff(names, make.names(names, unique = TRUE))
+    ## > if (hasLength(invalidNames)) {
+    ## >     invalidNames <- sort(unique(invalidNames))
+    ## >     alertWarning(sprintf(
+    ## >         fmt = "%d invalid %s: %s.",
+    ## >         length(invalidNames),
+    ## >         ngettext(
+    ## >             n = length(invalidNames),
+    ## >             msg1 = "name",
+    ## >             msg2 = "names"
+    ## >         ),
+    ## >         toInlineString(invalidNames, n = 10L)
+    ## >     ))
+    ## > }
     names(object) <- names
     ## Ensure the ranges are sorted by genomic position.
     object <- sort(object)
