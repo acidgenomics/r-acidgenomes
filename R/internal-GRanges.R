@@ -114,23 +114,20 @@
 .addBroadClass <- function(object) {
     assert(
         is(object, "GRanges"),
-        hasNoDuplicates(names(object)),
         identical(
             x = colnames(mcols(object)),
             y = camelCase(colnames(mcols(object)), strict = TRUE)
         ),
-        !isSubset("broadClass", colnames(mcols(object)))
+        !isSubset("broadClass", colnames(mcols(object))),
+        allAreNotMatchingRegex(
+            pattern = "^transcript",
+            x = colnames(mcols(object))
+        )
     )
     df <- as.data.frame(object)
-    colnames(df) <- gsub(
-        pattern = "^transcript",
-        replacement = "tx",
-        x = colnames(df)
-    )
-    ## Biotypes ----------------------------------------------------------------
-    ## Prioritizing transcript biotype over gene, if defined. This only applies
-    ## for transcript-level GRanges. For gene-level GRanges, the gene biotypes
-    ## will be used, as expected.
+    ## Biotypes. Prioritizing transcript biotype over gene, if defined. This
+    ## only applies for transcript-level GRanges. For gene-level GRanges, the
+    ## gene biotypes will be used, as expected.
     if ("txBiotype" %in% colnames(df)) {
         biotypeCol <- "txBiotype"
         biotypeData <- df[[biotypeCol]]
@@ -138,9 +135,10 @@
         biotypeCol <- "geneBiotype"
         biotypeData <- df[[biotypeCol]]
     } else {
-        return(NA_character_)
+        biotypeCol <- NULL
+        biotypeData <- NA_character_
     }
-    ## Gene names --------------------------------------------------------------
+    ## Gene names.
     if ("geneName" %in% colnames(df)) {
         geneNameCol <- "geneName"
         geneNameData <- df[[geneNameCol]]
@@ -148,10 +146,9 @@
         geneNameCol <- NULL
         geneNameData <- NA_character_
     }
-    ## Seqnames ----------------------------------------------------------------
-    ## This refers to the chromosome name.
-    ## Note that data frame coercion will define `seqnames` column from the
-    ## `GRanges` object (see above).
+    ## Seqnames. This refers to the chromosome name. Note that data frame
+    ## coercion will define `seqnames` column from the `GRanges` object
+    ## (see above).
     if ("seqnames" %in% colnames(df)) {
         seqnamesCol <- "seqnames"
         seqnamesData <- df[[seqnamesCol]]
@@ -170,7 +167,6 @@
     ## Consider adding BiocParallel support here for improved speed.
     mcols(object)[["broadClass"]] <-
         Rle(as.factor(apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)))
-    validObject(object)
     object
 }
 
