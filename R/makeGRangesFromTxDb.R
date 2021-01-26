@@ -50,7 +50,7 @@ makeGRangesFromTxDb <- function(
         }
     )
     columns <- colsList[[level]]
-    assert(isString(columns))
+    assert(isCharacter(columns))
     args <- list(
         "x" = object,
         "columns" = columns
