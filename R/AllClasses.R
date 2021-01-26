@@ -91,6 +91,30 @@ setValidity(
 
 
 
+#' FlyBase gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with FlyBase gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `FlyBaseGenes`.
+setClass(
+    Class = "FlyBaseGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "FlyBaseGenes",
+    method = function(object) {
+        validate(
+            identical(metadata(object)[["provider"]], "FlyBase")
+        )
+    }
+)
+
+
+
 #' GENCODE gene annotations
 #'
 #' @details
@@ -108,7 +132,6 @@ setValidity(
     Class = "GencodeGenes",
     method = function(object) {
         validate(
-            ## FIXME CHECK FOR "CHR" IN SEQINFO.
             identical(metadata(object)[["provider"]], "GENCODE")
         )
     }
