@@ -244,9 +244,9 @@ makeGRangesFromGFF <- function(
         pattern = .gffPatterns[["ucsc"]],
         x = basename(file)
     )) {
-        db <- makeTxDbFromGFF(file)
+        txdb <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
-            object = db,
+            object = txdb,
             level = level,
             ignoreVersion = TRUE
         )
