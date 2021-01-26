@@ -14,5 +14,5 @@ RefSeq transcript annotations
 Contains a \code{GRanges} with RefSeq transcript-level annotations.
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-01-26.
 }

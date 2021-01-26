@@ -250,9 +250,8 @@ makeGRangesFromGFF <- function(
             x = basename(file)
         )
     ) {
-        txdb <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
-            object = txdb,
+            object = makeTxDbFromGFF(file),
             level = level,
             ignoreVersion = TRUE
         )
