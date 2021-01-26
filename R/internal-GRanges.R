@@ -373,7 +373,7 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #' @noRd
 .standardizeGRanges <- function(object) {
     assert(is(object, "GRanges"))
@@ -421,13 +421,29 @@
         ## "transl_except"
     )
     keep <- !colnames(mcols) %in% blacklistCols
-    ## Always prefer use "geneName" instead of "symbol".
-    ## Note that ensembldb output duplicates these by default.
+    ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
+    ## Note that ensembldb output "symbol" duplicate by default.
     if (isSubset(c("geneName", "symbol"), colnames(mcols))) {
         mcols[["symbol"]] <- NULL
-    } else if (isSubset("symbol", colnames(mcols))) {
-        mcols[["geneName"]] <- mcols[["symbol"]]
-        mcols[["symbol"]] <- NULL
+    } else if (
+        isSubset("symbol", colnames(mcols)) &&
+        !isSubset("geneName", colnames(mcols))
+    ) {
+        colnames(mcols)[colnames(mcols) == "symbol"] <- "geneName"
+    } else if (
+        isSubset("geneSymbol", colnames(mcols)) &&
+        !isSubset("geneName", colnames(mcols))
+    ) {
+        ## e.g. FlyBase GTF.
+        colnames(mcols)[colnames(mcols) == "geneSymbol"] <- "geneName"
+    }
+    ## Always prefer use of "txName" instead of "txSymbol".
+    if (
+        isSubset("txSymbol", colnames(mcols)) &&
+        !isSubset("txName", colnames(mcols))
+    ) {
+        ## e.g. FlyBase GTF.
+        colnames(mcols)[colnames(mcols) == "txSymbol"] <- "txName"
     }
     ## Add geneName column if missing.
     if (
@@ -442,6 +458,21 @@
         !isSubset("txName", colnames(mcols))
     ) {
         mcols[["txName"]] <- mcols[["txId"]]
+    }
+    ## Always prefer use of "geneBiotype" instead of "geneType".
+    if (
+        isSubset("geneType", colnames(mcols)) &&
+        !isSubset("geneBiotype", colnames(mcols))
+    ) {
+        ## e.g. GENCODE GFF.
+        colnames(mcols)[colnames(mcols) == "geneType"] <- "geneBiotype"
+    }
+    if (
+        isSubset("txType", colnames(mcols)) &&
+        !isSubset("txBiotype", colnames(mcols))
+    ) {
+        ## e.g. GENCODE GFF.
+        colnames(mcols)[colnames(mcols) == "txType"] <- "txBiotype"
     }
     mcols <- mcols[keep]
     mcols(object) <- mcols
