@@ -91,6 +91,18 @@ setValidity(
 
 
 
+#' Shared FlyBase validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.flybaseValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "FlyBase")
+    )
+}
+
+
+
 #' FlyBase gene annotations
 #'
 #' @details
@@ -107,9 +119,33 @@ setClass(
 setValidity(
     Class = "FlyBaseGenes",
     method = function(object) {
-        validate(
-            identical(metadata(object)[["provider"]], "FlyBase")
-        )
+        ok <- .flybaseValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
+    }
+)
+
+
+
+#' FlyBase transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with FlyBase transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `FlyBaseTranscripts`.
+setClass(
+    Class = "FlyBaseTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "FlyBaseTranscripts",
+    method = function(object) {
+        ok <- .flybaseValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
