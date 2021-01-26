@@ -28,13 +28,16 @@ makeGRangesFromTxDb <- function(
     keys <- columns(object)
     colsList <- list(
         "cds" = grep(pattern = "^CDS", x = keys, value = TRUE),
-        "exon" = grep(pattern = "^EXON", x = keys, value = TRUE),
-        "gene" = grep(pattern = "^GENE", x = keys, value = TRUE),
-        "tx" = grep(pattern = "^TX", x = keys, value = TRUE)
+        "exons" = grep(pattern = "^EXON", x = keys, value = TRUE),
+        "genes" = grep(pattern = "^GENE", x = keys, value = TRUE),
+        "transcripts" = grep(pattern = "^TX", x = keys, value = TRUE)
     )
-    colsList[["cds"]] <- c(colsList[["cds"]], colsList[["gene"]])
-    colsList[["exon"]] <- c(colsList[["exon"]], colsList[["gene"]])
-    colsList[["tx"]] <- c(colsList[["tx"]], colsList[["gene"]])
+    colsList[["cds"]] <-
+        c(colsList[["cds"]], colsList[["genes"]])
+    colsList[["exons"]] <-
+        c(colsList[["exons"]], colsList[["genes"]])
+    colsList[["transcripts"]] <-
+        c(colsList[["transcripts"]], colsList[["genes"]])
     colsList <- lapply(
         X = colsList,
         FUN = function(x) {
@@ -46,9 +49,11 @@ makeGRangesFromTxDb <- function(
             )
         }
     )
+    columns <- colsList[[level]]
+    assert(isString(columns))
     args <- list(
         "x" = object,
-        "columns" = colsList[[level]]
+        "columns" = columns
     )
     switch(
         EXPR = level,
