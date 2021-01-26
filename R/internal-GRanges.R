@@ -414,7 +414,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -435,6 +435,7 @@
         arg = metadata(object)[["level"]],
         choices = .grangesLevels
     )
+    provider <- metadata(object)[["provider"]]
     object <- .minimizeGRanges(object)
     object <- .standardizeGRanges(object)
     if (isFALSE(ignoreVersion)) {
@@ -442,40 +443,34 @@
         object <- .addTxVersion(object)
     }
     if (isTRUE(broadClass)) {
-        ## FIXME THIS IS RETURNING NA FOR FLYBASE...
         object <- .addBroadClass(object)
     }
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
-    ## Define the names by desired identifier column.
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, colnames(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
     names <- as.character(mcols(object)[[idCol]])
-    ## FIXME RefSeq transcripts aren't unique here.
-    ##       Return as GRangesList?
-    ##       Split method is in previous release / basejump.
+    if (
+        identical(provider, "RefSeq") &&
+        identical(level, "transcripts")
+    ) {
+        alertInfo(sprintf(
+            fmt = paste(
+                "{.var %s} contains multiple ranges per '%s'.",
+                "Splitting into {.var %s}."
+            ),
+            "GRanges", idCol, "GRangesList"
+        ))
+        ## Metadata will get dropped during `split()` call; stash and reassign.
+        meta <- metadata(object)
+        object <- split(x = object, f = as.factor(names))
+        metadata(object) <- meta
+    }
     assert(hasNoDuplicates(names), !any(is.na(names)))
-    ## Inform the user if the object contains invalid names, showing offenders.
-    ## This can happen with RefSeq genes, WormBase transcripts, but should be
-    ## clean for Ensembl and GENCODE.
-    ## > invalidNames <- setdiff(names, make.names(names, unique = TRUE))
-    ## > if (hasLength(invalidNames)) {
-    ## >     invalidNames <- sort(unique(invalidNames))
-    ## >     alertWarning(sprintf(
-    ## >         fmt = "%d invalid %s: %s.",
-    ## >         length(invalidNames),
-    ## >         ngettext(
-    ## >             n = length(invalidNames),
-    ## >             msg1 = "name",
-    ## >             msg2 = "names"
-    ## >         ),
-    ## >         toInlineString(invalidNames, n = 10L)
-    ## >     ))
-    ## > }
     names(object) <- names
-    ## Ensure the ranges are sorted by genomic position.
+    ## Sort the ranges by genomic position.
     object <- sort(object)
     assert(isFALSE(is.unsorted(object)))
     ## Inform the user about the number of features returned.
@@ -488,7 +483,7 @@
             msg2 = level                                  # genes
         )
     ))
-    ## Sort the metadata columns alphabetically.
+    ## Sort the mcols alphabetically.
     mcols(object) <-
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
     ## Ensure metadata elements are all sorted alphabetically.
@@ -496,8 +491,6 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    provider <- metadata(object)[["provider"]]
-    assert(isString(provider))
     class <- upperCamelCase(
         object = paste(provider, level),
         strict = FALSE
@@ -505,6 +498,7 @@
     if (isClass(Class = class)) {
         out <- new(Class = class, object)
     } else {
+        ## This is used to return CDS and exons from TxDb.
         out <- object
     }
     out
