@@ -110,6 +110,8 @@
 
 
 
+## FIXME Is this not working for RefSeq?
+
 #' Add broad class annotations
 #'
 #' @note Updated 2021-01-25.
