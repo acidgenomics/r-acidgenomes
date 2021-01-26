@@ -488,18 +488,15 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    ## FIXME Reenable this once we get RefSeq genes working.
-    ## > class <- upperCamelCase(
-    ## >     object = paste(provider, level),
-    ## >     strict = FALSE
-    ## > )
-    ## > if (isClass(Class = class)) {
-    ## >     ## FIXME This isn't working quite right for RefSeq genes yet.
-    ## >     ## no method or default for coercing "CompressedGRangesList" to "GRanges"
-    ## >     out <- new(Class = class, object)
-    ## > } else {
-    ## >     ## This is used to return CDS and exons from TxDb.
-    ## >     out <- object
-    ## > }
+    class <- upperCamelCase(
+        object = paste(provider, level),
+        strict = FALSE
+    )
+    if (isClass(Class = class)) {
+        out <- new(Class = class, object)
+    } else {
+        ## This is used to return CDS and exons from TxDb.
+        out <- object
+    }
     out
 }
