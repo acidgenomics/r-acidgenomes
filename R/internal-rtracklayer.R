@@ -103,7 +103,7 @@
 
 
 
-## Updated 2021-01-25.
+## Updated 2021-01-26.
 .rtracklayerGenesFromEnsemblGff <-
     function(object) {
         assert(
@@ -120,6 +120,7 @@
         )
         keep <- !is.na(mcols(object)[["gene_id"]])
         object <- object[keep]
+        ## FIXME DONT DUPLICATE AND REMOVE, RENAME...
         mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
         mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
         object
@@ -166,6 +167,7 @@
                 x = as.character(mcols(object)[["Parent"]])
             )
         )
+        ## FIXME DONT DUPLICATE, RENAME.
         mcols(object)[["transcript_biotype"]] <- mcols(object)[["biotype"]]
         mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
         mcols(object)[["gene_id"]] <- gsub(
@@ -204,44 +206,25 @@
 
 
 
-## Updated 2021-01-25.
+## Updated 2021-01-26.
 .rtracklayerGenesFromFlyBaseGtf <-
     function(object) {
-        object <- .standardizeFlyBaseToEnsembl(object)
         .rtracklayerGenesFromEnsemblGtf(object)
     }
 
 
 
-## Updated 2021-01-25.
+## FIXME NEED TO RETHINK THIS ONE?
+
+## Updated 2021-01-26.
 .rtracklayerTranscriptsFromFlyBaseGtf <-
     function(object) {
-        object <- .standardizeFlyBaseToEnsembl(object)
         keep <- grepl(
             pattern = paste(c("^pseudogene$", "RNA$"), collapse = "|"),
             x = mcols(object)[["type"]],
             ignore.case = TRUE
         )
         object <- object[keep]
-        object
-    }
-
-
-
-## Updated 2021-01-25.
-.standardizeFlyBaseToEnsembl <-
-    function(object) {
-        assert(is(object, "GRanges"))
-        colnames(mcols(object)) <- sub(
-            pattern = "^gene_symbol$",
-            replacement = "gene_name",
-            x = colnames(mcols(object))
-        )
-        colnames(mcols(object)) <- sub(
-            pattern = "^transcript_symbol$",
-            replacement = "transcript_name",
-            x = colnames(mcols(object))
-        )
         object
     }
 
@@ -280,7 +263,9 @@
 
 
 
-## Updated 2021-01-25.
+## FIXME SIMPLIFY THE ASSERT HERE.
+
+## Updated 2021-01-26.
 .rtracklayerGenesFromGencodeGff <-
     function(object) {
         object <- .standardizeGencodeToEnsembl(object)
@@ -294,24 +279,24 @@
         object <- object[keep]
         ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
         mcols(object)[["gene_id"]] <- mcols(object)[["ID"]]
+        mcols(object)[["ID"]] <- NULL
         object
     }
 
 
 
-## Updated 2021-01-25.
+## Updated 2021-01-26.
 .rtracklayerGenesFromGencodeGtf <-
     function(object) {
-        object <- .standardizeGencodeToEnsembl(object)
         .rtracklayerGenesFromEnsemblGtf(object)
     }
 
 
 
-## Updated 2021-01-25.
+## Updated 2021-01-26.
 .rtracklayerTranscriptsFromGencodeGff <-
     function(object) {
-        object <- .standardizeGencodeToEnsembl(object)
+        ## FIXME SIMPLIFY THE ASSERT HERE.
         assert(
             isSubset(
                 x = c(
@@ -325,6 +310,7 @@
         object <- object[keep]
         ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
         mcols(object)[["transcript_id"]] <- mcols(object)[["ID"]]
+        mcols(object)[["ID"]] <- NULL
         object
     }
 
@@ -333,30 +319,7 @@
 ## Updated 2021-01-25.
 .rtracklayerTranscriptsFromGencodeGtf <-
     function(object) {
-        object <- .standardizeGencodeToEnsembl(object)
         .rtracklayerTranscriptsFromEnsemblGtf(object)
-    }
-
-
-
-## Updated 2021-01-25.
-.standardizeGencodeToEnsembl <-
-    function(object) {
-        assert(is(object, "GRanges"))
-        mcolnames <- colnames(mcols(object))
-        ## Match Ensembl spec, which uses `*_biotype` instead of `*_type`.
-        mcolnames <- sub(
-            pattern = "^gene_type$",
-            replacement = "gene_biotype",
-            x = mcolnames
-        )
-        mcolnames <- sub(
-            pattern = "^transcript_type$",
-            replacement = "transcript_biotype",
-            x = mcolnames
-        )
-        colnames(mcols(object)) <- mcolnames
-        object
     }
 
 
@@ -574,7 +537,7 @@
 
 
 
-## FIXME RETHINK THIS APPROACH.
+## FIXME RETHINK THIS APPROACH, CONSIDER USING ABOVE.
 ## This step ensures that `gene_id` and `transcript_id` columns are defined.
 ## Updated 2020-01-20.
 .standardizeRefSeqToEnsembl <-
