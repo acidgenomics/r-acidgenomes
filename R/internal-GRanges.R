@@ -111,6 +111,7 @@
 
 
 ## FIXME Is this not working for RefSeq?
+## FIXME Make this tighter and ONLY return if biotype column is defined.
 
 #' Add broad class annotations
 #'
@@ -452,6 +453,9 @@
     assert(isSubset(idCol, colnames(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
     names <- as.character(mcols(object)[[idCol]])
+    ## FIXME RefSeq transcripts aren't unique here.
+    ##       Return as GRangesList?
+    ##       Split method is in previous release / basejump.
     assert(hasNoDuplicates(names), !any(is.na(names)))
     ## Inform the user if the object contains invalid names, showing offenders.
     ## This can happen with RefSeq genes, WormBase transcripts, but should be
