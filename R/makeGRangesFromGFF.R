@@ -250,16 +250,9 @@ makeGRangesFromGFF <- function(
             x = basename(file)
         )
     ) {
-        ## Hitting a weird R error here:
-        ## Make the TxDb object ... OK
-        ## Error in makeGRangesFromTxDb(object = makeTxDbFromGFF(file), level = level,  :
-        ## object 'txdb' not found
-        ## Calls: <Anonymous> -> makeGRangesFromTxDb
-        ## Backtrace:
-        ## 1. └─AcidGenomes::makeGRangesFromGFF(file)
-        ## 2.   └─AcidGenomes::makeGRangesFromTxDb(...) makeGRangesFromGFF.R:253:8
+        db <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
-            object = makeTxDbFromGFF(file),
+            object = db,
             level = level,
             ignoreVersion = TRUE
         )
