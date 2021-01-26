@@ -45,7 +45,7 @@
     funName <- paste0(
         ".",
         camelCase(
-            object = paste("rtracklayer", level, "from", provider, format),
+            object = paste("rtracklayer", provider, level, format),
             strict = TRUE
         )
     )
@@ -104,64 +104,69 @@
 
 
 ## Updated 2021-01-26.
-.rtracklayerGenesFromEnsemblGff <-
+.rtracklayerEnsemblGenesGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "biotype", "gene_id"),
-                y = colnames(mcols(object))
+                x = c("Name", "gene_id"),
+                y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c("gene_biotype", "gene_name"),
-                y = colnames(mcols(object))
-            ),
-            areDisjointSets("gene_biotype", colnames(mcols(object)))
+                x = "gene_name",
+                y = names(mcols(object))
+            )
         )
         keep <- !is.na(mcols(object)[["gene_id"]])
         object <- object[keep]
-        ## FIXME DONT DUPLICATE AND REMOVE, RENAME...
-        mcols(object)[["gene_biotype"]] <- mcols(object)[["biotype"]]
-        mcols(object)[["gene_name"]] <- mcols(object)[["Name"]]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        names(mcols(object))[names(mcols(object)) == "Name"] <- "gene_name"
+        ## FIXME NEED TO RENAME VERSION TO GENE VERSION?
         object
     }
 
 
 
+## FIXME HOW IS GENE VERSION HANDLED HERE?
+
 ## Updated 2021-01-25.
-.rtracklayerGenesFromEnsemblGtf <-
+.rtracklayerEnsemblGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c("gene_id", "type"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         object
     }
 
 
 
-## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGff <-
+## FIXME HOW IS TX AND GENE VERSION HANDLED HERE? ARE THEY THE SAME??
+
+## Updated 2021-01-26.
+.rtracklayerEnsemblTranscriptsGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c("Name", "Parent", "biotype"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             ),
             areDisjointSets(
                 x = c("transcript_biotype", "transcript_name"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- !is.na(mcols(object)[["transcript_id"]])
         object <- object[keep]
         assert(
+            hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
                 pattern = "^gene:",
                 x = as.character(mcols(object)[["Parent"]])
@@ -175,6 +180,7 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
+        ## FIXME NEED TO RENAME VERSION TO GENE VERSION?
         object
     }
 
@@ -187,7 +193,7 @@
             is(object, "GRanges"),
             isSubset(
                 x = c("transcript_id", "type"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
@@ -272,7 +278,7 @@
         assert(
             isSubset(
                 x = c("ID", "gene_biotype", "gene_id", "gene_name", "type"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
@@ -303,7 +309,7 @@
                     "gene_biotype", "gene_id",
                     "transcript_biotype", "transcript_id"
                 ),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
@@ -424,11 +430,11 @@
                     "gene_biotype",
                     "type"
                 ),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             ),
             areDisjointSets(
                 x = "gene_id",
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         keep <- !is.na(mcols(object)[["gbkey"]])
@@ -455,8 +461,8 @@
         ids <- gsub(pattern = "^GeneID:", replacement = "", x = ids)
         ids <- as.integer(ids)
         mcols(object)[["gene_id"]] <- ids
-        colnames(mcols(object))[
-            colnames(mcols(object)) == "gene"] <- "gene_name"
+        names(mcols(object))[
+            names(mcols(object)) == "gene"] <- "gene_name"
         ## FIXME NEED TO RENAME AND KEEP DBXREF KEY.
         object
     }
@@ -470,17 +476,17 @@
             is(object, "GRanges"),
             isSubset(
                 x = c("db_xref", "gbkey", "gene_biotype", "gene_id", "type"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             ),
-            areDisjointSets("gene_name", colnames(mcols(object)))
+            areDisjointSets("gene_name", names(mcols(object)))
         )
         keep <- mcols(object)[["gbkey"]] == "Gene"
         object <- object[keep]
         mcols(object)[["gene_id"]] <- mcols(object)[["gene"]]
         mcols(object)[["gene"]] <- NULL
         mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-        colnames(mcols(object))[
-            colnames(mcols(object)) == "db_xref"] <- "dbxref"
+        names(mcols(object))[
+            names(mcols(object)) == "db_xref"] <- "dbxref"
         object
     }
 
@@ -493,8 +499,8 @@
     function(object) {
         assert(
             is(object, "GRanges"),
-            isSubset("Name", colnames(mcols(object))),
-            areDisjointSets("transcript_name", colnames(mcols(object)))
+            isSubset("Name", names(mcols(object))),
+            areDisjointSets("transcript_name", names(mcols(object)))
         )
         ## Only keep annotations that map to `Name` column.
         keep <- !is.na(mcols(object)[["Name"]])
@@ -511,10 +517,10 @@
     function(object) {
         assert(
             is(object, "GRanges"),
-            isSubset(c("transcript_id", "type"), colnames(mcols(object))),
+            isSubset(c("transcript_id", "type"), names(mcols(object))),
             areDisjointSets(
                 x = c("gene_name", "transcript_biotype", "transcript_name"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
         ## Note that we're filtering by "exon" instead of "transcript" here.
@@ -547,25 +553,25 @@
         assert(
             isSubset(
                 x = c("gene", "transcript_id"),
-                y = colnames(mcols)
+                y = names(mcols)
             ),
             areDisjointSets(
                 x = c("gene_name", "transcript_name"),
-                y = colnames(mcols)
+                y = names(mcols)
             )
         )
         ## Ensure `gene_id` is defined.
-        if (isTRUE(all(c("gene", "gene_id") %in% colnames(mcols)))) {
+        if (isTRUE(all(c("gene", "gene_id") %in% names(mcols)))) {
             ## Pick `gene_id` over `gene` column, if both are defined.
             ## This applies to GTF spec.
-            keep <- setdiff(colnames(mcols), "gene")
+            keep <- setdiff(names(mcols), "gene")
             mcols <- mcols[keep]
-        } else if ("gene" %in% colnames(mcols)) {
+        } else if ("gene" %in% names(mcols)) {
             ## Rename `gene` column to `gene_id`, matching Ensembl spec.
             ## This applies to GFF3 spec.
-            colnames(mcols) <- sub("^gene$", "gene_id", colnames(mcols))
+            names(mcols) <- sub("^gene$", "gene_id", names(mcols))
         }
-        assert(isSubset(c("gene_id", "transcript_id"), colnames(mcols)))
+        assert(isSubset(c("gene_id", "transcript_id"), names(mcols)))
         mcols(object) <- mcols
         object
     }
@@ -594,8 +600,8 @@
     function(object) {
         assert(
             is(object, "GRanges"),
-            isSubset(x = "gene_id", y = colnames(mcols(object))),
-            areDisjointSets(x = "gene_name", y = colnames(mcols(object)))
+            isSubset(x = "gene_id", y = names(mcols(object))),
+            areDisjointSets(x = "gene_name", y = names(mcols(object)))
         )
         ## Sanitize the `gene_id` column, which can contain some malformed entries
         ## prefixed with "Gene:". We want to keep these entries.
@@ -627,15 +633,15 @@
             is(object, "GRanges"),
             isSubset(
                 x = c("gene_id", "transcript_id"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             ),
             areDisjointSets(
                 x = c("gene_name", "transcript_name"),
-                y = colnames(mcols(object))
+                y = names(mcols(object))
             )
         )
-        ## Sanitize the `gene_id` column, which can contain some malformed entries
-        ## prefixed with "Gene:". We want to keep these entries.
+        ## Sanitize the `gene_id` column, which can contain some malformed
+        ## entries prefixed with "Gene:". We want to keep these entries.
         mcols(object)[["gene_id"]] <- gsub(
             pattern = "^Gene:",
             replacement = "",
