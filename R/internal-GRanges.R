@@ -450,10 +450,7 @@
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, colnames(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
-    if (
-        identical(provider, "RefSeq") &&
-        identical(level, "transcripts")
-    ) {
+    if (hasDuplicates(mcols(object)[[idCol]])) {
         alertInfo(sprintf(
             fmt = paste(
                 "{.var %s} contains multiple ranges per {.var %s}.",
@@ -462,6 +459,7 @@
             "GRanges", idCol, "GRangesList"
         ))
         ## Metadata will get dropped during `split()` call; stash and reassign.
+        ## FIXME This isn't setting correctly for RefSeq genes?
         meta <- metadata(object)
         object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
         metadata(object) <- meta
@@ -490,15 +488,18 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    class <- upperCamelCase(
-        object = paste(provider, level),
-        strict = FALSE
-    )
-    if (isClass(Class = class)) {
-        out <- new(Class = class, object)
-    } else {
-        ## This is used to return CDS and exons from TxDb.
-        out <- object
-    }
+    ## FIXME Reenable this once we get RefSeq genes working.
+    ## > class <- upperCamelCase(
+    ## >     object = paste(provider, level),
+    ## >     strict = FALSE
+    ## > )
+    ## > if (isClass(Class = class)) {
+    ## >     ## FIXME This isn't working quite right for RefSeq genes yet.
+    ## >     ## no method or default for coercing "CompressedGRangesList" to "GRanges"
+    ## >     out <- new(Class = class, object)
+    ## > } else {
+    ## >     ## This is used to return CDS and exons from TxDb.
+    ## >     out <- object
+    ## > }
     out
 }
