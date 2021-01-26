@@ -27,6 +27,66 @@
 
 
 
+#' Shared FlyBase validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.flybaseValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "FlyBase")
+    )
+}
+
+
+
+#' Shared GENCODE validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.gencodeValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "GENCODE")
+    )
+}
+
+
+
+#' Shared RefSeq validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.refseqValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "RefSeq")
+    )
+}
+
+
+
+#' Shared UCSC validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.ucscValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "UCSC")
+    )
+}
+
+
+
+#' Shared WormBase validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.wormbaseValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "WormBase")
+    )
+}
+
+
+
 #' Ensembl gene annotations
 #'
 #' @details
@@ -91,18 +151,6 @@ setValidity(
 
 
 
-#' Shared FlyBase validity checks
-#'
-#' @note Updated 2021-01-25.
-#' @noRd
-.flybaseValidity <- function(object) {
-    validate(
-        identical(metadata(object)[["provider"]], "FlyBase")
-    )
-}
-
-
-
 #' FlyBase gene annotations
 #'
 #' @details
@@ -157,7 +205,7 @@ setValidity(
 #' Contains a `GRanges` with GENCODE gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-25.
 #'
 #' @return `GencodeGenes`.
 setClass(
@@ -167,9 +215,9 @@ setClass(
 setValidity(
     Class = "GencodeGenes",
     method = function(object) {
-        validate(
-            identical(metadata(object)[["provider"]], "GENCODE")
-        )
+        ok <- .gencodeValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -181,7 +229,7 @@ setValidity(
 #' Contains a `GRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-25.
 #'
 #' @return `GencodeTranscripts`.
 setClass(
@@ -191,9 +239,9 @@ setClass(
 setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
-        validate(
-            identical(metadata(object)[["provider"]], "GENCODE")
-        )
+        ok <- .gencodeValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -205,7 +253,7 @@ setValidity(
 #' Contains a `GRanges` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-25.
 #'
 #' @return `RefSeqGenes`.
 setClass(
@@ -215,8 +263,8 @@ setClass(
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ## FIXME Need to add checks here.
-        ## FIXME Check for seqinfo here.
+        ok <- .refseqValidity(object)
+        if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
@@ -229,7 +277,7 @@ setValidity(
 #' Contains a `GRanges` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-10.
+#' @note Updated 2021-01-25.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
@@ -239,24 +287,11 @@ setClass(
 setValidity(
     Class = "RefSeqTranscripts",
     method = function(object) {
-        ## FIXME Ensure identifiers match expected format.
-        ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
-        ## FIXME Check for seqinfo here.
+        ok <- .refseqValidity(object)
+        if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
-
-
-
-#' Shared UCSC validity checks
-#'
-#' @note Updated 2021-01-25.
-#' @noRd
-.ucscValidity <- function(object) {
-    validate(
-        identical(metadata(object)[["provider"]], "UCSC")
-    )
-}
 
 
 
@@ -301,6 +336,54 @@ setValidity(
     Class = "UCSCTranscripts",
     method = function(object) {
         ok <- .ucscValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
+    }
+)
+
+
+
+#' WormBase gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with WormBase gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `WormBaseGenes`.
+setClass(
+    Class = "WormBaseGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "WormBaseGenes",
+    method = function(object) {
+        ok <- .wormbaseValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
+    }
+)
+
+
+
+#' WormBase transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with WormBase transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `WormBaseTranscripts`.
+setClass(
+    Class = "WormBaseTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "WormBaseTranscripts",
+    method = function(object) {
+        ok <- .wormbaseValidity(object)
         if (!isTRUE(ok)) return(ok)
         TRUE
     }
