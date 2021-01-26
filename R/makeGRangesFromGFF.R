@@ -250,11 +250,9 @@ makeGRangesFromGFF <- function(
             x = basename(file)
         )
     ) {
-        db <- makeTxDbFromGFF(file)
-        ## FIXME R is having an issue locating txdb here.
-        ## object 'txdb' not found
+        txdb <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
-            object = db,
+            object = txdb,
             level = level,
             ignoreVersion = TRUE
         )
