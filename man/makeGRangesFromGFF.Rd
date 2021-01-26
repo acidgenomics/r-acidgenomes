@@ -227,8 +227,8 @@ genes <- makeGRangesFromGFF(file = file, level = "genes")
 summary(genes)
 
 ## Transcripts.
-transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
-summary(transcripts)
+## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+## > summary(transcripts)
 
 ## GENCODE ====
 file <- pasteURL(
