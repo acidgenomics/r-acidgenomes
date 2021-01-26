@@ -4,6 +4,7 @@ if (!isTRUE(goalie::hasInternet())) {
 }
 dir.create("cache", showWarnings = FALSE)
 files <- c(
+    "cellranger-genes.gtf.gz",
     "ensembl.gff3",
     "ensembl.gtf",
     "example.gff3",

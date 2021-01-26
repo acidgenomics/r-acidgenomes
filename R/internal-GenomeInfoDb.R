@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -66,13 +66,10 @@
     if (!is.list(x)) {
         x <- getGFFMetadata(x)
     }
-    assert(
-        is.list(x),
-        isSubset(
-            x = c("genomeBuild", "organism", "provider"),
-            y = names(x)
-        )
-    )
+    assert(is.list(x))
+    if (!isSubset(x = c("genomeBuild", "organism", "provider"), y = names(x))) {
+        return(NULL)
+    }
     assert(
         isString(x[["file"]]),
         isString(x[["genomeBuild"]]),

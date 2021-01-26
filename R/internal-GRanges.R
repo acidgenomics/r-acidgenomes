@@ -459,7 +459,6 @@
             "GRanges", idCol, "GRangesList"
         ))
         ## Metadata will get dropped during `split()` call; stash and reassign.
-        ## FIXME This isn't setting correctly for RefSeq genes?
         meta <- metadata(object)
         object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
         metadata(object) <- meta
@@ -471,15 +470,15 @@
         assert(isFALSE(is.unsorted(object)))
     }
     ## Inform the user about the number of features returned.
-    alertInfo(sprintf(
-        "%d %s detected.",
-        length(object),
-        ngettext(
-            n = length(object),
-            msg1 = substr(level, 1L, nchar(level) - 1L),  # gene
-            msg2 = level                                  # genes
-        )
-    ))
+    ## > alertInfo(sprintf(
+    ## >     "%d %s detected.",
+    ## >     length(object),
+    ## >     ngettext(
+    ## >         n = length(object),
+    ## >         msg1 = substr(level, 1L, nchar(level) - 1L),  # gene
+    ## >         msg2 = level                                  # genes
+    ## >     )
+    ## > ))
     ## Sort the mcols alphabetically.
     mcols(object) <-
         mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
