@@ -181,17 +181,26 @@
 
 
 
+## FIXME ONLY ALLOW THIS FOR ENSEMBL AND GENCODE.
+
 #' Add Ensembl gene synonyms
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-01-26.
 #' @noRd
+#'
+#' @details Currently supported only for Ensembl and GENCODE genomes.
 .addGeneSynonyms <- function(object) {
-    assert(is(object, "GRanges"))
-    mcols <- mcols(object)
     assert(
-        isSubset("geneId", colnames(mcols)),
-        allAreMatchingRegex(x = mcols[["geneId"]], pattern = "^ENS"),
+        is(object, "GRanges"),
+        isString(metadata(object)[["provider"]]),
+        isSubset(
+            x = metadata(object)[["provider"]],
+            y = c("Ensembl", "GENCODE")
+        ),
+        isSubset("geneId", colnames(mcols(object))),
+        allAreMatchingRegex(x = mcols(object)[["geneId"]], pattern = "^ENS")
     )
+    mcols <- mcols(object)
     organism <- match.arg(
         arg = organism(object),
         choices = eval(formals(geneSynonyms)[["organism"]])
