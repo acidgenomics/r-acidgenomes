@@ -492,7 +492,10 @@
     validObject(object)
     provider <- metadata(object)[["provider"]]
     assert(isString(provider))
-    class <- upperCamelCase(paste(provider, level))
+    class <- upperCamelCase(
+        object = paste(provider, level),
+        strict = FALSE
+    )
     if (isClass(Class = class)) {
         out <- new(Class = class, object)
     } else {
