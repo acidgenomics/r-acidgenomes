@@ -240,12 +240,24 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    gr <- .makeGRangesFromRtracklayer(
-        file = file,
-        level = level,
-        ignoreVersion = ignoreVersion,
-        synonyms = synonyms
-    )
+    if (isMatchingRegex(
+        pattern = .gffPatterns[["ucsc"]],
+        x = basename(file)
+    )) {
+        db <- makeTxDbFromGFF(file)
+        gr <- makeGRangesFromTxDb(
+            object = db,
+            level = level,
+            ignoreVersion = TRUE
+        )
+    } else {
+        gr <- .makeGRangesFromRtracklayer(
+            file = file,
+            level = level,
+            ignoreVersion = ignoreVersion,
+            synonyms = synonyms
+        )
+    }
     metadata(gr)[["call"]] <- match.call()
     gr
 }
