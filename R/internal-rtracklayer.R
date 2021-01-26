@@ -363,6 +363,9 @@
 
 ## RefSeq ======================================================================
 
+## FIXME These parsers are currently experimental.
+##       Using TxDb as current appraoch instead.
+
 ## Note that GTF contains both "gene_id" and "gene" columns, whereas GFF3 format
 ## only contains "gene" column.
 ##
