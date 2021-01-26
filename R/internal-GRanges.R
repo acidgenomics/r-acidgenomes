@@ -219,6 +219,7 @@
 
 
 ## FIXME Should this error out for unsupported genome?
+## FIXME RETHINK THIS APPROACH WITH IMPROVED GFF/GTF CONSISTENCY?
 
 #' Add the gene identifier version
 #'
@@ -251,6 +252,7 @@
 
 
 ## FIXME Should this error out for unsupported genome?
+## FIXME RETHINK THIS APPROACH WITH IMPROVED GFF/GTF CONSISTENCY?
 
 #' Add the transcript identifier version
 #'
@@ -322,9 +324,9 @@
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #' @noRd
-.minimizeGRanges <- function(object) {
+.minimizeMcols <- function(object) {
     assert(is(object, "GRanges"))
     ## This trimming step was added to handle GRanges from Ensembl 102, which
     ## won't return valid otherwise from ensembldb.
@@ -364,6 +366,8 @@
 ##       Dbxref, db_xref from RefSeq...need to standardize the convention here.
 ##       Then safe to nuke all capital columns.
 
+
+
 #' Standardize the GRanges mcols into desired naming conventions
 #'
 #' @details
@@ -375,17 +379,15 @@
 #'
 #' @note Updated 2021-01-26.
 #' @noRd
-.standardizeGRanges <- function(object) {
+.standardizeMcols <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
-
-
-    ## FIXME AUTOMATICALLY REMOVE CAPITALIZED COLUMNS, EXCEPT FOR A WHITELIST.
-
-
-
-    ## Changed to strict format here in v0.2.0 release.
-    ## This results in returning "Id" identifier suffix instead of "ID".
+    ## Remove any columns beginning with a capital letter, which are used in
+    ## GFF3 files.
+    keep <- !grepl(pattern = "^[A-Z]", x = names(mcols))
+    mcols <- mcols[keep]
+    ## Changed to strict format here in v0.2.0 release. This results in
+    ## returning "Id" identifier suffix instead of "ID".
     colnames(mcols) <- camelCase(colnames(mcols), strict = TRUE)
     ## Ensure "tx" prefix is used consistently instead of "transcript".
     ## This convention was changed in v0.2.0 release.
@@ -403,29 +405,9 @@
             x = colnames(mcols),
             ignore.case = FALSE
     )
-    ## Remove any uninformative blacklisted columns.
-    blacklistCols <- c(
-        ## e.g. Ensembl GFF. Use "(gene|tx)_biotype" instead.
-        "biotype",
-        ## e.g. RefSeq GFF.
-        "gbkey",
-        ## e.g. Ensembl GFF: "havana_homo_sapiens". Not informative.
-        "logic_name",
-        "type"
-        ## FIXME Other values to consider:
-        ## "end_range",
-        ## "exception",
-        ## "partial",
-        ## "pseudo",
-        ## "start_range",
-        ## "transl_except"
-    )
-    keep <- !colnames(mcols) %in% blacklistCols
     ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
     ## Note that ensembldb output "symbol" duplicate by default.
-    if (isSubset(c("geneName", "symbol"), colnames(mcols))) {
-        mcols[["symbol"]] <- NULL
-    } else if (
+    if (
         isSubset("symbol", colnames(mcols)) &&
         !isSubset("geneName", colnames(mcols))
     ) {
@@ -459,13 +441,18 @@
     ) {
         mcols[["txName"]] <- mcols[["txId"]]
     }
-    ## Always prefer use of "geneBiotype" instead of "geneType".
+    ## Always prefer use of "geneBiotype" instead of "geneType" or "biotype".
     if (
         isSubset("geneType", colnames(mcols)) &&
         !isSubset("geneBiotype", colnames(mcols))
     ) {
         ## e.g. GENCODE GFF.
         colnames(mcols)[colnames(mcols) == "geneType"] <- "geneBiotype"
+    } else if (
+        isSubset("biotype", colnames(mcols)) &&
+        !isSubset("geneBiotype", colnames(mcols))
+    ) {
+        colnames(mcols)[colnames(mcols) == "biotype"] <- "geneBiotype"
     }
     if (
         isSubset("txType", colnames(mcols)) &&
@@ -474,6 +461,23 @@
         ## e.g. GENCODE GFF.
         colnames(mcols)[colnames(mcols) == "txType"] <- "txBiotype"
     }
+    ## Remove any remaining uninformative blacklisted columns.
+    blacklistCols <- c(
+        "biotype",
+        "gbkey",
+        "geneSymbol",
+        "symbol",
+        "txSymbol",
+        "type"  # FIXME Remove this?
+        ## FIXME Other values to consider:
+        ## "endRange",
+        ## "exception",
+        ## "partial",
+        ## "pseudo",
+        ## "startRange",
+        ## "translExcept"
+    )
+    keep <- !colnames(mcols) %in% blacklistCols
     mcols <- mcols[keep]
     mcols(object) <- mcols
     object
@@ -507,8 +511,8 @@
         choices = .grangesLevels
     )
     provider <- metadata(object)[["provider"]]
-    object <- .minimizeGRanges(object)
-    object <- .standardizeGRanges(object)
+    object <- .minimizeMcols(object)
+    object <- .standardizeMcols(object)
     if (isFALSE(ignoreVersion)) {
         object <- .addGeneVersion(object)
         object <- .addTxVersion(object)
