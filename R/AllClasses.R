@@ -1,4 +1,4 @@
-## FIXME ADD UCSC CLASSES.
+## FIXME Need to harden validity checks for classed GRanges.
 
 
 
@@ -242,6 +242,66 @@ setValidity(
         ## FIXME Ensure identifiers match expected format.
         ## FIXME Ensure organism is defined, ensemblRelease, genomeBuild.
         ## FIXME Check for seqinfo here.
+        TRUE
+    }
+)
+
+
+
+#' Shared UCSC validity checks
+#'
+#' @note Updated 2021-01-25.
+#' @noRd
+.ucscValidity <- function(object) {
+    validate(
+        identical(metadata(object)[["provider"]], "UCSC")
+    )
+}
+
+
+
+#' UCSC gene annotations
+#'
+#' @details
+#' Contains a `GRanges` with UCSC gene-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `UCSCGenes`.
+setClass(
+    Class = "UCSCGenes",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "UCSCGenes",
+    method = function(object) {
+        ok <- .ucscValidity(object)
+        if (!isTRUE(ok)) return(ok)
+        TRUE
+    }
+)
+
+
+
+#' UCSC transcript annotations
+#'
+#' @details
+#' Contains a `GRanges` with UCSC transcript-level annotations.
+#'
+#' @export
+#' @note Updated 2021-01-25.
+#'
+#' @return `UCSCTranscripts`.
+setClass(
+    Class = "UCSCTranscripts",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "UCSCTranscripts",
+    method = function(object) {
+        ok <- .ucscValidity(object)
+        if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
