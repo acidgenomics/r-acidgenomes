@@ -1,7 +1,7 @@
 #' Make GRanges from TxDb object
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #'
 #' @return `GRanges`.
 #'
@@ -82,7 +82,7 @@ makeGRangesFromTxDb <- function(
     }
     ## This will also return metadata slotted into `genomeInfo`.
     meta <- metadata(gr)
-    gffMeta <- attr(x = txdb, which = "gffMetadata", exact = TRUE)
+    gffMeta <- attr(x = object, which = "gffMetadata", exact = TRUE)
     if (is.list(gffMeta)) {
         meta <- append(x = meta, values = gffMeta)
     }
