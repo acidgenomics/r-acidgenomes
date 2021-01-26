@@ -14,5 +14,5 @@ RefSeq gene annotations
 Contains a \code{GRanges} with RefSeq gene-level annotations.
 }
 \note{
-Updated 2021-01-10.
+Updated 2021-01-25.
 }

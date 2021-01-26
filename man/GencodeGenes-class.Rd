@@ -14,5 +14,5 @@ GENCODE gene annotations
 Contains a \code{GRanges} with GENCODE gene-level annotations.
 }
 \note{
-Updated 2021-01-18.
+Updated 2021-01-25.
 }
