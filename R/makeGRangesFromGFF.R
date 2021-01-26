@@ -240,10 +240,16 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    if (isMatchingRegex(
-        pattern = .gffPatterns[["ucsc"]],
-        x = basename(file)
-    )) {
+    if (
+        isMatchingRegex(
+            pattern = .gffPatterns[["ucsc"]],
+            x = basename(file)
+        ) ||
+        isMatchingRegex(
+            pattern = .gffPatterns[["refseq"]],
+            x = basename(file)
+        )
+    ) {
         txdb <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
             object = txdb,
