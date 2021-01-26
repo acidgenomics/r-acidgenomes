@@ -29,8 +29,8 @@
 #'   isString isSubset isSystemCommand isWindows validate
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
-#' @importFrom methods as is new setClass setGeneric setMethod setValidity
-#'   signature
+#' @importFrom methods as is isClass new setClass setGeneric setMethod
+#'   setValidity signature
 #' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export
 #'   getJSON getURL getURLDirList import removeNA sanitizeNA
 #' @importFrom purrr map_df
