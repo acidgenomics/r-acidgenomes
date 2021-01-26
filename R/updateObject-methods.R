@@ -1,3 +1,7 @@
+## FIXME Allow legacy columns to persist as long as we can map correctly?
+
+
+
 ## FIXME Gene2Symbol: geneID to geneId
 
 
