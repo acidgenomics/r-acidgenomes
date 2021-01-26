@@ -138,9 +138,6 @@
 
 
 
-## FIXME "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz" is currently failing
-##       seqinfo detection here....
-
 #' Get RefSeq genome assembly seqinfo
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
@@ -260,7 +257,7 @@
         x = basename(file)
     ))
     reportBasename <- sub(
-        pattern = "_genomic\\.(gff|gz)(\\.gz)?$",
+        pattern = "_genomic\\.(gff|gtf)(\\.gz)?$",
         replacement = "_assembly_report\\.txt",
         basename(file)
     )
