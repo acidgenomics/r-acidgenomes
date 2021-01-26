@@ -218,6 +218,8 @@
 
 
 
+## FIXME Should this error out for unsupported genome?
+
 #' Add the gene identifier version
 #'
 #' Append the gene version to the identifier (e.g. ENSG00000000003.15).
@@ -247,6 +249,8 @@
 }
 
 
+
+## FIXME Should this error out for unsupported genome?
 
 #' Add the transcript identifier version
 #'
