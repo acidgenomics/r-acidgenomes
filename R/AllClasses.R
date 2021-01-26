@@ -253,7 +253,7 @@ setValidity(
 #' Contains a `GRanges` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #'
 #' @return `RefSeqGenes`.
 setClass(
@@ -261,10 +261,11 @@ setClass(
     contains = "GRanges"
 )
 setValidity(
-    Class = "RefSeqGenes",
+    Class = "CompressedGRangesList",
     method = function(object) {
-        ok <- .refseqValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        ## FIXME Is this not setting metadata correctly???
+        ## > ok <- .refseqValidity(object)
+        ## > if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )

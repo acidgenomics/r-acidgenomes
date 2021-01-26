@@ -447,29 +447,46 @@
 
 
 
-## Updated 2020-01-20.
-.makeGenesFromRefSeqGff <-
+## Updated 2020-01-26.
+.rtracklayerGenesFromRefSeqGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "gene_biotype", "gene_id", "type"),
+                x = c(
+                    "Dbxref",
+                    "Name",
+                    "gbkey",
+                    "gene",
+                    "gene_biotype",
+                    "type"
+                ),
+                y = colnames(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id",
                 y = colnames(mcols(object))
             )
         )
-        ## Only keep annotations that map to `Name` column.
-        keep <- !is.na(mcols(object)[["Name"]])
+        keep <- !is.na(mcols(object)[["gbkey"]])
         object <- object[keep]
-        ## Drop rows that contain a `Parent` element.
-        keep <- bapply(
-            X = mcols(object)[["Parent"]],
+        keep <- mcols(object)[["gbkey"]] == "Gene"
+        object <- object[keep]
+        ## Unpack the numeric gene identifier from the Dbxref column.
+        dbxref <- mcols(object)[["Dbxref"]]
+        ids <- vapply(
+            X = dbxref,
             FUN = function(x) {
-                identical(x, character(0L))
-            }
+                grep(pattern = "^GeneID:[0-9]+$", x = x, value = TRUE)
+            },
+            FUN.VALUE = character(1L)
         )
-        object <- object[keep]
-        ## Define `gene_name` from `gene_id`.
-        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
+        ids <- gsub(pattern = "^GeneID:", replacement = "", x = ids)
+        ids <- as.integer(ids)
+        mcols(object)[["gene_id"]] <- ids
+        ## Rename "gene" column to "gene_name".
+        colnames(mcols(object))[
+            colnames(mcols(object)) == "gene"] <- "gene_name"
         object
     }
 
