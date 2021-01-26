@@ -472,7 +472,11 @@
         object <- object[keep]
         keep <- mcols(object)[["gbkey"]] == "Gene"
         object <- object[keep]
+
+
         ## Unpack the numeric gene identifier from the Dbxref column.
+        ## FIXME RETHINK THIS APPROACH, DOESNT WORK WITH GTF...
+        ## FIXME NEED TO MATCH CONVENTION USED FOR GTF, FOR SIMPLICITY.
         dbxref <- mcols(object)[["Dbxref"]]
         ids <- vapply(
             X = dbxref,
@@ -481,35 +485,45 @@
             },
             FUN.VALUE = character(1L)
         )
+
+        ## FIXME THIS APROACH DOESNT WORK?
+        ## NOT ALL ELEMENTS HAVE GENEID IN GTF FILE...
+
         ids <- gsub(pattern = "^GeneID:", replacement = "", x = ids)
         ids <- as.integer(ids)
         mcols(object)[["gene_id"]] <- ids
-        ## Rename "gene" column to "gene_name".
         colnames(mcols(object))[
             colnames(mcols(object)) == "gene"] <- "gene_name"
+        ## FIXME NEED TO RENAME AND KEEP DBXREF KEY.
         object
     }
 
 
 
-## Updated 2020-01-20.
-.makeGenesFromRefSeqGtf <-
+## Updated 2020-01-26.
+.rtracklayerGenesFromRefSeqGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("gene_biotype", "gene_id", "type"),
+                x = c("db_xref", "gbkey", "gene_biotype", "gene_id", "type"),
                 y = colnames(mcols(object))
             ),
             areDisjointSets("gene_name", colnames(mcols(object)))
         )
-        ## Define `gene_name` from `gene_id`.
+        keep <- mcols(object)[["gbkey"]] == "Gene"
+        object <- object[keep]
+        mcols(object)[["gene_id"]] <- mcols(object)[["gene"]]
+        mcols(object)[["gene"]] <- NULL
         mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-        object <- object[mcols(object)[["type"]] == "gene"]
+        colnames(mcols(object))[
+            colnames(mcols(object)) == "db_xref"] <- "dbxref"
         object
     }
 
 
+
+## FIXME NEED TO ADD SUPPORT.
 
 ## Updated 2020-01-20.
 .makeTranscriptsFromRefSeqGff <-
@@ -526,6 +540,8 @@
     }
 
 
+
+## FIXME NEED TO ADD SUPPORT.
 
 ## Updated 2020-01-20.
 .makeTranscriptsFromRefSeqGtf <-
