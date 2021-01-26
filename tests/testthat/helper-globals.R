@@ -40,6 +40,9 @@ tibble <- tibble::tibble
 ## nolint end
 
 gffs <- c(
+    ## FIXME NEED TO ADD CODE COVERAGE FOR BCBIO RNA-SEQ GTF FILE.
+    "bcbio_gtf" = "FIXME",
+    "cellranger_gtf" = "FIXME",
     "ensembl_grch37_gff3" = pasteURL(
         "ftp.ensembl.org",
         "pub",
