@@ -215,9 +215,6 @@
 
 
 ## Identifier versions =========================================================
-## FIXME Rethink this approach when `ignoreVersion = TRUE`.
-##       Currently doesn't work for GENCODE GFF.
-
 #' Include identifier version in primary identifier
 #'
 #' @note Updated 2021-01-27.
@@ -235,6 +232,7 @@
             isString(idVersionCol),
             isString(idNoVersionCol)
         )
+        ## Early return for genomes without identifier versions (e.g. FlyBase).
         if (!isSubset(
             x = c(idCol, idVersionCol),
             y = names(mcols(object))
