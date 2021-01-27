@@ -3,6 +3,7 @@
 ## FIXME `stripVersions` should work on `GRanges` and `SummarizedExperiment`.
 ## FIXME FOR GRANGES, SE, CAN CHECK FOR METADATA COLUMNS THAT CONTAIN VERSION
 ##       AND COMPARE?
+## FIXME WORK ON `txIdVersion` and `geneIdVersion` columns.
 
 
 
