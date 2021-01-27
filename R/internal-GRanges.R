@@ -112,29 +112,29 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-01-27.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
         is(object, "GRanges"),
         identical(
-            x = colnames(mcols(object)),
-            y = camelCase(colnames(mcols(object)), strict = TRUE)
+            x = names(mcols(object)),
+            y = camelCase(names(mcols(object)), strict = TRUE)
         ),
-        !isSubset("broadClass", colnames(mcols(object))),
+        !isSubset("broadClass", names(mcols(object))),
         allAreNotMatchingRegex(
             pattern = "^transcript",
-            x = colnames(mcols(object))
+            x = names(mcols(object))
         )
     )
     df <- as.data.frame(object)
     ## Biotypes. Prioritizing transcript biotype over gene, if defined. This
     ## only applies for transcript-level GRanges. For gene-level GRanges, the
     ## gene biotypes will be used, as expected.
-    if ("txBiotype" %in% colnames(df)) {
+    if ("txBiotype" %in% names(df)) {
         biotypeCol <- "txBiotype"
         biotypeData <- df[[biotypeCol]]
-    } else if ("geneBiotype" %in% colnames(df)) {
+    } else if ("geneBiotype" %in% names(df)) {
         biotypeCol <- "geneBiotype"
         biotypeData <- df[[biotypeCol]]
     } else {
@@ -142,7 +142,7 @@
         biotypeData <- NA_character_
     }
     ## Gene names.
-    if ("geneName" %in% colnames(df)) {
+    if ("geneName" %in% names(df)) {
         geneNameCol <- "geneName"
         geneNameData <- df[[geneNameCol]]
     } else {
@@ -152,7 +152,7 @@
     ## Seqnames. This refers to the chromosome name. Note that data frame
     ## coercion will define `seqnames` column from the `GRanges` object
     ## (see above).
-    if ("seqnames" %in% colnames(df)) {
+    if ("seqnames" %in% names(df)) {
         seqnamesCol <- "seqnames"
         seqnamesData <- df[[seqnamesCol]]
     } else {
@@ -179,11 +179,9 @@
 
 
 
-## FIXME ONLY ALLOW THIS FOR ENSEMBL AND GENCODE.
-
 #' Add Ensembl gene synonyms
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-01-27.
 #' @noRd
 #'
 #' @details Currently supported only for Ensembl and GENCODE genomes.
@@ -195,7 +193,7 @@
             x = metadata(object)[["provider"]],
             y = c("Ensembl", "GENCODE")
         ),
-        isSubset("geneId", colnames(mcols(object))),
+        isSubset("geneId", names(mcols(object))),
         allAreMatchingRegex(x = mcols(object)[["geneId"]], pattern = "^ENS")
     )
     mcols <- mcols(object)
@@ -208,7 +206,7 @@
         organism, "geneSynonyms"
     ))
     synonyms <- geneSynonyms(organism = organism, return = "DataFrame")
-    assert(identical(c("geneId", "geneSynonyms"), colnames(synonyms)))
+    assert(identical(c("geneId", "geneSynonyms"), names(synonyms)))
     mcols <- leftJoin(x = mcols, y = synonyms, by = "geneId")
     mcols(object) <- mcols
     object
@@ -216,68 +214,74 @@
 
 
 
-## FIXME Should this error out for unsupported genome?
-## FIXME RETHINK THIS APPROACH WITH IMPROVED GFF/GTF CONSISTENCY?
+## Identifier versions =========================================================
+#' Include identifier version in primary identifier
+#'
+#' @note Updated 2021-01-27.
+#' @noRd
+.includeVersion <-
+    function(
+        object,
+        idCol,
+        idVersionCol,
+        idNoVersionCol
+    ) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(idCol, idVersionCol),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(idNoVersionCol),
+                y = names(mcols(object))
+            )
+        )
+        alert(sprintf(
+            paste(
+                "Including version in {.var %s} from {.var %s}.",
+                "Unversioned identifiers are in {.var %s}."
+            ),
+            idCol, idVersionCol, idNoVersionCol
+        ))
+        id <- mcols(object)[[idVersionCol]]
+        mcols(object)[[idNoVersionCol]] <- mcols(object)[[idCol]]
+        mcols(object)[[idCol]] <- id
+        object
+    }
 
-#' Add the gene identifier version
+
+
+#' Include the gene identifier version
 #'
 #' Append the gene version to the identifier (e.g. ENSG00000000003.15).
 #'
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-27.
 #' @noRd
-.addGeneVersion <- function(object) {
-    assert(is(object, "GRanges"))
-    if (!isSubset("geneId", colnames(mcols(object)))) {
-        return(object)
-    }
-    alert("Including version in gene identifiers.")
-    if (isSubset("geneIdVersion", colnames(mcols(object)))) {
-        id <- mcols(object)[["geneIdVersion"]]
-    } else if (isSubset("geneVersion", colnames(mcols(object)))) {
-        id <- Rle(paste(
-            mcols(object)[["geneId"]],
-            mcols(object)[["geneVersion"]],
-            sep = "."
-        ))
-    } else {
-        stop("Failed to locate gene identifier version.")  # nocov
-    }
-    mcols(object)[["geneIdNoVersion"]] <- mcols(object)[["geneId"]]
-    mcols(object)[["geneId"]] <- id
-    object
+.includeGeneVersion <- function(object) {
+    .includeVersion(
+        object = object,
+        idCol = "geneId",
+        idVersionCol = "geneIdVersion",
+        idNoVersionCol = "geneIdNoVersion"
+    )
 }
 
 
 
-## FIXME Should this error out for unsupported genome?
-## FIXME RETHINK THIS APPROACH WITH IMPROVED GFF/GTF CONSISTENCY?
-
-#' Add the transcript identifier version
+#' Include the transcript identifier version
 #'
 #' Append the transcript version to the identifier (e.g. ENST00000000233.10).
 #'
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-27.
 #' @noRd
-.addTxVersion <- function(object) {
-    assert(is(object, "GRanges"))
-    if (!isSubset("txId", colnames(mcols(object)))) {
-        return(object)
-    }
-    alert("Including version in transcript identifiers.")
-    if (isSubset("txIdVersion", colnames(mcols(object)))) {
-        id <- mcols(object)[["txIdVersion"]]
-    } else if (isSubset("txVersion", colnames(mcols(object)))) {
-        id <- Rle(paste(
-            mcols(object)[["txId"]],
-            mcols(object)[["txVersion"]],
-            sep = "."
-        ))
-    } else {
-        stop("Failed to locate transcript identifier version.")  # nocov
-    }
-    mcols(object)[["txIdNoVersion"]] <- mcols(object)[["txId"]]
-    mcols(object)[["txId"]] <- id
-    object
+.includeTxVersion <- function(object) {
+    .includeVersion(
+        object = object,
+        idCol = "txId",
+        idVersionCol = "txIdVersion",
+        idNoVersionCol = "txIdNoVersion"
+    )
 }
 
 
@@ -301,7 +305,7 @@
             "transcripts"
         )
     )
-    x <- camelCase(colnames(mcols(object)), strict = TRUE)
+    x <- camelCase(names(mcols(object)), strict = TRUE)
     table <- switch(
         EXPR = level,
         "cds" = "cdsId",
@@ -310,7 +314,7 @@
         "transcripts" = "txId"
     )
     idx <- which(x %in% table)
-    x <- colnames(mcols(object))[idx]
+    x <- names(mcols(object))[idx]
     assert(isString(x))
     x
 }
@@ -392,79 +396,84 @@
     mcols <- mcols[keep]
     ## Changed to strict format here in v0.2.0 release. This results in
     ## returning "Id" identifier suffix instead of "ID".
-    colnames(mcols) <- camelCase(colnames(mcols), strict = TRUE)
+    names(mcols) <- camelCase(names(mcols), strict = TRUE)
     ## Ensure "tx" prefix is used consistently instead of "transcript".
     ## This convention was changed in v0.2.0 release.
-    colnames(mcols) <- gsub(
+    names(mcols) <- gsub(
         pattern = "^transcript",
         replacement = "tx",
-        x = colnames(mcols),
+        x = names(mcols),
         ignore.case = FALSE
     )
     ## Ensure "Id" is always capitalized (e.g. "entrezid" to "entrezId").
-    colnames(mcols) <-
+    names(mcols) <-
         gsub(
             pattern = "(.+)id$",
             replacement = "\\1Id",
-            x = colnames(mcols),
+            x = names(mcols),
             ignore.case = FALSE
     )
     ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
     ## Note that ensembldb output "symbol" duplicate by default.
     if (
-        isSubset("symbol", colnames(mcols)) &&
-        !isSubset("geneName", colnames(mcols))
+        isSubset("symbol", names(mcols)) &&
+        !isSubset("geneName", names(mcols))
     ) {
-        colnames(mcols)[colnames(mcols) == "symbol"] <- "geneName"
+        names(mcols)[names(mcols) == "symbol"] <- "geneName"
     } else if (
-        isSubset("geneSymbol", colnames(mcols)) &&
-        !isSubset("geneName", colnames(mcols))
+        isSubset("geneSymbol", names(mcols)) &&
+        !isSubset("geneName", names(mcols))
     ) {
         ## e.g. FlyBase GTF.
-        colnames(mcols)[colnames(mcols) == "geneSymbol"] <- "geneName"
+        names(mcols)[names(mcols) == "geneSymbol"] <- "geneName"
     }
     ## Always prefer use of "txName" instead of "txSymbol".
     if (
-        isSubset("txSymbol", colnames(mcols)) &&
-        !isSubset("txName", colnames(mcols))
+        isSubset("txSymbol", names(mcols)) &&
+        !isSubset("txName", names(mcols))
     ) {
         ## e.g. FlyBase GTF.
-        colnames(mcols)[colnames(mcols) == "txSymbol"] <- "txName"
+        names(mcols)[names(mcols) == "txSymbol"] <- "txName"
     }
     ## Add geneName column if missing.
     if (
-        isSubset("geneId", colnames(mcols)) &&
-        !isSubset("geneName", colnames(mcols))
+        isSubset("geneId", names(mcols)) &&
+        !isSubset("geneName", names(mcols))
     ) {
         mcols[["geneName"]] <- mcols[["geneId"]]
     }
     ## Add txName column if missing.
     if (
-        isSubset("txId", colnames(mcols)) &&
-        !isSubset("txName", colnames(mcols))
+        isSubset("txId", names(mcols)) &&
+        !isSubset("txName", names(mcols))
     ) {
         mcols[["txName"]] <- mcols[["txId"]]
     }
     ## Always prefer use of "geneBiotype" instead of "geneType" or "biotype".
     if (
-        isSubset("geneType", colnames(mcols)) &&
-        !isSubset("geneBiotype", colnames(mcols))
+        isSubset("geneType", names(mcols)) &&
+        !isSubset("geneBiotype", names(mcols))
     ) {
         ## e.g. GENCODE GFF.
-        colnames(mcols)[colnames(mcols) == "geneType"] <- "geneBiotype"
+        names(mcols)[names(mcols) == "geneType"] <- "geneBiotype"
     } else if (
-        isSubset("biotype", colnames(mcols)) &&
-        !isSubset("geneBiotype", colnames(mcols))
+        isSubset("biotype", names(mcols)) &&
+        !isSubset("geneBiotype", names(mcols))
     ) {
-        colnames(mcols)[colnames(mcols) == "biotype"] <- "geneBiotype"
+        names(mcols)[names(mcols) == "biotype"] <- "geneBiotype"
     }
     if (
-        isSubset("txType", colnames(mcols)) &&
-        !isSubset("txBiotype", colnames(mcols))
+        isSubset("txType", names(mcols)) &&
+        !isSubset("txBiotype", names(mcols))
     ) {
         ## e.g. GENCODE GFF.
-        colnames(mcols)[colnames(mcols) == "txType"] <- "txBiotype"
+        names(mcols)[names(mcols) == "txType"] <- "txBiotype"
     }
+    assert(areDisjointSets(
+        x = c(
+        ),
+        y = names(mcols)
+    ))
     ## Remove any remaining uninformative blacklisted columns.
     blacklistCols <- c(
         ## FIXME Check for "version" here?
@@ -473,16 +482,8 @@
         "geneSymbol",
         "symbol",
         "txSymbol",
-        "type"  # FIXME Remove this?
-        ## FIXME Other values to consider:
-        ## "endRange",
-        ## "exception",
-        ## "partial",
-        ## "pseudo",
-        ## "startRange",
-        ## "translExcept"
     )
-    keep <- !colnames(mcols) %in% blacklistCols
+    keep <- !names(mcols) %in% blacklistCols
     mcols <- mcols[keep]
     mcols(object) <- mcols
     object
@@ -519,15 +520,15 @@
     object <- .minimizeMcols(object)
     object <- .standardizeMcols(object)
     if (isFALSE(ignoreVersion)) {
-        object <- .addGeneVersion(object)
-        object <- .addTxVersion(object)
+        object <- .includeGeneVersion(object)
+        object <- .includeTxVersion(object)
     }
     object <- .addBroadClass(object)
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
     idCol <- .matchGRangesNamesColumn(object)
-    assert(isSubset(idCol, colnames(mcols(object))))
+    assert(isSubset(idCol, names(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
     if (hasDuplicates(mcols(object)[[idCol]])) {
         alertInfo(sprintf(
@@ -560,7 +561,7 @@
     ## > ))
     ## Sort the mcols alphabetically.
     mcols(object) <-
-        mcols(object)[, sort(colnames(mcols(object))), drop = FALSE]
+        mcols(object)[, sort(names(mcols(object))), drop = FALSE]
     ## Ensure metadata elements are all sorted alphabetically.
     metadata(object)[["ignoreVersion"]] <- ignoreVersion
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
