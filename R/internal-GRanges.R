@@ -469,7 +469,6 @@
         ## e.g. GENCODE GFF.
         names(mcols)[names(mcols) == "txType"] <- "txBiotype"
     }
-    mcols <- mcols[keep]
     mcols(object) <- mcols
     object
 }
