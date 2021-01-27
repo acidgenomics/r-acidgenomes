@@ -469,21 +469,6 @@
         ## e.g. GENCODE GFF.
         names(mcols)[names(mcols) == "txType"] <- "txBiotype"
     }
-    assert(areDisjointSets(
-        x = c(
-        ),
-        y = names(mcols)
-    ))
-    ## Remove any remaining uninformative blacklisted columns.
-    blacklistCols <- c(
-        ## FIXME Check for "version" here?
-        "biotype",
-        "gbkey",
-        "geneSymbol",
-        "symbol",
-        "txSymbol",
-    )
-    keep <- !names(mcols) %in% blacklistCols
     mcols <- mcols[keep]
     mcols(object) <- mcols
     object
