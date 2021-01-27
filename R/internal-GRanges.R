@@ -215,6 +215,9 @@
 
 
 ## Identifier versions =========================================================
+## FIXME Rethink this approach when `ignoreVersion = TRUE`.
+##       Currently doesn't work for GENCODE GFF.
+
 #' Include identifier version in primary identifier
 #'
 #' @note Updated 2021-01-27.
@@ -556,12 +559,24 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    class <- upperCamelCase(
-        object = paste(provider, level),
-        strict = FALSE
+    object <- tryCatch(
+        expr = {
+            class <- upperCamelCase(
+                object = paste(
+                    switch(
+                        EXPR = provider,
+                        "GENCODE" = "Gencode",
+                        provider
+                    ),
+                    level
+                ),
+                strict = FALSE
+            )
+            new(Class = class, object)
+        },
+        error = function(e) {
+            object
+        }
     )
-    try({
-        object <- new(Class = class, object)
-    })
     object
 }
