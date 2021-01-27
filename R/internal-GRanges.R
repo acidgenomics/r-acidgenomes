@@ -364,6 +364,12 @@
 ##       Dbxref, db_xref from RefSeq...need to standardize the convention here.
 ##       Then safe to nuke all capital columns.
 
+## FIXME standardize gene version similar to approach in ensembldb return.
+##       geneIdVersion
+##       txIdVersion
+##
+## FIXME Error if "biotype" is described here?
+
 
 
 #' Standardize the GRanges mcols into desired naming conventions
@@ -461,6 +467,7 @@
     }
     ## Remove any remaining uninformative blacklisted columns.
     blacklistCols <- c(
+        ## FIXME Check for "version" here?
         "biotype",
         "gbkey",
         "geneSymbol",

@@ -1,14 +1,3 @@
-## FIXME NEED TO SANITIZE COLS FOR REFSEQ
-## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
-## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
-##
-## FIXME TEST FLYBASE GFF AND WORMBASE GFF.
-## FIXME INCLUDE GENEVERSION HERE IF POSSIBLE WHEN `IGNOREVERSION` = FALSE
-## FIXME synonyms only works with Ensembl identifiers, consider making that more
-##       clear in documentation.
-
-
-
 ## Updated 2021-01-25.
 .makeGRangesFromRtracklayer <- function(
     file,
@@ -102,55 +91,81 @@
 
 
 
-## Updated 2021-01-26.
+## FIXME RENAME "biotype" to "gene_biotype" here.
+
+## Updated 2021-01-27.
 .rtracklayerEnsemblGenesGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "gene_id"),
+                x = c("Name", "biotype", "gene_id", "version"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = "gene_name",
+                x = c("gene_biotype", "gene_id_version", "gene_name"),
                 y = names(mcols(object))
             )
         )
         keep <- !is.na(mcols(object)[["gene_id"]])
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        names(mcols(object))[names(mcols(object)) == "Name"] <- "gene_name"
-        ## FIXME NEED TO RENAME VERSION TO GENE VERSION?
+        names(mcols(object))[
+            names(mcols(object)) == "Name"] <- "gene_name"
+        names(mcols(object))[
+            names(mcols(object)) == "biotype"] <- "gene_biotype"
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["version"]],
+                sep = "."
+            )
+        mcols(object)[["version"]] <- NULL
         object
     }
 
 
 
-## FIXME HOW IS GENE VERSION HANDLED HERE?
-
-## Updated 2021-01-25.
+## Updated 2021-01-27.
 .rtracklayerEnsemblGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("gene_id", "type"),
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id_version",
                 y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
         object
     }
 
 
 
-## FIXME HOW IS TX AND GENE VERSION HANDLED HERE? ARE THEY THE SAME??
-
-## Updated 2021-01-26.
+## Updated 2021-01-27.
 .rtracklayerEnsemblTranscriptsGff <-
     function(object) {
+        genes <- .rtracklayerEnsemblGenesGff(object)
+        mcols(genes) <- removeNA(mcols(genes))
         assert(
             is(object, "GRanges"),
             isSubset(
@@ -171,32 +186,75 @@
                 x = as.character(mcols(object)[["Parent"]])
             )
         )
-        ## FIXME DONT DUPLICATE, RENAME.
-        mcols(object)[["transcript_biotype"]] <- mcols(object)[["biotype"]]
-        mcols(object)[["transcript_name"]] <- mcols(object)[["Name"]]
+        mcols(object) <- removeNA(mcols(object))
+        names(mcols(object))[
+            names(mcols(object)) == "biotype"] <- "transcript_biotype"
+        names(mcols(object))[
+            names(mcols(object)) == "Name"] <- "transcript_name"
         mcols(object)[["gene_id"]] <- gsub(
             pattern = "^gene:",
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-        ## FIXME NEED TO RENAME VERSION TO GENE VERSION?
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["transcript_id_version"]] <-
+            paste(
+                mcols(object)[["transcript_id"]],
+                mcols(object)[["version"]],
+                sep = "."
+            )
+        mcols(object)[["version"]] <- NULL
+        geneCols <- c("gene_id", setdiff(names(mcols(y)), names(mcols(x))))
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = mcols(genes)[geneCols],
+            by = "gene_id"
+        )
         object
     }
 
 
 
-## Updated 2021-01-25.
-.rtracklayerTranscriptsFromEnsemblGtf <-
+## Updated 2021-01-27.
+.rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("transcript_id", "type"),
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "transcript_id",
+                    "transcript_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_version",
+                    "transcript_id_version"
+                ),
                 y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
         object <- object[keep]
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["transcript_id_version"]] <-
+            paste(
+                mcols(object)[["transcript_id"]],
+                mcols(object)[["transcript_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
+        mcols(object)[["transcript_version"]] <- NULL
         object
     }
 
@@ -333,6 +391,12 @@
 
 ## FIXME These parsers are currently experimental.
 ##       Using TxDb as current appraoch instead.
+
+## FIXME NEED TO SANITIZE COLS FOR REFSEQ
+## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
+## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
+
+
 
 ## Note that GTF contains both "gene_id" and "gene" columns, whereas GFF3 format
 ## only contains "gene" column.
