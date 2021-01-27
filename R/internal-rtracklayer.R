@@ -247,8 +247,13 @@
                 sep = "."
             )
         mcols(object)[["version"]] <- NULL
-        geneCols <-
-            c("gene_id", setdiff(names(mcols(object)), names(mcols(genes))))
+        geneCols <- c(
+            "gene_id",
+            setdiff(
+                x = names(mcols(genes)),
+                y = names(mcols(object))
+            )
+        )
         mcols(object) <- leftJoin(
             x = mcols(object),
             y = mcols(genes)[geneCols],
@@ -256,10 +261,6 @@
         )
         object
     }
-
-
-
-
 
 
 
