@@ -418,7 +418,9 @@
     )
     ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
     ## Note that ensembldb output "symbol" duplicate by default.
-    if (
+    if (isSubset(c("geneName", "symbol"), names(mcols))) {
+        mcols[["symbol"]] <- NULL
+    } else if (
         isSubset("symbol", names(mcols)) &&
         !isSubset("geneName", names(mcols))
     ) {
