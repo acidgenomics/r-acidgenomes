@@ -170,8 +170,6 @@
 
 
 
-## FIXME RENAME "biotype" to "gene_biotype" here.
-
 ## Updated 2021-01-27.
 .rtracklayerEnsemblGenesGff <-
     function(object) {
@@ -203,10 +201,6 @@
         mcols(object)[["version"]] <- NULL
         object
     }
-
-
-
-
 
 
 
@@ -253,7 +247,8 @@
                 sep = "."
             )
         mcols(object)[["version"]] <- NULL
-        geneCols <- c("gene_id", setdiff(names(mcols(y)), names(mcols(x))))
+        geneCols <-
+            c("gene_id", setdiff(names(mcols(object)), names(mcols(genes))))
         mcols(object) <- leftJoin(
             x = mcols(object),
             y = mcols(genes)[geneCols],
