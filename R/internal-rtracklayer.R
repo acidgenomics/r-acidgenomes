@@ -343,12 +343,68 @@
 
 
 
-## FIXME IS THIS SUPPORTING `ignoreVersion` CORRECTLY?
+## Updated 2021-01-27.
+.rtracklayerGencodeGenesGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "type"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("gene_id_version", "gene_version"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            mcols(object)[["gene_id"]]
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id"]])
+        object
+    }
+
+
 
 ## Updated 2021-01-27.
-.rtracklayerGenesFromGencodeGtf <-
+.rtracklayerGencodeTranscriptsGtf <-
     function(object) {
-        .rtracklayerEnsemblGenesGtf(object)
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "transcript_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_version",
+                    "gene_version",
+                    "transcript_id_version",
+                    "transcript_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id"]])
+        mcols(object)[["transcript_id_version"]] <-
+            mcols(object)[["transcript_id"]]
+        mcols(object)[["transcript_id"]] <-
+            stripGeneVersions(mcols(object)[["transcript_id"]])
+        object
     }
 
 
@@ -396,14 +452,6 @@
         mcols(object)[["transcript_id"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
         object
-    }
-
-
-
-## Updated 2021-01-25.
-.rtracklayerTranscriptsFromGencodeGtf <-
-    function(object) {
-        .rtracklayerTranscriptsFromEnsemblGtf(object)
     }
 
 
