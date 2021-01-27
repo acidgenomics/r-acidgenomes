@@ -226,13 +226,18 @@
         idVersionCol,
         idNoVersionCol
     ) {
-        assert(is(object, "GRanges"))
+        assert(
+            is(object, "GRanges"),
+            isString(idCol),
+            isString(idVersionCol),
+            isString(idNoVersionCol)
+        )
         if (!isSubset(idCol, names(mcols(object)))) {
             return(object)
         }
         assert(
             isSubset(idVersionCol, names(mcols(object))),
-            areDisjointSets(c(idNoVersionCol), names(mcols(object)))
+            areDisjointSets(idNoVersionCol, names(mcols(object)))
         )
         alert(sprintf(
             "Including version in {.var %s} from {.var %s}.",
