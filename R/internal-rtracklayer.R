@@ -111,7 +111,6 @@
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],
@@ -149,7 +148,6 @@
         )
         keep <- mcols(object)[["type"]] == "transcript"
         object <- object[keep]
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],
@@ -190,7 +188,6 @@
             names(mcols(object)) == "Name"] <- "gene_name"
         names(mcols(object))[
             names(mcols(object)) == "biotype"] <- "gene_biotype"
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],
@@ -238,7 +235,6 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["transcript_id_version"]] <-
             paste(
                 mcols(object)[["transcript_id"]],
@@ -360,7 +356,6 @@
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["gene_id_version"]] <-
             mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
@@ -396,7 +391,6 @@
         keep <- mcols(object)[["type"]] == "transcript"
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
-        ## Match ensembldb versioned identifier convention.
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id"]])
@@ -409,48 +403,67 @@
 
 
 
-
-## FIXME SIMPLIFY THE ASSERT HERE.
-## FIXME WHAT ABOUT IGNORING VERSION HERE?
-
-## Updated 2021-01-26.
-.rtracklayerGenesFromGencodeGff <-
+## Updated 2021-01-27.
+.rtracklayerGencodeGenesGff <-
     function(object) {
-        object <- .standardizeGencodeToEnsembl(object)
         assert(
+            is(object, "GRanges"),
             isSubset(
-                x = c("ID", "gene_biotype", "gene_id", "gene_name", "type"),
+                x = c("ID", "gene_id", "type"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_no_version",
+                    "gene_version"
+                ),
                 y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
         object <- object[keep]
-        ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
-        mcols(object)[["gene_id"]] <- mcols(object)[["ID"]]
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         object
     }
 
 
 
-## Updated 2021-01-26.
-.rtracklayerTranscriptsFromGencodeGff <-
+## Updated 2021-01-27.
+.rtracklayerGencodeTranscriptsGff <-
     function(object) {
-        ## FIXME SIMPLIFY THE ASSERT HERE.
         assert(
             isSubset(
                 x = c(
-                    "gene_biotype", "gene_id",
-                    "transcript_biotype", "transcript_id"
+                    "ID",
+                    "gene_id",
+                    "transcript_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "transcript_id_no_version",
+                    "transcript_version"
                 ),
                 y = names(mcols(object))
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
         object <- object[keep]
-        ## Keep track of PAR genes (e.g. "ENSG00000002586.20_PAR_Y").
-        mcols(object)[["transcript_id"]] <- mcols(object)[["ID"]]
+        mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
+        mcols(object)[["gene_id_version"]] <-
+            as.character(mcols(object)[["Parent"]])
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
         object
     }
 
