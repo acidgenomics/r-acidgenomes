@@ -110,11 +110,9 @@
 
 
 
-## FIXME Make this tighter and ONLY return if biotype column is defined.
-
 #' Add broad class annotations
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-26.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -491,7 +489,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-01-27.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -565,11 +563,8 @@
         object = paste(provider, level),
         strict = FALSE
     )
-    if (isClass(Class = class)) {
-        out <- new(Class = class, object)
-    } else {
-        ## This is used to return CDS and exons from TxDb.
-        out <- object
-    }
-    out
+    try({
+        object <- new(Class = class, object)
+    })
+    object
 }
