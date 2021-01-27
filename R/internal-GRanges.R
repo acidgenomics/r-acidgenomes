@@ -488,7 +488,7 @@
 #' @noRd
 .makeGRanges <- function(
     object,
-    ignoreVersion = TRUE,
+    ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
     assert(
