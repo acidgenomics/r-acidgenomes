@@ -6,8 +6,11 @@
 \alias{stripVersions}
 \alias{stripGeneVersions,character-method}
 \alias{stripTranscriptVersions,character-method}
+\alias{stripGeneVersions,matrix-method}
 \alias{stripTranscriptVersions,matrix-method}
+\alias{stripGeneVersions,Matrix-method}
 \alias{stripTranscriptVersions,Matrix-method}
+\alias{stripGeneVersions,SummarizedExperiment-method}
 \alias{stripTranscriptVersions,SummarizedExperiment-method}
 \title{Strip transcript identifier versions}
 \usage{
@@ -19,9 +22,15 @@ stripTranscriptVersions(object, ...)
 
 \S4method{stripTranscriptVersions}{character}(object)
 
+\S4method{stripGeneVersions}{matrix}(object)
+
 \S4method{stripTranscriptVersions}{matrix}(object)
 
+\S4method{stripGeneVersions}{Matrix}(object)
+
 \S4method{stripTranscriptVersions}{Matrix}(object)
+
+\S4method{stripGeneVersions}{SummarizedExperiment}(object)
 
 \S4method{stripTranscriptVersions}{SummarizedExperiment}(object)
 }
@@ -49,11 +58,18 @@ beginning with "ENS".
 }
 \examples{
 ## Ensembl.
-stripTranscriptVersions("ENSMUST00000000001.1")
+stripGeneVersions("ENSG00000002586.20")
+stripTranscriptVersions("ENST00000431238.7")
 
 ## GENCODE.
 stripGeneVersions("ENSG00000002586.20_PAR_Y")
+stripTranscriptVersions("ENST00000431238.7_PAR_Y")
 
 ## WormBase.
 stripTranscriptVersions("cTel79B.1")
+}
+\seealso{
+\itemize{
+\item http://www.ensembl.org/info/genome/stable_ids/index.html
+}
 }
