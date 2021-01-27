@@ -1,4 +1,3 @@
-## FIXME ## `gene_type` needs to be renamed to `gene_biotype`, if defined.
 ## FIXME NEED TO SANITIZE COLS FOR REFSEQ
 ## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
 ## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
