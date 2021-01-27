@@ -226,23 +226,21 @@
         idVersionCol,
         idNoVersionCol
     ) {
+        assert(is(object, "GRanges"))
+        if (!isSubset(idCol, names(mcols(object)))) {
+            return(object)
+        }
         assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c(idCol, idVersionCol),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(idNoVersionCol),
-                y = names(mcols(object))
-            )
+            isSubset(idVersionCol, names(mcols(object))),
+            areDisjointSets(c(idNoVersionCol), names(mcols(object)))
         )
         alert(sprintf(
-            paste(
-                "Including version in {.var %s} from {.var %s}.",
-                "Unversioned identifiers are in {.var %s}."
-            ),
-            idCol, idVersionCol, idNoVersionCol
+            "Including version in {.var %s} from {.var %s}.",
+            idCol, idVersionCol
+        ))
+        alertInfo(sprintf(
+            "Unversioned identifiers are in {.var %s}.",
+            idNoVersionCol
         ))
         id <- mcols(object)[[idVersionCol]]
         mcols(object)[[idNoVersionCol]] <- mcols(object)[[idCol]]

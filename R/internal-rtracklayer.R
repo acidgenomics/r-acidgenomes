@@ -91,6 +91,85 @@
 
 
 
+## Updated 2021-01-27.
+.rtracklayerEnsemblGenesGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id_version",
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
+        object
+    }
+
+
+
+## Updated 2021-01-27.
+.rtracklayerEnsemblTranscriptsGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "transcript_id",
+                    "transcript_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_version",
+                    "transcript_id_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
+        ## Match ensembldb versioned identifier convention.
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["transcript_id_version"]] <-
+            paste(
+                mcols(object)[["transcript_id"]],
+                mcols(object)[["transcript_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
+        mcols(object)[["transcript_version"]] <- NULL
+        object
+    }
+
+
+
 ## FIXME RENAME "biotype" to "gene_biotype" here.
 
 ## Updated 2021-01-27.
@@ -127,37 +206,7 @@
 
 
 
-## Updated 2021-01-27.
-.rtracklayerEnsemblGenesGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = "gene_id_version",
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "gene"
-        object <- object[keep]
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        ## Match ensembldb versioned identifier convention.
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
-        object
-    }
+
 
 
 
@@ -215,48 +264,7 @@
 
 
 
-## Updated 2021-01-27.
-.rtracklayerEnsemblTranscriptsGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "transcript_id",
-                    "transcript_version",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "gene_id_version",
-                    "transcript_id_version"
-                ),
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "transcript"
-        object <- object[keep]
-        ## Match ensembldb versioned identifier convention.
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["transcript_id_version"]] <-
-            paste(
-                mcols(object)[["transcript_id"]],
-                mcols(object)[["transcript_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
-        mcols(object)[["transcript_version"]] <- NULL
-        object
-    }
+
 
 
 
