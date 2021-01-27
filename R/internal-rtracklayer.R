@@ -1,8 +1,8 @@
-## Updated 2021-01-25.
+## Updated 2021-01-27.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
+    ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
     level <- match.arg(level)
@@ -61,7 +61,6 @@
 
 
 ## Ensembl =====================================================================
-
 ## GTF:
 ## >  [1] "source"                   "type"
 ## >  [3] "score"                    "phase"
@@ -265,7 +264,6 @@
 
 
 ## FlyBase =====================================================================
-
 ## GTF:
 ## > [1] "source"            "type"              "score"
 ## > [4] "phase"             "gene_id"           "gene_symbol"
@@ -314,7 +312,6 @@
 
 
 ## GENCODE =====================================================================
-
 ## Uses `gene_type` instead of `gene_biotype`.
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
@@ -346,7 +343,19 @@
 
 
 
+## FIXME IS THIS SUPPORTING `ignoreVersion` CORRECTLY?
+
+## Updated 2021-01-27.
+.rtracklayerGenesFromGencodeGtf <-
+    function(object) {
+        .rtracklayerEnsemblGenesGtf(object)
+    }
+
+
+
+
 ## FIXME SIMPLIFY THE ASSERT HERE.
+## FIXME WHAT ABOUT IGNORING VERSION HERE?
 
 ## Updated 2021-01-26.
 .rtracklayerGenesFromGencodeGff <-
@@ -364,14 +373,6 @@
         mcols(object)[["gene_id"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
         object
-    }
-
-
-
-## Updated 2021-01-26.
-.rtracklayerGenesFromGencodeGtf <-
-    function(object) {
-        .rtracklayerGenesFromEnsemblGtf(object)
     }
 
 

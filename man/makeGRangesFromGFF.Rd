@@ -7,7 +7,7 @@
 makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
-  ignoreVersion = TRUE,
+  ignoreVersion = FALSE,
   synonyms = FALSE
 )
 }
@@ -32,7 +32,7 @@ Make GRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-01-27.
 }
 \section{GFF/GTF specification}{
 
