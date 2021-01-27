@@ -273,25 +273,41 @@
 
 
 
-## Updated 2021-01-26.
-.rtracklayerGenesFromFlyBaseGtf <-
+## Updated 2021-01-27.
+.rtracklayerFlyBaseGenesGtf <-
     function(object) {
-        .rtracklayerGenesFromEnsemblGtf(object)
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        object
     }
 
 
 
-## FIXME NEED TO RETHINK THIS ONE?
-
-## Updated 2021-01-26.
-.rtracklayerTranscriptsFromFlyBaseGtf <-
+## Updated 2021-01-27.
+.rtracklayerFlyBaseTranscriptsGtf <-
     function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
         keep <- grepl(
             pattern = paste(c("^pseudogene$", "RNA$"), collapse = "|"),
             x = mcols(object)[["type"]],
             ignore.case = TRUE
         )
         object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         object
     }
 
