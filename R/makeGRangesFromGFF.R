@@ -11,7 +11,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-27.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -227,7 +227,7 @@
 makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
+    ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
     assert(
@@ -254,7 +254,8 @@ makeGRangesFromGFF <- function(
         gr <- makeGRangesFromTxDb(
             object = txdb,
             level = level,
-            ignoreVersion = TRUE
+            ignoreVersion = ignoreVersion,
+            synonyms = synonyms
         )
     } else {
         gr <- .makeGRangesFromRtracklayer(

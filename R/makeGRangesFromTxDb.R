@@ -21,7 +21,8 @@
 makeGRangesFromTxDb <- function(
     object,
     level = c("transcripts", "genes", "exons", "cds"),
-    ignoreVersion = TRUE
+    ignoreVersion = FALSE,
+    synonyms = FALSE
 ) {
     assert(is(object, "TxDb"))
     level <- match.arg(level)
@@ -90,7 +91,8 @@ makeGRangesFromTxDb <- function(
     metadata(gr) <- meta
     gr <- .makeGRanges(
         object = gr,
-        ignoreVersion = ignoreVersion
+        ignoreVersion = ignoreVersion,
+        synonyms = synonyms
     )
     gr
 }

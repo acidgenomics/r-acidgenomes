@@ -7,7 +7,8 @@
 makeGRangesFromTxDb(
   object,
   level = c("transcripts", "genes", "exons", "cds"),
-  ignoreVersion = TRUE
+  ignoreVersion = FALSE,
+  synonyms = FALSE
 )
 }
 \value{
