@@ -77,7 +77,9 @@ makeGRangesFromTxDb <- function(
         gr <- do.call(what = what, args = args)
     })
     if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
+        ## Improve identifier handling for RefSeq input.
         if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
+            mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
             mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
         }
     }
