@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.2.0
-Date: 2020-01-27
+Date: 2020-01-28
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -24,7 +24,7 @@ Depends:
     R (>= 4.0),
     GenomicRanges
 Imports:
-    AcidBase (>= 0.3.3),
+    AcidBase (>= 0.3.4),
     AcidCLI (>= 0.0.5),
     AcidGenerics (>= 0.5.3),
     AcidPlyr (>= 0.1.6),
@@ -44,7 +44,7 @@ Imports:
     pipette (>= 0.5.2),
     purrr (>= 0.3),
     stringr (>= 1.4),
-    syntactic (>= 0.4.3),
+    syntactic (>= 0.4.4),
     utils
 Suggests:
     AcidTest,
