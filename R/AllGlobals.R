@@ -6,11 +6,11 @@ NULL
 
 #' GFF file name pattern matching
 #'
-#' @note Updated 2021-01-23.
+#' @note Updated 2021-01-27.
 #' @noRd
 .gffPatterns <- list(
     "ensembl" = paste0(
-        ## e.g. "Homo_sapiens.GRCh38.102.gtf.gz"
+        ## "Homo_sapiens.GRCh38.102.gtf.gz"
         "^([a-z0-9]+_)?",              # BiocFileCache.
         "([A-Z][a-z]+_[a-z]+)",        # "Homo_sapiens".
         "\\.([A-Za-z0-9]+)",           # "GRCh38"
@@ -20,7 +20,7 @@ NULL
         "(\\.gz)?$"
     ),
     "flybase" = paste0(
-        ## e.g. "dmel-all-r6.37.gtf.gz".
+        ## "dmel-all-r6.37.gtf.gz".
         "^([a-z0-9]+_)?",       # BiocFileCache
         "^([^-]+)",             # "dmel"
         "-([^-]+)",             # "all"
@@ -29,7 +29,7 @@ NULL
         "(\\.gz)?$"
     ),
     "gencode" = paste0(
-        ## e.g. "gencode.v36.annotation.gtf.gz"
+        ## "gencode.v36.annotation.gtf.gz"
         "^([a-z0-9]+_)?",  # BiocFileCache.
         "gencode",
         "\\.v([M0-9]+)",   # "36" (human) / "M25" (mouse)
@@ -39,16 +39,17 @@ NULL
         "(\\.gz)?$"
     ),
     "refseq" = paste0(
-        ## e.g. "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
+        ## "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
+        ## "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz"
         "^([0-9a-z]_)?",          # BiocFileCache.
-        "(GCF_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
+        "(GC[AF]_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
         "_([^_]+)",               # "GRCh38.p12".
-        "_genomic",
+        "_(.+)",                  # "genomic" or "full_analysis_set".
         "\\.(gff|gtf)",
         "(\\.gz)?$"
     ),
     "ucsc" = paste0(
-        ## e.g. "hg38.ensGene.gtf.gz"
+        ## "hg38.ensGene.gtf.gz"
         "^([0-9a-z]_)?",                              # BiocFileCache.
         "([a-z]+[A-Za-z]+[0-9]+)",                    # "hg38".
         "\\.(ensGene|knownGene|ncbiRefSeq|refGene)",  # "ensGene"
@@ -56,7 +57,7 @@ NULL
         "(\\.gz)?$"
     ),
     "wormbase" = paste0(
-        ## e.g. c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz
+        ## "c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz"
         "^([a-z0-9]+_)?",   # BiocFileCache.
         "^([a-z]_[a-z]+)",  # "c_elegans".
         "\\.([A-Z0-9]+)",   # "PRJNA13758".
