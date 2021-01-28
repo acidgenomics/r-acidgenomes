@@ -470,16 +470,6 @@
 
 
 ## RefSeq ======================================================================
-
-## FIXME These parsers are currently experimental.
-##       Using TxDb as current appraoch instead.
-
-## FIXME NEED TO SANITIZE COLS FOR REFSEQ
-## genes <- genes[!is.na(sanitizeNA(mcols(genes)[["gene_id"]]))]
-## genes <- genes[is.na(sanitizeNA(mcols(genes)[["tx_id"]]))]
-
-
-
 ## Note that GTF contains both "gene_id" and "gene" columns, whereas GFF3 format
 ## only contains "gene" column.
 ##
@@ -558,6 +548,112 @@
 ## > [11] "snoRNA"             "snRNA"
 ## > [13] "telomerase_RNA"     "transcript"
 ## > [15] "vault_RNA"          "Y_RNA"
+##
+## RefSeq annotation FAQ from UCSC:
+## https://genome.ucsc.edu/FAQ/FAQgenes.html#ensRefseq
+##
+## When reporting RefSeq transcripts, e.g. in HGVS, prefer the "NCBI RefSeq"
+## track over the "UCSC RefSeq track". Please specify the RefSeq transcript ID
+## and also the RefSeq annotation release.
+##
+## The RefSeq transcript ID is the sequence of the transcript, the NM_xxxxx.y
+## accession. The version is separated with a dot. Different RefSeq transcript
+## versions have different sequences (for example, more sequence may be added
+## to the UTRs or even the CDS), and so the transcript coordinates can change
+## from one version to the next, which is why reporting the version of the
+## transcript is helpful for readers, e.g. report NM_012309.4, not NM_012309.
+##
+## The RefSeq annotation release captures the mapping of all transcript
+## sequences to the genome. It is shown on our transcript details page, when you
+## click a transcript. It looks like "Annotation Release 105 (2017-04-01)". The
+## most important part is the "Annotation Release" number, e.g. "105". The date
+## is NCBI's release date. Shown below this line is the date when UCSC imported
+## the data, which is not relevant for manuscripts. Note that an "Annotation
+## release" is not a "RefSeq release" , a "RefSeq release" is only about
+## sequences, not their mapping to the genome. NCBI provides a list of all
+## current annotation releases. The first annotation release for every genome
+## is usually "100".
+
+
+
+## Updated 2020-01-27.
+.rtracklayerRefSeqGenesGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "db_xref",
+                    "gbkey",
+                    "gene",
+                    "gene_biotype",
+                    "gene_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets("gene_name", names(mcols(object)))
+        )
+        keep <- mcols(object)[["gbkey"]] == "Gene"
+        object <- object[keep]
+        mcols(object)[["gene_id"]] <- mcols(object)[["gene"]]
+        mcols(object)[["gene"]] <- NULL
+        names(mcols(object))[
+            names(mcols(object)) == "db_xref"] <- "dbxref"
+        object
+    }
+
+
+
+## FIXME MIR6859-1 vs. MIR6859-1_1
+
+## Updated 2020-01-27.
+.rtracklayerRefSeqTranscriptsGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("transcript_id", "type"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("gene_name", "transcript_biotype", "transcript_name"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- !is.na(sanitizeNA(mcols(object)[["transcript_id"]]))
+        object <- object[keep]
+        mcols(object)[["gene_id"]] <- mcols(object)[["gene"]]
+        mcols(object)[["gene"]] <- NULL
+        names(mcols(object))[
+            names(mcols(object)) == "db_xref"] <- "dbxref"
+
+
+
+
+        ## Exons = gene - introns
+        ## CDS = Exons - UTRs
+
+        ## [1] gene        exon        CDS
+        ## [4] start_codon stop_codon
+
+        ## [1] gene        exon        CDS         start_codon stop_codon
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(any(keep))
+        n <- sum(keep, na.rm = TRUE)
+        alertInfo(sprintf(
+            "%d %s detected.",
+            n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
+        ))
+        object <- object[keep]
+        ## Define `gene_name` from `gene_id`.
+        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
+        ## Define `transcript_biotype` from `gene_biotype`.
+        mcols(object)[["transcript_biotype"]] <- mcols(object)[["gene_biotype"]]
+        ## Define `transcript_name` from `transcript_id`.
+        mcols(object)[["transcript_name"]] <- mcols(object)[["transcript_id"]]
+        object
+    }
 
 
 
@@ -614,29 +710,6 @@
 
 
 
-## Updated 2020-01-26.
-.rtracklayerGenesFromRefSeqGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(
-                x = c("db_xref", "gbkey", "gene_biotype", "gene_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets("gene_name", names(mcols(object)))
-        )
-        keep <- mcols(object)[["gbkey"]] == "Gene"
-        object <- object[keep]
-        mcols(object)[["gene_id"]] <- mcols(object)[["gene"]]
-        mcols(object)[["gene"]] <- NULL
-        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-        names(mcols(object))[
-            names(mcols(object)) == "db_xref"] <- "dbxref"
-        object
-    }
-
-
-
 ## FIXME NEED TO ADD SUPPORT.
 
 ## Updated 2020-01-20.
@@ -655,39 +728,7 @@
 
 
 
-## FIXME NEED TO ADD SUPPORT.
-
-## Updated 2020-01-20.
-.makeTranscriptsFromRefSeqGtf <-
-    function(object) {
-        assert(
-            is(object, "GRanges"),
-            isSubset(c("transcript_id", "type"), names(mcols(object))),
-            areDisjointSets(
-                x = c("gene_name", "transcript_biotype", "transcript_name"),
-                y = names(mcols(object))
-            )
-        )
-        ## Note that we're filtering by "exon" instead of "transcript" here.
-        keep <- mcols(object)[["type"]] == "exon"
-        assert(any(keep))
-        n <- sum(keep, na.rm = TRUE)
-        alertInfo(sprintf(
-            "%d %s detected.",
-            n, ngettext(n = n, msg1 = "exon", msg2 = "exons")
-        ))
-        object <- object[keep]
-        ## Define `gene_name` from `gene_id`.
-        mcols(object)[["gene_name"]] <- mcols(object)[["gene_id"]]
-        ## Define `transcript_biotype` from `gene_biotype`.
-        mcols(object)[["transcript_biotype"]] <- mcols(object)[["gene_biotype"]]
-        ## Define `transcript_name` from `transcript_id`.
-        mcols(object)[["transcript_name"]] <- mcols(object)[["transcript_id"]]
-        object
-    }
-
-
-
+## FIXME CONSIDER REMOVING ONCE THE OTHER PARSERS ARE UPDATED ABOVE.
 ## FIXME RETHINK THIS APPROACH, CONSIDER USING ABOVE.
 ## This step ensures that `gene_id` and `transcript_id` columns are defined.
 ## Updated 2020-01-20.
