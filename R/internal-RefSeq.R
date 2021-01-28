@@ -142,7 +142,7 @@
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-01-28.
 #' @noRd
 #'
 #' @param file `character(1)`.
@@ -186,6 +186,20 @@
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
 .getRefSeqSeqinfo <- function(file) {
+    if (
+        identical(
+            x = "seqs_for_alignment_pipelines.ucsc_ids",
+            y = basename(dirname(file))
+        ) ||
+        isMatchingFixed(
+            pattern = "_full_analysis_set.refseq_annotation",
+            x = basename(file)
+        )
+    ) {
+        ucsc <- TRUE
+    } else {
+        ucsc <- FALSE
+    }
     ## Locate the "*_assembly_report.txt" file from the GFF file path.
     file <- .locateRefSeqAssemblyReport(file)
     file <- .cacheIt(file)
@@ -194,38 +208,47 @@
         "(GC[AF]_[0-9]+\\.[0-9]+)",
         "_(.+)",
         "_assembly_report",
+        "(.+ucsc_names)?",
         "\\.txt$"
     )
     assert(isMatchingRegex(pattern = pattern, x = basename(file)))
-    ## e.g. GRCh38.p13, which is the format Seqinfo expects.
+    ## e.g. "GRCh38.p13", which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
     genomeBuild <- sub(
         pattern = pattern,
         replacement = "\\3",
         x = basename(file)
     )
+    ## Need to parse the comments in the assembly file to extract the column
+    ## names for the data frame. Note that the number of columns differs in
+    ## the report file for the "seqs_for_alignment_pipelines.ucsc_ids" assembly.
+    lines <- import(file = file, format = "lines")
+    comments <- grep(pattern = "^#", x = lines, value = TRUE)
+    colnames <- tail(comments, n = 1)
+    assert(isMatchingFixed(pattern = "\t", x = colnames))
+    colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
+    colnames <- strsplit(colnames, split = "\t")[[1L]]
+    colnames <- camelCase(colnames, strict = TRUE)
+    seqnames <- ifelse(
+        test = ucsc,
+        yes = "ucscStyleName",
+        no = "refSeqAccn"
+    )
+    whatCols <- c(
+        "seqnames" = seqnames,
+        "seqlengths" = "sequenceLength"
+    )
+    assert(isSubset(whatCols, colnames))
     df <- import(
         file = file,
         format = "tsv",
-        colnames = c(
-            "sequenceName",
-            "sequenceRole",
-            "assignedMolecule",
-            "assignedMoleculeLocation",
-            "genbankAccn",
-            "relationship",
-            "refseqAccn",
-            "assemblyUnit",
-            "sequenceLength",
-            "ucscStyleName"
-        ),
+        colnames = colnames,
         comment = "#"
     )
-    cols <- c("refseqAccn", "sequenceLength")
-    df <- df[, cols]
-    df <- df[complete.cases(df), ]
-    seqnames <- df[["refseqAccn"]]
-    seqlengths <- df[["sequenceLength"]]
+    df <- df[, whatCols, drop = FALSE]
+    df <- df[complete.cases(df), , drop = FALSE]
+    seqnames <- df[[whatCols[["seqnames"]]]]
+    seqlengths <- df[[whatCols[["seqlengths"]]]]
     assert(
         !any(is.na(seqnames)),
         !any(is.na(seqlengths)),
@@ -297,9 +320,6 @@
         pattern = .gffPatterns[["refseq"]],
         x = basename(file)
     ))
-    ## FIXME Use "GCA_000001405.15_GRCh38_assembly_report+ucsc_names.txt" for
-    ## the pipeline analysis set?
-    ## FIXME This is failing for RefSeq analysis set still...
     reportBasename <- sub(
         pattern = paste0(
             "_(genomic|full_analysis_set.refseq_annotation)",
