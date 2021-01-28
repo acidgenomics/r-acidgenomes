@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGene2Symbol
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-28.
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
@@ -25,13 +25,15 @@
 #' }
 #'
 #' ## makeGene2SymbolFromGFF ====
-#' ## GTF
-#' file <- file.path(AcidGenomesTestsURL, "example.gtf")
-#' x <- makeGene2SymbolFromGFF(file)
-#' print(x)
-#'
-#' ## GFF3
-#' file <- file.path(AcidGenomesTestsURL, "example.gff3")
+#' file <- pasteURL(
+#'     "ftp.ensembl.org",
+#'     "pub",
+#'     "release-102",
+#'     "gtf",
+#'     "homo_sapiens",
+#'     "Homo_sapiens.GRCh38.102.gtf.gz",
+#'     protocol = "ftp"
+#' )
 #' x <- makeGene2SymbolFromGFF(file)
 #' print(x)
 NULL
