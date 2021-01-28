@@ -5,7 +5,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-28.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -53,19 +53,18 @@ NULL
 
 ## nolint end
 
-## FIXME ADD A REFSEQ BLACKLIST CHECK HERE.
-
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file) {
     assert(isString(file))
     ## Check for input of unsupported files.
+    ## See `.gffPatterns` for details.
     blacklist <- c(
         "refseq_gtf" = paste0(
-            "^([0-9a-z]_)?",             # BiocFileCache.
-            "(GC[AF]_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
-            "_([^_]+)",                  # "GRCh38.p12".
-            "_(.+)",                     # "genomic" or "full_analysis_set".
+            "^([0-9a-z]_)?",
+            "(GC[AF]_[0-9]+\\.[0-9]+)",
+            "_([^_]+)",
+            "_(.+)",
             "\\.gtf",
             "(\\.gz)?$"
         )
