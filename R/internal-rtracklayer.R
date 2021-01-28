@@ -561,7 +561,7 @@
 
 
 
-## Updated 2020-01-26.
+## Updated 2020-01-27.
 .rtracklayerGenesFromRefSeqGff <-
     function(object) {
         assert(
@@ -727,8 +727,8 @@
 
 ## WormBase identifier fix may be needed. WormBase GTF currently imports
 ## somewhat malformed, and the gene identifiers require additional sanitization
-## to return correctly. Look for rows containing "Gene:" and "Transcript:" in ID
-## columns.
+## to return correctly. Look for rows containing "Gene:" and "Transcript:" in
+## identifier columns.
 ##
 ## GTF:
 ## >  [1] "source"             "type"               "score"
@@ -739,60 +739,48 @@
 
 
 
-## FIXME NEED TO CHECK THAT THIS WORKS.
-## Updated 2021-01-15.
-.rtracklayerGenesFromWormBaseGTF <-
+## Updated 2021-01-27.
+.rtracklayerWormBaseGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
-            isSubset(x = "gene_id", y = names(mcols(object))),
-            areDisjointSets(x = "gene_name", y = names(mcols(object)))
+            isSubset(
+                x = c("gene_id", "type"),
+                y = names(mcols(object))
+            )
         )
-        ## Sanitize the `gene_id` column, which can contain some malformed entries
-        ## prefixed with "Gene:". We want to keep these entries.
-        mcols(object)[["gene_id"]] <- gsub(
-            pattern = "^Gene:",
-            replacement = "",
-            x = mcols(object)[["gene_id"]]
+        keep <- mcols(object)[["type"]] == "gene"
+        object <- object[keep]
+        assert(
+            hasNoDuplicates(mcols(object)[["gene_id"]]),
+            allAreMatchingRegex(
+                pattern = "^WBGene[[:digit:]]{8}$",
+                x = mcols(object)[["gene_id"]]
+            )
         )
-        ## Now safe to only keep rows that match "WBGene" in `gene_id`.
-        ## Note that WormBase GTF currently contains some malformed "Transcript:"
-        ## entries that we want to drop with this step.
-        keep <- grepl(
-            pattern = "^WBGene[[:digit:]]{8}$",
-            x = mcols(object)[["gene_id"]]
-        )
-        object <- object[keep, , drop = FALSE]
-        ## Process using Ensembl conventions.
-        object <- .makeGenesFromEnsemblGTF(object)
         object
     }
 
 
 
-## FIXME NEED TO CHECK THAT THIS WORKS.
-## Updated 2021-01-15.
-.rtracklayersTranscriptsFromWormBaseGtf <-
+## Updated 2021-01-27.
+.rtracklayersWormBaseTranscriptsGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("gene_id", "transcript_id"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("gene_name", "transcript_name"),
+                x = c("gene_id", "transcript_id", "type"),
                 y = names(mcols(object))
             )
         )
-        ## Sanitize the `gene_id` column, which can contain some malformed
-        ## entries prefixed with "Gene:". We want to keep these entries.
-        mcols(object)[["gene_id"]] <- gsub(
-            pattern = "^Gene:",
-            replacement = "",
-            x = mcols(object)[["gene_id"]]
+        keep <- mcols(object)[["type"]] == "transcript"
+        object <- object[keep]
+        assert(
+            hasNoDuplicates(mcols(object)[["transcript_id"]]),
+            allAreMatchingRegex(
+                pattern = "^WBGene[[:digit:]]{8}$",
+                x = mcols(object)[["gene_id"]]
+            )
         )
-        ## Process using Ensembl conventions.
-        object <- .makeTranscriptsFromEnsemblGTF(object)
         object
     }
