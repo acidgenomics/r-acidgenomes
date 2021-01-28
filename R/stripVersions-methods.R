@@ -1,8 +1,3 @@
-## FIXME CONSIDER ADDING SUPPORT FOR GRANGES.
-##       IF ADDED, ALSO MODIFY MCOLS IN ROWDATA FOR SE.
-
-
-
 #' @name stripVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
 #' @note Updated 2021-01-27.
