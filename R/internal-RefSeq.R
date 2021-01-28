@@ -212,6 +212,10 @@
         "\\.txt$"
     )
     assert(isMatchingRegex(pattern = pattern, x = basename(file)))
+    alert(sprintf(
+        "Getting {.var Seqinfo} from {.file %s}.",
+        basename(file)
+    ))
     ## e.g. "GRCh38.p13", which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
     genomeBuild <- sub(
@@ -222,7 +226,7 @@
     ## Need to parse the comments in the assembly file to extract the column
     ## names for the data frame. Note that the number of columns differs in
     ## the report file for the "seqs_for_alignment_pipelines.ucsc_ids" assembly.
-    lines <- import(file = file, format = "lines")
+    lines <- import(file = file, format = "lines", quiet = TRUE)
     comments <- grep(pattern = "^#", x = lines, value = TRUE)
     colnames <- tail(comments, n = 1)
     assert(isMatchingFixed(pattern = "\t", x = colnames))
@@ -243,7 +247,8 @@
         file = file,
         format = "tsv",
         colnames = colnames,
-        comment = "#"
+        comment = "#",
+        quiet = FALSE
     )
     df <- df[, whatCols, drop = FALSE]
     df <- df[complete.cases(df), , drop = FALSE]

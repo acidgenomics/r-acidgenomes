@@ -468,12 +468,14 @@
 
 
 ## Main generator ==============================================================
+## FIXME `ignoreVersion = TRUE` needs to fail for unsupported genomes.
+
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-01-28.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -506,6 +508,9 @@
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, names(mcols(object))))
     alert(sprintf("Defining names by {.var %s} column.", idCol))
+    ## Sort the ranges by genomic location.
+    ## Previously we sorted by the identifier column, until v0.2.0.
+    object <- sort(object)
     if (hasDuplicates(mcols(object)[[idCol]])) {
         alertInfo(sprintf(
             fmt = paste(
@@ -520,21 +525,14 @@
         metadata(object) <- meta
     } else {
         names <- as.character(mcols(object)[[idCol]])
-        assert(hasNoDuplicates(names), !any(is.na(names)))
+        assert(
+            hasNoDuplicates(names),
+            !any(is.na(names)),
+            ## This check fails for split GRangesList (see above).
+            isFALSE(is.unsorted(object))
+        )
         names(object) <- names
-        object <- sort(object)
-        assert(isFALSE(is.unsorted(object)))
     }
-    ## Inform the user about the number of features returned.
-    ## > alertInfo(sprintf(
-    ## >     "%d %s detected.",
-    ## >     length(object),
-    ## >     ngettext(
-    ## >         n = length(object),
-    ## >         msg1 = substr(level, 1L, nchar(level) - 1L),  # gene
-    ## >         msg2 = level                                  # genes
-    ## >     )
-    ## > ))
     ## Sort the mcols alphabetically.
     mcols(object) <-
         mcols(object)[, sort(names(mcols(object))), drop = FALSE]

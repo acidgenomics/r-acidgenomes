@@ -53,10 +53,35 @@ NULL
 
 ## nolint end
 
+## FIXME ADD A REFSEQ BLACKLIST CHECK HERE.
+
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file) {
     assert(isString(file))
+    ## Check for input of unsupported files.
+    blacklist <- c(
+        "refseq_gtf" = paste0(
+            "^([0-9a-z]_)?",             # BiocFileCache.
+            "(GC[AF]_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
+            "_([^_]+)",                  # "GRCh38.p12".
+            "_(.+)",                     # "genomic" or "full_analysis_set".
+            "\\.gtf",
+            "(\\.gz)?$"
+        )
+    )
+    if (isMatchingRegex(
+        pattern = blacklist[["refseq_gtf"]],
+        x = basename(file)
+    )) {
+        stop(sprintf(
+            paste(
+                "Unsupported file: '%s'.",
+                "Use RefSeq GFF instead of GTF."
+            ),
+            basename(file)
+        ))
+    }
     alert(sprintf(
         "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
