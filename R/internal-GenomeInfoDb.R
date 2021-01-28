@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-01-27.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
