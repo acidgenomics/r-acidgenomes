@@ -516,6 +516,18 @@
     ## Sort the ranges by genomic location.
     ## Previously we sorted by the identifier column, until v0.2.0.
     object <- sort(object)
+    ## Sort the mcols alphabetically.
+    mcols(object) <-
+        mcols(object)[, sort(names(mcols(object))), drop = FALSE]
+    ## Ensure metadata elements are all sorted alphabetically.
+    metadata(object) <- append(
+        x = metadata(object),
+        values = list(
+            "ignoreVersion" = ignoreVersion,
+            "synonyms" = synonyms
+        )
+    )
+    metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     if (hasDuplicates(mcols(object)[[idCol]])) {
         alertInfo(sprintf(
             fmt = paste(
@@ -538,12 +550,6 @@
         )
         names(object) <- names
     }
-    ## Sort the mcols alphabetically.
-    mcols(object) <-
-        mcols(object)[, sort(names(mcols(object))), drop = FALSE]
-    ## Ensure metadata elements are all sorted alphabetically.
-    metadata(object)[["ignoreVersion"]] <- ignoreVersion
-    metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
     if (isSubset(level, c("genes", "transcripts"))) {
