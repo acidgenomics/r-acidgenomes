@@ -37,6 +37,7 @@ getGFFMetadata <- function(file) {
     if (isAFile(file)) {
         file <- realpath(file)
     }
+    alert(sprintf("Getting GFF metadata for {.file %s}.", basename(file)))
     l[["file"]] <- file
     l[["md5"]] <- .md5(file)
     l[["sha256"]] <- .sha256(file)

@@ -142,7 +142,7 @@
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-27.
 #' @noRd
 #'
 #' @param file `character(1)`.
@@ -154,6 +154,7 @@
 #' - `tximeta:::gtf2RefSeq`.
 #'
 #' @examples
+#' ## RefSeq GRCh38.p12.
 #' file <- pasteURL(
 #'     "ftp.ncbi.nlm.nih.gov",
 #'     "genomes",
@@ -167,17 +168,40 @@
 #' )
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
+#'
+#' ## RefSeq GRCh38 assembly for pipelines.
+#' file <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "all",
+#'     "GCA",
+#'     "000",
+#'     "001",
+#'     "405",
+#'     "GCA_000001405.15_GRCh38",
+#'     "seqs_for_alignment_pipelines.ucsc_ids",
+#'     "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
+#'     protocol = "ftp"
+#' )
+#' seqinfo <- .getRefSeqSeqinfo(file)
+#' print(seqinfo)
 .getRefSeqSeqinfo <- function(file) {
     ## Locate the "*_assembly_report.txt" file from the GFF file path.
     file <- .locateRefSeqAssemblyReport(file)
     file <- .cacheIt(file)
-    pattern <- "^([a-z0-9]+_)?GCF_[0-9]+\\.[0-9]+_(.+)_assembly_report\\.txt$"
+    pattern <- paste0(
+        "^([a-z0-9]+_)?",
+        "(GC[AF]_[0-9]+\\.[0-9]+)",
+        "_(.+)",
+        "_assembly_report",
+        "\\.txt$"
+    )
     assert(isMatchingRegex(pattern = pattern, x = basename(file)))
     ## e.g. GRCh38.p13, which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
     genomeBuild <- sub(
         pattern = pattern,
-        replacement = "\\2",
+        replacement = "\\3",
         x = basename(file)
     )
     df <- import(
@@ -220,17 +244,6 @@
 
 
 
-## FIXME This needs a fix for:
-##
-## ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/
-## GCA_000001405.15_GRCh38/GCA_000001405.15_GRCh38_assembly_report.txt
-##
-## from:
-##
-## ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/
-## GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/
-## GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz
-
 #' Locate RefSeq assembly report, from GFF file
 #'
 #' @note Updated 2021-01-27.
@@ -259,6 +272,23 @@
 #' )
 #' x <- .locateRefSeqAssemblyReport(file)
 #' print(x)
+#'
+#' ## RefSeq assembly for alignment pipelines.
+#' file <- pasteURL(
+#'     "ftp.ncbi.nlm.nih.gov",
+#'     "genomes",
+#'     "all",
+#'     "GCA",
+#'     "000",
+#'     "001",
+#'     "405",
+#'     "GCA_000001405.15_GRCh38",
+#'     "seqs_for_alignment_pipelines.ucsc_ids",
+#'     "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
+#'     protocol = "ftp"
+#' )
+#' x <- .locateRefSeqAssemblyReport(file)
+#' print(x)
 .locateRefSeqAssemblyReport <- function(file) {
     if (isAFile(file)) {
         file <- realpath(file)
@@ -267,13 +297,26 @@
         pattern = .gffPatterns[["refseq"]],
         x = basename(file)
     ))
+    ## FIXME Use "GCA_000001405.15_GRCh38_assembly_report+ucsc_names.txt" for
+    ## the pipeline analysis set?
+    ## FIXME This is failing for RefSeq analysis set still...
     reportBasename <- sub(
-        pattern = "_genomic\\.(gff|gtf)(\\.gz)?$",
+        pattern = paste0(
+            "_(genomic|full_analysis_set.refseq_annotation)",
+            "\\.(gff|gtf)(\\.gz)?$"
+        ),
         replacement = "_assembly_report\\.txt",
         basename(file)
     )
     if (isAURL(file)) {
-        x <- pasteURL(dirname(file), reportBasename)
+        if (identical(
+            x = "seqs_for_alignment_pipelines.ucsc_ids",
+            y = basename(dirname(file))
+        )) {
+            x <- pasteURL(dirname(dirname(file)), reportBasename)
+        } else {
+            x <- pasteURL(dirname(file), reportBasename)
+        }
         return(x)
     }
     ## Full local FTP pulldown.
