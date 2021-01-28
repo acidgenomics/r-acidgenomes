@@ -1,7 +1,3 @@
-## FIXME Need to import split method from IRanges?
-
-
-
 #' @importClassesFrom GenomicRanges CompressedGRangesList GRanges
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
