@@ -1,5 +1,5 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-01-28.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
@@ -23,6 +23,5 @@ MGI2Ensembl <- function() {  # nolint
     assert(hasNoDuplicates(df[["mgi"]]))
     rownames(df) <- df[["mgi"]]
     df <- df[order(df[["mgi"]]), , drop = FALSE]
-    metadata(df) <- .prototypeMetadata
     new(Class = "MGI2Ensembl", df)
 }
