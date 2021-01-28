@@ -494,9 +494,16 @@
     )
     provider <- metadata(object)[["provider"]]
     ## Don't allow user to ignore identifier versions for unsupported providers.
-    if (!isSubset(provider, c("Ensembl", "GENCODE"))) {
+    if (
+        isTRUE(ignoreVersion) &&
+        !isSubset(provider, c("Ensembl", "GENCODE"))
+    ) {
         stop(sprintf(
-            "Genomes from %s do not support identifier versions.",
+            paste(
+                "Identifier version modification with '%s' flag",
+                "is not supported for %s genomes."
+            ),
+            "ignoreVersion = TRUE",
             provider
         ))
     }
