@@ -220,9 +220,20 @@
 
 
 
+## FIXME This needs a fix for:
+##
+## ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/
+## GCA_000001405.15_GRCh38/GCA_000001405.15_GRCh38_assembly_report.txt
+##
+## from:
+##
+## ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/
+## GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/
+## GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz
+
 #' Locate RefSeq assembly report, from GFF file
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-27.
 #' @noRd
 #'
 #' @examples

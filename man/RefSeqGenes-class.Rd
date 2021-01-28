@@ -14,5 +14,5 @@ RefSeq gene annotations
 Contains a \code{CompressedGRangesList} with RefSeq gene-level annotations.
 }
 \note{
-Updated 2021-01-26.
+Updated 2021-01-27.
 }
