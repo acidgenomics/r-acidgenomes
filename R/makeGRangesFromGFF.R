@@ -177,6 +177,9 @@
 #'   `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
 #'
 #' @examples
+#' ## Some examples here are commented because they are CPU-intensive and
+#' ## can cause CI timeouts.
+#'
 #' ## Ensembl ====
 #' file <- pasteURL(
 #'     "ftp.ensembl.org",
@@ -187,40 +190,58 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#'
-#' ## Genes.
 #' genes <- makeGRangesFromGFF(file = file, level = "genes")
 #' summary(genes)
-#'
-#' ## Transcripts.
 #' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 #' ## > summary(transcripts)
 #'
 #' ## GENCODE ====
-#' file <- pasteURL(
-#'     "ftp.ebi.ac.uk",
-#'     "pub",
-#'     "databases",
-#'     "gencode",
-#'     "Gencode_human",
-#'     "release_36",
-#'     "gencode.v36.annotation.gtf.gz",
-#'     protocol = "ftp"
-#' )
-#'
-#' ## Genes.
-#' genes <- makeGRangesFromGFF(file = file, level = "genes")
-#' summary(genes)
-#'
-#' ## Transcripts.
-#' transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
-#' summary(transcripts)
+#' ## > file <- pasteURL(
+#' ## >     "ftp.ebi.ac.uk",
+#' ## >     "pub",
+#' ## >     "databases",
+#' ## >     "gencode",
+#' ## >     "Gencode_human",
+#' ## >     "release_36",
+#' ## >     "gencode.v36.annotation.gtf.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
+#' ## > summary(genes)
+#' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+#' ## > summary(transcripts)
 #'
 #' ## RefSeq ====
-#' ## FIXME NEED TO ADD THIS.
+#' ## > file <- pasteURL(
+#' ## >     "ftp.ncbi.nlm.nih.gov",
+#' ## >     "genomes",
+#' ## >     "refseq",
+#' ## >     "vertebrate_mammalian",
+#' ## >     "Homo_sapiens",
+#' ## >     "all_assembly_versions",
+#' ## >     "GCF_000001405.39_GRCh38.p13",
+#' ## >     "GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
+#' ## > summary(genes)
+#' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+#' ## > summary(transcripts)
 #'
 #' ## UCSC ====
-#' ## FIXME NEED TO ADD THIS.
+#' ## > file <- pasteURL(
+#' ## >     "hgdownload.soe.ucsc.edu",
+#' ## >     "goldenPath",
+#' ## >     "hg38",
+#' ## >     "bigZips",
+#' ## >     "genes",
+#' ## >     "hg38.ensGene.gtf.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
+#' ## > summary(genes)
+#' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+#' ## > summary(transcripts)
 
 ## nolint end
 
