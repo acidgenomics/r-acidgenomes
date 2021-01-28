@@ -234,7 +234,7 @@ setValidity(
 #' @return `GencodeTranscripts`.
 setClass(
     Class = "GencodeTranscripts",
-    contains = "EnsemblTranscripts"
+    contains = "GRanges"
 )
 setValidity(
     Class = "GencodeTranscripts",

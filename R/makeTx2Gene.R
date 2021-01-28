@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-28.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -24,13 +24,15 @@
 #' }
 #'
 #' ## makeTx2GeneFromGFF ====
-#' ## GTF
-#' file <- file.path(AcidGenomesTestsURL, "example.gtf")
-#' x <- makeTx2GeneFromGFF(file)
-#' print(x)
-#'
-#' ## GFF3
-#' file <- file.path(AcidGenomesTestsURL, "example.gff3")
+#' file <- pasteURL(
+#'     "ftp.ensembl.org",
+#'     "pub",
+#'     "release-102",
+#'     "gtf",
+#'     "homo_sapiens",
+#'     "Homo_sapiens.GRCh38.102.gtf.gz",
+#'     protocol = "ftp"
+#' )
 #' x <- makeTx2GeneFromGFF(file)
 #' print(x)
 NULL

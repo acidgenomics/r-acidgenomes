@@ -126,6 +126,11 @@ setMethod(
 
 
 
+## FIXME NEED TO ADD SUPPORT FOR GRANGESLIST HERE (REFSEQ).
+
+
+
+
 ## Updated 2021-01-07.
 `Tx2Gene,SummarizedExperiment` <-  # nolint
     function(object) {
