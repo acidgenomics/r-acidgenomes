@@ -366,20 +366,6 @@
 
 
 
-## FIXME NEED TO AUTOMATICALLY NUKE CAPITZLIED COLUMNS.
-
-## FIXME NEED TO ADD WHITELIST COLUMNS.
-##       Dbxref, db_xref from RefSeq...need to standardize the convention here.
-##       Then safe to nuke all capital columns.
-
-## FIXME standardize gene version similar to approach in ensembldb return.
-##       geneIdVersion
-##       txIdVersion
-##
-## FIXME Error if "biotype" is described here?
-
-
-
 #' Standardize the GRanges mcols into desired naming conventions
 #'
 #' @details
@@ -557,24 +543,19 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     ## Run final assert checks before returning.
     validObject(object)
-    object <- tryCatch(
-        expr = {
-            class <- upperCamelCase(
-                object = paste(
-                    switch(
-                        EXPR = provider,
-                        "GENCODE" = "Gencode",
-                        provider
-                    ),
-                    level
+    if (isSubset(level, c("genes", "transcripts"))) {
+        class <- upperCamelCase(
+            object = paste(
+                switch(
+                    EXPR = provider,
+                    "GENCODE" = "Gencode",
+                    provider
                 ),
-                strict = FALSE
-            )
-            new(Class = class, object)
-        },
-        error = function(e) {
-            object
-        }
-    )
+                level
+            ),
+            strict = FALSE
+        )
+        object <- new(Class = class, object)
+    }
     object
 }
