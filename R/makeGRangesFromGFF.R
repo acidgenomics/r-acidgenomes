@@ -11,7 +11,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-01-28.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.

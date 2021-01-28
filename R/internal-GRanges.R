@@ -468,8 +468,6 @@
 
 
 ## Main generator ==============================================================
-## FIXME `ignoreVersion = TRUE` needs to fail for unsupported genomes.
-
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
@@ -495,6 +493,13 @@
         choices = .grangesLevels
     )
     provider <- metadata(object)[["provider"]]
+    ## Don't allow user to ignore identifier versions for unsupported providers.
+    if (!isSubset(provider, c("Ensembl", "GENCODE"))) {
+        stop(sprintf(
+            "Genomes from %s do not support identifier versions.",
+            provider
+        ))
+    }
     object <- .minimizeMcols(object)
     object <- .standardizeMcols(object)
     if (isFALSE(ignoreVersion)) {

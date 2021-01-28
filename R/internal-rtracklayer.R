@@ -1,10 +1,55 @@
-## Updated 2021-01-27.
+## Updated 2021-01-28.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts"),
     ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
+    assert(isString(file))
+    ## Check for input of unsupported files.
+    ## See `.gffPatterns` for details.
+    blacklist <- c(
+        "flybase_gff" = paste0(
+            "^([a-z0-9]+_)?",
+            "^([^-]+)",
+            "-([^-]+)",
+            "-(r[0-9]+\\.[0-9]+)",
+            "\\.gff",
+            "(\\.gz)?$"
+        ),
+        "wormbase_gff" = paste0(
+            "^([a-z0-9]+_)?",
+            "^([a-z]_[a-z]+)",
+            "\\.([A-Z0-9]+)",
+            "\\.(WS[0-9]+)",
+            "\\.([a-z_]+)",
+            "\\.gff3",
+            "(\\.gz)?$"
+        )
+    )
+    if (isMatchingRegex(
+        pattern = blacklist[["flybase_gff"]],
+        x = basename(file)
+    )) {
+        stop(sprintf(
+            paste(
+                "Unsupported file: '%s'.",
+                "Use FlyBase GTF instead of GFF."
+            ),
+            basename(file)
+        ))
+    } else if (isMatchingRegex(
+        pattern = blacklist[["wormbase_gff"]],
+        x = basename(file)
+    )) {
+        stop(sprintf(
+            paste(
+                "Unsupported file: '%s'.",
+                "Use WormBase GTF instead of GFF."
+            ),
+            basename(file)
+        ))
+    }
     level <- match.arg(level)
     meta <- getGFFMetadata(file)
     meta[["level"]] <- level
