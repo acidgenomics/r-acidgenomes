@@ -95,12 +95,12 @@ NULL
 #'
 #' @export
 #' @keywords internal
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-01-28.
 #'
 #' @examples
 #' AcidGenomesTestsURL
 AcidGenomesTestsURL <-  # nolint
     paste0(
-        "https://tests.acidgenomics.com/AcidGenomes/",
+        "https://r.acidgenomics.com/testdata/acidgenomes/",
         "v", .version$major, ".", .version$minor  # nolint
     )
