@@ -78,6 +78,7 @@ gffs <- c(
         "Homo_sapiens.GRCh38.102.gtf.gz",
         protocol = "ftp"
     ),
+    ## NOTE Not supported yet in the package.
     "flybase_gff3" = pasteURL(
         "ftp.flybase.net",
         "releases",
@@ -165,10 +166,11 @@ gffs <- c(
         "vertebrate_mammalian",
         "Homo_sapiens",
         "all_assembly_versions",
-        "GCF_000001405.38_GRCh38.p12",
-        "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+        "GCF_000001405.39_GRCh38.p13",
+        "GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
         protocol = "ftp"
     ),
+    ## NOTE TxDb fails on this: "some CDS cannot be mapped to an exon".
     "refseq_grch38_gtf" = pasteURL(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
@@ -176,8 +178,8 @@ gffs <- c(
         "vertebrate_mammalian",
         "Homo_sapiens",
         "all_assembly_versions",
-        "GCF_000001405.38_GRCh38.p12",
-        "GCF_000001405.38_GRCh38.p12_genomic.gtf.gz",
+        "GCF_000001405.39_GRCh38.p13",
+        "GCF_000001405.39_GRCh38.p13_genomic.gtf.gz",
         protocol = "ftp"
     ),
     "refseq_grch38_pipeline_gff3" = pasteURL(
@@ -193,6 +195,7 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
         protocol = "ftp"
     ),
+    ## NOTE TxDb fails on this: "some CDS cannot be mapped to an exon".
     "refseq_grch38_pipeline_gtf" = pasteURL(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
@@ -242,6 +245,7 @@ gffs <- c(
         "hg38.refGene.gtf.gz",
         protocol = "ftp"
     ),
+    ## NOTE Not supported yet in the package.
     "wormbase_gff3" = pasteURL(
         "ftp.wormbase.org",
         "pub",

@@ -41,10 +41,10 @@ NULL
     "refseq" = paste0(
         ## "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
         ## "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz"
-        "^([0-9a-z]_)?",          # BiocFileCache.
+        "^([0-9a-z]_)?",             # BiocFileCache.
         "(GC[AF]_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38.
-        "_([^_]+)",               # "GRCh38.p12".
-        "_(.+)",                  # "genomic" or "full_analysis_set".
+        "_([^_]+)",                  # "GRCh38.p12".
+        "_(.+)",                     # "genomic" or "full_analysis_set".
         "\\.(gff|gtf)",
         "(\\.gz)?$"
     ),
