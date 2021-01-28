@@ -1,5 +1,3 @@
-## FIXME NUKE THE USE OF "EXAMPLE.GTF" HERE...TOO VAGUE.
-
 if (!isTRUE(goalie::hasInternet())) {
     warning("No Internet connection detected.")
     return(invisible(NULL))
@@ -9,8 +7,6 @@ files <- c(
     "cellranger-genes.gtf.gz",
     "ensembl.gff3",
     "ensembl.gtf",
-    "example.gff3",
-    "example.gtf",
     "flybase.gtf",
     "gencode.gff3",
     "gencode.gtf",

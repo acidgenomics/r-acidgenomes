@@ -52,7 +52,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-01-28.
 }
 \section{GFF/GTF file}{
 
@@ -72,13 +72,15 @@ if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {
 }
 
 ## makeTx2GeneFromGFF ====
-## GTF
-file <- file.path(AcidGenomesTestsURL, "example.gtf")
-x <- makeTx2GeneFromGFF(file)
-print(x)
-
-## GFF3
-file <- file.path(AcidGenomesTestsURL, "example.gff3")
+file <- pasteURL(
+    "ftp.ensembl.org",
+    "pub",
+    "release-102",
+    "gtf",
+    "homo_sapiens",
+    "Homo_sapiens.GRCh38.102.gtf.gz",
+    protocol = "ftp"
+)
 x <- makeTx2GeneFromGFF(file)
 print(x)
 }
