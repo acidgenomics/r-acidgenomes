@@ -11,10 +11,7 @@ makeTx2GeneFileFromFASTA(
   source
 )
 
-makeTx2GeneFromFASTA(
-  file,
-  source = c("ensembl", "gencode", "flybase", "wormbase")
-)
+makeTx2GeneFromFASTA(file)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -22,17 +19,6 @@ File path.}
 
 \item{outputFile}{\code{character(1)}.
 Output file.}
-
-\item{source}{\code{character(1)}.
-FASTA file source:
-\itemize{
-\item \code{"ensembl"}: Ensembl.
-\item \code{"gencode"}: GENCODE.
-\item \code{"flybase"}: FlyBase.
-\item \code{"wormbase"}: WormBase.
-}
-
-Assuming Ensembl transcriptome (i.e. cDNA) input by default.}
 }
 \value{
 \code{Tx2Gene}.
@@ -45,7 +31,7 @@ RefSeq transcript FASTA
 (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz") doesn't contain gene
 identifiers, and is not supported.
 
-Updated 2021-01-21.
+Updated 2021-01-29.
 }
 \examples{
 ## Ensembl ====
@@ -59,45 +45,49 @@ file <- pasteURL(
     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
     protocol = "ftp"
 )
-## > makeTx2GeneFromFASTA(file, source = "ensembl")
+t2g <- makeTx2GeneFromFASTA(file)
+print(t2g)
 
 ## GENCODE ====
-file <- pasteURL(
-    "ftp.ebi.ac.uk",
-    "pub",
-    "databases",
-    "gencode",
-    "Gencode_human",
-    "release_32",
-    "gencode.v32.transcripts.fa.gz",
-    protocol = "ftp"
-)
-## > makeTx2GeneFromFASTA(file, source = "gencode")
+## > file <- pasteURL(
+## >     "ftp.ebi.ac.uk",
+## >     "pub",
+## >     "databases",
+## >     "gencode",
+## >     "Gencode_human",
+## >     "release_32",
+## >     "gencode.v32.transcripts.fa.gz",
+## >     protocol = "ftp"
+## > )
+## > t2g <- makeTx2GeneFromFASTA(file)
+## > print(t2g)
 
 ## FlyBase ====
-file <- pasteURL(
-    "ftp.flybase.net",
-    "releases",
-    "FB2019_05",
-    "dmel_r6.30",
-    "fasta",
-    "dmel-all-transcript-r6.30.fasta.gz",
-    protocol = "ftp"
-)
-## > makeTx2GeneFromFASTA(file, source = "flybase")
+## > file <- pasteURL(
+## >     "ftp.flybase.net",
+## >     "releases",
+## >     "FB2019_05",
+## >     "dmel_r6.30",
+## >     "fasta",
+## >     "dmel-all-transcript-r6.30.fasta.gz",
+## >     protocol = "ftp"
+## > )
+## > t2g <- makeTx2GeneFromFASTA(file)
+## > print(t2g)
 
 ## WormBase ====
-file <- pasteURL(
-    "ftp.wormbase.org",
-    "pub",
-    "wormbase",
-    "releases",
-    "WS272",
-    "species",
-    "c_elegans",
-    "PRJNA13758",
-    "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
-    protocol = "ftp"
-)
-## > makeTx2GeneFromFASTA(file, source = "wormbase")
+## > file <- pasteURL(
+## >     "ftp.wormbase.org",
+## >     "pub",
+## >     "wormbase",
+## >     "releases",
+## >     "WS272",
+## >     "species",
+## >     "c_elegans",
+## >     "PRJNA13758",
+## >     "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
+## >     protocol = "ftp"
+## > )
+## > t2g <- makeTx2GeneFromFASTA(file)
+## > print(t2g)
 }
