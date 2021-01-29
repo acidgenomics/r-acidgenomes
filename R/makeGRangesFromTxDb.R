@@ -76,13 +76,15 @@ makeGRangesFromTxDb <- function(
     suppressMessages({
         gr <- do.call(what = what, args = args)
     })
-    ## > if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
-    ## >     ## Improve identifier handling for RefSeq input.
-    ## >         if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
-    ## >         mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
-    ## >         mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
-    ## >     }
-    ## > }
+    ## Improve identifier handling for UCSC and/or RefSeq input. Note that
+    ## RefSeq transcript names currently map to the gene names here, which is
+    ## incorrect and confusing.
+    if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
+        if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
+            mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
+            mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
+        }
+    }
     ## This will also return metadata slotted into `genomeInfo`.
     meta <- metadata(gr)
     gffMeta <- attr(x = object, which = "gffMetadata", exact = TRUE)

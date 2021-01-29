@@ -38,7 +38,7 @@ Updated 2021-01-29.
 file <- pasteURL(
     "ftp.ensembl.org",
     "pub",
-    "release-98",
+    "release-102",
     "fasta",
     "homo_sapiens",
     "cdna",
