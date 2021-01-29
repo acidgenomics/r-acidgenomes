@@ -642,6 +642,17 @@
 
 
 
+## UCSC ========================================================================
+## GTF:
+## [1] "source"        "type"          "score"         "phase"
+## [5] "gene_id"       "transcript_id" "gene_name"     "exon_number"
+## [9] "exon_id"
+##
+## These files are complicated to parse, and we're simply handing off to TxDb
+## in the current version of the package.
+
+
+
 ## WormBase ====================================================================
 ## GTF:
 ## >  [1] "source"             "type"               "score"
