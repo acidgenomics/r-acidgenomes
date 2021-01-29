@@ -1,11 +1,13 @@
-## FIXME NEED TO CREATE TX2GENE.CSV
+## NOTE This doesn't currently save "tx2gene.csv" file automatically.
+
+
 
 ## nolint start
 
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-29.
 #'
 #' @section Genome:
 #'
@@ -116,7 +118,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-01-29.
 .downloadUCSCAnnotation <-
     function(
         genomeBuild,
@@ -148,8 +150,8 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "annotation")
         )
         ## Create symlink.
+        gtfFile <- files[["ensGene"]]
         if (!isWindows()) {
-            gtfFile <- files[["ensGene"]]
             assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
                 outputDir,
@@ -158,6 +160,8 @@ downloadUCSCGenome <-
             file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
         }
+        ## NOTE Consider adding support for "tx2gene.csv" creation from
+        ## `gtfFile` variable.
         invisible(list("files" = files, "urls" = urls))
     }
 
