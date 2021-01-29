@@ -2,7 +2,7 @@
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-01-17.
+#' @note Updated 2021-01-29.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param metadata `logical(1)`.
@@ -45,13 +45,13 @@ setMethod(
 
 
 
-## Updated 2020-01-07.
+## Updated 2020-01-29.
 `Tx2Gene,data.frame` <-  # nolint
     function(object) {
         assert(identical(ncol(object), 2L))
         colnames(object) <- c("txId", "geneId")
         object <- as(object, "DataFrame")
-        Tx2Gene(object = object, metadata = FALSE)
+        Tx2Gene(object)
     }
 
 
@@ -68,8 +68,8 @@ setMethod(
 
 ## Updated 2021-01-29.
 `Tx2Gene,DataFrame` <-  # nolint
-    function(object, metadata = TRUE) {
-        assert(isFlag(metadata))
+    function(object) {
+        meta <- metadata(object)
         colnames(object) <- camelCase(colnames(object), strict = TRUE)
         colnames(object) <- gsub(
             pattern = "^transcript",
@@ -82,15 +82,16 @@ setMethod(
             hasRows(object)
         )
         df <- object[, cols, drop = FALSE]
-        df <- decode(df)
+        ## This ensures any `CharacterList` columns from `GRangesList` get
+        ## coerced to `character` correctly.
+        df[[1L]] <- as.character(df[[1L]])
+        df[[2L]] <- as.character(df[[2L]])
         ## This step is needed for handling raw GFF annotations.
         df <- unique(df)
         ## Ensure identifiers return sorted, which is more intuitive.
         idx <- order(df)
         df <- df[idx, , drop = FALSE]
-        if (isTRUE(metadata)) {
-            metadata(df) <- .slotGenomeMetadata(object)
-        }
+        metadata(df) <- meta
         new(Class = "Tx2Gene", df)
     }
 
@@ -111,7 +112,7 @@ setMethod(
     function(object) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
-        Tx2Gene(object = df, metadata = TRUE)
+        Tx2Gene(df)
     }
 
 
@@ -126,6 +127,9 @@ setMethod(
 
 
 
+## FIXME THIS CURRENTLY DOESNT WORK FOR REFSEQ, BECAUSE TX AND GENE IDENTIFERS
+## ARE THE SAME HERE...MESSED UP.
+
 ## Updated 2021-01-29.
 `Tx2Gene,CompressedGRangesList` <-  # nolint
     function(object) {
@@ -133,7 +137,7 @@ setMethod(
         x <- unname(x)
         gr <- unlist(x)
         assert(is(gr, "GRanges"))
-        Tx2Gene(object = gr, metadata = TRUE)
+        Tx2Gene(object = gr)
     }
 
 
@@ -148,11 +152,11 @@ setMethod(
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-29.
 `Tx2Gene,SummarizedExperiment` <-  # nolint
     function(object) {
         object <- rowData(object, use.names = TRUE)
-        Tx2Gene(object = object, metadata = TRUE)
+        Tx2Gene(object)
     }
 
 

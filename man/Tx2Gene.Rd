@@ -16,7 +16,7 @@ Tx2Gene(object, ...)
 
 \S4method{Tx2Gene}{data.frame}(object)
 
-\S4method{Tx2Gene}{DataFrame}(object, metadata = TRUE)
+\S4method{Tx2Gene}{DataFrame}(object)
 
 \S4method{Tx2Gene}{GRanges}(object)
 
@@ -41,7 +41,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2021-01-17.
+Updated 2021-01-29.
 }
 \examples{
 ## SummarizedExperiment ====
