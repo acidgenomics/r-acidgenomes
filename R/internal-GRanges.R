@@ -537,7 +537,10 @@
         )
     )
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
-    if (hasDuplicates(mcols(object)[[idCol]])) {
+    if (
+        isSubset(provider, "RefSeq") ||
+        hasDuplicates(mcols(object)[[idCol]])
+    ) {
         alertInfo(sprintf(
             fmt = paste(
                 "{.var %s} contains multiple ranges per {.var %s}.",
@@ -561,20 +564,19 @@
     }
     ## Run final assert checks before returning.
     validObject(object)
-    ## FIXME THIS ISNT WORKING FOR REFSEQ TRANSCRIPTS FROM TXDB...
-    # if (isSubset(level, c("genes", "transcripts"))) {
-    #     class <- upperCamelCase(
-    #         object = paste(
-    #             switch(
-    #                 EXPR = provider,
-    #                 "GENCODE" = "Gencode",
-    #                 provider
-    #             ),
-    #             level
-    #         ),
-    #         strict = FALSE
-    #     )
-    #     object <- new(Class = class, object)
-    # }
+    if (isSubset(level, c("genes", "transcripts"))) {
+        class <- upperCamelCase(
+            object = paste(
+                switch(
+                    EXPR = provider,
+                    "GENCODE" = "Gencode",
+                    provider
+                ),
+                level
+            ),
+            strict = FALSE
+        )
+        object <- new(Class = class, object)
+    }
     object
 }
