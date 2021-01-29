@@ -1,7 +1,3 @@
-## NOTE This doesn't currently save "tx2gene.csv" file automatically.
-
-
-
 ## nolint start
 
 #' Download UCSC reference genome
@@ -160,8 +156,8 @@ downloadUCSCGenome <-
             file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
         }
-        ## NOTE Consider adding support for "tx2gene.csv" creation from
-        ## `gtfFile` variable.
+        tx2geneFile <- makeTx2GeneFileFromGFF(file = gtfFile)
+        files[["tx2gene"]] <- tx2geneFile
         invisible(list("files" = files, "urls" = urls))
     }
 
