@@ -43,7 +43,7 @@ fastas <- c(
     "ensembl" = pasteURL(
         "ftp.ensembl.org",
         "pub",
-        "release-98",
+        "release-102",
         "fasta",
         "homo_sapiens",
         "cdna",

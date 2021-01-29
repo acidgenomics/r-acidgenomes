@@ -1,7 +1,3 @@
-## FIXME DETECT THE SOURCE HERE AUTOMATICALLY.
-
-
-
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
@@ -19,7 +15,7 @@
 #' file <- pasteURL(
 #'     "ftp.ensembl.org",
 #'     "pub",
-#'     "release-98",
+#'     "release-102",
 #'     "fasta",
 #'     "homo_sapiens",
 #'     "cdna",
@@ -86,16 +82,6 @@ makeTx2GeneFromFASTA <- function(file) {
     head <- head(x, n = 10L)
     if (any(grepl(
         pattern = paste0(
-            "^(ENS.*T[0-9]{11}\\.[0-9]+)\\|",
-            "(ENS.*T[0-9]{11}\\.[0-9]+)\\|"
-        ),
-        x = head
-    ))) {
-        ## Note that GENCODE uses pipes to separate.
-        ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
-        provider <- "GENCODE"
-    } else if (any(grepl(
-        pattern = paste0(
             "^(ENS.*T[0-9]{11}\\.[0-9]+)\\s",
             ".+",
             "gene:(ENS.*G[0-9]{11}\\.[0-9]+)"
@@ -105,9 +91,27 @@ makeTx2GeneFromFASTA <- function(file) {
         ## Note that Ensembl includes "gene:" key.
         ## e.g. "ENST00000632684.1 cdna chromosome.*"
         provider <- "Ensembl"
+    } else if (any(grepl(pattern = "FlyBase", x = head))) {
+        provider <- "FlyBase"
+    } else if (any(grepl(
+        pattern = paste0(
+            "^(ENS.*T[0-9]{11}\\.[0-9]+)(_PAR_Y)?\\|",
+            "(ENS.*G[0-9]{11}\\.[0-9]+)(_PAR_Y)?\\|"
+        ),
+        x = head
+    ))) {
+        ## Note that GENCODE uses pipes to separate.
+        ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
+        provider <- "GENCODE"
+    } else if (any(grepl(
+        pattern = "\\sgene=(WBGene[0-9]{8})$",
+        x = head
+    ))) {
+        provider <- "WormBase"
     } else {
         stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
     }
+    alertInfo(sprintf("%s transcriptome detected.", provider))
     switch(
         EXPR = provider,
         "Ensembl" = {
@@ -131,16 +135,6 @@ makeTx2GeneFromFASTA <- function(file) {
                 )
             )
         },
-        "GENCODE" = {
-            x <- strsplit(x = x, split = "|", fixed = TRUE)
-            x <- lapply(
-                X = x,
-                FUN = function(x) {
-                    x[c(1L, 2L)]
-                }
-            )
-            x <- do.call(what = rbind, args = x)
-        },
         "FlyBase" = {
             x <- strsplit(x = x, split = " ", fixed = TRUE)
             x <- lapply(
@@ -155,6 +149,36 @@ makeTx2GeneFromFASTA <- function(file) {
                 replacement = "\\1",
                 x = x[, 2L]
             )
+            assert(
+                allAreMatchingRegex(
+                    pattern = "^FBtr[0-9]{7}$",
+                    x = x[, 1L]
+                ),
+                allAreMatchingRegex(
+                    pattern = "^FBgn[0-9]{7}$",
+                    x = x[, 2L]
+                )
+            )
+        },
+        "GENCODE" = {
+            x <- strsplit(x = x, split = "|", fixed = TRUE)
+            x <- lapply(
+                X = x,
+                FUN = function(x) {
+                    x[c(1L, 2L)]
+                }
+            )
+            x <- do.call(what = rbind, args = x)
+            assert(
+                allAreMatchingRegex(
+                    pattern = "^ENS.*T[0-9]{11}\\.[0-9]+(_PAR_Y)?$",
+                    x = x[, 1L]
+                ),
+                allAreMatchingRegex(
+                    pattern = "^ENS.*G[0-9]{11}\\.[0-9]+(_PAR_Y)?$",
+                    x = x[, 2L]
+                )
+            )
         },
         "WormBase" = {
             x <- strsplit(x = x, split = " ", fixed = TRUE)
@@ -166,11 +190,19 @@ makeTx2GeneFromFASTA <- function(file) {
             )
             x <- do.call(what = rbind, args = x)
             x[, 2L] <- gsub(pattern = "^gene=", replacement = "", x = x[, 2L])
+            assert(
+                allAreMatchingRegex(
+                    pattern = "^[A-Za-z0-9_]+\\.[a-z0-9]+\\.[0-9]+$",
+                    x = x[, 1L]
+                ),
+                allAreMatchingRegex(
+                    pattern = "^WBGene[0-9]{8}$",
+                    x = x[, 2L]
+                )
+            )
         },
         stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
     )
-    ## Perform identifier checks before returning.
-    ## FIXME PERFORM ID CHECKS HERE.
     out <- Tx2Gene(x)
     metadata(out) <- list(
         "acidGenomes" = .version,
