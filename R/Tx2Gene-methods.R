@@ -66,7 +66,7 @@ setMethod(
 
 
 
-## Updated 2021-01-17.
+## Updated 2021-01-29.
 `Tx2Gene,DataFrame` <-  # nolint
     function(object, metadata = TRUE) {
         assert(isFlag(metadata))
@@ -83,6 +83,8 @@ setMethod(
         )
         df <- object[, cols, drop = FALSE]
         df <- decode(df)
+        ## This step is needed for handling raw GFF annotations.
+        df <- unique(df)
         ## Ensure identifiers return sorted, which is more intuitive.
         idx <- order(df)
         df <- df[idx, , drop = FALSE]
@@ -104,12 +106,10 @@ setMethod(
 
 
 
-## Updated 2021-01-07.
+## Updated 2021-01-29.
 `Tx2Gene,GRanges` <-  # nolint
     function(object) {
         df <- as(object, "DataFrame")
-        ## This step is needed for handling raw GFF annotations.
-        df <- unique(df)
         metadata(df) <- metadata(object)
         Tx2Gene(object = df, metadata = TRUE)
     }
@@ -126,8 +126,25 @@ setMethod(
 
 
 
-## FIXME NEED TO ADD SUPPORT FOR GRANGESLIST HERE (REFSEQ).
+## Updated 2021-01-29.
+`Tx2Gene,CompressedGRangesList` <-  # nolint
+    function(object) {
+        x <- as(object, "CompressedGRangesList")
+        x <- unname(x)
+        gr <- unlist(x)
+        assert(is(gr, "GRanges"))
+        Tx2Gene(object = gr, metadata = TRUE)
+    }
 
+
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("CompressedGRangesList"),
+    definition = `Tx2Gene,CompressedGRangesList`
+)
 
 
 
