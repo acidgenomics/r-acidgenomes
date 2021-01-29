@@ -1,6 +1,6 @@
 #' Connect to AnnotationHub
 #'
-#' @note Updated 2020-09-24.
+#' @note Updated 2021-01-29.
 #' @noRd
 #'
 #' @details
@@ -8,9 +8,9 @@
 #' using [utils::capture.output()] here to suppress the console output, since
 #' it's not very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
-    invisible(capture.output({
-        ah <- suppressMessages(AnnotationHub())
-    }))
+    invisible(capture.output({suppressMessages({
+        ah <- AnnotationHub()
+    })}))
     assert(is(ah, "AnnotationHub"))
     ah
 }

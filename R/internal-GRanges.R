@@ -532,6 +532,8 @@
     metadata(object) <- append(
         x = metadata(object),
         values = list(
+            "acidGenomes" = .version,
+            "date" = Sys.Date(),
             "ignoreVersion" = ignoreVersion,
             "synonyms" = synonyms
         )
@@ -564,10 +566,6 @@
     }
     ## Run final assert checks before returning.
     validObject(object)
-
-    ## date = Sys.Date()
-    ## AcidGenomes = .version
-
     if (isSubset(level, c("genes", "transcripts"))) {
         class <- upperCamelCase(
             object = paste(
