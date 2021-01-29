@@ -573,8 +573,14 @@
     function(object) {
         assert(
             is(object, "GRanges"),
-            isSubset(c("Parent", "gene"), names(mcols(object))),
-            areDisjointSets("gene_id", names(mcols(object)))
+            isSubset(
+                x = c("Parent", "description", "gene"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id",
+                y = names(mcols(object))
+            )
         )
         keep <-
             !is.na(mcols(object)[["gbkey"]]) &
