@@ -1,3 +1,9 @@
+## NOTE This currently isn't working as desired for UCSC GTF files.
+##      TxDb doesn't keep track of transcript identifiers correctly.
+##      Should contain: ENST00000450305
+
+
+
 ## nolint start
 
 #' Make TxDb from a GFF/GTF file
@@ -5,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-01-29.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -19,7 +25,7 @@
 #' - [TxDb.Hsapiens.UCSC.hg38.knownGene](https://bioconductor.org/packages/TxDb.Hsapiens.UCSC.hg38.knownGene/).
 #'
 #' @examples
-#' ## GENCODE.
+#' ## GENCODE ====
 #' gtfFile <- pasteURL(
 #'     "ftp.ebi.ac.uk",
 #'     "pub",
@@ -34,21 +40,21 @@
 #' print(txdb)
 #' seqinfo(txdb)
 #'
-#' ## RefSeq.
-#' gffFile <- pasteURL(
-#'     "ftp.ncbi.nlm.nih.gov",
-#'     "genomes",
-#'     "refseq",
-#'     "vertebrate_mammalian",
-#'     "Homo_sapiens",
-#'     "all_assembly_versions",
-#'     "GCF_000001405.38_GRCh38.p12",
-#'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
-#'     protocol = "ftp"
-#' )
-#' txdb <- makeTxDbFromGFF(file = gffFile)
-#' print(txdb)
-#' seqinfo(txdb)
+#' ## RefSeq ====
+#' ## > gffFile <- pasteURL(
+#' ## >     "ftp.ncbi.nlm.nih.gov",
+#' ## >     "genomes",
+#' ## >     "refseq",
+#' ## >     "vertebrate_mammalian",
+#' ## >     "Homo_sapiens",
+#' ## >     "all_assembly_versions",
+#' ## >     "GCF_000001405.38_GRCh38.p12",
+#' ## >     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > txdb <- makeTxDbFromGFF(file = gffFile)
+#' ## > print(txdb)
+#' ## > seqinfo(txdb)
 NULL
 
 ## nolint end
