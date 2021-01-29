@@ -22,10 +22,10 @@ Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }}
 
 \note{
-Updated 2021-01-28.
+Updated 2021-01-29.
 }
 \examples{
-## GENCODE.
+## GENCODE ====
 gtfFile <- pasteURL(
     "ftp.ebi.ac.uk",
     "pub",
@@ -40,21 +40,21 @@ txdb <- makeTxDbFromGFF(gtfFile)
 print(txdb)
 seqinfo(txdb)
 
-## RefSeq.
-gffFile <- pasteURL(
-    "ftp.ncbi.nlm.nih.gov",
-    "genomes",
-    "refseq",
-    "vertebrate_mammalian",
-    "Homo_sapiens",
-    "all_assembly_versions",
-    "GCF_000001405.38_GRCh38.p12",
-    "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
-    protocol = "ftp"
-)
-txdb <- makeTxDbFromGFF(file = gffFile)
-print(txdb)
-seqinfo(txdb)
+## RefSeq ====
+## > gffFile <- pasteURL(
+## >     "ftp.ncbi.nlm.nih.gov",
+## >     "genomes",
+## >     "refseq",
+## >     "vertebrate_mammalian",
+## >     "Homo_sapiens",
+## >     "all_assembly_versions",
+## >     "GCF_000001405.38_GRCh38.p12",
+## >     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
+## >     protocol = "ftp"
+## > )
+## > txdb <- makeTxDbFromGFF(file = gffFile)
+## > print(txdb)
+## > seqinfo(txdb)
 }
 \seealso{
 \itemize{
