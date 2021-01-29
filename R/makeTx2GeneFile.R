@@ -15,12 +15,6 @@ makeTx2GeneFileFromFASTA <- function(
 
 
 
-## FIXME CAN WE GET REFSEQ TO A FLAT GRANGES?
-## FIXME NOT SUPPORTED FOR REFSEQ.
-## Error in (function (classes, fdef, mtable)  :
-##               unable to find an inherited method for function 'Tx2Gene' for signature '"CompressedGRangesList"'
-##           Calls: makeTx2GeneFromGFF -> Tx2Gene -> <Anonymous>
-
 ## Updated 2021-01-08.
 #' @rdname makeTx2Gene
 #' @export
