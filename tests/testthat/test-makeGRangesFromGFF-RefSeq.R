@@ -8,7 +8,7 @@ file <- file.path("cache", "refseq.gtf")
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
-    expect_s4_class(object, "GRanges")
+    expect_s4_class(object, "RefSeqGenes")
     expect_identical(length(object), 66L)
     expect_identical(names(object)[[1L]], "AGRN")
     expect_identical(
@@ -31,7 +31,7 @@ test_that("GTF genes", {
 
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
-    expect_s4_class(object, "CompressedGRangesList")
+    expect_s4_class(object, "RefSeqTranscripts")
     expect_identical(length(object), 111L)
     expect_identical(names(object)[[1L]], "MIR1302-2")
     expect_identical(

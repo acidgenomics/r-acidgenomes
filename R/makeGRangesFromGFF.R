@@ -11,7 +11,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-01-29.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -261,6 +261,8 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
+    ## FIXME TXDB DOESNT WORK RIGHT FOR REFSEQ TRANSCRIPTS...CANT GET CORRECT
+    ## IDENTIFIER TO MAP HERE.
     if (
         isMatchingRegex(
             pattern = .gffPatterns[["refseq"]],
