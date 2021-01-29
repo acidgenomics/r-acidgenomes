@@ -514,8 +514,120 @@
 
 
 
+## RefSeq ======================================================================
+## GFF:
+##  [1] "source"                    "type"
+##  [3] "score"                     "phase"
+##  [5] "ID"                        "Dbxref"
+##  [7] "Name"                      "chromosome"
+##  [9] "gbkey"                     "genome"
+## [11] "mol_type"                  "description"
+## [13] "gene"                      "gene_biotype"
+## [15] "pseudo"                    "Parent"
+## [17] "product"                   "transcript_id"
+## [19] "gene_synonym"              "model_evidence"
+## [21] "tag"                       "protein_id"
+## [23] "Note"                      "experiment"
+## [25] "function"                  "regulatory_class"
+## [27] "standard_name"             "recombination_class"
+## [29] "feat_class"                "rpt_type"
+## [31] "rpt_unit_seq"              "exception"
+## [33] "inference"                 "anticodon"
+## [35] "partial"                   "start_range"
+## [37] "end_range"                 "mobile_element_type"
+## [39] "rpt_family"                "transl_except"
+## [41] "satellite"                 "bound_moiety"
+## [43] "Target"                    "assembly_bases_aln"
+## [45] "assembly_bases_seq"        "bit_score"
+## [47] "blast_aligner"             "blast_score"
+## [49] "common_component"          "e_value"
+## [51] "filter_score"              "for_remapping"
+## [53] "gap_count"                 "hsp_percent_coverage"
+## [55] "matchable_bases"           "matched_bases"
+## [57] "num_ident"                 "num_mismatch"
+## [59] "pct_coverage"              "pct_coverage_hiqual"
+## [61] "pct_identity_gap"          "pct_identity_gapopen_only"
+## [63] "pct_identity_ungap"        "rank"
+## [65] "weighted_identity"         "lxr_locAcc_currStat_120"
+## [67] "not_for_annotation"        "Gap"
+## [69] "consensus_splices"         "exon_identity"
+## [71] "identity"                  "idty"
+## [73] "matches"                   "product_coverage"
+## [75] "splices"                   "map"
+## [77] "part"                      "merge_aligner"
+## [79] "lxr_locAcc_currStat_35"    "direction"
+## [81] "rpt_unit_range"            "exon_number"
+## [83] "number"                    "allele"
+## [85] "align_id"                  "batch_id"
+## [87] "crc32"                     "curated_alignment"
+## [89] "promoted_rank"             "qtaxid"
+## [91] "Is_circular"               "country"
+## [93] "isolation-source"          "note"
+## [95] "tissue-type"               "codons"
+## [97] "transl_table"
+
+
+
+## Updated 2021-01-29.
+.rtracklayerRefSeqGenesGff <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(c("Parent", "gene"), names(mcols(object))),
+            areDisjointSets("gene_id", names(mcols(object)))
+        )
+        keep <- mcols(object)[["gbkey"]] == "Gene"
+        object <- object[keep]
+        mcols(object) <- removeNA(mcols(object))
+        names(mcols(object))[
+            names(mcols(object)) == "gene"] <- "gene_id"
+        object
+    }
+
+
+
+## Updated 2021-01-29.
+.rtracklayerRefSeqTranscriptsGff <-
+    function(object) {
+        ## FIXME GET THE GENE ANNOTATIONS AND MERGE HERE.
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Parent", "gene", "transcript_id"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id",
+                y = names(mcols(object))
+            )
+        )
+        keep <- !is.na(mcols(object)[["transcript_id"]])
+        object <- object[keep]
+        keep <- bapply(
+            X = mcols(object)[["Parent"]],
+            FUN = function(x) {
+                any(grepl(pattern = "^gene-", x = x))
+            }
+        )
+        object <- object[keep]
+        ## e.g. "NM_000218.3".
+        assert(allAreMatchingRegex(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        ))
+        names(mcols(object))[
+            names(mcols(object)) == "gene"] <- "gene_id"
+        mcols(object) <- removeNA(mcols(object))
+        ## FIXME MERGE THE GENE ANNOTATIONS HERE.
+
+        ## FIXME MAKE A SIMPLIFIED GENE METADATA DF THAT WE CAN MERGE...
+
+        object
+    }
+
+
+
 ## WormBase ====================================================================
-##
 ## GTF:
 ## >  [1] "source"             "type"               "score"
 ## >  [4] "phase"              "gene_id"            "gene_source"
