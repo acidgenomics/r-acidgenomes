@@ -591,8 +591,6 @@ setValidity(
 
 
 
-## FIXME THIS NEEDS TO SLOT `ignoreVersions` in metadata.
-
 #' Transcript-to-gene identifier mappings
 #'
 #' @details
@@ -600,11 +598,16 @@ setValidity(
 #'
 #' @section Genome metadata:
 #'
-#' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
+#' We recommend slotting `organism`, `genomeBuild`, and `release` into
 #' `metadata`.
 #'
+#' Ensembl examples:
+#' - `organism`: "Homo sapiens".
+#' - `genomeBuild`: "GRCh38".
+#' - `release`: 100L.
+#'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-01-29.
 #'
 #' @return `Tx2Gene`.
 setClass(
@@ -614,15 +617,44 @@ setClass(
 setValidity(
     Class = "Tx2Gene",
     method = function(object) {
-        validate(
+        ok <- validate(
             hasRows(object),
-            identical(colnames(object), c("txId", "geneId")),
+            identical(ncol(object), 2L)
+        )
+        if (!isTRUE(ok)) return(ok)
+        ## Note that "transcriptId" is allowed for legacy compatibility.
+        ok <- validate(
+            isSubset(
+                x = camelCase(colnames(object)[[1L]], strict = TRUE),
+                y = c("transcriptId", "txId")
+            ),
+            identical(
+                x = camelCase(colnames(object)[[2L]], strict = TRUE),
+                y = "geneId"
+            ),
+            msg = "Column names are invalid. Use 'txId' and 'geneId'."
+        )
+        if (!isTRUE(ok)) return(ok)
+        ok <- validate(
             all(vapply(
                 X = object,
                 FUN = is.character,
                 FUN.VALUE = logical(1L)
             )),
-            hasNoDuplicates(object[["txId"]])
+            hasNoDuplicates(object[[1L]])
         )
+        if (!isTRUE(ok)) return(ok)
+        ok <- validate(
+            !any(apply(
+                X = object,
+                MARGIN = 1L,
+                FUN = function(x) {
+                    identical(x[[1L]], x[[2L]])
+                }
+            )),
+            msg = "Some transcript and gene identifiers are identical."
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
