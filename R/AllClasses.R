@@ -258,10 +258,10 @@ setValidity(
 #' @return `RefSeqGenes`.
 setClass(
     Class = "RefSeqGenes",
-    contains = "GRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
-    Class = "GRanges",
+    Class = "RefSeqGenes",
     method = function(object) {
         ## FIXME Is this not setting metadata correctly???
         ## > ok <- .refseqValidity(object)
@@ -283,7 +283,7 @@ setValidity(
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "GRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
