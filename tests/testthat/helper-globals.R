@@ -39,6 +39,50 @@ str_pad <- stringr::str_pad
 tibble <- tibble::tibble
 ## nolint end
 
+fastas <- c(
+    "ensembl" = pasteURL(
+        "ftp.ensembl.org",
+        "pub",
+        "release-98",
+        "fasta",
+        "homo_sapiens",
+        "cdna",
+        "Homo_sapiens.GRCh38.cdna.all.fa.gz",
+        protocol = "ftp"
+    ),
+    "flybase" = pasteURL(
+        "ftp.flybase.net",
+        "releases",
+        "FB2019_05",
+        "dmel_r6.30",
+        "fasta",
+        "dmel-all-transcript-r6.30.fasta.gz",
+        protocol = "ftp"
+    ),
+        "gencode" = pasteURL(
+        "ftp.ebi.ac.uk",
+        "pub",
+        "databases",
+        "gencode",
+        "Gencode_human",
+        "release_32",
+        "gencode.v32.transcripts.fa.gz",
+        protocol = "ftp"
+    ),
+    "wormbase" = pasteURL(
+        "ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "WS272",
+        "species",
+        "c_elegans",
+        "PRJNA13758",
+        "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
+        protocol = "ftp"
+    )
+)
+
 gffs <- c(
     "ensembl_grch37_gff3" = pasteURL(
         "ftp.ensembl.org",
