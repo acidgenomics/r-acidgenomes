@@ -1,4 +1,4 @@
-#' @importClassesFrom GenomicRanges GRanges GRangesList
+#' @importClassesFrom GenomicRanges CompressedGRangesList GRanges GRangesList
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
