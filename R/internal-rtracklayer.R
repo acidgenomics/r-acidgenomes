@@ -576,9 +576,10 @@
             isSubset(c("Parent", "gene"), names(mcols(object))),
             areDisjointSets("gene_id", names(mcols(object)))
         )
-        keep <- mcols(object)[["gbkey"]] == "Gene"
+        keep <-
+            !is.na(mcols(object)[["gbkey"]]) &
+            mcols(object)[["gbkey"]] == "Gene"
         object <- object[keep]
-        mcols(object) <- removeNA(mcols(object))
         names(mcols(object))[
             names(mcols(object)) == "gene"] <- "gene_id"
         object
@@ -589,7 +590,7 @@
 ## Updated 2021-01-29.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
-        ## FIXME GET THE GENE ANNOTATIONS AND MERGE HERE.
+        genes <- .rtracklayerRefSeqGenesGff(object)
         assert(
             is(object, "GRanges"),
             isSubset(
@@ -618,10 +619,18 @@
         names(mcols(object))[
             names(mcols(object)) == "gene"] <- "gene_id"
         mcols(object) <- removeNA(mcols(object))
-        ## FIXME MERGE THE GENE ANNOTATIONS HERE.
-
-        ## FIXME MAKE A SIMPLIFIED GENE METADATA DF THAT WE CAN MERGE...
-
+        ## Keep track of "description" column, which is still useful at
+        ## transcript level.
+        genesMcols <- mcols(genes)
+        genesMcols <- genesMcols[, c("gene_id", "description")]
+        genesMcols <- genesMcols[complete.cases(genesMcols), , drop = FALSE]
+        genesMcols <- unique(genesMcols)
+        assert(hasNoDuplicates(genesMcols[["gene_id"]]))
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = genesMcols,
+            by = "gene_id"
+        )
         object
     }
 
