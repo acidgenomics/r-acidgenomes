@@ -14,12 +14,19 @@ Transcript-to-gene identifier mappings
 Contains a \code{DataFrame} with \code{txId} and \code{geneId} columns.
 }
 \note{
-Updated 2020-10-05.
+Updated 2021-01-29.
 }
 \section{Genome metadata}{
 
 
-We recommend slotting \code{organism}, \code{genomeBuild}, and \code{ensemblRelease} into
+We recommend slotting \code{organism}, \code{genomeBuild}, and \code{release} into
 \code{metadata}.
+
+Ensembl examples:
+\itemize{
+\item \code{organism}: "Homo sapiens".
+\item \code{genomeBuild}: "GRCh38".
+\item \code{release}: 100L.
+}
 }
 

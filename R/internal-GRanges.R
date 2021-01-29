@@ -473,7 +473,7 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-01-29.
 #' @noRd
 .makeGRanges <- function(
     object,
@@ -493,20 +493,22 @@
         choices = .grangesLevels
     )
     provider <- metadata(object)[["provider"]]
-    ## Don't allow user to ignore identifier versions for unsupported providers.
-    if (
-        isTRUE(ignoreVersion) &&
-        !isSubset(provider, c("Ensembl", "GENCODE"))
-    ) {
-        stop(sprintf(
-            paste(
-                "Identifier version modification with '%s' flag",
-                "is not supported for %s genomes."
-            ),
-            "ignoreVersion = TRUE",
-            provider
-        ))
-    }
+    ## Consider not allowing user to ignore identifier versions for unsupported
+    ## providers. Not failing here at the moment, to provide legacy support for
+    ## bcbio R packages.
+    ## > if (
+    ## >     isTRUE(ignoreVersion) &&
+    ## >     !isSubset(provider, c("Ensembl", "GENCODE"))
+    ## > ) {
+    ## >     stop(sprintf(
+    ## >         paste(
+    ## >             "Identifier version modification with '%s' flag",
+    ## >             "is not supported for %s genomes."
+    ## >         ),
+    ## >         "ignoreVersion = TRUE",
+    ## >         provider
+    ## >     ))
+    ## > }
     object <- .minimizeMcols(object)
     object <- .standardizeMcols(object)
     if (isFALSE(ignoreVersion)) {
@@ -559,19 +561,20 @@
     }
     ## Run final assert checks before returning.
     validObject(object)
-    if (isSubset(level, c("genes", "transcripts"))) {
-        class <- upperCamelCase(
-            object = paste(
-                switch(
-                    EXPR = provider,
-                    "GENCODE" = "Gencode",
-                    provider
-                ),
-                level
-            ),
-            strict = FALSE
-        )
-        object <- new(Class = class, object)
-    }
+    ## FIXME THIS ISNT WORKING FOR REFSEQ TRANSCRIPTS FROM TXDB...
+    # if (isSubset(level, c("genes", "transcripts"))) {
+    #     class <- upperCamelCase(
+    #         object = paste(
+    #             switch(
+    #                 EXPR = provider,
+    #                 "GENCODE" = "Gencode",
+    #                 provider
+    #             ),
+    #             level
+    #         ),
+    #         strict = FALSE
+    #     )
+    #     object <- new(Class = class, object)
+    # }
     object
 }

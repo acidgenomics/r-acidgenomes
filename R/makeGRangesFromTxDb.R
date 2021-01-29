@@ -1,7 +1,7 @@
 #' Make GRanges from TxDb object
 #'
 #' @export
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-01-29.
 #'
 #' @return `GRanges`.
 #'
@@ -76,13 +76,13 @@ makeGRangesFromTxDb <- function(
     suppressMessages({
         gr <- do.call(what = what, args = args)
     })
-    if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
-        ## Improve identifier handling for RefSeq input.
-        if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
-            mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
-            mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
-        }
-    }
+    ## > if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
+    ## >     ## Improve identifier handling for RefSeq input.
+    ## >         if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
+    ## >         mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
+    ## >         mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
+    ## >     }
+    ## > }
     ## This will also return metadata slotted into `genomeInfo`.
     meta <- metadata(gr)
     gffMeta <- attr(x = object, which = "gffMetadata", exact = TRUE)

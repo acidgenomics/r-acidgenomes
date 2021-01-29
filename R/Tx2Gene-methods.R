@@ -127,13 +127,10 @@ setMethod(
 
 
 
-## FIXME THIS CURRENTLY DOESNT WORK FOR REFSEQ, BECAUSE TX AND GENE IDENTIFERS
-## ARE THE SAME HERE...MESSED UP.
-
 ## Updated 2021-01-29.
-`Tx2Gene,CompressedGRangesList` <-  # nolint
+`Tx2Gene,GRangesList` <-  # nolint
     function(object) {
-        x <- as(object, "CompressedGRangesList")
+        x <- as(object, "GRangesList")
         x <- unname(x)
         gr <- unlist(x)
         assert(is(gr, "GRanges"))
@@ -146,8 +143,8 @@ setMethod(
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("CompressedGRangesList"),
-    definition = `Tx2Gene,CompressedGRangesList`
+    signature = signature("GRangesList"),
+    definition = `Tx2Gene,GRangesList`
 )
 
 
