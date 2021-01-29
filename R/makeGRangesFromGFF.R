@@ -245,6 +245,8 @@
 
 ## nolint end
 
+## FIXME Can we add parsers for UCSC?
+
 makeGRangesFromGFF <- function(
     file,
     level = c("genes", "transcripts"),
@@ -261,13 +263,11 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.var GRanges} from GFF file ({.file %s}).",
         basename(file)
     ))
-    ## FIXME TXDB DOESNT WORK RIGHT FOR REFSEQ TRANSCRIPTS...CANT GET CORRECT
-    ## IDENTIFIER TO MAP HERE.
     if (
-        isMatchingRegex(
-            pattern = .gffPatterns[["refseq"]],
-            x = basename(file)
-        ) ||
+        ## > isMatchingRegex(
+        ## >     pattern = .gffPatterns[["refseq"]],
+        ## >     x = basename(file)
+        ## > ) ||
         isMatchingRegex(
             pattern = .gffPatterns[["ucsc"]],
             x = basename(file)
