@@ -564,6 +564,10 @@
     }
     ## Run final assert checks before returning.
     validObject(object)
+
+    ## date = Sys.Date()
+    ## AcidGenomes = .version
+
     if (isSubset(level, c("genes", "transcripts"))) {
         class <- upperCamelCase(
             object = paste(
