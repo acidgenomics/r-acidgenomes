@@ -146,7 +146,18 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "annotation")
         )
         gtfFile <- files[["ensGene"]]
-        ## Create tx2gene.
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
+        ## Save transcript-to-gene mappings.
         tx2gene <- makeTx2GeneFromFASTA(gtfFile)
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(
