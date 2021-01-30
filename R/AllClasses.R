@@ -1,36 +1,63 @@
-## FIXME ensembldb failure:
-## 1   95  LRG_618.1
-## 2  232   LRG_53.1
-## 3  287  LRG_616.1
-## 4  349  LRG_125.1
-## 5  353  LRG_559.1
-## 6  472  LRG_665.1
-## 7  546  LRG_245.1
-## 8  628 LRG_1250.1
-## 9  810  LRG_264.1
-## 10 953   LRG_19.1
+## FIXME ignoreVersion: Check that identifiers are sanitized correctly.
+## FIXME Check for geneIdNoVersion, txIdNoVersion according (Ensembl).
 
 
 
 ## Genome annotation classes ===================================================
+#' Shared GRanges validity checks
+#'
+#' @note Updated 2021-01-30.
+#' @noRd
+.grangesValidity <- function(object) {
+    ok <- validate(
+        identical(
+            x = colnames(mcols(object)),
+            y = camelCase(colnames(mcols(object)), strict = TRUE)
+        )
+    )
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "acidGenomes" = "package_version",
+            "date" = "Date",
+            "genomeBuild" = "character",
+            "ignoreVersion" = "logical",
+            "level" = "character",
+            "organism" = "character",
+            "provider" = "character",
+            "synonyms" = "logical"
+        ),
+        subset = TRUE
+    )
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
+        isOrganism(metadata(object)[["organism"]])
+    )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
+}
+
+
+
 #' Shared Ensembl validity checks
 #'
 #' @note Updated 2021-01-30.
 #' @noRd
 .ensemblValidity <- function(object) {
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
     ok <- validate(
-        identical(
-            x = colnames(mcols(object)),
-            y = camelCase(colnames(mcols(object)), strict = TRUE)
-        ),
-        isString(metadata(object)[["genomeBuild"]]),
-        isFlag(metadata(object)[["ignoreVersion"]]),
-        isOrganism(metadata(object)[["organism"]])
+        identical(metadata(object)[["provider"]], "Ensembl")
     )
     if (!isTRUE(ok)) return(ok)
-    ## FIXME CHECK THAT RELEASE IS DEFINED FOR ENSEMBLDB.
-    ## Not necessarily defined in GFF file.
-    ## > isInt(metadata(object)[["release"]])
+    ## Can't always get the release version from GFF file, so just check
+    ## for ensembldb return.
+    if (isSubset("ensembldb", names(metadata(object)))) {
+        ok <- validate(
+            is.integer(metadata(object)[["release"]])
+        )
+        if (!isTRUE(ok)) return(ok)
+    }
     if (!isMatchingFixed("GRCh37", metadata(object)[["genomeBuild"]])) {
         ok <- validate(
             !all(is.na(seqlengths(object))),
@@ -46,65 +73,80 @@
 
 #' Shared FlyBase validity checks
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #' @noRd
 .flybaseValidity <- function(object) {
-    ## FIXME Need to improve this.
-    validate(
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
         identical(metadata(object)[["provider"]], "FlyBase")
     )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
 }
 
 
 
 #' Shared GENCODE validity checks
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #' @noRd
 .gencodeValidity <- function(object) {
-    ## FIXME Need to improve this.
-    validate(
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
         identical(metadata(object)[["provider"]], "GENCODE")
     )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
 }
 
 
 
 #' Shared RefSeq validity checks
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #' @noRd
 .refseqValidity <- function(object) {
-    ## FIXME Need to improve this.
-    validate(
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
         identical(metadata(object)[["provider"]], "RefSeq")
     )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
 }
 
 
 
 #' Shared UCSC validity checks
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #' @noRd
 .ucscValidity <- function(object) {
-    ## FIXME Need to improve this.
-    validate(
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
         identical(metadata(object)[["provider"]], "UCSC")
     )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
 }
 
 
 
 #' Shared WormBase validity checks
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #' @noRd
 .wormbaseValidity <- function(object) {
-    ## FIXME Need to improve this.
-    validate(
+    ok <- .grangesValidity(object)
+    if (!isTRUE(ok)) return(ok)
+    ok <- validate(
         identical(metadata(object)[["provider"]], "WormBase")
     )
+    if (!isTRUE(ok)) return(ok)
+    TRUE
 }
 
 
@@ -129,7 +171,16 @@ setValidity(
         if (!isTRUE(ok)) return(ok)
         ok <- validate(
             allAreMatchingRegex(
-                pattern = "^ENS([A-Z]+)?G[0-9]{11}(\\.[0-9]+)?$",
+                pattern = paste0(
+                    "^",
+                    "(",
+                    "ENS([A-Z]+)?G[0-9]{11}",
+                    "|",
+                    "LRG_[0-9]+",
+                    ")",
+                    "(\\.[0-9]+)?",
+                    "$"
+                ),
                 x = names(object)
             ),
             identical(metadata(object)[["level"]], "genes")
@@ -140,6 +191,8 @@ setValidity(
 )
 
 
+
+## FIXME "call" isn't included here...what's up with that.
 
 #' Ensembl transcript annotations
 #'
@@ -161,7 +214,16 @@ setValidity(
         if (!isTRUE(ok)) return(ok)
         ok <- validate(
             allAreMatchingRegex(
-                pattern = "^ENS([A-Z]+)?T[0-9]{11}(\\.[0-9]+)?$",
+                pattern = paste0(
+                    "^",
+                    "(",
+                    "ENS([A-Z]+)?T[0-9]{11}",
+                    "|",
+                    "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
+                    ")",
+                    "(\\.[0-9]+)?",
+                    "$"
+                ),
                 x = names(object)
             ),
             identical(metadata(object)[["level"]], "transcripts")
@@ -275,7 +337,7 @@ setValidity(
 #' Contains a `GRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-01-30.
 #'
 #' @return `RefSeqGenes`.
 setClass(
@@ -285,9 +347,8 @@ setClass(
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ## FIXME Is this not setting metadata correctly???
-        ## > ok <- .refseqValidity(object)
-        ## > if (!isTRUE(ok)) return(ok)
+        ok <- .refseqValidity(object)
+        if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
@@ -300,7 +361,7 @@ setValidity(
 #' Contains a `GRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-01-30.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
