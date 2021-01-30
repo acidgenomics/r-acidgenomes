@@ -1,18 +1,24 @@
-## FIXME Need to harden validity checks for classed GRanges.
+## FIXME ensembldb failure:
+## 1   95  LRG_618.1
+## 2  232   LRG_53.1
+## 3  287  LRG_616.1
+## 4  349  LRG_125.1
+## 5  353  LRG_559.1
+## 6  472  LRG_665.1
+## 7  546  LRG_245.1
+## 8  628 LRG_1250.1
+## 9  810  LRG_264.1
+## 10 953   LRG_19.1
 
 
 
 ## Genome annotation classes ===================================================
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-01-30.
 #' @noRd
 .ensemblValidity <- function(object) {
-    validate(
-        ## GRCh37 currently will fail these checks.
-        ## > !all(is.na(seqlengths(object))),
-        ## > !all(is.na(seqnames(object))),
-        ## > !all(is.na(genome(object))),
+    ok <- validate(
         identical(
             x = colnames(mcols(object)),
             y = camelCase(colnames(mcols(object)), strict = TRUE)
@@ -20,9 +26,20 @@
         isString(metadata(object)[["genomeBuild"]]),
         isFlag(metadata(object)[["ignoreVersion"]]),
         isOrganism(metadata(object)[["organism"]])
-        ## Not necessarily defined in GFF file.
-        ## > isInt(metadata(object)[["release"]])
     )
+    if (!isTRUE(ok)) return(ok)
+    ## FIXME CHECK THAT RELEASE IS DEFINED FOR ENSEMBLDB.
+    ## Not necessarily defined in GFF file.
+    ## > isInt(metadata(object)[["release"]])
+    if (!isMatchingFixed("GRCh37", metadata(object)[["genomeBuild"]])) {
+        ok <- validate(
+            !all(is.na(seqlengths(object))),
+            !all(is.na(seqnames(object))),
+            !all(is.na(genome(object)))
+        )
+        if (!isTRUE(ok)) return(ok)
+    }
+    TRUE
 }
 
 
@@ -32,6 +49,7 @@
 #' @note Updated 2021-01-25.
 #' @noRd
 .flybaseValidity <- function(object) {
+    ## FIXME Need to improve this.
     validate(
         identical(metadata(object)[["provider"]], "FlyBase")
     )
@@ -44,6 +62,7 @@
 #' @note Updated 2021-01-25.
 #' @noRd
 .gencodeValidity <- function(object) {
+    ## FIXME Need to improve this.
     validate(
         identical(metadata(object)[["provider"]], "GENCODE")
     )
@@ -56,6 +75,7 @@
 #' @note Updated 2021-01-25.
 #' @noRd
 .refseqValidity <- function(object) {
+    ## FIXME Need to improve this.
     validate(
         identical(metadata(object)[["provider"]], "RefSeq")
     )
@@ -68,6 +88,7 @@
 #' @note Updated 2021-01-25.
 #' @noRd
 .ucscValidity <- function(object) {
+    ## FIXME Need to improve this.
     validate(
         identical(metadata(object)[["provider"]], "UCSC")
     )
@@ -80,6 +101,7 @@
 #' @note Updated 2021-01-25.
 #' @noRd
 .wormbaseValidity <- function(object) {
+    ## FIXME Need to improve this.
     validate(
         identical(metadata(object)[["provider"]], "WormBase")
     )
@@ -106,10 +128,10 @@ setValidity(
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
         ok <- validate(
-            any(grepl(
+            allAreMatchingRegex(
                 pattern = "^ENS([A-Z]+)?G[0-9]{11}(\\.[0-9]+)?$",
                 x = names(object)
-            )),
+            ),
             identical(metadata(object)[["level"]], "genes")
         )
         if (!isTRUE(ok)) return(ok)
@@ -138,10 +160,10 @@ setValidity(
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
         ok <- validate(
-            any(grepl(
+            allAreMatchingRegex(
                 pattern = "^ENS([A-Z]+)?T[0-9]{11}(\\.[0-9]+)?$",
                 x = names(object)
-            )),
+            ),
             identical(metadata(object)[["level"]], "transcripts")
         )
         if (!isTRUE(ok)) return(ok)
