@@ -3,7 +3,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-01-30.
 #'
 #' @section Genome:
 #'
@@ -145,8 +145,16 @@ downloadUCSCGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
-        ## Create symlink.
         gtfFile <- files[["ensGene"]]
+        ## Create tx2gene.
+        tx2gene <- makeTx2GeneFromFASTA(gtfFile)
+        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
+        tx2geneFile <- export(
+            object = tx2gene,
+            file = file.path(outputDir, "tx2gene.csv.gz")
+        )
+        files[["tx2gene"]] <- tx2geneFile
+        ## Create symlink.
         if (!isWindows()) {
             assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
@@ -156,8 +164,6 @@ downloadUCSCGenome <-
             file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
         }
-        tx2geneFile <- makeTx2GeneFileFromGFF(file = gtfFile)
-        files[["tx2gene"]] <- tx2geneFile
         invisible(list("files" = files, "urls" = urls))
     }
 
