@@ -1,14 +1,7 @@
-## FIXME CREATE A TXDB AUTOMATICALLY.
-## FIXME CREATE GENE-LEVEL GRANGES AUTOMATICALLY.
-## FIXME CREATE TRANSCRIPT-LEVEL RANGES AUTOMATICALLY.
-## FIXME COMPARE TX2GENE OBJECT???
-
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-01-30.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -149,7 +142,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-01-30.
 .downloadEnsemblGTF <-
     function(
         genomeBuild,
@@ -185,9 +178,20 @@ downloadEnsemblGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation", "gtf")
         )
+        gtfFile <- files[["gtf"]]
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
         ## Create symlink.
         if (!isWindows()) {
-            gtfFile <- files[["gtf"]]
             assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
                 outputDir,
@@ -310,12 +314,12 @@ downloadEnsemblGenome <-
             overwrite = TRUE
         )
         ## Create tx2gene.
-        tx2geneFile <-
-            makeTx2GeneFileFromFASTA(
-                file = mergeFastaFile,
-                outputFile = file.path(outputDir, "tx2gene.csv.gz"),
-                source = "ensembl"
-            )
+        tx2gene <- makeTx2GeneFromFASTA(mergeFastaFile)
+        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
+        tx2geneFile <- export(
+            object = tx2gene,
+            file = file.path(outputDir, "tx2gene.csv.gz")
+        )
         files <- list(
             "fasta" = list(
                 "cdna" = cdnaFiles,
