@@ -113,6 +113,8 @@ makeGRangesFromTxDb <- function(
             isSubset(c("tx_id", "tx_name"), colnames(mcols(gr))) &&
             is.integer(decode(mcols(gr)[["tx_id"]]))
         ) {
+            ## Not sure these numbers are actually useful, but keep for the
+            ## time being just in case.
             mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
             mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
         }

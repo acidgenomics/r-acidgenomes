@@ -21,12 +21,12 @@
 #' @importFrom SummarizedExperiment rowData rowRanges
 #' @importFrom digest digest
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
-#' @importFrom goalie allAreFiles allAreMatchingRegex allAreNotMatchingRegex
-#'   allAreURLs areDisjointSets areIntersectingSets areSetEqual assert bapply
-#'   hasDuplicates hasInternet hasLength hasNoDuplicates hasNames hasRownames
-#'   hasRows isADir isAFile isAURL isAny isCharacter isFlag isInt
-#'   isMatchingFixed isMatchingRegex isNotMatchingFixed isOrganism isScalar
-#'   isString isSubset isSystemCommand isWindows validate
+#' @importFrom goalie allAreAtomic allAreFiles allAreMatchingRegex
+#'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
+#'   areSetEqual assert bapply hasDuplicates hasInternet hasLength
+#'   hasNoDuplicates hasNames hasRownames hasRows isADir isAFile isAURL isAny
+#'   isCharacter isFlag isInt isMatchingFixed isMatchingRegex isNotMatchingFixed
+#'   isOrganism isScalar isString isSubset isSystemCommand isWindows validate
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
