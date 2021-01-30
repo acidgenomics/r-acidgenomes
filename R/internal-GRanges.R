@@ -23,7 +23,7 @@
 #' @note Can return `NA_character_` here instead. Keeping this as "other", to
 #'   main consistency with previous data sets. Also note that `NA` can behave
 #'   inconsistently in plotting engines.
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-01-30.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
 #' @noRd
@@ -54,6 +54,7 @@
         x[["biotype"]] %in% c(
             "known_ncrna",
             "lincRNA",
+            "lncRNA",
             "non_coding"
         )
     ) {
@@ -112,7 +113,7 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-01-30.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -128,14 +129,13 @@
         )
     )
     df <- as.data.frame(object)
-    ## Biotypes. Prioritizing transcript biotype over gene, if defined. This
-    ## only applies for transcript-level GRanges. For gene-level GRanges, the
-    ## gene biotypes will be used, as expected.
-    if ("txBiotype" %in% names(df)) {
-        biotypeCol <- "txBiotype"
-        biotypeData <- df[[biotypeCol]]
-    } else if ("geneBiotype" %in% names(df)) {
+    ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
+    ## only applies for transcript-level GRanges.
+    if ("geneBiotype" %in% names(df)) {
         biotypeCol <- "geneBiotype"
+        biotypeData <- df[[biotypeCol]]
+    } else if ("txBiotype" %in% names(df)) {
+        biotypeCol <- "txBiotype"
         biotypeData <- df[[biotypeCol]]
     } else {
         biotypeCol <- NULL
@@ -165,6 +165,7 @@
         "biotype" = biotypeData,
         "chromosome" = seqnamesData,
         "geneName" = geneNameData,
+        row.names = names(object),
         stringsAsFactors = TRUE
     )
     ## NOTE Consider using BiocParallel here for improved speed.
