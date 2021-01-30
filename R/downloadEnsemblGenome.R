@@ -313,7 +313,7 @@ downloadEnsemblGenome <-
             file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
-        ## Create tx2gene.
+        ## Save transcript-to-gene mappings.
         tx2gene <- makeTx2GeneFromFASTA(mergeFastaFile)
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(

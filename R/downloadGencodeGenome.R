@@ -101,7 +101,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-01-30.
 .downloadGencodeAnnotation <-
     function(
         genomeBuild,
@@ -141,18 +141,31 @@ downloadGencodeGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
+        gffFile <- files[["gff"]]
+        gtfFile <- files[["gtf"]]
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
         ## Create symlinks.
         if (!isWindows()) {
-            gffFile <- files[["gff"]]
-            assert(isAFile(gffFile))
+            assert(
+                isAFile(gffFile),
+                isAFile(gtfFile)
+            )
             gffSymlink <- file.path(
                 outputDir,
                 paste0("annotation.", fileExt(gffFile))
             )
             file.symlink(from = gffFile, to = gffSymlink)
             files[["gffSymlink"]] <- gffSymlink
-            gtfFile <- files[["gtf"]]
-            assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
                 outputDir,
                 paste0("annotation.", fileExt(gtfFile))
@@ -252,7 +265,7 @@ downloadGencodeGenome <-
             outputDir = file.path(outputDir, "transcriptome")
         )
         fastaFile <- files[["fasta"]]
-        ## Create tx2gene.
+        ## Save transcript-to-gene mappings.
         tx2gene <- makeTx2GeneFromFASTA(fastaFile)
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(
