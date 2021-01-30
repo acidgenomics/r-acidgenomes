@@ -1,7 +1,3 @@
-## FIXME NEED TO CREATE TX2GENE.CSV
-
-
-
 ## nolint start
 
 #' Download RefSeq reference genome
@@ -14,7 +10,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-30.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -112,7 +108,7 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-01-30.
 .downloadRefSeqAnnotation <-
     function(
         genomeBuild,
@@ -133,16 +129,37 @@ downloadRefSeqGenome <-
             urls = urls,
             outputDir = file.path(outputDir, "annotation")
         )
+        gffFile <- files[["gff"]]
+        gtfFile <- files[["gtf"]]
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gffFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gffFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
+        ## Save transcript-to-gene mappings.
+        tx2gene <- makeTx2GeneFromFASTA(gffFile)
+        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
+        tx2geneFile <- export(
+            object = tx2gene,
+            file = file.path(outputDir, "tx2gene.csv.gz")
+        )
+        files[["tx2gene"]] <- tx2geneFile
         ## Create GFF and GTF symlinks.
         if (!isWindows()) {
-            gffFile <- files[["gff"]]
-            assert(isAFile(gffFile))
+            assert(
+                isAFile(gffFile),
+                isAFile(gtfFile)
+            )
             gffSymlink <- file.path(outputDir, "annotation.gff3.gz")
             file.symlink(from = gffFile, to = gffSymlink)
             files[["gffSymlink"]] <- gffSymlink
             ## Generate GTF symlink.
-            gtfFile <- files[["gtf"]]
-            assert(isAFile(gtfFile))
             gtfSymlink <- file.path(
                 outputDir,
                 paste0("annotation.", fileExt(gtfFile))
