@@ -217,20 +217,22 @@
 ## Identifier versions =========================================================
 #' Include identifier version in primary identifier
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-01-30.
 #' @noRd
 .includeVersion <-
     function(
         object,
         idCol,
         idVersionCol,
-        idNoVersionCol
+        idNoVersionCol,
+        quiet = TRUE
     ) {
         assert(
             is(object, "GRanges"),
             isString(idCol),
             isString(idVersionCol),
-            isString(idNoVersionCol)
+            isString(idNoVersionCol),
+            isFlag(quiet)
         )
         ## Early return for genomes without identifier versions (e.g. FlyBase).
         if (!isSubset(
@@ -240,14 +242,16 @@
             return(object)
         }
         assert(areDisjointSets(idNoVersionCol, names(mcols(object))))
-        alert(sprintf(
-            "Including version in {.var %s} from {.var %s}.",
-            idCol, idVersionCol
-        ))
-        alertInfo(sprintf(
-            "Unversioned identifiers are in {.var %s}.",
-            idNoVersionCol
-        ))
+        if (isFALSE(quiet)) {
+            alert(sprintf(
+                "Including version in {.var %s} from {.var %s}.",
+                idCol, idVersionCol
+            ))
+            alertInfo(sprintf(
+                "Unversioned identifiers are in {.var %s}.",
+                idNoVersionCol
+            ))
+        }
         id <- mcols(object)[[idVersionCol]]
         mcols(object)[[idNoVersionCol]] <- mcols(object)[[idCol]]
         mcols(object)[[idCol]] <- id
