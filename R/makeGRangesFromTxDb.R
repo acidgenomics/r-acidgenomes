@@ -26,12 +26,12 @@ makeGRangesFromTxDb <- function(
 ) {
     assert(is(object, "TxDb"))
     level <- match.arg(level)
-    keys <- columns(object)
+    cols <- columns(object)
     colsList <- list(
-        "cds" = grep(pattern = "^CDS", x = keys, value = TRUE),
-        "exons" = grep(pattern = "^EXON", x = keys, value = TRUE),
-        "genes" = grep(pattern = "^GENE", x = keys, value = TRUE),
-        "transcripts" = grep(pattern = "^TX", x = keys, value = TRUE)
+        "cds" = grep(pattern = "^CDS", x = cols, value = TRUE),
+        "exons" = grep(pattern = "^EXON", x = cols, value = TRUE),
+        "genes" = grep(pattern = "^GENE", x = cols, value = TRUE),
+        "transcripts" = grep(pattern = "^TX", x = cols, value = TRUE)
     )
     colsList[["cds"]] <-
         c(colsList[["cds"]], colsList[["genes"]])
@@ -76,14 +76,65 @@ makeGRangesFromTxDb <- function(
     suppressMessages({
         gr <- do.call(what = what, args = args)
     })
-    ## Improve identifier handling for UCSC and/or RefSeq input. Note that
-    ## RefSeq transcript names currently map to the gene names here, which is
-    ## incorrect and confusing.
-    if (isSubset(c("tx_id", "tx_name"), colnames(mcols(gr)))) {
-        if (is.integer(decode(mcols(gr)[["tx_id"]]))) {
+    ## Transcript-specific fixes.
+    if (identical(level, "transcripts")) {
+        ## Ensure we coerce gene identifiers to character vector, if necessary.
+        ## This currently gets returned as CharacterList for RefSeq.
+        if (is(mcols(gr)[["gene_id"]], "CharacterList")) {
+            mcols(gr)[["gene_id"]] <-
+                as.character(mcols(gr)[["gene_id"]])
+        }
+        ## Drop transcripts that don't map to genes.
+        keep <- !is.na(mcols(gr)[["gene_id"]])
+        gr <- gr[keep]
+        ## Ensure "rna-" prefix is correctly removed from identifiers.
+        ## This is not currently handled correctly for RefSeq input.
+        ## (e.g. "rna-MIR1302-2", "rna-TRNP", etc.).
+        if (any(grepl(pattern = "^rna-", x = mcols(gr)[["tx_id"]]))) {
+            mcols(gr)[["tx_id"]] <-
+                gsub(
+                    pattern = "^rna-",
+                    replacement = "",
+                    x = mcols(gr)[["tx_id"]]
+                )
+        }
+        if (any(grepl(pattern = "^rna-", x = mcols(gr)[["tx_name"]]))) {
+            mcols(gr)[["tx_name"]] <-
+                gsub(
+                    pattern = "^rna-",
+                    replacement = "",
+                    x = mcols(gr)[["tx_name"]]
+                )
+        }
+        ## Improve identifier handling for UCSC and/or RefSeq input. Note that
+        ## RefSeq transcript names currently map to the gene names here, which
+        ## is incorrect and confusing.
+        if (
+            isSubset(c("tx_id", "tx_name"), colnames(mcols(gr))) &&
+            is.integer(decode(mcols(gr)[["tx_id"]]))
+        ) {
             mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
             mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
         }
+
+        ## Drop any transcript identifiers that return NA. This can happen
+        ## with RefSeq return.
+        keep <- !is.na(mcols(gr)[["tx_id"]])
+        gr <- gr[keep]
+        ## Drop any remaining elements where the transcript and gene identifiers
+        ## are identical. This is garbage output from RefSeq that we don't want
+        ## to include in transcript-to-gene mappings.
+        keep <- apply(
+            X = mcols(gr),
+            MARGIN = 1L,
+            FUN = function(x) {
+                !identical(
+                    x = as.character(x[["tx_id"]]),
+                    x[["gene_id"]]
+                )
+            }
+        )
+        gr <- gr[keep]
     }
     ## This will also return metadata slotted into `genomeInfo`.
     meta <- metadata(gr)
