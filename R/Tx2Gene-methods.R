@@ -2,7 +2,7 @@
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-01-30.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param metadata `logical(1)`.
@@ -66,9 +66,12 @@ setMethod(
 
 
 
-## Updated 2021-01-29.
+## Updated 2021-01-30.
 `Tx2Gene,DataFrame` <-  # nolint
     function(object) {
+        ## Harden against `CharacterList` input, which can happen when
+        ## passing from transcripts generated via TxDb.
+        assert(allAreAtomic(object))
         meta <- metadata(object)
         colnames(object) <- camelCase(colnames(object), strict = TRUE)
         colnames(object) <- gsub(
@@ -81,18 +84,13 @@ setMethod(
             isSubset(cols, colnames(object)),
             hasRows(object)
         )
-        df <- object[, cols, drop = FALSE]
-        ## This ensures any `CharacterList` columns from `GRangesList` get
-        ## coerced to `character` correctly.
-        df[[1L]] <- as.character(df[[1L]])
-        df[[2L]] <- as.character(df[[2L]])
-        ## This step is needed for handling raw GFF annotations.
-        df <- unique(df)
-        ## Ensure identifiers return sorted, which is more intuitive.
-        idx <- order(df)
-        df <- df[idx, , drop = FALSE]
-        metadata(df) <- meta
-        new(Class = "Tx2Gene", df)
+        object <- object[, cols, drop = FALSE]
+        object <- object[complete.cases(object), , drop = FALSE]
+        object <- unique(object)
+        assert(hasNoDuplicates(object[[1L]]))
+        object <- object[order(object), , drop = FALSE]
+        metadata(object) <- meta
+        new(Class = "Tx2Gene", object)
     }
 
 
