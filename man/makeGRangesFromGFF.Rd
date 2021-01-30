@@ -32,7 +32,7 @@ Make GRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2021-01-29.
+Updated 2021-01-30.
 }
 \section{GFF/GTF specification}{
 
