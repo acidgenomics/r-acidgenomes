@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-01-30.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -253,10 +253,11 @@ downloadGencodeGenome <-
         )
         fastaFile <- files[["fasta"]]
         ## Create tx2gene.
-        tx2geneFile <- makeTx2GeneFileFromFASTA(
-            file = fastaFile,
-            outputFile = file.path(outputDir, "tx2gene.csv.gz"),
-            source = "gencode"
+        tx2gene <- makeTx2GeneFromFASTA(fastaFile)
+        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
+        tx2geneFile <- export(
+            object = tx2gene,
+            file = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["tx2gene"]] <- tx2geneFile
         ## Create symlink.

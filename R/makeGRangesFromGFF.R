@@ -11,7 +11,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-01-30.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -244,8 +244,6 @@
 #' ## > summary(transcripts)
 
 ## nolint end
-
-## FIXME Can we add parsers for UCSC?
 
 makeGRangesFromGFF <- function(
     file,
