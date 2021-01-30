@@ -1,9 +1,13 @@
 ## Metadata modification =======================================================
+
+## nolint start
+
 #' Apply broad class definitions
 #'
 #' This function is intended to work rowwise on the GRanges mcols.
 #'
 #' @section Mitochondrial genes:
+#'
 #' Mitochondrial gene matching depends on the genome.
 #' This is important in particular for single-cell RNA-seq.
 #'
@@ -16,6 +20,20 @@
 #'
 #' Note that this might not be perfect for other genomes, so consider
 #' atttempting to improve support here in a future update.
+#'
+#' @section Ensembl biotypes:
+#'
+#' See [biotypes guide](https://m.ensembl.org/info/genome/genebuild/biotypes.html)
+#' for details.
+#'
+#' LRG: Locus Reference Genomic sequence.
+#' Refer to the [LRG website](https://www.lrg-sequence.org/) for details.
+#'
+#' TEC (To be Experimentally Confirmed): Regions with EST clusters that have
+#' polyA features that could indicate the presence of protein coding genes.
+#' These require experimental validation, either by 5' RACE or RT-PCR to extend
+#' the transcripts, or by confirming expression of the putatively-encoded
+#' peptide with specific antibodies.
 #'
 #' @seealso Can use `dplyr::case_when()` instead, which allows for a rowwise
 #'   vectorized if/else call stack.
@@ -32,6 +50,9 @@
 #'   List returned via apply call using `MARGIN = 1`.
 #'
 #' @return `character(1)`.
+
+## nolint end
+
 .applyBroadClass <- function(x) {
     if (
         isTRUE(grepl(pattern = "^MT",
