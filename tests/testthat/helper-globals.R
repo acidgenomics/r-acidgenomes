@@ -21,7 +21,7 @@ sparse <- sparseMatrix
 txse <- SummarizedExperiment_transcripts
 
 organism <- "Homo sapiens"
-release <- 102L
+ensemblRelease <- 102L
 
 ## nolint start
 DataFrame <- S4Vectors::DataFrame
