@@ -1,33 +1,33 @@
 ## Genome annotation classes ===================================================
 #' Shared GRanges validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .grangesValidity <- function(object) {
+    if (is(object, "GRangesList")) {
+        gr <- object[[1L]]
+    } else {
+        gr <- object
+    }
     ok <- validate(
         identical(
-            x = colnames(mcols(object)),
-            y = camelCase(colnames(mcols(object)), strict = TRUE)
+            x = colnames(mcols(gr)),
+            y = camelCase(colnames(mcols(gr)), strict = TRUE)
         )
     )
+    if (!isTRUE(ok)) return(ok)
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
             "acidGenomes" = "package_version",
             "date" = "Date",
-            ## > "genomeBuild" = "character",
             "ignoreVersion" = "logical",
             "level" = "character",
-            ## > "organism" = "character",
             "provider" = "character",
             "synonyms" = "logical"
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
-    ## > ok <- validate(
-    ## >     isOrganism(metadata(object)[["organism"]])
-    ## > )
     if (!isTRUE(ok)) return(ok)
     TRUE
 }
@@ -110,13 +110,22 @@
 
 #' Shared RefSeq validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .refseqValidity <- function(object) {
     ok <- .grangesValidity(object)
     if (!isTRUE(ok)) return(ok)
     ok <- validate(
         identical(metadata(object)[["provider"]], "RefSeq")
+    )
+    if (!isTRUE(ok)) return(ok)
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "genomeBuild" = "character",
+            "organism" = "character"
+        ),
+        subset = TRUE
     )
     if (!isTRUE(ok)) return(ok)
     TRUE
@@ -126,13 +135,22 @@
 
 #' Shared UCSC validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .ucscValidity <- function(object) {
     ok <- .grangesValidity(object)
     if (!isTRUE(ok)) return(ok)
     ok <- validate(
         identical(metadata(object)[["provider"]], "UCSC")
+    )
+    if (!isTRUE(ok)) return(ok)
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "genomeBuild" = "character",
+            "organism" = "character"
+        ),
+        subset = TRUE
     )
     if (!isTRUE(ok)) return(ok)
     TRUE
@@ -142,13 +160,22 @@
 
 #' Shared WormBase validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .wormbaseValidity <- function(object) {
     ok <- .grangesValidity(object)
     if (!isTRUE(ok)) return(ok)
     ok <- validate(
         identical(metadata(object)[["provider"]], "WormBase")
+    )
+    if (!isTRUE(ok)) return(ok)
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "genomeBuild" = "character",
+            "organism" = "character"
+        ),
+        subset = TRUE
     )
     if (!isTRUE(ok)) return(ok)
     TRUE
