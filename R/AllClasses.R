@@ -1,6 +1,8 @@
 ## Genome annotation classes ===================================================
 #' Shared GRanges validity checks
 #'
+#' @note Note that genome build and organism are not defined in minimal FlyBase
+#'   GTF example.
 #' @note Updated 2021-02-01.
 #' @noRd
 .grangesValidity <- function(object) {
