@@ -51,7 +51,7 @@ Generates a \code{Tx2Gene} object containing \code{txId} and \code{geneId} colum
 \note{
 File should not contain column header names.
 
-Updated 2021-01-14.
+Updated 2021-02-01.
 }
 \examples{
 file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")

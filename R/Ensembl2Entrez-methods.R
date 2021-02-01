@@ -1,3 +1,9 @@
+## NOTE Can see this cryptic warning from AnnotationHub:
+## > Failed to parse headers:
+## > 221 Goodbye.
+
+
+
 #' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
 #' @note Updated 2021-01-18.
