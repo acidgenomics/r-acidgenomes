@@ -25,9 +25,9 @@
 #'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
 #'   areSetEqual assert bapply hasColnames hasDuplicates hasInternet hasLength
 #'   hasNoDuplicates hasNames hasRownames hasRows hasValidNames isADir isAFile
-#'   isAURL isAny isCharacter isFlag isInt isMatchingFixed isMatchingRegex
-#'   isNotMatchingFixed isOrganism isScalar isString isSubset isSystemCommand
-#'   isWindows validate validateClasses
+#'   isAURL isAny isCharacter isFlag isInstalled isInt isMatchingFixed
+#'   isMatchingRegex isNotMatchingFixed isOrganism isScalar isString isSubset
+#'   isSystemCommand isWindows validate validateClasses
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
