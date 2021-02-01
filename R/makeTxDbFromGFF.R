@@ -36,7 +36,7 @@
 #'     "gencode.v36.annotation.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' txdb <- makeTxDbFromGFF(gtfFile)
+#' txdb <- AcidGenomes::makeTxDbFromGFF(file = gtfFile)
 #' print(txdb)
 #' seqinfo(txdb)
 #'
@@ -52,7 +52,7 @@
 #' ## >     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
 #' ## >     protocol = "ftp"
 #' ## > )
-#' ## > txdb <- makeTxDbFromGFF(file = gffFile)
+#' ## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gffFile)
 #' ## > print(txdb)
 #' ## > seqinfo(txdb)
 NULL
