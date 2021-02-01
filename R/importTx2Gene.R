@@ -22,7 +22,7 @@
 #'     file = file,
 #'     organism = "Homo sapiens",
 #'     genomeBuild = "GRCh38",
-#'     ensemblRelease = 100L
+#'     release = 100L
 #' )
 #' print(x)
 importTx2Gene <- function(
