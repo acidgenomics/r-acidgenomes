@@ -22,7 +22,7 @@ Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }}
 
 \note{
-Updated 2021-01-29.
+Updated 2021-02-01.
 }
 \examples{
 ## GENCODE ====

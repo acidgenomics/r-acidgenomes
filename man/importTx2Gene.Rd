@@ -51,7 +51,7 @@ x <- importTx2Gene(
     file = file,
     organism = "Homo sapiens",
     genomeBuild = "GRCh38",
-    ensemblRelease = 100L
+    release = 100L
 )
 print(x)
 }
