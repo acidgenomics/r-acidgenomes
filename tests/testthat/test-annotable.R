@@ -6,9 +6,10 @@ test_that("genes", {
     object <- annotable(
         organism = organism,
         release = release,
-        level = "genes"
+        level = "genes",
+        ignoreVersion = TRUE
     )
     expect_s3_class(object, "tbl_df")
-    expect_identical(dim(object), c(67667L, 13L))
-    expect_identical(object[["geneId"]][[1L]], "ENSG00000000003")
+    expect_identical(dim(object), c(68001L, 14L))
+    expect_identical(object[["geneId"]][[1L]], "ENSG00000228572")
 })
