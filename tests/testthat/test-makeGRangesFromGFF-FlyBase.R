@@ -1,9 +1,10 @@
+## FIXME FAILING GENOME BUILD AND ORGANISM.
+
 context("makeGRangesFromGFF : FlyBase")
 
 skip_if_not(hasInternet())
 
 Rle <- structure("Rle", package = "S4Vectors")  # nolint
-
 file <- file.path("cache", "flybase.gtf")
 
 test_that("GTF genes", {
