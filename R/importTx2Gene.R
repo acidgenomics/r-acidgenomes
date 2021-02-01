@@ -8,21 +8,13 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #'
-#' @param ignoreVersion `logical(1)`.
-#'   Don't include the transcript version in the identifier.
-#'   **Not recommended** by default when handing off salmon or kallisto output
-#'   to tximport-DESeq2 workflow.
-#' @param ignoreGeneVersion `logical(1)`.
-#'   Don't include the gene version in the identifier.
-#'   **Recommended** by default when handing off salmon or kallisto output to
-#'   tximport-DESeq2 workflow.
+#' @param ignoreVersion `logical(2)`.
+#'   Ignore transcript ("tx") and/or gene ("gene") versions.
 #'
 #' @return `Tx2Gene`.
 #'
 #' @seealso
 #' - `stripTranscriptVersions`, `stripGeneVersions`
-#' - `download-ensembl-genome` script (which generates `tx2gene.csv` output)
-#'   defined in koopa shell bootloader.
 #'
 #' @examples
 #' file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")
@@ -30,36 +22,39 @@
 #'     file = file,
 #'     organism = "Homo sapiens",
 #'     genomeBuild = "GRCh38",
-#'     ensemblRelease = 90L
+#'     ensemblRelease = 100L
 #' )
 #' print(x)
 importTx2Gene <- function(
     file,
     organism = NULL,
     genomeBuild = NULL,
-    ensemblRelease = NULL,
-    ignoreVersion = FALSE,
-    ignoreGeneVersion = TRUE
+    release = NULL,
+    ignoreVersion = c("tx" = FALSE, "gene" = FALSE)
 ) {
     assert(
-        isFlag(ignoreVersion),
-        isFlag(ignoreGeneVersion)
+        is.logical(ignoreVersion),
+        areSetEqual(
+            x = c("tx", "gene"),
+            y = names(ignoreVersion)
+        )
     )
     data <- import(file = file, rownames = FALSE, colnames = FALSE)
     colnames(data) <- c("txId", "geneId")
     data <- as(data, "DataFrame")
-    if (isTRUE(ignoreVersion)) {
+    if (isTRUE(ignoreVersion[["tx"]])) {
         data[["txId"]] <-
             stripTranscriptVersions(data[["txId"]])
     }
-    if (isTRUE(ignoreGeneVersion)) {
+    if (isTRUE(ignoreVersion[["gene"]])) {
         data[["geneId"]] <-
             stripGeneVersions(data[["geneId"]])
     }
     metadata(data) <- list(
-        organism = as.character(organism),
-        genomeBuild = as.character(genomeBuild),
-        ensemblRelease = as.integer(ensemblRelease)
+        "genomeBuild" = genomeBuild,
+        "ignoreVersion" = ignoreVersion,
+        "organism" = organism,
+        "release" = release
     )
     Tx2Gene(data)
 }

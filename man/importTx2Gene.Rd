@@ -8,9 +8,8 @@ importTx2Gene(
   file,
   organism = NULL,
   genomeBuild = NULL,
-  ensemblRelease = NULL,
-  ignoreVersion = FALSE,
-  ignoreGeneVersion = TRUE
+  release = NULL,
+  ignoreVersion = c(tx = FALSE, gene = FALSE)
 )
 }
 \arguments{
@@ -25,22 +24,15 @@ Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
 defaults to the most recent build available.
 Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
-\item{ensemblRelease}{\code{integer(1)}.
+\item{release}{\code{integer(1)}.
 Ensembl release version (e.g. \code{90}). We recommend setting this value if
 possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 
-\item{ignoreVersion}{\code{logical(1)}.
-Don't include the transcript version in the identifier.
-\strong{Not recommended} by default when handing off salmon or kallisto output
-to tximport-DESeq2 workflow.}
-
-\item{ignoreGeneVersion}{\code{logical(1)}.
-Don't include the gene version in the identifier.
-\strong{Recommended} by default when handing off salmon or kallisto output to
-tximport-DESeq2 workflow.}
+\item{ignoreVersion}{\code{logical(2)}.
+Ignore transcript ("tx") and/or gene ("gene") versions.}
 }
 \value{
 \code{Tx2Gene}.
@@ -59,14 +51,12 @@ x <- importTx2Gene(
     file = file,
     organism = "Homo sapiens",
     genomeBuild = "GRCh38",
-    ensemblRelease = 90L
+    ensemblRelease = 100L
 )
 print(x)
 }
 \seealso{
 \itemize{
 \item \code{stripTranscriptVersions}, \code{stripGeneVersions}
-\item \code{download-ensembl-genome} script (which generates \code{tx2gene.csv} output)
-defined in koopa shell bootloader.
 }
 }
