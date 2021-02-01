@@ -6,9 +6,9 @@ Rle <- structure("Rle", package = "S4Vectors")  # nolint
 
 test_that("Genes", {
     object <- makeGRangesFromEnsembl(
-        organism = organism,
+        organism = "Homo sapiens",
         level = "genes",
-        release = ensemblRelease,
+        release = 102L,
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
@@ -54,9 +54,9 @@ test_that("Genes", {
 ## Transcript verion metadata isn't saved in older EnsDb releases, such as v87.
 test_that("Transcripts", {
     object <- makeGRangesFromEnsembl(
-        organism = organism,
+        organism = "Homo sapiens",
         level = "transcripts",
-        release = ensemblRelease,
+        release = 102L,
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
@@ -119,35 +119,44 @@ test_that("Transcripts", {
 
 test_that("GRCh37 (hg19)", {
     ## Conditionally test if optional EnsDb.Hsapiens.v75 package is installed.
-    skip_if_not("EnsDb.Hsapiens.v75" %in% rownames(installed.packages()))
+    skip_if_not_installed("EnsDb.Hsapiens.v75")
     ## Genes
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
-        genomeBuild = "GRCh37"
+        genomeBuild = "GRCh37",
+        ignoreVersion = TRUE
     )
-    expect_is(object, "GRanges")
+    expect_is(object, "EnsemblGenes")
     expect_identical(length(object), 64102L)
-    expect_identical(head(names(object), 1L), "ENSG00000000003")
+    expect_identical(head(names(object), 1L), "ENSG00000228572")
     ## Transcripts
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "transcripts",
-        genomeBuild = "GRCh37"
+        genomeBuild = "GRCh37",
+        ignoreVersion = TRUE
     )
-    expect_is(object, "GRanges")
+    expect_is(object, "EnsemblTranscripts")
     expect_identical(length(object), 215647L)
-    expect_identical(head(names(object), 1L), "ENST00000000233")
+    expect_identical(head(names(object), 1L), "ENST00000478759")
 })
 
 test_that("UCSC identifier matching (hg38)", {
-    x <- makeGRangesFromEnsembl(organism = "Homo sapiens", genomeBuild = "hg38")
-    expect_s4_class(x, "GRanges")
+    x <- makeGRangesFromEnsembl(
+        organism = "Homo sapiens",
+        level = "genes",
+        genomeBuild = "hg38"
+    )
+    expect_s4_class(x, "EnsemblGenes")
 })
 
 test_that("Organism with 3 words", {
-    x <- makeGRangesFromEnsembl(organism = "Canis lupus familiaris")
-    expect_s4_class(x, "GRanges")
+    x <- makeGRangesFromEnsembl(
+        organism = "Canis lupus familiaris",
+        level = "genes"
+    )
+    expect_s4_class(x, "EnsemblGenes")
 })
 
 test_that("Invalid parameters", {

@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -20,10 +20,11 @@ getEnsDb <- function(
     release = NULL
 ) {
     assert(
-        isOrganism(organism),
+        isString(organism),
         isString(genomeBuild, nullOK = TRUE),
         isInt(release, nullOK = TRUE)
     )
+    organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
     if (isString(genomeBuild)) {
         remap <- tryCatch(
             expr = mapUCSCBuildToNCBI(genomeBuild),
@@ -74,7 +75,7 @@ getEnsDb <- function(
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-02-01.
 #' @noRd
 #'
 #' @examples
@@ -86,7 +87,7 @@ getEnsDb <- function(
     ah = NULL
 ) {
     assert(
-        isOrganism(organism),
+        isString(organism),
         isString(genomeBuild, nullOK = TRUE),
         isInt(release, nullOK = TRUE),
         is(ah, "AnnotationHub") || is.null(ah)
@@ -112,6 +113,7 @@ getEnsDb <- function(
             fullOrganism, organism
         ))
     }
+    assert(isOrganism(organism))
     ## Coerce integerish (e.g. 90) to integer (e.g. 90L).
     if (isInt(release)) {
         release <- as.integer(release)
