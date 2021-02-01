@@ -640,7 +640,7 @@ setValidity(
 #' Contains a `DataFrame` with `mgi` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-02-01.
 #'
 #' @return `MGI2Ensembl`.
 setClass(
@@ -652,9 +652,9 @@ setValidity(
     method = function(object) {
         validate(
             hasRows(object),
-            identical(colnames(object), c("mgi", "ensembl")),
-            is.integer(object[["mgi"]]),
-            hasNoDuplicates(object[["mgi"]])
+            identical(colnames(object), c("mgiId", "ensemblId")),
+            is.integer(object[["mgiId"]]),
+            hasNoDuplicates(object[["mgiId"]])
         )
     }
 )
