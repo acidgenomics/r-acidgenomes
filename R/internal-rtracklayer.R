@@ -616,6 +616,9 @@
                 any(grepl(pattern = "^gene-", x = x))
             }
         )
+        if (!any(keep)) {
+            stop("Failed to identify transcripts.")
+        }
         object <- object[keep]
         ## e.g. "NM_000218.3".
         assert(allAreMatchingRegex(
