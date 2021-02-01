@@ -1,3 +1,5 @@
+## FIXME NEED UCSC MINIMAL EXAMPLE.
+
 if (!isTRUE(goalie::hasInternet())) {
     warning("No Internet connection detected.")
     return(invisible(NULL))

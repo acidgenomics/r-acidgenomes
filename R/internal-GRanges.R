@@ -134,7 +134,7 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -193,6 +193,10 @@
     x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
     x <- as.factor(x)
     if (all(x == "other")) {
+        alertWarning(sprintf(
+            "Returning without {.var %s} in {.var %s}.",
+            "broadClass", "mcols"
+        ))
         return(object)
     }
     mcols(object)[["broadClass"]] <- Rle(x)
