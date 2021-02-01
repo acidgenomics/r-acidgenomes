@@ -1,17 +1,19 @@
-## This code depends on biomaRt and Ensembl, which can time out.
+## This code depends on Ensembl server, which can time out.
 
 context("extra | mapEnsemblReleaseToURL")
+
+skip_if_not(hasInternet(url = "https://ensembl.org/"))
+
+test_that("Ensembl 100", {
+    expect_identical(
+        object = mapEnsemblReleaseToURL(100L),
+        expected = "https://apr2020.archive.ensembl.org"
+    )
+})
 
 test_that("NULL input", {
     expect_identical(
         object = mapEnsemblReleaseToURL(NULL),
         expected = "http://useast.ensembl.org"
-    )
-})
-
-test_that("integer input", {
-    expect_identical(
-        object = mapEnsemblReleaseToURL(96L),
-        expected = "http://apr2019.archive.ensembl.org"
     )
 })

@@ -2,15 +2,30 @@
 
 context("extra | mapHumanOrthologs")
 
+## FIXME THIS ISNT MAPPING THE RELEASE TO ENSEMBLDB CORRECTLY...
+## FIXME THIS GOT TOTALLY HOSED DURING MATCHING...
+
 test_that("mapHumanOrthologs", {
     genes <- c(
         "ENSMUSG00000000001", "ENSMUSG00000000003",
         "ENSMUSG00000000028", "ENSMUSG00000000031",
         "ENSMUSG00000000037", "ENSMUSG00000000049"
     )
-    object <- mapHumanOrthologs(genes, ensemblRelease = 87L)
-    expected <- tibble(
-        geneId = c(
+    ## This depends on biomaRt, and has a tendency to time out.
+    object <- tryCatch(
+        expr = mapHumanOrthologs(genes, ensemblRelease = 87L),
+        error = function(e) e
+    )
+    ## Skip if connection timed out.
+    if (is(map, "error")) {
+        msg <- as.character(map)
+        skip_if(
+            condition = grepl(pattern = "biomaRt", x = msg),
+            message = msg
+        )
+    }
+    expected <- DataFrame(
+        "geneId" = c(
             "ENSMUSG00000000001",
             "ENSMUSG00000000003",
             "ENSMUSG00000000028",
@@ -18,7 +33,7 @@ test_that("mapHumanOrthologs", {
             "ENSMUSG00000000037",
             "ENSMUSG00000000049"
         ),
-        hgncId = c(
+        "hgncId" = c(
             "ENSG00000065135",
             NA,
             "ENSG00000093009",
@@ -26,7 +41,7 @@ test_that("mapHumanOrthologs", {
             "ENSG00000102098",
             "ENSG00000091583"
         ),
-        geneName = c(
+        "geneName" = c(
             "Gnai3",
             "Pbsn",
             "Cdc45",
@@ -34,14 +49,15 @@ test_that("mapHumanOrthologs", {
             "Scml2",
             "Apoh"
         ),
-        hgncName = c(
+        "hgncName" = c(
             "GNAI3",
             NA,
             "CDC45",
             NA,
             "SCML2",
             "APOH"
-        )
+        ),
+        row.names = genes
     )
     expect_identical(object, expected)
 })
