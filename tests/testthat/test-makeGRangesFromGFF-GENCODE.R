@@ -39,9 +39,35 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_identical(length(object), 167L)
-    ## FIXME ! No gene versions to modify.
-    expect_identical(names(object)[[1L]], "ENST00000456328.2")
+    expect_identical(length(object), 232117L)
+    expect_identical(
+        object = names(object)[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txId"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
+        expected = "ENST00000456328"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneId"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
+        expected = "ENSG00000223972"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
@@ -54,6 +80,7 @@ test_that("GTF transcripts", {
             "geneName" = Rle,
             "havanaGene" = Rle,
             "havanaTranscript" = Rle,
+            "hgncId" = Rle,
             "level" = Rle,
             "ont" = Rle,
             "proteinId" = Rle,
@@ -70,7 +97,7 @@ test_that("GTF transcripts", {
     )
 })
 
-file <- file.path("cache", "gencode.gff3")
+file <- gffs[["gencode_grch38_gff3"]]
 
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(
@@ -79,7 +106,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_identical(length(object), 60L)
+    expect_identical(length(object), 60660L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), class),
@@ -91,6 +118,7 @@ test_that("GFF3 genes", {
             "geneIdVersion" = Rle,
             "geneName" = Rle,
             "havanaGene" = Rle,
+            "hgncId" = Rle,
             "level" = Rle,
             "ont" = "CompressedCharacterList",
             "source" = Rle,
@@ -107,8 +135,35 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_identical(length(object), 167L)
-    expect_identical(names(object)[[1L]], "ENST00000456328.2")
+    expect_identical(length(object), 232117L)
+    expect_identical(
+        object = names(object)[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txId"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
+        expected = "ENST00000456328"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneId"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
+        expected = "ENSG00000223972"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
@@ -121,6 +176,7 @@ test_that("GFF3 transcripts", {
             "geneName" = Rle,
             "havanaGene" = Rle,
             "havanaTranscript" = Rle,
+            "hgncId" = Rle,
             "level" = Rle,
             "ont" = "CompressedCharacterList",
             "proteinId" = Rle,
