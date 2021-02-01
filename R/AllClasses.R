@@ -85,13 +85,22 @@
 
 #' Shared GENCODE validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .gencodeValidity <- function(object) {
     ok <- .grangesValidity(object)
     if (!isTRUE(ok)) return(ok)
     ok <- validate(
         identical(metadata(object)[["provider"]], "GENCODE")
+    )
+    if (!isTRUE(ok)) return(ok)
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "genomeBuild" = "character",
+            "organism" = "character"
+        ),
+        subset = TRUE
     )
     if (!isTRUE(ok)) return(ok)
     TRUE
