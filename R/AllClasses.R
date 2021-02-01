@@ -15,19 +15,19 @@
         expected = list(
             "acidGenomes" = "package_version",
             "date" = "Date",
-            "genomeBuild" = "character",
+            ## > "genomeBuild" = "character",
             "ignoreVersion" = "logical",
             "level" = "character",
-            "organism" = "character",
+            ## > "organism" = "character",
             "provider" = "character",
             "synonyms" = "logical"
         ),
         subset = TRUE
     )
     if (!isTRUE(ok)) return(ok)
-    ok <- validate(
-        isOrganism(metadata(object)[["organism"]])
-    )
+    ## > ok <- validate(
+    ## >     isOrganism(metadata(object)[["organism"]])
+    ## > )
     if (!isTRUE(ok)) return(ok)
     TRUE
 }
@@ -36,7 +36,7 @@
 
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -45,19 +45,20 @@
         identical(metadata(object)[["provider"]], "Ensembl")
     )
     if (!isTRUE(ok)) return(ok)
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "genomeBuild" = "character",
+            "organism" = "character"
+        ),
+        subset = TRUE
+    )
+    if (!isTRUE(ok)) return(ok)
     ## Can't always get the release version from GFF file, so just check
     ## for ensembldb return.
     if (isSubset("ensembldb", names(metadata(object)))) {
         ok <- validate(
             is.integer(metadata(object)[["release"]])
-        )
-        if (!isTRUE(ok)) return(ok)
-    }
-    if (!isMatchingFixed("GRCh37", metadata(object)[["genomeBuild"]])) {
-        ok <- validate(
-            !all(is.na(seqlengths(object))),
-            !all(is.na(seqnames(object))),
-            !all(is.na(genome(object)))
         )
         if (!isTRUE(ok)) return(ok)
     }
