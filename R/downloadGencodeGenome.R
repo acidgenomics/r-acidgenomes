@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-01-31.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
