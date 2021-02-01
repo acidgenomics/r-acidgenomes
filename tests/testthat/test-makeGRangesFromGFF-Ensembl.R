@@ -1,9 +1,8 @@
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
-
 Rle <- structure("Rle", package = "S4Vectors")  # nolint
-file <- file.path("cache", "ensembl.gtf")
+file <- gffs[["ensembl_grch38_gtf"]]
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(
@@ -12,7 +11,7 @@ test_that("GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 60L)
+    expect_identical(length(object), 60675L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), class),
@@ -64,7 +63,7 @@ test_that("GTF transcripts", {
     )
 })
 
-file <- file.path("cache", "ensembl.gff3")
+file <- gffs[["ensembl_grch38_gff3"]]
 
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(
