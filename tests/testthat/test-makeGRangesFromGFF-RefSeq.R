@@ -32,13 +32,22 @@ test_that("GFF3 genes", {
     )
 })
 
-## FIXME THIS ISNT RETURNING BROAD CLASS, WHICH WE WANT...
-
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
     expect_identical(length(object), 163975L)
-    expect_identical(names(object)[[1L]], "NM_000014.6")
+    expect_identical(
+        object = names(object)[[1L]],
+        expected = "NM_000014.6"
+    )
+    expect_identical(
+        object = as.character(mcols(object[[1L]])[["txId"]])[[1L]],
+        expected = "NM_000014.6"
+    )
+    expect_identical(
+        object = as.character(mcols(object[[1L]])[["geneId"]])[[1L]],
+        expected = "A2M"
+    )
     AsIs <- "list"  # nolint
     expect_identical(
         object = lapply(mcols(object[[1L]]), class),
