@@ -4,6 +4,6 @@ organisms <- eval(formals("geneSynonyms")[["organism"]])
 test_that("geneSynonyms", {
     for (object in organisms) {
         object <- geneSynonyms(organism = organism)
-        expect_is(object, "grouped_df")
+        expect_s4_class(object, "DataFrame")
     }
 })
