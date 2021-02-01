@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2020-01-14.
+#' @note Updated 2020-01-31.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -16,8 +16,8 @@
 #' - [RefSeq genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/).
 #'
 #' @examples
-#' currentEnsemblBuild("Homo sapiens")
-#' currentGencodeBuild("Homo sapiens")
+#' currentEnsemblGenomeBuild("Homo sapiens")
+#' currentGencodeGenomeBuild("Homo sapiens")
 #' currentRefSeqGenomeBuild(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "vertebrate_mammalian"
