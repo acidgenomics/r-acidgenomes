@@ -418,7 +418,7 @@
 
 
 
-## Updated 2021-01-27.
+## Updated 2021-02-01.
 .rtracklayerGencodeTranscriptsGtf <-
     function(object) {
         assert(
@@ -444,14 +444,14 @@
         keep <- mcols(object)[["type"]] == "transcript"
         assert(any(keep))
         object <- object[keep]
+        mcols(object)[["transcript_id_version"]] <-
+            mcols(object)[["transcript_id"]]
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id"]])
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id"]])
-        mcols(object)[["transcript_id_version"]] <-
-            mcols(object)[["transcript_id"]]
-        mcols(object)[["transcript_id"]] <-
-            stripGeneVersions(mcols(object)[["transcript_id"]])
         object
     }
 
