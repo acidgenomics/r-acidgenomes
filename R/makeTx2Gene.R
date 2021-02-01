@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -41,65 +41,56 @@ NULL
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-01-25.
+## Updated 2021-02-01.
 makeTx2GeneFromEnsembl <-
-    function() {
-        gr <- do.call(
-            what = makeGRangesFromEnsembl,
-            args = matchArgsToDoCall(
-                args = list(
-                    "level" = "transcripts",
-                    "synonyms" = FALSE
-                )
-            )
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        ignoreVersion = FALSE
+    ) {
+        gr <- makeGRangesFromEnsembl(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release,
+            ignoreVersion = ignoreVersion,
+            level = "transcripts"
         )
         Tx2Gene(gr)
     }
 
-f <- formals(makeGRangesFromEnsembl)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-formals(makeTx2GeneFromEnsembl) <- f
+
+
+#' @rdname makeTx2Gene
+#' @export
+## Updated 2021-02-01.
+makeTx2GeneFromEnsDb <-
+    function(
+        object,
+        ignoreVersion = FALSE
+    ) {
+        gr <- makeGRangesFromEnsDb(
+            object = object,
+            ignoreVersion = ignoreVersion,
+            level = "transcripts"
+        )
+        Tx2Gene(gr)
+    }
 
 
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-01-25.
-makeTx2GeneFromEnsDb <- function(object) {
-    gr <- do.call(
-        what = makeGRangesFromEnsDb,
-        args = matchArgsToDoCall(
-            args = list(
-                "level" = "transcripts",
-                "synonyms" = FALSE
-            )
+## Updated 2021-02-01.
+makeTx2GeneFromGFF <-
+    function(
+        file,
+        ignoreVersion = FALSE
+    ) {
+        gr <- makeGRangesFromGFF(
+            file = file,
+            ignoreVersion = ignoreVersion,
+            level = "transcripts"
         )
-    )
-    Tx2Gene(gr)
-}
-
-f <- formals(makeGRangesFromEnsDb)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-formals(makeTx2GeneFromEnsDb) <- f
-
-
-
-#' @rdname makeTx2Gene
-#' @export
-## Updated 2021-01-25.
-makeTx2GeneFromGFF <- function(file) {
-    gr <- do.call(
-        what = makeGRangesFromGFF,
-        args = matchArgsToDoCall(
-            args = list(
-                "level" = "transcripts",
-                "synonyms" = FALSE
-            )
-        )
-    )
-    Tx2Gene(gr)
-}
-
-f <- formals(makeGRangesFromGFF)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-formals(makeTx2GeneFromGFF) <- f
+        Tx2Gene(gr)
+    }

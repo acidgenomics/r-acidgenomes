@@ -77,7 +77,7 @@ object or annotation package.
 }}
 
 \note{
-Updated 2021-01-28.
+Updated 2021-02-01.
 }
 \section{GFF/GTF file}{
 

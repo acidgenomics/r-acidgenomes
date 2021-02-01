@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGene2Symbol
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
@@ -43,74 +43,60 @@ NULL
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from Ensembl using
 #'   an AnnotationHub lookup.
 #' @export
-## Updated 2021-01-25.
+## Updated 2021-02-01.
 makeGene2SymbolFromEnsembl <-
-    function() {
-        gr <- do.call(
-            what = makeGRangesFromEnsembl,
-            args = matchArgsToDoCall(
-                args = list(
-                    "level" = "genes",
-                    "synonyms" = FALSE
-                ),
-                removeFormals = "format"
-            )
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        ignoreVersion = FALSE,
+        format = c("makeUnique", "unmodified", "1:1")
+    ) {
+        gr <- makeGRangesFromEnsembl(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release,
+            ignoreVersion = ignoreVersion,
+            level = "genes"
         )
         Gene2Symbol(object = gr, format = match.arg(format))
     }
-
-f <- formals(makeGRangesFromEnsembl)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-f[["format"]] <- formals(`Gene2Symbol,DataFrame`)[["format"]]
-formals(makeGene2SymbolFromEnsembl) <- f
 
 
 
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from an `EnsDb`
 #'   object or annotation package.
 #' @export
-## Updated 2021-01-25.
+## Updated 2021-02-01.
 makeGene2SymbolFromEnsDb <-
-    function() {
-        gr <- do.call(
-            what = makeGRangesFromEnsDb,
-            args = matchArgsToDoCall(
-                args = list(
-                    "level" = "genes",
-                    "synonyms" = FALSE
-                ),
-                removeFormals = "format"
-            )
+    function(
+        object,
+        ignoreVersion = FALSE,
+        format = c("makeUnique", "unmodified", "1:1")
+    ) {
+        gr <- makeGRangesFromEnsDb(
+            object = object,
+            ignoreVersion = ignoreVersion,
+            level = "genes"
         )
         Gene2Symbol(object = gr, format = match.arg(format))
     }
-
-f <- formals(makeGRangesFromEnsDb)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-f[["format"]] <- formals(makeGene2SymbolFromEnsembl)[["format"]]
-formals(makeGene2SymbolFromEnsDb) <- f
 
 
 
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from a GFF file.
 #' @export
-## Updated 2020-01-25.
+## Updated 2020-02-01.
 makeGene2SymbolFromGFF <-
-    function() {
-        gr <- do.call(
-            what = makeGRangesFromGFF,
-            args = matchArgsToDoCall(
-                args = list(
-                    "level" = "genes",
-                    "synonyms" = FALSE
-                ),
-                removeFormals = "format"
-            )
+    function(
+        file,
+        ignoreVersion = FALSE,
+        format = c("makeUnique", "unmodified", "1:1")
+    ) {
+        gr <- makeGRangesFromGFF(
+            file = file,
+            ignoreVersion = ignoreVersion,
+            level = "genes"
         )
         Gene2Symbol(object = gr, format = match.arg(format))
     }
-
-f <- formals(makeGRangesFromGFF)
-f <- f[setdiff(names(f), c("level", "synonyms"))]
-f[["format"]] <- formals(makeGene2SymbolFromEnsembl)[["format"]]
-formals(makeGene2SymbolFromGFF) <- f
