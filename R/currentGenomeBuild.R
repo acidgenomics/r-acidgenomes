@@ -63,7 +63,7 @@ currentEnsemblGenomeBuild <- function(organism) {
 
 
 
-## Updated 2021-01-05.
+## Updated 2021-01-31.
 #' @rdname currentGenomeBuild
 #' @export
 currentGencodeGenomeBuild <- function(organism) {
@@ -71,7 +71,7 @@ currentGencodeGenomeBuild <- function(organism) {
         arg = organism,
         choices = c("Homo sapiens", "Mus musculus")
     )
-    currentEnsemblBuild(organism)
+    currentEnsemblGenomeBuild(organism)
 }
 
 
