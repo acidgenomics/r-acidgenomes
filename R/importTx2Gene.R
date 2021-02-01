@@ -3,7 +3,7 @@
 #' Generates a `Tx2Gene` object containing `txId` and `geneId` columns.
 #'
 #' @note File should not contain column header names.
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-02-01.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -61,5 +61,5 @@ importTx2Gene <- function(
         genomeBuild = as.character(genomeBuild),
         ensemblRelease = as.integer(ensemblRelease)
     )
-    Tx2Gene(data, metadata = TRUE)
+    Tx2Gene(data)
 }

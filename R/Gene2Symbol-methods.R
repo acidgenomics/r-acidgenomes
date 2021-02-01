@@ -6,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-01-17.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -95,7 +95,6 @@ NULL
             df <- x
             assert(is(df, "DataFrame"))
         }
-        metadata(df) <- .slotGenomeMetadata(object)
         metadata(df)[["format"]] <- format
         new(Class = "Gene2Symbol", df)
     }

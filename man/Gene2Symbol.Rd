@@ -45,7 +45,7 @@ the documentation for approaches that deal with this issue.
 For the \code{format} argument, note that "long" was used instead of
 "unmodified" prior to v0.10.10.
 
-Updated 2021-01-17.
+Updated 2021-02-01.
 }
 \examples{
 data(RangedSummarizedExperiment, package = "AcidTest")
