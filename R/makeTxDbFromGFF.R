@@ -11,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -62,6 +62,7 @@ NULL
 #' @describeIn makeTxDbFromGFF Primary function.
 #' @export
 makeTxDbFromGFF <- function(file) {
+    pkgs <- .packages()
     assert(isString(file))
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
@@ -124,5 +125,6 @@ makeTxDbFromGFF <- function(file) {
     ## Stash the GFF metadata, so we can access in `makeGRangesFromGFF()`.
     attr(txdb, which = "gffMetadata") <- meta
     validObject(txdb)
+    forceDetach(keep = pkgs)
     txdb
 }
