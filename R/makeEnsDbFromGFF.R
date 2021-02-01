@@ -27,6 +27,7 @@
 #' edb <- makeEnsDbFromGFF(file)
 #' print(edb)
 makeEnsDbFromGFF <- function(file) {
+    pkgs <- .packages()
     assert(isString(file))
     if (isAFile(file)) {
         file <- realpath(file)
@@ -67,5 +68,6 @@ makeEnsDbFromGFF <- function(file) {
     attr(x = edb, which = "args") <- args
     attr(x = edb, which = "gffMetadata") <- meta
     validObject(edb)
+    forceDetach(keep = pkgs)
     edb
 }

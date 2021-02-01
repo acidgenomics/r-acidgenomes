@@ -34,7 +34,7 @@ Data frame containing mapping columns:
 Map input to human gene orthologs
 }
 \note{
-Updated 2020-10-05.
+Updated 2021-02-01.
 }
 \examples{
 genes <- c(

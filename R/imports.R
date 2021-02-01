@@ -2,8 +2,9 @@
 #' @importClassesFrom IRanges DataFrameList
 #' @importClassesFrom S4Vectors DataFrame Vector
 #'
-#' @importFrom AcidBase compress download fileExt initDir matchArgsToDoCall
-#'   pasteURL printString realpath requireNamespaces showSlotInfo
+#' @importFrom AcidBase compress download fileExt forceDetach initDir
+#'   matchArgsToDoCall pasteURL printString realpath requireNamespaces
+#'   showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call

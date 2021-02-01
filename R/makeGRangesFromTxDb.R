@@ -1,7 +1,7 @@
 #' Make GRanges from TxDb object
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-02-01.
 #'
 #' @return `GRanges`.
 #'
@@ -24,6 +24,7 @@ makeGRangesFromTxDb <- function(
     ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
+    pkgs <- .packages()
     assert(is(object, "TxDb"))
     level <- match.arg(level)
     cols <- columns(object)
@@ -151,5 +152,6 @@ makeGRangesFromTxDb <- function(
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
+    forceDetach(keep = pkgs)
     gr
 }
