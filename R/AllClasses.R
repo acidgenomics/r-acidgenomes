@@ -1,8 +1,3 @@
-## FIXME ignoreVersion: Check that identifiers are sanitized correctly.
-## FIXME Check for geneIdNoVersion, txIdNoVersion according (Ensembl).
-
-
-
 ## Genome annotation classes ===================================================
 #' Shared GRanges validity checks
 #'
@@ -191,8 +186,6 @@ setValidity(
 )
 
 
-
-## FIXME "call" isn't included here...what's up with that.
 
 #' Ensembl transcript annotations
 #'
@@ -551,8 +544,6 @@ setValidity(
 )
 
 
-
-## FIXME THIS NEEDS TO SLOT `ignoreVersions` in metadata.
 
 #' Gene-to-symbol mappings
 #'
