@@ -5,7 +5,7 @@ skip_if_not(hasInternet())
 test_that("genes", {
     object <- annotable(
         organism = organism,
-        release = release,
+        release = ensemblRelease,
         level = "genes",
         ignoreVersion = TRUE
     )
