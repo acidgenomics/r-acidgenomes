@@ -28,9 +28,14 @@ HGNC <-  # nolint
         file <- .cacheIt(url)
         ## Expecting warning from vroom parser here:
         ## Warning: One or more parsing issues, see `problems()` for details
-        suppressWarnings({
-            df <- import(file, format = "tsv")
-        })
+        ## See related issue:
+        ## https://github.com/r-lib/vroom/issues/300
+        engine <- getOption("acid.import.engine")
+        if (isInstalled("data.table")) {
+            options("acid.import.engine" = "data.table")
+        }
+        df <- import(file, format = "tsv")
+        options("acid.import.engine" = engine)
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
