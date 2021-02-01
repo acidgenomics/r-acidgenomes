@@ -39,7 +39,7 @@ ensembldb in use.}
 Map protein identifiers to genes
 }
 \note{
-Updated 2020-10-06.
+Updated 2021-02-01.
 }
 \examples{
 ids <- c("ENSP00000238714", "ENSP00000338157")
