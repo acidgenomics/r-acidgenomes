@@ -1,5 +1,5 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-02-01.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
