@@ -9,13 +9,12 @@ file <- file.path("cache", "flybase.gtf")
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
-    expect_s4_class(object, "GRanges")
+    expect_s4_class(object, "FlyBaseGenes")
     expect_identical(length(object), 39L)
-    expect_identical(names(object)[[1L]], "FBgn0000022")
+    expect_identical(names(object)[[1L]], "FBgn0053217")
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            "broadClass" = Rle,
             "geneId" = Rle,
             "geneName" = Rle,
             "source" = Rle,
@@ -25,20 +24,13 @@ test_that("GTF genes", {
 })
 
 test_that("GTF transcripts", {
-    expect_warning(
-        object = makeGRangesFromGFF(file = file, level = "transcripts"),
-        regexp = "Returning without broad class definitions."
-    )
-    suppressWarnings({
-        object <- makeGRangesFromGFF(file = file, level = "transcripts")
-    })
-    expect_s4_class(object, "GRanges")
+    object <- makeGRangesFromGFF(file = file, level = "transcripts")
+    expect_s4_class(object, "FlyBaseTranscripts")
     expect_identical(length(object), 72L)
-    expect_identical(names(object)[[1L]], "FBtr0070000")
+    expect_identical(names(object)[[1L]], "FBtr0070045")
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
-            "broadClass" = Rle,
             "geneId" = Rle,
             "geneName" = Rle,
             "source" = Rle,
