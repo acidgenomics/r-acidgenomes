@@ -3,16 +3,18 @@ context("makeGRangesFromGFF : GENCODE")
 skip_if_not(hasInternet())
 
 Rle <- structure("Rle", package = "S4Vectors")  # nolint
-file <- file.path("cache", "gencode.gtf")
+file <- gffs[["gencode_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("GTF genes", {loa
+    ## FIXME THIS IS ATTACHING BIOCONDUCTOR...
+    ## FIXME CAN REQUIRENAMESPACES HIDE THE PACKAGE STARTUP MESSAGES?
     object <- makeGRangesFromGFF(
         file = file,
         level = "genes",
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_identical(length(object), 60L)
+    expect_identical(length(object), 60660L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), class),
