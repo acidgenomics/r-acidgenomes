@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-02-01.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -63,6 +63,7 @@
 #' seq <- .getSeqinfo(file)
 #' print(seq)
 .getSeqinfo <- function(x) {
+    pkgs <- .packages()
     if (!is.list(x)) {
         x <- getGFFMetadata(x)
     }
@@ -78,40 +79,43 @@
         isScalar(x[["release"]]) || is.null(x[["release"]])
     )
     seq <- tryCatch(
-        expr = switch(
-            EXPR = x[["provider"]],
-            "Ensembl" = {
-                assert(isInt(x[["release"]]))
-                args <- list(
-                    "species" = x[["organism"]],
-                    "release" = x[["release"]],
-                    "as.Seqinfo" = TRUE
-                )
-                ## The `use.grch37` flag isn't currently working with
-                ## GenomeInfoDb v1.26.2, but may be improved in the future.
-                if (isMatchingFixed(
-                    pattern = "GRCh37",
-                    x = x[["genomeBuild"]])
-                ) {
-                    args[["use.grch37"]] <- TRUE
+        expr = suppressPackageStartupMessages({
+            switch(
+                EXPR = x[["provider"]],
+                "Ensembl" = {
+                    assert(isInt(x[["release"]]))
+                    args <- list(
+                        "species" = x[["organism"]],
+                        "release" = x[["release"]],
+                        "as.Seqinfo" = TRUE
+                    )
+                    ## The `use.grch37` flag isn't currently working with
+                    ## GenomeInfoDb v1.26.2, but may be improved in the future.
+                    if (isMatchingFixed(
+                        pattern = "GRCh37",
+                        x = x[["genomeBuild"]])
+                    ) {
+                        args[["use.grch37"]] <- TRUE
+                    }
+                    do.call(what = getChromInfoFromEnsembl, args = args)
+                },
+                "GENCODE" = {
+                    Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
+                },
+                "RefSeq" = {
+                    .getRefSeqSeqinfo(x[["file"]])
+                },
+                "UCSC" = {
+                    Seqinfo(genome = x[["genomeBuild"]])
                 }
-                do.call(what = getChromInfoFromEnsembl, args = args)
-            },
-            "GENCODE" = {
-                Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
-            },
-            "RefSeq" = {
-                .getRefSeqSeqinfo(x[["file"]])
-            },
-            "UCSC" = {
-                Seqinfo(genome = x[["genomeBuild"]])
-            }
-        ),
+            )
+        }),
         error = function(e) {
             alertWarning("Automatic {.var seqinfo} assignment failed.")
             NULL
         }
     )
     assert(isAny(seq, c("Seqinfo", "NULL")))
+    forceDetach(keep = pkgs)
     seq
 }
