@@ -37,7 +37,34 @@ test_that("GTF transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 232024L)
-    expect_identical(names(object)[[1L]], "ENST00000456328.2")
+    expect_identical(
+        object = names(object)[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txId"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
+        expected = "ENST00000456328"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneId"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
+        expected = "ENSG00000223972"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
@@ -99,7 +126,34 @@ test_that("GFF3 transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 232024L)
-    expect_identical(names(object)[[1L]], "ENST00000456328.2")
+    expect_identical(
+        object = names(object)[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txId"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
+        expected = "ENST00000456328"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
+        expected = "ENST00000456328.2"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneId"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
+        expected = "ENSG00000223972"
+    )
+    expect_identical(
+        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
+        expected = "ENSG00000223972.5"
+    )
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
