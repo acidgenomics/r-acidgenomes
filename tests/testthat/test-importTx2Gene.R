@@ -12,8 +12,7 @@ test_that("No version stripping", {
         what = importTx2Gene,
         args = c(
             args,
-            ignoreVersion = FALSE,
-            ignoreGeneVersion = FALSE
+            ignoreVersion = c("tx" = FALSE, "gene" = FALSE)
         )
     )
     expect_is(object, "Tx2Gene")
