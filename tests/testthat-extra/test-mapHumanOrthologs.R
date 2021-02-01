@@ -2,9 +2,6 @@
 
 context("extra | mapHumanOrthologs")
 
-## FIXME THIS ISNT MAPPING THE RELEASE TO ENSEMBLDB CORRECTLY...
-## FIXME THIS GOT TOTALLY HOSED DURING MATCHING...
-
 test_that("mapHumanOrthologs", {
     genes <- c(
         "ENSMUSG00000000001", "ENSMUSG00000000003",
