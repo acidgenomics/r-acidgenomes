@@ -1,5 +1,3 @@
-## FIXME NEED UCSC MINIMAL EXAMPLE.
-
 if (!isTRUE(goalie::hasInternet())) {
     warning("No Internet connection detected.")
     return(invisible(NULL))
@@ -15,6 +13,7 @@ files <- c(
     "refseq.gff3",
     "refseq.gtf",
     "tx2gene.csv",
+    "ucsc.gtf",
     "wormbase.gtf"
 )
 mapply(
