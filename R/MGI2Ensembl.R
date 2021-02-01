@@ -15,8 +15,8 @@ MGI2Ensembl <- function() {  # nolint
         protocol = "http"
     )
     file <- .cacheIt(url)
-    ## NOTE vroom now warns about expected parsing issues, which cannot be
-    ## suppressed.
+    ## NOTE vroom now messages a warning about expected parsing issues, which
+    ## cannot be suppressed. There's some C++ pointer voodoo going on here.
     ## See related issue:
     ## https://github.com/r-lib/vroom/issues/300
     df <- import(file = file, format = "tsv", colnames = TRUE)
