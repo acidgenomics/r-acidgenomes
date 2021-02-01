@@ -21,11 +21,11 @@ MGI2Ensembl <- function() {  # nolint
     ## https://github.com/r-lib/vroom/issues/300
     df <- import(file = file, format = "tsv", colnames = TRUE)
     df <- as(df[, c(1L, 11L)], "DataFrame")
-    colnames(df) <- c("mgi", "ensembl")
+    colnames(df) <- c("mgiId", "ensemblId")
     df <- df[complete.cases(df), , drop = FALSE]
-    df[["mgi"]] <- as.integer(gsub("^MGI\\:", "", df[["mgi"]]))
-    assert(hasNoDuplicates(df[["mgi"]]))
-    rownames(df) <- df[["mgi"]]
-    df <- df[order(df[["mgi"]]), , drop = FALSE]
+    df[["mgiId"]] <- as.integer(gsub("^MGI\\:", "", df[["mgiId"]]))
+    assert(hasNoDuplicates(df[["mgiId"]]))
+    rownames(df) <- df[["mgiId"]]
+    df <- df[order(df[["mgiId"]]), , drop = FALSE]
     new(Class = "MGI2Ensembl", df)
 }
