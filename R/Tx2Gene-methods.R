@@ -2,7 +2,7 @@
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param metadata `logical(1)`.
@@ -66,12 +66,10 @@ setMethod(
 
 
 
-## Updated 2021-01-30.
+## Updated 2021-02-01.
 `Tx2Gene,DataFrame` <-  # nolint
     function(object) {
-        ## Harden against `CharacterList` input, which can happen when
-        ## passing from transcripts generated via TxDb.
-        assert(allAreAtomic(object))
+        assert(hasColnames(object))
         meta <- metadata(object)
         colnames(object) <- camelCase(colnames(object), strict = TRUE)
         colnames(object) <- gsub(
@@ -86,6 +84,10 @@ setMethod(
         )
         object <- object[, cols, drop = FALSE]
         object <- object[complete.cases(object), , drop = FALSE]
+        ## Harden against `CharacterList` input, which can happen when
+        ## passing from transcripts generated via TxDb.
+        object <- decode(object)
+        assert(allAreAtomic(object))
         object <- unique(object)
         assert(hasNoDuplicates(object[[1L]]))
         object <- object[order(object), , drop = FALSE]
