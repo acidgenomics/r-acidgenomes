@@ -7,7 +7,7 @@ file <- file.path("cache", "ensembl.gtf")
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
-    expect_s4_class(object, "GRanges")
+    expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 60L)
     expect_identical(names(object)[[1L]], "ENSG00000177757")
     expect_identical(
