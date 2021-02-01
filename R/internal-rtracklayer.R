@@ -578,7 +578,7 @@
 
 
 
-## Updated 2021-01-29.
+## Updated 2021-02-01.
 .rtracklayerRefSeqGenesGff <-
     function(object) {
         assert(
@@ -604,7 +604,7 @@
 
 
 
-## Updated 2021-01-29.
+## Updated 2021-02-01.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGff(object)
@@ -638,12 +638,15 @@
         names(mcols(object))[
             names(mcols(object)) == "gene"] <- "gene_id"
         mcols(object) <- removeNA(mcols(object))
-        ## Keep track of "description" column, which is still useful at
-        ## transcript level.
-        genesMcols <- mcols(genes)
-        genesMcols <- genesMcols[, c("gene_id", "description")]
+        ## Keep track gene metadata at transcript level.
+        genesMcols <- mcols(genes)[
+            ,
+            c("gene_id", "gene_biotype", "description"),
+            drop = FALSE
+        ]
         genesMcols <- genesMcols[complete.cases(genesMcols), , drop = FALSE]
-        genesMcols <- unique(genesMcols)
+        keep <- !duplicated(genesMcols[["gene_id"]])
+        genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(hasNoDuplicates(genesMcols[["gene_id"]]))
         mcols(object) <- leftJoin(
             x = mcols(object),
