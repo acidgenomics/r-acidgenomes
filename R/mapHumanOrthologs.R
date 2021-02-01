@@ -33,8 +33,10 @@ mapHumanOrthologs <- function(
     organism = NULL,
     ensemblRelease = NULL
 ) {
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     pkgs <- .packages()
     requireNamespaces("biomaRt")
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     assert(
         isCharacter(genes),
         isOrganism(organism, nullOK = TRUE),
@@ -43,6 +45,7 @@ mapHumanOrthologs <- function(
     if (is.null(organism)) {
         organism <- detectOrganism(genes)
     }
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     ## Don't allow the user to pass in human genes, since this makes no sense.
     assert(!identical(organism, "Homo sapiens"))
     ## Match the Ensembl release to the archive host name, required for biomaRt.
@@ -64,9 +67,10 @@ mapHumanOrthologs <- function(
         ),
         dataset, host, packageVersion("biomaRt")
     ))
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
+    ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
     mart <- tryCatch(
         expr = biomaRt::useMart(
-            ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
             biomart = "ensembl",
             dataset = dataset,
             host = host,
@@ -76,6 +80,7 @@ mapHumanOrthologs <- function(
             stop("'biomaRt::useMart()' error: ", e)
         }
     )
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     map <- tryCatch(
         expr = select(
             x = mart,
@@ -95,6 +100,7 @@ mapHumanOrthologs <- function(
     map <- sanitizeNA(map)
     ## Get the corresponding gene-to-symbol mappings.
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
@@ -106,6 +112,7 @@ mapHumanOrthologs <- function(
         release = ensemblRelease,
         format = "unmodified"
     )
+    print(paste("FIXME ensemblRelease:", ensemblRelease))
     g2shs <- as(g2shs, "DataFrame")
     colnames(g2shs) <- c("hgncId", "hgncName")
     ## Return.
