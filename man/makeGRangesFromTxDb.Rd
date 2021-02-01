@@ -30,7 +30,7 @@ file <- pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-txdb <- makeTxDbFromGFF(file)
+txdb <- AcidGenomes::makeTxDbFromGFF(file)
 gr <- makeGRangesFromTxDb(txdb)
 print(gr)
 }
