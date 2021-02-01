@@ -8,13 +8,7 @@ Rle <- structure("Rle", package = "S4Vectors")  # nolint
 file <- file.path("cache", "flybase.gtf")
 
 test_that("GTF genes", {
-    expect_warning(
-        object = makeGRangesFromGFF(file = file, level = "genes"),
-        regexp = "Returning without broad class definitions."
-    )
-    suppressWarnings({
-        object <- makeGRangesFromGFF(file = file, level = "genes")
-    })
+    object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "GRanges")
     expect_identical(length(object), 39L)
     expect_identical(names(object)[[1L]], "FBgn0000022")
