@@ -21,7 +21,7 @@ sparse <- sparseMatrix
 txse <- SummarizedExperiment_transcripts
 
 organism <- "Homo sapiens"
-release <- 97L
+release <- 102L
 
 ## nolint start
 DataFrame <- S4Vectors::DataFrame
@@ -53,10 +53,10 @@ fastas <- c(
     "flybase" = pasteURL(
         "ftp.flybase.net",
         "releases",
-        "FB2019_05",
-        "dmel_r6.30",
+        "FB2020_06",
+        "dmel_r6.37",
         "fasta",
-        "dmel-all-transcript-r6.30.fasta.gz",
+        "dmel-all-transcript-r6.37.fasta.gz",
         protocol = "ftp"
     ),
         "gencode" = pasteURL(
@@ -65,8 +65,8 @@ fastas <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_32",
-        "gencode.v32.transcripts.fa.gz",
+        "release_36",
+        "gencode.v36.transcripts.fa.gz",
         protocol = "ftp"
     ),
     "wormbase" = pasteURL(
@@ -74,11 +74,11 @@ fastas <- c(
         "pub",
         "wormbase",
         "releases",
-        "WS272",
+        "WS279",
         "species",
         "c_elegans",
         "PRJNA13758",
-        "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
+        "c_elegans.PRJNA13758.WS279.mRNA_transcripts.fa.gz",
         protocol = "ftp"
     )
 )
