@@ -46,7 +46,7 @@ Latin organism name (e.g. \emph{Homo sapiens}).
 Organism
 }
 \note{
-Updated 2020-05-11.
+Updated 2021-02-01.
 }
 \examples{
 data(RangedSummarizedExperiment, package = "AcidTest")

@@ -52,6 +52,8 @@ Suggests:
     GenomicFeatures,
     biomaRt,
     knitr,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
     rmarkdown,
     testthat
 biocViews:

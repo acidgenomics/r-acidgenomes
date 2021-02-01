@@ -1,7 +1,7 @@
 #' Organism
 #'
 #' @name organism
-#' @note Updated 2020-05-11.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -139,7 +139,7 @@ setMethod(
 
 
 
-## Updated 2019-07-22.
+## Updated 2021-02-01.
 `organism,SummarizedExperiment` <-  # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
@@ -148,7 +148,14 @@ setMethod(
             return(organism)
         }
         ## Fall back to detecting from rowRanges or rownames.
-        if ("geneId" %in% colnames(rowData(object))) {
+        if (hasColnames(rowData(object))) {
+            colnames(rowData(object)) <-
+                camelCase(
+                    object = colnames(rowData(object)),
+                    strict = TRUE
+                )
+        }
+        if (isSubset("geneId", colnames(rowData(object)))) {
             x <- as.character(rowData(object)[["geneId"]])
         } else {
             x <- rownames(object)

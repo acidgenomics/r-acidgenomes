@@ -16,17 +16,18 @@
 #' @examples
 #' data(RangedSummarizedExperiment, package = "AcidTest")
 #' rse <- RangedSummarizedExperiment
+#' organism <- organism(rse)
 #'
 #' ## character ====
 #' ## Ensembl-to-Entrez.
 #' genes <- c("ENSG00000000003", "ENSG00000000005")
-#' x <- Ensembl2Entrez(genes)
+#' x <- Ensembl2Entrez(object = genes, organism = organism)
 #' print(x)
 #'
 #' ## integer ====
 #' ## Entrez-to-Ensembl.
 #' genes <- c(1L, 2L)
-#' x <- Entrez2Ensembl(genes)
+#' x <- Entrez2Ensembl(object = genes, organism = organism)
 #' print(x)
 #'
 #' ## SummarizedExperiment ====
@@ -164,9 +165,15 @@ setMethod(
 
 
 
-## Updated 2021-01-18.
+## Updated 2021-02-01.
 `Ensembl2Entrez,GRanges` <-  # nolint
     function(object, format) {
+        assert(hasColnames(mcols(object)))
+        colnames(mcols(object)) <-
+            camelCase(
+                object = colnames(mcols(object)),
+                strict = TRUE
+            )
         assert(
             isSubset(
                 x = c("geneId", "entrezId"),
