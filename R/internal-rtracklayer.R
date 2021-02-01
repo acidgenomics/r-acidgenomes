@@ -704,8 +704,8 @@
 
 
 
-## Updated 2021-01-27.
-.rtracklayersWormBaseTranscriptsGtf <-
+## Updated 2021-02-01.
+.rtracklayerWormBaseTranscriptsGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
