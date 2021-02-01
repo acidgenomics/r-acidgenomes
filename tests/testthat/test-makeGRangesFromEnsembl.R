@@ -169,10 +169,10 @@ test_that("Invalid parameters", {
     )
     expect_error(
         object = makeGRangesFromEnsembl(
-            organism = "AAA",
+            organism = "Homo sapiens",
             genomeBuild = "BBB"
         ),
-        regexp = "No ID matched on AnnotationHub"
+        regexp = "No entry matched on AnnotationHub"
     )
     expect_error(
         object = makeGRangesFromEnsembl(
