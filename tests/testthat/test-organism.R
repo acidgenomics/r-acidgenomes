@@ -1,7 +1,12 @@
 context("organism")
 
 object <- rse
-rownames(object) <- as.character(rowData(rse)[["geneId"]])
+colnames(mcols(rowRanges(object))) <-
+    camelCase(
+        object = colnames(mcols(rowRanges(object))),
+        strict = TRUE
+    )
+rownames(object) <- as.character(rowData(object)[["geneId"]])
 
 ## nolint start
 matrix <- assay(object)
@@ -11,10 +16,10 @@ DataFrame <- as(as.data.frame(GRanges), "DataFrame")
 
 test_that("organism", {
     for (object in list(
-        matrix = matrix,
-        DataFrame = DataFrame,
-        GRanges = GRanges,
-        SummarizedExperiment = object
+        "matrix" = matrix,
+        "DataFrame" = DataFrame,
+        "GRanges" = GRanges,
+        "SummarizedExperiment" = object
     )) {
         expect_identical(
             object = organism(object),
