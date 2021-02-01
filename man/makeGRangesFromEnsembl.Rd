@@ -90,7 +90,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2021-01-27.
+Updated 2021-02-01.
 }
 \section{Broad class definitions}{
 

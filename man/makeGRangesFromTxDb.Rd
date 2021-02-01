@@ -18,7 +18,7 @@ makeGRangesFromTxDb(
 Make GRanges from TxDb object
 }
 \note{
-Updated 2021-01-29.
+Updated 2021-02-01.
 }
 \examples{
 file <- pasteURL(

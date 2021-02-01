@@ -19,7 +19,7 @@
 
 #' Get Ensembl/Entrez mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-02-01.
 #' @noRd
 .getEnsembl2EntrezFromOrgDb <- function(
     keys,
@@ -28,6 +28,7 @@
     organism,
     strict = TRUE
 ) {
+    pkgs <- .packages()
     assert(
         isCharacter(keys),
         hasNoDuplicates(keys),
@@ -77,5 +78,6 @@
     colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblId"
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
     df[["entrezId"]] <- as.integer(df[["entrezId"]])
+    forceDetach(keep = pkgs)
     df
 }

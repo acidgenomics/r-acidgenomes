@@ -94,7 +94,7 @@ NULL
             colnames(df) <- cols
         }
         df[["entrezId"]] <- as.integer(df[["entrezId"]])
-        df <- df[complete.cases(df), ]
+        df <- df[complete.cases(df), , drop = FALSE]
         assert(hasRows(df))
         metadata(df) <- metadata(object)
         metadata(df)[["format"]] <- format

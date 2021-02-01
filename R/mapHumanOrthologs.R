@@ -1,6 +1,6 @@
 #' Map input to human gene orthologs
 #'
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-02-01.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -33,6 +33,7 @@ mapHumanOrthologs <- function(
     organism = NULL,
     ensemblRelease = NULL
 ) {
+    pkgs <- .packages()
     requireNamespaces("biomaRt")
     assert(
         isCharacter(genes),
@@ -113,5 +114,6 @@ mapHumanOrthologs <- function(
     out <- leftJoin(out, g2shs, by = "hgncId")
     rownames(out) <- out[["geneId"]]
     out <- out[, sort(colnames(out))]
+    forceDetach(keep = pkgs)
     out
 }

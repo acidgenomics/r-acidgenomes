@@ -18,7 +18,7 @@ URL.
 Map Ensembl release to archive URL.
 }
 \note{
-Updated 2020-10-12.
+Updated 2021-02-01.
 }
 \examples{
 tryCatch(
