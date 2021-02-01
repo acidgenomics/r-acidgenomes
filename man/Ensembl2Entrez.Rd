@@ -52,7 +52,7 @@ Updated 2021-01-18.
 \examples{
 data(RangedSummarizedExperiment, package = "AcidTest")
 rse <- RangedSummarizedExperiment
-organism <- organism(rse)
+organism <- AcidGenomes::organism(rse)
 
 ## character ====
 ## Ensembl-to-Entrez.

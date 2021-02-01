@@ -22,7 +22,7 @@
 #' @examples
 #' data(RangedSummarizedExperiment, package = "AcidTest")
 #' rse <- RangedSummarizedExperiment
-#' organism <- organism(rse)
+#' organism <- AcidGenomes::organism(rse)
 #'
 #' ## character ====
 #' ## Ensembl-to-Entrez.
