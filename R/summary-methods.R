@@ -27,20 +27,21 @@ NULL
 
 
 
-## Updated 2019-07-22.
+## Updated 2021-02-01.
 `summary,Gene2Symbol` <-  # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            genes = length(unique(object[["geneId"]])),
-            symbols = length(unique(object[["geneName"]])),
-            format = m[["format"]],
-            organism = m[["organism"]],
-            genomeBuild = m[["genomeBuild"]],
-            ensemblRelease = m[["ensemblRelease"]],
-            id = m[["id"]],
-            version = as.character(m[["version"]]),
-            date = m[["date"]]
+            "genes" = length(unique(object[["geneId"]])),
+            "symbols" = length(unique(object[["geneName"]])),
+            "format" = m[["format"]],
+            "organism" = m[["organism"]],
+            "provider" = m[["provider"]],
+            "genomeBuild" = m[["genomeBuild"]],
+            "release" = m[["release"]],
+            "annotationHub" = m[["annotationHubId"]],
+            "acidGenomes" = as.character(m[["acidGenomes"]]),
+            "date" = m[["date"]]
         ))
     }
 
@@ -56,19 +57,20 @@ setMethod(
 
 
 
-## Updated 2019-07-22.
+## Updated 2021-02-01.
 `summary,Tx2Gene` <-  # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            transcripts = length(unique(object[["txId"]])),
-            genes = length(unique(object[["geneId"]])),
-            organism = m[["organism"]],
-            genomeBuild = m[["genomeBuild"]],
-            ensemblRelease = m[["ensemblRelease"]],
-            id = m[["id"]],
-            version = as.character(m[["version"]]),
-            date = m[["date"]]
+            "transcripts" = length(unique(object[["txId"]])),
+            "genes" = length(unique(object[["geneId"]])),
+            "organism" = m[["organism"]],
+            "provider" = m[["provider"]],
+            "genomeBuild" = m[["genomeBuild"]],
+            "release" = m[["ensemblRelease"]],
+            "annotationHub" = m[["id"]],
+            "acidGenomes" = as.character(m[["acidGenomes"]]),
+            "date" = m[["date"]]
         ))
     }
 

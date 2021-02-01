@@ -13,7 +13,11 @@ test_that("mapHumanOrthologs", {
     )
     ## This depends on biomaRt, and has a tendency to time out.
     object <- tryCatch(
-        expr = mapHumanOrthologs(genes, ensemblRelease = 87L),
+        expr = mapHumanOrthologs(
+            genes = genes,
+            organism = NULL,
+            ensemblRelease = 87L
+        ),
         error = function(e) e
     )
     ## Skip if connection timed out.
