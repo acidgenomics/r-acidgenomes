@@ -7,8 +7,8 @@ test_that("default", {
         expected = "unknown"
     )
     expect_identical(
-        object = IRanges::ranges(object),
-        expected = IRanges::IRanges(
+        object = ranges(object),
+        expected = IRanges(
             start = 1L,
             end = 100L,
             names = "XXX"
