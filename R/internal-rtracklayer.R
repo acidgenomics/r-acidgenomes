@@ -92,7 +92,6 @@
     )
     gr <- do.call(what = what, args = list("object" = gr))
     metadata(gr) <- meta
-    ## FIXME THIS IS ATTACHING BIOCONDUCTOR...
     seqinfo <- .getSeqinfo(meta)
     if (is(seqinfo, "Seqinfo")) {
         seqinfo(gr) <- seqinfo[seqlevels(gr)]
