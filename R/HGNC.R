@@ -1,7 +1,7 @@
 #' Import HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-02-01.
 #'
 #' @return `HGNC`.
 #'
@@ -26,7 +26,11 @@ HGNC <-  # nolint
             protocol = "ftp"
         )
         file <- .cacheIt(url)
-        df <- import(file, format = "tsv")
+        ## Expecting warning from vroom parser here:
+        ## Warning: One or more parsing issues, see `problems()` for details
+        suppressWarnings({
+            df <- import(file, format = "tsv")
+        })
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
