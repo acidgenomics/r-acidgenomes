@@ -1,6 +1,6 @@
 #' Map Ensembl release to archive URL.
 #'
-#' @note Updated 2020-10-12.
+#' @note Updated 2021-02-01.
 #' @export
 #'
 #' @param release `integer(1)` or `character(1)`.
@@ -18,6 +18,7 @@
 #'     error = function(e) message(e)
 #' )
 mapEnsemblReleaseToURL <- function(release) {
+    pkgs <- .packages()
     requireNamespaces("biomaRt")
     currentURL <- "http://useast.ensembl.org"
     if (is.null(release)) {
@@ -50,5 +51,6 @@ mapEnsemblReleaseToURL <- function(release) {
     }
     url <- x[1L, "url"]
     assert(isTRUE(grepl("ensembl\\.org", url)))
+    forceDetach(keep = pkgs)
     url
 }

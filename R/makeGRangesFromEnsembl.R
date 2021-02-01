@@ -82,7 +82,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -167,6 +167,7 @@ makeGRangesFromEnsDb <- function(
     ignoreVersion = FALSE,
     synonyms = FALSE
 ) {
+    pkgs <- .packages()
     assert(
         isFlag(ignoreVersion),
         isFlag(synonyms)
@@ -241,6 +242,7 @@ makeGRangesFromEnsDb <- function(
         synonyms = synonyms
     )
     metadata(gr)[["call"]] <- match.call()
+    forceDetach(keep = pkgs)
     gr
 }
 
