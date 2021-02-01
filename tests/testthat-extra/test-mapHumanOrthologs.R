@@ -18,8 +18,8 @@ test_that("mapHumanOrthologs", {
         error = function(e) e
     )
     ## Skip if connection timed out.
-    if (is(map, "error")) {
-        msg <- as.character(map)
+    if (is(object, "error")) {
+        msg <- as.character(object)
         skip_if(
             condition = grepl(pattern = "biomaRt", x = msg),
             message = msg
@@ -34,14 +34,6 @@ test_that("mapHumanOrthologs", {
             "ENSMUSG00000000037",
             "ENSMUSG00000000049"
         ),
-        "hgncId" = c(
-            "ENSG00000065135",
-            NA,
-            "ENSG00000093009",
-            NA,
-            "ENSG00000102098",
-            "ENSG00000091583"
-        ),
         "geneName" = c(
             "Gnai3",
             "Pbsn",
@@ -49,6 +41,14 @@ test_that("mapHumanOrthologs", {
             "H19",
             "Scml2",
             "Apoh"
+        ),
+        "hgncId" = c(
+            "ENSG00000065135",
+            NA,
+            "ENSG00000093009",
+            NA,
+            "ENSG00000102098",
+            "ENSG00000091583"
         ),
         "hgncName" = c(
             "GNAI3",
