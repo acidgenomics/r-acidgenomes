@@ -32,7 +32,7 @@ downloadEnsemblGenome <-
             isString(outputDir)
         )
         outputDir <- initDir(outputDir)
-        baseURL <- "ftp://hgdownload.soe.ucsc.edu/goldenPath"
+        baseURL <- "ftp://ftp.ensembl.org/pub"
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
