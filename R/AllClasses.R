@@ -171,15 +171,6 @@
         identical(metadata(object)[["provider"]], "WormBase")
     )
     if (!isTRUE(ok)) return(ok)
-    ok <- validateClasses(
-        object = metadata(object),
-        expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
-        ),
-        subset = TRUE
-    )
-    if (!isTRUE(ok)) return(ok)
     TRUE
 }
 
