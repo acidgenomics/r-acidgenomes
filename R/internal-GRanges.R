@@ -551,7 +551,10 @@
     }
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, names(mcols(object))))
-    alert(sprintf("Defining names by {.var %s} column.", idCol))
+    alert(sprintf(
+        "Defining names by {.var %s} column in {.var %s}.",
+        idCol, "mcols"
+    ))
     ## Sort the ranges by genomic location.
     ## Previously we sorted by the identifier column, until v0.2.0.
     object <- sort(object)
