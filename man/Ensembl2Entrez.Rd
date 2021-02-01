@@ -52,17 +52,18 @@ Updated 2021-01-18.
 \examples{
 data(RangedSummarizedExperiment, package = "AcidTest")
 rse <- RangedSummarizedExperiment
+organism <- organism(rse)
 
 ## character ====
 ## Ensembl-to-Entrez.
 genes <- c("ENSG00000000003", "ENSG00000000005")
-x <- Ensembl2Entrez(genes)
+x <- Ensembl2Entrez(object = genes, organism = organism)
 print(x)
 
 ## integer ====
 ## Entrez-to-Ensembl.
 genes <- c(1L, 2L)
-x <- Entrez2Ensembl(genes)
+x <- Entrez2Ensembl(object = genes, organism = organism)
 print(x)
 
 ## SummarizedExperiment ====

@@ -23,7 +23,7 @@
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingRegex
 #'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
-#'   areSetEqual assert bapply hasDuplicates hasInternet hasLength
+#'   areSetEqual assert bapply hasColnames hasDuplicates hasInternet hasLength
 #'   hasNoDuplicates hasNames hasRownames hasRows hasValidNames isADir isAFile
 #'   isAURL isAny isCharacter isFlag isInt isMatchingFixed isMatchingRegex
 #'   isNotMatchingFixed isOrganism isScalar isString isSubset isSystemCommand
