@@ -1,3 +1,6 @@
+## FIXME Need to address parsing issues popping up with vroom engine.
+## Warning: One or more parsing issues, see `problems()` for details
+
 context("HGNC2Ensembl")
 
 skip_if_not(hasInternet())
