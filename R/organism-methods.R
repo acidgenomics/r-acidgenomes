@@ -144,7 +144,7 @@ setMethod(
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
-        if (isOrganism(organism)) {
+        if (isString(organism)) {
             return(organism)
         }
         ## Fall back to detecting from rowRanges or rownames.
