@@ -6,19 +6,24 @@ Rle <- structure("Rle", package = "S4Vectors")  # nolint
 file <- file.path("cache", "ensembl.gtf")
 
 test_that("GTF genes", {
-    object <- makeGRangesFromGFF(file = file, level = "genes")
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "genes",
+        ignoreVersion = FALSE
+    )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 60L)
-    expect_identical(names(object)[[1L]], "ENSG00000177757")
+    expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
             "broadClass" = Rle,
             "geneBiotype" = Rle,
             "geneId" = Rle,
+            "geneIdNoVersion" = Rle,
+            "geneIdVersion" = Rle,
             "geneName" = Rle,
             "geneSource" = Rle,
-            "geneVersion" = Rle,
             "source" = Rle,
             "type" = Rle
         )
@@ -26,10 +31,14 @@ test_that("GTF genes", {
 })
 
 test_that("GTF transcripts", {
-    object <- makeGRangesFromGFF(file = file, level = "transcripts")
-    expect_s4_class(object, "GRanges")
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "transcripts",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 167L)
-    expect_identical(names(object)[[1L]], "ENST00000326734")
+    expect_identical(names(object)[[1L]], "ENST00000456328.2")
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
@@ -37,17 +46,19 @@ test_that("GTF transcripts", {
             "ccdsId" = Rle,
             "geneBiotype" = Rle,
             "geneId" = Rle,
+            "geneIdNoVersion" = Rle,
+            "geneIdVersion" = Rle,
             "geneName" = Rle,
             "geneSource" = Rle,
-            "geneVersion" = Rle,
             "source" = Rle,
             "tag" = Rle,
             "txBiotype" = Rle,
             "txId" = Rle,
+            "txIdNoVersion" = Rle,
+            "txIdVersion" = Rle,
             "txName" = Rle,
             "txSource" = Rle,
             "txSupportLevel" = Rle,
-            "txVersion" = Rle,
             "type" = Rle
         )
     )
