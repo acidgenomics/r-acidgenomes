@@ -154,6 +154,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         mcols(object)[["gene_id_version"]] <-
@@ -192,6 +193,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
+        assert(any(keep))
         object <- object[keep]
         mcols(object)[["gene_id_version"]] <-
             paste(
@@ -227,6 +229,7 @@
             )
         )
         keep <- !is.na(mcols(object)[["gene_id"]])
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         names(mcols(object))[
@@ -262,6 +265,7 @@
             )
         )
         keep <- !is.na(mcols(object)[["transcript_id"]])
+        assert(any(keep))
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
@@ -323,6 +327,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         object
@@ -345,6 +350,7 @@
             x = mcols(object)[["type"]],
             ignore.case = TRUE
         )
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         object
@@ -399,6 +405,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         mcols(object)[["gene_id_version"]] <-
@@ -434,6 +441,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
+        assert(any(keep))
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
@@ -466,6 +474,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
         object <- object[keep]
         mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
@@ -499,6 +508,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
+        assert(any(keep))
         object <- object[keep]
         mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
@@ -585,6 +595,7 @@
         keep <-
             !is.na(mcols(object)[["gbkey"]]) &
             mcols(object)[["gbkey"]] == "Gene"
+        assert(any(keep))
         object <- object[keep]
         names(mcols(object))[
             names(mcols(object)) == "gene"] <- "gene_id"
@@ -609,6 +620,7 @@
             )
         )
         keep <- !is.na(mcols(object)[["transcript_id"]])
+        assert(any(keep))
         object <- object[keep]
         keep <- bapply(
             X = mcols(object)[["Parent"]],
@@ -616,9 +628,7 @@
                 any(grepl(pattern = "^gene-", x = x))
             }
         )
-        if (!any(keep)) {
-            stop("Failed to identify transcripts.")
-        }
+        assert(any(keep))
         object <- object[keep]
         ## e.g. "NM_000218.3".
         assert(allAreMatchingRegex(
@@ -677,6 +687,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["gene_id"]]),
@@ -701,6 +712,7 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
+        assert(any(keep))
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
