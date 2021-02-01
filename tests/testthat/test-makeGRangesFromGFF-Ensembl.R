@@ -36,7 +36,7 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 167L)
+    expect_identical(length(object), 232024L)
     expect_identical(names(object)[[1L]], "ENST00000456328.2")
     expect_identical(
         object = lapply(mcols(object), class),
@@ -72,7 +72,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 53L)
+    expect_identical(length(object), 60675L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), class),
@@ -98,7 +98,7 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 147L)
+    expect_identical(length(object), 232024L)
     expect_identical(names(object)[[1L]], "ENST00000456328.2")
     expect_identical(
         object = lapply(mcols(object), class),
