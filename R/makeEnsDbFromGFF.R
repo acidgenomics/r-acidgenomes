@@ -2,8 +2,8 @@
 #'
 #' Wrapper for ensembldb importer functions.
 #'
-#' @name makeEnsDbFromGFF
-#' @note Updated 2021-01-25.
+#' @export
+#' @note Updated 2021-02-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
