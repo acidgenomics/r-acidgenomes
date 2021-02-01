@@ -20,9 +20,6 @@ sce <- SingleCellExperiment
 sparse <- sparseMatrix
 txse <- SummarizedExperiment_transcripts
 
-organism <- "Homo sapiens"
-ensemblRelease <- 102L
-
 ## nolint start
 DataFrame <- S4Vectors::DataFrame
 GRanges <- GenomicRanges::GRanges
@@ -32,6 +29,7 @@ assay <- SummarizedExperiment::assay
 `assay<-` <- SummarizedExperiment::`assay<-`
 cause <- goalie::cause
 hasInternet <- goalie::hasInternet
+ranges <- IRanges::ranges
 rowRanges <- SummarizedExperiment::rowRanges
 `rowRanges<-` <- SummarizedExperiment::`rowRanges<-`
 skip_on_docker <- goalie::skip_on_docker
