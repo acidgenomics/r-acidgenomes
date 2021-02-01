@@ -15,10 +15,14 @@ MGI2Ensembl <- function() {  # nolint
         protocol = "http"
     )
     file <- .cacheIt(url)
+    ## NOTE vroom now warns about expected parsing issues, which cannot be
+    ## suppressed.
+    ## See related issue:
+    ## https://github.com/r-lib/vroom/issues/300
     df <- import(file = file, format = "tsv", colnames = TRUE)
     df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgi", "ensembl")
-    df <- df[complete.cases(df), ]
+    df <- df[complete.cases(df), , drop = FALSE]
     df[["mgi"]] <- as.integer(gsub("^MGI\\:", "", df[["mgi"]]))
     assert(hasNoDuplicates(df[["mgi"]]))
     rownames(df) <- df[["mgi"]]
