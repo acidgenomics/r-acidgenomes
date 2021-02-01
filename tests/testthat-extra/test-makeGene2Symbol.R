@@ -1,4 +1,4 @@
-context("makeGene2Symbol")
+context("extra | makeGene2Symbol")
 
 skip_if_not_installed("EnsDb.Hsapiens.v75")
 formats <- eval(formals(makeGene2SymbolFromEnsDb)[["format"]])
