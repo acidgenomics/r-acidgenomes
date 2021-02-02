@@ -26,19 +26,19 @@ Updated 2021-02-01.
 }
 \examples{
 ## GENCODE ====
-gtfFile <- pasteURL(
-    "ftp.ebi.ac.uk",
-    "pub",
-    "databases",
-    "gencode",
-    "Gencode_human",
-    "release_36",
-    "gencode.v36.annotation.gtf.gz",
-    protocol = "ftp"
-)
-txdb <- AcidGenomes::makeTxDbFromGFF(file = gtfFile)
-print(txdb)
-seqinfo(txdb)
+## > gtfFile <- pasteURL(
+## >     "ftp.ebi.ac.uk",
+## >     "pub",
+## >     "databases",
+## >     "gencode",
+## >     "Gencode_human",
+## >     "release_36",
+## >     "gencode.v36.annotation.gtf.gz",
+## >     protocol = "ftp"
+## > )
+## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gtfFile)
+## > print(txdb)
+## > seqinfo(txdb)
 
 ## RefSeq ====
 ## > gffFile <- pasteURL(
