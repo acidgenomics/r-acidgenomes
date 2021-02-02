@@ -11,5 +11,5 @@
 HGNC complete set metadata
 }
 \note{
-Updated 2020-10-05.
+Updated 2021-02-02.
 }
