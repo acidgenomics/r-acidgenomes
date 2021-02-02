@@ -7,7 +7,6 @@
 \alias{Tx2Gene,DataFrame-method}
 \alias{Tx2Gene,GRanges-method}
 \alias{Tx2Gene,GRangesList-method}
-\alias{Tx2Gene,SummarizedExperiment-method}
 \title{Transcript-to-gene identifier mappings}
 \usage{
 Tx2Gene(object, ...)
@@ -21,8 +20,6 @@ Tx2Gene(object, ...)
 \S4method{Tx2Gene}{GRanges}(object)
 
 \S4method{Tx2Gene}{GRangesList}(object)
-
-\S4method{Tx2Gene}{SummarizedExperiment}(object)
 }
 \arguments{
 \item{object}{Object.}
@@ -41,13 +38,25 @@ No attempt is made to arrange the rows by transcript identifier.
 Updated 2021-02-02.
 }
 \examples{
-## SummarizedExperiment ====
-data(SummarizedExperiment_transcripts, package = "AcidTest")
-txse <- SummarizedExperiment_transcripts
+data(GRanges, package = "AcidTest")
 
-## SummarizedExperiment ====
-x <- Tx2Gene(txse)
-print(x)
+## DataFrame ====
+df <- S4Vectors::DataFrame(
+    "txId" = c(
+        "ENST00000635602.1",
+        "ENST00000635506.1"
+    ),
+    "geneId" = c(
+        "ENSG00000283061.1",
+        "ENSG00000283061.1"
+    )
+)
+t2g <- Tx2Gene(df)
+print(t2g)
+
+## GRanges ====
+object <- GRanges
+x <- Tx2Gene(object)
 }
 \seealso{
 \code{\link[=makeTx2Gene]{makeTx2Gene()}}.

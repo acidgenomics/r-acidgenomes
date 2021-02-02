@@ -10,8 +10,6 @@
 \alias{stripTranscriptVersions,matrix-method}
 \alias{stripGeneVersions,Matrix-method}
 \alias{stripTranscriptVersions,Matrix-method}
-\alias{stripGeneVersions,SummarizedExperiment-method}
-\alias{stripTranscriptVersions,SummarizedExperiment-method}
 \title{Strip transcript identifier versions}
 \usage{
 stripGeneVersions(object, ...)
@@ -29,10 +27,6 @@ stripTranscriptVersions(object, ...)
 \S4method{stripGeneVersions}{Matrix}(object)
 
 \S4method{stripTranscriptVersions}{Matrix}(object)
-
-\S4method{stripGeneVersions}{SummarizedExperiment}(object)
-
-\S4method{stripTranscriptVersions}{SummarizedExperiment}(object)
 }
 \arguments{
 \item{object}{Object.}

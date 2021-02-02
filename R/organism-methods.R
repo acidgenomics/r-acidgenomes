@@ -11,11 +11,23 @@
 #' @seealso [detectOrganism()][.
 #'
 #' @examples
-#' data(matrix, package = "AcidTest")
-#' rse <- RangedSummarizedExperiment
-#'
-#' ## SummarizedExperiment ====
-#' organism(rse)
+#' ## DataFrame ====
+#' df <- S4Vectors::DataFrame(
+#'     "txId" = c(
+#'         "ENST00000635602.1",
+#'         "ENST00000635506.1"
+#'     ),
+#'     "geneId" = c(
+#'         "ENSG00000283061.1",
+#'         "ENSG00000283061.1"
+#'     ),
+#'     row.names = c(
+#'         "ENST00000635602.1",
+#'         "ENST00000635506.1"
+#'     )
+#' )
+#' x <- organism(df)
+#' print(x)
 NULL
 
 
