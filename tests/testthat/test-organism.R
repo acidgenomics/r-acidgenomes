@@ -1,25 +1,15 @@
 context("organism")
 
-object <- rse
-colnames(mcols(rowRanges(object))) <-
-    camelCase(
-        object = colnames(mcols(rowRanges(object))),
-        strict = TRUE
-    )
-rownames(object) <- as.character(rowData(object)[["geneId"]])
-
 ## nolint start
-matrix <- assay(object)
-GRanges <- rowRanges(object)
 DataFrame <- as(as.data.frame(GRanges), "DataFrame")
+matrix <- as.matrix(DataFrame)
 ## nolint end
 
 test_that("organism", {
     for (object in list(
         "matrix" = matrix,
         "DataFrame" = DataFrame,
-        "GRanges" = GRanges,
-        "SummarizedExperiment" = object
+        "GRanges" = GRanges
     )) {
         expect_identical(
             object = organism(object),
@@ -29,9 +19,8 @@ test_that("organism", {
 })
 
 test_that("Metadata stash", {
+    object <- GRanges
     org <- "xxx"
     metadata(object)[["organism"]] <- org
     expect_identical(organism(object), org)
 })
-
-rm(object)
