@@ -31,7 +31,7 @@
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
-#'   setValidity signature
+#'   setValidity signature validObject
 #' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export
 #'   getJSON getURL getURLDirList import removeNA sanitizeNA
 #' @importFrom purrr map_df
