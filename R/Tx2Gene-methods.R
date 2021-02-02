@@ -2,11 +2,9 @@
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-02.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @param metadata `logical(1)`.
-#'   Include genome metadata.
 #'
 #' @seealso [makeTx2Gene()].
 #'
