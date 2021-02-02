@@ -28,9 +28,6 @@ Tx2Gene(object, ...)
 \item{object}{Object.}
 
 \item{...}{Additional arguments.}
-
-\item{metadata}{\code{logical(1)}.
-Include genome metadata.}
 }
 \value{
 \code{Tx2Gene}.
@@ -41,7 +38,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2021-02-01.
+Updated 2021-02-02.
 }
 \examples{
 ## SummarizedExperiment ====
