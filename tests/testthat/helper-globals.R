@@ -3,9 +3,6 @@
 data(
     DFrame,
     GRanges,
-    RangedSummarizedExperiment,
-    SingleCellExperiment,
-    SummarizedExperiment_transcripts,
     matrix,
     matrix_lfc,
     sparseMatrix,
@@ -17,10 +14,7 @@ df <- DFrame
 gr <- GRanges
 lfc <- matrix_lfc
 mat <- matrix
-rse <- RangedSummarizedExperiment
-sce <- SingleCellExperiment
 sparse <- sparseMatrix
-txse <- SummarizedExperiment_transcripts
 
 ## nolint start
 DataFrame <- S4Vectors::DataFrame

@@ -42,15 +42,6 @@ setGeneric(
 
 
 
-#' @rdname geneNames
-#' @name geneNames
-#' @importFrom AcidGenerics geneNames
-#' @usage geneNames(object, ...)
-#' @export
-NULL
-
-
-
 #' @rdname organism
 #' @name organism
 #' @importFrom AcidGenerics organism
