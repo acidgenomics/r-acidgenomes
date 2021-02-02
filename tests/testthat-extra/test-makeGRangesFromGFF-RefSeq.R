@@ -1,4 +1,4 @@
-context("makeGRangesFromGFF : RefSeq")
+context("extra | makeGRangesFromGFF : RefSeq")
 
 skip_if_not(hasInternet())
 
