@@ -23,11 +23,18 @@
 #' @seealso [makeGene2Symbol()].
 #'
 #' @examples
-#' data(RangedSummarizedExperiment, package = "AcidTest")
-#' rse <- RangedSummarizedExperiment
-#'
-#' ## SummarizedExperiment ====
-#' x <- Gene2Symbol(rse)
+#' ## DataFrame ====
+#' df <- S4Vectors::DataFrame(
+#'     "geneId" = c(
+#'         "ENSG00000228572.7",
+#'         "ENSG00000182378.14"
+#'     ),
+#'     "geneName" = c(
+#'         "AL954722.1",
+#'         "PLCXD1"
+#'     )
+#' )
+#' x <- Gene2Symbol(df)
 #' print(x)
 NULL
 
@@ -130,27 +137,4 @@ setMethod(
     f = "Gene2Symbol",
     signature = signature("GRanges"),
     definition = `Gene2Symbol,GRanges`
-)
-
-
-
-## Updated 2019-07-22.
-`Gene2Symbol,SummarizedExperiment` <-  # nolint
-    function(object, format) {
-        object <- as.SummarizedExperiment(object)
-        df <- rowData(object)
-        rownames(df) <- rownames(object)
-        do.call(what = Gene2Symbol, args = list(object = df, format = format))
-    }
-
-formals(`Gene2Symbol,SummarizedExperiment`) <- formals(`Gene2Symbol,DataFrame`)
-
-
-
-#' @rdname Gene2Symbol
-#' @export
-setMethod(
-    f = "Gene2Symbol",
-    signature = signature("SummarizedExperiment"),
-    definition = `Gene2Symbol,SummarizedExperiment`
 )
