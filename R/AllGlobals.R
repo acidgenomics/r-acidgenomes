@@ -32,7 +32,7 @@ NULL
         ## "gencode.v36.annotation.gtf.gz"
         "^([a-z0-9]+_)?",  # BiocFileCache
         "gencode",
-        "\\.v([M0-9]+)",   # "36" (human) / "M25" (mouse)
+        "\\.v([M0-9]+)",   # "36" (human); "M25" (mouse)
         "(lift37)?",       # GRCh37-specific
         "\\.annotation",
         "\\.(gff3|gtf)",
