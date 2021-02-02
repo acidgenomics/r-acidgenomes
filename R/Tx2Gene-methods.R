@@ -9,8 +9,6 @@
 #' @seealso [makeTx2Gene()].
 #'
 #' @examples
-#' data(GRanges, package = "AcidTest")
-#'
 #' ## DataFrame ====
 #' df <- S4Vectors::DataFrame(
 #'     "txId" = c(
@@ -24,10 +22,6 @@
 #' )
 #' t2g <- Tx2Gene(df)
 #' print(t2g)
-#'
-#' ## GRanges ====
-#' object <- GRanges
-#' x <- Tx2Gene(object)
 NULL
 
 
