@@ -15,8 +15,10 @@
   cache GFF/GTF files when used in `makeGRangesFromGFF`.
 - Renamed `ignoreTxVersion` to simply `ignoreVersion`, where applicable.
   We want this setting to also apply at gene level.
-- No longer using `forceDetach` internally to force unload some Bioconductor
-  annotation packages.
+- GFF, TxDb, and ensembldb parser functions now default to
+  `ignoreVersion = FALSE`. Previous releases of AcidGenomes and basejump had
+  this set to `ignoreVersion = TRUE` by default. Note that both modes are now
+  non-destructive.
 - `GRanges` `mcols` now return with `tx` prefix instead of `transcript`.
 - `GRanges` `mcols` now use strict camel case formatting
   (e.g. `geneId` instead of `geneID`).
