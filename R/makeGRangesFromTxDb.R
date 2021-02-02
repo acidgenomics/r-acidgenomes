@@ -3,6 +3,9 @@
 #' @export
 #' @note Updated 2021-02-01.
 #'
+#' @inheritParams AcidRoxygen::params
+#' @inheritParams params
+#'
 #' @return `GRanges`.
 #'
 #' @examples
