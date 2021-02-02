@@ -15,17 +15,17 @@
 #' - `ensembldb::ensDbFromGtf()`.
 #'
 #' @examples
-#' file <- pasteURL(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-102",
-#'     "gtf",
-#'     "homo_sapiens",
-#'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
-#' )
-#' edb <- makeEnsDbFromGFF(file)
-#' print(edb)
+#' ## > file <- pasteURL(
+#' ## >     "ftp.ensembl.org",
+#' ## >     "pub",
+#' ## >     "release-102",
+#' ## >     "gtf",
+#' ## >     "homo_sapiens",
+#' ## >     "Homo_sapiens.GRCh38.102.gtf.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > edb <- makeEnsDbFromGFF(file)
+#' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
     pkgs <- .packages()
     assert(isString(file))
