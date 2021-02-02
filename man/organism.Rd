@@ -9,7 +9,6 @@
 \alias{organism,Annotated-method}
 \alias{organism,DataFrame-method}
 \alias{organism,GRanges-method}
-\alias{organism,SummarizedExperiment-method}
 \alias{organism<-,Annotated-method}
 \title{Organism}
 \usage{
@@ -29,8 +28,6 @@ organism(object) <- value
 
 \S4method{organism}{GRanges}(object)
 
-\S4method{organism}{SummarizedExperiment}(object)
-
 \S4method{organism}{Annotated}(object) <- value
 }
 \arguments{
@@ -49,7 +46,7 @@ Organism
 Updated 2021-02-01.
 }
 \examples{
-data(RangedSummarizedExperiment, package = "AcidTest")
+data(matrix, package = "AcidTest")
 rse <- RangedSummarizedExperiment
 
 ## SummarizedExperiment ====
