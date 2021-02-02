@@ -17,6 +17,6 @@ test_that("summary", {
     output <- capture.output(summary(x))
     expect_identical(
         head(output, n = 1L),
-        paste("genes:", nrow(object))
+        paste("genes:", length(object))
     )
 })
