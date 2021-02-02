@@ -9,9 +9,9 @@ data(
 gr <- GRanges
 
 ## nolint start
-## > DataFrame <- S4Vectors::DataFrame
 ## > GRanges <- GenomicRanges::GRanges
 ## > IRanges <- IRanges::IRanges
+DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
 ## nolint end
 
