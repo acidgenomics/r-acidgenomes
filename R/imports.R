@@ -32,8 +32,8 @@
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette as_tibble as.SummarizedExperiment cacheURL export
-#'   getJSON getURL getURLDirList import removeNA sanitizeNA
+#' @importFrom pipette as_tibble cacheURL export getJSON getURL getURLDirList
+#'   import removeNA sanitizeNA
 #' @importFrom purrr map_df
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
