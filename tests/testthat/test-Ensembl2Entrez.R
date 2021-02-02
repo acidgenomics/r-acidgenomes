@@ -50,7 +50,8 @@ test_that("character", {
 
 test_that("GRanges", {
     for (format in formats) {
-        object <- Ensembl2Entrez(object = rowRanges(rse), format = format)
+        object <- GRanges
+        object <- Ensembl2Entrez(object = object, format = format)
         expect_s4_class(object, "Ensembl2Entrez")
     }
 })
