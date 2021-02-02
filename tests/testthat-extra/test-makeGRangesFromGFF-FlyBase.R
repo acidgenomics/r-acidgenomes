@@ -1,4 +1,4 @@
-context("makeGRangesFromGFF : FlyBase")
+context("extra | makeGRangesFromGFF : FlyBase")
 
 skip_if_not(hasInternet())
 
