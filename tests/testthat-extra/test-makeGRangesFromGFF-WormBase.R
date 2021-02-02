@@ -1,4 +1,4 @@
-context("makeGRangesFromGFF : WormBase")
+context("extra | makeGRangesFromGFF : WormBase")
 
 skip_if_not(hasInternet())
 

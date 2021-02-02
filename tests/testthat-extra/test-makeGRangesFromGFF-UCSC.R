@@ -1,4 +1,4 @@
-context("makeGRangesFromGFF : UCSC")
+context("extra | makeGRangesFromGFF : UCSC")
 
 skip_if_not(hasInternet())
 
