@@ -27,18 +27,32 @@ Object summaries
 Updated 2019-11-19.
 }
 \examples{
-data(
-    RangedSummarizedExperiment,
-    SummarizedExperiment_transcripts,
-    package = "AcidTest"
-)
-
 ## Gene2Symbol ====
-object <- Gene2Symbol(RangedSummarizedExperiment)
-summary(object)
+df <- S4Vectors::DataFrame(
+    "geneId" = c(
+        "ENSG00000228572.7",
+        "ENSG00000182378.14"
+    ),
+    "geneName" = c(
+        "AL954722.1",
+        "PLCXD1"
+    )
+)
+g2s <- Gene2Symbol(df)
+summary(g2s)
 
 ## Tx2Gene ====
-object <- Tx2Gene(SummarizedExperiment_transcripts)
-summary(object)
+df <- S4Vectors::DataFrame(
+    "txId" = c(
+        "ENST00000635602.1",
+        "ENST00000635506.1"
+    ),
+    "geneId" = c(
+        "ENSG00000283061.1",
+        "ENSG00000283061.1"
+    )
+)
+t2g <- Tx2Gene(df)
+summary(t2g)
 }
 \keyword{internal}

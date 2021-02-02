@@ -6,7 +6,6 @@
 \alias{Ensembl2Entrez,character-method}
 \alias{Entrez2Ensembl,integer-method}
 \alias{Ensembl2Entrez,GRanges-method}
-\alias{Ensembl2Entrez,RangedSummarizedExperiment-method}
 \title{Ensembl-to-Entrez gene identifier mappings}
 \usage{
 Ensembl2Entrez(object, ...)
@@ -18,8 +17,6 @@ Entrez2Ensembl(object, ...)
 \S4method{Entrez2Ensembl}{integer}(object, organism, format = c("1:1", "long"))
 
 \S4method{Ensembl2Entrez}{GRanges}(object, format = c("1:1", "long"))
-
-\S4method{Ensembl2Entrez}{RangedSummarizedExperiment}(object, format = c("1:1", "long"))
 }
 \arguments{
 \item{object}{Object.}
@@ -50,9 +47,7 @@ Ensembl-to-Entrez gene identifier mappings
 Updated 2021-01-18.
 }
 \examples{
-data(RangedSummarizedExperiment, package = "AcidTest")
-rse <- RangedSummarizedExperiment
-organism <- AcidGenomes::organism(rse)
+organism <- "Homo sapiens"
 
 ## character ====
 ## Ensembl-to-Entrez.
@@ -64,9 +59,5 @@ print(x)
 ## Entrez-to-Ensembl.
 genes <- c(1L, 2L)
 x <- Entrez2Ensembl(object = genes, organism = organism)
-print(x)
-
-## SummarizedExperiment ====
-x <- Ensembl2Entrez(rse)
 print(x)
 }

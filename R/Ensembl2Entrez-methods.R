@@ -20,9 +20,7 @@
 #'       Return 1:many in long format.
 #'
 #' @examples
-#' data(RangedSummarizedExperiment, package = "AcidTest")
-#' rse <- RangedSummarizedExperiment
-#' organism <- AcidGenomes::organism(rse)
+#' organism <- "Homo sapiens"
 #'
 #' ## character ====
 #' ## Ensembl-to-Entrez.
@@ -34,10 +32,6 @@
 #' ## Entrez-to-Ensembl.
 #' genes <- c(1L, 2L)
 #' x <- Entrez2Ensembl(object = genes, organism = organism)
-#' print(x)
-#'
-#' ## SummarizedExperiment ====
-#' x <- Ensembl2Entrez(rse)
 #' print(x)
 NULL
 
@@ -206,28 +200,4 @@ setMethod(
     f = "Ensembl2Entrez",
     signature = signature("GRanges"),
     definition = `Ensembl2Entrez,GRanges`
-)
-
-
-
-## Updated 2020-10-01.
-`Ensembl2Entrez,RangedSummarizedExperiment` <-  # nolint
-    function(object, format) {
-        Ensembl2Entrez(
-            object = rowRanges(object),
-            format = match.arg(format)
-        )
-    }
-
-formals(`Ensembl2Entrez,RangedSummarizedExperiment`)[["format"]] <-
-    formals(.makeEnsembl2Entrez)[["format"]]
-
-
-
-#' @rdname Ensembl2Entrez
-#' @export
-setMethod(
-    f = "Ensembl2Entrez",
-    signature = signature("RangedSummarizedExperiment"),
-    definition = `Ensembl2Entrez,RangedSummarizedExperiment`
 )
