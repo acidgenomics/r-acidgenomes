@@ -662,7 +662,7 @@ setValidity(
 #' Contains a `DataFrame` with `hgnc` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-02-02.
 #'
 #' @return `HGNC2Ensembl`.
 setClass(
@@ -672,12 +672,25 @@ setClass(
 setValidity(
     Class = "HGNC2Ensembl",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("hgnc", "ensembl"), colnames(object)),
-            is.integer(object[["hgnc"]]),
-            hasNoDuplicates(object[["hgnc"]])
+        ok <- validate(
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c(
+            "hgnc" = "hgncId",
+            "ensembl" = "ensemblId"
+        )
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
+        ok <- validate(
+            is.integer(object[[cols[["hgnc"]]]]),
+            hasNoDuplicates(object[[cols[["hgnc"]]]])
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -699,12 +712,25 @@ setClass(
 setValidity(
     Class = "MGI2Ensembl",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(colnames(object), c("mgiId", "ensemblId")),
-            is.integer(object[["mgiId"]]),
-            hasNoDuplicates(object[["mgiId"]])
+        ok <- validate(
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c(
+            "mgi" = "mgiId",
+            "ensembl" = "ensemblId"
+        )
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
+        ok <- validate(
+            is.integer(object[[cols[["mgi"]]]]),
+            hasNoDuplicates(object[[cols[["mgi"]]]])
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -721,7 +747,7 @@ setValidity(
 #' [`metadata()`][S4Vectors::metadata].
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-02-02.
 #'
 #' @return `Protein2Gene`.
 setClass(
@@ -731,14 +757,22 @@ setClass(
 setValidity(
     Class = "Protein2Gene",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(
-                x = colnames(object),
-                y = c("proteinId", "geneId", "geneName")
-            ),
+        ok <- validate(
+            identical(ncol(object), 3L),
+            hasColnames(object),
+            hasRows(object)
+        )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c("proteinId", "geneId", "geneName")
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+        }
+        ok <- validate(
+            identical(cols, colnames(object)),
             all(bapply(X = object, FUN = is.character))
         )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -760,7 +794,7 @@ setValidity(
 #' - `release`: 100L.
 #'
 #' @export
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-02-02.
 #'
 #' @return `Tx2Gene`.
 setClass(
@@ -771,30 +805,25 @@ setValidity(
     Class = "Tx2Gene",
     method = function(object) {
         ok <- validate(
-            hasRows(object),
-            identical(ncol(object), 2L)
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
         if (!isTRUE(ok)) return(ok)
-        ## Note that "transcriptId" is allowed for legacy compatibility.
-        ok <- validate(
-            isSubset(
-                x = camelCase(colnames(object)[[1L]], strict = TRUE),
-                y = c("transcriptId", "txId")
-            ),
-            identical(
-                x = camelCase(colnames(object)[[2L]], strict = TRUE),
-                y = "geneId"
-            ),
-            msg = "Column names are invalid. Use 'txId' and 'geneId'."
+        cols <- c(
+            "tx" = "txId",
+            "gene" = "geneId"
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
         ok <- validate(
             all(vapply(
                 X = object,
                 FUN = is.character,
                 FUN.VALUE = logical(1L)
             )),
-            hasNoDuplicates(object[[1L]])
+            hasNoDuplicates(object[[cols[["tx"]]]])
         )
         if (!isTRUE(ok)) return(ok)
         ok <- validate(
@@ -802,7 +831,7 @@ setValidity(
                 X = object,
                 MARGIN = 1L,
                 FUN = function(x) {
-                    identical(x[[1L]], x[[2L]])
+                    identical(x[[cols[["tx"]]]], x[[cols[["gene"]]]])
                 }
             )),
             msg = "Some transcript and gene identifiers are identical."

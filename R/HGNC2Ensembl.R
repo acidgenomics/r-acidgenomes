@@ -1,5 +1,5 @@
 #' @inherit HGNC2Ensembl-class title description return
-#' @note Updated 2021-01-06.
+#' @note Updated 2021-02-02.
 #' @export
 #' @examples
 #' object <- HGNC2Ensembl()
@@ -12,9 +12,8 @@ HGNC2Ensembl <-  # nolint
         cols <- c("hgncId", "ensemblGeneId")
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols]
-        colnames(df)[colnames(df) == "ensemblGeneId"] <- "ensembl"
-        colnames(df)[colnames(df) == "hgncId"] <- "hgnc"
-        df <- df[complete.cases(df), ]
+        colnames(df)[colnames(df) == "ensemblGeneId"] <- "ensemblId"
+        df <- df[complete.cases(df), , drop = FALSE]
         metadata(df) <- metadata(hgnc)
         new(Class = "HGNC2Ensembl", df)
     }
