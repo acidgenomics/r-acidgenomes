@@ -1,5 +1,3 @@
-## FIXME NEED TO TAKE RSE, SCE OUT HERE...
-
 data(
     GRanges,
     package = "AcidTest",
@@ -9,8 +7,6 @@ data(
 gr <- GRanges
 
 ## nolint start
-## > GRanges <- GenomicRanges::GRanges
-## > IRanges <- IRanges::IRanges
 DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
 ## nolint end
