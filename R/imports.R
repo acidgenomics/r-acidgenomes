@@ -19,7 +19,6 @@
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom SummarizedExperiment rowData rowData<- rowRanges
-#' @importFrom digest digest
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingRegex
 #'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
@@ -33,7 +32,7 @@
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
 #' @importFrom pipette as_tibble cacheURL export getJSON getURL getURLDirList
-#'   import removeNA sanitizeNA
+#'   import md5 removeNA sanitizeNA sha256
 #' @importFrom purrr map_df
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
