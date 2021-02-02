@@ -9,7 +9,7 @@ test_that("GTF genes", {
     object <- makeGRangesFromGFF(
         file = file,
         level = "genes",
-        ignoreVersion = TRUE
+        ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
     expect_identical(length(object), 60660L)
