@@ -158,35 +158,3 @@ setMethod(
     signature = signature("Matrix"),
     definition = `stripTranscriptVersions,Matrix`
 )
-
-
-
-## Updated 2019-07-22.
-`stripGeneVersions,SummarizedExperiment` <-  # nolint
-    `stripGeneVersions,matrix`
-
-
-
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripGeneVersions",
-    signature = signature("SummarizedExperiment"),
-    definition = `stripGeneVersions,SummarizedExperiment`
-)
-
-
-
-## Updated 2019-07-22.
-`stripTranscriptVersions,SummarizedExperiment` <-  # nolint
-    `stripTranscriptVersions,matrix`
-
-
-
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripTranscriptVersions",
-    signature = signature("SummarizedExperiment"),
-    definition = `stripTranscriptVersions,SummarizedExperiment`
-)

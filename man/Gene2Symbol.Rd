@@ -45,6 +45,8 @@ For the \code{format} argument, note that "long" was used instead of
 Updated 2021-02-01.
 }
 \examples{
+data(GRanges, package = "AcidTest")
+
 ## DataFrame ====
 df <- S4Vectors::DataFrame(
     "geneId" = c(
@@ -58,6 +60,10 @@ df <- S4Vectors::DataFrame(
 )
 x <- Gene2Symbol(df)
 print(x)
+
+## GRanges ====
+object <- GRanges
+x <- Gene2Symbol(object)
 }
 \seealso{
 \code{\link[=makeGene2Symbol]{makeGene2Symbol()}}.
