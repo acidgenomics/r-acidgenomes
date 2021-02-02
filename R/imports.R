@@ -18,7 +18,6 @@
 #' @importFrom GenomicRanges GRanges ranges trim
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
-#' @importFrom SummarizedExperiment rowData rowData<- rowRanges
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingRegex
 #'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
