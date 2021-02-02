@@ -28,7 +28,7 @@ test_that("organism", {
     }
 })
 
-test_that("SE metadata stash", {
+test_that("Metadata stash", {
     org <- "xxx"
     metadata(object)[["organism"]] <- org
     expect_identical(organism(object), org)

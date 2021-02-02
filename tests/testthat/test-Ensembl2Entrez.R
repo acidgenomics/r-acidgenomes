@@ -55,13 +55,6 @@ test_that("GRanges", {
     }
 })
 
-test_that("RangedSummarizedExperiment", {
-    for (format in formats) {
-        object <- Ensembl2Entrez(object = rse, format = format)
-        expect_s4_class(object, "Ensembl2Entrez")
-    }
-})
-
 
 
 context("Entrez2Ensembl")

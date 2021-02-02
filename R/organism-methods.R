@@ -127,12 +127,12 @@ setMethod(
 
 
 
-## Updated 2019-07-22.
+## Updated 2021-02-02.
 `organism,GRanges` <-  # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
-        if (isOrganism(organism)) {
+        if (isString(organism)) {
             return(organism)
         }
         assert(hasNames(object))
