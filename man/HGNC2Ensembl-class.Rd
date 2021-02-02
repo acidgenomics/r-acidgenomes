@@ -14,5 +14,5 @@ HGNC-to-Ensembl gene identifier mappings
 Contains a \code{DataFrame} with \code{hgnc} and \code{ensembl} columns.
 }
 \note{
-Updated 2020-10-05.
+Updated 2021-02-02.
 }

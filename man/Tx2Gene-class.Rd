@@ -14,7 +14,7 @@ Transcript-to-gene identifier mappings
 Contains a \code{DataFrame} with \code{txId} and \code{geneId} columns.
 }
 \note{
-Updated 2021-01-29.
+Updated 2021-02-02.
 }
 \section{Genome metadata}{
 
