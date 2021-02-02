@@ -502,7 +502,7 @@ setValidity(
 #' HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2020-10-05.
+#' @note Updated 2021-02-02.
 #'
 #' @return `HGNC`.
 setClass(
@@ -512,12 +512,22 @@ setClass(
 setValidity(
     Class = "HGNC",
     method = function(object) {
-        validate(
-            hasRows(object),
-            isSubset(c("hgncId", "ensemblGeneId"), colnames(object)),
-            is.integer(object[["hgncId"]]),
-            hasNoDuplicates(object[["hgncId"]])
+        ok <- validate(
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c("hgncId", "ensemblGeneId")
+        if (!isSubset(cols, colnames(object))) {
+            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+        }
+        ok <- validate(
+            isSubset(cols, colnames(object)),
+            is.integer(object[[cols[[1L]]]]),
+            hasNoDuplicates(object[[cols[[1L]]]])
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -530,7 +540,7 @@ setValidity(
 #' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-02-02.
 #'
 #' @return `Ensembl2Entrez`.
 setClass(
@@ -540,11 +550,24 @@ setClass(
 setValidity(
     Class = "Ensembl2Entrez",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("ensemblId", "entrezId"), colnames(object)),
-            is.integer(object[["entrezId"]])
+        ok <- validate(
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c(
+            "ensembl" = "ensemblId",
+            "entrez" = "entrezId"
+        )
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
+        ok <- validate(
+            is.integer(object[[cols[["entrez"]]]])
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -555,7 +578,7 @@ setValidity(
 #' @inherit Ensembl2Entrez-class details
 #'
 #' @export
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-02-02.
 #'
 #' @return `Entrez2Ensembl`.
 setClass(
@@ -565,11 +588,24 @@ setClass(
 setValidity(
     Class = "Entrez2Ensembl",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(c("entrezId", "ensemblId"), colnames(object)),
-            is.integer(object[["entrezId"]])
+        ok <- validate(
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c(
+            "entrez" = "entrezId",
+            "ensembl" = "ensemblId"
+        )
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
+        ok <- validate(
+            is.integer(object[[cols[["entrez"]]]])
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
@@ -586,7 +622,7 @@ setValidity(
 #' [`metadata()`][S4Vectors::metadata].
 #'
 #' @export
-#' @note Updated 2019-08-08.
+#' @note Updated 2021-02-02.
 #'
 #' @return `Gene2Symbol`.
 setClass(
@@ -596,12 +632,25 @@ setClass(
 setValidity(
     Class = "Gene2Symbol",
     method = function(object) {
-        validate(
-            hasRows(object),
-            identical(colnames(object), c("geneId", "geneName")),
-            is.character(object[["geneId"]]),
-            isAny(object[["geneName"]], c("character", "factor"))
+        ok <- validate(
+            identical(ncol(object), 2L),
+            hasColnames(object),
+            hasRows(object)
         )
+        if (!isTRUE(ok)) return(ok)
+        cols <- c(
+            "gene" = "geneId",
+            "symbol" = "geneName"
+        )
+        if (!identical(cols, colnames(object))) {
+            colnames(object) <- unname(cols)
+        }
+        ok <- validate(
+            is.character(object[[cols[["gene"]]]]),
+            isAny(object[[cols[["symbol"]]]], c("character", "factor"))
+        )
+        if (!isTRUE(ok)) return(ok)
+        TRUE
     }
 )
 
