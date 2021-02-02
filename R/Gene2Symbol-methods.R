@@ -23,6 +23,8 @@
 #' @seealso [makeGene2Symbol()].
 #'
 #' @examples
+#' data(GRanges, package = "AcidTest")
+#'
 #' ## DataFrame ====
 #' df <- S4Vectors::DataFrame(
 #'     "geneId" = c(
@@ -36,6 +38,10 @@
 #' )
 #' x <- Gene2Symbol(df)
 #' print(x)
+#'
+#' ## GRanges ====
+#' object <- GRanges
+#' x <- Gene2Symbol(object)
 NULL
 
 
