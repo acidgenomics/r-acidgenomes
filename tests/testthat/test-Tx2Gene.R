@@ -1,15 +1,20 @@
 context("Tx2Gene")
 
-object <- Tx2Gene(txse)
-
-test_that("Tx2Gene", {
+test_that("DataFrame", {
+    df <- DataFrame(
+        "txId" = c(
+            "ENST00000635602.1",
+            "ENST00000635506.1"
+        ),
+        "geneId" = c(
+            "ENSG00000283061.1",
+            "ENSG00000283061.1"
+        )
+    )
+    object <- Tx2Gene(df)
     expect_s4_class(object, "Tx2Gene")
-    expect_identical(dim(object), c(6L, 2L))
-})
-
-test_that("summary", {
     expect_output(
         object = summary(object),
-        regexp = "organism: Homo sapiens"
+        regexp = "genes: 1"
     )
 })
