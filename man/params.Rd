@@ -4,6 +4,12 @@
 \alias{params}
 \title{Shared parameter documentation}
 \arguments{
+\item{ignoreVersion}{\code{logical(1)}.
+Ignore identifier (e.g. transcript, gene) versions.
+When applicable, the identifier containing version numbers will be stored
+in \code{txIdVersion} and \code{geneIdVersion}, and the variants without versions
+will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
+
 \item{synonyms}{\code{logical(1)}.
 Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
