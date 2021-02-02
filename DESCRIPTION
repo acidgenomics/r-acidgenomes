@@ -33,7 +33,6 @@ Imports:
     GenomicRanges,
     IRanges,
     S4Vectors,
-    SummarizedExperiment,
     digest (>= 0.6),
     ensembldb,
     goalie (>= 0.4.14),
