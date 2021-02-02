@@ -228,7 +228,7 @@
     ## the report file for the "seqs_for_alignment_pipelines.ucsc_ids" assembly.
     lines <- import(file = file, format = "lines", quiet = TRUE)
     comments <- grep(pattern = "^#", x = lines, value = TRUE)
-    colnames <- tail(comments, n = 1)
+    colnames <- tail(comments, n = 1L)
     assert(isMatchingFixed(pattern = "\t", x = colnames))
     colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
     colnames <- strsplit(colnames, split = "\t")[[1L]]
