@@ -8,6 +8,10 @@ data(
 
 gr <- GRanges
 
+## nolint start
+hasInternet <- goalie::hasInternet
+## nolint end
+
 # data(
 #     DFrame,
 #     GRanges,
