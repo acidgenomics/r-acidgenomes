@@ -14,7 +14,7 @@ Protein-to-gene mappings
 Contains a \code{DataFrame} with \code{proteinId}, \code{geneId}, and \code{geneName} columns.
 }
 \note{
-Updated 2020-10-05.
+Updated 2021-02-02.
 }
 \section{Genome metadata}{
 

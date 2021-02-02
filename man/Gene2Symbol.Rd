@@ -4,7 +4,6 @@
 \alias{Gene2Symbol}
 \alias{Gene2Symbol,DataFrame-method}
 \alias{Gene2Symbol,GRanges-method}
-\alias{Gene2Symbol,SummarizedExperiment-method}
 \title{Gene-to-symbol mappings}
 \usage{
 Gene2Symbol(object, ...)
@@ -12,8 +11,6 @@ Gene2Symbol(object, ...)
 \S4method{Gene2Symbol}{DataFrame}(object, format = c("makeUnique", "unmodified", "1:1"))
 
 \S4method{Gene2Symbol}{GRanges}(object, format = c("makeUnique", "unmodified", "1:1"))
-
-\S4method{Gene2Symbol}{SummarizedExperiment}(object, format = c("makeUnique", "unmodified", "1:1"))
 }
 \arguments{
 \item{object}{Object.}
@@ -48,11 +45,18 @@ For the \code{format} argument, note that "long" was used instead of
 Updated 2021-02-01.
 }
 \examples{
-data(RangedSummarizedExperiment, package = "AcidTest")
-rse <- RangedSummarizedExperiment
-
-## SummarizedExperiment ====
-x <- Gene2Symbol(rse)
+## DataFrame ====
+df <- S4Vectors::DataFrame(
+    "geneId" = c(
+        "ENSG00000228572.7",
+        "ENSG00000182378.14"
+    ),
+    "geneName" = c(
+        "AL954722.1",
+        "PLCXD1"
+    )
+)
+x <- Gene2Symbol(df)
 print(x)
 }
 \seealso{
