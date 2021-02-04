@@ -65,8 +65,6 @@ NULL
 #' @export
 NULL
 
-
-
 #' @rdname stripVersions
 #' @name stripTranscriptVersions
 #' @importFrom AcidGenerics stripTranscriptVersions
