@@ -38,8 +38,6 @@ No attempt is made to arrange the rows by transcript identifier.
 Updated 2021-02-02.
 }
 \examples{
-data(GRanges, package = "AcidTest")
-
 ## DataFrame ====
 df <- S4Vectors::DataFrame(
     "txId" = c(
@@ -53,10 +51,6 @@ df <- S4Vectors::DataFrame(
 )
 t2g <- Tx2Gene(df)
 print(t2g)
-
-## GRanges ====
-object <- GRanges
-x <- Tx2Gene(object)
 }
 \seealso{
 \code{\link[=makeTx2Gene]{makeTx2Gene()}}.
