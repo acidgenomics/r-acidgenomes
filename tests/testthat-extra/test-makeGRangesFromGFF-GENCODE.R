@@ -14,7 +14,6 @@ test_that("GTF genes", {
     expect_s4_class(object, "GencodeGenes")
     expect_identical(length(object), 60660L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
-    ## FIXME THIS TEST IS FAILING NOW...
     expect_identical(
         object = lapply(mcols(object), class),
         expected = list(
@@ -25,6 +24,7 @@ test_that("GTF genes", {
             "geneIdVersion" = Rle,
             "geneName" = Rle,
             "havanaGene" = Rle,
+            "hgncId" = Rle,
             "level" = Rle,
             "source" = Rle,
             "tag" = Rle,
