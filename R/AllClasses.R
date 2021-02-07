@@ -502,7 +502,7 @@ setValidity(
 #' HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-02-07.
 #'
 #' @return `HGNC`.
 setClass(
@@ -517,7 +517,10 @@ setValidity(
             hasRows(object)
         )
         if (!isTRUE(ok)) return(ok)
-        cols <- c("hgncId", "ensemblGeneId")
+        cols <- c(
+            "hgnc" = "hgncId",
+            "ensembl" = "ensemblGeneId"
+        )
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
         }
