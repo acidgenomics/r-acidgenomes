@@ -4,6 +4,9 @@
 \name{reexports}
 \alias{reexports}
 \alias{pasteURL}
+\alias{GRanges}
+\alias{GRangesList}
+\alias{IRanges}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -12,5 +15,9 @@ below to see their documentation.
 
 \describe{
   \item{AcidBase}{\code{\link[AcidBase]{pasteURL}}}
+
+  \item{GenomicRanges}{\code{\link[GenomicRanges:GRanges-class]{GRanges}}, \code{\link[GenomicRanges:GRangesList-class]{GRangesList}}}
+
+  \item{IRanges}{\code{\link[IRanges:IRanges-constructor]{IRanges}}}
 }}
 
