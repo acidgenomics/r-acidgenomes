@@ -1,3 +1,9 @@
+## AcidGenomes 0.2.1 (2021-02-08)
+
+### Minor changes
+
+- Now including some reexports from GenomicRanges and IRanges.
+
 ## AcidGenomes 0.2.0 (2021-02-02)
 
 ### New functions
