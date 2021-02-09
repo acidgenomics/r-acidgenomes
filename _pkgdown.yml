@@ -1,9 +1,8 @@
 authors:
   Michael Steinbaugh:
-    href: https://steinbaugh.com/
+    href: https://mike.steinbaugh.com/
   Acid Genomics:
     href: https://acidgenomics.com/
-
 navbar:
   components:
      acid:
@@ -11,6 +10,6 @@ navbar:
        href: https://acidgenomics.com/
   structure:
     right: [acid, github]
-
 news:
   - one_page: false
+url: https://r.acidgenomics.com/packages/acidgenomes
