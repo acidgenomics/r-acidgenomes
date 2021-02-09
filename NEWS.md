@@ -1,3 +1,9 @@
+## AcidGenomes 0.2.2 (2021-02-09)
+
+### Minor changes
+
+- Reduced the number of reexported functions.
+
 ## AcidGenomes 0.2.1 (2021-02-08)
 
 ### Minor changes
