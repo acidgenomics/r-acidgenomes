@@ -6,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -46,25 +46,21 @@ NULL
 
 
 
-## Updated 2021-01-17.
+## Updated 2021-02-10.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(object, format = c("makeUnique", "unmodified", "1:1")) {
-        assert(hasRows(object))
         format <- match.arg(format)
-        colnames(object) <- camelCase(colnames(object), strict = TRUE)
         cols <- c("geneId", "geneName")
+        if (!isSubset(cols, colnames(object))) {
+            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+        }
         assert(
-            isSubset(cols, colnames(object)),
-            hasRows(object)
+            hasRows(object),
+            isSubset(cols, colnames(object))
         )
-        df <- DataFrame(
-            "geneId" = as.character(decode(object[["geneId"]])),
-            "geneName" = as.character(decode(object[["geneName"]])),
-            row.names = rownames(object)
-        )
+        df <- decode(object[, cols])
         ## Inform the user about how many symbols multi-map.
-        ## Note that `duplicated` doesn't work on Rle, so we have to coerce
-        ## columns to character first (see `as_tibble` call above).
+        ## Note that `duplicated()` doesn't work on Rle, so we have to decode.
         duplicated <- duplicated(df[["geneName"]])
         if (any(duplicated)) {
             dupes <- unique(df[["geneName"]][duplicated])
@@ -78,36 +74,40 @@ NULL
                 )
             ))
         }
-        ## Return mode.
-        if (format == "makeUnique") {
-            ## Returning 1:1 mappings with renamed gene symbols.
-            ## This is the default, and including a message is too noisy, since
-            ## it is used heavily in other functions.
-            df[["geneName"]] <- make.unique(df[["geneName"]])
-        } else if (format == "unmodified") {
-            alertWarning(paste(
-                "Returning with unmodified gene symbols",
-                "{.emph (may contain duplicates)}."
-            ))
-        } else if (format == "1:1") {
-            alert(paste(
-                "Returning 1:1 mappings using oldest",
-                "gene identifier per symbol."
-            ))
-            x <- split(df, f = df[["geneName"]])
-            x <- bplapply(
-                X = x,
-                FUN = function(x) {
-                    x <- x[order(x[["geneId"]]), , drop = FALSE]
-                    x <- head(x, n = 1L)
-                    x
-                }
-            )
-            x <- DataFrameList(x)
-            x <- unlist(x, recursive = FALSE, use.names = FALSE)
-            df <- x
-            assert(is(df, "DataFrame"))
-        }
+        switch(
+            EXPR = format,
+            "makeUnique" = {
+                ## Returning 1:1 mappings with renamed gene symbols. This is the
+                ## default, and including a message is too noisy, since it is
+                ## used heavily in other functions.
+                df[["geneName"]] <- make.unique(df[["geneName"]])
+            },
+            "unmodified" = {
+                alertWarning(paste(
+                    "Returning with unmodified gene symbols",
+                    "{.emph (may contain duplicates)}."
+                ))
+            },
+            "1:1" = {
+                alert(paste(
+                    "Returning 1:1 mappings using oldest",
+                    "gene identifier per symbol."
+                ))
+                x <- split(x = df, f = df[[1L]])
+                assert(is(x, "SplitDataFrameList"))
+                x <- lapply(
+                    X = x[, 2L],
+                    FUN = function(x) {
+                        sort(x = x, decreasing = FALSE, na.last = TRUE)[[1L]]
+                    }
+                )
+                x <- unlist(x, recursive = FALSE, use.names = TRUE)
+                df <- DataFrame("a" = names(x), "b" = x)
+                rownames(df) <- df[[1L]]
+                colnames(df) <- cols
+            }
+        )
+        assert(is(df, "DataFrame"))
         metadata(df)[["format"]] <- format
         new(Class = "Gene2Symbol", df)
     }
