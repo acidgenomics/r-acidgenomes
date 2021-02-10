@@ -24,7 +24,7 @@ Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.3.5),
     AcidCLI (>= 0.0.6),
-    AcidGenerics (>= 0.5.8),
+    AcidGenerics (>= 0.5.10),
     AcidPlyr (>= 0.1.8),
     AnnotationDbi,
     AnnotationHub,
