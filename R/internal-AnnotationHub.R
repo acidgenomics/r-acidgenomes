@@ -19,7 +19,7 @@
 
 #' Get Ensembl/Entrez mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-10.
 #' @noRd
 .getEnsembl2EntrezFromOrgDb <- function(
     keys,
@@ -29,6 +29,7 @@
     strict = TRUE
 ) {
     pkgs <- .packages()
+    keys <- as.character(keys)
     assert(
         isCharacter(keys),
         hasNoDuplicates(keys),
@@ -57,16 +58,16 @@
         mcols(ahs)[id, "description"]
     ))
     suppressMessages({
-        df <- select(
+        df <- AnnotationDbi::select(
             x = orgdb,
             keys = keys,
             keytype = keytype,
             columns = columns
         )
     })
-    df <- as(df, "DataFrame")
+    assert(is.data.frame(df))
     if (isTRUE(strict)) {
-        df <- df[complete.cases(df), ]
+        df <- df[complete.cases(df), , drop = FALSE]
         if (!areSetEqual(keys, unique(df[[keytype]]))) {
             setdiff <- setdiff(keys, unique(df[[keytype]]))
             stop(sprintf(
@@ -79,5 +80,6 @@
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
     df[["entrezId"]] <- as.integer(df[["entrezId"]])
     forceDetach(keep = pkgs)
+    df <- as(df, "DataFrame")
     df
 }
