@@ -1,12 +1,6 @@
-## NOTE Can see this cryptic warning from AnnotationHub:
-## > Failed to parse headers:
-## > 221 Goodbye.
-
-
-
 #' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-02-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -39,7 +33,7 @@ NULL
 
 #' Make an Ensembl2Entrez (or Entrez2Ensembl) object
 #'
-#' @note Updated 2019-08-16.
+#' @note Updated 2021-02-10.
 #' @noRd
 .makeEnsembl2Entrez <-
     function(
@@ -60,7 +54,7 @@ NULL
             hasRows(object),
             isSubset(cols, colnames(object))
         )
-        df <- object[, cols]
+        df <- object[, cols, drop = FALSE]
         rownames(df) <- NULL
         df <- decode(expand(df))
         assert(
@@ -68,28 +62,22 @@ NULL
             is.integer(df[["entrezId"]])
         )
         if (identical(format, "1:1")) {
-            split <- split(x = df, f = df[[1L]])
-            unique <- unlist(
-                x = bplapply(
-                    X = split[, 2L],
-                    FUN = function(x) {
-                        if (all(is.na(x))) {
-                            NA
-                        } else {
-                            head(sort(x), n = 1L)
-                        }
-                    }
-                ),
-                recursive = FALSE,
-                use.names = FALSE
+            x <- split(x = df, f = df[[1L]])
+            assert(is(x, "SplitDataFrameList"))
+            x <- lapply(
+                X = x[, 2L],
+                FUN = function(x) {
+                    sort(x = x, decreasing = FALSE, na.last = TRUE)[[1L]]
+                }
             )
-            df <- DataFrame("a" = names(split), "b" = unique)
+            x <- unlist(x, recursive = FALSE, use.names = TRUE)
+            df <- DataFrame("a" = names(x), "b" = x)
             rownames(df) <- df[[1L]]
             colnames(df) <- cols
         }
-        df[["entrezId"]] <- as.integer(df[["entrezId"]])
         df <- df[complete.cases(df), , drop = FALSE]
         assert(hasRows(df))
+        df[["entrezId"]] <- as.integer(df[["entrezId"]])
         metadata(df) <- metadata(object)
         metadata(df)[["format"]] <- format
         new(Class = return, df)
@@ -97,7 +85,7 @@ NULL
 
 
 
-## Updated 2021-01-18.
+## Updated 2021-02-10.
 `Ensembl2Entrez,character` <-  # nolint
     function(
         object,
@@ -107,6 +95,9 @@ NULL
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
+        if (allAreMatchingFixed(pattern = ".", x = object)) {
+            object <- stripGeneVersions(object)
+        }
         df <- .getEnsembl2EntrezFromOrgDb(
             keys = object,
             keytype = "ENSEMBL",
@@ -115,7 +106,8 @@ NULL
         )
         .makeEnsembl2Entrez(
             object = df,
-            format = match.arg(format)
+            format = match.arg(format),
+            return = "Ensembl2Entrez"
         )
     }
 
