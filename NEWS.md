@@ -1,3 +1,9 @@
+## AcidGenomes 0.2.3 (2021-02-10)
+
+### Minor changes
+
+- Reverted back to using vroom as importer for `HGNC` and `MGI2Ensembl`.
+
 ## AcidGenomes 0.2.2 (2021-02-09)
 
 ### Minor changes
