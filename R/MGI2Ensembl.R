@@ -1,5 +1,5 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-10.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
@@ -15,17 +15,9 @@ MGI2Ensembl <- function() {  # nolint
         protocol = "http"
     )
     file <- .cacheIt(url)
-    ## NOTE vroom now messages a warning about expected parsing issues, which
-    ## cannot be suppressed. There's some C++ pointer voodoo going on here.
-    ## Falling back to using data.table instead, if possible.
-    ## See related issue:
-    ## https://github.com/r-lib/vroom/issues/300
-    engine <- getOption("acid.import.engine")
-    if (isInstalled("data.table")) {
-        options("acid.import.engine" = "data.table")
-    }
-    df <- import(file = file, format = "tsv", colnames = TRUE)
-    options("acid.import.engine" = engine)
+    suppressWarnings({
+        df <- import(file = file, format = "tsv", colnames = TRUE)
+    })
     df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgiId", "ensemblId")
     df <- df[complete.cases(df), , drop = FALSE]
