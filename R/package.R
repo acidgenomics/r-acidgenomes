@@ -23,20 +23,20 @@
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
-#' @importFrom BiocParallel bplapply
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
 #'   seqinfo<- seqlengths seqlevels seqnames
 #' @importFrom GenomicRanges GRanges ranges trim
 #' @importFrom IRanges DataFrameList IRanges
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
-#' @importFrom goalie allAreAtomic allAreFiles allAreMatchingRegex
-#'   allAreNotMatchingRegex allAreURLs areDisjointSets areIntersectingSets
-#'   areSetEqual assert bapply hasColnames hasDuplicates hasInternet hasLength
-#'   hasNoDuplicates hasNames hasRownames hasRows hasValidNames isADir isAFile
-#'   isAURL isAny isCharacter isFlag isInstalled isInt isMatchingFixed
-#'   isMatchingRegex isNotMatchingFixed isOrganism isScalar isString isSubset
-#'   isSystemCommand isWindows validate validateClasses
+#' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
+#'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
+#'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
+#'   hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows
+#'   hasValidNames isADir isAFile isAURL isAny isCharacter isFlag isInstalled
+#'   isInt isMatchingFixed isMatchingRegex isNotMatchingFixed isOrganism
+#'   isScalar isString isSubset isSystemCommand isWindows validate
+#'   validateClasses
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom jsonlite fromJSON toJSON
 #' @importFrom methods as is isClass new setClass setGeneric setMethod

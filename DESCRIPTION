@@ -28,7 +28,6 @@ Imports:
     AcidPlyr (>= 0.1.8),
     AnnotationDbi,
     AnnotationHub,
-    BiocParallel,
     GenomeInfoDb,
     GenomicRanges,
     IRanges,
@@ -45,6 +44,7 @@ Imports:
     utils
 Suggests:
     AcidTest (>= 0.4.2),
+    BiocParallel,
     EnsDb.Hsapiens.v75,
     GenomicFeatures,
     biomaRt,
