@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' ## DataFrame ====
-#' df <- S4Vectors::DataFrame(
+#' df <- DataFrame(
 #'     "txId" = c(
 #'         "ENST00000635602.1",
 #'         "ENST00000635506.1"
