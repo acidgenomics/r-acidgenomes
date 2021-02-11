@@ -22,7 +22,7 @@
 #' @importFrom AcidGenerics DataFrame Rle %in% as.data.frame complete.cases
 #'   decode do.call expand head is.unsorted lapply match mcols mcols<- metadata
 #'   metadata<- order setdiff sort split tail
-#' @importFrom AcidPlyr leftJoin
+#' @importFrom AcidPlyr leftJoin map_df
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
@@ -46,9 +46,3 @@
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
-
-
-
-## FIXME MOVE THESE TO ACIDPLYR
-#' @importFrom purrr map_df
-

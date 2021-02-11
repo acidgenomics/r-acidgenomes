@@ -48,7 +48,7 @@ Updated 2021-02-10.
 data(GRanges, package = "AcidTest")
 
 ## DataFrame ====
-df <- S4Vectors::DataFrame(
+df <- DataFrame(
     "geneId" = c(
         "ENSG00000228572.7",
         "ENSG00000182378.14"
