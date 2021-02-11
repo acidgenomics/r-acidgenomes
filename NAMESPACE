@@ -2,6 +2,7 @@
 
 export("organism<-")
 export(AcidGenomesTestsURL)
+export(DataFrame)
 export(Ensembl2Entrez)
 export(Entrez2Ensembl)
 export(Gene2Symbol)
