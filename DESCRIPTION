@@ -37,12 +37,10 @@ Imports:
     httr (>= 1.4),
     methods,
     pipette (>= 0.5.4),
-    purrr (>= 0.3),
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
     AcidTest (>= 0.4.2),
-    BiocParallel,
     EnsDb.Hsapiens.v75,
     GenomicFeatures,
     biomaRt,
