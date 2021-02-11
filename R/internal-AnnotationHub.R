@@ -29,7 +29,6 @@
     strict = TRUE
 ) {
     pkgs <- .packages()
-    keys <- as.character(keys)
     assert(
         isCharacter(keys),
         hasNoDuplicates(keys),
