@@ -3,6 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{DataFrame}
 \alias{pasteURL}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -12,5 +13,7 @@ below to see their documentation.
 
 \describe{
   \item{AcidBase}{\code{\link[AcidBase]{pasteURL}}}
+
+  \item{AcidGenerics}{\code{\link[AcidGenerics:reexports]{DataFrame}}}
 }}
 

@@ -101,6 +101,8 @@
         taxonomicGroups <- getURLDirList(url = baseURL)
         keep <- grepl(pattern = "^[a-z_]+$", x = taxonomicGroups)
         taxonomicGroups <- sort(taxonomicGroups[keep])
+        ## FIXME RETHINK THIS.
+        ## CAN WE CONVERT TO CHARACTERLIST AND SPEED UP HERE INSTEAD?
         list <- bplapply(
             X = taxonomicGroups,
             baseURL = baseURL,
