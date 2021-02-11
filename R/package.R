@@ -11,25 +11,22 @@
 #'
 #' @keywords internal
 #'
-#' @importClassesFrom GenomicRanges CompressedGRangesList GRanges GRangesList
-#' @importClassesFrom IRanges DataFrameList
-#' @importClassesFrom S4Vectors DataFrame Vector
+#' @importClassesFrom AcidGenerics DataFrame Vector
+#' @importClassesFrom pipette DataFrameList
 #'
-#' @importFrom AcidBase compress download fileExt forceDetach initDir pasteURL
-#'   printString realpath requireNamespaces showSlotInfo
+#' @importFrom AcidBase capture.output compress download fileExt forceDetach
+#'   initDir packageName packageVersion pasteURL printString realpath
+#'   requireNamespaces sessionInfo showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
-#' @importFrom AcidGenerics %in% as.data.frame complete.cases decode do.call
-#'   expand head is.unsorted lapply match mcols mcols<- metadata metadata<-
-#'   order setdiff sort split tail
+#' @importFrom AcidGenerics DataFrame Rle %in% as.data.frame complete.cases
+#'   decode do.call expand head is.unsorted lapply match mcols mcols<- metadata
+#'   metadata<- order setdiff sort split tail
 #' @importFrom AcidPlyr leftJoin
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
 #'   seqinfo<- seqlengths seqlevels seqnames
-#' @importFrom GenomicRanges GRanges ranges trim
-#' @importFrom IRanges DataFrameList IRanges
-#' @importFrom S4Vectors DataFrame Rle
 #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
@@ -40,15 +37,18 @@
 #'   isScalar isString isSubset isSystemCommand isWindows validate
 #'   validateClasses
 #' @importFrom httr GET content content_type stop_for_status
-#' @importFrom jsonlite fromJSON toJSON
+
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette as_tibble cacheURL export getJSON getURL getURLDirList
-#'   import md5 removeNA sanitizeNA sha256
-#' @importFrom purrr map_df
+#' @importFrom pipette DataFrameList GRanges GRangesList IRanges as_tibble
+#'   cacheURL export getJSON getURL getURLDirList import md5 ranges removeNA
+#'   sanitizeNA sha256 trim
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
-#' @importFrom utils capture.output packageName packageVersion sessionInfo
-#'
-#' @importMethodsFrom GenomicRanges is.unsorted sort
 "_PACKAGE"
+
+
+
+## FIXME MOVE THESE TO ACIDPLYR
+#' @importFrom purrr map_df
+
