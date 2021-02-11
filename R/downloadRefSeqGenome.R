@@ -1,5 +1,12 @@
 ## nolint start
 
+
+
+## FIXME ENSURE WE DOWNLOAD GENE_INFO.GZ FILE HERE.
+## NOTE THIS IS ALSO USED IN GENE SYNONYMS CALL...
+
+
+
 #' Download RefSeq reference genome
 #'
 #' @section Stable release:
