@@ -24,18 +24,16 @@ Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.3.6),
     AcidCLI (>= 0.0.6),
-    AcidGenerics (>= 0.5.10),
-    AcidPlyr (>= 0.1.8),
+    AcidGenerics (>= 0.5.11),
+    AcidPlyr (>= 0.1.9),
     AnnotationDbi,
     AnnotationHub,
     GenomeInfoDb,
-    GenomicRanges,
-    IRanges,
     ensembldb,
     goalie (>= 0.4.14),
     httr (>= 1.4),
     methods,
-    pipette (>= 0.5.4),
+    pipette (>= 0.5.6),
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
