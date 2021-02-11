@@ -14,7 +14,7 @@ geneSynonyms(
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
-\code{DataFrame}.
+\code{DataFrame} containing \code{geneId} and \code{geneSynonyms} columns.
 }
 \description{
 Look up gene synonyms from NCBI.
