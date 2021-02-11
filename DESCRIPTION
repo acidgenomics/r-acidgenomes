@@ -31,7 +31,6 @@ Imports:
     GenomeInfoDb,
     GenomicRanges,
     IRanges,
-    S4Vectors,
     ensembldb,
     goalie (>= 0.4.14),
     httr (>= 1.4),

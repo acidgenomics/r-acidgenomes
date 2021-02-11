@@ -622,7 +622,7 @@ setValidity(
 #' @section Genome metadata:
 #'
 #' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
-#' [`metadata()`][S4Vectors::metadata].
+#' `metadata()`.
 #'
 #' @export
 #' @note Updated 2021-02-02.
@@ -747,7 +747,7 @@ setValidity(
 #' @section Genome metadata:
 #'
 #' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
-#' [`metadata()`][S4Vectors::metadata].
+#' `metadata()`.
 #'
 #' @export
 #' @note Updated 2021-02-02.
