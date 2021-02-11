@@ -6,42 +6,30 @@
 \usage{
 geneSynonyms(
   organism = c("Homo sapiens", "Mus musculus", "Drosophila melanogaster"),
-  return = c("DataFrame", "SplitDataFrameList")
+  idType = c("Entrez", "Ensembl", "HGNC", "OMIM")
 )
 }
 \arguments{
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
-
-\item{return}{\code{character(1)}.
-Return type. Uses \code{\link[base:match.arg]{match.arg()}} internally and defaults
-to the first argument in the \code{character} vector.}
 }
 \value{
-\itemize{
-\item \code{DataFrame}:
-Returns unique row for each \code{geneId}.
-Returns only \code{geneId} and \code{geneSynonyms} columns.
-The \code{geneSynonyms} column returns as character vector, with synonyms
-arranged alphabetically and delimited by \code{", "}.
-\item \code{SplitDataFrameList}:
-Split by \code{geneId} column.
-Keeps duplicate rows mapping to same \code{geneId} (e.g. ENSG00000004866).
-Returns \code{geneId}, \code{geneName}, and \code{geneSynonyms} columns in the split.
-}
+\code{DataFrame}.
 }
 \description{
 Look up gene synonyms from NCBI.
 }
 \note{
-Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI.
-Use the \href{https://r.acidgenomics.com/packages/wormbase/}{WormBase} package
-instead.
-
-Updated 2021-01-14.
+Updated 2021-02-10.
 }
+\section{\emph{Caenorhabditis elegans}}{
+
+
+Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI. Use the
+\href{https://r.acidgenomics.com/packages/wormbase/}{WormBase} package instead.
+}
+
 \examples{
-## CPU intensive.
 ## > object <- geneSynonyms(organism = "Homo sapiens")
 ## > print(object)
 }
