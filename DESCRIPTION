@@ -35,7 +35,6 @@ Imports:
     ensembldb,
     goalie (>= 0.4.14),
     httr (>= 1.4),
-    jsonlite (>= 1.7),
     methods,
     pipette (>= 0.5.4),
     purrr (>= 0.3),
