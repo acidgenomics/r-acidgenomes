@@ -18,8 +18,8 @@
 #'   toInlineString
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IRanges Rle
 #'   %in% as.data.frame complete.cases decode do.call encode expand grep grepl
-#'   head is.unsorted lapply match mcols mcols<- metadata metadata<- order
-#'   ranges setdiff sort split tail trim
+#'   gsub head is.unsorted lapply match mcols mcols<- metadata metadata<- order
+#'   ranges setdiff sort split tail trim unlist
 #' @importFrom AcidPlyr leftJoin map_df
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate

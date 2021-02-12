@@ -44,7 +44,7 @@ geneSynonyms <- function(
         is(df[["geneSynonyms"]], "CharacterList")
     )
     df <- as(df, "DataFrame")
-    df <- df[, cols]
+    df <- df[, cols, drop = FALSE]
     keep <- !all(is.na(df[["geneSynonyms"]]))
     df <- df[keep, , drop = FALSE]
     if (identical(geneIDType, "Entrez")) {
@@ -62,96 +62,24 @@ geneSynonyms <- function(
     )
     keep <- any(grepl(pattern = pattern, x = df[["dbXrefs"]]))
     df <- df[keep, , drop = FALSE]
-
-
-
-    ## FIXME NEED TO REWORK LIST APPROACH HERE...LAPPLY?
-    ## FIXME NEED TO EXTRACT THE ELEMENTS THAT MATCH AND MAKE IT FLAG....
-    xxx <- gsub(
-        pattern = pattern,
-        replacement = "\\1",
-        x = df[["dbXrefs"]][lgl]
+    ## Extract the gene identifiers.
+    x <- df[["dbXrefs"]]
+    x <- x[grepl(pattern = pattern, x = x)]
+    x <- gsub(pattern = pattern, replacement = "\\1", x = x)
+    assert(is(x, "CharacterList"))
+    ## Handle cases where identifiers don't map 1:1 to Entrez.
+    ## In this case, the first (oldest) identifier will be used.
+    x <- unlist(
+        x = lapply(X = x, FUN = `[[`, 1L),
+        recursive = FALSE,
+        use.names = FALSE
     )
-    xxx <- unlist(xxx, recursive = FALSE, use.names = FALSE)
-    assert(identical(length(xxx), nrow(df)))
-
-    length(xxx)
-    ## FIXME DONT DO THIS, AS IT WILL DROP IDENTIFIERS.
-    yyy <- unlist(xxx, recursive = FALSE, use.names = TRUE)
-    length(yyy)
-
-
-
-
-
-
-
-
-
-    df <- df[, c("symbol", "synonyms", "dbXrefs")]
-    colnames(df)[colnames(df) == "symbol"] <- "geneName"
-    colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
-    keep <- df[["geneSynonyms"]] != "-"
-    df <- df[keep, , drop = FALSE]
-    keep <- df[["dbXrefs"]] != "-"
-    df <- df[keep, , drop = FALSE]
-
-
-
-    ## FIXME NEED TO IMPROVE SUPPORT FOR ID TYPE RETURN HERE.
-    ## FIXME ENSEMBL MATCH MIGHT NOT WORK FOR OTHER GENOMES....
-
-
-    ## Sanitize the identifiers.
-    pattern <- switch(
-        EXPR = organism,
-        "Drosophila melanogaster" = {
-            "\\bFBgn[0-9]{7}\\b"
-        },
-        "\\bENS[A-Z]+[0-9]{11}\\b"
-    )
-    df[["geneId"]] <- str_extract(
-        string = df[["dbXrefs"]],
-        pattern = pattern
-    )
-    keep <- !is.na(df[["geneId"]])
-    df <- df[keep, , drop = FALSE]
-    cols <- c("geneId", "geneSynonyms")
-    df <- df[, cols, drop = FALSE]
-    df <- df[order(df[[1L]]), , drop = FALSE]
-    x <- split(df, f = df[[1L]])
-    if (identical(return, "SplitDataFrameList")) {
-        return(x)
-    }
-    alert("Preparing unique synonyms per gene.")
-
-
-    xx <- lapply(
-        X = x[, 2L],
-        FUN = function(x) {
-            geneId <- x[["geneId"]][[1L]]
-            geneSynonyms <- strsplit(
-                x = sort(
-                    x = x[["geneSynonyms"]],
-                    decreasing = FALSE,
-                    na.last = TRUE
-                ),
-                split = ", "
-            )[[1L]]
-            geneSynonyms <- unlist(geneSynonyms)
-            geneSynonyms <- c(geneSynonyms, x[["geneName"]])
-            geneSynonyms <- sort(unique(geneSynonyms))
-            geneSynonyms <- toString(geneSynonyms)
-            DataFrame("geneId" = geneId, "geneSynonyms" = geneSynonyms)
-        }
-    )
-
-
-
-    df <- do.call(what = rbind, args = list)
-    assert(identical(names(split), df[["geneId"]]))
-    df <- df[complete.cases(df), ]
+    df[["geneId"]] <- x
+    df[["dbXrefs"]] <- NULL
+    keep <- !duplicated(df[["geneId"]])
+    df <- df[keep, ]
+    assert(hasNoDuplicates(df[["geneId"]]))
+    df <- df[order(df[["geneId"]]), , drop = FALSE]
     rownames(df) <- df[["geneId"]]
-    out <- df
-    out
+    df
 }
