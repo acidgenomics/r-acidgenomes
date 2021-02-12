@@ -1,8 +1,6 @@
 ## FIXME NEED TO REWORK IDENTIFIER MATCHING FOR SYNONYMS...
 ## CURRENTLY FAILING IN DEPMAPANALYSIS DRAFT UPDATE.
 
-## FIXME CAN WE TAKE BIOCPARALLEL OUT COMPLETELY HERE?
-
 
 
 #' AcidGenomes
@@ -20,8 +18,8 @@
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics DataFrame Rle %in% as.data.frame complete.cases
-#'   decode do.call expand head is.unsorted lapply match mcols mcols<- metadata
-#'   metadata<- order setdiff sort split tail
+#'   decode do.call encode expand head is.unsorted lapply match mcols mcols<-
+#'   metadata metadata<- order setdiff sort split tail
 #' @importFrom AcidPlyr leftJoin map_df
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
@@ -40,9 +38,9 @@
 
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette DataFrameList GRanges GRangesList IRanges as_tibble
-#'   cacheURL export getJSON getURL getURLDirList import md5 ranges removeNA
-#'   sanitizeNA sha256 trim
+#' @importFrom pipette CharacterList DataFrameList GRanges GRangesList IRanges
+#'   as_tibble cacheURL export getJSON getURL getURLDirList import md5 ranges
+#'   removeNA sanitizeNA sha256 trim
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
