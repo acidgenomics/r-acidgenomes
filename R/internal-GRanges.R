@@ -207,7 +207,7 @@
 
 #' Add Ensembl gene synonyms
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-02-12.
 #' @noRd
 #'
 #' @details Currently supported only for Ensembl and GENCODE genomes.
@@ -219,21 +219,34 @@
             x = metadata(object)[["provider"]],
             y = c("Ensembl", "GENCODE")
         ),
-        isSubset("geneId", names(mcols(object))),
-        allAreMatchingRegex(x = mcols(object)[["geneId"]], pattern = "^ENS")
+        isSubset("geneId", names(mcols(object)))
     )
     mcols <- mcols(object)
-    organism <- match.arg(
-        arg = organism(object),
-        choices = eval(formals(geneSynonyms)[["organism"]])
-    )
+    organism <- organism(object)
+    assert(isOrganism(organism))
     alert(sprintf(
-        "Adding gene synonyms for {.var %s} to {.var %s} column.",
+        "Adding gene synonyms for {.emph %s} to {.var %s} column.",
         organism, "geneSynonyms"
     ))
-    synonyms <- geneSynonyms(organism = organism, return = "DataFrame")
-    assert(identical(c("geneId", "geneSynonyms"), names(synonyms)))
-    mcols <- leftJoin(x = mcols, y = synonyms, by = "geneId")
+    syns <- geneSynonyms(
+        organism = organism,
+        ## Avoid the speed penalty quering the FTP server for human or mouse.
+        taxonomicGroup = switch(
+            EXPR = organism,
+            "Homo sapiens" = "Mammalia",
+            "Mus musculus" = "Mammalia",
+            NULL
+        ),
+        geneIDType = "Ensembl"
+    )
+    assert(identical(c("geneId", "geneSynonyms"), colnames(syns)))
+    joinCol <- ".join"
+    colnames(syns)[colnames(syns) == "geneId"] <- joinCol
+    suppressMessages({
+        mcols[[joinCol]] <- stripGeneVersions(as.character(mcols[["geneId"]]))
+    })
+    mcols <- leftJoin(x = mcols, y = syns, by = joinCol)
+    mcols[[joinCol]] <- NULL
     mcols(object) <- mcols
     object
 }
