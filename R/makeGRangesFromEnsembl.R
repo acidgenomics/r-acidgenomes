@@ -147,7 +147,7 @@ makeGRangesFromEnsembl <- function(
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
-    metadata(gr)[["call"]] <- match.call()
+    metadata(gr)[["call"]] <- standardizeCall()
     gr
 }
 
@@ -241,7 +241,7 @@ makeGRangesFromEnsDb <- function(
         ignoreVersion = ignoreVersion,
         synonyms = synonyms
     )
-    metadata(gr)[["call"]] <- match.call()
+    metadata(gr)[["call"]] <- standardizeCall()
     forceDetach(keep = pkgs)
     gr
 }

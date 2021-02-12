@@ -368,12 +368,12 @@
 
 
 
-#' Minimize GRanges mcols
+#' Minimize `GRanges` metadata columns
 #'
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-02-12.
 #' @noRd
 .minimizeMcols <- function(object) {
     assert(is(object, "GRanges"))
