@@ -187,38 +187,10 @@
     }
     baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
     if (is.null(taxonomicGroup)) {
-        alertWarning(sprintf(
-            "Set {.var %s} manually to speed up this step.",
-            "taxonimicGroup"
-        ))
-        taxonomicGroups <- getURLDirList(url = baseURL)
-        keep <- grepl(pattern = "^[a-z_]+$", x = taxonomicGroups)
-        taxonomicGroups <- sort(taxonomicGroups[keep])
-        ## FIXME RETHINK THIS.
-        ## CAN WE CONVERT TO CHARACTERLIST AND SPEED UP HERE INSTEAD?
-        list <- bplapply(
-            X = taxonomicGroups,
-            baseURL = baseURL,
-            FUN = function(taxonomicGroup, baseURL) {
-                url <- pasteURL(baseURL, taxonomicGroup)
-                x <- getURLDirList(url = url)
-                keep <- grepl(pattern = "^[A-Z][a-z]+_[a-z]+$", x = x)
-                x <- sort(x[keep])
-                x
-            }
+        taxonomicGroup <- .matchNcbiTaxonomicGroup(
+            organism = organism,
+            mode = "refseq"
         )
-        names(list) <- taxonomicGroups
-        match <- vapply(
-            X = list,
-            organism = gsub(pattern = " ", replacement = "_", x = organism),
-            FUN = function(strings, organism) {
-                isSubset(x = organism, y = strings)
-            },
-            FUN.VALUE = logical(1L),
-            USE.NAMES = TRUE
-        )
-        taxonomicGroup <- names(match)[match]
-        assert(isString(taxonomicGroup))
     }
     url <- pasteURL(
         baseURL,
