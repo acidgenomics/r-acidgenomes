@@ -47,11 +47,27 @@ EntrezGeneInfo <-  # nolint
                 ".gene_info.gz"
             )
         )
+        alert(sprintf(
+            "Downloading {.emph %s} gene info from NCBI at {.url %s}.",
+            organism, url
+        ))
         df <- import(file = .cacheIt(url), format = "tsv", colnames = TRUE)
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
-        ## Ensure that any "-" values get sanitized to "NA".
-        assert(any(is.na(df[["locusTag"]])))
+        assert(
+            isSubset(
+                x = c("geneId", "locusTag", "symbol", "synonyms"),
+                y = colnames(df)
+            ),
+            hasNoDuplicates(df[["geneId"]]),
+            ## Ensure that any "-" values get sanitized to "NA".
+            any(is.na(df[["locusTag"]]))
+        )
+        colnames(df)[colnames(df) == "symbol"] <- "geneName"
+        colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
+        df <- removeNA(df)
+        df <- df[, sort(colnames(df))]
+        rownames(df) <- df[["geneId"]]
         splitToList <- function(x) {
             x <- strsplit(x = x, split = "|", fixed = TRUE)
             x <- CharacterList(x)
@@ -59,18 +75,7 @@ EntrezGeneInfo <-  # nolint
             x
         }
         df[["dbXrefs"]] <- splitToList(df[["dbXrefs"]])
-        df[["synonyms"]] <- splitToList(df[["synonyms"]])
-        assert(
-            isSubset(
-                x = c("geneId", "symbol"),
-                y = colnames(df)
-            ),
-            hasNoDuplicates(df[["geneId"]])
-        )
-        colnames(df)[colnames(df) == "symbol"] <- "geneName"
-        df <- removeNA(df)
-        df <- df[, sort(colnames(df))]
-        rownames(df) <- df[["geneId"]]
+        df[["geneSynonyms"]] <- splitToList(df[["geneSynonyms"]])
         df <- encode(df)
         metadata(df) <- list(
             "date" = Sys.Date(),

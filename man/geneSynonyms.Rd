@@ -5,8 +5,9 @@
 \title{Gene synonyms}
 \usage{
 geneSynonyms(
-  organism = c("Homo sapiens", "Mus musculus", "Drosophila melanogaster"),
-  idType = c("Entrez", "Ensembl", "HGNC", "OMIM")
+  organism,
+  taxonomicGroup = NULL,
+  geneIDType = c("Entrez", "Ensembl", "HGNC", "OMIM")
 )
 }
 \arguments{
@@ -20,7 +21,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Look up gene synonyms from NCBI.
 }
 \note{
-Updated 2021-02-10.
+Updated 2021-02-12.
 }
 \section{\emph{Caenorhabditis elegans}}{
 
@@ -30,6 +31,10 @@ Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI. Use the
 }
 
 \examples{
-## > object <- geneSynonyms(organism = "Homo sapiens")
+object <- geneSynonyms(
+    organism = "Homo sapiens",
+    taxonomicGroup = "Mammalia",
+    geneIDType = "Ensembl"
+)
 ## > print(object)
 }
