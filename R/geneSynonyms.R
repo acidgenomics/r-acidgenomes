@@ -1,18 +1,6 @@
 ## FIXME NEED TO SPECIFY AN ENSEMBL MODE HERE.
 ## FIXME CONSIDER USING THIS METADATA FOR DEPMAPANALYSIS...
-
-
-
-## NOTE This can contain some Ensembl duplicates (e.g. ENSG00000004866).
-
-## FIXME CONSIDER ADDING SUPPORT FOR THESE ORGANISMS:
-## Bos_taurus.gene_info.gz	1.6 MB	2/9/21, 10:44:00 PM
-## Canis_familiaris.gene_info.gz	1.3 MB	2/9/21, 10:44:00 PM
-## Homo_sapiens.gene_info.gz	2.8 MB	2/9/21, 10:44:00 PM
-## Mus_musculus.gene_info.gz	3.0 MB	2/9/21, 10:44:00 PM
-## Pan_troglodytes.gene_info.gz	1.3 MB	2/9/21, 10:44:00 PM
-## Rattus_norvegicus.gene_info.gz	2.1 MB	2/9/21, 10:44:00 PM
-## Sus_scrofa.gene_info.gz	1.2 MB	2/9/21, 10:44:00 PM
+## FIXME This can contain some Ensembl duplicates (e.g. ENSG00000004866).
 
 
 
@@ -20,7 +8,7 @@
 #'
 #' Look up gene synonyms from NCBI.
 #'
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-02-12.
 #' @export
 #'
 #' @section *Caenorhabditis elegans*:
@@ -34,61 +22,31 @@
 #' @return `DataFrame` containing `geneId` and `geneSynonyms` columns.
 #'
 #' @examples
-#' ## > object <- geneSynonyms(organism = "Homo sapiens")
+#' object <- geneSynonyms(
+#'     organism = "Homo sapiens",
+#'     taxonomicGroup = "Mammalia",
+#'     geneIDType = "Ensembl"
+#' )
 #' ## > print(object)
 geneSynonyms <- function(
-    organism = c(
-        "Homo sapiens",
-        "Mus musculus",
-        "Drosophila melanogaster"
-    ),
-    idType = c("Entrez", "Ensembl", "HGNC", "OMIM")
+    organism,
+    taxonomicGroup = NULL,
+    geneIDType = c("Entrez", "Ensembl", "HGNC", "OMIM")
 ) {
-    organism <- match.arg(organism)
-    idType <- match.arg(idType)
+    geneIDType <- match.arg(geneIDType)
+    df <- EntrezGeneInfo(
+        organism = organism,
+        taxonomicGroup = taxonomicGroup
+    )
+    cols <- c("geneId", "geneSynonyms", "dbXrefs")
     assert(
-        hasInternet(),
-        isOrganism(organism)
+        isSubset(cols, colnames(df)),
+        is(df[["geneSynonyms"]], "CharacterList")
     )
-    alert(sprintf(
-        "Importing {.var %s} synonyms from NCBI for %s gene identifiers.",
-        organism, idType
-    ))
-    genome <- c(
-        "kingdom" = switch(
-            EXPR = species,
-            "Drosophila melanogaster" = "Invertebrates",
-            "Mammalia"
-        ),
-        ## NCBI uses underscore for species name.
-        "species" = gsub(" ", "_", organism)
-    )
-    url <- pasteURL(
-        "ftp.ncbi.nih.gov",
-        "gene",
-        "DATA",
-        "GENE_INFO",
-        genome[["kingdom"]],
-        paste0(genome[["species"]], ".gene_info.gz"),
-        protocol = "ftp"
-    )
-    df <- import(file = .cacheIt(url), format = "tsv", colnames = TRUE)
     df <- as(df, "DataFrame")
-    colnames(df) <- camelCase(colnames(df), strict = TRUE)
-    df <- df[, c("geneId", "synonyms", "dbXrefs")]
-    keep <- df[["synonyms"]] != "-"
-    df <- df[keep, ]
-    ## Ensure synonyms include current gene symbol.
-    df[["synonyms"]] <- paste(df[["synonyms"]], df[["symbol"]], sep = "|")
-    df[["symbol"]] <- NULL
-    splitToList <- function(x) {
-        x <- strsplit(x = x, split = "|", fixed = TRUE)
-        x <- CharacterList(x)
-        x <- sort(unique(x))
-        x
-    }
-    df[["synonyms"]] <- splitToList(df[["synonyms"]])
-    colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
+    df <- df[, cols]
+    keep <- !all(is.na(df[["geneSynonyms"]]))
+    df <- df[keep, , drop = FALSE]
     if (identical(idType, "Entrez")) {
         df[["dbXrefs"]] <- NULL
         return(df)
