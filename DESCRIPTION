@@ -37,7 +37,7 @@ Imports:
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
-    AcidTest (>= 0.4.2),
+    AcidTest (>= 0.4.3),
     EnsDb.Hsapiens.v75,
     GenomicFeatures,
     biomaRt,

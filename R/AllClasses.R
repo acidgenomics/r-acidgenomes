@@ -499,6 +499,25 @@ setValidity(
 
 
 ## Identifier classes ==========================================================
+#' NCBI Entrez gene identifier information
+#'
+#' @export
+#' @note Updated 2021-02-12.
+#'
+#' @return `EntrezGeneInfo`.
+setClass(
+    Class = "EntrezGeneInfo",
+    contains = "DataFrame"
+)
+setValidity(
+    Class = "EntrezGeneInfo",
+    method = function(object) {
+        TRUE
+    }
+)
+
+
+
 #' HGNC complete set metadata
 #'
 #' @export
