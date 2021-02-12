@@ -24,7 +24,7 @@ Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.3.7),
     AcidCLI (>= 0.0.6),
-    AcidGenerics (>= 0.5.12),
+    AcidGenerics (>= 0.5.13),
     AcidPlyr (>= 0.1.9),
     AnnotationDbi,
     AnnotationHub,
@@ -33,7 +33,7 @@ Imports:
     goalie (>= 0.4.14),
     httr (>= 1.4),
     methods,
-    pipette (>= 0.5.7),
+    pipette (>= 0.5.9),
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
