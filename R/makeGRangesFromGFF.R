@@ -286,6 +286,6 @@ makeGRangesFromGFF <- function(
             synonyms = synonyms
         )
     }
-    metadata(gr)[["call"]] <- match.call()
+    metadata(gr)[["call"]] <- standardizeCall()
     gr
 }
