@@ -1,10 +1,101 @@
+#' Match NCBI taxonomic group for gene info or RefSeq.
+#'
+#' @note Updated 2021-02-12.
+#' @noRd
+.matchNcbiTaxonomicGroup <-
+    function(
+        organism,
+        mode = c("geneInfo", "refseq")
+    ) {
+        assert(isOrganism(organism))
+        mode <- match.arg(mode)
+        baseURL <- switch(
+            EXPR = mode,
+            "geneInfo" = pasteURL(
+                "ftp.ncbi.nih.gov",
+                "gene", "DATA", "GENE_INFO",
+                protocol = "ftp"
+            ),
+            "refseq" = pasteURL(
+                "ftp.ncbi.nlm.nih.gov",
+                "genomes", "refseq",
+                protocol = "ftp"
+            )
+        )
+        alertWarning(sprintf(
+            paste(
+                "Detecting taxonomic group from {.var %s}.",
+                "Set {.var %s} manually to speed up this step."
+            ),
+            "organism", "taxonimicGroup"
+        ))
+        x <- getURLDirList(url = baseURL)
+        pattern <- switch(
+            EXPR = mode,
+            "geneInfo" = "^[A-Z][A-Za-z_-]+$",
+            "refseq" = "^[a-z_]+$"
+        )
+        keep <- grepl(pattern = pattern, x = x)
+        groups <- sort(x[keep])
+        bplapply <- eval(.bplapply)
+        list <- bplapply(
+            X = groups,
+            baseURL = baseURL,
+            mode = mode,
+            FUN = function(group, baseURL, mode) {
+                url <- pasteURL(baseURL, group)
+                x <- getURLDirList(url = url)
+                switch(
+                    EXPR = mode,
+                    "geneInfo" = {
+                        keep <- grepl(
+                            pattern = "^[A-Z][a-z]+_[a-z]+\\.gene_info\\.gz$",
+                            x = x
+                        )
+                        x <- x[keep]
+                        x <- gsub(
+                            pattern = "\\.gene_info\\.gz$",
+                            replacement = "",
+                            x = x
+                        )
+                    },
+                    "refseq" = {
+                        keep <- grepl(
+                            pattern = "^[A-Z][a-z]+_[a-z]+$",
+                            x = x
+                        )
+                        x <- x[keep]
+                    }
+                )
+                x <- sort(x)
+                x
+            }
+        )
+        names(list) <- groups
+        match <- vapply(
+            X = list,
+            organism = gsub(pattern = " ", replacement = "_", x = organism),
+            FUN = function(strings, organism) {
+                isSubset(x = organism, y = strings)
+            },
+            FUN.VALUE = logical(1L),
+            USE.NAMES = TRUE
+        )
+        out <- names(match)[match]
+        assert(isString(out))
+        out
+    }
+
+
+
 ## nolint start
 
 #' Get the RefSeq assembly metadata
 #'
 #' @section Stable reference assembly:
-#' The latest reference assembly, linked under the `reference/`
-#' subdirectory changes over time and is not considered "stable". For improved
+#'
+#' The latest reference assembly, linked under the `reference/` subdirectory
+#' changes over time and is not considered "stable". For improved
 #' reproduciblity, track a reference one version behind
 #' (e.g. use "GCF_000001405.39_GRCh38.p12" instead of current
 #' "GCF_000001405.39_GRCh38.p13" build).
@@ -13,7 +104,7 @@
 #' compared to other sources such as Ensembl and GENCODE, which track a stable
 #' release as the latest "reference" assembly.
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-02-12.
 #' @noRd
 #'
 #' @param file `character(1)`.
@@ -65,6 +156,8 @@
     }
 
 
+
+## FIXME NEED TO ADD TAXONOMIC GROUP MATCHING FOR GENEINFO ALSO.
 
 #' Get the RefSeq base genome URL for an organism
 #'
