@@ -1,9 +1,3 @@
-## FIXME NEED TO SPECIFY AN ENSEMBL MODE HERE.
-## FIXME CONSIDER USING THIS METADATA FOR DEPMAPANALYSIS...
-## FIXME This can contain some Ensembl duplicates (e.g. ENSG00000004866).
-
-
-
 #' Gene synonyms
 #'
 #' Look up gene synonyms from NCBI.
