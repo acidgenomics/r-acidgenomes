@@ -9,17 +9,17 @@
 #'
 #' @keywords internal
 #'
-#' @importClassesFrom AcidGenerics DataFrame Vector
-#' @importClassesFrom pipette DataFrameList
+#' @importClassesFrom AcidGenerics DataFrame DataFrameList Vector
 #'
 #' @importFrom AcidBase capture.output compress download fileExt forceDetach
 #'   initDir packageName packageVersion pasteURL printString realpath
 #'   requireNamespaces sessionInfo showSlotInfo
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
-#' @importFrom AcidGenerics DataFrame Rle %in% as.data.frame complete.cases
-#'   decode do.call encode expand head is.unsorted lapply match mcols mcols<-
-#'   metadata metadata<- order setdiff sort split tail
+#' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IRanges Rle
+#'   %in% as.data.frame complete.cases decode do.call encode expand grep grepl
+#'   head is.unsorted lapply match mcols mcols<- metadata metadata<- order
+#'   ranges setdiff sort split tail trim
 #' @importFrom AcidPlyr leftJoin map_df
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
@@ -35,12 +35,10 @@
 #'   isScalar isString isSubset isSystemCommand isWindows validate
 #'   validateClasses
 #' @importFrom httr GET content content_type stop_for_status
-
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette CharacterList DataFrameList GRanges GRangesList IRanges
-#'   as_tibble cacheURL export getJSON getURL getURLDirList import md5 ranges
-#'   removeNA sanitizeNA sha256 trim
+#' @importFrom pipette GRanges GRangesList as_tibble cacheURL export getJSON
+#'   getURL getURLDirList import md5 removeNA sanitizeNA sha256
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
