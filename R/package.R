@@ -1,8 +1,3 @@
-## FIXME NEED TO REWORK IDENTIFIER MATCHING FOR SYNONYMS...
-## CURRENTLY FAILING IN DEPMAPANALYSIS DRAFT UPDATE.
-
-
-
 #' AcidGenomes
 #'
 #' Toolkit for downloading and processing genome annotations.
