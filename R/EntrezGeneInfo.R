@@ -81,7 +81,8 @@ EntrezGeneInfo <-  # nolint
         metadata(df) <- list(
             "date" = Sys.Date(),
             "organism" = organism,
-            "taxonomicGroup" = "taxonomicGroup"
+            "taxonomicGroup" = "taxonomicGroup",
+            "url" = url
         )
         new(Class = "EntrezGeneInfo", df)
     }
