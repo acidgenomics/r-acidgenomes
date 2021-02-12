@@ -511,12 +511,22 @@
 
 
 ## Main generator ==============================================================
+## FIXME REWORK TOWARD RETURNING SPECIAL COLUMNS AS CLASSED LISTS.
+## e.g. entrezId,
+## FIXME WHEN WE ADD SYNONYMS, THIS ISNT RETURNING ENCODED.
+## FIXME ENSURE MCOLS RETURN RLE OR LIST....
+## - entrezId: IntegerList
+## - geneSynonyms: CharacterList
+## Yeah transcript level is doing something funky and not returning encoded...
+
+
+
 #' Make GRanges
 #'
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-02-12.
 #' @noRd
 .makeGRanges <- function(
     object,

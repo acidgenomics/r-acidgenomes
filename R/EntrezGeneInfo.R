@@ -63,6 +63,7 @@ EntrezGeneInfo <-  # nolint
             ## Ensure that any "-" values get sanitized to "NA".
             any(is.na(df[["locusTag"]]))
         )
+        df[["geneId"]] <- as.integer(df[["geneId"]])
         colnames(df)[colnames(df) == "symbol"] <- "geneName"
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
         df <- removeNA(df)

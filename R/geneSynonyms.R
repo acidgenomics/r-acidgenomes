@@ -21,7 +21,7 @@
 #'     taxonomicGroup = "Mammalia",
 #'     geneIDType = "Ensembl"
 #' )
-#' ## > print(object)
+#' print(object)
 geneSynonyms <- function(
     organism,
     taxonomicGroup = NULL,
@@ -42,6 +42,8 @@ geneSynonyms <- function(
     keep <- !all(is.na(df[["geneSynonyms"]]))
     df <- df[keep, , drop = FALSE]
     if (identical(geneIDType, "Entrez")) {
+        df[["geneId"]] <- decode(df[["geneId"]])
+        assert(is.integer(df[["geneId"]]))
         df[["dbXrefs"]] <- NULL
         return(df)
     }
@@ -49,6 +51,7 @@ geneSynonyms <- function(
         "^",
         switch(
             EXPR = geneIDType,
+            "HGNC" = "HGNC:HGNC",
             "OMIM" = "MIM",
             geneIDType
         ),
@@ -68,12 +71,21 @@ geneSynonyms <- function(
         recursive = FALSE,
         use.names = FALSE
     )
+    if (isSubset(geneIDType, c("HGNC", "OMIM"))) {
+        x <- as.integer(x)
+    }
     df[["geneId"]] <- x
     df[["dbXrefs"]] <- NULL
     keep <- !duplicated(df[["geneId"]])
-    df <- df[keep, ]
+    df <- df[keep, , drop = FALSE]
     assert(hasNoDuplicates(df[["geneId"]]))
     df <- df[order(df[["geneId"]]), , drop = FALSE]
     rownames(df) <- df[["geneId"]]
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "geneIDType" = geneIDType,
+        "organism" = organism,
+        "taxonomicGroup" = taxonomicGroup
+    )
     df
 }
