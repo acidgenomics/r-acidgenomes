@@ -47,24 +47,23 @@ geneSynonyms <- function(
     df <- df[, cols]
     keep <- !all(is.na(df[["geneSynonyms"]]))
     df <- df[keep, , drop = FALSE]
-    if (identical(idType, "Entrez")) {
+    if (identical(geneIDType, "Entrez")) {
         df[["dbXrefs"]] <- NULL
         return(df)
     }
-    df[["dbXrefs"]] <- splitToList(df[["dbXrefs"]])
     pattern <- paste0(
         "^",
         switch(
-            EXPR = idType,
+            EXPR = geneIDType,
             "OMIM" = "MIM",
-            idType
+            geneIDType
         ),
         ":(.+)$"
     )
     keep <- any(grepl(pattern = pattern, x = df[["dbXrefs"]]))
     df <- df[keep, , drop = FALSE]
-    lgl <- grepl(pattern = pattern, x = df[["dbXrefs"]])
-    assert(is(lgl, "LogicalList"))
+
+
 
     ## FIXME NEED TO REWORK LIST APPROACH HERE...LAPPLY?
     ## FIXME NEED TO EXTRACT THE ELEMENTS THAT MATCH AND MAKE IT FLAG....
