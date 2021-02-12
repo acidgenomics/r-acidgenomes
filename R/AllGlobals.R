@@ -4,6 +4,19 @@ NULL
 
 
 
+## Updated 2021-02-12.
+.bplapply <-
+    {
+        if (isInstalled("BiocParallel")) {
+            x <- quote(BiocParallel::bplapply)
+        } else {
+            x <- quote(lapply)
+        }
+        x
+    }
+
+
+
 #' GFF file name pattern matching
 #'
 #' @note Updated 2021-01-27.
