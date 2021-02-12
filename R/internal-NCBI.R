@@ -157,8 +157,6 @@
 
 
 
-## FIXME NEED TO ADD TAXONOMIC GROUP MATCHING FOR GENEINFO ALSO.
-
 #' Get the RefSeq base genome URL for an organism
 #'
 #' @note Updated 2021-01-08.
