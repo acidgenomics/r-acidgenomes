@@ -36,5 +36,5 @@ object <- geneSynonyms(
     taxonomicGroup = "Mammalia",
     geneIDType = "Ensembl"
 )
-## > print(object)
+print(object)
 }
