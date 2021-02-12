@@ -511,13 +511,9 @@
 
 
 ## Main generator ==============================================================
-## FIXME REWORK TOWARD RETURNING SPECIAL COLUMNS AS CLASSED LISTS.
-## e.g. entrezId,
-## FIXME WHEN WE ADD SYNONYMS, THIS ISNT RETURNING ENCODED.
-## FIXME ENSURE MCOLS RETURN RLE OR LIST....
+## FIXME Return nested lists as special classes:
 ## - entrezId: IntegerList
 ## - geneSynonyms: CharacterList
-## Yeah transcript level is doing something funky and not returning encoded...
 
 
 
@@ -546,32 +542,17 @@
         choices = .grangesLevels
     )
     provider <- metadata(object)[["provider"]]
-    ## Consider not allowing user to ignore identifier versions for unsupported
-    ## providers. Not failing here at the moment, to provide legacy support for
-    ## bcbio R packages.
-    ## > if (
-    ## >     isTRUE(ignoreVersion) &&
-    ## >     !isSubset(provider, c("Ensembl", "GENCODE"))
-    ## > ) {
-    ## >     stop(sprintf(
-    ## >         paste(
-    ## >             "Identifier version modification with '%s' flag",
-    ## >             "is not supported for %s genomes."
-    ## >         ),
-    ## >         "ignoreVersion = TRUE",
-    ## >         provider
-    ## >     ))
-    ## > }
-    object <- .minimizeMcols(object)
     object <- .standardizeMcols(object)
     if (isFALSE(ignoreVersion)) {
         object <- .includeGeneVersion(object)
         object <- .includeTxVersion(object)
     }
     object <- .addBroadClass(object)
+    ## FIXME THIS CAUSES THE RANGES TO DECOMPRESS...NEED TO RETHINK.
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
+    object <- .minimizeMcols(object)
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, names(mcols(object))))
     alert(sprintf(
