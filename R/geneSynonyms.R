@@ -32,6 +32,8 @@ geneSynonyms <- function(
         organism = organism,
         taxonomicGroup = taxonomicGroup
     )
+    meta <- metadata(df)
+    meta <- append(x = meta, values = list("geneIdType" = geneIDType))
     cols <- c("geneId", "geneSynonyms", "dbXrefs")
     assert(
         isSubset(cols, colnames(df)),
@@ -81,11 +83,6 @@ geneSynonyms <- function(
     assert(hasNoDuplicates(df[["geneId"]]))
     df <- df[order(df[["geneId"]]), , drop = FALSE]
     rownames(df) <- df[["geneId"]]
-    metadata(df) <- list(
-        "date" = Sys.Date(),
-        "geneIDType" = geneIDType,
-        "organism" = organism,
-        "taxonomicGroup" = taxonomicGroup
-    )
+    metadata(df) <- meta
     df
 }
