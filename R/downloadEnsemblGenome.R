@@ -78,7 +78,7 @@ downloadEnsemblGenome <-
         info[["annotation"]][["gtf"]] <-
             do.call(what = .downloadEnsemblGTF, args = args)
         info[["args"]] <- args
-        info[["call"]] <- match.call()
+        info[["call"]] <- standardizeCall()
         info[["sessionInfo"]] <- sessionInfo()
         saveRDS(object = info, file = file.path(outputDir, "metadata.rds"))
         alertSuccess(sprintf(

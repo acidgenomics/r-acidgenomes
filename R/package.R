@@ -8,7 +8,7 @@
 #'
 #' @importFrom AcidBase capture.output compress download fileExt forceDetach
 #'   initDir packageName packageVersion pasteURL printString realpath
-#'   requireNamespaces sessionInfo showSlotInfo
+#'   requireNamespaces sessionInfo showSlotInfo standardizeCall
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IRanges Rle

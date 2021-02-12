@@ -206,7 +206,7 @@ makeTx2GeneFromFASTA <- function(file) {
     out <- Tx2Gene(x)
     metadata(out) <- list(
         "acidGenomes" = .version,
-        "call" = match.call(),
+        "call" = standardizeCall(),
         "date" = Sys.Date(),
         "file" = file,
         "provider" = provider
