@@ -1,10 +1,6 @@
 ## nolint start
 
-
-
-## FIXME ENSURE WE DOWNLOAD GENE_INFO.GZ FILE HERE.
-## NOTE THIS IS ALSO USED IN GENE SYNONYMS CALL...
-## FIXME USE THE GENE_INFO WITH GRANGES, ROWDATA FOR SUMMARIZEDEXPERIMENT.
+## NOTE Consider also downloading corresponding NCBI gene_info.gz file here.
 
 
 
