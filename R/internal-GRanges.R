@@ -245,8 +245,12 @@
     suppressMessages({
         mcols[[joinCol]] <- stripGeneVersions(as.character(mcols[["geneId"]]))
     })
+    ## FIXME ACIDPLYR IS CAUSING COERCION TO ASIS HERE, ARGH...
     mcols <- leftJoin(x = mcols, y = syns, by = joinCol)
     mcols[[joinCol]] <- NULL
+    ## Ensure we're not accidentally coercing to AsIs here.
+    ## FIXME NEED TO ADDRESS THIS IN ACIDPLYR...
+    assert(is(mcols[["geneSynonyms"]], "CharacterList"))
     mcols(object) <- mcols
     object
 }
@@ -372,9 +376,6 @@
     ## Ensure nested list columns return classed when possible.
     if (is.list(mcols[["entrezId"]])) {
         mcols[["entrezId"]] <- IntegerList(mcols[["entrezId"]])
-    }
-    if (is.list(mcols[["geneSynonyms"]])) {
-        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
     }
     mcols(object) <- mcols
     object
@@ -518,9 +519,7 @@
 
 
 ## Main generator ==============================================================
-## FIXME Return nested lists as special classes:
-## - entrezId: IntegerList
-## - geneSynonyms: CharacterList
+## FIXME CharacterList is getting coerced back to list somehwere...
 
 
 
