@@ -7,11 +7,14 @@ Toolkit for downloading and processing genome annotations.
 ### [R][] method
 
 ```r
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
 install.packages(
     pkgs = "AcidGenomes",
     repos = c(
         "https://r.acidgenomics.com",
-        getOption("repos")
+        BiocManager::repositories()
     )
 )
 ```
