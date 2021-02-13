@@ -237,7 +237,7 @@
             "Mus musculus" = "Mammalia",
             NULL
         ),
-        geneIDType = "Ensembl"
+        geneIdType = "Ensembl"
     )
     assert(identical(c("geneId", "geneSynonyms"), colnames(syns)))
     joinCol <- ".join"

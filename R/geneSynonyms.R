@@ -2,7 +2,7 @@
 #'
 #' Look up gene synonyms from NCBI.
 #'
-#' @note Updated 2021-02-12.
+#' @note Updated 2021-02-13.
 #' @export
 #'
 #' @section *Caenorhabditis elegans*:
@@ -12,6 +12,10 @@
 #'
 #'
 #' @inheritParams AcidRoxygen::params
+#' @inheritParams EntrezGeneInfo
+#' @inheritParams params
+#' @param geneIdType `character(1)`.
+#'   Type of gene identifier to return in the `geneId` column.
 #'
 #' @return `DataFrame` containing `geneId` and `geneSynonyms` columns.
 #'
@@ -19,21 +23,21 @@
 #' object <- geneSynonyms(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "Mammalia",
-#'     geneIDType = "Ensembl"
+#'     geneIdType = "Ensembl"
 #' )
 #' print(object)
 geneSynonyms <- function(
     organism,
     taxonomicGroup = NULL,
-    geneIDType = c("Entrez", "Ensembl", "HGNC", "OMIM")
+    geneIdType = c("Entrez", "Ensembl", "HGNC", "OMIM")
 ) {
-    geneIDType <- match.arg(geneIDType)
+    geneIdType <- match.arg(geneIdType)
     df <- EntrezGeneInfo(
         organism = organism,
         taxonomicGroup = taxonomicGroup
     )
     meta <- metadata(df)
-    meta <- append(x = meta, values = list("geneIdType" = geneIDType))
+    meta <- append(x = meta, values = list("geneIdType" = geneIdType))
     cols <- c("geneId", "geneSynonyms", "dbXrefs")
     assert(
         isSubset(cols, colnames(df)),
@@ -43,7 +47,7 @@ geneSynonyms <- function(
     df <- df[, cols, drop = FALSE]
     keep <- !all(is.na(df[["geneSynonyms"]]))
     df <- df[keep, , drop = FALSE]
-    if (identical(geneIDType, "Entrez")) {
+    if (identical(geneIdType, "Entrez")) {
         df[["geneId"]] <- decode(df[["geneId"]])
         assert(is.integer(df[["geneId"]]))
         df[["dbXrefs"]] <- NULL
@@ -52,10 +56,10 @@ geneSynonyms <- function(
     pattern <- paste0(
         "^",
         switch(
-            EXPR = geneIDType,
+            EXPR = geneIdType,
             "HGNC" = "HGNC:HGNC",
             "OMIM" = "MIM",
-            geneIDType
+            geneIdType
         ),
         ":(.+)$"
     )
@@ -73,7 +77,7 @@ geneSynonyms <- function(
         recursive = FALSE,
         use.names = FALSE
     )
-    if (isSubset(geneIDType, c("HGNC", "OMIM"))) {
+    if (isSubset(geneIdType, c("HGNC", "OMIM"))) {
         x <- as.integer(x)
     }
     df[["geneId"]] <- x
