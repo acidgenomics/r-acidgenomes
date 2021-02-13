@@ -1,8 +1,12 @@
-## AcidGenomes 0.2.4 (UNRELEASED)
+## AcidGenomes 0.2.4 (2021-02-12)
 
 ### New functions
 
+- `EntrezGeneInfo`: New utility for obtaining gene annotations from NCBI.
 
+### Major changes
+
+- `geneSynonyms`: Reworked internal code, extending `EntrezGeneInfo`.
 
 ## AcidGenomes 0.2.3 (2021-02-10)
 
