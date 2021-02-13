@@ -1,10 +1,12 @@
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2021-02-12.
+#' @note Updated 2021-02-13.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @inheritParams params
+#' @param taxonomicGroup `character(1)`.
+#'   NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
+#'   Defining this manually avoids having to query the FTP server.
 #'
 #' @return `EntrezGeneInfo`.
 #'
