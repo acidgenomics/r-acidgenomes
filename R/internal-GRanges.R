@@ -334,6 +334,54 @@
 
 
 ## Standardization =============================================================
+#' Apply run-length encoding and minimize `GRanges` mcols
+#'
+#' This step sanitizes NA values, applies run-length encoding (to reduce memory
+#' overhead), and trims any invalid ranges.
+#'
+#' @note Updated 2021-02-12.
+#' @noRd
+.encodeMcols <- function(object) {
+    assert(is(object, "GRanges"))
+    ## This trimming step was added to handle GRanges from Ensembl 102, which
+    ## won't return valid otherwise from ensembldb.
+    length <- length(object)
+    object <- trim(object)
+    assert(hasLength(object, n = length))
+    mcols <- mcols(object)
+    mcolsList <- lapply(
+        X = mcols,
+        FUN = function(x) {
+            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
+                I(x)
+            } else {
+                x <- sanitizeNA(x)
+                if (all(is.na(x))) {
+                    return(NULL)
+                }
+                if (is.factor(x)) {
+                    x <- droplevels(x)
+                }
+                x <- Rle(x)
+                x
+            }
+        }
+    )
+    mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
+    mcols <- as(mcolsList, "DataFrame")
+    ## Ensure nested list columns return classed when possible.
+    if (is.list(mcols[["entrezId"]])) {
+        mcols[["entrezId"]] <- IntegerList(mcols[["entrezId"]])
+    }
+    if (is.list(mcols[["geneSynonyms"]])) {
+        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
+    }
+    mcols(object) <- mcols
+    object
+}
+
+
+
 #' Match the identifier column in GRanges to use for names.
 #'
 #' @note Updated 2021-01-20.
@@ -368,47 +416,6 @@
 
 
 
-#' Minimize `GRanges` metadata columns
-#'
-#' This step sanitizes NA values, applies run-length encoding (to reduce memory
-#' overhead), and trims any invalid ranges.
-#'
-#' @note Updated 2021-02-12.
-#' @noRd
-.minimizeMcols <- function(object) {
-    assert(is(object, "GRanges"))
-    ## This trimming step was added to handle GRanges from Ensembl 102, which
-    ## won't return valid otherwise from ensembldb.
-    length <- length(object)
-    object <- trim(object)
-    assert(hasLength(object, n = length))
-    mcols <- mcols(object)
-    mcolsList <- lapply(
-        X = mcols,
-        FUN = function(x) {
-            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
-                I(x)
-            } else {
-                x <- sanitizeNA(x)
-                if (all(is.na(x))) {
-                    return(NULL)
-                }
-                if (is.factor(x)) {
-                    x <- droplevels(x)
-                }
-                x <- Rle(x)
-                x
-            }
-        }
-    )
-    mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
-    mcols <- as(mcolsList, "DataFrame")
-    mcols(object) <- mcols
-    object
-}
-
-
-
 #' Standardize the GRanges mcols into desired naming conventions
 #'
 #' @details
@@ -418,7 +425,7 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2021-01-26.
+#' @note Updated 2021-02-12.
 #' @noRd
 .standardizeMcols <- function(object) {
     assert(is(object, "GRanges"))
@@ -548,11 +555,11 @@
         object <- .includeTxVersion(object)
     }
     object <- .addBroadClass(object)
-    ## FIXME THIS CAUSES THE RANGES TO DECOMPRESS...NEED TO RETHINK.
     if (isTRUE(synonyms)) {
         object <- .addGeneSynonyms(object)
     }
-    object <- .minimizeMcols(object)
+    ## Run the encoding step after all modifications above.
+    object <- .encodeMcols(object)
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, names(mcols(object))))
     alert(sprintf(
