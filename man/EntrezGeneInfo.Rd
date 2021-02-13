@@ -9,6 +9,10 @@ EntrezGeneInfo(organism, taxonomicGroup = NULL)
 \arguments{
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{taxonomicGroup}{\code{character(1)}.
+NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
+Defining this manually avoids having to query the FTP server.}
 }
 \value{
 \code{EntrezGeneInfo}.
@@ -17,7 +21,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Import NCBI Entrez gene identifier information
 }
 \note{
-Updated 2021-02-12.
+Updated 2021-02-13.
 }
 \examples{
 object <- EntrezGeneInfo(

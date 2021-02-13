@@ -7,12 +7,19 @@
 geneSynonyms(
   organism,
   taxonomicGroup = NULL,
-  geneIDType = c("Entrez", "Ensembl", "HGNC", "OMIM")
+  geneIdType = c("Entrez", "Ensembl", "HGNC", "OMIM")
 )
 }
 \arguments{
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{taxonomicGroup}{\code{character(1)}.
+NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
+Defining this manually avoids having to query the FTP server.}
+
+\item{geneIdType}{\code{character(1)}.
+Type of gene identifier to return in the \code{geneId} column.}
 }
 \value{
 \code{DataFrame} containing \code{geneId} and \code{geneSynonyms} columns.
@@ -21,7 +28,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Look up gene synonyms from NCBI.
 }
 \note{
-Updated 2021-02-12.
+Updated 2021-02-13.
 }
 \section{\emph{Caenorhabditis elegans}}{
 
@@ -34,7 +41,7 @@ Synonym support for \emph{Caenorhabditis elegans} is poor on NCBI. Use the
 object <- geneSynonyms(
     organism = "Homo sapiens",
     taxonomicGroup = "Mammalia",
-    geneIDType = "Ensembl"
+    geneIdType = "Ensembl"
 )
 print(object)
 }
