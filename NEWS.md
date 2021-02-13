@@ -1,4 +1,4 @@
-## AcidGenomes 0.2.4 (2021-02-12)
+## AcidGenomes 0.2.4 (2021-02-13)
 
 ### New functions
 
