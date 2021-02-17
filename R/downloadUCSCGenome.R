@@ -1,13 +1,9 @@
-## FIXME SYMLINKS NEED TO BE RELATIVE, NOT ABSOLUTE.
-
-
-
 ## nolint start
 
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-17.
 #'
 #' @section Genome:
 #'
@@ -118,7 +114,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-01-29.
+## Updated 2021-02-17.
 .downloadUCSCAnnotation <-
     function(
         genomeBuild,
@@ -171,13 +167,21 @@ downloadUCSCGenome <-
         files[["tx2gene"]] <- tx2geneFile
         ## Create symlink.
         if (!isWindows()) {
-            assert(isAFile(gtfFile))
-            gtfSymlink <- file.path(
-                outputDir,
-                paste0("annotation.", fileExt(gtfFile))
+            wd <- getwd()
+            setwd(outputDir)
+            gtfRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gtfFile
             )
-            file.symlink(from = gtfFile, to = gtfSymlink)
+            assert(
+                isAFile(gtfFile),
+                isAFile(gtfRelativeFile)
+            )
+            gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
+            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -185,7 +189,7 @@ downloadUCSCGenome <-
 
 
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadUCSCGenome <-
     function(
         genomeBuild,
@@ -227,14 +231,22 @@ downloadUCSCGenome <-
         )
         ## Create FASTA symlink.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
             fastaFile <- files[["fasta"]]
-            assert(isAFile(fastaFile))
-            fastaSymlink <- file.path(
-                outputDir,
-                paste0("genome.", fileExt(fastaFile))
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
             )
-            file.symlink(from = fastaFile, to = fastaSymlink)
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- paste0("genome.", fileExt(fastaFile))
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -257,7 +269,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadUCSCTranscriptome <-
     function(
         outputDir,
@@ -275,13 +287,22 @@ downloadUCSCGenome <-
         )
         ## Create symlink.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
             fastaFile <- files[["mrna"]]
-            fastaSymlink <- file.path(
-                outputDir,
-                paste0("transcriptome.", fileExt(fastaFile))
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
             )
-            file.symlink(from = fastaFile, to = fastaSymlink)
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
