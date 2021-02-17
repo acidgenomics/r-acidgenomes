@@ -357,15 +357,15 @@ setValidity(
 #' RefSeq gene annotations
 #'
 #' @details
-#' Contains a `GRangesList` with RefSeq gene-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-17.
 #'
 #' @return `RefSeqGenes`.
 setClass(
     Class = "RefSeqGenes",
-    contains = "GRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqGenes",
@@ -381,15 +381,15 @@ setValidity(
 #' RefSeq transcript annotations
 #'
 #' @details
-#' Contains a `GRangesList` with RefSeq transcript-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-17.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "GRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
