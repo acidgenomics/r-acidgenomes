@@ -368,9 +368,10 @@ downloadEnsemblGenome <-
                 isAFile(fastaFile),
                 isAFile(fastaRelativeFile)
             )
-            fastaSymlink <- basename(fastaFile)
+            fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
             file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
