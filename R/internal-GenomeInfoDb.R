@@ -97,6 +97,8 @@
                     ) {
                         args[["use.grch37"]] <- TRUE
                     }
+                    ## NOTE This step is failing for Ensembl 103 with
+                    ## GenomeInfoDb 1.26.2.
                     do.call(what = getChromInfoFromEnsembl, args = args)
                 },
                 "GENCODE" = {
