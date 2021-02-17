@@ -146,6 +146,24 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "annotation")
         )
         gtfFile <- files[["ensGene"]]
+        ## Create symlink.
+        if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
+            gtfRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gtfFile
+            )
+            assert(
+                isAFile(gtfFile),
+                isAFile(gtfRelativeFile)
+            )
+            gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
+            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+            files[["gtfSymlink"]] <- gtfSymlink
+            setwd(wd)
+        }
         ## Save genomic ranges.
         genes <- makeGRangesFromGFF(gtfFile, level = "genes")
         transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
@@ -165,24 +183,6 @@ downloadUCSCGenome <-
             file = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["tx2gene"]] <- tx2geneFile
-        ## Create symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
-            gtfRelativeFile <- sub(
-                pattern = paste0("^", outputDir, "/"),
-                replacement = "",
-                x = gtfFile
-            )
-            assert(
-                isAFile(gtfFile),
-                isAFile(gtfRelativeFile)
-            )
-            gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
-            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
-            files[["gtfSymlink"]] <- gtfSymlink
-            setwd(wd)
-        }
         invisible(list("files" = files, "urls" = urls))
     }
 
