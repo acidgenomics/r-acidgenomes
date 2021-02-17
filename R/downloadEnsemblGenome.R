@@ -75,6 +75,7 @@ downloadEnsemblGenome <-
         args <- append(x = args, values = list("release" = release))
         info[["annotation"]][["gff"]] <-
             do.call(what = .downloadEnsemblGFF, args = args)
+        ## FIXME IS THIS NOT CREATING SYMLINK?
         info[["annotation"]][["gtf"]] <-
             do.call(what = .downloadEnsemblGTF, args = args)
         info[["args"]] <- args
@@ -187,17 +188,6 @@ downloadEnsemblGenome <-
             outputDir = file.path(outputDir, "annotation", "gtf")
         )
         gtfFile <- files[["gtf"]]
-        ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
-        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
-        saveRDS(
-            object = genes,
-            file = file.path(outputDir, "genes.rds")
-        )
-        saveRDS(
-            object = transcripts,
-            file = file.path(outputDir, "transcripts.rds")
-        )
         ## Create symlink.
         if (!isWindows()) {
             wd <- getwd()
@@ -216,6 +206,18 @@ downloadEnsemblGenome <-
             files[["gtfSymlink"]] <- gtfSymlink
             setwd(wd)
         }
+        ## Save genomic ranges.
+        ## FIXME seqinfo is failing for Ensembl 103.
+        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
         invisible(list("files" = files, "urls" = urls))
     }
 

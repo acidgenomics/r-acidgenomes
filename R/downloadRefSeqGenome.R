@@ -131,25 +131,6 @@ downloadRefSeqGenome <-
         )
         gffFile <- files[["gff"]]
         gtfFile <- files[["gtf"]]
-        ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(gffFile, level = "genes")
-        transcripts <- makeGRangesFromGFF(gffFile, level = "transcripts")
-        saveRDS(
-            object = genes,
-            file = file.path(outputDir, "genes.rds")
-        )
-        saveRDS(
-            object = transcripts,
-            file = file.path(outputDir, "transcripts.rds")
-        )
-        ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromGFF(file = gffFile)
-        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
-        tx2geneFile <- export(
-            object = tx2gene,
-            file = file.path(outputDir, "tx2gene.csv.gz")
-        )
-        files[["tx2gene"]] <- tx2geneFile
         ## Create GFF and GTF symlinks.
         if (!isWindows()) {
             wd <- getwd()
@@ -178,6 +159,25 @@ downloadRefSeqGenome <-
             files[["gtfSymlink"]] <- gtfSymlink
             setwd(wd)
         }
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gffFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gffFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
+        ## Save transcript-to-gene mappings.
+        tx2gene <- makeTx2GeneFromGFF(file = gffFile)
+        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
+        tx2geneFile <- export(
+            object = tx2gene,
+            file = file.path(outputDir, "tx2gene.csv.gz")
+        )
+        files[["tx2gene"]] <- tx2geneFile
         invisible(list("files" = files, "urls" = urls))
     }
 

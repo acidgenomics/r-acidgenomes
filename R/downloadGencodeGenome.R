@@ -143,17 +143,6 @@ downloadGencodeGenome <-
         )
         gffFile <- files[["gff"]]
         gtfFile <- files[["gtf"]]
-        ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
-        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
-        saveRDS(
-            object = genes,
-            file = file.path(outputDir, "genes.rds")
-        )
-        saveRDS(
-            object = transcripts,
-            file = file.path(outputDir, "transcripts.rds")
-        )
         ## Create symlinks.
         if (!isWindows()) {
             wd <- getwd()
@@ -182,6 +171,17 @@ downloadGencodeGenome <-
             files[["gtfSymlink"]] <- gtfSymlink
             setwd(wd)
         }
+        ## Save genomic ranges.
+        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
+        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        saveRDS(
+            object = genes,
+            file = file.path(outputDir, "genes.rds")
+        )
+        saveRDS(
+            object = transcripts,
+            file = file.path(outputDir, "transcripts.rds")
+        )
         invisible(list("files" = files, "urls" = urls))
     }
 
