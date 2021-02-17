@@ -1,7 +1,3 @@
-## FIXME SYMLINKS NEED TO BE RELATIVE, NOT ABSOLUTE.
-
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
@@ -94,7 +90,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadEnsemblGFF <-
     function(
         genomeBuild,
@@ -154,7 +150,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-01-30.
+## Updated 2021-02-17.
 .downloadEnsemblGTF <-
     function(
         genomeBuild,
@@ -204,21 +200,28 @@ downloadEnsemblGenome <-
         )
         ## Create symlink.
         if (!isWindows()) {
-            assert(isAFile(gtfFile))
-            gtfSymlink <- file.path(
-                outputDir,
-                paste0("annotation.", fileExt(gtfFile))
+            wd <- getwd()
+            setwd(outputDir)
+            gtfRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gtfFile
             )
-            ## FIXME NEED TO USE RELATIVE PATH HERE...
-            file.symlink(from = gtfFile, to = gtfSymlink)
+            assert(
+                isAFile(gtfFile),
+                isAFile(gtfRelativeFile)
+            )
+            gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
+            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadEnsemblGenome <-
     function(
         genomeBuild,
@@ -253,19 +256,29 @@ downloadEnsemblGenome <-
         )
         ## Create symlink.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
             fastaFile <- files[["fasta"]]
-            assert(isAFile(fastaFile))
-            fastaSymlink <-
-                file.path(outputDir, paste0("genome.", fileExt(fastaFile)))
-            file.symlink(from = fastaFile, to = fastaSymlink)
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
+            )
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- paste0("genome.", fileExt(fastaFile))
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadEnsemblTranscriptome <-
     function(
         genomeBuild,
@@ -343,8 +356,20 @@ downloadEnsemblGenome <-
         )
         ## Create FASTA symlink.
         if (!isWindows()) {
-            fastaSymlink <- file.path(outputDir, basename(mergeFastaFile))
-            file.symlink(from = mergeFastaFile, to = fastaSymlink)
+            wd <- getwd()
+            setwd(outputDir)
+            fastaFile <- mergeFastaFile
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
+            )
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- basename(fastaFile)
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
         }
         invisible(list("files" = files, "urls" = urls))

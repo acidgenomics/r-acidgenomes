@@ -1,7 +1,3 @@
-## FIXME This is breaking in AcidGSEA. Need to rework the AcidPlyr leftJoin step.
-
-
-
 #' Map input to human gene orthologs
 #'
 #' @note Updated 2021-02-01.
@@ -105,6 +101,7 @@ mapHumanOrthologs <- function(
         format = "unmodified"
     )
     g2s <- as(g2s, "DataFrame")
+    assert(identical(colnames(g2s), c("geneId", "geneName")))
     alert("Getting {.emph Homo sapiens} gene symbols.")
     g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
