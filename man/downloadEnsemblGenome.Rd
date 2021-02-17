@@ -37,7 +37,7 @@ Invisible \code{list}.
 Download Ensembl reference genome
 }
 \note{
-Updated 2021-01-30.
+Updated 2021-02-17.
 }
 \examples{
 ## This example is bandwidth intensive.

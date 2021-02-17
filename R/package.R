@@ -32,8 +32,9 @@
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette GRanges GRangesList as_tibble cacheURL export getJSON
-#'   getURL getURLDirList import md5 removeNA sanitizeNA sha256
+#' @importFrom pipette CompressedGRangesList GRanges GRangesList as_tibble
+#'   cacheURL export getJSON getURL getURLDirList import md5 removeNA sanitizeNA
+#'   sha256
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
