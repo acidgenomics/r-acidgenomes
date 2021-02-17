@@ -24,10 +24,10 @@ ensembldb in use.}
 \code{DataFrame}.
 Data frame containing mapping columns:
 \itemize{
-\item geneId
-\item hgncId
-\item geneName
-\item hgncName
+\item \code{geneId}
+\item \code{geneName}
+\item \code{humanGeneId}
+\item \code{humanGeneName}
 }
 }
 \description{
@@ -44,7 +44,8 @@ genes <- c(
 )
 ## Protect against Ensembl timeouts causing build checks to fail.
 ## > if (goalie::hasInternet("https://ensembl.org")) {
-## >     mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+## >     x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+## >     print(x)
 ## > }
 }
 \seealso{

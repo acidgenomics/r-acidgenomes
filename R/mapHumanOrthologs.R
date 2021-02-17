@@ -12,10 +12,10 @@
 #' @return `DataFrame`.
 #'   Data frame containing mapping columns:
 #'
-#'   - geneId
-#'   - hgncId
-#'   - geneName
-#'   - hgncName
+#'   - `geneId`
+#'   - `geneName`
+#'   - `humanGeneId`
+#'   - `humanGeneName`
 #'
 #' @seealso
 #' - `biomaRt::listEnsemblArchives()`.
@@ -30,7 +30,8 @@
 #' )
 #' ## Protect against Ensembl timeouts causing build checks to fail.
 #' ## > if (goalie::hasInternet("https://ensembl.org")) {
-#' ## >     mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+#' ## >     x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+#' ## >     print(x)
 #' ## > }
 mapHumanOrthologs <- function(
     genes,
@@ -95,27 +96,27 @@ mapHumanOrthologs <- function(
         }
     )
     map <- as(map, "DataFrame")
-    colnames(map) <- c("geneId", "hgncId")
+    colnames(map) <- c("geneId", "humanGeneId")
     map <- sanitizeNA(map)
-    ## Get the corresponding gene-to-symbol mappings.
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
         format = "unmodified"
     )
+    g2s <- as(g2s, "DataFrame")
     alert("Getting {.emph Homo sapiens} gene symbols.")
-    g2shs <- makeGene2SymbolFromEnsembl(
+    g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
         format = "unmodified"
     )
-    g2shs <- as(g2shs, "DataFrame")
-    colnames(g2shs) <- c("hgncId", "hgncName")
+    g2sHuman <- as(g2sHuman, "DataFrame")
+    colnames(g2sHuman) <- c("humanGeneId", "humanGeneName")
     ## Return.
     out <- map
     out <- leftJoin(out, g2s, by = "geneId")
-    out <- leftJoin(out, g2shs, by = "hgncId")
+    out <- leftJoin(out, g2sHuman, by = "humanGeneId")
     rownames(out) <- out[["geneId"]]
     out <- out[, sort(colnames(out))]
     forceDetach(keep = pkgs)
