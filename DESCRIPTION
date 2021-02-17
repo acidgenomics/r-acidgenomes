@@ -26,23 +26,21 @@ Imports:
     AcidCLI (>= 0.0.6),
     AcidGenerics (>= 0.5.13),
     AcidPlyr (>= 0.1.9),
-    AnnotationDbi,
-    AnnotationHub,
-    GenomeInfoDb,
-    ensembldb,
+    AnnotationDbi (>= 1.52),
+    AnnotationHub (>= 2.22),
+    GenomeInfoDb (>= 1.26),
+    ensembldb (>= 2.14),
     goalie (>= 0.4.14),
     httr (>= 1.4),
     methods,
-    pipette (>= 0.5.9),
+    pipette (>= 0.5.10),
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
     AcidTest (>= 0.4.3),
-    EnsDb.Hsapiens.v75,
-    GenomicFeatures,
-    biomaRt,
-    knitr,
-    rmarkdown,
+    EnsDb.Hsapiens.v75 (>= 2.99),
+    GenomicFeatures (>= 1.42),
+    biomaRt (>= 2.46),
     testthat
 biocViews:
     DataImport,
@@ -50,5 +48,4 @@ biocViews:
     Preprocessing
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr
 Additional_repositories: https://r.acidgenomics.com
