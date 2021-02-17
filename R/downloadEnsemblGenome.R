@@ -75,7 +75,6 @@ downloadEnsemblGenome <-
         args <- append(x = args, values = list("release" = release))
         info[["annotation"]][["gff"]] <-
             do.call(what = .downloadEnsemblGFF, args = args)
-        ## FIXME IS THIS NOT CREATING SYMLINK?
         info[["annotation"]][["gtf"]] <-
             do.call(what = .downloadEnsemblGTF, args = args)
         info[["args"]] <- args
@@ -207,7 +206,6 @@ downloadEnsemblGenome <-
             setwd(wd)
         }
         ## Save genomic ranges.
-        ## FIXME seqinfo is failing for Ensembl 103.
         genes <- makeGRangesFromGFF(gtfFile, level = "genes")
         transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
         saveRDS(
