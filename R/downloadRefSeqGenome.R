@@ -1,8 +1,8 @@
+## FIXME SYMLINKS NEED TO BE RELATIVE, NOT ABSOLUTE.
+
+
+
 ## nolint start
-
-## NOTE Consider also downloading corresponding NCBI gene_info.gz file here.
-
-
 
 #' Download RefSeq reference genome
 #'

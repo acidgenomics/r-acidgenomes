@@ -1,3 +1,7 @@
+## FIXME SYMLINKS NEED TO BE RELATIVE, NOT ABSOLUTE.
+
+
+
 ## nolint start
 
 #' Download UCSC reference genome
