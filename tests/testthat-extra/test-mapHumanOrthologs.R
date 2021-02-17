@@ -42,7 +42,7 @@ test_that("mapHumanOrthologs", {
             "Scml2",
             "Apoh"
         ),
-        "hgncId" = c(
+        "humanGeneId" = c(
             "ENSG00000065135",
             NA,
             "ENSG00000093009",
@@ -50,7 +50,7 @@ test_that("mapHumanOrthologs", {
             "ENSG00000102098",
             "ENSG00000091583"
         ),
-        "hgncName" = c(
+        "humanGeneName" = c(
             "GNAI3",
             NA,
             "CDC45",

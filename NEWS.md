@@ -4,7 +4,9 @@
 
 - Genome downloader functions (e.g. `downloadEnsemblGenome`) now return
   relative symlinks instead of absolute paths.
-- Bug fix for `mapHumanOrthologs` internal join step.
+- Bug fix for `mapHumanOrthologs` internal join step. Now returns `humanGeneId`
+  and `humanGeneName` columns instead of `hgncId` and `hgncName` columns, which
+  technically were incorrect, since these map to Ensembl.
 
 ## AcidGenomes 0.2.4 (2021-02-13)
 
