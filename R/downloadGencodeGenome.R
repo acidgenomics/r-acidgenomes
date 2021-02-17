@@ -1,11 +1,7 @@
-## FIXME SYMLINKS NEED TO BE RELATIVE, NOT ABSOLUTE.
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-01-31.
+#' @note Updated 2021-02-17.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -105,7 +101,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-30.
+## Updated 2021-02-17.
 .downloadGencodeAnnotation <-
     function(
         genomeBuild,
@@ -160,29 +156,38 @@ downloadGencodeGenome <-
         )
         ## Create symlinks.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
+            gffRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gffFile
+            )
+            gtfRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gtfFile
+            )
             assert(
                 isAFile(gffFile),
-                isAFile(gtfFile)
+                isAFile(gffRelativeFile),
+                isAFile(gtfFile),
+                isAFile(gtfRelativeFile)
             )
-            gffSymlink <- file.path(
-                outputDir,
-                paste0("annotation.", fileExt(gffFile))
-            )
-            file.symlink(from = gffFile, to = gffSymlink)
+            gffSymlink <- paste0("annotation.", fileExt(gffFile))
+            gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
+            file.symlink(from = gffRelativeFile, to = gffSymlink)
+            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
             files[["gffSymlink"]] <- gffSymlink
-            gtfSymlink <- file.path(
-                outputDir,
-                paste0("annotation.", fileExt(gtfFile))
-            )
-            file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadGencodeGenome <-
     function(
         genomeBuild,
@@ -201,14 +206,22 @@ downloadGencodeGenome <-
         )
         ## Create symlink.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
             fastaFile <- files[["fasta"]]
-            assert(isAFile(fastaFile))
-            fastaSymlink <- file.path(
-                outputDir,
-                paste0("genome.", fileExt(fastaFile))
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
             )
-            file.symlink(from = fastaFile, to = fastaSymlink)
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- paste0("genome.", fileExt(fastaFile))
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -242,7 +255,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-02-17.
 .downloadGencodeTranscriptome <-
     function(
         genomeBuild,
@@ -279,13 +292,21 @@ downloadGencodeGenome <-
         files[["tx2gene"]] <- tx2geneFile
         ## Create symlink.
         if (!isWindows()) {
-            assert(isAFile(fastaFile))
-            fastaSymlink <- file.path(
-                outputDir,
-                paste0("transcriptome.", fileExt(fastaFile))
+            wd <- getwd()
+            setwd(outputDir)
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
             )
-            file.symlink(from = fastaFile, to = fastaSymlink)
+            assert(
+                isAFile(fastaFile),
+                isAFile(fastaRelativeFile)
+            )
+            fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
+            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             files[["fastaSymlink"]] <- fastaSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
