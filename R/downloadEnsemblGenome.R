@@ -5,7 +5,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-02-17.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -132,14 +132,22 @@ downloadEnsemblGenome <-
         )
         ## Create symlink.
         if (!isWindows()) {
+            wd <- getwd()
+            setwd(outputDir)
             gffFile <- files[["gff"]]
-            assert(isAFile(gffFile))
-            gffSymlink <- file.path(
-                outputDir,
-                paste0("annotation.", fileExt(gffFile))
+            gffRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = gffFile
             )
-            file.symlink(from = gffFile, to = gffSymlink)
+            assert(
+                isAFile(gffFile),
+                isAFile(gffRelativeFile)
+            )
+            gffSymlink <- paste0("annotation.", fileExt(gffFile))
+            file.symlink(from = gffRelativeFile, to = gffSymlink)
             files[["gffSymlink"]] <- gffSymlink
+            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -201,6 +209,7 @@ downloadEnsemblGenome <-
                 outputDir,
                 paste0("annotation.", fileExt(gtfFile))
             )
+            ## FIXME NEED TO USE RELATIVE PATH HERE...
             file.symlink(from = gtfFile, to = gtfSymlink)
             files[["gtfSymlink"]] <- gtfSymlink
         }
