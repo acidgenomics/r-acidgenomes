@@ -1,3 +1,11 @@
+## AcidGenomes 0.2.5 (UNRELEASED)
+
+### Minor changes
+
+- Genome downloader functions (e.g. `downloadEnsemblGenome`) now return
+  relative symlinks instead of absolute paths.
+- Bug fix for `mapHumanOrthologs` internal join step.
+
 ## AcidGenomes 0.2.4 (2021-02-13)
 
 ### New functions
