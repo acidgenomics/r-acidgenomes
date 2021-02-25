@@ -1,4 +1,11 @@
-## AcidGenomes 0.2.5 (UNRELEASED)
+## AcidGenomes 0.2.6 (2021-02-25)
+
+### Minor changes
+
+- Updated basejump dependency versions.
+- `EntrezGeneInfo`: Improved column formatting.
+
+## AcidGenomes 0.2.5 (2021-02-17)
 
 ### Minor changes
 
