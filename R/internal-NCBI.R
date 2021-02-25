@@ -1,6 +1,6 @@
 #' Match NCBI taxonomic group for gene info or RefSeq.
 #'
-#' @note Updated 2021-02-12.
+#' @note Updated 2021-02-25.
 #' @noRd
 .matchNcbiTaxonomicGroup <-
     function(
@@ -22,6 +22,21 @@
                 protocol = "ftp"
             )
         )
+        ## Quickly return value for commonly used organisms without querying
+        ## the NCBI FTP server.
+        if (isSubset(
+            x = organism,
+            y = c(
+                "Homo sapiens",
+                "Mus musculus"
+            )
+        )) {
+            return(switch(
+                EXPR = mode,
+                "geneInfo" = "Mammalia",
+                "refseq" = "vertebrate_mammalian"
+            ))
+        }
         alertWarning(sprintf(
             paste(
                 "Detecting taxonomic group from {.var %s}.",
