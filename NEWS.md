@@ -1,3 +1,10 @@
+## AcidGenomes 0.2.7 (2021-02-26)
+
+### Minor changes
+
+- `makeGRangesFromGFF`: Improved support and code coverage for handling of
+  bcbio-nextgen `ref-transcripts.gtf` genome file.
+
 ## AcidGenomes 0.2.6 (2021-02-25)
 
 ### Minor changes
