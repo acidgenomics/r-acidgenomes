@@ -1,6 +1,6 @@
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-02-26.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -74,10 +74,23 @@ getGFFMetadata <- function(file) {
             x = lines
         ))) {
             l[["provider"]] <- "UCSC"
-        } else if (any(grepl(pattern = "\tFlyBase\t", x = lines))) {
+        } else if (any(grepl(
+            pattern = "\tFlyBase\t", x = lines
+        ))) {
             l[["provider"]] <- "FlyBase"
-        } else if (any(grepl(pattern = "\tWormBase\t", x = lines))) {
+        } else if (any(grepl(
+            pattern = "\tWormBase\t", x = lines
+        ))) {
             l[["provider"]] <- "WormBase"
+        } else if (any(grepl(
+            pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
+        ))) {
+            l[["provider"]] <- "Ensembl"
+        } else {
+            stop(sprintf(
+                "Failed to detect provider (e.g. Ensembl) from file: '%s'.",
+                file
+            ))
         }
     }
     ## Attempt to parse file names for useful values.
@@ -199,6 +212,13 @@ getGFFMetadata <- function(file) {
     }
     l <- Filter(f = hasLength, x = l)
     l <- l[sort(names(l))]
+    assert(
+        isString(l[["file"]]),
+        isString(l[["format"]]),
+        isString(l[["md5"]]),
+        isString(l[["provider"]]),
+        isString(l[["sha256"]])
+    )
     l
 }
 
