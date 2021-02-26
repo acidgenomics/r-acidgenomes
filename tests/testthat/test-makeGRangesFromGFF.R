@@ -1,3 +1,17 @@
+context("makeGRangesFromGFF : bcbio")
+
+test_that("bcbio `ref-transcripts.gtf` file", {
+    file <- file.path("cache", "ref-transcripts.gtf")
+    object <- makeGRangesFromGFF(file = file, level = "genes")
+    expect_s4_class(object, "EnsemblGenes")
+    expect_length(object, n = 60L)
+    object <- makeGRangesFromGFF(file = file, level = "transcripts")
+    expect_s4_class(object, "EnsemblTranscripts")
+    expect_length(object, n = 167L)
+})
+
+
+
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
