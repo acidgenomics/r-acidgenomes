@@ -38,7 +38,7 @@
 
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-26.
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -50,7 +50,7 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
+            ## > "genomeBuild" = "character",
             "organism" = "character"
         ),
         subset = TRUE
@@ -87,7 +87,7 @@
 
 #' Shared GENCODE validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-26.
 #' @noRd
 .gencodeValidity <- function(object) {
     ok <- .grangesValidity(object)
