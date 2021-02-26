@@ -1,4 +1,4 @@
-## Updated 2021-01-28.
+## Updated 2021-02-26.
 .makeGRangesFromRtracklayer <- function(
     file,
     level = c("genes", "transcripts"),
@@ -52,13 +52,13 @@
     }
     level <- match.arg(level)
     meta <- getGFFMetadata(file)
-    meta[["level"]] <- level
-    gr <- import(file = .cacheIt(file))
     assert(
-        is(gr, "GRanges"),
         isString(meta[["format"]]),
         isString(meta[["provider"]])
     )
+    meta[["level"]] <- level
+    gr <- import(file = .cacheIt(file))
+    assert(is(gr, "GRanges"))
     format <- ifelse(
         test = grepl(pattern = "GTF", x = meta[["format"]]),
         yes = "GTF",
