@@ -44,7 +44,7 @@ Return 1:many in long format.
 Ensembl-to-Entrez gene identifier mappings
 }
 \note{
-Updated 2021-02-10.
+Updated 2021-02-24.
 }
 \examples{
 organism <- "Homo sapiens"

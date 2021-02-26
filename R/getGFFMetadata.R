@@ -83,6 +83,8 @@ getGFFMetadata <- function(file) {
         ))) {
             l[["provider"]] <- "WormBase"
         } else if (any(grepl(
+            ## NOTE This will currently miss genomes with gene identifiers that
+            ## aren't prefixed with "ENS".
             pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
         ))) {
             l[["provider"]] <- "Ensembl"
