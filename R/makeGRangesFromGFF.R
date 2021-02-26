@@ -1,3 +1,5 @@
+## FIXME This isn't working correctly for bcbio hg38 'ref-transcripts.gtf'.
+
 ## NOTE Can consider using ensembldb to parse GFF files once v2.15.2 is
 ##      available on Bioconductor. Current stable version has issues parsing
 ##      compressed GFF3 files.
