@@ -11,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -66,7 +66,7 @@ makeTxDbFromGFF <- function(file) {
     assert(isString(file))
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
-    blacklist <- c(
+    denylist <- c(
         "refseq_gtf" = paste0(
             "^([0-9a-z]_)?",
             "(GC[AF]_[0-9]+\\.[0-9]+)",
@@ -77,7 +77,7 @@ makeTxDbFromGFF <- function(file) {
         )
     )
     if (isMatchingRegex(
-        pattern = blacklist[["refseq_gtf"]],
+        pattern = denylist[["refseq_gtf"]],
         x = basename(file)
     )) {
         stop(sprintf(
