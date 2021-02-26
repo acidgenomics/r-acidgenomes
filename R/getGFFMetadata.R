@@ -205,10 +205,25 @@ getGFFMetadata <- function(file) {
             }
         )
     }
-    ## Attempt to get the organism from the genome build, if necessary.
-    if (!isOrganism(l[["organism"]])) {
+    ## Attempt to detect the organism from the genome build, if necessary.
+    if (
+        !isOrganism(l[["organism"]]) &&
+        isString(l[["genomeBuild"]])
+    ) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
+            error = function(e) NULL
+        )
+    }
+    ## Attempt to detect the organism from gene identifiers, if necessary.
+    if (!isOrganism(l[["organism"]])) {
+        match <- str_match(
+            string = lines,
+            pattern = "\tgene_id \"([^\"]+)\""
+        )
+        genes <- na.omit(match[, 2L, drop = TRUE])
+        l[["organism"]] <- tryCatch(
+            expr = detectOrganism(genes),
             error = function(e) NULL
         )
     }
@@ -218,6 +233,7 @@ getGFFMetadata <- function(file) {
         isString(l[["file"]]),
         isString(l[["format"]]),
         isString(l[["md5"]]),
+        isOrganism(l[["organism"]]),
         isString(l[["provider"]]),
         isString(l[["sha256"]])
     )
