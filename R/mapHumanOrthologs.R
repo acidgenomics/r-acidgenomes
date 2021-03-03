@@ -3,6 +3,10 @@
 #' @note Updated 2021-03-03.
 #' @export
 #'
+#' @details
+#' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
+#' currently supported.
+#'
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `DataFrame`.
@@ -91,6 +95,9 @@ mapHumanOrthologs <- function(
             stop("'biomaRt::select()' error: ", e)
         }
     )
+    if (!hasRows(map)) {
+        stop("Failed to map any genes.")
+    }
     map <- as(map, "DataFrame")
     colnames(map) <- c("geneId", "humanGeneId")
     map <- map[complete.cases(map), , drop = FALSE]
