@@ -1,3 +1,9 @@
+## AcidGenomes 0.2.8 (2021-03-02)
+
+### Minor changes
+
+- Relaxed validity checks for `EnsemblGenes` and `EnsemblTranscripts`.
+
 ## AcidGenomes 0.2.7 (2021-02-26)
 
 ### Minor changes
