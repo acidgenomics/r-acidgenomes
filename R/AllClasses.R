@@ -3,7 +3,7 @@
 #'
 #' @note Note that genome build and organism are not defined in minimal FlyBase
 #'   GTF example.
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-03.
 #' @noRd
 .grangesValidity <- function(object) {
     if (is(object, "GRangesList")) {
@@ -21,10 +21,10 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "acidGenomes" = "package_version",
             "date" = "Date",
             "ignoreVersion" = "logical",
             "level" = "character",
+            "packageVersion" = "package_version",
             "provider" = "character",
             "synonyms" = "logical"
         ),
