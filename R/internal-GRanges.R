@@ -576,9 +576,9 @@
     metadata(object) <- append(
         x = metadata(object),
         values = list(
-            "acidGenomes" = .version,
             "date" = Sys.Date(),
             "ignoreVersion" = ignoreVersion,
+            "packageVersion" = .pkgVersion,
             "synonyms" = synonyms
         )
     )

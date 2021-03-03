@@ -1,3 +1,7 @@
+## FIXME These need to retain metadata, which is expected in pointillism.
+
+
+
 #' Make a Gene2Symbol object
 #'
 #' @section GFF/GTF file:
@@ -5,7 +9,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGene2Symbol
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-03.
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
