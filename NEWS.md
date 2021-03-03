@@ -1,4 +1,12 @@
+## AcidGenomes 0.3.0 (2021-03-03)
+
+### Minor changes
+
+- `mapHumanOrthologs`: Hardened mouse-to-human matching.
+
 ## AcidGenomes 0.2.9 (2021-03-03)
+
+### Minor changes
 
 - `Gene2Symbol` functions now preserve metadata, as expected. This was
   causing pointillism package to error, due to unwanted breaking change.
