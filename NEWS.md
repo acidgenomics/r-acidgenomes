@@ -1,7 +1,11 @@
 ## AcidGenomes 0.2.9 (2021-03-03)
 
-- `makeGene2Symbol` functions now preserve metadata, as expected. This was
+- `Gene2Symbol` functions now preserve metadata, as expected. This was
   causing pointillism package to error, due to unwanted breaking change.
+- `Tx2Gene`: Improved consistency of metadata return, ensuring `call` and
+  `synonyms` are not defined.
+- Renamed internal "acidGenomes" metadata key to "packageVersion", for
+  consistency with conventions used in other Acid Genomics packages.
 
 ## AcidGenomes 0.2.8 (2021-03-02)
 
