@@ -182,7 +182,7 @@
 #' Contains a `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-03-02.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -194,22 +194,25 @@ setValidity(
     method = function(object) {
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
-        ok <- validate(
-            allAreMatchingRegex(
-                pattern = paste0(
-                    "^",
-                    "(",
-                    "ENS([A-Z]+)?G[0-9]{11}",
-                    "|",
-                    "LRG_[0-9]+",
-                    ")",
-                    "(\\.[0-9]+)?",
-                    "$"
-                ),
-                x = names(object)
-            ),
-            identical(metadata(object)[["level"]], "genes")
-        )
+        ## NOTE This doesn't work for all organisms
+        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
+        ## > ok <- validate(
+        ## >     allAreMatchingRegex(
+        ## >         pattern = paste0(
+        ## >             "^",
+        ## >             "(",
+        ## >             "ENS([A-Z]+)?G[0-9]{11}",
+        ## >             "|",
+        ## >             "LRG_[0-9]+",
+        ## >             ")",
+        ## >             "(\\.[0-9]+)?",
+        ## >             "$"
+        ## >         ),
+        ## >         x = names(object)
+        ## >     )
+        ## > )
+        ## > if (!isTRUE(ok)) return(ok)
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
         if (!isTRUE(ok)) return(ok)
         TRUE
     }
@@ -223,7 +226,7 @@ setValidity(
 #' Contains a `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-03-02.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -235,22 +238,25 @@ setValidity(
     method = function(object) {
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
-        ok <- validate(
-            allAreMatchingRegex(
-                pattern = paste0(
-                    "^",
-                    "(",
-                    "ENS([A-Z]+)?T[0-9]{11}",
-                    "|",
-                    "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
-                    ")",
-                    "(\\.[0-9]+)?",
-                    "$"
-                ),
-                x = names(object)
-            ),
-            identical(metadata(object)[["level"]], "transcripts")
-        )
+        ## NOTE This doesn't work for all organisms
+        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
+        ## > ok <- validate(
+        ## >     allAreMatchingRegex(
+        ## >         pattern = paste0(
+        ## >             "^",
+        ## >             "(",
+        ## >             "ENS([A-Z]+)?T[0-9]{11}",
+        ## >             "|",
+        ## >             "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
+        ## >             ")",
+        ## >             "(\\.[0-9]+)?",
+        ## >             "$"
+        ## >         ),
+        ## >         x = names(object)
+        ## >     )
+        ## > )
+        ## > if (!isTRUE(ok)) return(ok)
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
         if (!isTRUE(ok)) return(ok)
         TRUE
     }
