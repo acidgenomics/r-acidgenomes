@@ -1,6 +1,6 @@
 #' Dynamically cache a URL into package or return local file
 #'
-#' @note Updated 2021-01-14.
+#' @note Updated 2021-03-03.
 #' @note R won't let you name the function `.cache`.
 #' @noRd
 #'
@@ -14,7 +14,7 @@
 .cacheIt <- function(file) {
     assert(isString(file))
     if (isAURL(file)) {
-        x <- cacheURL(url = file, pkg = packageName())
+        x <- cacheURL(url = file, pkg = .pkgName)
     } else {
         x <- file
     }

@@ -1,3 +1,7 @@
+## FIXME THIS FUNCTION NEEDS TO PRESERVE METADATA.
+
+
+
 #' @name Gene2Symbol
 #' @inherit Gene2Symbol-class title description return
 #'
