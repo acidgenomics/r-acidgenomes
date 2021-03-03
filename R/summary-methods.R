@@ -41,7 +41,7 @@ NULL
 
 
 
-## Updated 2021-02-01.
+## Updated 2021-03-03.
 `summary,Gene2Symbol` <-  # nolint
     function(object) {
         m <- metadata(object)
@@ -54,7 +54,6 @@ NULL
             "genomeBuild" = m[["genomeBuild"]],
             "release" = m[["release"]],
             "annotationHub" = m[["annotationHubId"]],
-            "acidGenomes" = as.character(m[["acidGenomes"]]),
             "date" = m[["date"]]
         ))
     }
@@ -71,7 +70,7 @@ setMethod(
 
 
 
-## Updated 2021-02-01.
+## Updated 2021-03-03.
 `summary,Tx2Gene` <-  # nolint
     function(object) {
         m <- metadata(object)
@@ -83,7 +82,6 @@ setMethod(
             "genomeBuild" = m[["genomeBuild"]],
             "release" = m[["ensemblRelease"]],
             "annotationHub" = m[["id"]],
-            "acidGenomes" = as.character(m[["acidGenomes"]]),
             "date" = m[["date"]]
         ))
     }
