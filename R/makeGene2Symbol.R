@@ -1,7 +1,3 @@
-## FIXME These need to retain metadata, which is expected in pointillism.
-
-
-
 #' Make a Gene2Symbol object
 #'
 #' @section GFF/GTF file:
