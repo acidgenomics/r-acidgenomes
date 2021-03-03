@@ -35,12 +35,12 @@
 
 #' Get an internal function from the package
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-03-03.
 #' @noRd
 .getFun <- function(x) {
     fun <- get(
         x = x,
-        envir = asNamespace(packageName()),
+        envir = asNamespace(.pkgName),
         inherits = FALSE
     )
     assert(is.function(fun))

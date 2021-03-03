@@ -1,3 +1,8 @@
+## AcidGenomes 0.2.9 (2021-03-03)
+
+- `makeGene2Symbol` functions now preserve metadata, as expected. This was
+  causing pointillism package to error, due to unwanted breaking change.
+
 ## AcidGenomes 0.2.8 (2021-03-02)
 
 ### Minor changes
