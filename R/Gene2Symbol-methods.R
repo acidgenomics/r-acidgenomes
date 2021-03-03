@@ -50,7 +50,7 @@ NULL
 
 
 
-## Updated 2021-02-10.
+## Updated 2021-03-03.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(object, format = c("makeUnique", "unmodified", "1:1")) {
         format <- match.arg(format)
@@ -112,7 +112,9 @@ NULL
             }
         )
         assert(is(df, "DataFrame"))
+        metadata(df) <- metadata(object)
         metadata(df)[["format"]] <- format
+        metadata(df)[c("call", "synonyms")] <- NULL
         new(Class = "Gene2Symbol", df)
     }
 
