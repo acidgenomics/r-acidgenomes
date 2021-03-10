@@ -1,9 +1,9 @@
-## Updated 2021-02-26.
+## Updated 2021-03-10.
 .makeGRangesFromRtracklayer <- function(
     file,
-    level = c("genes", "transcripts"),
-    ignoreVersion = FALSE,
-    synonyms = FALSE
+    level,
+    ignoreVersion,
+    synonyms
 ) {
     assert(isString(file))
     ## Check for input of unsupported files.
@@ -50,7 +50,10 @@
             basename(file)
         ))
     }
-    level <- match.arg(level)
+    level <- match.arg(
+        arg = level,
+        choices = c("genes", "transcripts")
+    )
     meta <- getGFFMetadata(file)
     assert(
         isString(meta[["format"]]),

@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGene2Symbol
-#' @note Updated 2021-03-03.
+#' @note Updated 2021-03-10.
 #'
 #' @inheritParams Gene2Symbol
 #' @inheritParams AcidRoxygen::params
@@ -15,7 +15,10 @@
 #'
 #' @examples
 #' ## makeGene2SymbolFromEnsembl ====
-#' x <- makeGene2SymbolFromEnsembl(organism = "Homo sapiens")
+#' x <- makeGene2SymbolFromEnsembl(
+#'     organism = "Homo sapiens",
+#'     ignoreVersion = FALSE
+#' )
 #' print(x)
 #'
 #' ## makeTx2GeneFromEnsDb ====
@@ -34,7 +37,10 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' x <- makeGene2SymbolFromGFF(file)
+#' x <- makeGene2SymbolFromGFF(
+#'     file = file,
+#'     ignoreVersion = FALSE
+#' )
 #' print(x)
 NULL
 
@@ -43,13 +49,13 @@ NULL
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from Ensembl using
 #'   an AnnotationHub lookup.
 #' @export
-## Updated 2021-02-01.
+## Updated 2021-03-10.
 makeGene2SymbolFromEnsembl <-
     function(
         organism,
         genomeBuild = NULL,
         release = NULL,
-        ignoreVersion = FALSE,
+        ignoreVersion = TRUE,
         format = c("makeUnique", "unmodified", "1:1")
     ) {
         gr <- makeGRangesFromEnsembl(
@@ -67,11 +73,11 @@ makeGene2SymbolFromEnsembl <-
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from an `EnsDb`
 #'   object or annotation package.
 #' @export
-## Updated 2021-02-01.
+## Updated 2021-03-10.
 makeGene2SymbolFromEnsDb <-
     function(
         object,
-        ignoreVersion = FALSE,
+        ignoreVersion = TRUE,
         format = c("makeUnique", "unmodified", "1:1")
     ) {
         gr <- makeGRangesFromEnsDb(
@@ -90,7 +96,7 @@ makeGene2SymbolFromEnsDb <-
 makeGene2SymbolFromGFF <-
     function(
         file,
-        ignoreVersion = FALSE,
+        ignoreVersion = TRUE,
         format = c("makeUnique", "unmodified", "1:1")
     ) {
         gr <- makeGRangesFromGFF(

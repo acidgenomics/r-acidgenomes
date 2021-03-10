@@ -11,12 +11,12 @@ makeTx2GeneFromEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = FALSE
+  ignoreVersion = TRUE
 )
 
-makeTx2GeneFromEnsDb(object, ignoreVersion = FALSE)
+makeTx2GeneFromEnsDb(object, ignoreVersion = TRUE)
 
-makeTx2GeneFromGFF(file, ignoreVersion = FALSE)
+makeTx2GeneFromGFF(file, ignoreVersion = TRUE)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -52,7 +52,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2021-02-01.
+Updated 2021-03-10.
 }
 \section{GFF/GTF file}{
 
@@ -81,6 +81,6 @@ file <- pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-x <- makeTx2GeneFromGFF(file)
+x <- makeTx2GeneFromGFF(file = file, ignoreVersion = FALSE)
 print(x)
 }

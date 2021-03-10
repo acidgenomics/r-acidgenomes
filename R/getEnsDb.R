@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -119,12 +119,14 @@ getEnsDb <- function(
         release <- as.integer(release)
     }
     ## Error on request of unsupported legacy Ensembl release.
-    if (
-        is.integer(release) &&
-        release < 87L
-    ) {
-        stop("ensembldb currently only supports Ensembl releases >= 87.")
-    }
+    ## Don't hardcode against Ensembl 87 cutoff, in case older releases are
+    ## added back in a future ensembldb/AnnotationHub update.
+    ## > if (
+    ## >     is.integer(release) &&
+    ## >     release < 87L
+    ## > ) {
+    ## >     stop("ensembldb currently only supports Ensembl releases >= 87.")
+    ## > }
     ## Get AnnotationHub.
     if (is.null(ah)) {
         ah <- .annotationHub()

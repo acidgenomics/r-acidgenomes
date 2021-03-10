@@ -82,7 +82,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -127,7 +127,7 @@ makeGRangesFromEnsembl <- function(
     level = c("genes", "transcripts"),
     genomeBuild = NULL,
     release = NULL,
-    ignoreVersion = FALSE,
+    ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
     assert(
@@ -164,7 +164,7 @@ makeGRangesFromEnsembl <- function(
 makeGRangesFromEnsDb <- function(
     object,
     level = c("genes", "transcripts"),
-    ignoreVersion = FALSE,
+    ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
     pkgs <- .packages()

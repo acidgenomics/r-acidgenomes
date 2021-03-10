@@ -529,12 +529,12 @@
 #' This is the main GRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-02-12.
+#' @note Updated 2021-03-10.
 #' @noRd
 .makeGRanges <- function(
     object,
-    ignoreVersion = FALSE,
-    synonyms = FALSE
+    ignoreVersion,
+    synonyms
 ) {
     assert(
         is(object, "GRanges"),

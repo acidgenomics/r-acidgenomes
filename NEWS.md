@@ -1,8 +1,12 @@
-## AcidGenomes 0.3.0 (2021-03-03)
+## AcidGenomes 0.2.10 (UNRELEASED)
 
 ### Minor changes
 
 - `mapHumanOrthologs`: Hardened mouse-to-human matching.
+- `makeGRangesFromEnsembl`: No longer hard-coding minimum release version check
+  at 87, in case older releases are ported to AnnotationHub in a future release.
+- Revert back to `ignoreVersion = TRUE` by default for genome annotation
+  importers, as this is typically what users expect by default.
 
 ## AcidGenomes 0.2.9 (2021-03-03)
 

@@ -11,14 +11,14 @@ makeGRangesFromEnsembl(
   level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 
 makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts"),
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 
@@ -96,7 +96,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2021-02-01.
+Updated 2021-03-10.
 }
 \section{Broad class definitions}{
 
