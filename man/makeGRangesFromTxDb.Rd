@@ -7,7 +7,7 @@
 makeGRangesFromTxDb(
   object,
   level = c("transcripts", "genes", "exons", "cds"),
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 }
@@ -34,7 +34,7 @@ Queries the Ensembl web server, and is CPU intensive.}
 Make GRanges from TxDb object
 }
 \note{
-Updated 2021-02-01.
+Updated 2021-03-10.
 }
 \examples{
 file <- pasteURL(
@@ -47,6 +47,6 @@ file <- pasteURL(
     protocol = "ftp"
 )
 txdb <- AcidGenomes::makeTxDbFromGFF(file)
-gr <- makeGRangesFromTxDb(txdb)
+gr <- makeGRangesFromTxDb(object = txdb, ignoreVersion = FALSE)
 print(gr)
 }
