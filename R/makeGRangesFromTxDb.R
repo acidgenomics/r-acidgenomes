@@ -1,7 +1,7 @@
 #' Make GRanges from TxDb object
 #'
 #' @export
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -19,12 +19,12 @@
 #'     protocol = "ftp"
 #' )
 #' txdb <- AcidGenomes::makeTxDbFromGFF(file)
-#' gr <- makeGRangesFromTxDb(txdb)
+#' gr <- makeGRangesFromTxDb(object = txdb, ignoreVersion = FALSE)
 #' print(gr)
 makeGRangesFromTxDb <- function(
     object,
     level = c("transcripts", "genes", "exons", "cds"),
-    ignoreVersion = FALSE,
+    ignoreVersion = TRUE,
     synonyms = FALSE
 ) {
     pkgs <- .packages()
