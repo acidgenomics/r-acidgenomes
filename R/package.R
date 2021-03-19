@@ -16,7 +16,7 @@
 #'   IRanges Rle %in% append as.data.frame complete.cases decode do.call encode
 #'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
 #'   metadata<- na.omit order ranges setdiff sort split tail trim unlist
-#' @importFrom AcidPlyr leftJoin map_df
+#' @importFrom AcidPlyr leftJoin map_df mutateAt
 #' @importFrom AnnotationDbi columns select
 #' @importFrom AnnotationHub AnnotationHub query snapshotDate
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular

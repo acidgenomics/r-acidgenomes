@@ -1,7 +1,7 @@
 #' Import HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-03-19.
 #'
 #' @return `HGNC`.
 #'
@@ -36,7 +36,33 @@ HGNC <-  # nolint
             hasNoDuplicates(df[["hgncId"]])
         )
         df[["hgncId"]] <- as.integer(gsub("^HGNC\\:", "", df[["hgncId"]]))
-        df <- df[order(df[["hgncId"]]), ]
+        df <- df[order(df[["hgncId"]]), , drop = FALSE]
         rownames(df) <- df[["hgncId"]]
+        isNested <- bapply(
+            X = df,
+            FUN = function(x) {
+                any(grepl(pattern = "|", x = x, fixed = TRUE))
+            }
+        )
+        if (any(isNested)) {
+            vars <- names(isNested)[isNested]
+            df <- mutateAt(
+                object = df,
+                vars = vars,
+                fun = .splitToCharacterList,
+                split = "|"
+            )
+        }
         new("HGNC", df)
     }
+
+
+
+## Updated 2021-03-19.
+.splitToCharacterList <- function(x, split = "|") {
+    if (all(is.na(x))) return(x)
+    x <- strsplit(x, split = split, fixed = TRUE)
+    x <- CharacterList(x)
+    ## > x <- sort(unique(x))
+    x
+}
