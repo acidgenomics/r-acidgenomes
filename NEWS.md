@@ -1,3 +1,10 @@
+## AcidGenomes 0.2.10 (2021-03-19)
+
+### Minor changes
+
+- `HGNC` now returns columns with split values as `CharacterList`, instead of
+  as character strings containing "|".
+
 ## AcidGenomes 0.2.10 (2021-03-15)
 
 ### Minor changes
