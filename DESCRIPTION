@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.2.10
-Date: 2021-03-15
+Date: 2021-03-19
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -33,7 +33,7 @@ Imports:
     goalie (>= 0.5.1),
     httr (>= 1.4),
     methods,
-    pipette (>= 0.5.13),
+    pipette (>= 0.5.14),
     stringr (>= 1.4),
     syntactic (>= 0.4.4)
 Suggests:
