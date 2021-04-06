@@ -1,5 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Need to include current gene name (symbol) in the synonyms, in case
+   we're mapping to an older reference, such as GRCh37.
 ** TODO Consider adding better support for CDS, exon, and promoter extraction
    from EnsDb/TxDb objects in a future update.
