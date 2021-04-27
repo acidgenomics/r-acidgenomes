@@ -23,7 +23,7 @@ Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
     AcidBase (>= 0.3.13),
-    AcidCLI (>= 0.1.0),
+    AcidCLI (>= 0.1.1),
     AcidGenerics (>= 0.5.17),
     AcidPlyr (>= 0.1.17),
     goalie (>= 0.5.1),
@@ -31,7 +31,7 @@ Imports:
     methods,
     pipette (>= 0.5.14),
     stringr (>= 1.4),
-    syntactic (>= 0.4.4)
+    syntactic (>= 0.4.5)
 Suggests:
     AcidTest (>= 0.4.3),
     AnnotationDbi (>= 1.52),
