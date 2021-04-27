@@ -7,7 +7,7 @@
 makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 }
@@ -38,7 +38,7 @@ Make GRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2021-01-30.
+Updated 2021-03-10.
 }
 \section{GFF/GTF specification}{
 
@@ -230,9 +230,17 @@ file <- pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-genes <- makeGRangesFromGFF(file = file, level = "genes")
+genes <- makeGRangesFromGFF(
+    file = file,
+    level = "genes",
+    ignoreVersion = FALSE
+)
 summary(genes)
-## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
+## > transcripts <- makeGRangesFromGFF(
+## >     file = file,
+## >     level = "transcripts",
+## >     ignoreVersion = FALSE
+## > )
 ## > summary(transcripts)
 
 ## GENCODE ====

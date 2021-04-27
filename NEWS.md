@@ -1,4 +1,52 @@
-## AcidGenomes 0.2.5 (UNRELEASED)
+## AcidGenomes 0.2.10 (2021-03-19)
+
+### Minor changes
+
+- `HGNC` now returns columns with split values as `CharacterList`, instead of
+  as character strings containing "|".
+
+## AcidGenomes 0.2.10 (2021-03-15)
+
+### Minor changes
+
+- `mapHumanOrthologs`: Hardened mouse-to-human matching.
+- `makeGRangesFromEnsembl`: No longer hard-coding minimum release version check
+  at 87, in case older releases are ported to AnnotationHub in a future release.
+- Revert back to `ignoreVersion = TRUE` by default for genome annotation
+  importers, as this is typically what users expect by default.
+
+## AcidGenomes 0.2.9 (2021-03-03)
+
+### Minor changes
+
+- `Gene2Symbol` functions now preserve metadata, as expected. This was
+  causing pointillism package to error, due to unwanted breaking change.
+- `Tx2Gene`: Improved consistency of metadata return, ensuring `call` and
+  `synonyms` are not defined.
+- Renamed internal "acidGenomes" metadata key to "packageVersion", for
+  consistency with conventions used in other Acid Genomics packages.
+
+## AcidGenomes 0.2.8 (2021-03-02)
+
+### Minor changes
+
+- Relaxed validity checks for `EnsemblGenes` and `EnsemblTranscripts`.
+
+## AcidGenomes 0.2.7 (2021-02-26)
+
+### Minor changes
+
+- `makeGRangesFromGFF`: Improved support and code coverage for handling of
+  bcbio-nextgen `ref-transcripts.gtf` genome file.
+
+## AcidGenomes 0.2.6 (2021-02-25)
+
+### Minor changes
+
+- Updated basejump dependency versions.
+- `EntrezGeneInfo`: Improved column formatting.
+
+## AcidGenomes 0.2.5 (2021-02-17)
 
 ### Minor changes
 

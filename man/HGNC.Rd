@@ -13,7 +13,7 @@ HGNC()
 Import HGNC complete set metadata
 }
 \note{
-Updated 2021-02-10.
+Updated 2021-03-19.
 }
 \examples{
 object <- HGNC()

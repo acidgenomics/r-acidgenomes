@@ -33,6 +33,10 @@ Data frame containing mapping columns:
 \description{
 Map input to human gene orthologs
 }
+\details{
+Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
+currently supported.
+}
 \note{
 Updated 2021-04-27.
 }

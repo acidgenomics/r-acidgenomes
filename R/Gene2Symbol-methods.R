@@ -6,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-03-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -46,7 +46,7 @@ NULL
 
 
 
-## Updated 2021-02-10.
+## Updated 2021-03-03.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(object, format = c("makeUnique", "unmodified", "1:1")) {
         format <- match.arg(format)
@@ -108,7 +108,9 @@ NULL
             }
         )
         assert(is(df, "DataFrame"))
+        metadata(df) <- metadata(object)
         metadata(df)[["format"]] <- format
+        metadata(df)[c("call", "synonyms")] <- NULL
         new(Class = "Gene2Symbol", df)
     }
 

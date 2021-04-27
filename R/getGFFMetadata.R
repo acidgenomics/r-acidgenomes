@@ -1,6 +1,6 @@
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-02-26.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -74,10 +74,25 @@ getGFFMetadata <- function(file) {
             x = lines
         ))) {
             l[["provider"]] <- "UCSC"
-        } else if (any(grepl(pattern = "\tFlyBase\t", x = lines))) {
+        } else if (any(grepl(
+            pattern = "\tFlyBase\t", x = lines
+        ))) {
             l[["provider"]] <- "FlyBase"
-        } else if (any(grepl(pattern = "\tWormBase\t", x = lines))) {
+        } else if (any(grepl(
+            pattern = "\tWormBase\t", x = lines
+        ))) {
             l[["provider"]] <- "WormBase"
+        } else if (any(grepl(
+            ## NOTE This will currently miss genomes with gene identifiers that
+            ## aren't prefixed with "ENS".
+            pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
+        ))) {
+            l[["provider"]] <- "Ensembl"
+        } else {
+            stop(sprintf(
+                "Failed to detect provider (e.g. Ensembl) from file: '%s'.",
+                file
+            ))
         }
     }
     ## Attempt to parse file names for useful values.
@@ -190,15 +205,38 @@ getGFFMetadata <- function(file) {
             }
         )
     }
-    ## Attempt to get the organism from the genome build, if necessary.
-    if (!isOrganism(l[["organism"]])) {
+    ## Attempt to detect the organism from the genome build, if necessary.
+    if (
+        !isOrganism(l[["organism"]]) &&
+        isString(l[["genomeBuild"]])
+    ) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
             error = function(e) NULL
         )
     }
+    ## Attempt to detect the organism from gene identifiers, if necessary.
+    if (!isOrganism(l[["organism"]])) {
+        match <- str_match(
+            string = lines,
+            pattern = "\tgene_id \"([^\"]+)\""
+        )
+        genes <- na.omit(match[, 2L, drop = TRUE])
+        l[["organism"]] <- tryCatch(
+            expr = detectOrganism(genes),
+            error = function(e) NULL
+        )
+    }
     l <- Filter(f = hasLength, x = l)
     l <- l[sort(names(l))]
+    assert(
+        isString(l[["file"]]),
+        isString(l[["format"]]),
+        isString(l[["md5"]]),
+        isOrganism(l[["organism"]]),
+        isString(l[["provider"]]),
+        isString(l[["sha256"]])
+    )
     l
 }
 

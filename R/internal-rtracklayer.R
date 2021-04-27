@@ -1,14 +1,14 @@
-## Updated 2021-01-28.
+## Updated 2021-03-10.
 .makeGRangesFromRtracklayer <- function(
     file,
-    level = c("genes", "transcripts"),
-    ignoreVersion = FALSE,
-    synonyms = FALSE
+    level,
+    ignoreVersion,
+    synonyms
 ) {
     assert(isString(file))
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
-    blacklist <- c(
+    denylist <- c(
         "flybase_gff" = paste0(
             "^([a-z0-9]+_)?",
             "^([^-]+)",
@@ -28,7 +28,7 @@
         )
     )
     if (isMatchingRegex(
-        pattern = blacklist[["flybase_gff"]],
+        pattern = denylist[["flybase_gff"]],
         x = basename(file)
     )) {
         stop(sprintf(
@@ -39,7 +39,7 @@
             basename(file)
         ))
     } else if (isMatchingRegex(
-        pattern = blacklist[["wormbase_gff"]],
+        pattern = denylist[["wormbase_gff"]],
         x = basename(file)
     )) {
         stop(sprintf(
@@ -50,15 +50,18 @@
             basename(file)
         ))
     }
-    level <- match.arg(level)
+    level <- match.arg(
+        arg = level,
+        choices = c("genes", "transcripts")
+    )
     meta <- getGFFMetadata(file)
-    meta[["level"]] <- level
-    gr <- import(file = .cacheIt(file))
     assert(
-        is(gr, "GRanges"),
         isString(meta[["format"]]),
         isString(meta[["provider"]])
     )
+    meta[["level"]] <- level
+    gr <- import(file = .cacheIt(file))
+    assert(is(gr, "GRanges"))
     format <- ifelse(
         test = grepl(pattern = "GTF", x = meta[["format"]]),
         yes = "GTF",

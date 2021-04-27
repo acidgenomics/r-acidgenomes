@@ -12,6 +12,7 @@ files <- c(
     "gencode.gtf",
     "refseq.gff3",
     "refseq.gtf",
+    "ref-transcripts.gtf",
     "tx2gene.csv",
     "ucsc.gtf",
     "wormbase.gtf"

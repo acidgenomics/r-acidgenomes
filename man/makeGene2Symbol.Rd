@@ -11,19 +11,19 @@ makeGene2SymbolFromEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
 makeGene2SymbolFromEnsDb(
   object,
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 
 makeGene2SymbolFromGFF(
   file,
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   format = c("makeUnique", "unmodified", "1:1")
 )
 }
@@ -83,7 +83,7 @@ object or annotation package.
 }}
 
 \note{
-Updated 2021-02-01.
+Updated 2021-03-10.
 }
 \section{GFF/GTF file}{
 
@@ -93,7 +93,10 @@ Remote URLs and compressed files are supported.
 
 \examples{
 ## makeGene2SymbolFromEnsembl ====
-x <- makeGene2SymbolFromEnsembl(organism = "Homo sapiens")
+x <- makeGene2SymbolFromEnsembl(
+    organism = "Homo sapiens",
+    ignoreVersion = FALSE
+)
 print(x)
 
 ## makeTx2GeneFromEnsDb ====
@@ -112,6 +115,9 @@ file <- pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-x <- makeGene2SymbolFromGFF(file)
+x <- makeGene2SymbolFromGFF(
+    file = file,
+    ignoreVersion = FALSE
+)
 print(x)
 }

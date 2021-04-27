@@ -7,7 +7,7 @@
 makeGRangesFromTxDb(
   object,
   level = c("transcripts", "genes", "exons", "cds"),
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 }
@@ -47,6 +47,6 @@ file <- pasteURL(
     protocol = "ftp"
 )
 txdb <- AcidGenomes::makeTxDbFromGFF(file)
-gr <- makeGRangesFromTxDb(txdb)
+gr <- makeGRangesFromTxDb(object = txdb, ignoreVersion = FALSE)
 print(gr)
 }

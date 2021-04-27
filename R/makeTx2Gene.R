@@ -5,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -33,7 +33,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' x <- makeTx2GeneFromGFF(file)
+#' x <- makeTx2GeneFromGFF(file = file, ignoreVersion = FALSE)
 #' print(x)
 NULL
 
@@ -41,13 +41,13 @@ NULL
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-02-01.
+## Updated 2021-03-10.
 makeTx2GeneFromEnsembl <-
     function(
         organism,
         genomeBuild = NULL,
         release = NULL,
-        ignoreVersion = FALSE
+        ignoreVersion = TRUE
     ) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
@@ -63,11 +63,11 @@ makeTx2GeneFromEnsembl <-
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-02-01.
+## Updated 2021-03-10.
 makeTx2GeneFromEnsDb <-
     function(
         object,
-        ignoreVersion = FALSE
+        ignoreVersion = TRUE
     ) {
         gr <- makeGRangesFromEnsDb(
             object = object,
@@ -81,11 +81,11 @@ makeTx2GeneFromEnsDb <-
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-02-01.
+## Updated 2021-03-10.
 makeTx2GeneFromGFF <-
     function(
         file,
-        ignoreVersion = FALSE
+        ignoreVersion = TRUE
     ) {
         gr <- makeGRangesFromGFF(
             file = file,

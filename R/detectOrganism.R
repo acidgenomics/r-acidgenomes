@@ -23,7 +23,7 @@
 #'   package, which gets loaded into the namespace when DESeq2 is attached.
 #'   Instead, we're exporting the character method here as a separate function
 #'   named `detectOrganism`.
-#' @note Updated 2021-01-20.
+#' @note Updated 2021-03-03.
 #'
 #' @param object `character`.
 #'
@@ -54,7 +54,7 @@ detectOrganism <- function(object) {
     data <- import(
         file = system.file(
             "extdata", "detect-organism.rds",
-            package = packageName()
+            package = .pkgName
         ),
         quiet = TRUE
     )

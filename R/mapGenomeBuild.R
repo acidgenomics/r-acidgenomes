@@ -20,7 +20,7 @@ NULL
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-03-03.
 .mapGenomeBuild <- function(object, from, to) {
     assert(
         isCharacter(object),
@@ -30,7 +30,7 @@ NULL
     map <- import(
         file = system.file(
             "extdata", "map-genome-build.rds",
-            package = packageName()
+            package = .pkgName
         ),
         quiet = TRUE
     )

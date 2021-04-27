@@ -2,7 +2,7 @@
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-03-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -70,11 +70,12 @@ setMethod(
 
 
 
-## Updated 2021-02-01.
+## Updated 2021-03-03.
 `Tx2Gene,DataFrame` <-  # nolint
     function(object) {
         assert(hasColnames(object))
         meta <- metadata(object)
+        meta[c("call", "synonyms")] <- NULL
         colnames(object) <- camelCase(colnames(object), strict = TRUE)
         colnames(object) <- gsub(
             pattern = "^transcript",
