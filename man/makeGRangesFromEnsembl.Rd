@@ -96,7 +96,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2021-02-01.
+Updated 2021-04-27.
 }
 \section{Broad class definitions}{
 
@@ -128,8 +128,10 @@ GENCODE or Ensembl.
 \section{AnnotationHub queries}{
 
 
-Here's how to perform manual, customized AnnotationHub queries.\preformatted{library(AnnotationHub)
-library(ensembldb)
+Here's how to perform manual, customized AnnotationHub queries.\preformatted{suppressPackageStartupMessages(\{
+    library(AnnotationHub)
+    library(ensembldb)
+\})
 ah <- AnnotationHub()
 
 # Human ensembldb (EnsDb) records.

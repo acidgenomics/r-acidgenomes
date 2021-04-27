@@ -1,6 +1,6 @@
 #' Map input to human gene orthologs
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-04-27.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -78,7 +78,7 @@ mapHumanOrthologs <- function(
         }
     )
     map <- tryCatch(
-        expr = select(
+        expr = biomaRt::select(
             x = mart,
             keys = genes,
             keytype = "ensembl_gene_id",

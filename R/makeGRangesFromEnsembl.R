@@ -46,8 +46,10 @@
 #' Here's how to perform manual, customized AnnotationHub queries.
 #'
 #' ```
-#' library(AnnotationHub)
-#' library(ensembldb)
+#' suppressPackageStartupMessages({
+#'     library(AnnotationHub)
+#'     library(ensembldb)
+#' })
 #' ah <- AnnotationHub()
 #'
 #' # Human ensembldb (EnsDb) records.
@@ -82,7 +84,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-04-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
