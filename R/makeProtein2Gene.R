@@ -1,7 +1,7 @@
 #' Map protein identifiers to genes
 #'
 #' @name makeProtein2Gene
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-04-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ids `character`.
@@ -25,6 +25,7 @@ makeProtein2GeneFromEnsembl <- function(
     genomeBuild = NULL,
     release = NULL
 ) {
+    requireNamespaces("ensembldb")
     assert(
         isCharacter(ids),
         hasNoDuplicates(ids)
@@ -38,7 +39,8 @@ makeProtein2GeneFromEnsembl <- function(
         genomeBuild = genomeBuild,
         release = release
     )
-    df <- select(
+    ## The `select()` generic is defined in AnnotationDbi.
+    df <- ensembldb::select(
         x = edb,
         keys = ids,
         keytype = "PROTEINID",

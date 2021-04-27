@@ -1,4 +1,14 @@
-## AcidGenomes 0.2.10 (2021-03-19)
+## AcidGenomes 0.2.12 (2021-04-27)
+
+### Major changes
+
+- Removed some Bioconductor packages from imports: AnnotationDbi, AnnotationHub,
+  GenomeInfoDb, and ensembldb. This helps reduce package loading time and avoid
+  unwanted BiocManager messages from appearing at startup (due to loading of
+  AnnotationHub). These are included as suggested packages, which should not
+  be problematic, since they are frequently used.
+
+## AcidGenomes 0.2.11 (2021-03-19)
 
 ### Minor changes
 
