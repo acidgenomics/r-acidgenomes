@@ -1,6 +1,6 @@
 #' Connect to AnnotationHub
 #'
-#' @note Updated 2021-01-29.
+#' @note Updated 2021-04-27.
 #' @noRd
 #'
 #' @details
@@ -8,8 +8,9 @@
 #' using [utils::capture.output()] here to suppress the console output, since
 #' it's not very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
+    requireNamespaces("AnnotationHub")
     invisible(capture.output({suppressMessages({
-        ah <- AnnotationHub()
+        ah <- AnnotationHub::AnnotationHub()
     })}))
     assert(is(ah, "AnnotationHub"))
     ah
@@ -19,7 +20,7 @@
 
 #' Get Ensembl/Entrez mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-04-27.
 #' @noRd
 .getEnsembl2EntrezFromOrgDb <- function(
     keys,
@@ -28,6 +29,7 @@
     organism,
     strict = TRUE
 ) {
+    requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
     pkgs <- .packages()
     assert(
         isCharacter(keys),
@@ -44,7 +46,7 @@
         packageVersion("AnnotationHub")
     ))
     ah <- .annotationHub()
-    ahs <- query(ah, pattern = c(organism, "NCBI", "OrgDb"))
+    ahs <- AnnotationHub::query(ah, pattern = c(organism, "NCBI", "OrgDb"))
     id <- tail(names(ahs), n = 1L)
     suppressMessages({
         orgdb <- ah[[id]]

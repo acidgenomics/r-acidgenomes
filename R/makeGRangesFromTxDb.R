@@ -1,7 +1,7 @@
 #' Make GRanges from TxDb object
 #'
 #' @export
-#' @note Updated 2021-03-10.
+#' @note Updated 2021-04-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -28,9 +28,10 @@ makeGRangesFromTxDb <- function(
     synonyms = FALSE
 ) {
     pkgs <- .packages()
+    requireNamespaces("AnnotationDbi")
     assert(is(object, "TxDb"))
     level <- match.arg(level)
-    cols <- columns(object)
+    cols <- AnnotationDbi::columns(object)
     colsList <- list(
         "cds" = grep(pattern = "^CDS", x = cols, value = TRUE),
         "exons" = grep(pattern = "^EXON", x = cols, value = TRUE),
