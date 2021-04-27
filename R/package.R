@@ -1,7 +1,3 @@
-## FIXME Optionally call purrr for `map_df` instead of inheriting from AcidPlyr...
-
-
-
 #' AcidGenomes
 #'
 #' Toolkit for downloading and processing genome annotations.
