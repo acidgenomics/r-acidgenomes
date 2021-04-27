@@ -1,8 +1,15 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+<<<<<<< HEAD
 ** FIXME Bioconductor seems to be loading at startup...this inherits up the
    chain into acidexperiment, acidsinglecell, and basejump. What's up?
 ** TODO Consider classing gene/transcript return from EnsDb and TxDb.
 ** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
 ** TODO Add automatic tx2gene output for RefSeq genome download.
+=======
+** TODO Need to include current gene name (symbol) in the synonyms, in case
+   we're mapping to an older reference, such as GRCh37.
+** TODO Consider adding better support for CDS, exon, and promoter extraction
+   from EnsDb/TxDb objects in a future update.
+>>>>>>> 2966021776cc7be7600684183842ffc0c8c948e6

@@ -21,7 +21,7 @@ Defining this manually avoids having to query the FTP server.}
 Import NCBI Entrez gene identifier information
 }
 \note{
-Updated 2021-02-13.
+Updated 2021-02-25.
 }
 \examples{
 object <- EntrezGeneInfo(

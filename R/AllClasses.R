@@ -3,7 +3,7 @@
 #'
 #' @note Note that genome build and organism are not defined in minimal FlyBase
 #'   GTF example.
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-03-03.
 #' @noRd
 .grangesValidity <- function(object) {
     if (is(object, "GRangesList")) {
@@ -21,10 +21,10 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "acidGenomes" = "package_version",
             "date" = "Date",
             "ignoreVersion" = "logical",
             "level" = "character",
+            "packageVersion" = "package_version",
             "provider" = "character",
             "synonyms" = "logical"
         ),
@@ -38,7 +38,7 @@
 
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-26.
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -50,7 +50,7 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
+            ## > "genomeBuild" = "character",
             "organism" = "character"
         ),
         subset = TRUE
@@ -87,7 +87,7 @@
 
 #' Shared GENCODE validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-02-26.
 #' @noRd
 .gencodeValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -182,7 +182,7 @@
 #' Contains a `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-03-02.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -194,22 +194,25 @@ setValidity(
     method = function(object) {
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
-        ok <- validate(
-            allAreMatchingRegex(
-                pattern = paste0(
-                    "^",
-                    "(",
-                    "ENS([A-Z]+)?G[0-9]{11}",
-                    "|",
-                    "LRG_[0-9]+",
-                    ")",
-                    "(\\.[0-9]+)?",
-                    "$"
-                ),
-                x = names(object)
-            ),
-            identical(metadata(object)[["level"]], "genes")
-        )
+        ## NOTE This doesn't work for all organisms
+        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
+        ## > ok <- validate(
+        ## >     allAreMatchingRegex(
+        ## >         pattern = paste0(
+        ## >             "^",
+        ## >             "(",
+        ## >             "ENS([A-Z]+)?G[0-9]{11}",
+        ## >             "|",
+        ## >             "LRG_[0-9]+",
+        ## >             ")",
+        ## >             "(\\.[0-9]+)?",
+        ## >             "$"
+        ## >         ),
+        ## >         x = names(object)
+        ## >     )
+        ## > )
+        ## > if (!isTRUE(ok)) return(ok)
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
         if (!isTRUE(ok)) return(ok)
         TRUE
     }
@@ -223,7 +226,7 @@ setValidity(
 #' Contains a `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-22.
+#' @note Updated 2021-03-02.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -235,22 +238,25 @@ setValidity(
     method = function(object) {
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) return(ok)
-        ok <- validate(
-            allAreMatchingRegex(
-                pattern = paste0(
-                    "^",
-                    "(",
-                    "ENS([A-Z]+)?T[0-9]{11}",
-                    "|",
-                    "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
-                    ")",
-                    "(\\.[0-9]+)?",
-                    "$"
-                ),
-                x = names(object)
-            ),
-            identical(metadata(object)[["level"]], "transcripts")
-        )
+        ## NOTE This doesn't work for all organisms
+        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
+        ## > ok <- validate(
+        ## >     allAreMatchingRegex(
+        ## >         pattern = paste0(
+        ## >             "^",
+        ## >             "(",
+        ## >             "ENS([A-Z]+)?T[0-9]{11}",
+        ## >             "|",
+        ## >             "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
+        ## >             ")",
+        ## >             "(\\.[0-9]+)?",
+        ## >             "$"
+        ## >         ),
+        ## >         x = names(object)
+        ## >     )
+        ## > )
+        ## > if (!isTRUE(ok)) return(ok)
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
         if (!isTRUE(ok)) return(ok)
         TRUE
     }

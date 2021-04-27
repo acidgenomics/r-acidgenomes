@@ -35,7 +35,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2021-02-02.
+Updated 2021-03-03.
 }
 \examples{
 ## DataFrame ====

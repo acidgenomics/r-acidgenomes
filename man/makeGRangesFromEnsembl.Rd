@@ -11,14 +11,14 @@ makeGRangesFromEnsembl(
   level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 
 makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts"),
-  ignoreVersion = FALSE,
+  ignoreVersion = TRUE,
   synonyms = FALSE
 )
 

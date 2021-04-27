@@ -1,7 +1,7 @@
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2021-02-13.
+#' @note Updated 2021-02-25.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param taxonomicGroup `character(1)`.
@@ -65,6 +65,8 @@ EntrezGeneInfo <-  # nolint
             ## Ensure that any "-" values get sanitized to "NA".
             any(is.na(df[["locusTag"]]))
         )
+        df[["fullNameFromNomenclatureAuthority"]] <- NULL
+        df[["symbolFromNomenclatureAuthority"]] <- NULL
         df[["geneId"]] <- as.integer(df[["geneId"]])
         colnames(df)[colnames(df) == "symbol"] <- "geneName"
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
@@ -77,8 +79,15 @@ EntrezGeneInfo <-  # nolint
             x <- sort(unique(x))
             x
         }
-        df[["dbXrefs"]] <- splitToList(df[["dbXrefs"]])
-        df[["geneSynonyms"]] <- splitToList(df[["geneSynonyms"]])
+        if (isSubset("dbXrefs", colnames(df))) {
+            df[["dbXrefs"]] <- splitToList(df[["dbXrefs"]])
+        }
+        if (isSubset("geneSynonyms", colnames(df))) {
+            df[["geneSynonyms"]] <- splitToList(df[["geneSynonyms"]])
+        }
+        if (isSubset("otherDesignations", colnames(df))) {
+            df[["otherDesignations"]] <- splitToList(df[["otherDesignations"]])
+        }
         df <- encode(df)
         metadata(df) <- list(
             "date" = Sys.Date(),
