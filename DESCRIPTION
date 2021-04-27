@@ -26,10 +26,6 @@ Imports:
     AcidCLI (>= 0.0.6),
     AcidGenerics (>= 0.5.13),
     AcidPlyr (>= 0.1.9),
-    AnnotationDbi (>= 1.52),
-    AnnotationHub (>= 2.22),
-    GenomeInfoDb (>= 1.26),
-    ensembldb (>= 2.14),
     goalie (>= 0.4.14),
     httr (>= 1.4),
     methods,
@@ -38,9 +34,13 @@ Imports:
     syntactic (>= 0.4.4)
 Suggests:
     AcidTest (>= 0.4.3),
+    AnnotationDbi (>= 1.52),
+    AnnotationHub (>= 2.22),
     EnsDb.Hsapiens.v75 (>= 2.99),
+    GenomeInfoDb (>= 1.26),
     GenomicFeatures (>= 1.42),
     biomaRt (>= 2.46),
+    ensembldb (>= 2.14),
     testthat
 biocViews:
     DataImport,

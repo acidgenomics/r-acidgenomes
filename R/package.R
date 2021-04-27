@@ -17,11 +17,6 @@
 #'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
 #'   metadata<- order ranges setdiff sort split tail trim unlist
 #' @importFrom AcidPlyr leftJoin map_df
-#' @importFrom AnnotationDbi columns select
-#' @importFrom AnnotationHub AnnotationHub query snapshotDate
-#' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
-#'   seqinfo<- seqlengths seqlevels seqnames
-#' @importFrom ensembldb ensemblVersion genes listColumns transcripts
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
@@ -38,3 +33,12 @@
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
+
+
+
+## Heavy dependencies we want to rework:
+## #' @importFrom AnnotationDbi columns select
+## #' @importFrom AnnotationHub AnnotationHub query snapshotDate
+## #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
+## #'   seqinfo<- seqlengths seqlevels seqnames
+## #' @importFrom ensembldb ensemblVersion genes listColumns transcripts
