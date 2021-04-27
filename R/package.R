@@ -33,8 +33,3 @@
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
 "_PACKAGE"
-
-
-
-## #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
-## #'   seqinfo<- seqlengths seqlevels seqnames
