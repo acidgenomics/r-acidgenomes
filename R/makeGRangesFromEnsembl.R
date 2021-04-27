@@ -170,6 +170,7 @@ makeGRangesFromEnsDb <- function(
     synonyms = FALSE
 ) {
     pkgs <- .packages()
+    requireNamespaces("ensembldb")
     assert(
         isFlag(ignoreVersion),
         isFlag(synonyms)
@@ -197,7 +198,10 @@ makeGRangesFromEnsDb <- function(
     ##  [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
     ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
     ## [13] "symbol"
-    geneCols <- sort(unique(c(listColumns(object, "gene"), "entrezid")))
+    geneCols <- sort(unique(c(
+        ensembldb::listColumns(object, "gene"),
+        "entrezid"
+    )))
     ## Ensembl 102 example (AH89180):
     ##  [1] "canonical_transcript" "description"          "entrezid"
     ##  [4] "gc_content"           "gene_biotype"         "gene_id"
@@ -207,7 +211,10 @@ makeGRangesFromEnsDb <- function(
     ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
     ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
     ## [22] "tx_seq_start"         "tx_support_level"
-    txCols <- sort(unique(c(listColumns(object, "tx"), geneCols)))
+    txCols <- sort(unique(c(
+        ensembldb::listColumns(object, "tx"),
+        geneCols
+    )))
     switch(
         EXPR = level,
         "genes" = {
