@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2020-01-31.
+#' @note Updated 2021-04-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -133,7 +133,7 @@ currentUCSCGenomeBuild <- function(organism) {
         SIMPLIFY = FALSE,
         USE.NAMES = FALSE
     )
-    df <- map_df(.x = l, .f = unlist)
+    df <- rbindToDataFrame(l)
     df <- df[df[["active"]] == 1L, , drop = FALSE]
     if (!isSubset(organism, unique(df[["scientificName"]]))) {
         stop("Invalid organism.")

@@ -1,3 +1,7 @@
+## FIXME Optionally call purrr for `map_df` instead of inheriting from AcidPlyr...
+
+
+
 #' AcidGenomes
 #'
 #' Toolkit for downloading and processing genome annotations.
@@ -16,7 +20,7 @@
 #'   IRanges Rle %in% append as.data.frame complete.cases decode do.call encode
 #'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
 #'   metadata<- na.omit order ranges setdiff sort split tail trim unlist
-#' @importFrom AcidPlyr leftJoin map_df mutateAt
+#' @importFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates

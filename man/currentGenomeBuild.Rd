@@ -33,7 +33,7 @@ Genome assembly build version.
 Fetch the current genome build (assembly) version from online resources.
 }
 \note{
-Updated 2020-01-31.
+Updated 2021-04-27.
 }
 \examples{
 currentEnsemblGenomeBuild("Homo sapiens")
