@@ -278,9 +278,10 @@ getEnsDb <- function(
 
 #' Get metadata inside EnsDb object
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-04-27.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
+    requireNamespaces("ensembldb")
     assert(
         is(object, "EnsDb"),
         isString(level, nullOK = TRUE)
@@ -298,7 +299,7 @@ getEnsDb <- function(
         "genomeBuild" = genomeBuild,
         "organism" = organism(object),
         "provider" = "Ensembl",
-        "release" = as.integer(ensemblVersion(object))
+        "release" = as.integer(ensembldb::ensemblVersion(object))
     )
     if (!is.null(level)) {
         list[["level"]] <- level
