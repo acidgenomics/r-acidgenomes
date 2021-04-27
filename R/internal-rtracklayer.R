@@ -1,10 +1,11 @@
-## Updated 2021-03-10.
+## Updated 2021-04-27.
 .makeGRangesFromRtracklayer <- function(
     file,
     level,
     ignoreVersion,
     synonyms
 ) {
+    requireNamespaces("GenomeInfoDb")
     assert(isString(file))
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
@@ -97,7 +98,7 @@
     metadata(gr) <- meta
     seqinfo <- .getSeqinfo(meta)
     if (is(seqinfo, "Seqinfo")) {
-        seqinfo(gr) <- seqinfo[seqlevels(gr)]
+        GenomeInfoDb::seqinfo(gr) <- seqinfo[GenomeInfoDb::seqlevels(gr)]
     }
     .makeGRanges(
         object = gr,
