@@ -96,11 +96,19 @@ NULL
 
 
 
+#' Package name
+#'
+#' @note Updated 2021-03-03.
+#' @noRd
+.pkgName <- packageName()
+
+
+
 #' Package version
 #'
-#' @note Updated 2020-10-06.
+#' @note Updated 2021-03-03.
 #' @noRd
-.version <- packageVersion(packageName())
+.pkgVersion <- packageVersion(.pkgName)
 
 
 
@@ -108,12 +116,12 @@ NULL
 #'
 #' @export
 #' @keywords internal
-#' @note Updated 2021-01-28.
+#' @note Updated 2021-03-03.
 #'
 #' @examples
 #' AcidGenomesTestsURL
 AcidGenomesTestsURL <-  # nolint
     paste0(
         "https://r.acidgenomics.com/testdata/acidgenomes/",
-        "v", .version$major, ".", .version$minor  # nolint
+        "v", .pkgVersion$major, ".", .pkgVersion$minor  # nolint
     )

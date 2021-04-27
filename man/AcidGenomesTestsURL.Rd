@@ -14,7 +14,7 @@ AcidGenomesTestsURL
 AcidGenomes test data URL
 }
 \note{
-Updated 2021-01-28.
+Updated 2021-03-03.
 }
 \examples{
 AcidGenomesTestsURL

@@ -29,7 +29,7 @@ Containing values, when possible:
 Get metadata about a GFF file
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-02-26.
 }
 \examples{
 url <- pasteURL(

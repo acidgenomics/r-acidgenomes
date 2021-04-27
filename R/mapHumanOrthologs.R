@@ -1,7 +1,11 @@
 #' Map input to human gene orthologs
 #'
-#' @note Updated 2021-04-27.
 #' @export
+#' @note Updated 2021-04-27.
+#'
+#' @details
+#' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
+#' currently supported.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -91,13 +95,67 @@ mapHumanOrthologs <- function(
             stop("'biomaRt::select()' error: ", e)
         }
     )
+    if (!hasRows(map)) {
+        stop("Failed to map any genes.")
+    }
     map <- as(map, "DataFrame")
     colnames(map) <- c("geneId", "humanGeneId")
-    map <- sanitizeNA(map)
+    map <- map[complete.cases(map), , drop = FALSE]
+    map <- map[order(map), , drop = FALSE]
+    keep <- !duplicated(map[["geneId"]])
+    if (!all(keep)) {
+        dupes <- unique(map[["geneId"]][!keep])
+        alertWarning(sprintf(
+            paste(
+                "%d gene %s multimap to multiple human genes.",
+                "Selecting first match by oldest Ensembl identifier."
+            ),
+            length(dupes),
+            ngettext(
+                n = length(dupes),
+                msg1 = "identifier",
+                msg2 = "identifiers"
+            )
+        ))
+        map <- map[keep, , drop = FALSE]
+    }
+    keep <- !duplicated(map[["humanGeneId"]])
+    if (!all(keep)) {
+        dupes <- unique(map[["humanGeneId"]][!keep])
+        alertWarning(sprintf(
+            paste(
+                "%d duplicate human gene %s detected.",
+                "Selecting first match."
+            ),
+            length(dupes),
+            ngettext(
+                n = length(dupes),
+                msg1 = "identifier",
+                msg2 = "identifiers"
+            )
+        ))
+    }
+    map <- map[keep, , drop = FALSE]
+    assert(
+        hasRows(map),
+        hasNoDuplicates(map[["geneId"]]),
+        hasNoDuplicates(map[["humanGeneId"]])
+    )
+    alertInfo(sprintf(
+        "%d gene %s mapped 1:1 from {.emph %s} to {.emph %s}.",
+        nrow(map),
+        ngettext(
+            n = nrow(map),
+            msg1 = "identifier",
+            msg2 = "identifiers"
+        ),
+        organism, "Homo sapiens"
+    ))
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
+        ignoreVersion = TRUE,
         format = "unmodified"
     )
     g2s <- as(g2s, "DataFrame")
@@ -106,6 +164,7 @@ mapHumanOrthologs <- function(
     g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
+        ignoreVersion = TRUE,
         format = "unmodified"
     )
     g2sHuman <- as(g2sHuman, "DataFrame")
@@ -116,6 +175,10 @@ mapHumanOrthologs <- function(
     out <- leftJoin(out, g2sHuman, by = "humanGeneId")
     rownames(out) <- out[["geneId"]]
     out <- out[, sort(colnames(out))]
+    assert(
+        !all(is.na(out[["geneName"]])),
+        !all(is.na(out[["humanGeneId"]]))
+    )
     forceDetach(keep = pkgs)
     out
 }

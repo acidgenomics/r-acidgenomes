@@ -15,8 +15,8 @@
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IntegerList
 #'   IRanges Rle %in% append as.data.frame complete.cases decode do.call encode
 #'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
-#'   metadata<- order ranges setdiff sort split tail trim unlist
-#' @importFrom AcidPlyr leftJoin map_df
+#'   metadata<- na.omit order ranges setdiff sort split tail trim unlist
+#' @importFrom AcidPlyr leftJoin map_df mutateAt
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
@@ -36,7 +36,6 @@
 
 
 
-## Heavy dependencies we want to rework:
 ## #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
 ## #'   seqinfo<- seqlengths seqlevels seqnames
-## #' @importFrom ensembldb genes transcripts
+## ' @importFrom ensembldb ensemblVersion genes listColumns transcripts

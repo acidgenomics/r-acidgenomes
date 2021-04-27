@@ -1,6 +1,6 @@
 #' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-02-24.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -33,7 +33,7 @@ NULL
 
 #' Make an Ensembl2Entrez (or Entrez2Ensembl) object
 #'
-#' @note Updated 2021-02-10.
+#' @note Updated 2021-02-24.
 #' @noRd
 .makeEnsembl2Entrez <-
     function(
@@ -71,7 +71,7 @@ NULL
                 }
             )
             x <- unlist(x, recursive = FALSE, use.names = TRUE)
-            df <- DataFrame("a" = names(x), "b" = x)
+            df <- DataFrame("a" = names(x), "b" = unname(x))
             rownames(df) <- df[[1L]]
             colnames(df) <- cols
         }
