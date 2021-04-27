@@ -22,7 +22,7 @@ Wrapper for GenomicFeatures \code{makeTxDbFromGFF} importer.
 }}
 
 \note{
-Updated 2021-02-26.
+Updated 2021-04-27.
 }
 \examples{
 ## GENCODE ====
@@ -38,7 +38,6 @@ Updated 2021-02-26.
 ## > )
 ## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gtfFile)
 ## > print(txdb)
-## > seqinfo(txdb)
 
 ## RefSeq ====
 ## > gffFile <- pasteURL(
@@ -54,7 +53,6 @@ Updated 2021-02-26.
 ## > )
 ## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gffFile)
 ## > print(txdb)
-## > seqinfo(txdb)
 }
 \seealso{
 \itemize{

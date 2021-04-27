@@ -1,7 +1,7 @@
 #' Map input to human gene orthologs
 #'
-#' @note Updated 2021-03-03.
 #' @export
+#' @note Updated 2021-04-27.
 #'
 #' @details
 #' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
@@ -82,7 +82,7 @@ mapHumanOrthologs <- function(
         }
     )
     map <- tryCatch(
-        expr = select(
+        expr = biomaRt::select(
             x = mart,
             keys = genes,
             keytype = "ensembl_gene_id",

@@ -64,6 +64,7 @@
 #' print(seq)
 .getSeqinfo <- function(x) {
     pkgs <- .packages()
+    requireNamespaces("GenomeInfoDb")
     if (!is.list(x)) {
         x <- getGFFMetadata(x)
     }
@@ -99,16 +100,23 @@
                     }
                     ## NOTE This step is failing for Ensembl 103 with
                     ## GenomeInfoDb 1.26.2.
-                    do.call(what = getChromInfoFromEnsembl, args = args)
+                    do.call(
+                        what = GenomeInfoDb::getChromInfoFromEnsembl,
+                        args = args
+                    )
                 },
                 "GENCODE" = {
-                    Seqinfo(genome = mapNCBIBuildToUCSC(x[["genomeBuild"]]))
+                    GenomeInfoDb::Seqinfo(
+                        genome = mapNCBIBuildToUCSC(x[["genomeBuild"]])
+                    )
                 },
                 "RefSeq" = {
                     .getRefSeqSeqinfo(x[["file"]])
                 },
                 "UCSC" = {
-                    Seqinfo(genome = x[["genomeBuild"]])
+                    GenomeInfoDb::Seqinfo(
+                        genome = x[["genomeBuild"]]
+                    )
                 }
             )
         }),
