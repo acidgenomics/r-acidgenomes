@@ -11,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-02-26.
+#' @note Updated 2021-04-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -38,7 +38,6 @@
 #' ## > )
 #' ## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gtfFile)
 #' ## > print(txdb)
-#' ## > seqinfo(txdb)
 #'
 #' ## RefSeq ====
 #' ## > gffFile <- pasteURL(
@@ -54,7 +53,6 @@
 #' ## > )
 #' ## > txdb <- AcidGenomes::makeTxDbFromGFF(file = gffFile)
 #' ## > print(txdb)
-#' ## > seqinfo(txdb)
 NULL
 
 ## nolint end
