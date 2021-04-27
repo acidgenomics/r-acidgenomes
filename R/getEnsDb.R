@@ -75,7 +75,7 @@ getEnsDb <- function(
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-04-27.
 #' @noRd
 #'
 #' @examples
@@ -86,6 +86,7 @@ getEnsDb <- function(
     release = NULL,
     ah = NULL
 ) {
+    requireNamespaces("AnnotationHub")
     assert(
         isString(organism),
         isString(genomeBuild, nullOK = TRUE),
@@ -137,10 +138,10 @@ getEnsDb <- function(
         rdataclass,
         "AnnotationHub",
         packageVersion("AnnotationHub"),
-        snapshotDate(ah)
+        AnnotationHub::snapshotDate(ah)
     ))
     ## Query AnnotationHub.
-    ahs <- query(
+    ahs <- AnnotationHub::query(
         x = ah,
         pattern = c(
             "Ensembl",

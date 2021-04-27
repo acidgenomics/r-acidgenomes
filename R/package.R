@@ -37,8 +37,7 @@
 
 
 ## Heavy dependencies we want to rework:
-## #' @importFrom AnnotationDbi columns select
-## #' @importFrom AnnotationHub AnnotationHub query snapshotDate
+## #' @importFrom AnnotationHub AnnotationHub snapshotDate
 ## #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome isCircular
 ## #'   seqinfo<- seqlengths seqlevels seqnames
 ## #' @importFrom ensembldb ensemblVersion genes listColumns transcripts

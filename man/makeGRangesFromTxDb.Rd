@@ -34,7 +34,7 @@ Queries the Ensembl web server, and is CPU intensive.}
 Make GRanges from TxDb object
 }
 \note{
-Updated 2021-02-01.
+Updated 2021-04-27.
 }
 \examples{
 file <- pasteURL(
