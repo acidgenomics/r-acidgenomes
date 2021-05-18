@@ -294,6 +294,9 @@ makeGRangesFromGFF <- function(
             synonyms = synonyms
         )
     }
-    metadata(gr)[["call"]] <- standardizeCall()
+    metadata(gr)[["call"]] <- tryCatch(
+        expr = standardizeCall(),
+        error = function(e) NULL
+    )
     gr
 }

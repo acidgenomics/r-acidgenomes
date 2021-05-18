@@ -89,7 +89,10 @@ downloadGencodeGenome <-
         info[["annotation"]] <-
             do.call(what = .downloadGencodeAnnotation, args = args)
         info[["args"]] <- args
-        info[["call"]] <- standardizeCall()
+        info[["call"]] <- tryCatch(
+            expr = standardizeCall(),
+            error = function(e) NULL
+        )
         info[["sessionInfo"]] <- sessionInfo()
         saveRDS(object = info, file = file.path(outputDir, "metadata.rds"))
         alertSuccess(sprintf(
