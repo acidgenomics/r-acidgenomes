@@ -204,12 +204,16 @@ makeTx2GeneFromFASTA <- function(file) {
         stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
     )
     out <- Tx2Gene(x)
-    metadata(out) <- list(
-        "call" = standardizeCall(),
+    meta <- list(
+        "call" = tryCatch(
+            expr = standardizeCall(),
+            error = function(e) NULL
+        ),
         "date" = Sys.Date(),
         "file" = file,
         "packageVersion" = .pkgVersion,
         "provider" = provider
     )
+    metadata(out) <- meta
     out
 }
