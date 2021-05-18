@@ -1,7 +1,5 @@
 ## Metadata modification =======================================================
 
-## nolint start
-
 #' Apply broad class definitions
 #'
 #' This function is intended to work rowwise on the GRanges mcols.
@@ -23,8 +21,7 @@
 #'
 #' @section Ensembl biotypes:
 #'
-#' See [biotypes guide](https://m.ensembl.org/info/genome/genebuild/biotypes.html)
-#' for details.
+#' See [biotypes guide][] for details.
 #'
 #' LRG: Locus Reference Genomic sequence.
 #' Refer to the [LRG website](https://www.lrg-sequence.org/) for details.
@@ -35,13 +32,15 @@
 #' the transcripts, or by confirming expression of the putatively-encoded
 #' peptide with specific antibodies.
 #'
+#' [biotypes guide]: https://m.ensembl.org/info/genome/genebuild/biotypes.html
+#'
 #' @seealso Can use `dplyr::case_when()` instead, which allows for a rowwise
 #'   vectorized if/else call stack.
 #'
 #' @note Can return `NA_character_` here instead. Keeping this as "other", to
 #'   main consistency with previous data sets. Also note that `NA` can behave
 #'   inconsistently in plotting engines.
-#' @note Updated 2021-01-30.
+#' @note Updated 2021-05-18.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
 #' @noRd
@@ -50,8 +49,6 @@
 #'   List returned via apply call using `MARGIN = 1`.
 #'
 #' @return `character(1)`.
-
-## nolint end
 
 .applyBroadClass <- function(x) {
     if (
@@ -340,15 +337,17 @@
 ## Standardization =============================================================
 #' Apply run-length encoding and minimize `GRanges` mcols
 #'
+#' @note Updated 2021-05-18.
+#' @noRd
+#'
+#' @details
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' @note Updated 2021-02-12.
-#' @noRd
+#' This trimming step was added to handle GRanges from Ensembl 102, which won't
+#' return valid otherwise from ensembldb.
 .encodeMcols <- function(object) {
     assert(is(object, "GRanges"))
-    ## This trimming step was added to handle GRanges from Ensembl 102, which
-    ## won't return valid otherwise from ensembldb.
     length <- length(object)
     object <- trim(object)
     assert(hasLength(object, n = length))
@@ -357,22 +356,21 @@
         X = mcols,
         FUN = function(x) {
             if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
-                I(x)
-            } else {
-                x <- sanitizeNA(x)
-                if (all(is.na(x))) {
-                    return(NULL)
-                }
-                if (is.factor(x)) {
-                    x <- droplevels(x)
-                }
-                x <- Rle(x)
-                x
+                return(x)
             }
+            x <- sanitizeNA(x)
+            if (all(is.na(x))) {
+                return(NULL)
+            }
+            if (is.factor(x)) {
+                x <- droplevels(x)
+            }
+            x <- Rle(x)
+            x
         }
     )
     mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
-    mcols <- as(mcolsList, "DataFrame")
+    mcols <- as.DataFrame(mcolsList)
     ## Ensure nested list columns return classed when possible.
     if (is.list(mcols[["entrezId"]])) {
         mcols[["entrezId"]] <- IntegerList(mcols[["entrezId"]])
