@@ -1,3 +1,7 @@
+## AcidGenomes 0.2.13 (UNRELEASED)
+
+- Internal fixes to provide compatibility for R 4.1 release.
+
 ## AcidGenomes 0.2.12 (2021-04-27)
 
 ### Major changes
