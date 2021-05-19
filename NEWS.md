@@ -1,6 +1,7 @@
-## AcidGenomes 0.2.13 (UNRELEASED)
+## AcidGenomes 0.2.13 (2021-05-18)
 
 - Internal fixes to provide compatibility for R 4.1 release.
+- Updated dependencies to support Bioconductor 3.13.
 
 ## AcidGenomes 0.2.12 (2021-04-27)
 
