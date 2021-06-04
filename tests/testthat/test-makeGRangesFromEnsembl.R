@@ -2,7 +2,16 @@ context("makeGRangesFromEnsembl")
 
 skip_if_not(hasInternet())
 
-Rle <- structure("Rle", package = "S4Vectors")  # nolint
+## nolint start
+CompressedIntegerList <- structure(
+    .Data = "CompressedIntegerList",
+    package = "IRanges"
+)
+Rle <- structure(
+    .Data = "Rle",
+    package = "S4Vectors"
+)
+## nolint end
 
 test_that("Genes", {
     object <- makeGRangesFromEnsembl(
@@ -41,7 +50,7 @@ test_that("Genes", {
             "broadClass" = Rle,
             "canonicalTranscript" = Rle,
             "description" = Rle,
-            "entrezId" = "list",
+            "entrezId" = CompressedIntegerList,
             "geneBiotype" = Rle,
             "geneId" = Rle,
             "geneIdVersion" = Rle,
@@ -95,7 +104,7 @@ test_that("Transcripts", {
             "broadClass" = Rle,
             "canonicalTranscript" = Rle,
             "description" = Rle,
-            "entrezId" = "list",
+            "entrezId" = CompressedIntegerList,
             "gcContent" = Rle,
             "geneBiotype" = Rle,
             "geneId" = Rle,
