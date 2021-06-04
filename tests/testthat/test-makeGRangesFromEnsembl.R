@@ -169,12 +169,13 @@ test_that("Organism with 3 words", {
 })
 
 test_that("Invalid parameters", {
+    ## Currently only supports releases back to Ensembl 87.
     expect_error(
         object = makeGRangesFromEnsembl(
             organism = "Homo sapiens",
             release = 86L
         ),
-        regexp = ">= 87"
+        regexp = "No entry matched on AnnotationHub"
     )
     expect_error(
         object = makeGRangesFromEnsembl(
