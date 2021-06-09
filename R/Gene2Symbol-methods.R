@@ -6,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-03-03.
+#' @note Updated 2021-06-09.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -46,7 +46,7 @@ NULL
 
 
 
-## Updated 2021-03-03.
+## Updated 2021-06-09.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(object, format = c("makeUnique", "unmodified", "1:1")) {
         format <- match.arg(format)
@@ -59,6 +59,10 @@ NULL
             isSubset(cols, colnames(object))
         )
         df <- decode(object[, cols])
+        ## Allow coercion of integer gene identifiers (e.g. NCBI Entrez).
+        if (is.integer(df[[cols[[1L]]]])) {
+            df[[cols[[1L]]]] <- as.character(df[[cols[[1L]]]])
+        }
         ## Inform the user about how many symbols multi-map.
         ## Note that `duplicated()` doesn't work on Rle, so we have to decode.
         duplicated <- duplicated(df[["geneName"]])
