@@ -42,7 +42,7 @@ the documentation for approaches that deal with this issue.
 For the \code{format} argument, note that "long" was used instead of
 "unmodified" prior to v0.10.10.
 
-Updated 2021-03-03.
+Updated 2021-06-09.
 }
 \examples{
 data(GRanges, package = "AcidTest")
