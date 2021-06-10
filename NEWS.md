@@ -1,3 +1,10 @@
+## AcidGenomes 0.2.14 (2021-06-10)
+
+### Minor changes
+
+- `Gene2Symbol`: Improve handling when gene identifiers are integer, such as
+  is the case with NCBI Entrez gene identifiers.
+
 ## AcidGenomes 0.2.13 (2021-05-18)
 
 - Internal fixes to provide compatibility for R 4.1 release.
