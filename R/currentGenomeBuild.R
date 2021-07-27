@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-07-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -16,13 +16,27 @@
 #' - [RefSeq genomes](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/).
 #'
 #' @examples
+#' ## Ensembl.
 #' currentEnsemblGenomeBuild("Homo sapiens")
+#' currentEnsemblGenomeBuild("Mus musculus")
+#'
+#' ## GENCODE.
 #' currentGencodeGenomeBuild("Homo sapiens")
+#' currentGencodeGenomeBuild("Mus musculus")
+#'
+#' ## RefSeq.
 #' currentRefSeqGenomeBuild(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
+#' currentRefSeqGenomeBuild(
+#'     organism = "Mus musculus",
+#'     taxonomicGroup = "vertebrate_mammalian"
+#' )
+#'
+#' ## UCSC.
 #' currentUCSCGenomeBuild("Homo sapiens")
+#' currentUCSCGenomeBuild("Mus musculus")
 NULL
 
 
