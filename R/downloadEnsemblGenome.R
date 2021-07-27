@@ -93,7 +93,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-07-27.
 .downloadEnsemblGFF <-
     function(
         genomeBuild,
@@ -115,7 +115,17 @@ downloadEnsemblGenome <-
                 )
             )
         )
-        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+        if (
+            isSubset(
+                x = organism,
+                y = c("Homo sapiens", "Mus musculus")
+            ) &&
+            ## NOTE Not supported for new GRCm39 build.
+            isSubset(
+                x = genomeBuild,
+                y = c("GRCh37", "GRCh38", "GRCm38")
+            )
+        ) {
             urls[["gff2"]] <- pasteURL(
                 baseURL,
                 paste(
@@ -153,7 +163,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-07-27.
 .downloadEnsemblGTF <-
     function(
         genomeBuild,
@@ -175,7 +185,17 @@ downloadEnsemblGenome <-
                 )
             )
         )
-        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+        if (
+            isSubset(
+                x = organism,
+                y = c("Homo sapiens", "Mus musculus")
+            ) &&
+            ## NOTE Not supported for new GRCm39 build.
+            isSubset(
+                x = genomeBuild,
+                y = c("GRCh37", "GRCh38", "GRCm38")
+            )
+        ) {
             urls[["gtf2"]] <- pasteURL(
                 baseURL,
                 paste(
