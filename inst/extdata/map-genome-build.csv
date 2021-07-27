@@ -15,6 +15,7 @@ hg38,GRCh38,2013-12,Homo sapiens,TRUE
 hg38-noalt,GRCh38,2013-12,Homo sapiens,TRUE
 mm9,GRCm37,2007-07,Mus musculus,FALSE
 mm10,GRCm38,2011-12,Mus musculus,TRUE
+mm39,GRCm39,2020-06,Mus musculus,TRUE
 rn5,Rnor_5.0,2012-03,Rattus norvegicus,FALSE
 rn6,Rnor_6.0,2014-07,Rattus norvegicus,TRUE
 sacCer3,R64-1-1,2011-04,Saccharomyces cerevisiae,TRUE
