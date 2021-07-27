@@ -1,3 +1,12 @@
+## AcidGenomes 0.2.15 (2021-07-27)
+
+### Minor changes
+
+- Added support for new *Mus musculus* GRCm39 genome build. Updated internal
+  code for `mapUCSCBuildToEnsembl` and `downloadEnsemblGenome`, in particular.
+  Note that `*_chr_patch_hapl_scaff` GFF and GTF files are no longer available
+  on the Egnyte FTP server for GRCm39 (only GRCm38 and GRCh38).
+
 ## AcidGenomes 0.2.14 (2021-06-10)
 
 ### Minor changes
