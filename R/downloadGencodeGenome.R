@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-07-27.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -26,7 +26,7 @@ downloadGencodeGenome <-
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
-            isInt(release, nullOK = TRUE),
+            isScalar(release) || is.null(release),
             isString(outputDir)
         )
         organism <- match.arg(
@@ -54,9 +54,8 @@ downloadGencodeGenome <-
             paste("Gencode", organismShort, sep = "_"),
             paste("release", release, sep = "_")
         )
-        if (genomeBuild == "GRCh37") {
-            releaseURL <-
-                pasteURL(releaseURL, "GRCh37_mapping")
+        if (identical(genomeBuild, "GRCh37")) {
+            releaseURL <- pasteURL(releaseURL, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "gencode", release
