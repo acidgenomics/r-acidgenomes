@@ -1,8 +1,11 @@
 context("Ensembl annotations")
 
+## FIXME Need to ensure these run.
+## FIXME Need to test GRCm39 support.
+
 map <- import(
     file = system.file(
-        "extdata", "mapUCSCBuildToEnsembl.rds",
+        "extdata", "map-genome-build.rds",
         package = packageName()
     ),
     quiet = TRUE
