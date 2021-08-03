@@ -9,7 +9,7 @@ downloadEnsemblGenome(
   genomeBuild = NULL,
   release = NULL,
   outputDir = ".",
-  cache = FALSE
+  cache = TRUE
 )
 }
 \arguments{
