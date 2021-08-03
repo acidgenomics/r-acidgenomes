@@ -3,7 +3,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-08-03.
 #'
 #' @section Genome:
 #'
@@ -44,12 +44,14 @@ downloadUCSCGenome <-
     function(
         organism,
         genomeBuild = NULL,
-        outputDir = "."
+        outputDir = ".",
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
-            isString(outputDir)
+            isString(outputDir),
+            isFlag(cache)
         )
         outputDir <- initDir(outputDir)
         if (is.null(genomeBuild)) {
@@ -88,7 +90,8 @@ downloadUCSCGenome <-
         outputDir <- initDir(outputDir)
         args <- list(
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL
+            "releaseURL" = releaseURL,
+            "cache" = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -117,12 +120,13 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadUCSCAnnotation <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         genesURL <- pasteURL(releaseURL, "genes")
         urls <- c(
@@ -146,7 +150,8 @@ downloadUCSCGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation")
+            outputDir = file.path(outputDir, "annotation"),
+            cache = cache
         )
         gtfFile <- files[["ensGene"]]
         ## Create symlink.
@@ -192,12 +197,13 @@ downloadUCSCGenome <-
 
 
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadUCSCGenome <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         isHuman <- grepl(pattern = "^hg[0-9]+$", x = genomeBuild)
         latestURL <- ifelse(
@@ -230,7 +236,8 @@ downloadUCSCGenome <-
         }
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "genome")
+            outputDir = file.path(outputDir, "genome"),
+            cache = cache
         )
         ## Create FASTA symlink.
         if (!isWindows()) {
@@ -256,27 +263,30 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-08-03.
 .downloadUCSCMetadata <-
     function(
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c("readme" = pasteURL(releaseURL, "README.txt"))
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "metadata")
+            outputDir = file.path(outputDir, "metadata"),
+            cache = cache
         )
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadUCSCTranscriptome <-
     function(
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "mrna" = pasteURL(releaseURL, "mrna.fa.gz"),
@@ -286,7 +296,8 @@ downloadUCSCGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "metadata")
+            outputDir = file.path(outputDir, "metadata"),
+            cache = cache
         )
         ## Create symlink.
         if (!isWindows()) {
