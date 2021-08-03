@@ -2,17 +2,6 @@ context("makeGRangesFromEnsembl")
 
 skip_if_not(hasInternet())
 
-## nolint start
-CompressedIntegerList <- structure(
-    .Data = "CompressedIntegerList",
-    package = "IRanges"
-)
-Rle <- structure(
-    .Data = "Rle",
-    package = "S4Vectors"
-)
-## nolint end
-
 test_that("Genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
