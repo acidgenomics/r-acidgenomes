@@ -1,6 +1,6 @@
 #' @name stripVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -26,7 +26,6 @@ NULL
 
 
 
-
 ## Updated 2021-01-27.
 `stripGeneVersions,character` <-  # nolint
     function(object) {
@@ -43,16 +42,6 @@ NULL
         )
         out
     }
-
-
-
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripGeneVersions",
-    signature = signature("character"),
-    definition = `stripGeneVersions,character`
-)
 
 
 
@@ -75,16 +64,6 @@ setMethod(
 
 
 
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripTranscriptVersions",
-    signature = signature("character"),
-    definition = `stripTranscriptVersions,character`
-)
-
-
-
 ## Updated 2021-01-27.
 `stripGeneVersions,matrix` <-  # nolint
     function(object) {
@@ -94,16 +73,6 @@ setMethod(
         rownames(object) <- rownames
         object
     }
-
-
-
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripGeneVersions",
-    signature = signature("matrix"),
-    definition = `stripGeneVersions,matrix`
-)
 
 
 
@@ -119,29 +88,9 @@ setMethod(
 
 
 
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripTranscriptVersions",
-    signature = signature("matrix"),
-    definition = `stripTranscriptVersions,matrix`
-)
-
-
-
 ## Updated 2021-01-27.
 `stripGeneVersions,Matrix` <-  # nolint
     `stripGeneVersions,matrix`
-
-
-
-#' @rdname stripVersions
-#' @export
-setMethod(
-    f = "stripGeneVersions",
-    signature = signature("Matrix"),
-    definition = `stripGeneVersions,Matrix`
-)
 
 
 
@@ -154,7 +103,47 @@ setMethod(
 #' @rdname stripVersions
 #' @export
 setMethod(
+    f = "stripGeneVersions",
+    signature = signature("Matrix"),
+    definition = `stripGeneVersions,Matrix`
+)
+
+#' @rdname stripVersions
+#' @export
+setMethod(
+    f = "stripGeneVersions",
+    signature = signature("character"),
+    definition = `stripGeneVersions,character`
+)
+
+#' @rdname stripVersions
+#' @export
+setMethod(
+    f = "stripGeneVersions",
+    signature = signature("matrix"),
+    definition = `stripGeneVersions,matrix`
+)
+
+#' @rdname stripVersions
+#' @export
+setMethod(
     f = "stripTranscriptVersions",
     signature = signature("Matrix"),
     definition = `stripTranscriptVersions,Matrix`
+)
+
+#' @rdname stripVersions
+#' @export
+setMethod(
+    f = "stripTranscriptVersions",
+    signature = signature("character"),
+    definition = `stripTranscriptVersions,character`
+)
+
+#' @rdname stripVersions
+#' @export
+setMethod(
+    f = "stripTranscriptVersions",
+    signature = signature("matrix"),
+    definition = `stripTranscriptVersions,matrix`
 )
