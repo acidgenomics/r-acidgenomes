@@ -1,6 +1,6 @@
 #' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
-#' @note Updated 2021-02-24.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -116,16 +116,6 @@ formals(`Ensembl2Entrez,character`)[["format"]] <-
 
 
 
-#' @rdname Ensembl2Entrez
-#' @export
-setMethod(
-    f = "Ensembl2Entrez",
-    signature = signature("character"),
-    definition = `Ensembl2Entrez,character`
-)
-
-
-
 ## Updated 2021-01-18.
 `Entrez2Ensembl,integer` <-  # nolint
     function(object, organism, format) {
@@ -144,16 +134,6 @@ setMethod(
 
 formals(`Entrez2Ensembl,integer`)[["format"]] <-
     formals(.makeEnsembl2Entrez)[["format"]]
-
-
-
-#' @rdname Ensembl2Entrez
-#' @export
-setMethod(
-    f = "Entrez2Ensembl",
-    signature = signature("integer"),
-    definition = `Entrez2Ensembl,integer`
-)
 
 
 
@@ -185,6 +165,22 @@ formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
     formals(.makeEnsembl2Entrez)[["format"]]
 
 
+
+#' @rdname Ensembl2Entrez
+#' @export
+setMethod(
+    f = "Ensembl2Entrez",
+    signature = signature("character"),
+    definition = `Ensembl2Entrez,character`
+)
+
+#' @rdname Ensembl2Entrez
+#' @export
+setMethod(
+    f = "Entrez2Ensembl",
+    signature = signature("integer"),
+    definition = `Entrez2Ensembl,integer`
+)
 
 #' @rdname Ensembl2Entrez
 #' @export
