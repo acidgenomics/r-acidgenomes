@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -23,13 +23,15 @@ downloadEnsemblGenome <-
         organism,
         genomeBuild = NULL,
         release = NULL,
-        outputDir = "."
+        outputDir = ".",
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
             isInt(release, nullOK = TRUE),
-            isString(outputDir)
+            isString(outputDir),
+            isFlag(cache)
         )
         outputDir <- initDir(outputDir)
         baseURL <- "ftp://ftp.ensembl.org/pub"
@@ -64,7 +66,8 @@ downloadEnsemblGenome <-
             "genomeBuild" = genomeBuild,
             "organism" = organism,
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL
+            "releaseURL" = releaseURL,
+            "cache" = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -93,14 +96,15 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-07-27.
+## Updated 2021-08-03.
 .downloadEnsemblGFF <-
     function(
         genomeBuild,
         organism,
         outputDir,
         releaseURL,
-        release
+        release,
+        cache
     ) {
         baseURL <- pasteURL(releaseURL, "gff3", snakeCase(organism))
         urls <- c(
@@ -137,7 +141,8 @@ downloadEnsemblGenome <-
         }
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation", "gff3")
+            outputDir = file.path(outputDir, "annotation", "gff3"),
+            cache = cache
         )
         ## Create symlink.
         if (!isWindows()) {
@@ -163,14 +168,15 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-07-27.
+## Updated 2021-08-03.
 .downloadEnsemblGTF <-
     function(
         genomeBuild,
         organism,
         outputDir,
         release,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
         urls <- c(
@@ -207,7 +213,8 @@ downloadEnsemblGenome <-
         }
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation", "gtf")
+            outputDir = file.path(outputDir, "annotation", "gtf"),
+            cache = cache
         )
         gtfFile <- files[["gtf"]]
         ## Create symlink.
@@ -244,13 +251,14 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadEnsemblGenome <-
     function(
         genomeBuild,
         organism,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
         urls <- c(
@@ -275,7 +283,8 @@ downloadEnsemblGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "genome")
+            outputDir = file.path(outputDir, "genome"),
+            cache = cache
         )
         ## Create symlink.
         if (!isWindows()) {
@@ -301,13 +310,14 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadEnsemblTranscriptome <-
     function(
         genomeBuild,
         organism,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
         ## Download cDNA FASTA files.
@@ -326,7 +336,8 @@ downloadEnsemblGenome <-
         )
         cdnaFiles <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "transcriptome", "cdna")
+            outputDir = file.path(outputDir, "transcriptome", "cdna"),
+            cache = cache
         )
         ## Download ncRNA FASTA files.
         ncrnaBaseURL <- pasteURL(baseURL, "ncrna")
@@ -344,7 +355,8 @@ downloadEnsemblGenome <-
         )
         ncrnaFiles <- .downloadURLs(
             urls =  urls,
-            outputDir = file.path(outputDir, "transcriptome", "ncrna")
+            outputDir = file.path(outputDir, "transcriptome", "ncrna"),
+            cache = cache
         )
         ## Create a merged transcriptome FASTA.
         alert("Creating a merged transcriptome FASTA file.")
