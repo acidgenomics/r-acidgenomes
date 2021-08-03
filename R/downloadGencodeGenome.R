@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-07-27.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -21,13 +21,15 @@ downloadGencodeGenome <-
         organism,
         genomeBuild = NULL,
         release = NULL,
-        outputDir = "."
+        outputDir = ".",
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
             isScalar(release) || is.null(release),
-            isString(outputDir)
+            isString(outputDir),
+            isFlag(cache)
         )
         organism <- match.arg(
             arg = organism,
@@ -74,7 +76,8 @@ downloadGencodeGenome <-
         args <- list(
             "genomeBuild" = genomeBuild,
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL
+            "releaseURL" = releaseURL,
+            "cache" = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -103,13 +106,14 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadGencodeAnnotation <-
     function(
         genomeBuild,
         outputDir,
         release,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "gff" = pasteURL(
@@ -141,7 +145,8 @@ downloadGencodeGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation")
+            outputDir = file.path(outputDir, "annotation"),
+            cache = cache
         )
         gffFile <- files[["gff"]]
         gtfFile <- files[["gtf"]]
@@ -189,12 +194,13 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadGencodeGenome <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -204,7 +210,8 @@ downloadGencodeGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "genome")
+            outputDir = file.path(outputDir, "genome"),
+            cache = cache
         )
         ## Create symlink.
         if (!isWindows()) {
@@ -230,12 +237,13 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-01-21.
+## Updated 2021-08-03.
 .downloadGencodeMetadata <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "readme" = pasteURL(
@@ -250,20 +258,22 @@ downloadGencodeGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "metadata")
+            outputDir = file.path(outputDir, "metadata"),
+            cache = cache
         )
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadGencodeTranscriptome <-
     function(
         genomeBuild,
         outputDir,
         release,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -281,7 +291,8 @@ downloadGencodeGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "transcriptome")
+            outputDir = file.path(outputDir, "transcriptome"),
+            cache = cache
         )
         fastaFile <- files[["fasta"]]
         ## Save transcript-to-gene mappings.
