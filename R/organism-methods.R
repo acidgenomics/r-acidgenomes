@@ -1,14 +1,14 @@
 #' Organism
 #'
 #' @name organism
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `character(1)`.
 #' Latin organism name (e.g. *Homo sapiens*).
 #'
-#' @seealso [detectOrganism()][.
+#' @seealso `detectOrganism()`.
 #'
 #' @examples
 #' ## DataFrame ====
@@ -42,29 +42,9 @@ NULL
 
 
 
-#' @rdname organism
-#' @export
-setMethod(
-    f = "organism",
-    signature = signature("matrix"),
-    definition = `organism,matrix`
-)
-
-
-
 ## Updated 2020-01-30.
 `organism,Matrix` <-  # nolint
     `organism,matrix`
-
-
-
-#' @rdname organism
-#' @export
-setMethod(
-    f = "organism",
-    signature = signature("Matrix"),
-    definition = `organism,Matrix`
-)
 
 
 
@@ -74,32 +54,12 @@ setMethod(
 
 
 
-#' @rdname organism
-#' @export
-setMethod(
-    f = "organism",
-    signature = signature("data.frame"),
-    definition = `organism,data.frame`
-)
-
-
-
 ## Note that DataFrame and GRanges inherit from this class.
 ## Updated 2019-07-22.
 `organism,Annotated` <-  # nolint
     function(object) {
         metadata(object)[["organism"]]
     }
-
-
-
-#' @rdname organism
-#' @export
-setMethod(
-    f = "organism",
-    signature = signature("Annotated"),
-    definition = `organism,Annotated`
-)
 
 
 
@@ -117,16 +77,6 @@ setMethod(
 
 
 
-#' @rdname organism
-#' @export
-setMethod(
-    f = "organism",
-    signature = signature("DataFrame"),
-    definition = `organism,DataFrame`
-)
-
-
-
 ## Updated 2021-02-02.
 `organism,GRanges` <-  # nolint
     function(object) {
@@ -141,6 +91,31 @@ setMethod(
 
 
 
+## Updated 2019-08-06.
+`organism<-,Annotated,character` <-  # nolint
+    function(object, value) {
+        metadata(object)[["organism"]] <- value
+        object
+    }
+
+
+
+#' @rdname organism
+#' @export
+setMethod(
+    f = "organism",
+    signature = signature("Annotated"),
+    definition = `organism,Annotated`
+)
+
+#' @rdname organism
+#' @export
+setMethod(
+    f = "organism",
+    signature = signature("DataFrame"),
+    definition = `organism,DataFrame`
+)
+
 #' @rdname organism
 #' @export
 setMethod(
@@ -149,14 +124,29 @@ setMethod(
     definition = `organism,GRanges`
 )
 
+#' @rdname organism
+#' @export
+setMethod(
+    f = "organism",
+    signature = signature("Matrix"),
+    definition = `organism,Matrix`
+)
 
+#' @rdname organism
+#' @export
+setMethod(
+    f = "organism",
+    signature = signature("data.frame"),
+    definition = `organism,data.frame`
+)
 
-## Updated 2019-08-06.
-`organism<-,Annotated,character` <-  # nolint
-    function(object, value) {
-        metadata(object)[["organism"]] <- value
-        object
-    }
+#' @rdname organism
+#' @export
+setMethod(
+    f = "organism",
+    signature = signature("matrix"),
+    definition = `organism,matrix`
+)
 
 
 
