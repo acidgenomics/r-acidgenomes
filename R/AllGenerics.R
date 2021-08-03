@@ -58,14 +58,14 @@ NULL
 
 
 
-#' @rdname stripVersions
+#' @rdname stripGeneVersions
 #' @name stripGeneVersions
 #' @importFrom AcidGenerics stripGeneVersions
 #' @usage stripGeneVersions(object, ...)
 #' @export
 NULL
 
-#' @rdname stripVersions
+#' @rdname stripTranscriptVersions
 #' @name stripTranscriptVersions
 #' @importFrom AcidGenerics stripTranscriptVersions
 #' @usage stripTranscriptVersions(object, ...)
