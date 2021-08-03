@@ -2,8 +2,6 @@
 
 context("mapHumanOrthologs")
 
-## FIXME This isn't sanitizing NA values the way we'd expect.
-
 test_that("mapHumanOrthologs", {
     genes <- c(
         "ENSMUSG00000000001", "ENSMUSG00000000003",
