@@ -1,7 +1,7 @@
-context("extra | geneSynonyms")
+context("geneSynonyms")
 
-organisms <- eval(formals("geneSynonyms")[["organism"]])
 test_that("geneSynonyms", {
+    organisms <- c("Homo sapiens", "Mus musculus")
     for (object in organisms) {
         object <- geneSynonyms(organism = organism)
         expect_s4_class(object, "DataFrame")
