@@ -2,24 +2,24 @@
 % Please edit documentation in R/AllGenerics.R, R/Tx2Gene-methods.R
 \name{Tx2Gene}
 \alias{Tx2Gene}
-\alias{Tx2Gene,matrix-method}
-\alias{Tx2Gene,data.frame-method}
 \alias{Tx2Gene,DataFrame-method}
 \alias{Tx2Gene,GRanges-method}
 \alias{Tx2Gene,GRangesList-method}
+\alias{Tx2Gene,data.frame-method}
+\alias{Tx2Gene,matrix-method}
 \title{Transcript-to-gene identifier mappings}
 \usage{
 Tx2Gene(object, ...)
-
-\S4method{Tx2Gene}{matrix}(object)
-
-\S4method{Tx2Gene}{data.frame}(object)
 
 \S4method{Tx2Gene}{DataFrame}(object)
 
 \S4method{Tx2Gene}{GRanges}(object)
 
 \S4method{Tx2Gene}{GRangesList}(object)
+
+\S4method{Tx2Gene}{data.frame}(object)
+
+\S4method{Tx2Gene}{matrix}(object)
 }
 \arguments{
 \item{object}{Object.}
@@ -35,7 +35,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2021-03-03.
+Updated 2021-08-03.
 }
 \examples{
 ## DataFrame ====

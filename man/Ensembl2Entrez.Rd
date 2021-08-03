@@ -3,28 +3,25 @@
 \name{Ensembl2Entrez}
 \alias{Ensembl2Entrez}
 \alias{Entrez2Ensembl}
+\alias{Ensembl2Entrez,GRanges-method}
 \alias{Ensembl2Entrez,character-method}
 \alias{Entrez2Ensembl,integer-method}
-\alias{Ensembl2Entrez,GRanges-method}
 \title{Ensembl-to-Entrez gene identifier mappings}
 \usage{
 Ensembl2Entrez(object, ...)
 
 Entrez2Ensembl(object, ...)
 
+\S4method{Ensembl2Entrez}{GRanges}(object, format = c("1:1", "long"))
+
 \S4method{Ensembl2Entrez}{character}(object, organism = NULL, format = c("1:1", "long"))
 
 \S4method{Entrez2Ensembl}{integer}(object, organism, format = c("1:1", "long"))
-
-\S4method{Ensembl2Entrez}{GRanges}(object, format = c("1:1", "long"))
 }
 \arguments{
 \item{object}{Object.}
 
 \item{...}{Additional arguments.}
-
-\item{organism}{\code{character(1)}.
-Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{format}{\code{character(1)}.
 Formatting method to apply:
@@ -36,6 +33,9 @@ Entrez will contain \code{NA} in \code{entrezId} column.
 \item \code{"long"}:
 Return 1:many in long format.
 }}
+
+\item{organism}{\code{character(1)}.
+Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
 \code{Ensembl2Entrez}.
@@ -44,7 +44,7 @@ Return 1:many in long format.
 Ensembl-to-Entrez gene identifier mappings
 }
 \note{
-Updated 2021-02-24.
+Updated 2021-08-03.
 }
 \examples{
 organism <- "Homo sapiens"

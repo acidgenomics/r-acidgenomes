@@ -170,6 +170,14 @@ formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
 #' @export
 setMethod(
     f = "Ensembl2Entrez",
+    signature = signature("GRanges"),
+    definition = `Ensembl2Entrez,GRanges`
+)
+
+#' @rdname Ensembl2Entrez
+#' @export
+setMethod(
+    f = "Ensembl2Entrez",
     signature = signature("character"),
     definition = `Ensembl2Entrez,character`
 )
@@ -180,12 +188,4 @@ setMethod(
     f = "Entrez2Ensembl",
     signature = signature("integer"),
     definition = `Entrez2Ensembl,integer`
-)
-
-#' @rdname Ensembl2Entrez
-#' @export
-setMethod(
-    f = "Ensembl2Entrez",
-    signature = signature("GRanges"),
-    definition = `Ensembl2Entrez,GRanges`
 )
