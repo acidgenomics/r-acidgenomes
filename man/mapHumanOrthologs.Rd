@@ -38,7 +38,7 @@ Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
 currently supported.
 }
 \note{
-Updated 2021-04-27.
+Updated 2021-08-03.
 }
 \examples{
 genes <- c(
