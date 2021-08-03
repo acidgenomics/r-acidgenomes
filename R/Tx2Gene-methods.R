@@ -54,31 +54,45 @@ NULL
 
 
 
-## Updated 2021-03-03.
+## Updated 2021-08-03.
 `Tx2Gene,DataFrame` <-  # nolint
     function(object) {
         assert(hasColnames(object))
         meta <- metadata(object)
-        meta[c("call", "synonyms")] <- NULL
-        colnames(object) <- camelCase(colnames(object), strict = TRUE)
-        colnames(object) <- gsub(
-            pattern = "^transcript",
-            replacement = "tx",
-            x = colnames(object)
-        )
         cols <- c("txId", "geneId")
+        if (!isSubset(cols, colnames(object))) {
+            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+            colnames(object) <- gsub(
+                pattern = "^transcript",
+                replacement = "tx",
+                x = colnames(object)
+            )
+        }
         assert(
             isSubset(cols, colnames(object)),
             hasRows(object)
         )
         object <- object[, cols, drop = FALSE]
-        object <- object[complete.cases(object), , drop = FALSE]
-        ## Harden against `CharacterList` input, which can happen when
-        ## passing from transcripts generated via TxDb.
         object <- decode(object)
         assert(allAreAtomic(object))
         object <- unique(object)
-        assert(hasNoDuplicates(object[[1L]]))
+        keep <- complete.cases(object)
+        if (!all(keep)) {
+            meta[["dropped"]] <- which(!keep)
+            n <- sum(!keep)
+            alertWarning(sprintf(
+                "Dropping %d %s without defined transcript-to-gene mapping.",
+                n,
+                ngettext(
+                    n = n,
+                    msg1 = "identifier",
+                    msg2 = "identifiers"
+                )
+            ))
+            object <- object[keep, , drop = FALSE]
+            assert(hasRows(object))
+        }
+        assert(hasNoDuplicates(object[[cols[[1L]]]]))
         object <- object[order(object), , drop = FALSE]
         metadata(object) <- meta
         new(Class = "Tx2Gene", object)
@@ -96,14 +110,14 @@ NULL
 
 
 
-## Updated 2021-01-29.
+## Updated 2021-08-03.
 `Tx2Gene,GRangesList` <-  # nolint
     function(object) {
         x <- as(object, "GRangesList")
         x <- unname(x)
         gr <- unlist(x)
         assert(is(gr, "GRanges"))
-        Tx2Gene(object = gr)
+        Tx2Gene(gr)
     }
 
 
