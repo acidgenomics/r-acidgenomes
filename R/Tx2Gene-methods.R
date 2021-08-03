@@ -1,7 +1,3 @@
-## FIXME Ensure NA values don't propagate here.
-
-
-
 #' @name Tx2Gene
 #' @inherit Tx2Gene-class title description return
 #'
