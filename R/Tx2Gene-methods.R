@@ -1,8 +1,12 @@
+## FIXME Ensure NA values don't propagate here.
+
+
+
 #' @name Tx2Gene
 #' @inherit Tx2Gene-class title description return
 #'
 #' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-03-03.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -39,16 +43,6 @@ NULL
 
 
 
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
-    signature = signature("matrix"),
-    definition = `Tx2Gene,matrix`
-)
-
-
-
 ## Updated 2020-01-29.
 `Tx2Gene,data.frame` <-  # nolint
     function(object) {
@@ -57,16 +51,6 @@ setMethod(
         object <- as(object, "DataFrame")
         Tx2Gene(object)
     }
-
-
-
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
-    signature = signature("data.frame"),
-    definition = `Tx2Gene,data.frame`
-)
 
 
 
@@ -102,16 +86,6 @@ setMethod(
 
 
 
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
-    signature = signature("DataFrame"),
-    definition = `Tx2Gene,DataFrame`
-)
-
-
-
 ## Updated 2021-01-29.
 `Tx2Gene,GRanges` <-  # nolint
     function(object) {
@@ -119,16 +93,6 @@ setMethod(
         metadata(df) <- metadata(object)
         Tx2Gene(df)
     }
-
-
-
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
-    signature = signature("GRanges"),
-    definition = `Tx2Gene,GRanges`
-)
 
 
 
@@ -143,6 +107,38 @@ setMethod(
     }
 
 
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("matrix"),
+    definition = `Tx2Gene,matrix`
+)
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("data.frame"),
+    definition = `Tx2Gene,data.frame`
+)
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("DataFrame"),
+    definition = `Tx2Gene,DataFrame`
+)
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("GRanges"),
+    definition = `Tx2Gene,GRanges`
+)
 
 #' @rdname Tx2Gene
 #' @export
