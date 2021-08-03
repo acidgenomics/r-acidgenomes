@@ -45,7 +45,7 @@ downloadUCSCGenome <-
         organism,
         genomeBuild = NULL,
         outputDir = ".",
-        cache = FALSE
+        cache = TRUE
     ) {
         assert(
             isOrganism(organism),

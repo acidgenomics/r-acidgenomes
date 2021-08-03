@@ -9,7 +9,7 @@ downloadRefSeqGenome(
   taxonomicGroup = NULL,
   genomeBuild = NULL,
   outputDir = ".",
-  cache = FALSE
+  cache = TRUE
 )
 }
 \arguments{
