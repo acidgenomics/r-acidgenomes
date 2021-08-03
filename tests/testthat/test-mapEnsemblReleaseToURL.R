@@ -1,6 +1,6 @@
 ## This code depends on Ensembl server, which can time out.
 
-context("extra | mapEnsemblReleaseToURL")
+context("mapEnsemblReleaseToURL")
 
 skip_if_not(hasInternet(url = "https://ensembl.org/"))
 
