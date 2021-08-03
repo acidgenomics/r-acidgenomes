@@ -7,6 +7,14 @@ data(
 gr <- GRanges
 
 ## nolint start
+CompressedIntegerList <- structure(
+    .Data = "CompressedIntegerList",
+    package = "IRanges"
+)
+Rle <- structure(
+    .Data = "Rle",
+    package = "S4Vectors"
+)
 DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
 ## nolint end
@@ -287,5 +295,3 @@ gffs <- c(
         protocol = "ftp"
     )
 )
-
-options(acid.test = TRUE)
