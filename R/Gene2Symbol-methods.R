@@ -66,6 +66,8 @@ NULL
         )
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
+        assert(allAreAtomic(object))
+        object <- unique(object)
         keep <- complete.cases(object)
         if (!all(keep)) {
             ## e.g. applies to Ensembl Mus musculus GRCm39 104.
@@ -136,7 +138,11 @@ NULL
                 dimnames(object) <- list(object[[1L]], cols)
             }
         )
-        assert(is(object, "DataFrame"))
+        assert(
+            is(object, "DataFrame"),
+            hasNoDuplicates(object[[cols[[1L]]]])
+        )
+        object <- object[order(object), , drop = FALSE]
         metadata(object) <- meta
         new(Class = "Gene2Symbol", object)
     }
@@ -147,7 +153,6 @@ NULL
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, format) {
         df <- as(object, "DataFrame")
-        df <- unique(df)
         metadata(df) <- metadata(object)
         Gene2Symbol(object = df, format = format)
     }
