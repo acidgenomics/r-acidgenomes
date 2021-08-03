@@ -1,13 +1,10 @@
-## FIXME Add file caching option.
-## FIXME Call to `.cacheIt` here when `cache = TRUE`.
-
 #' Download multiple genome files in a single call
 #'
 #' @note Updated 2021-08-03.
 #' @noRd
 #'
 #' @return `character`
-#'   Destination files.
+#'   Local file paths.
 .downloadURLs <- function(
     urls,
     outputDir,
