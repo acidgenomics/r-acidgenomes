@@ -1,7 +1,7 @@
 #' Map input to human gene orthologs
 #'
 #' @export
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-03.
 #'
 #' @details
 #' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
@@ -100,7 +100,23 @@ mapHumanOrthologs <- function(
     }
     map <- as(map, "DataFrame")
     colnames(map) <- c("geneId", "humanGeneId")
-    map <- map[complete.cases(map), , drop = FALSE]
+    map <- sanitizeNA(map)
+    keep <- complete.cases(map)
+    if (!all(keep)) {
+        n <- sum(!keep)
+        failures <- sort(unique(map[which(!keep), "geneId"]))
+        alertWarning(sprintf(
+            "%d match %s: %s",
+            n,
+            ngettext(
+                n = n,
+                msg1 = "failure",
+                msg2 = "failures"
+            ),
+            toString(fails, width = 200L)
+        ))
+        map <- map[keep, , drop = FALSE]
+    }
     map <- map[order(map), , drop = FALSE]
     keep <- !duplicated(map[["geneId"]])
     if (!all(keep)) {
@@ -134,12 +150,13 @@ mapHumanOrthologs <- function(
                 msg2 = "identifiers"
             )
         ))
+        map <- map[keep, , drop = FALSE]
     }
-    map <- map[keep, , drop = FALSE]
     assert(
         hasRows(map),
         hasNoDuplicates(map[["geneId"]]),
-        hasNoDuplicates(map[["humanGeneId"]])
+        hasNoDuplicates(map[["humanGeneId"]]),
+        isTRUE(all(complete.cases(map)))
     )
     alertInfo(sprintf(
         "%d gene %s mapped 1:1 from {.emph %s} to {.emph %s}.",
