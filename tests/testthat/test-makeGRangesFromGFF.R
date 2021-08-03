@@ -15,7 +15,7 @@ test_that("bcbio `ref-transcripts.gtf` file", {
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
-Rle <- structure("Rle", package = "S4Vectors")  # nolint
+
 file <- gffs[["ensembl_grch38_gtf"]]
 
 test_that("GTF genes", {

@@ -3,9 +3,6 @@
 localOrRemoteFile <- pipette::localOrRemoteFile
 pasteURL <- acidbase::pasteURL
 
-## Enable this for even more verbose checks.
-checkAgainstTxDb <- TRUE
-
 levels <- c("genes", "transcripts")
 
 files <- list(
@@ -116,8 +113,7 @@ mapply(
                 FUN = function(level, length) {
                     object <- makeGRangesFromGFF(
                         file = file,
-                        level = level,
-                        .checkAgainstTxDb = checkAgainstTxDb
+                        level = level
                     )
                     expect_s4_class(object, "GRanges")
                     expect_identical(length(object), length)
@@ -147,8 +143,7 @@ test_that("GTF", {
             suppressWarnings({
                 object <- makeGRangesFromGFF(
                     file = file,
-                    level = level,
-                    .checkAgainstTxDb = checkAgainstTxDb
+                    level = level
                 )
             })
             expect_s4_class(object, "GRanges")
@@ -189,8 +184,7 @@ mapply(
                 FUN = function(level, length) {
                     object <- makeGRangesFromGFF(
                         file = file,
-                        level = level,
-                        .checkAgainstTxDb = checkAgainstTxDb
+                        level = level
                     )
                     expect_s4_class(object, "GRanges")
                     expect_identical(length(object), length)
@@ -231,8 +225,7 @@ mapply(
                 FUN = function(level, length) {
                     object <- makeGRangesFromGFF(
                         file = file,
-                        level = level,
-                        .checkAgainstTxDb = FALSE
+                        level = level
                     )
                     ## > expect_s4_class(object, class)
                     expect_identical(length(object), length)
@@ -259,8 +252,7 @@ test_that("GTF", {
         FUN = function(level, length) {
             object <- makeGRangesFromGFF(
                 file = file,
-                level = level,
-                .checkAgainstTxDb = checkAgainstTxDb
+                level = level
             )
             expect_s4_class(object, "GRanges")
             expect_identical(length(object), length)
