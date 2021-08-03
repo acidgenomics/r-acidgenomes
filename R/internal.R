@@ -8,7 +8,7 @@
 .downloadURLs <- function(
     urls,
     outputDir,
-    cache = FALSE
+    cache
 ) {
     assert(
         allAreURLs(urls),
