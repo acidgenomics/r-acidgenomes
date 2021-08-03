@@ -10,7 +10,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -41,13 +41,15 @@ downloadRefSeqGenome <-
         organism,
         taxonomicGroup = NULL,
         genomeBuild = NULL,
-        outputDir = "."
+        outputDir = ".",
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),
             isString(taxonomicGroup, nullOK = TRUE),
             isString(genomeBuild, nullOK = TRUE),
-            isString(outputDir)
+            isString(outputDir),
+            isFlag(cache)
         )
         release <- currentRefSeqVersion()
         baseURL <- .getRefSeqGenomeURL(
@@ -83,7 +85,8 @@ downloadRefSeqGenome <-
         args <- list(
             "genomeBuild" = genomeBuild,
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL
+            "releaseURL" = releaseURL,
+            "cache" = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -111,12 +114,13 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadRefSeqAnnotation <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "gff" = pasteURL(
@@ -130,7 +134,8 @@ downloadRefSeqGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "annotation")
+            outputDir = file.path(outputDir, "annotation"),
+            cache = cache
         )
         gffFile <- files[["gff"]]
         gtfFile <- files[["gtf"]]
@@ -186,12 +191,13 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-02-17.
+## Updated 2021-08-03.
 .downloadRefSeqGenome <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -201,7 +207,8 @@ downloadRefSeqGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "genome")
+            outputDir = file.path(outputDir, "genome"),
+            cache = cache
         )
         ## Create FASTA symlink.
         if (!isWindows()) {
@@ -227,12 +234,13 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-08-03.
 .downloadRefSeqMetadata <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "readme" = pasteURL(releaseURL, "README.txt"),
@@ -254,18 +262,21 @@ downloadRefSeqGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "metadata")
+            outputDir = file.path(outputDir, "metadata"),
+            cache = cache
         )
         invisible(list("files" = files, "urls" = urls))
     }
 
 
-## Updated 2021-02-17.
+
+## Updated 2021-08-03.
 .downloadRefSeqTranscriptome <-
     function(
         genomeBuild,
         outputDir,
-        releaseURL
+        releaseURL,
+        cache
     ) {
         urls <- c(
             "fasta" = pasteURL(
@@ -275,7 +286,8 @@ downloadRefSeqGenome <-
         )
         files <- .downloadURLs(
             urls = urls,
-            outputDir = file.path(outputDir, "transcriptome")
+            outputDir = file.path(outputDir, "transcriptome"),
+            cache = cache
         )
         ## Create FASTA symlink.
         if (!isWindows()) {
