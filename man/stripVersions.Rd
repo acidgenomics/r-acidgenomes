@@ -10,7 +10,7 @@
 \alias{stripTranscriptVersions,Matrix-method}
 \alias{stripTranscriptVersions,character-method}
 \alias{stripTranscriptVersions,matrix-method}
-\title{Strip transcript identifier versions}
+\title{Strip gene or transcript identifier versions}
 \usage{
 stripGeneVersions(object, ...)
 
