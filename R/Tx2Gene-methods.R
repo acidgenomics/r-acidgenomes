@@ -112,22 +112,6 @@ NULL
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("matrix"),
-    definition = `Tx2Gene,matrix`
-)
-
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
-    signature = signature("data.frame"),
-    definition = `Tx2Gene,data.frame`
-)
-
-#' @rdname Tx2Gene
-#' @export
-setMethod(
-    f = "Tx2Gene",
     signature = signature("DataFrame"),
     definition = `Tx2Gene,DataFrame`
 )
@@ -146,4 +130,20 @@ setMethod(
     f = "Tx2Gene",
     signature = signature("GRangesList"),
     definition = `Tx2Gene,GRangesList`
+)
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("data.frame"),
+    definition = `Tx2Gene,data.frame`
+)
+
+#' @rdname Tx2Gene
+#' @export
+setMethod(
+    f = "Tx2Gene",
+    signature = signature("matrix"),
+    definition = `Tx2Gene,matrix`
 )
