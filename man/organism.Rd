@@ -3,12 +3,12 @@
 \name{organism}
 \alias{organism}
 \alias{organism<-}
-\alias{organism,matrix-method}
-\alias{organism,Matrix-method}
-\alias{organism,data.frame-method}
 \alias{organism,Annotated-method}
 \alias{organism,DataFrame-method}
 \alias{organism,GRanges-method}
+\alias{organism,Matrix-method}
+\alias{organism,data.frame-method}
+\alias{organism,matrix-method}
 \alias{organism<-,Annotated-method}
 \title{Organism}
 \usage{
@@ -16,17 +16,17 @@ organism(object)
 
 organism(object) <- value
 
-\S4method{organism}{matrix}(object)
-
-\S4method{organism}{Matrix}(object)
-
-\S4method{organism}{data.frame}(object)
-
 \S4method{organism}{Annotated}(object)
 
 \S4method{organism}{DataFrame}(object)
 
 \S4method{organism}{GRanges}(object)
+
+\S4method{organism}{Matrix}(object)
+
+\S4method{organism}{data.frame}(object)
+
+\S4method{organism}{matrix}(object)
 
 \S4method{organism}{Annotated}(object) <- value
 }
@@ -43,7 +43,7 @@ Latin organism name (e.g. \emph{Homo sapiens}).
 Organism
 }
 \note{
-Updated 2021-02-01.
+Updated 2021-08-03.
 }
 \examples{
 ## DataFrame ====
@@ -65,5 +65,5 @@ x <- organism(df)
 print(x)
 }
 \seealso{
-[detectOrganism()][.
+\code{detectOrganism()}.
 }
