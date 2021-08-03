@@ -1,3 +1,9 @@
+## FIXME Split out to separate file and improve documentation here...
+
+
+
+#' Strip gene or transcript identifier versions
+#'
 #' @name stripVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
 #' @note Updated 2021-08-03.
