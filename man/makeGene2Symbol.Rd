@@ -12,19 +12,19 @@ makeGene2SymbolFromEnsembl(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = TRUE,
-  format = c("makeUnique", "unmodified", "1:1")
+  format = c("makeUnique", "1:1", "unmodified")
 )
 
 makeGene2SymbolFromEnsDb(
   object,
   ignoreVersion = TRUE,
-  format = c("makeUnique", "unmodified", "1:1")
+  format = c("makeUnique", "1:1", "unmodified")
 )
 
 makeGene2SymbolFromGFF(
   file,
   ignoreVersion = TRUE,
-  format = c("makeUnique", "unmodified", "1:1")
+  format = c("makeUnique", "1:1", "unmodified")
 )
 }
 \arguments{
@@ -83,7 +83,7 @@ object or annotation package.
 }}
 
 \note{
-Updated 2021-03-10.
+Updated 2021-08-03.
 }
 \section{GFF/GTF file}{
 
