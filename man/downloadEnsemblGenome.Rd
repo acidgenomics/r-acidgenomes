@@ -8,7 +8,8 @@ downloadEnsemblGenome(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  outputDir = "."
+  outputDir = ".",
+  cache = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ ensembldb in use.}
 
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
+
+\item{cache}{\code{logical(1)}.
+Cache URLs locally, using BiocFileCache internally.}
 }
 \value{
 Invisible \code{list}.
@@ -37,7 +41,7 @@ Invisible \code{list}.
 Download Ensembl reference genome
 }
 \note{
-Updated 2021-02-17.
+Updated 2021-08-03.
 }
 \examples{
 ## This example is bandwidth intensive.
