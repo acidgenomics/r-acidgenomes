@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-03-10.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -26,6 +26,7 @@ getEnsDb <- function(
     )
     organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
     if (isString(genomeBuild)) {
+        ## FIXME This also needs to pass the Ensembl version...
         remap <- tryCatch(
             expr = mapUCSCBuildToNCBI(genomeBuild),
             error = function(e) NULL
@@ -41,14 +42,29 @@ getEnsDb <- function(
                 ucsc, ensembl
             ))
             genomeBuild <- ensembl
-            rm(remap, ucsc, ensembl)
         }
-        ## Sanitize patch builds (e.g. "GRCh38.p13" to simply "GRCh38")
-        genomeBuild <- sub(
-            pattern = "\\.p[0-9]+$",
-            replacement = "",
-            x = genomeBuild
-        )
+        ## Sanitize specific genome patch builds (e.g. "GRCh38.p13" to
+        ## simply "GRCh38"). Drosophila melanogaster ensembldb objects do not
+        ## follow these naming conventions (e.g. "BDGP6", "BDGP6.32").
+        if (
+            identical(organism, "Homo sapiens") &&
+            isMatchingRegex(
+                pattern = "^GRCh38\\.p[0-9]+$",
+                x = genomeBuild
+            )
+        ) {
+            originalGenomeBuild <- genomeBuild
+            genomeBuild <- sub(
+                pattern = "\\.p[0-9]+$",
+                replacement = "",
+                x = genomeBuild
+            )
+            alertInfo(sprintf(
+                "Sanitizing {.var %s} genome build to {.var %s}.",
+                originalGenomeBuild,
+                genomeBuild
+            ))
+        }
     }
     if (
         identical(tolower(organism), "homo sapiens") &&
@@ -73,9 +89,11 @@ getEnsDb <- function(
 
 
 
+## FIXME Should we not sanitize the genome Build to simple name here?
+
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-03.
 #' @noRd
 #'
 #' @examples
@@ -158,13 +176,18 @@ getEnsDb <- function(
     assert(is(ahs, "AnnotationHub"))
     ## Get the AnnotationHub from the metadata columns.
     mcols <- mcols(ahs, use.names = TRUE)
+    ## FIXME This step is failing for "Drosophila melanogaster" with "BDGP6".
+    ## FIXME This needs to match the genomeBuild more precisely.
+    ## "BDGP6" needs to match exactly and not allow propagation of "BDGP6.32",
+    ## for example.
     assert(
         all(mcols[["dataprovider"]] == "Ensembl"),
         all(mcols[["preparerclass"]] == preparerclass),
         all(mcols[["rdataclass"]] == rdataclass),
         all(mcols[["sourcetype"]] == "ensembl"),
         all(tolower(mcols[["genome"]]) == tolower(genomeBuild)),
-        all(tolower(mcols[["species"]]) == tolower(organism))
+        all(tolower(mcols[["species"]]) == tolower(organism)),
+        msg = "Invalid metadata returned from AnnotationHub query."
     )
     ## Sort the entries by Ensembl release as integer instead of AH identifier.
     ## Updates can otherwise mess up the expected order, for example:
