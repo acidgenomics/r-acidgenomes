@@ -8,9 +8,9 @@
 \usage{
 Gene2Symbol(object, ...)
 
-\S4method{Gene2Symbol}{DataFrame}(object, format = c("makeUnique", "unmodified", "1:1"))
+\S4method{Gene2Symbol}{DataFrame}(object, format = c("makeUnique", "1:1", "unmodified"))
 
-\S4method{Gene2Symbol}{GRanges}(object, format = c("makeUnique", "unmodified", "1:1"))
+\S4method{Gene2Symbol}{GRanges}(object, format = c("makeUnique", "1:1", "unmodified"))
 }
 \arguments{
 \item{object}{Object.}
