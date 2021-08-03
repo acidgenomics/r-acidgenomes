@@ -1,7 +1,3 @@
-## FIXME Need to ensure we handle NA values correctly here.
-
-
-
 #' @name Gene2Symbol
 #' @inherit Gene2Symbol-class title description return
 #'
@@ -10,7 +6,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-06-09.
+#' @note Updated 2021-08-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -50,9 +46,12 @@ NULL
 
 
 
-## Updated 2021-06-09.
+## Updated 2021-08-03.
 `Gene2Symbol,DataFrame` <-  # nolint
-    function(object, format = c("makeUnique", "unmodified", "1:1")) {
+    function(
+        object,
+        format = c("makeUnique", "unmodified", "1:1")
+    ) {
         format <- match.arg(format)
         cols <- c("geneId", "geneName")
         if (!isSubset(cols, colnames(object))) {
@@ -62,7 +61,23 @@ NULL
             hasRows(object),
             isSubset(cols, colnames(object))
         )
-        df <- decode(object[, cols])
+        df <- decode(object[, cols, drop = FALSE])
+        keep <- complete.cases(df)
+        if (!all(keep)) {
+            ## e.g. applies to Ensembl Mus musculus GRCm39 104.
+            n <- sum(!keep)
+            alertWarning(sprintf(
+                "Dropping %d %s without defined gene symbol.",
+                n,
+                ngettext(
+                    n = n,
+                    msg1 = "identifier",
+                    msg2 = "identifiers"
+                )
+            ))
+            df <- df[keep, , drop = FALSE]
+            assert(hasRows(df))
+        }
         ## Allow coercion of integer gene identifiers (e.g. NCBI Entrez).
         if (is.integer(df[[cols[[1L]]]])) {
             df[[cols[[1L]]]] <- as.character(df[[cols[[1L]]]])
@@ -124,13 +139,13 @@ NULL
 
 
 
-## Updated 2019-07-22.
+## Updated 2021-08-03.
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, format) {
         df <- as(object, "DataFrame")
         df <- unique(df)
         metadata(df) <- metadata(object)
-        do.call(what = Gene2Symbol, args = list(object = df, format = format))
+        Gene2Symbol(object = df, format = format)
     }
 
 formals(`Gene2Symbol,GRanges`) <- formals(`Gene2Symbol,DataFrame`)
