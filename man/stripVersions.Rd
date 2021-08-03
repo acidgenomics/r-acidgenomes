@@ -4,29 +4,29 @@
 \alias{stripGeneVersions}
 \alias{stripTranscriptVersions}
 \alias{stripVersions}
-\alias{stripGeneVersions,character-method}
-\alias{stripTranscriptVersions,character-method}
-\alias{stripGeneVersions,matrix-method}
-\alias{stripTranscriptVersions,matrix-method}
 \alias{stripGeneVersions,Matrix-method}
+\alias{stripGeneVersions,character-method}
+\alias{stripGeneVersions,matrix-method}
 \alias{stripTranscriptVersions,Matrix-method}
+\alias{stripTranscriptVersions,character-method}
+\alias{stripTranscriptVersions,matrix-method}
 \title{Strip transcript identifier versions}
 \usage{
 stripGeneVersions(object, ...)
 
 stripTranscriptVersions(object, ...)
 
-\S4method{stripGeneVersions}{character}(object)
+\S4method{stripGeneVersions}{Matrix}(object)
 
-\S4method{stripTranscriptVersions}{character}(object)
+\S4method{stripGeneVersions}{character}(object)
 
 \S4method{stripGeneVersions}{matrix}(object)
 
-\S4method{stripTranscriptVersions}{matrix}(object)
-
-\S4method{stripGeneVersions}{Matrix}(object)
-
 \S4method{stripTranscriptVersions}{Matrix}(object)
+
+\S4method{stripTranscriptVersions}{character}(object)
+
+\S4method{stripTranscriptVersions}{matrix}(object)
 }
 \arguments{
 \item{object}{Object.}
@@ -45,7 +45,7 @@ Intentionally does not strip gene versions, if defined in the object.
 To perform that action in parallel, use \code{stripVersions} instead.
 }
 \note{
-Updated 2021-01-27.
+Updated 2021-08-03.
 
 This method is strict, and will only strip Ensembl transcript IDs
 beginning with "ENS".
