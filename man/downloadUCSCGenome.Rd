@@ -4,7 +4,12 @@
 \alias{downloadUCSCGenome}
 \title{Download UCSC reference genome}
 \usage{
-downloadUCSCGenome(organism, genomeBuild = NULL, outputDir = ".")
+downloadUCSCGenome(
+  organism,
+  genomeBuild = NULL,
+  outputDir = ".",
+  cache = FALSE
+)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -17,6 +22,9 @@ Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
+
+\item{cache}{\code{logical(1)}.
+Cache URLs locally, using BiocFileCache internally.}
 }
 \value{
 Invisible \code{list}.
@@ -25,7 +33,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2021-02-17.
+Updated 2021-08-03.
 }
 \section{Genome}{
 
