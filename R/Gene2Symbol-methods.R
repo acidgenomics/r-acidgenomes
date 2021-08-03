@@ -1,3 +1,7 @@
+## FIXME Need to ensure we handle NA values correctly here.
+
+
+
 #' @name Gene2Symbol
 #' @inherit Gene2Symbol-class title description return
 #'
@@ -120,16 +124,6 @@ NULL
 
 
 
-#' @rdname Gene2Symbol
-#' @export
-setMethod(
-    f = "Gene2Symbol",
-    signature = signature("DataFrame"),
-    definition = `Gene2Symbol,DataFrame`
-)
-
-
-
 ## Updated 2019-07-22.
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, format) {
@@ -142,6 +136,14 @@ setMethod(
 formals(`Gene2Symbol,GRanges`) <- formals(`Gene2Symbol,DataFrame`)
 
 
+
+#' @rdname Gene2Symbol
+#' @export
+setMethod(
+    f = "Gene2Symbol",
+    signature = signature("DataFrame"),
+    definition = `Gene2Symbol,DataFrame`
+)
 
 #' @rdname Gene2Symbol
 #' @export
