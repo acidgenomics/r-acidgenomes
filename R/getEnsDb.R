@@ -174,7 +174,7 @@ getEnsDb <- function(
         all(mcols[["preparerclass"]] == preparerclass),
         all(mcols[["rdataclass"]] == rdataclass),
         all(mcols[["sourcetype"]] == "ensembl"),
-        msg = "Invalid metadata returned from AnnotationHub query."
+        msg = "No entry matched on AnnotationHub."
     )
     ## Sort the entries by Ensembl release as integer instead of AH identifier.
     ## Updates can otherwise mess up the expected order, for example:
