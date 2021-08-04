@@ -113,7 +113,7 @@ mapHumanOrthologs <- function(
                 msg1 = "failure",
                 msg2 = "failures"
             ),
-            toString(fails, width = 200L)
+            toString(failures, width = 200L)
         ))
         map <- map[keep, , drop = FALSE]
     }
