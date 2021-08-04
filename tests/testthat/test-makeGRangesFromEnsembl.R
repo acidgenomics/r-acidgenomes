@@ -157,49 +157,6 @@ test_that("Organism with 3 words", {
     expect_s4_class(x, "EnsemblGenes")
 })
 
-## Note that we're running at transcript level here to check the gene merge.
-##
-## Potential issues:
-## - *Caenorhabditis elegans*
-##     - Invalid transcript identifiers.
-## - *Canis familiaris*
-##     - Using the full *Canis lupus familiaris* won't match.
-## - *Saccharomyces cerevisiae*
-##     - Invalid gene identifiers.
-##     - Iinvalid transcript identifiers.
-##     - No gene names.
-
-## FIXME This needs to set a specific Ensembl release version.
-## FIXME Don't allow the user to set an Ensembl release version when
-## UCSC genome is passed in.
-
-test_that("UCSC genome build support", {
-    map <- import(
-        file = system.file(
-            "extdata", "map-genome-build.rds",
-            package = .pkgName
-        ),
-        quiet = TRUE
-    )
-    keep <- as.logical(map[["ensembldb"]])
-    map <- map[keep, , drop = FALSE]
-    mapply(
-        organism = map[["organism"]],
-        genomeBuild = map[["ucsc"]],
-        FUN = function(organism, genomeBuild) {
-            print(organism)
-            print(genomeBuild)
-            object <- makeGRangesFromEnsembl(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                level = "transcripts"
-            )
-            expect_s4_class(object, "EnsemblTranscripts")
-        },
-        SIMPLIFY = FALSE
-    )
-})
-
 test_that("Invalid parameters", {
     ## Currently only supports releases back to Ensembl 87.
     expect_error(
