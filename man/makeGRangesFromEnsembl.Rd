@@ -96,7 +96,7 @@ coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
 }}
 
 \note{
-Updated 2021-04-27.
+Updated 2021-08-04.
 }
 \section{Broad class definitions}{
 
