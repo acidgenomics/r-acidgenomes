@@ -84,7 +84,7 @@
 #' ```
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
