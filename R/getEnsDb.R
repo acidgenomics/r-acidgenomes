@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-08-03.
+#' @note Updated 2021-08-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -25,47 +25,6 @@ getEnsDb <- function(
         isInt(release, nullOK = TRUE)
     )
     organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
-    if (isString(genomeBuild)) {
-        ## FIXME This also needs to pass the Ensembl version...
-        remap <- tryCatch(
-            expr = mapUCSCBuildToNCBI(genomeBuild),
-            error = function(e) NULL
-        )
-        if (hasLength(remap)) {
-            ucsc <- names(remap)
-            ensembl <- unname(remap)
-            alertWarning(sprintf(
-                fmt = paste(
-                    "Remapping genome build from UCSC ({.val %s}) to",
-                    "Ensembl ({.val %s})."
-                ),
-                ucsc, ensembl
-            ))
-            genomeBuild <- ensembl
-        }
-        ## Sanitize specific genome patch builds (e.g. "GRCh38.p13" to
-        ## simply "GRCh38"). Drosophila melanogaster ensembldb objects do not
-        ## follow these naming conventions (e.g. "BDGP6", "BDGP6.32").
-        if (
-            identical(organism, "Homo sapiens") &&
-            isMatchingRegex(
-                pattern = "^GRCh38\\.p[0-9]+$",
-                x = genomeBuild
-            )
-        ) {
-            originalGenomeBuild <- genomeBuild
-            genomeBuild <- sub(
-                pattern = "\\.p[0-9]+$",
-                replacement = "",
-                x = genomeBuild
-            )
-            alertInfo(sprintf(
-                "Sanitizing {.var %s} genome build to {.var %s}.",
-                originalGenomeBuild,
-                genomeBuild
-            ))
-        }
-    }
     if (
         identical(tolower(organism), "homo sapiens") &&
         (

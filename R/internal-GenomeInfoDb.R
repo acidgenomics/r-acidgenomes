@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-08-04.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -69,7 +69,10 @@
         x <- getGFFMetadata(x)
     }
     assert(is.list(x))
-    if (!isSubset(x = c("genomeBuild", "organism", "provider"), y = names(x))) {
+    if (!isSubset(
+        x = c("genomeBuild", "organism", "provider"),
+        y = names(x))
+    ) {
         return(NULL)
     }
     assert(
@@ -107,7 +110,7 @@
                 },
                 "GENCODE" = {
                     GenomeInfoDb::Seqinfo(
-                        genome = mapNCBIBuildToUCSC(x[["genomeBuild"]])
+                        genome = .mapGenomeBuildToUCSC(x[["genomeBuild"]])
                     )
                 },
                 "RefSeq" = {
