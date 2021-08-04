@@ -115,7 +115,7 @@ test_that("Transcripts", {
     )
 })
 
-test_that("GRCh37 (hg19)", {
+test_that("GRCh37", {
     ## Conditionally test if optional EnsDb.Hsapiens.v75 package is installed.
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     ## Genes
@@ -138,15 +138,6 @@ test_that("GRCh37 (hg19)", {
     expect_is(object, "EnsemblTranscripts")
     expect_identical(length(object), 215647L)
     expect_identical(head(names(object), 1L), "ENST00000478759")
-})
-
-test_that("UCSC identifier matching (hg38)", {
-    x <- makeGRangesFromEnsembl(
-        organism = "Homo sapiens",
-        level = "genes",
-        genomeBuild = "hg38"
-    )
-    expect_s4_class(x, "EnsemblGenes")
 })
 
 test_that("Organism with 3 words", {
