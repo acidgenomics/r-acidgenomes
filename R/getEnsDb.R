@@ -48,11 +48,9 @@ getEnsDb <- function(
 
 
 
-## FIXME Should we not sanitize the genome Build to simple name here?
-
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-08-03.
+#' @note Updated 2021-08-04.
 #' @noRd
 #'
 #' @examples
@@ -72,11 +70,11 @@ getEnsDb <- function(
     )
     ## Standardize organism name, if necessary.
     organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
-    ## ensembldb always uses two words for organisms, instead of matching the
-    ## Ensembl name exactly. This can mismatch with some organisms. For example,
-    ## the dog genome is named "Canis lupus familiaris" on Ensembl but matches
-    ## against "Canis familiaris" only with ensembldb. Check for this rare edge
-    ## case and inform the user.
+    ## The ensembldb package always uses two words for organisms, instead of
+    ## matching the Ensembl name exactly. This can mismatch with some organisms.
+    ## For example, the dog genome is named "Canis lupus familiaris" on Ensembl
+    ## but matches against "Canis familiaris" only with ensembldb. Check for
+    ## this rare edge case and inform the user.
     pattern <- "^([a-z]+)\\s[a-z]+\\s([a-z]+)$"
     if (isTRUE(grepl(pattern = pattern, x = organism, ignore.case = TRUE))) {
         fullOrganism <- organism
@@ -92,7 +90,7 @@ getEnsDb <- function(
         ))
     }
     assert(isOrganism(organism))
-    ## Coerce integerish (e.g. 90) to integer (e.g. 90L).
+    ## Coerce integerish value (e.g. "90") to integer (e.g. "90L").
     if (isInt(release)) {
         release <- as.integer(release)
     }
@@ -135,17 +133,47 @@ getEnsDb <- function(
     assert(is(ahs, "AnnotationHub"))
     ## Get the AnnotationHub from the metadata columns.
     mcols <- mcols(ahs, use.names = TRUE)
-    ## FIXME This step is failing for "Drosophila melanogaster" with "BDGP6".
-    ## FIXME This needs to match the genomeBuild more precisely.
-    ## "BDGP6" needs to match exactly and not allow propagation of "BDGP6.32",
-    ## for example.
+    assert(isSubset(
+        x = c(
+            "dataprovider",
+            "genome",
+            "species",
+            "tags",
+            "title"
+        ),
+        y = colnames(mcols)
+    ))
+    ## Ensure organism (species) matches exactly.
+    keep <- mcols[["species"]] == organism
+    mcols <- mcols[keep, , drop = FALSE]
+    ## Ensure genome build matches exactly.
+    if (!is.null(genomeBuild)) {
+        keep <- mcols[["genome"]] == genomeBuild
+        mcols <- mcols[keep, , drop = FALSE]
+    }
+    ## Ensure release version matches exactly.
+    if (!is.null(release)) {
+        keep <- grepl(
+            pattern = paste0("\\b", release, "\\b"),
+            x = mcols[["title"]]
+        )
+        mcols <- mcols[keep, , drop = FALSE]
+        keep <- vapply(
+            X = mcols[["tags"]],
+            FUN = function(tags) {
+                release %in% tags
+            },
+            FUN.VALUE = logical(1L),
+            USE.NAMES = FALSE
+        )
+        mcols <- mcols[keep, , drop = FALSE]
+    }
     assert(
+        hasRows(mcols),
         all(mcols[["dataprovider"]] == "Ensembl"),
         all(mcols[["preparerclass"]] == preparerclass),
         all(mcols[["rdataclass"]] == rdataclass),
         all(mcols[["sourcetype"]] == "ensembl"),
-        all(tolower(mcols[["genome"]]) == tolower(genomeBuild)),
-        all(tolower(mcols[["species"]]) == tolower(organism)),
         msg = "Invalid metadata returned from AnnotationHub query."
     )
     ## Sort the entries by Ensembl release as integer instead of AH identifier.
@@ -159,25 +187,6 @@ getEnsDb <- function(
     )
     idx <- order(as.integer(match[, 2L]))
     mcols <- mcols[idx, , drop = FALSE]
-    ## Abort if there's no match and working offline.
-    if (!isTRUE(hasInternet()) && !hasRows(mcols)) {
-        ## nocov start
-        stop("AnnotationHub requires an Internet connection.")
-        ## nocov end
-    }
-    ## Ensure genome build matches, if specified.
-    if (!is.null(genomeBuild)) {
-        assert(isSubset("genome", colnames(mcols)))
-        keep <- which(mcols[["genome"]] %in% genomeBuild)
-        mcols <- mcols[keep, , drop = FALSE]
-    }
-    ## Ensure Ensembl release matches, or pick the latest one.
-    if (!is.null(release)) {
-        assert(isSubset("title", colnames(mcols)))
-        keep <- which(grepl(paste("Ensembl", release), mcols[["title"]]))
-        mcols <- mcols[keep, , drop = FALSE]
-        assert(hasLength(nrow(mcols), n = 1L))
-    }
     ## Error if filtering was unsuccessful.
     if (!hasRows(mcols)) {
         stop(sprintf(

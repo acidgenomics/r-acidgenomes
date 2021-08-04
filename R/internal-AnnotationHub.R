@@ -1,17 +1,22 @@
 #' Connect to AnnotationHub
 #'
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-04.
 #' @noRd
 #'
 #' @details
 #' On a fresh install this will print a txProgressBar to the console. We're
-#' using [utils::capture.output()] here to suppress the console output, since
-#' it's not very informative and can cluster R Markdown reports.
+#' using `capture.output()` here to suppress the console output, since it's not
+#' very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
+    assert(hasInternet())
     requireNamespaces("AnnotationHub")
-    invisible(capture.output({suppressMessages({
-        ah <- AnnotationHub::AnnotationHub()
-    })}))
+    invisible(
+        capture.output({
+            suppressMessages({
+                ah <- AnnotationHub::AnnotationHub()
+            })
+        })
+    )
     assert(is(ah, "AnnotationHub"))
     ah
 }
