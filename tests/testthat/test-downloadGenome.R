@@ -61,9 +61,8 @@ test_that("downloadRefSeqGenome", {
             "annotation.gtf.gz",
             "genome.fa.gz",
             "metadata.rds",
-            "transcriptome.fa.gz"
-            ## NOTE Check for this in a future update.
-            ## > "tx2gene.csv.gz"
+            "transcriptome.fa.gz",
+            "tx2gene.csv.gz"
         )
     ))))
     if (dir.exists(outputDir)) {
@@ -71,4 +70,24 @@ test_that("downloadRefSeqGenome", {
     }
 })
 
-## FIXME Need to add UCSC genome coverage.
+test_that("downloadUCSCGenome", {
+    info <- downloadUCSCGenome(
+        organism = "Homo sapiens",
+        cache = TRUE
+    )
+    outputDir <- info[["args"]][["outputDir"]]
+    expect_true(dir.exists(outputDir))
+    expect_true(all(file.exists(file.path(
+        outputDir,
+        c(
+            "annotation.gtf.gz",
+            "genome.fa.gz",
+            "metadata.rds",
+            "transcriptome.fa.gz",
+            "tx2gene.csv.gz"
+        )
+    ))))
+    if (dir.exists(outputDir)) {
+        unlink(outputDir, recursive = TRUE)
+    }
+})
