@@ -1,4 +1,8 @@
-## Updated 2021-04-27.
+## FIXME This is no longer keeping track of "geneName" for
+## WormBase releases WS280, WS281...
+## FIXME Need to merge this back onto the transcript-level data...argh
+
+## Updated 2021-08-05.
 .makeGRangesFromRtracklayer <- function(
     file,
     level,
