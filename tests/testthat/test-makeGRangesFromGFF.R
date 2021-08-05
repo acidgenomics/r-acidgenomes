@@ -427,15 +427,17 @@ file <- gffs[["refseq_grch38_gff3"]]
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "RefSeqGenes")
-    expect_identical(length(object), 54651L)
-    expect_identical(names(object)[[1L]], "A1BG")
+    ## This changes over time, so don't hard-code (2021-08-05).
+    ## > expect_identical(length(object), 54583L)
+    expect_true(isSubset("A1BG", names(object)))
     expect_identical(
-        object = lapply(mcols(object[[1L]]), class),
+        object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "Rle",
             "description" = "Rle",
             "endRange" = "CompressedCharacterList",
             "exception" = "Rle",
+            "experiment" = "CompressedCharacterList",
             "gbkey" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -454,40 +456,39 @@ test_that("GFF3 genes", {
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
-    expect_identical(length(object), 163975L)
+    ## This changes over time, so don't hard-code (2021-08-05).
+    ## > expect_identical(length(object), 163975L)
+    expect_true(isSubset("NM_000014.6", names(object)))
     expect_identical(
-        object = names(object)[[1L]],
+        object = as.character(mcols(object[["NM_000014.6"]])[["txId"]])[[1L]],
         expected = "NM_000014.6"
     )
     expect_identical(
-        object = as.character(mcols(object[[1L]])[["txId"]])[[1L]],
-        expected = "NM_000014.6"
-    )
-    expect_identical(
-        object = as.character(mcols(object[[1L]])[["geneId"]])[[1L]],
+        object = as.character(mcols(object[["NM_000014.6"]])[["geneId"]])[[1L]],
         expected = "A2M"
     )
     expect_identical(
-        object = lapply(mcols(object[[1L]]), class),
+        object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "Rle",
             "description" = "Rle",
-            "endRange" = "list",
+            "endRange" = "CompressedCharacterList",
             "exception" = "Rle",
+            "experiment" = "CompressedCharacterList",
             "gbkey" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneName" = "Rle",
-            "geneSynonym" = "list",
+            "geneSynonym" = "CompressedCharacterList",
             "inference" = "Rle",
             "modelEvidence" = "Rle",
             "partial" = "Rle",
             "product" = "Rle",
             "pseudo" = "Rle",
             "source" = "Rle",
-            "startRange" = "list",
+            "startRange" = "CompressedCharacterList",
             "tag" = "Rle",
-            "translExcept" = "list",
+            "translExcept" = "CompressedCharacterList",
             "txId" = "Rle",
             "txName" = "Rle",
             "type" = "Rle"
