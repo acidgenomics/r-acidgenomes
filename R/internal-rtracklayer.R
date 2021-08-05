@@ -702,6 +702,7 @@
         keep <- mcols(object)[["type"]] == "gene"
         assert(any(keep))
         object <- object[keep]
+        mcols(object)[["type"]] <- NULL
         assert(
             hasNoDuplicates(mcols(object)[["gene_id"]]),
             allAreMatchingRegex(
@@ -713,8 +714,6 @@
     }
 
 
-
-## FIXME This looks good...there's something else messing up downstream.
 
 ## Updated 2021-08-05.
 .rtracklayerWormBaseTranscriptsGtf <-
@@ -737,6 +736,7 @@
         keep <- mcols(object)[["type"]] == "transcript"
         assert(any(keep))
         object <- object[keep]
+        mcols(object)[["type"]] <- NULL
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
@@ -745,7 +745,13 @@
             )
         )
         mcols <- mcols(object)
-        cols <- c(setdiff(colnames(mcols), colnames(geneMeta)), "gene_id")
+        cols <- c(
+            setdiff(
+                x = colnames(mcols),
+                y = colnames(geneMcols)
+            ),
+            "gene_id"
+        )
         mcols <- mcols[, cols]
         mcols <- leftJoin(x = mcols, y = geneMcols, by = "gene_id")
         mcols(object) <- mcols
