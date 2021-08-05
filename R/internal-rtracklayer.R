@@ -1,6 +1,7 @@
 ## FIXME This is no longer keeping track of "geneName" for
 ## WormBase releases WS280, WS281...
 ## FIXME Need to merge this back onto the transcript-level data...argh
+## FIXME Previous pull of geneName in WS279 is incorrect....
 
 ## Updated 2021-08-05.
 .makeGRangesFromRtracklayer <- function(
@@ -711,6 +712,9 @@
     }
 
 
+
+## FIXME THis isn't handling "geneName" column merge correctly...
+## FIXME Need to check for this better in code coverage.
 
 ## Updated 2021-02-01.
 .rtracklayerWormBaseTranscriptsGtf <-

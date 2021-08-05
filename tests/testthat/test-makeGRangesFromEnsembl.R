@@ -1,3 +1,5 @@
+## FIXME Need to improve "geneId" and "geneName" checks here.
+
 context("makeGRangesFromEnsembl")
 
 skip_if_not(hasInternet())

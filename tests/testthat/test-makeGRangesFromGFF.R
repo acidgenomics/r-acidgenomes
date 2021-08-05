@@ -1,3 +1,5 @@
+## FIXME Need to improve consistency of "geneId" and "geneName" checks.
+
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
@@ -12,6 +14,7 @@ test_that("GTF genes", {
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 60664L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
+    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -84,6 +87,7 @@ test_that("GTF transcripts", {
         object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
         expected = "ENSG00000223972.5"
     )
+    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -193,6 +197,7 @@ test_that("GFF3 transcripts", {
         object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
         expected = "ENSG00000223972.5"
     )
+    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -230,6 +235,7 @@ test_that("GTF genes", {
     expect_s4_class(object, "FlyBaseGenes")
     expect_identical(length(object), 17874L)
     expect_identical(names(object)[[1L]], "FBgn0031208")
+    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -695,7 +701,10 @@ test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "WormBaseGenes")
     expect_identical(length(object), 46925L)
-    expect_identical(names(object)[[1L]], "WBGene00022276")
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -707,6 +716,28 @@ test_that("GTF genes", {
             "geneVersion" = "Rle",
             "source" = "Rle",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["WBGene00022276"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "I",
+            "start" = "11495",
+            "end" = "16837",
+            "width" = "5343",
+            "strand" = "+",
+            "broadClass" = "coding",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "WBGene00022276",
+            "geneName" = "nlp-40",
+            "geneSource" = "WormBase",
+            "geneVersion" = "1",
+            "source" = "WormBase",
+            "type" = "gene"
         )
     )
     expect_identical(
@@ -737,7 +768,10 @@ test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "WormBaseTranscripts")
     expect_identical(length(object), 59961L)
-    expect_identical(names(object)[[1L]], "Y74C9A.2a.3")
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]]))
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -755,11 +789,15 @@ test_that("GTF transcripts", {
             "type" = "Rle"
         )
     )
+    # FIXME Need to rework this internally...currently not mapping "geneName"
+    # correctly...
 })
 
 
 
 context("makeGRangesFromGFF : bcbio")
+
+## FIXME Need to check geneId, geneName, etc. here.
 
 test_that("bcbio `ref-transcripts.gtf` file", {
     file <- file.path("cache", "ref-transcripts.gtf")
