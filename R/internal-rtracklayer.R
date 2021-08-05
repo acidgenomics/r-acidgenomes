@@ -702,7 +702,6 @@
         keep <- mcols(object)[["type"]] == "gene"
         assert(any(keep))
         object <- object[keep]
-        mcols(object)[["type"]] <- NULL
         assert(
             hasNoDuplicates(mcols(object)[["gene_id"]]),
             allAreMatchingRegex(
@@ -736,7 +735,6 @@
         keep <- mcols(object)[["type"]] == "transcript"
         assert(any(keep))
         object <- object[keep]
-        mcols(object)[["type"]] <- NULL
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
