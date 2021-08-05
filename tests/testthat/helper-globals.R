@@ -120,7 +120,7 @@ gffs <- c(
         "ftp.flybase.net",
         "releases",
         "FB2021_03",
-        "dmel_r6.37",
+        "dmel_r6.40",
         "gtf",
         "dmel-all-r6.40.gtf.gz",
         protocol = "ftp"
