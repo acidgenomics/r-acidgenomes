@@ -558,7 +558,7 @@ file <- gffs[["wormbase_gtf"]]
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
-    expect_s4_class(object, "GRanges")
+    expect_s4_class(object, "WormBaseGenes")
     expect_identical(length(object), 46934L)
     expect_identical(names(object)[[1L]], "WBGene00022276")
     expect_identical(
@@ -577,7 +577,7 @@ test_that("GTF genes", {
 
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
-    expect_s4_class(object, "GRanges")
+    expect_s4_class(object, "WormBaseTranscripts")
     expect_identical(length(object), 59897L)
     expect_identical(names(object)[[1L]], "Y74C9A.2a.3")
     expect_identical(
