@@ -8,7 +8,7 @@ mapEnsemblReleaseToURL(release)
 }
 \arguments{
 \item{release}{\code{integer(1)} or \code{character(1)}.
-Ensembl release (e.g. 99).}
+Ensembl release (e.g. \code{100}).}
 }
 \value{
 \code{character(1)}.
@@ -18,11 +18,11 @@ URL.
 Map Ensembl release to archive URL.
 }
 \note{
-Updated 2021-02-01.
+Updated 2021-08-05.
 }
 \examples{
 tryCatch(
-    expr = mapEnsemblReleaseToURL(96L),
+    expr = mapEnsemblReleaseToURL(release = 100L),
     error = function(e) message(e)
 )
 }
