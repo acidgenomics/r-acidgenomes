@@ -29,7 +29,7 @@ Imports:
     goalie (>= 0.5.2),
     httr (>= 1.4.2),
     methods,
-    pipette (>= 0.6.2),
+    pipette (>= 0.6.3),
     stringr (>= 1.4.0),
     syntactic (>= 0.4.5)
 Suggests:
