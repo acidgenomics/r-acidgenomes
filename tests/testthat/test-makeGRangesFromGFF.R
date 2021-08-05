@@ -691,9 +691,6 @@ test_that("GTF transcripts", {
 
 context("makeGRangesFromGFF : WormBase")
 
-## FIXME Drop back to checking against WS280?
-## FIXME WS280 is dropping "geneName" now as well...need to fix.
-
 skip_if_not(hasInternet())
 file <- gffs[["wormbase_gtf"]]
 
@@ -737,7 +734,7 @@ test_that("GTF genes", {
             "geneSource" = "WormBase",
             "geneVersion" = "1",
             "source" = "WormBase",
-            "type" = "gene"  # FIXME Take out.
+            "type" = "gene"
         )
     )
     expect_identical(
@@ -762,7 +759,6 @@ test_that("GTF genes", {
     )
 })
 
-## FIXME Take out the type column?
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "WormBaseTranscripts")
@@ -785,10 +781,9 @@ test_that("GTF transcripts", {
             "txId" = "Rle",
             "txName" = "Rle",
             "txSource" = "Rle",
-            "type" = "Rle"  # FIXME Take out.
+            "type" = "Rle"
         )
     )
-
     expect_identical(
         object = vapply(
             X = as.data.frame(object["Y74C9A.2a.3"]),
@@ -808,32 +803,127 @@ test_that("GTF transcripts", {
             "geneSource" = "WormBase",
             "geneVersion" = "1",
             "source" = "WormBase",
-
-
-            ## "type" = "gene"  # FIXME Don't want this.
+            "txBiotype" = "protein_coding",
+            "txId" = "Y74C9A.2a.3",
+            "txName" = "Y74C9A.2a.3",
+            "txSource" = "WormBase",
+            "type" = "transcript"
         )
     )
-
-    # FIXME Need to rework this internally...currently not mapping "geneName"
-    # correctly...
 })
 
 
 
 context("makeGRangesFromGFF : bcbio")
 
-## FIXME Need to check geneId, geneName, etc. here.
+file <- file.path("cache", "ref-transcripts.gtf")
 
-test_that("bcbio `ref-transcripts.gtf` file", {
-    file <- file.path("cache", "ref-transcripts.gtf")
+test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, n = 60L)
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+})
+
+test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, n = 167L)
     expect_identical(
-        object = metadata(object)[["organism"]],
-        expected = "Homo sapiens"
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSource" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000456328"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "ccdsId" = NA_character_,
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "processed_transcript",
+            "txId" = "ENST00000456328",
+            "txIdVersion" = "ENST00000456328.2",
+            "txName" = "DDX11L1-202",
+            "txSource" = "havana",
+            "txSupportLevel" = "1",
+            "type" = "transcript"
+        )
     )
 })
