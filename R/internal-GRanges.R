@@ -361,6 +361,8 @@
             if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
                 return(x)
             }
+            ## FIXME This is flipping the value from "transcript" to "gene".
+            ## FIXME Need to ensure this doesn't mess up!!!
             x <- sanitizeNA(x)
             if (all(is.na(x))) {
                 return(NULL)
