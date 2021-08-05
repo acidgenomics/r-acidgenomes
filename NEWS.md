@@ -1,3 +1,21 @@
+## AcidGenomes 0.2.16 (2021-08-25)
+
+### Major changes
+
+- Removed `mapEnsemblBuildToUCSC` and `mapUCSCBuildToEnsembl` functions. Also
+  removed mapping support for UCSC genome build names (e.g. "hg38") inside of
+  `makeGRangesFromEnsembl` calls, since this is not technically the correct
+  genome build name.
+- `downloadEnsemblGenome`, `downloadGencodeGenome`, etc. now support file
+  caching by default with `cache = TRUE` argument.
+
+### Minor changes
+
+- Improved genome download code coverage.
+- Split out `stripGeneVersions` and `stripTranscriptVersions` documentation
+  into separate files.
+- Reorganized S4 method documentation to be alphabetical consistently.
+
 ## AcidGenomes 0.2.15 (2021-07-27)
 
 ### Minor changes
