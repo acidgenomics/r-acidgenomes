@@ -510,8 +510,9 @@ test_that("GTF genes", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "UCSCGenes")
-    expect_identical(length(object), 64252L)
-    expect_identical(names(object)[[1L]], "ENSG00000223972")
+    ## This changes over time, so don't hard-code (2021-08-05).
+    ## > expect_identical(length(object), 64252L)
+    expect_true(isSubset("ENSG00000223972", names(object)))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -528,8 +529,9 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "UCSCTranscripts")
-    expect_identical(length(object), 208239L)
-    expect_identical(names(object)[[1L]], "ENST00000456328")
+    ## This changes over time, so don't hard-code (2021-08-05).
+    ## > expect_identical(length(object), 208239L)
+    expect_true(isSubset("ENST00000456328", names(object)))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
