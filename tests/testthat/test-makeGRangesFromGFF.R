@@ -685,13 +685,16 @@ test_that("GTF transcripts", {
 
 context("makeGRangesFromGFF : WormBase")
 
+## FIXME Drop back to checking against WS280?
+## FIXME WS280 is dropping "geneName" now as well...need to fix.
+
 skip_if_not(hasInternet())
 file <- gffs[["wormbase_gtf"]]
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "WormBaseGenes")
-    expect_identical(length(object), 46934L)
+    expect_identical(length(object), 46925L)
     expect_identical(names(object)[[1L]], "WBGene00022276")
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -701,6 +704,7 @@ test_that("GTF genes", {
             "geneId" = "Rle",
             "geneName" = "Rle",
             "geneSource" = "Rle",
+            "geneVersion" = "Rle",
             "source" = "Rle",
             "type" = "Rle"
         )
@@ -727,10 +731,12 @@ test_that("GTF genes", {
     )
 })
 
+## FIXME Now this is dropping gene name argh...
+## FIXME How to get WormBase 281 to keep track of gene name???
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "WormBaseTranscripts")
-    expect_identical(length(object), 59897L)
+    expect_identical(length(object), 59961L)
     expect_identical(names(object)[[1L]], "Y74C9A.2a.3")
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -740,6 +746,7 @@ test_that("GTF transcripts", {
             "geneId" = "Rle",
             "geneName" = "Rle",
             "geneSource" = "Rle",
+            "geneVersion" = "Rle",
             "source" = "Rle",
             "txBiotype" = "Rle",
             "txId" = "Rle",
