@@ -1,10 +1,10 @@
 #' Map Ensembl release to archive URL.
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-08-05.
 #' @export
 #'
 #' @param release `integer(1)` or `character(1)`.
-#'   Ensembl release (e.g. 99).
+#'   Ensembl release (e.g. `100`).
 #'
 #' @return `character(1)`.
 #'   URL.
@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' tryCatch(
-#'     expr = mapEnsemblReleaseToURL(96L),
+#'     expr = mapEnsemblReleaseToURL(release = 100L),
 #'     error = function(e) message(e)
 #' )
 mapEnsemblReleaseToURL <- function(release) {
