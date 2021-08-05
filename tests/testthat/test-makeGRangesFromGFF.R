@@ -13,17 +13,17 @@ test_that("GTF genes", {
     expect_identical(length(object), 60675L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "geneSource" = Rle,
-            "source" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -65,26 +65,26 @@ test_that("GTF transcripts", {
         expected = "ENSG00000223972.5"
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "ccdsId" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "geneSource" = Rle,
-            "source" = Rle,
-            "tag" = Rle,
-            "txBiotype" = Rle,
-            "txId" = Rle,
-            "txIdNoVersion" = Rle,
-            "txIdVersion" = Rle,
-            "txName" = Rle,
-            "txSource" = Rle,
-            "txSupportLevel" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSource" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -101,18 +101,18 @@ test_that("GFF3 genes", {
     expect_identical(length(object), 60675L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "description" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "logicName" = Rle,
-            "source" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "description" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "logicName" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -154,26 +154,26 @@ test_that("GFF3 transcripts", {
         expected = "ENSG00000223972.5"
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "ccdsId" = Rle,
-            "description" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "logicName" = Rle,
-            "source" = Rle,
-            "tag" = Rle,
-            "txBiotype" = Rle,
-            "txId" = Rle,
-            "txIdNoVersion" = Rle,
-            "txIdVersion" = Rle,
-            "txName" = Rle,
-            "txSupportLevel" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "description" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "logicName" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -191,13 +191,13 @@ test_that("GTF genes", {
     expect_identical(length(object), 17875L)
     expect_identical(names(object)[[1L]], "FBgn0031208")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "source" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -208,15 +208,15 @@ test_that("GTF transcripts", {
     expect_identical(length(object), 35643L)
     expect_identical(names(object)[[1L]], "FBtr0475186")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "source" = Rle,
-            "txId" = Rle,
-            "txName" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "source" = "Rle",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -238,20 +238,20 @@ test_that("GTF genes", {
     expect_identical(length(object), 60660L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "havanaGene" = Rle,
-            "hgncId" = Rle,
-            "level" = Rle,
-            "source" = Rle,
-            "tag" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "havanaGene" = "Rle",
+            "hgncId" = "Rle",
+            "level" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -293,30 +293,30 @@ test_that("GTF transcripts", {
         expected = "ENSG00000223972.5"
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "ccdsId" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "havanaGene" = Rle,
-            "havanaTranscript" = Rle,
-            "hgncId" = Rle,
-            "level" = Rle,
-            "ont" = Rle,
-            "proteinId" = Rle,
-            "source" = Rle,
-            "tag" = Rle,
-            "txBiotype" = Rle,
-            "txId" = Rle,
-            "txIdNoVersion" = Rle,
-            "txIdVersion" = Rle,
-            "txName" = Rle,
-            "txSupportLevel" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "havanaGene" = "Rle",
+            "havanaTranscript" = "Rle",
+            "hgncId" = "Rle",
+            "level" = "Rle",
+            "ont" = "Rle",
+            "proteinId" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -333,21 +333,21 @@ test_that("GFF3 genes", {
     expect_identical(length(object), 60660L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "havanaGene" = Rle,
-            "hgncId" = Rle,
-            "level" = Rle,
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "havanaGene" = "Rle",
+            "hgncId" = "Rle",
+            "level" = "Rle",
             "ont" = "CompressedCharacterList",
-            "source" = Rle,
+            "source" = "Rle",
             "tag" = "CompressedCharacterList",
-            "type" = Rle
+            "type" = "Rle"
         )
     )
 })
@@ -389,30 +389,30 @@ test_that("GFF3 transcripts", {
         expected = "ENSG00000223972.5"
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "ccdsId" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "havanaGene" = Rle,
-            "havanaTranscript" = Rle,
-            "hgncId" = Rle,
-            "level" = Rle,
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "havanaGene" = "Rle",
+            "havanaTranscript" = "Rle",
+            "hgncId" = "Rle",
+            "level" = "Rle",
             "ont" = "CompressedCharacterList",
-            "proteinId" = Rle,
-            "source" = Rle,
+            "proteinId" = "Rle",
+            "source" = "Rle",
             "tag" = "CompressedCharacterList",
-            "txBiotype" = Rle,
-            "txId" = Rle,
-            "txIdNoVersion" = Rle,
-            "txIdVersion" = Rle,
-            "txName" = Rle,
-            "txSupportLevel" = Rle,
-            "type" = Rle
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -432,21 +432,21 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), class),
         expected = list(
-            "broadClass" = Rle,
-            "description" = Rle,
+            "broadClass" = "Rle",
+            "description" = "Rle",
             "endRange" = "CompressedCharacterList",
-            "exception" = Rle,
-            "gbkey" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
+            "exception" = "Rle",
+            "gbkey" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
             "geneSynonym" = "CompressedCharacterList",
-            "partial" = Rle,
-            "pseudo" = Rle,
-            "source" = Rle,
+            "partial" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
             "startRange" = "CompressedCharacterList",
             "translExcept" = "CompressedCharacterList",
-            "type" = Rle
+            "type" = "Rle"
         )
     )
 })
@@ -467,31 +467,30 @@ test_that("GFF3 transcripts", {
         object = as.character(mcols(object[[1L]])[["geneId"]])[[1L]],
         expected = "A2M"
     )
-    AsIs <- "list"  # nolint
     expect_identical(
         object = lapply(mcols(object[[1L]]), class),
         expected = list(
-            "broadClass" = Rle,
-            "description" = Rle,
-            "endRange" = AsIs,
-            "exception" = Rle,
-            "gbkey" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "geneSynonym" = AsIs,
-            "inference" = Rle,
-            "modelEvidence" = Rle,
-            "partial" = Rle,
-            "product" = Rle,
-            "pseudo" = Rle,
-            "source" = Rle,
-            "startRange" = AsIs,
-            "tag" = Rle,
-            "translExcept" = AsIs,
-            "txId" = Rle,
-            "txName" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "description" = "Rle",
+            "endRange" = "list",
+            "exception" = "Rle",
+            "gbkey" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSynonym" = "list",
+            "inference" = "Rle",
+            "modelEvidence" = "Rle",
+            "partial" = "Rle",
+            "product" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
+            "startRange" = "list",
+            "tag" = "Rle",
+            "translExcept" = "list",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -513,10 +512,10 @@ test_that("GTF genes", {
     expect_identical(length(object), 64252L)
     expect_identical(names(object)[[1L]], "ENSG00000223972")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = Rle,
-            "geneName" = Rle
+            "geneId" = "Rle",
+            "geneName" = "Rle"
         )
     )
 })
@@ -531,18 +530,18 @@ test_that("GTF transcripts", {
     expect_identical(length(object), 208239L)
     expect_identical(names(object)[[1L]], "ENST00000456328")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "txBiotype" = Rle,
-            "txChrom" = Rle,
-            "txEnd" = Rle,
-            "txId" = Rle,
-            "txName" = Rle,
-            "txNumber" = Rle,
-            "txStart" = Rle,
-            "txStrand" = Rle
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "txBiotype" = "Rle",
+            "txChrom" = "Rle",
+            "txEnd" = "Rle",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "txNumber" = "Rle",
+            "txStart" = "Rle",
+            "txStrand" = "Rle"
         )
     )
 })
@@ -560,15 +559,15 @@ test_that("GTF genes", {
     expect_identical(length(object), 46934L)
     expect_identical(names(object)[[1L]], "WBGene00022276")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "geneSource" = Rle,
-            "source" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
         )
     )
 })
@@ -579,19 +578,19 @@ test_that("GTF transcripts", {
     expect_identical(length(object), 59897L)
     expect_identical(names(object)[[1L]], "Y74C9A.2a.3")
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneName" = Rle,
-            "geneSource" = Rle,
-            "source" = Rle,
-            "txBiotype" = Rle,
-            "txId" = Rle,
-            "txName" = Rle,
-            "txSource" = Rle,
-            "type" = Rle
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "txSource" = "Rle",
+            "type" = "Rle"
         )
     )
 })
