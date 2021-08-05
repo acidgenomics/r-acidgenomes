@@ -105,6 +105,7 @@
     if (is(seqinfo, "Seqinfo")) {
         GenomeInfoDb::seqinfo(gr) <- seqinfo[GenomeInfoDb::seqlevels(gr)]
     }
+    ## FIXME This is incorrectly setting type on our WormBase transcript-level ranges to "genes".
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
@@ -679,16 +680,16 @@
 
 
 ## WormBase ====================================================================
-## GTF:
-## >  [1] "source"             "type"               "score"
-## >  [4] "phase"              "gene_id"            "gene_source"
-## >  [7] "gene_biotype"       "transcript_id"      "transcript_source"
-## > [10] "transcript_biotype" "exon_number"        "exon_id"
-## > [13] "protein_id"
+## GTF (2021-08-05):
+##  [1] "source"             "type"               "score"
+##  [4] "phase"              "gene_id"            "gene_version"
+##  [7] "gene_source"        "gene_biotype"       "gene_name"
+## [10] "transcript_id"      "transcript_source"  "transcript_biotype"
+## [13] "exon_number"        "exon_id"            "protein_id"
 
 
 
-## Updated 2021-01-27.
+## Updated 2021-08-05.
 .rtracklayerWormBaseGenesGtf <-
     function(object) {
         assert(
@@ -713,10 +714,9 @@
 
 
 
-## FIXME THis isn't handling "geneName" column merge correctly...
-## FIXME Need to check for this better in code coverage.
+## FIXME This looks good...there's something else messing up downstream.
 
-## Updated 2021-02-01.
+## Updated 2021-08-05.
 .rtracklayerWormBaseTranscriptsGtf <-
     function(object) {
         assert(
@@ -726,6 +726,14 @@
                 y = names(mcols(object))
             )
         )
+        ## Keep track of gene-level metadata, that we'll join below.
+        genes <- .rtracklayerWormBaseGenesGtf(object)
+        geneCols <- grep(
+            pattern = "^gene_",
+            x = colnames(mcols(genes)),
+            value = TRUE
+        )
+        geneMcols <- mcols(genes, use.names = FALSE)[, geneCols]
         keep <- mcols(object)[["type"]] == "transcript"
         assert(any(keep))
         object <- object[keep]
@@ -736,5 +744,10 @@
                 x = mcols(object)[["gene_id"]]
             )
         )
+        mcols <- mcols(object)
+        cols <- c(setdiff(colnames(mcols), colnames(geneMeta)), "gene_id")
+        mcols <- mcols[, cols]
+        mcols <- leftJoin(x = mcols, y = geneMcols, by = "gene_id")
+        mcols(object) <- mcols
         object
     }
