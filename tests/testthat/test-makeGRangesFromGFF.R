@@ -10,7 +10,7 @@ test_that("GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 60675L)
+    expect_identical(length(object), 60664L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -26,6 +26,26 @@ test_that("GTF genes", {
             "type" = "Rle"
         )
     )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["file"]],
+        expected = file
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+    expect_identical(
+        object = metadata(object)[["release"]],
+        expected = 104L
+    )
+    expect_identical(
+        object = metadata(object)[["sha256"]],
+        expected = "2c1be3a18925eb033052f4019512eab4cb3227b2a87e7766787452fa6ebbb79c"  # nolint
+    )
 })
 
 test_that("GTF transcripts", {
@@ -35,7 +55,7 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 232024L)
+    expect_identical(length(object), 236920L)
     expect_identical(
         object = names(object)[[1L]],
         expected = "ENST00000456328.2"
@@ -98,7 +118,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 60675L)
+    expect_identical(length(object), 60664L)
     expect_identical(names(object)[[1L]], "ENSG00000223972.5")
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -115,6 +135,26 @@ test_that("GFF3 genes", {
             "type" = "Rle"
         )
     )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["file"]],
+        expected = file
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+    expect_identical(
+        object = metadata(object)[["release"]],
+        expected = 104L
+    )
+    expect_identical(
+        object = metadata(object)[["sha256"]],
+        expected = "313ad46bd4af78b45b9f5d8407bbcbd3f87f4be0747060e84b3b5eb931530ec1"  # nolint
+    )
 })
 
 test_that("GFF3 transcripts", {
@@ -124,7 +164,7 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 232024L)
+    expect_identical(length(object), 236918L)
     expect_identical(
         object = names(object)[[1L]],
         expected = "ENST00000456328.2"
