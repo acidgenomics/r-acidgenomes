@@ -17,6 +17,7 @@ Rle <- structure(
 )
 DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
+simpleClass <- AcidBase::simpleClass
 ## nolint end
 
 fastas <- c(

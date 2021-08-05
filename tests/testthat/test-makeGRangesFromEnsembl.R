@@ -34,17 +34,17 @@ test_that("Genes", {
         )
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "canonicalTranscript" = Rle,
-            "description" = Rle,
-            "entrezId" = CompressedIntegerList,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "seqCoordSystem" = Rle
+            "broadClass" = "Rle",
+            "canonicalTranscript" = "Rle",
+            "description" = "Rle",
+            "entrezId" = "CompressedIntegerList",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "seqCoordSystem" = "Rle"
         )
     )
 })
@@ -88,29 +88,29 @@ test_that("Transcripts", {
         expected = c("ENST00000635602.1", "ENST00000635506.1")
     )
     expect_identical(
-        object = lapply(mcols(object), class),
+        object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = Rle,
-            "canonicalTranscript" = Rle,
-            "description" = Rle,
-            "entrezId" = CompressedIntegerList,
-            "gcContent" = Rle,
-            "geneBiotype" = Rle,
-            "geneId" = Rle,
-            "geneIdNoVersion" = Rle,
-            "geneIdVersion" = Rle,
-            "geneName" = Rle,
-            "geneSeqEnd" = Rle,
-            "geneSeqStart" = Rle,
-            "seqCoordSystem" = Rle,
-            "txBiotype" = Rle,
-            "txCdsSeqEnd" = Rle,
-            "txCdsSeqStart" = Rle,
-            "txId" = Rle,
-            "txIdNoVersion" = Rle,
-            "txIdVersion" = Rle,
-            "txName" = Rle,
-            "txSupportLevel" = Rle
+            "broadClass" = "Rle",
+            "canonicalTranscript" = "Rle",
+            "description" = "Rle",
+            "entrezId" = "CompressedIntegerList",
+            "gcContent" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSeqEnd" = "Rle",
+            "geneSeqStart" = "Rle",
+            "seqCoordSystem" = "Rle",
+            "txBiotype" = "Rle",
+            "txCdsSeqEnd" = "Rle",
+            "txCdsSeqStart" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSupportLevel" = "Rle"
         )
     )
 })
