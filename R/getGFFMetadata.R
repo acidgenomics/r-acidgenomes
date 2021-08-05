@@ -1,6 +1,6 @@
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-02-26.
+#' @note Updated 2021-08-05.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -133,10 +133,7 @@ getGFFMetadata <- function(file) {
                         l[["release"]] <- x[[5L]]
                     }
                     if (!isString(l[["genomeBuild"]])) {
-                        ## This matches the convention defined in GFF.
-                        l[["genomeBuild"]] <- paste(
-                            l[["provider"]], l[["release"]]
-                        )
+                        l[["genomeBuild"]] <- l[["release"]]
                     }
                 }
             },
@@ -202,6 +199,9 @@ getGFFMetadata <- function(file) {
                         l[["release"]] <- x[[5L]]
                     }
                 }
+                if (!isString(l[["genomeBuild"]])) {
+                    l[["genomeBuild"]] <- l[["release"]]
+                }
             }
         )
     }
@@ -242,11 +242,17 @@ getGFFMetadata <- function(file) {
 
 
 
-## Updated 2021-01-20.
+## Updated 2021-08-05.
 .gffGenomeBuild <- function(df) {
     assert(is(df, "DataFrame"))
     ## GENCODE files have a description key that contains the genome build.
-    if (isTRUE("description" %in% df[["key"]])) {
+    if (
+        identical(
+            x = df[which(df[["key"]] == "provider"), "value"],
+            y = "GENCODE"
+        ) &&
+        isTRUE("description" %in% df[["key"]])
+    ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
         x <- str_match(
             string = string,
@@ -256,13 +262,19 @@ getGFFMetadata <- function(file) {
     }
     ## Otherwise we can parse for standard "genome-build" key, which is
     ## supported by Ensembl and RefSeq.
-    .getValue <- function(key) {
+    .getValue <- function(key, df) {
         x <- df[match(x = key, table = df[["key"]]), "value", drop = TRUE]
         if (is.na(x)) return(NULL)
         x
     }
-    x <- .getValue("genome-build")
-    if (isString(x)) return(x)
+    x <- .getValue(key = "genome-build", df = df)
+    if (isString(x)) {
+        if (isTRUE(grepl(pattern = " ", x = x))) {
+            x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]]
+            x <- x[length(x)]
+        }
+        return(x)
+    }
     NULL
 }
 
