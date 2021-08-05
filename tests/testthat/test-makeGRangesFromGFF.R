@@ -737,7 +737,7 @@ test_that("GTF genes", {
             "geneSource" = "WormBase",
             "geneVersion" = "1",
             "source" = "WormBase",
-            "type" = "gene"
+            "type" = "gene"  # FIXME Take out.
         )
     )
     expect_identical(
@@ -762,8 +762,7 @@ test_that("GTF genes", {
     )
 })
 
-## FIXME Now this is dropping gene name argh...
-## FIXME How to get WormBase 281 to keep track of gene name???
+## FIXME Take out the type column?
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "WormBaseTranscripts")
@@ -786,9 +785,35 @@ test_that("GTF transcripts", {
             "txId" = "Rle",
             "txName" = "Rle",
             "txSource" = "Rle",
-            "type" = "Rle"
+            "type" = "Rle"  # FIXME Take out.
         )
     )
+
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["Y74C9A.2a.3"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "I",
+            "start" = "11495",
+            "end" = "16793",
+            "width" = "5299",
+            "strand" = "+",
+            "broadClass" = "coding",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "WBGene00022276",
+            "geneName" = "nlp-40",
+            "geneSource" = "WormBase",
+            "geneVersion" = "1",
+            "source" = "WormBase",
+
+
+            ## "type" = "gene"  # FIXME Don't want this.
+        )
+    )
+
     # FIXME Need to rework this internally...currently not mapping "geneName"
     # correctly...
 })

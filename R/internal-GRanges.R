@@ -337,7 +337,7 @@
 ## Standardization =============================================================
 #' Apply run-length encoding and minimize `GRanges` mcols
 #'
-#' @note Updated 2021-05-18.
+#' @note Updated 2021-08-05.
 #' @noRd
 #'
 #' @details
@@ -346,6 +346,9 @@
 #'
 #' This trimming step was added to handle GRanges from Ensembl 102, which won't
 #' return valid otherwise from ensembldb.
+
+## FIXME This function is currently messing up the "type" column for WormBase GTF...
+
 .encodeMcols <- function(object) {
     assert(is(object, "GRanges"))
     length <- length(object)
@@ -557,6 +560,7 @@
         object <- .addGeneSynonyms(object)
     }
     ## Run the encoding step after all modifications above.
+    ## FIXME This step is messing up the "type" level here...
     object <- .encodeMcols(object)
     idCol <- .matchGRangesNamesColumn(object)
     assert(isSubset(idCol, names(mcols(object))))
