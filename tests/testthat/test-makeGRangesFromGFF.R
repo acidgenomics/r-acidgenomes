@@ -1,9 +1,3 @@
-## FIXME Need to check seqinfo here.
-## FIXME RefSeq seqinfo is currently failing...what's up with that?
-## FIXME Need to improve consistency of "geneId" and "geneName" checks.
-## FIXME Check seqinfo, seqlevels, seqlengths.
-## FIXME Automatic assignment of Seqinfo failed for RefSeq...need to resolve?
-
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
