@@ -1,5 +1,3 @@
-## FIXME Is this failing for RefSeq GTF?
-
 #' Get metadata about a GFF file
 #'
 #' @note Updated 2021-08-06.
