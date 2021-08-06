@@ -376,9 +376,8 @@ setClass(
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ## FIXME Set this TRUE.
-        ## > ok <- .refseqValidity(object)
-        ## > if (!isTRUE(ok)) return(ok)
+        ok <- .refseqValidity(object)
+        if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
