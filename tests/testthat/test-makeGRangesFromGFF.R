@@ -2,6 +2,7 @@
 ## FIXME RefSeq seqinfo is currently failing...what's up with that?
 ## FIXME Need to improve consistency of "geneId" and "geneName" checks.
 ## FIXME Check seqinfo and seqlengths.
+## FIXME Automatic assignment of Seqinfo failed for RefSeq...need to resolve?
 
 context("makeGRangesFromGFF : Ensembl")
 
@@ -753,6 +754,16 @@ context("makeGRangesFromGFF : RefSeq")
 skip_if_not(hasInternet())
 file <- gffs[["refseq_grch38_gff3"]]
 
+## FIXME Check the seqinfo handling here.
+## → Getting `Seqinfo` from 5c0b178f46eb_GCF_000001405.39_GRCh38.p13_assembly_report.txt.
+## ! Automatic `seqinfo` assignment failed.
+## > seqnames(object[[1L]])
+## factor-Rle of length 1 with 1 run
+## Lengths:            1
+## Values : NC_000012.12
+## Levels(639): NC_000001.11 ... NW_021160031.1
+## FIXME Check the levels here...
+
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "RefSeqGenes")
@@ -824,17 +835,6 @@ test_that("GFF3 genes", {
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
-    ## This changes over time, so don't hard-code (2021-08-05).
-    ## > expect_identical(length(object), 163975L)
-    expect_true(isSubset("NM_000014.6", names(object)))
-    expect_identical(
-        object = as.character(mcols(object[["NM_000014.6"]])[["txId"]])[[1L]],
-        expected = "NM_000014.6"
-    )
-    expect_identical(
-        object = as.character(mcols(object[["NM_000014.6"]])[["geneId"]])[[1L]],
-        expected = "A2M"
-    )
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
@@ -860,6 +860,42 @@ test_that("GFF3 transcripts", {
             "txId" = "Rle",
             "txName" = "Rle",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["NM_000014.6"]][1L]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000012.12",
+            "start" = "9067708",
+            "end" = "9115919",
+            "width" = "48212",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "description" = "alpha-2-macroglobulin",
+            "endRange" = "character(0)",
+            "exception" = NA_character_,
+            "experiment" = "character(0)",
+            "gbkey" = "mRNA",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A2M",
+            "geneName" = "A2M",
+            "geneSynonym" = "character(0)",
+            "inference" = NA_character_,
+            "modelEvidence" = NA_character_,
+            "partial" = NA_character_,
+            "product" = "alpha-2-macroglobulin, transcript variant 1",
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "startRange" = "character(0)",
+            "tag" = "MANE Select",
+            "translExcept" = "character(0)",
+            "txId" = "NM_000014.6",
+            "txName" = "NM_000014.6",
+            "type" = "mRNA"
         )
     )
 })
