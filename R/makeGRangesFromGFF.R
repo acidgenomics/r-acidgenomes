@@ -1,6 +1,3 @@
-## FIXME WormBase WS280, WS281 are dropping "geneName" now from transcripts
-## level return...
-
 ## NOTE Can consider using ensembldb to parse GFF files once v2.15.2 is
 ##      available on Bioconductor. Current stable version has issues parsing
 ##      compressed GFF3 files.
@@ -14,7 +11,7 @@
 #' Make GRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-08-05.
+#' @note Updated 2021-08-06.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
