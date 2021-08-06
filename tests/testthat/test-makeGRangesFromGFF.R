@@ -381,6 +381,14 @@ test_that("GTF genes", {
             "type" = "gene"
         )
     )
+    expect_true(isSubset(
+        x = c(
+            "2L", "2R", "3L", "3R", "4", "X", "Y",
+            "mitochondrion_genome", "rDNA"
+        ),
+        y = levels(seqnames(object))
+    ))
+    expect_true(all(is.na(seqlengths(object))))
     expect_identical(
         object = metadata(object)[["file"]],
         expected = file
