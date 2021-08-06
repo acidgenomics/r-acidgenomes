@@ -1,4 +1,7 @@
+## FIXME Need to check seqinfo here.
+## FIXME RefSeq seqinfo is currently failing...what's up with that?
 ## FIXME Need to improve consistency of "geneId" and "geneName" checks.
+## FIXME Check seqinfo and seqlengths.
 
 context("makeGRangesFromGFF : Ensembl")
 
@@ -753,9 +756,6 @@ file <- gffs[["refseq_grch38_gff3"]]
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "RefSeqGenes")
-    ## This changes over time, so don't hard-code (2021-08-05).
-    ## > expect_identical(length(object), 54583L)
-    expect_true(isSubset("A1BG", names(object)))
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
@@ -775,6 +775,36 @@ test_that("GFF3 genes", {
             "startRange" = "CompressedCharacterList",
             "translExcept" = "CompressedCharacterList",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["A1BG"]][1L]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000019.10",
+            "start" = "58345183",
+            "end" = "58353492",
+            "width" = "8310",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "description" = "alpha-1-B glycoprotein",
+            "endRange" = "character(0)",
+            "exception" = NA_character_,
+            "experiment" = "character(0)",
+            "gbkey" = "Gene",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A1BG",
+            "geneName" = "A1BG",
+            "geneSynonym" = "c(\"A1B\", \"ABG\", \"GAB\", \"HYST2477\")",
+            "partial" = NA_character_,
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "startRange" = "character(0)",
+            "translExcept" = "character(0)",
+            "type" = "gene"
         )
     )
     expect_identical(
