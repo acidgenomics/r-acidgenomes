@@ -117,7 +117,6 @@
                     )
                 },
                 "RefSeq" = {
-                    ## FIXME Need to rethink this.
                     seq <- .getRefSeqSeqinfo(x[["file"]])
                 },
                 "UCSC" = {
@@ -128,8 +127,7 @@
             )
         }),
         error = function(e) {
-            alertWarning("Automatic {.var seqinfo} assignment failed.")
-            NULL
+            stop("Automatic seqinfo assignment failed.")
         }
     )
     assert(isAny(seq, c("Seqinfo", "NULL")))

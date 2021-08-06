@@ -309,7 +309,7 @@
     ## the report file for the "seqs_for_alignment_pipelines.ucsc_ids" assembly.
     lines <- import(file = file, format = "lines", quiet = TRUE)
     comments <- grep(pattern = "^#", x = lines, value = TRUE)
-    colnames <- tail(comments, n = 1L)
+    colnames <- comments[length(comments)]
     assert(isMatchingFixed(pattern = "\t", x = colnames))
     colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
     colnames <- strsplit(colnames, split = "\t")[[1L]]
@@ -324,11 +324,14 @@
         "seqlengths" = "sequenceLength"
     )
     assert(isSubset(whatCols, colnames))
+    ## NOTE `data.table::fread` doesn't currently support comment exclusion,
+    ## so we're intentionally using the base R engine for import here instead.
     df <- import(
         file = file,
         format = "tsv",
         colnames = colnames,
         comment = "#",
+        engine = "base",
         quiet = FALSE
     )
     df <- df[, whatCols, drop = FALSE]
