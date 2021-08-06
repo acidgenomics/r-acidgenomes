@@ -335,6 +335,8 @@ test_that("GFF3 transcripts", {
 
 context("makeGRangesFromGFF : FlyBase")
 
+## FIXME Check for GFF blacklist.
+
 skip_if_not(hasInternet())
 file <- gffs[["flybase_gtf"]]
 
@@ -819,18 +821,10 @@ test_that("GFF3 transcripts", {
 
 context("makeGRangesFromGFF : RefSeq")
 
+## FIXME Check for GTF blacklist.
+
 skip_if_not(hasInternet())
 file <- gffs[["refseq_grch38_gff3"]]
-
-## FIXME Check the seqinfo handling here.
-## → Getting `Seqinfo` from 5c0b178f46eb_GCF_000001405.39_GRCh38.p13_assembly_report.txt.
-## ! Automatic `seqinfo` assignment failed.
-## > seqnames(object[[1L]])
-## factor-Rle of length 1 with 1 run
-## Lengths:            1
-## Values : NC_000012.12
-## Levels(639): NC_000001.11 ... NW_021160031.1
-## FIXME Check the levels here...
 
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
@@ -884,6 +878,14 @@ test_that("GFF3 genes", {
             "startRange" = "character(0)",
             "translExcept" = "character(0)",
             "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p13"
         )
     )
     expect_identical(
@@ -1079,6 +1081,8 @@ test_that("GTF transcripts", {
 
 
 context("makeGRangesFromGFF : WormBase")
+
+## FIXME Check for GFF blacklist.
 
 skip_if_not(hasInternet())
 file <- gffs[["wormbase_gtf"]]
