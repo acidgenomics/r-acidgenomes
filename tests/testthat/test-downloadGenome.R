@@ -1,3 +1,5 @@
+## FIXME Need to improve coverage for tx2gene.csv.gz file generation.
+
 context("downloadGenome")
 
 test_that("downloadEnsemblGenome", {

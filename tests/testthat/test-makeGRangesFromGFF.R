@@ -431,7 +431,10 @@ test_that("GTF genes", {
     )
     expect_s4_class(object, "GencodeGenes")
     expect_identical(length(object), 60649L)
-    expect_identical(names(object)[[1L]], "ENSG00000223972.5")
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -450,12 +453,42 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972.5"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "havanaGene" = "OTTHUMG00000000961.2",
+            "hgncId" = "HGNC:37102",
+            "level" = "2",
+            "source" = "HAVANA",
+            "tag" = NA_character_,
+            "type" = "gene"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
         expected = "GRCh38"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "16fcae8ca8e488cd8056cf317d963407"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
