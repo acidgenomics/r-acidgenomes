@@ -17,6 +17,8 @@ Rle <- structure(
 )
 DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
+seqinfo <- GenomeInfoDb::seqinfo
+seqnames <- GenomeInfoDb::seqnames
 simpleClass <- AcidBase::simpleClass
 ## nolint end
 
