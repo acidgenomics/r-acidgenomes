@@ -377,14 +377,9 @@ test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "FlyBaseTranscripts")
     expect_identical(length(object), 35642L)
-    expect_identical(names(object)[[1L]], "FBtr0475186")
     expect_identical(
-        object = as.character(mcols(object)[["txId"]])[[1L]],
-        expected = "FBtr0475186"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneId"]])[[1L]],
-        expected = "FBgn0031208"
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -396,6 +391,27 @@ test_that("GTF transcripts", {
             "txId" = "Rle",
             "txName" = "Rle",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["FBtr0475186"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "2L",
+            "start" = "7529",
+            "end" = "9484",
+            "width" = "1956",
+            "strand" = "+",
+            "broadClass" = "other",
+            "geneId" = "FBgn0031208",
+            "geneName" = "CR11023",
+            "source" = "FlyBase",
+            "txId" = "FBtr0475186",
+            "txName" = "CR11023-RE",
+            "type" = "pseudogene"
         )
     )
 })
