@@ -64,7 +64,6 @@
 #' print(seq)
 .getSeqinfo <- function(x) {
     pkgs <- .packages()
-    requireNamespaces("GenomeInfoDb")
     ## Allowing pass-in of either file or GFF metadata list here.
     if (!is.list(x)) {
         x <- getGFFMetadata(file = x)
@@ -83,58 +82,45 @@
         isString(x[["provider"]]),
         isScalar(x[["release"]]) || is.null(x[["release"]])
     )
-    tryCatch(
-        expr = suppressPackageStartupMessages({
-            switch(
-                EXPR = x[["provider"]],
-                "Ensembl" = {
-                    assert(isInt(x[["release"]]))
-                    args <- list(
-                        "species" = x[["organism"]],
-                        "release" = x[["release"]],
-                        "as.Seqinfo" = TRUE
-                    )
-                    ## The `use.grch37` flag isn't currently working with
-                    ## GenomeInfoDb v1.26.2, but may be improved in the future.
-                    if (isMatchingFixed(
-                        pattern = "GRCh37",
-                        x = x[["genomeBuild"]])
-                    ) {
-                        args[["use.grch37"]] <- TRUE
-                    }
-                    seq <- do.call(
-                        what = GenomeInfoDb::getChromInfoFromEnsembl,
-                        args = args
-                    )
-                },
-                "GENCODE" = {
-                    seq <- GenomeInfoDb::Seqinfo(
-                        genome = .mapGenomeBuildToUCSC(x[["genomeBuild"]])
-                    )
-                    seq <- GenomeInfoDb::`genome<-`(
-                        x = seq,
-                        value = x[["genomeBuild"]]
-                    )
-                },
-                "RefSeq" = {
-                    seq <- .getRefSeqSeqinfo(x[["file"]])
-                },
-                "UCSC" = {
-                    seq <- GenomeInfoDb::Seqinfo(
-                        genome = x[["genomeBuild"]]
-                    )
-                }
+    seq <- NULL
+    switch(
+        EXPR = x[["provider"]],
+        "Ensembl" = {
+            assert(isInt(x[["release"]]))
+            args <- list(
+                "species" = x[["organism"]],
+                "release" = x[["release"]],
+                "as.Seqinfo" = TRUE
             )
-        }),
-        error = function(e) {
-            stop("Automatic seqinfo assignment failed.")
+            ## The `use.grch37` flag isn't currently working with
+            ## GenomeInfoDb v1.26.2, but may be improved in the future.
+            if (isMatchingFixed(
+                pattern = "GRCh37",
+                x = x[["genomeBuild"]])
+            ) {
+                args[["use.grch37"]] <- TRUE
+            }
+            seq <- do.call(
+                what = getChromInfoFromEnsembl,
+                args = args
+            )
+        },
+        "GENCODE" = {
+            seq <- Seqinfo(genome = .mapGenomeBuildToUCSC(x[["genomeBuild"]]))
+            genome(seq) <- x[["genomeBuild"]]
+        },
+        "RefSeq" = {
+            seq <- .getRefSeqSeqinfo(x[["file"]])
+        },
+        "UCSC" = {
+            seq <- Seqinfo(genome = x[["genomeBuild"]])
         }
     )
     assert(isAny(seq, c("Seqinfo", "NULL")))
     if (is(seq, "Seqinfo")) {
         assert(
             identical(
-                x = unique(unname(GenomeInfoDb::genome(seq))),
+                x = unique(unname(genome(seq))),
                 y = x[["genomeBuild"]]
             ),
             msg = sprintf(

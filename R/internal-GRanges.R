@@ -581,10 +581,9 @@
         )
     )
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
-    if (
-        isSubset(provider, "RefSeq") ||
-        hasDuplicates(mcols(object)[[idCol]])
-    ) {
+    ## FIXME Rethink this for RefSeq genes...can we just make it flat?
+    ## FIXME Does this happen with RefSeq GFF file?
+    if (hasDuplicates(mcols(object)[[idCol]])) {
         alertInfo(sprintf(
             fmt = paste(
                 "{.var %s} contains multiple ranges per {.var %s}.",

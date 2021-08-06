@@ -11,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -61,7 +61,7 @@ NULL
 #' @export
 makeTxDbFromGFF <- function(file) {
     pkgs <- .packages()
-    assert(isString(file))
+    assert(.isSupportedGFF(file))
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
     denylist <- c(

@@ -5,52 +5,7 @@
     ignoreVersion,
     synonyms
 ) {
-    requireNamespaces("GenomeInfoDb")
     assert(isString(file))
-    ## Check for input of unsupported files.
-    ## See `.gffPatterns` for details.
-    denylist <- c(
-        "flybase_gff" = paste0(
-            "^([a-z0-9]+_)?",
-            "^([^-]+)",
-            "-([^-]+)",
-            "-(r[0-9]+\\.[0-9]+)",
-            "\\.gff",
-            "(\\.gz)?$"
-        ),
-        "wormbase_gff" = paste0(
-            "^([a-z0-9]+_)?",
-            "^([a-z]_[a-z]+)",
-            "\\.([A-Z0-9]+)",
-            "\\.(WS[0-9]+)",
-            "\\.([a-z_]+)",
-            "\\.gff3",
-            "(\\.gz)?$"
-        )
-    )
-    if (isMatchingRegex(
-        pattern = denylist[["flybase_gff"]],
-        x = basename(file)
-    )) {
-        stop(sprintf(
-            paste(
-                "Unsupported file: '%s'.",
-                "Use FlyBase GTF instead of GFF."
-            ),
-            basename(file)
-        ))
-    } else if (isMatchingRegex(
-        pattern = denylist[["wormbase_gff"]],
-        x = basename(file)
-    )) {
-        stop(sprintf(
-            paste(
-                "Unsupported file: '%s'.",
-                "Use WormBase GTF instead of GFF."
-            ),
-            basename(file)
-        ))
-    }
     level <- match.arg(
         arg = level,
         choices = c("genes", "transcripts")
@@ -98,7 +53,7 @@
     metadata(gr) <- meta
     seqinfo <- .getSeqinfo(meta)
     if (is(seqinfo, "Seqinfo")) {
-        GenomeInfoDb::seqinfo(gr) <- seqinfo[GenomeInfoDb::seqlevels(gr)]
+        seqinfo(gr) <- seqinfo[seqlevels(gr)]
     }
     .makeGRanges(
         object = gr,
@@ -529,6 +484,18 @@
 
 
 ## RefSeq ======================================================================
+## GTF:
+##  [1] "source"             "type"               "score"
+##  [4] "phase"              "gene_id"            "transcript_id"
+##  [7] "db_xref"            "description"        "gbkey"
+## [10] "gene"               "gene_biotype"       "pseudo"
+## [13] "product"            "transcript_biotype" "exon_number"
+## [16] "gene_synonym"       "model_evidence"     "tag"
+## [19] "protein_id"         "note"               "exception"
+## [22] "inference"          "anticodon"          "partial"
+## [25] "transl_except"      "standard_name"      "codons"
+## [28] "transl_table"
+
 ## GFF:
 ##  [1] "source"                    "type"
 ##  [3] "score"                     "phase"
@@ -579,6 +546,30 @@
 ## [93] "isolation-source"          "note"
 ## [95] "tissue-type"               "codons"
 ## [97] "transl_table"
+
+
+
+## FIXME Seqinfo assignment is failing here...are we missing metadata?
+
+## Updated 2021-08-05.
+.rtracklayerRefSeqGenesGtf <-
+    function(object) {
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        assert(any(keep))
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        object
+    }
 
 
 
