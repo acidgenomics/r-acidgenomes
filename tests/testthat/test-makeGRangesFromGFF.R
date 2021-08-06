@@ -314,8 +314,10 @@ test_that("GTF genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "FlyBaseGenes")
     expect_identical(length(object), 17874L)
-    expect_identical(names(object)[[1L]], "FBgn0031208")
-    ## FIXME Need to check for "geneName" here.
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -327,12 +329,35 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = vapply(
+            X = as.data.frame(object["FBgn0031208"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "2L",
+            "start" = "7529",
+            "end" = "9484",
+            "width" = "1956",
+            "strand" = "+",
+            "broadClass" = "other",
+            "geneId" = "FBgn0031208",
+            "geneName" = "CR11023",
+            "source" = "FlyBase",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
         expected = "r6.40"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "3563ac20aa9c6605a34227952c8e70bb"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
