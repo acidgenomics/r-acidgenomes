@@ -1059,12 +1059,29 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = levels(seqnames(object)),
+        expected = c(
+            "I",
+            "II",
+            "III",
+            "IV",
+            "V",
+            "X",
+            "MtDNA"
+        )
+    )
+    expect_true(all(is.na(seqlengths(object))))
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
         expected = "WS281"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "a63345f3410927caa1029a143b7e6acc"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
