@@ -521,6 +521,24 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = levels(seqnames(object)),
+        expected = paste0(
+            "chr",
+            c(
+                seq(from = 1L, to = 22L),
+                "X", "Y", "M"
+            )
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = FALSE,
+            "genome" = "hg38"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
