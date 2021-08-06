@@ -260,7 +260,7 @@ makeGRangesFromGFF <- function(
     synonyms = FALSE
 ) {
     assert(
-        isString(file),
+        .isSupportedGFF(file),
         isFlag(ignoreVersion),
         isFlag(synonyms)
     )
@@ -270,10 +270,6 @@ makeGRangesFromGFF <- function(
         basename(file)
     ))
     if (
-        ## > isMatchingRegex(
-        ## >     pattern = .gffPatterns[["refseq"]],
-        ## >     x = basename(file)
-        ## > ) ||
         isMatchingRegex(
             pattern = .gffPatterns[["ucsc"]],
             x = basename(file)

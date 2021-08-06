@@ -1,3 +1,20 @@
+context("makeGRangesFromGFF")
+
+test_that("Unsupported files", {
+    for (file in gffs[c(
+        "flybase_gff3",
+        "refseq_grch38_gtf",
+        "wormbase_gff3"
+    )]) {
+        expect_error(
+            object = makeGRangesFromGFF(file = file),
+            regexp = "Unsupported"
+        )
+    }
+}
+
+
+
 context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet())
@@ -334,8 +351,6 @@ test_that("GFF3 transcripts", {
 
 
 context("makeGRangesFromGFF : FlyBase")
-
-## FIXME Check for GFF blacklist.
 
 skip_if_not(hasInternet())
 file <- gffs[["flybase_gtf"]]
@@ -820,8 +835,6 @@ test_that("GFF3 transcripts", {
 
 
 context("makeGRangesFromGFF : RefSeq")
-
-## FIXME Check for GTF blacklist.
 
 skip_if_not(hasInternet())
 file <- gffs[["refseq_grch38_gff3"]]

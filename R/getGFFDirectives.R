@@ -1,7 +1,7 @@
 #' Get the directives from a GFF file
 #'
 #' @export
-#' @note Updated 2021-01-21.
+#' @note Updated 2021-08-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -35,6 +35,7 @@
 #' df <- getGFFDirectives(url)
 #' print(df)
 getGFFDirectives <- function(file, nMax = Inf) {
+    assert(.isSupportedGFF(file))
     file <- .cacheIt(file)
     lines <- import(
         file = file,

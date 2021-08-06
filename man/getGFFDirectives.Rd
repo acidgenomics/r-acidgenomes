@@ -24,7 +24,7 @@ Get the directives from a GFF file
 Matches lines beginning with \verb{#!<key> <value>} or \verb{##<key>: <value>}
 }
 \note{
-Updated 2021-01-21.
+Updated 2021-08-06.
 }
 \section{GFF3}{
 

@@ -222,7 +222,7 @@
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
 #'
-#' @note Updated 2021-04-27.
+#' @note Updated 2021-08-06.
 #' @noRd
 #'
 #' @param file `character(1)`.
@@ -266,7 +266,6 @@
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
 .getRefSeqSeqinfo <- function(file) {
-    requireNamespaces("GenomeInfoDb")
     if (
         identical(
             x = "seqs_for_alignment_pipelines.ucsc_ids",
@@ -343,7 +342,7 @@
         !any(is.na(seqlengths)),
         hasNoDuplicates(seqnames)
     )
-    seq <- GenomeInfoDb::Seqinfo(
+    seq <- Seqinfo(
         seqnames = seqnames,
         seqlengths = seqlengths,
         isCircular = NA,

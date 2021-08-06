@@ -3,7 +3,7 @@
 #' Wrapper for ensembldb importer functions.
 #'
 #' @export
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-08-06.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -28,12 +28,15 @@
 #' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
     pkgs <- .packages()
-    assert(isString(file))
+    assert(.isSupportedGFF(file))
     if (isAFile(file)) {
         file <- realpath(file)
     }
     pattern <- .gffPatterns[["ensembl"]]
-    assert(isMatchingRegex(pattern = pattern, x = basename(file)))
+    assert(
+        isMatchingRegex(pattern = pattern, x = basename(file)),
+        msg = "Failed to detect Ensembl GFF file."
+    )
     alert(sprintf("Making {.var %s} from {.file %s}.", "EnsDb", file))
     requireNamespaces("ensembldb")
     args <- list()
