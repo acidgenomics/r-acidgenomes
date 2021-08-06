@@ -535,7 +535,7 @@ test_that("GTF genes", {
         expected = list(
             "seqlengths" = 248956422L,
             "isCircular" = FALSE,
-            "genome" = "hg38"
+            "genome" = "GRCh38"
         )
     )
     expect_identical(
