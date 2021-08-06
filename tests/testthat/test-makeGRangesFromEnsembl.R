@@ -1,4 +1,5 @@
 ## FIXME Need to improve "geneId" and "geneName" checks here.
+## FIXME Check the first element in each return, similar to GFF checks.
 
 context("makeGRangesFromEnsembl")
 
