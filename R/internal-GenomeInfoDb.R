@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-08-04.
+#' @note Updated 2021-08-06.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -65,8 +65,9 @@
 .getSeqinfo <- function(x) {
     pkgs <- .packages()
     requireNamespaces("GenomeInfoDb")
+    ## Allowing pass-in of either file or GFF metadata list here.
     if (!is.list(x)) {
-        x <- getGFFMetadata(x)
+        x <- getGFFMetadata(file = x)
     }
     assert(is.list(x))
     if (!isSubset(
@@ -82,7 +83,7 @@
         isString(x[["provider"]]),
         isScalar(x[["release"]]) || is.null(x[["release"]])
     )
-    seq <- tryCatch(
+    tryCatch(
         expr = suppressPackageStartupMessages({
             switch(
                 EXPR = x[["provider"]],
@@ -101,23 +102,26 @@
                     ) {
                         args[["use.grch37"]] <- TRUE
                     }
-                    ## NOTE This step is failing for Ensembl 103 with
-                    ## GenomeInfoDb 1.26.2.
-                    do.call(
+                    seq <- do.call(
                         what = GenomeInfoDb::getChromInfoFromEnsembl,
                         args = args
                     )
                 },
                 "GENCODE" = {
-                    GenomeInfoDb::Seqinfo(
+                    seq <- GenomeInfoDb::Seqinfo(
                         genome = .mapGenomeBuildToUCSC(x[["genomeBuild"]])
+                    )
+                    seq <- GenomeInfoDb::`genome<-`(
+                        x = seq,
+                        value = x[["genomeBuild"]]
                     )
                 },
                 "RefSeq" = {
-                    .getRefSeqSeqinfo(x[["file"]])
+                    ## FIXME Need to rethink this.
+                    seq <- .getRefSeqSeqinfo(x[["file"]])
                 },
                 "UCSC" = {
-                    GenomeInfoDb::Seqinfo(
+                    seq <- GenomeInfoDb::Seqinfo(
                         genome = x[["genomeBuild"]]
                     )
                 }
@@ -129,6 +133,18 @@
         }
     )
     assert(isAny(seq, c("Seqinfo", "NULL")))
+    if (is(seq, "Seqinfo")) {
+        assert(
+            identical(
+                x = unique(unname(GenomeInfoDb::genome(seq))),
+                y = x[["genomeBuild"]]
+            ),
+            msg = sprintf(
+                "Seqinfo does not contain expected genome build: '%s'.",
+                x[["genomeBuild"]]
+            )
+        )
+    }
     forceDetach(keep = pkgs)
     seq
 }
