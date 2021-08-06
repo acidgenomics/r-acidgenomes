@@ -159,7 +159,10 @@ test_that("GFF3 genes", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 60664L)
-    expect_identical(names(object)[[1L]], "ENSG00000223972.5")
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -176,12 +179,43 @@ test_that("GFF3 genes", {
         )
     )
     expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972.5"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "description" = paste(
+                "DEAD/H-box helicase 11 like 1 (pseudogene)",
+                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+            ),
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "logicName" = "havana_homo_sapiens",
+            "source" = "havana",
+            "type" = "pseudogene"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
         expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "d9fd21961d3af5d25b39f724dc93ef3e"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -206,34 +240,9 @@ test_that("GFF3 transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 236918L)
     expect_identical(
-        object = names(object)[[1L]],
-        expected = "ENST00000456328.2"
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]])
     )
-    expect_identical(
-        object = as.character(mcols(object)[["txId"]])[[1L]],
-        expected = "ENST00000456328.2"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
-        expected = "ENST00000456328"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
-        expected = "ENST00000456328.2"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneId"]])[[1L]],
-        expected = "ENSG00000223972.5"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
-        expected = "ENSG00000223972"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
-        expected = "ENSG00000223972.5"
-    )
-    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -255,6 +264,41 @@ test_that("GFF3 transcripts", {
             "txName" = "Rle",
             "txSupportLevel" = "Rle",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000456328.2"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "ccdsId" = NA_character_,
+            "description" = paste(
+                "DEAD/H-box helicase 11 like 1 (pseudogene)",
+                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+            ),
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "logicName" = "havana_homo_sapiens",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "processed_transcript",
+            "txId" = "ENST00000456328.2",
+            "txIdNoVersion" = "ENST00000456328",
+            "txIdVersion" = "ENST00000456328.2",
+            "txName" = "DDX11L1-202",
+            "txSupportLevel" = "1",
+            "type" = "lnc_RNA"
         )
     )
 })
