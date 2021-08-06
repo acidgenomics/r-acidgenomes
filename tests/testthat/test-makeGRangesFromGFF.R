@@ -13,8 +13,10 @@ test_that("GTF genes", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 60664L)
-    expect_identical(names(object)[[1L]], "ENSG00000223972.5")
-    ## FIXME Need to check for "geneName" here.
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -30,12 +32,39 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972.5"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
         expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "1615e866df72f3396ae29714469d5bb4"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -60,34 +89,9 @@ test_that("GTF transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 236920L)
     expect_identical(
-        object = names(object)[[1L]],
-        expected = "ENST00000456328.2"
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]])
     )
-    expect_identical(
-        object = as.character(mcols(object)[["txId"]])[[1L]],
-        expected = "ENST00000456328.2"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["txIdNoVersion"]])[[1L]],
-        expected = "ENST00000456328"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["txIdVersion"]])[[1L]],
-        expected = "ENST00000456328.2"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneId"]])[[1L]],
-        expected = "ENSG00000223972.5"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneIdNoVersion"]])[[1L]],
-        expected = "ENSG00000223972"
-    )
-    expect_identical(
-        object = as.character(mcols(object)[["geneIdVersion"]])[[1L]],
-        expected = "ENSG00000223972.5"
-    )
-    ## FIXME Need to check for "geneName" here.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -109,6 +113,38 @@ test_that("GTF transcripts", {
             "txSource" = "Rle",
             "txSupportLevel" = "Rle",
             "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000456328.2"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "ccdsId" = NA_character_,
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "processed_transcript",
+            "txId" = "ENST00000456328.2",
+            "txIdNoVersion" = "ENST00000456328",
+            "txIdVersion" = "ENST00000456328.2",
+            "txName" = "DDX11L1-202",
+            "txSource" = "havana",
+            "txSupportLevel" = "1",
+            "type" = "transcript"
         )
     )
 })
