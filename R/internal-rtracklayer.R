@@ -1,8 +1,3 @@
-## FIXME This is no longer keeping track of "geneName" for
-## WormBase releases WS280, WS281...
-## FIXME Need to merge this back onto the transcript-level data...argh
-## FIXME Previous pull of geneName in WS279 is incorrect....
-
 ## Updated 2021-08-05.
 .makeGRangesFromRtracklayer <- function(
     file,
@@ -105,7 +100,6 @@
     if (is(seqinfo, "Seqinfo")) {
         GenomeInfoDb::seqinfo(gr) <- seqinfo[GenomeInfoDb::seqlevels(gr)]
     }
-    ## FIXME This is incorrectly setting type on our WormBase transcript-level ranges to "genes".
     .makeGRanges(
         object = gr,
         ignoreVersion = ignoreVersion,
