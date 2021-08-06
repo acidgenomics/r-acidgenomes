@@ -1,6 +1,8 @@
+## FIXME Is this failing for RefSeq GTF?
+
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-08-05.
+#' @note Updated 2021-08-06.
 #' @export
 #'
 #' @inheritParams AcidRoxygen::params
@@ -33,6 +35,7 @@
 #' x <- getGFFMetadata(url)
 #' print(x)
 getGFFMetadata <- function(file) {
+    assert(.isSupportedGFF(file))
     l <- list()
     if (isAFile(file)) {
         file <- realpath(file)

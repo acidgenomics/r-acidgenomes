@@ -17,6 +17,8 @@
 #'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
 #'   metadata<- na.omit order ranges setdiff sort split tail trim unlist
 #' @importFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
+#' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome genome<-
+#'   seqinfo seqinfo<- seqlevels
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates

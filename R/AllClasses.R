@@ -363,21 +363,22 @@ setValidity(
 #' RefSeq gene annotations
 #'
 #' @details
-#' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
+#' Contains a `GRanges` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-08-06.
 #'
 #' @return `RefSeqGenes`.
 setClass(
     Class = "RefSeqGenes",
-    contains = "CompressedGRangesList"
+    contains = "GRanges"
 )
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ok <- .refseqValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        ## FIXME Set this TRUE.
+        ## > ok <- .refseqValidity(object)
+        ## > if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
