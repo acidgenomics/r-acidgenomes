@@ -59,6 +59,21 @@ test_that("GTF genes", {
         )
     )
     expect_identical(
+        object = levels(seqnames(object))[seq_len(25L)],
+        expected = c(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p13"
+        )
+    )
+    expect_identical(
         object = metadata(object)[["file"]],
         expected = file
     )
@@ -207,6 +222,21 @@ test_that("GFF3 genes", {
             "logicName" = "havana_homo_sapiens",
             "source" = "havana",
             "type" = "pseudogene"
+        )
+    )
+    expect_identical(
+        object = levels(seqnames(object))[seq_len(25L)],
+        expected = c(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p13"
         )
     )
     expect_identical(
