@@ -1,7 +1,7 @@
 ## FIXME Need to check seqinfo here.
 ## FIXME RefSeq seqinfo is currently failing...what's up with that?
 ## FIXME Need to improve consistency of "geneId" and "geneName" checks.
-## FIXME Check seqinfo and seqlengths.
+## FIXME Check seqinfo, seqlevels, seqlengths.
 ## FIXME Automatic assignment of Seqinfo failed for RefSeq...need to resolve?
 
 context("makeGRangesFromGFF : Ensembl")
@@ -914,14 +914,36 @@ test_that("GTF genes", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "UCSCGenes")
-    ## This changes over time, so don't hard-code (2021-08-05).
-    ## > expect_identical(length(object), 64252L)
-    expect_true(isSubset("ENSG00000223972", names(object)))
+
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
             "geneId" = "Rle",
             "geneName" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "geneId" = "ENSG00000223972",
+            "geneName" = "ENSG00000223972"
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = FALSE,
+            "genome" = "hg38"
         )
     )
     expect_identical(
@@ -945,9 +967,6 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "UCSCTranscripts")
-    ## This changes over time, so don't hard-code (2021-08-05).
-    ## > expect_identical(length(object), 208239L)
-    expect_true(isSubset("ENST00000456328", names(object)))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -961,6 +980,30 @@ test_that("GTF transcripts", {
             "txNumber" = "Rle",
             "txStart" = "Rle",
             "txStrand" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000456328"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "geneId" = "ENSG00000223972",
+            "geneName" = "ENSG00000223972",
+            "txBiotype" = "transcript",
+            "txChrom" = "chr1",
+            "txEnd" = "14409",
+            "txId" = "ENST00000456328",
+            "txName" = "ENST00000456328",
+            "txNumber" = "1",
+            "txStart" = "11869",
+            "txStrand" = "+"
         )
     )
 })
