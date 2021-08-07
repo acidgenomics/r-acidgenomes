@@ -86,7 +86,10 @@ downloadUCSCGenome <-
             organism, genomeBuild,
             releaseURL, outputDir
         ))
-        assert(!isADir(outputDir))
+        assert(
+            !isADir(outputDir),
+            msg = sprintf("Genome exists at '%s'.", outputDir)
+        )
         outputDir <- initDir(outputDir)
         args <- list(
             "outputDir" = outputDir,
