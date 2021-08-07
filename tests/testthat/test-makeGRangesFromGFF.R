@@ -8,7 +8,7 @@ test_that("Unsupported files", {
     )]) {
         expect_error(
             object = makeGRangesFromGFF(file = file),
-            regexp = "Unsupported"
+            regexp = "isSupportedGFF"
         )
     }
 })
