@@ -1121,9 +1121,6 @@ test_that("GFF3 genes", {
     )
 })
 
-# FIXME Need to update checks.
-# FIXME Need to filter out "unassigned_transcript" entries from the return.
-# FIXME Add a check for identifiers in names.
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
@@ -1146,6 +1143,7 @@ test_that("GFF3 transcripts", {
             "geneSynonym" = "CompressedCharacterList",
             "inference" = "Rle",
             "modelEvidence" = "Rle",
+            "parentGeneId" = "Rle",
             "partial" = "Rle",
             "product" = "Rle",
             "pseudo" = "Rle",
@@ -1182,6 +1180,7 @@ test_that("GFF3 transcripts", {
             "geneSynonym" = "character(0)",
             "inference" = NA_character_,
             "modelEvidence" = NA_character_,
+            "parentGeneId" = "A2M",
             "partial" = NA_character_,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
             "pseudo" = NA_character_,
@@ -1307,8 +1306,6 @@ test_that("GTF transcripts", {
 
 
 context("makeGRangesFromGFF : WormBase")
-
-## FIXME Check for GFF blacklist.
 
 skip_if_not(hasInternet())
 file <- gffs[["wormbase_gtf"]]
