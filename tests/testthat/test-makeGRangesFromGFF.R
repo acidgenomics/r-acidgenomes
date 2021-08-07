@@ -3,7 +3,6 @@ context("makeGRangesFromGFF")
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",
-        "refseq_grch38_gtf",
         "wormbase_gff3"
     )]) {
         expect_error(
