@@ -1,6 +1,3 @@
-## FIXME Need to improve "geneId" and "geneName" checks here.
-## FIXME Check the first element in each return, similar to GFF checks.
-
 context("makeGRangesFromEnsembl")
 
 skip_if_not(hasInternet())
@@ -50,6 +47,47 @@ test_that("Genes", {
             "seqCoordSystem" = "Rle"
         )
     )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "canonicalTranscript" = "ENST00000456328",
+            "description" = paste(
+                "DEAD/H-box helicase 11 like 1 (pseudogene)",
+                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+            ),
+            "entrezId" = "c(84771, 727856, 100287102, 100287596, 102725121)",
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "seqCoordSystem" = "chromosome"
+        )
+    )
+    expect_true(isSubset(
+        x = c(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+        ),
+        y = levels(seqnames(object))
+    ))
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = FALSE,
+            "genome" = "GRCh38"
+        )
+    )
 })
 
 ## Transcript verion metadata isn't saved in older EnsDb releases, such as v87.
@@ -64,30 +102,6 @@ test_that("Transcripts", {
     expect_identical(length(object), 254853L)
     expect_identical(
         object = head(names(object), n = 2L),
-        expected = c("ENST00000635602.1", "ENST00000635506.1")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["geneId"]], n = 2L)),
-        expected = c("ENSG00000283061.1", "ENSG00000283061.1")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["geneIdNoVersion"]], n = 2L)),
-        expected = c("ENSG00000283061", "ENSG00000283061")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["geneIdVersion"]], n = 2L)),
-        expected = c("ENSG00000283061.1", "ENSG00000283061.1")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["txId"]], n = 2L)),
-        expected = c("ENST00000635602.1", "ENST00000635506.1")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["txIdNoVersion"]], n = 2L)),
-        expected = c("ENST00000635602", "ENST00000635506")
-    )
-    expect_identical(
-        object = as.character(head(mcols(object)[["txIdVersion"]], n = 2L)),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
     )
     expect_identical(
@@ -114,6 +128,41 @@ test_that("Transcripts", {
             "txIdVersion" = "Rle",
             "txName" = "Rle",
             "txSupportLevel" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000635602.1"]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "7",
+            "start" = "12704",
+            "end" = "27199",
+            "width" = "14496",
+            "strand" = "+",
+            "broadClass" = "noncoding",
+            "canonicalTranscript" = "ENST00000635602",
+            "description" = "novel transcript",
+            "entrezId" = "NA",
+            "gcContent" = "42.090395480226",
+            "geneBiotype" = "lncRNA",
+            "geneId" = "ENSG00000283061.1",
+            "geneIdNoVersion" = "ENSG00000283061",
+            "geneIdVersion" = "ENSG00000283061.1",
+            "geneName" = "AC215522.3",
+            "geneSeqEnd" = "27234",
+            "geneSeqStart" = "12704",
+            "seqCoordSystem" = "chromosome",
+            "txBiotype" = "lncRNA",
+            "txCdsSeqEnd" = NA_character_,
+            "txCdsSeqStart" = NA_character_,
+            "txId" = "ENST00000635602.1",
+            "txIdNoVersion" = "ENST00000635602",
+            "txIdVersion" = "ENST00000635602.1",
+            "txName" = "ENST00000635602",
+            "txSupportLevel" = "5"
         )
     )
 })
