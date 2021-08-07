@@ -1398,7 +1398,7 @@ test_that("GTF transcripts", {
     expect_identical(length(object), 59961L)
     expect_identical(
         object = names(object),
-        expected = as.character(mcols(object)[["txId"]]))
+        expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
