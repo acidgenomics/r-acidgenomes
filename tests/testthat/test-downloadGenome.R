@@ -23,6 +23,7 @@ test_that("downloadEnsemblGenome", {
             "tx2gene.rds"
         )
     ))))
+    ## FIXME The rownames are inconsistent across these saves.
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
@@ -34,14 +35,14 @@ test_that("downloadEnsemblGenome", {
     )
     tx2gene <- import(
         file = file.path(outputDir, "tx2gene.csv.gz"),
-        colnames = FALSE
+        colnames = c("txId", "geneId")
     )
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
-            "V1" = "ENST00000000233.10",
-            "V2" = "ENSG00000004059.11"
+            "txId" = "ENST00000000233.10",
+            "geneId" = "ENSG00000004059.11"
         )
     )
     if (dir.exists(outputDir)) {
@@ -72,6 +73,7 @@ test_that("downloadGencodeGenome", {
             "tx2gene.rds"
         )
     ))))
+    ## FIXME The rownames are inconsistent across these saves.
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(nrow(tx2gene), 237012L)
     expect_identical(
@@ -129,6 +131,7 @@ test_that("downloadRefSeqGenome", {
         ),
         "geneId" = rep("AATF", 3L)
     )
+    ## FIXME The rownames are inconsistent across these saves.
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     tx2gene <- as.data.frame(tx2gene)
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
@@ -146,9 +149,11 @@ test_that("downloadRefSeqGenome", {
     }
 })
 
+## FIXME Ensure that Bioconductor package attachment doesn't spam here.
 test_that("downloadUCSCGenome", {
     info <- downloadUCSCGenome(
         organism = "Homo sapiens",
+        genomeBuild = "hg38",
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
@@ -157,12 +162,38 @@ test_that("downloadUCSCGenome", {
         outputDir,
         c(
             "annotation.gtf.gz",
+            "genes.rds",
             "genome.fa.gz",
             "metadata.rds",
             "transcriptome.fa.gz",
-            "tx2gene.csv.gz"
+            "transcripts.rds",
+            "tx2gene.csv.gz",
+            "tx2gene.rds"
         )
     ))))
+    ## FIXME The rownames are inconsistent across these saves.
+    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
+    expect_identical(
+        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        expected = list(
+            "txId" = "ENST00000000233",
+            "geneId" = "ENSG00000004059"
+        )
+    )
+    ## FIXME Can't assign 2 names to a 3 column data frame?
+    ## FIXME This isn't outputting the flat file correctly...need to remove
+    ## rownames before the export.
+    tx2gene <- import(
+        file = file.path(outputDir, "tx2gene.csv.gz"),
+        colnames = c("txId", "geneId")
+    )
+    expect_identical(
+        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        expected = list(
+            "txId" = "ENST00000000233",
+            "geneId" = "ENSG00000004059"
+        )
+    )
     if (dir.exists(outputDir)) {
         unlink(outputDir, recursive = TRUE)
     }
