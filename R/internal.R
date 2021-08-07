@@ -66,9 +66,6 @@
 
 
 
-## FIXME Do we need to add check for RefSeq GTF file here?
-## FIXME RefSeq files are failing because they don't have enough metadata...
-
 #' Is the input GFF file supported in the package?
 #'
 ## See `.gffPatterns` for pattern matching details.
