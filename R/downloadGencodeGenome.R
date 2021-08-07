@@ -71,7 +71,10 @@ downloadGencodeGenome <-
             organism, genomeBuild, as.character(release),
             releaseURL, outputDir
         ))
-        assert(!isADir(outputDir))
+        assert(
+            !isADir(outputDir),
+            msg = sprintf("Genome exists at '%s'.", outputDir)
+        )
         outputDir <- initDir(outputDir)
         args <- list(
             "genomeBuild" = genomeBuild,
