@@ -581,17 +581,12 @@
         )
     )
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
-    ## FIXME Rethink this for RefSeq genes...can we just make it flat?
-    ## FIXME Does this happen with RefSeq GFF file?
-    if (hasDuplicates(mcols(object)[[idCol]])) {
+    if (identical(provider, "RefSeq")) {
         alertInfo(sprintf(
-            fmt = paste(
-                "{.var %s} contains multiple ranges per {.var %s}.",
-                "Splitting into {.var %s}."
-            ),
+            "Splitting {.var %s} by {.var %s} into {.var %s}.",
             "GRanges", idCol, "GRangesList"
         ))
-        ## Metadata will get dropped during `split()` call; stash and reassign.
+        ## Metadata gets dropped during `split()` call; stash and reassign.
         meta <- metadata(object)
         object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
         metadata(object) <- meta
@@ -600,10 +595,14 @@
         assert(
             hasNoDuplicates(names),
             !any(is.na(names)),
-            ## This check fails for split GRangesList (see above).
-            isFALSE(is.unsorted(object))
+            msg = "Invalid and/or duplicated identifiers detected."
         )
         names(object) <- names
+        ## This check fails for split GRangesList.
+        assert(
+            isFALSE(is.unsorted(object)),
+            msg = "GRanges are not sorted."
+        )
     }
     ## Run final assert checks before returning.
     validObject(object)
