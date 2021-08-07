@@ -941,34 +941,34 @@ test_that("GTF genes", {
     )
 })
 
-## FIXME Need to merge in description and geneBiotype information here...
-## FIXME Need to filter out "unassigned_transcript" entries from the return.
-## FIXME Add a check for identifiers in names.
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = names(object)
+    )))
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "anticodon" = "Rle",
-            "codons" = "Rle",
+            "broadClass" = "Rle",
             "dbXref" = "Rle",
-            "description" = "Rle",  # FIXME
+            "description" = "Rle",
             "exception" = "Rle",
             "gbkey" = "Rle",
-            ## > "geneBiotype" = "Rle",  # FIXME
+            "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneName" = "Rle",
-            "geneSynonym" = "CompressedCharacterList",
             "inference" = "Rle",
             "modelEvidence" = "Rle",
+            "note" = "Rle",
+            "parentGeneId" = "Rle",
             "partial" = "Rle",
             "product" = "Rle",
             "pseudo" = "Rle",
             "source" = "Rle",
-            "startRange" = "CompressedCharacterList",
             "tag" = "Rle",
-            "translExcept" = "CompressedCharacterList",
+            "txBiotype" = "Rle",
             "txId" = "Rle",
             "txName" = "Rle",
             "type" = "Rle"
@@ -987,39 +987,32 @@ test_that("GTF transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
+            "dbXref" = "GeneID:2",
             "description" = "alpha-2-macroglobulin",
-            "endRange" = "character(0)",
             "exception" = NA_character_,
-            "experiment" = "character(0)",
             "gbkey" = "mRNA",
             "geneBiotype" = "protein_coding",
             "geneId" = "A2M",
             "geneName" = "A2M",
-            "geneSynonym" = "character(0)",
             "inference" = NA_character_,
             "modelEvidence" = NA_character_,
+            "note" = NA_character_,
+            "parentGeneId" = "A2M",
             "partial" = NA_character_,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
             "pseudo" = NA_character_,
             "source" = "BestRefSeq",
-            "startRange" = "character(0)",
             "tag" = "MANE Select",
-            "translExcept" = "character(0)",
+            "txBiotype" = "mRNA",
             "txId" = "NM_000014.6",
             "txName" = "NM_000014.6",
-            "type" = "mRNA"
+            "type" = "transcript"
         )
     )
-
-
-
-
-
 })
 
 file <- gffs[["refseq_grch38_gff3"]]
 
-# FIXME Need to update checks.
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "RefSeqGenes")
@@ -1036,6 +1029,7 @@ test_that("GFF3 genes", {
             "geneId" = "Rle",
             "geneName" = "Rle",
             "geneSynonym" = "CompressedCharacterList",
+            "parentGeneId" = "Rle",
             "partial" = "Rle",
             "pseudo" = "Rle",
             "source" = "Rle",
@@ -1066,6 +1060,7 @@ test_that("GFF3 genes", {
             "geneId" = "A1BG",
             "geneName" = "A1BG",
             "geneSynonym" = "c(\"A1B\", \"ABG\", \"GAB\", \"HYST2477\")",
+            "parentGeneId" = "A1BG",
             "partial" = NA_character_,
             "pseudo" = NA_character_,
             "source" = "BestRefSeq",
@@ -1074,7 +1069,36 @@ test_that("GFF3 genes", {
             "type" = "gene"
         )
     )
-    ## FIXME Need to test split of AATF here.
+    expect_identical(
+        object = lapply(
+            X = as.data.frame(object[["AATF"]]),
+            FUN = as.character
+        ),
+        expected = list(
+            "seqnames" = c("NC_000017.11", "NT_187614.1"),
+            "start" = c("36948954", "1185319"),
+            "end" = c("37056871", "1293236"),
+            "width" = rep("107918", 2L),
+            "strand"= rep("+", 2L),
+            "broadClass" = rep("coding", 2L),
+            "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
+            "endRange" = rep("character(0)", 2L),
+            "exception" = rep(NA_character_, 2L),
+            "experiment" = rep("character(0)", 2L),
+            "gbkey" = rep("Gene", 2L),
+            "geneBiotype" = rep("protein_coding", 2L),
+            "geneId" = rep("AATF", 2L),
+            "geneName" = rep("AATF", 2L),
+            "geneSynonym" = rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),  # nolint
+            "parentGeneId" = c("AATF", "AATF-2"),
+            "partial" = rep(NA_character_, 2L),
+            "pseudo" = rep(NA_character_, 2L),
+            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
+            "startRange" = rep("character(0)", 2L),
+            "translExcept" = rep("character(0)", 2L),
+            "type" = rep("gene", 2L)
+        )
+    )
     expect_identical(
         object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
         expected = list(
@@ -1103,6 +1127,10 @@ test_that("GFF3 genes", {
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = names(object)
+    )))
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(

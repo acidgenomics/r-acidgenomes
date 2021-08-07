@@ -641,6 +641,12 @@
             msg = "Failed to extract any transcripts."
         )
         object <- object[keep]
+        ## e.g. "NM_000014.6".
+        keep <- grepl(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        )
+        object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         names(mcols(object))[
             names(mcols(object)) == "gene_id"] <- "parent_gene_id"
@@ -732,6 +738,12 @@
             msg = "Failed to extract any transcripts."
         )
         object <- object[keep]
+        ## e.g. "NM_000014.6".
+        keep <- grepl(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        )
+        object <- object[keep]
         ## Only keep transcript annotations that map to a parent gene.
         ## This is somewhat slow and may be optimizable.
         keep <- bapply(
@@ -745,11 +757,6 @@
             msg = "Failed to match transcripts against parent genes."
         )
         object <- object[keep]
-        ## e.g. "NM_000218.3".
-        assert(allAreMatchingRegex(
-            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
-            x = mcols(object)[["transcript_id"]]
-        ))
         ## Ensure that matching transcripts contain a unique gene parent.
         assert(
             all(bapply(
