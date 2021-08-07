@@ -1,11 +1,6 @@
 ## FIXME Need to suppress package startup messages here somewhere during the
 ## GFF processing -- TxDb step?
 
-## FIXME The Tx2Gene output here has rownames, whereas the other genome downloads
-## don't.
-## FIXME The flat file Tx2Gene incorrectly saves an extra column with the rownames
-## Need to handle this better in our export method.
-
 
 
 ## nolint start
