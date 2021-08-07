@@ -113,7 +113,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         mcols(object)[["gene_id_version"]] <-
@@ -152,7 +155,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         mcols(object)[["gene_id_version"]] <-
             paste(
@@ -188,7 +194,10 @@
             )
         )
         keep <- !is.na(mcols(object)[["gene_id"]])
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         names(mcols(object))[
@@ -224,7 +233,10 @@
             )
         )
         keep <- !is.na(mcols(object)[["transcript_id"]])
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
@@ -286,7 +298,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         object
@@ -309,7 +324,10 @@
             x = mcols(object)[["type"]],
             ignore.case = TRUE
         )
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         object
@@ -364,7 +382,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         mcols(object)[["gene_id_version"]] <-
@@ -400,7 +421,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         mcols(object)[["transcript_id_version"]] <-
             mcols(object)[["transcript_id"]]
@@ -433,7 +457,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
         mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
@@ -467,7 +494,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "transcript"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
         mcols(object)[["ID"]] <- NULL
@@ -549,15 +579,14 @@
 
 
 
-## FIXME Seqinfo assignment is failing here...are we missing metadata?
-
-## Updated 2021-08-05.
+## Updated 2021-08-06.
 .rtracklayerRefSeqGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c(
+                    "gene",
                     "gene_id",
                     "type"
                 ),
@@ -565,21 +594,83 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        names(mcols(object))[
+            names(mcols(object)) == "gene_id"] <- "parent_gene_id"
+        names(mcols(object))[
+            names(mcols(object)) == "gene"] <- "gene_id"
+        assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
         object
     }
 
 
 
-## Updated 2021-02-01.
+## Updated 2021-08-06.
+.rtracklayerRefSeqTranscriptsGtf <-
+    function(object) {
+        genes <- .rtracklayerRefSeqGenesGtf(object)
+        genesMcols <- mcols(genes)[
+            ,
+            c(
+                "parent_gene_id",
+                "gene_biotype",
+                "description"
+            ),
+            drop = FALSE
+        ]
+        keep <- complete.cases(genesMcols)
+        genesMcols <- genesMcols[keep, , drop = FALSE]
+        assert(
+            hasNoDuplicates(genesMcols[["parent_gene_id"]]),
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "transcript_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
+        names(mcols(object))[
+            names(mcols(object)) == "gene_id"] <- "parent_gene_id"
+        names(mcols(object))[
+            names(mcols(object)) == "gene"] <- "gene_id"
+        cols <- c(
+            setdiff(
+                x = colnames(mcols(object)),
+                y = colnames(genesMcols)
+            ),
+            "parent_gene_id"
+        )
+        mcols(object) <- mcols(object)[, cols]
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = genesMcols,
+            by = "parent_gene_id"
+        )
+        object
+    }
+
+
+
+## Updated 2021-08-06.
 .rtracklayerRefSeqGenesGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Parent", "description", "gene"),
+                x = c("ID", "Parent", "description", "gene"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
@@ -590,20 +681,41 @@
         keep <-
             !is.na(mcols(object)[["gbkey"]]) &
             mcols(object)[["gbkey"]] == "Gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
         object <- object[keep]
-        names(mcols(object))[
-            names(mcols(object)) == "gene"] <- "gene_id"
+        names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
+        assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
+        names(mcols(object))[ names(mcols(object)) == "gene"] <- "gene_id"
+        assert(all(grepl(
+            pattern = "^gene-",
+            x = mcols(object)[["parent_gene_id"]]
+        )))
+        mcols(object)[["parent_gene_id"]] <- gsub(
+            pattern = "^gene-",
+            replacement = "",
+            x = mcols(object)[["parent_gene_id"]]
+        )
         object
     }
 
 
 
-## Updated 2021-02-01.
+## Updated 2021-08-06.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGff(object)
+        genesMcols <- mcols(genes)[
+            ,
+            c("parent_gene_id", "gene_biotype", "description"),
+            drop = FALSE
+        ]
+        keep <- complete.cases(genesMcols)
+        genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(
+            hasNoDuplicates(genesMcols[["parent_gene_id"]]),
             is(object, "GRanges"),
             isSubset(
                 x = c("Parent", "gene", "transcript_id"),
@@ -615,38 +727,59 @@
             )
         )
         keep <- !is.na(mcols(object)[["transcript_id"]])
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
+        ## Only keep transcript annotations that map to a parent gene.
+        ## This is somewhat slow and may be optimizable.
         keep <- bapply(
             X = mcols(object)[["Parent"]],
             FUN = function(x) {
                 any(grepl(pattern = "^gene-", x = x))
             }
         )
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to match transcripts against parent genes."
+        )
         object <- object[keep]
         ## e.g. "NM_000218.3".
         assert(allAreMatchingRegex(
             pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
             x = mcols(object)[["transcript_id"]]
         ))
-        names(mcols(object))[
-            names(mcols(object)) == "gene"] <- "gene_id"
-        mcols(object) <- removeNA(mcols(object))
-        ## Keep track gene metadata at transcript level.
-        genesMcols <- mcols(genes)[
-            ,
-            c("gene_id", "gene_biotype", "description"),
-            drop = FALSE
-        ]
-        genesMcols <- genesMcols[complete.cases(genesMcols), , drop = FALSE]
-        keep <- !duplicated(genesMcols[["gene_id"]])
-        genesMcols <- genesMcols[keep, , drop = FALSE]
-        assert(hasNoDuplicates(genesMcols[["gene_id"]]))
+        ## Ensure that matching transcripts contain a unique gene parent.
+        assert(
+            all(bapply(
+                X = mcols(object)[["Parent"]],
+                FUN = isScalar
+            )),
+            msg = "Elements do not contain a unique gene parent."
+        )
+        mcols(object)[["parent_gene_id"]] <- vapply(
+            X = mcols(object)[["Parent"]],
+            FUN = function(x) {
+                sub(pattern = "^gene-", replacement = "", x = x[[1L]])
+            },
+            FUN.VALUE = character(1L),
+            USE.NAMES = FALSE
+        )
+        mcols(object)[["Parent"]] <- NULL
+        names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
+        cols <- c(
+            setdiff(
+                x = colnames(mcols(object)),
+                y = colnames(genesMcols)
+            ),
+            "parent_gene_id"
+        )
+        mcols(object) <- mcols(object)[, cols]
         mcols(object) <- leftJoin(
             x = mcols(object),
             y = genesMcols,
-            by = "gene_id"
+            by = "parent_gene_id"
         )
         object
     }
@@ -685,7 +818,10 @@
             )
         )
         keep <- mcols(object)[["type"]] == "gene"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["gene_id"]]),
@@ -718,7 +854,10 @@
         )
         geneMcols <- mcols(genes, use.names = FALSE)[, geneCols]
         keep <- mcols(object)[["type"]] == "transcript"
-        assert(any(keep))
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
         object <- object[keep]
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
