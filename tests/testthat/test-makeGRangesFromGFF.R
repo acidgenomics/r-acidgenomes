@@ -837,8 +837,189 @@ test_that("GFF3 transcripts", {
 context("makeGRangesFromGFF : RefSeq")
 
 skip_if_not(hasInternet())
+file <- gffs[["refseq_grch38_gtf"]]
+
+test_that("GTF genes", {
+    object <- makeGRangesFromGFF(file = file, level = "genes")
+    expect_s4_class(object, "RefSeqGenes")
+    expect_identical(
+        object = lapply(mcols(object[[1L]]), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "dbXref" = "Rle",
+            "description" = "Rle",
+            "exception" = "Rle",
+            "gbkey" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSynonym" = "Rle",
+            "note" = "Rle",
+            "parentGeneId" = "Rle",
+            "partial" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["A1BG"]][1L]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000019.10",
+            "start" = "58345183",
+            "end" = "58353492",
+            "width" = "8310",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "dbXref" = "MIM:138670",
+            "description" = "alpha-1-B glycoprotein",
+            "exception" = NA_character_,
+            "gbkey" = "Gene",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A1BG",
+            "geneName" = "A1BG",
+            "geneSynonym" = "HYST2477",
+            "note" = NA_character_,
+            "parentGeneId" = "A1BG",
+            "partial" = NA_character_,
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = lapply(
+            X = as.data.frame(object[["AATF"]]),
+            FUN = as.character
+        ),
+        expected = list(
+            "seqnames" = c("NC_000017.11", "NT_187614.1"),
+            "start" = c("36948954", "1185319"),
+            "end" = c("37056871", "1293236"),
+            "width" = rep("107918", 2L),
+            "strand"= rep("+", 2L),
+            "broadClass" = rep("coding", 2L),
+            "dbXref"= rep("MIM:608463", 2L),
+            "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
+            "exception" = rep(NA_character_, 2L),
+            "gbkey" = rep("Gene", 2L),
+            "geneBiotype" = rep("protein_coding", 2L),
+            "geneId" = rep("AATF", 2L),
+            "geneName" = rep("AATF", 2L),
+            "geneSynonym" = rep("DED", 2L),
+            "note" = rep(NA_character_, 2L),
+            "parentGeneId" = c("AATF", "AATF_1"),
+            "partial" = rep(NA_character_, 2L),
+            "pseudo" = rep(NA_character_, 2L),
+            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
+            "type" = rep("gene", 2L)
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p13"
+        )
+    )
+    expect_identical(
+        object = metadata(object)[["file"]],
+        expected = file
+    )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+})
+
+## FIXME Need to merge in description and geneBiotype information here...
+## FIXME Need to filter out "unassigned_transcript" entries from the return.
+## FIXME Add a check for identifiers in names.
+test_that("GTF transcripts", {
+    object <- makeGRangesFromGFF(file = file, level = "transcripts")
+    expect_s4_class(object, "RefSeqTranscripts")
+    expect_identical(
+        object = lapply(mcols(object[[1L]]), simpleClass),
+        expected = list(
+            "anticodon" = "Rle",
+            "codons" = "Rle",
+            "dbXref" = "Rle",
+            "description" = "Rle",  # FIXME
+            "exception" = "Rle",
+            "gbkey" = "Rle",
+            ## > "geneBiotype" = "Rle",  # FIXME
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSynonym" = "CompressedCharacterList",
+            "inference" = "Rle",
+            "modelEvidence" = "Rle",
+            "partial" = "Rle",
+            "product" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
+            "startRange" = "CompressedCharacterList",
+            "tag" = "Rle",
+            "translExcept" = "CompressedCharacterList",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["NM_000014.6"]][1L]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000012.12",
+            "start" = "9067708",
+            "end" = "9115919",
+            "width" = "48212",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "description" = "alpha-2-macroglobulin",
+            "endRange" = "character(0)",
+            "exception" = NA_character_,
+            "experiment" = "character(0)",
+            "gbkey" = "mRNA",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A2M",
+            "geneName" = "A2M",
+            "geneSynonym" = "character(0)",
+            "inference" = NA_character_,
+            "modelEvidence" = NA_character_,
+            "partial" = NA_character_,
+            "product" = "alpha-2-macroglobulin, transcript variant 1",
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "startRange" = "character(0)",
+            "tag" = "MANE Select",
+            "translExcept" = "character(0)",
+            "txId" = "NM_000014.6",
+            "txName" = "NM_000014.6",
+            "type" = "mRNA"
+        )
+    )
+
+
+
+
+
+})
+
 file <- gffs[["refseq_grch38_gff3"]]
 
+# FIXME Need to update checks.
 test_that("GFF3 genes", {
     object <- makeGRangesFromGFF(file = file, level = "genes")
     expect_s4_class(object, "RefSeqGenes")
@@ -893,6 +1074,7 @@ test_that("GFF3 genes", {
             "type" = "gene"
         )
     )
+    ## FIXME Need to test split of AATF here.
     expect_identical(
         object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
         expected = list(
@@ -915,6 +1097,9 @@ test_that("GFF3 genes", {
     )
 })
 
+# FIXME Need to update checks.
+# FIXME Need to filter out "unassigned_transcript" entries from the return.
+# FIXME Add a check for identifiers in names.
 test_that("GFF3 transcripts", {
     object <- makeGRangesFromGFF(file = file, level = "transcripts")
     expect_s4_class(object, "RefSeqTranscripts")
