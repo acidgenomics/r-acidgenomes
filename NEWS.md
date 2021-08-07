@@ -1,4 +1,4 @@
-## AcidGenomes 0.2.16 (2021-08-25)
+## AcidGenomes 0.2.16 (UNRELEASED)
 
 ### Major changes
 
@@ -15,6 +15,9 @@
 - Split out `stripGeneVersions` and `stripTranscriptVersions` documentation
   into separate files.
 - Reorganized S4 method documentation to be alphabetical consistently.
+- `export`: Hardened `Tx2Gene` method to ensure that rownames are consistently
+  removed prior to export. Noticed that this was an issue with UCSC genome
+  build download.
 
 ## AcidGenomes 0.2.15 (2021-07-27)
 

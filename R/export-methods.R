@@ -1,6 +1,6 @@
 #' @name export
 #' @inherit pipette::export description return title
-#' @note Updated 2020-12-10.
+#' @note Updated 2021-08-07.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
@@ -29,14 +29,12 @@ NULL
 
 
 
-## Updated 2020-12-10.
+## Updated 2021-08-07.
 `export,Tx2Gene` <-  # nolint
     function(object, ...) {
-        export(
-            object = as(object, "DataFrame"),
-            colnames = FALSE,
-            ...
-        )
+        df <- as(object, "DataFrame")
+        rownames(df) <- NULL
+        export(object = df, colnames = FALSE, ...)
     }
 
 
