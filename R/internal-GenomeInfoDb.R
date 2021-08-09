@@ -108,7 +108,7 @@
             },
             "GENCODE" = {
                 genome <- .mapGenomeBuildToUCSC(x[["genomeBuild"]])
-                seq <- Seqinfo(genome = genome))
+                seq <- Seqinfo(genome = genome)
                 genome(seq) <- x[["genomeBuild"]]
             },
             "RefSeq" = {
