@@ -11,20 +11,26 @@
 \usage{
 Tx2Gene(object, ...)
 
-\S4method{Tx2Gene}{DataFrame}(object)
+\S4method{Tx2Gene}{DataFrame}(object, removeNA = FALSE)
 
-\S4method{Tx2Gene}{GRanges}(object)
+\S4method{Tx2Gene}{GRanges}(object, ...)
 
-\S4method{Tx2Gene}{GRangesList}(object)
+\S4method{Tx2Gene}{GRangesList}(object, ...)
 
-\S4method{Tx2Gene}{data.frame}(object)
+\S4method{Tx2Gene}{data.frame}(object, ...)
 
-\S4method{Tx2Gene}{matrix}(object)
+\S4method{Tx2Gene}{matrix}(object, ...)
 }
 \arguments{
 \item{object}{Object.}
 
 \item{...}{Additional arguments.}
+
+\item{removeNA}{\code{logical(1)}.
+Remove elements that don't contain clear mappings (e.g. gene identifier
+is \code{NA}). Calls \code{complete.cases} internally.
+If set \code{FALSE}, the function will intentionally error if any incomplete
+cases are detected.}
 }
 \value{
 \code{Tx2Gene}.
@@ -35,7 +41,7 @@ Transcript-to-gene identifier mappings
 \note{
 No attempt is made to arrange the rows by transcript identifier.
 
-Updated 2021-08-03.
+Updated 2021-08-09.
 }
 \examples{
 ## DataFrame ====
