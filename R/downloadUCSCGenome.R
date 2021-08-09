@@ -1,8 +1,3 @@
-## FIXME Need to suppress package startup messages here somewhere during the
-## GFF processing -- TxDb step?
-
-
-
 ## nolint start
 
 #' Download UCSC reference genome
@@ -128,6 +123,9 @@ downloadUCSCGenome <-
 
 
 
+## FIXME It's this step that is causing the Bioconductor package load.
+## FIXME Think it's the handoff to TxDb...
+
 ## Updated 2021-08-03.
 .downloadUCSCAnnotation <-
     function(
@@ -181,6 +179,7 @@ downloadUCSCGenome <-
             setwd(wd)
         }
         ## Save genomic ranges.
+        ## FIXME Ensure that this step doesn't cause visible Bioc attachment.
         genes <- makeGRangesFromGFF(gtfFile, level = "genes")
         transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
         saveRDS(
