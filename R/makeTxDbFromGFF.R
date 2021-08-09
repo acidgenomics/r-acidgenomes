@@ -11,7 +11,7 @@
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
 #'
 #' @name makeTxDbFromGFF
-#' @note Updated 2021-08-06.
+#' @note Updated 2021-08-09.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
