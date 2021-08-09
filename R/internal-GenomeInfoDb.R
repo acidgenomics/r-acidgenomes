@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-08-06.
+#' @note Updated 2021-08-09.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -83,39 +83,42 @@
         isScalar(x[["release"]]) || is.null(x[["release"]])
     )
     seq <- NULL
-    switch(
-        EXPR = x[["provider"]],
-        "Ensembl" = {
-            assert(isInt(x[["release"]]))
-            args <- list(
-                "species" = x[["organism"]],
-                "release" = x[["release"]],
-                "as.Seqinfo" = TRUE
-            )
-            ## The `use.grch37` flag isn't currently working with
-            ## GenomeInfoDb v1.26.2, but may be improved in the future.
-            if (isMatchingFixed(
-                pattern = "GRCh37",
-                x = x[["genomeBuild"]])
-            ) {
-                args[["use.grch37"]] <- TRUE
+    suppressPackageStartupMessages({
+        switch(
+            EXPR = x[["provider"]],
+            "Ensembl" = {
+                assert(isInt(x[["release"]]))
+                args <- list(
+                    "species" = x[["organism"]],
+                    "release" = x[["release"]],
+                    "as.Seqinfo" = TRUE
+                )
+                ## The `use.grch37` flag isn't currently working with
+                ## GenomeInfoDb v1.26.2, but may be improved in the future.
+                if (isMatchingFixed(
+                    pattern = "GRCh37",
+                    x = x[["genomeBuild"]])
+                ) {
+                    args[["use.grch37"]] <- TRUE
+                }
+                seq <- do.call(
+                    what = getChromInfoFromEnsembl,
+                    args = args
+                )
+            },
+            "GENCODE" = {
+                genome <- .mapGenomeBuildToUCSC(x[["genomeBuild"]]
+                seq <- Seqinfo(genome = genome))
+                genome(seq) <- x[["genomeBuild"]]
+            },
+            "RefSeq" = {
+                seq <- .getRefSeqSeqinfo(x[["file"]])
+            },
+            "UCSC" = {
+                seq <- Seqinfo(genome = x[["genomeBuild"]])
             }
-            seq <- do.call(
-                what = getChromInfoFromEnsembl,
-                args = args
-            )
-        },
-        "GENCODE" = {
-            seq <- Seqinfo(genome = .mapGenomeBuildToUCSC(x[["genomeBuild"]]))
-            genome(seq) <- x[["genomeBuild"]]
-        },
-        "RefSeq" = {
-            seq <- .getRefSeqSeqinfo(x[["file"]])
-        },
-        "UCSC" = {
-            seq <- Seqinfo(genome = x[["genomeBuild"]])
-        }
-    )
+        )
+    })
     assert(isAny(seq, c("Seqinfo", "NULL")))
     if (is(seq, "Seqinfo")) {
         assert(
