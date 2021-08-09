@@ -1078,7 +1078,7 @@ test_that("GFF3 genes", {
             "start" = c("36948954", "1185319"),
             "end" = c("37056871", "1293236"),
             "width" = rep("107918", 2L),
-            "strand"= rep("+", 2L),
+            "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
             "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
             "endRange" = rep("character(0)", 2L),
