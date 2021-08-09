@@ -694,7 +694,7 @@
         object <- object[keep]
         names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
-        names(mcols(object))[ names(mcols(object)) == "gene"] <- "gene_id"
+        names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
         assert(all(grepl(
             pattern = "^gene-",
             x = mcols(object)[["parent_gene_id"]]
