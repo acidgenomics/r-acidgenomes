@@ -47,7 +47,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),
+            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -146,7 +146,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),
+            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -209,7 +209,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),
+            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -312,7 +312,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),
+            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -374,7 +374,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBgn0031208"]),
+            X = as.data.frame(object["FBgn0031208"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -447,7 +447,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBtr0475186"]),
+            X = as.data.frame(object["FBtr0475186"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -506,7 +506,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),
+            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -615,7 +615,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),
+            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -685,7 +685,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),
+            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -795,7 +795,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),
+            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -863,7 +863,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]),
+            X = as.data.frame(object[["A1BG"]][1L]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -900,9 +900,9 @@ test_that("GTF genes", {
             "start" = c("36948954", "1185319"),
             "end" = c("37056871", "1293236"),
             "width" = rep("107918", 2L),
-            "strand"= rep("+", 2L),
+            "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
-            "dbXref"= rep("MIM:608463", 2L),
+            "dbXref" = rep("MIM:608463", 2L),
             "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
             "exception" = rep(NA_character_, 2L),
             "gbkey" = rep("Gene", 2L),
@@ -975,7 +975,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]),
+            X = as.data.frame(object[["NM_000014.6"]][1L]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1039,7 +1039,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]),
+            X = as.data.frame(object[["A1BG"]][1L]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1157,7 +1157,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]),
+            X = as.data.frame(object[["NM_000014.6"]][1L]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1218,7 +1218,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]),
+            X = as.data.frame(object["ENSG00000223972"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1278,7 +1278,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]),
+            X = as.data.frame(object["ENST00000456328"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1332,7 +1332,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["WBGene00022276"]),
+            X = as.data.frame(object["WBGene00022276"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1418,7 +1418,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["Y74C9A.2a.3"]),
+            X = as.data.frame(object["Y74C9A.2a.3"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1473,7 +1473,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]),
+            X = as.data.frame(object["ENSG00000223972"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1530,7 +1530,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]),
+            X = as.data.frame(object["ENST00000456328"]),  # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
