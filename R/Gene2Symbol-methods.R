@@ -149,12 +149,15 @@ NULL
 
 
 
-## Updated 2021-08-03.
+## Updated 2021-08-09.
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, format) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
-        Gene2Symbol(object = df, format = format)
+        Gene2Symbol(
+            object = df,
+            format = match.arg(format)
+        )
     }
 
 formals(`Gene2Symbol,GRanges`) <- formals(`Gene2Symbol,DataFrame`)
