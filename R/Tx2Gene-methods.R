@@ -1,15 +1,14 @@
 #' @name Tx2Gene
 #' @inherit Tx2Gene-class title description return
-#'
-#' @note No attempt is made to arrange the rows by transcript identifier.
-#' @note Updated 2021-08-09.
+#' @note Updated 2021-08-10.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @param removeNA `logical(1)`.
-#'   Remove elements that don't contain clear mappings (e.g. gene identifier
-#'   is `NA`). Calls `complete.cases` internally.
-#'   If set `FALSE`, the function will intentionally error if any incomplete
-#'   cases are detected.
+#' @param completeCases `logical(1)`.
+#'   Remove elements that don't contain clear mappings
+#'   (e.g. gene identifier is `NA`).
+#'   Calls `complete.cases` internally.
+#'   If set `FALSE`, the function will intentionally error on any incompletes.
+#' @param ... Arguments pass through to `DataFrame` method.
 #'
 #' @seealso [makeTx2Gene()].
 #'
@@ -55,15 +54,20 @@ NULL
 
 
 
-## Updated 2021-08-09.
+## Updated 2021-08-10.
 `Tx2Gene,DataFrame` <-  # nolint
     function(
         object,
-        removeNA = FALSE
+        completeCases = TRUE
     ) {
-        assert(hasColnames(object))
+        assert(
+            hasColnames(object),
+            hasRows(object),
+            isFlag(completeCases)
+        )
         meta <- metadata(object)
         cols <- c("txId", "geneId")
+        ## Rename legacy columns, if necessary.
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
             colnames(object) <- gsub(
@@ -79,7 +83,9 @@ NULL
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
         assert(allAreAtomic(object))
-        if (isTRUE(removeNA)) {
+        object <- unique(object)
+        ## Harden against messy input with incomplete elements.
+        if (isTRUE(completeCases)) {
             keep <- complete.cases(object)
             if (!all(keep)) {
                 meta[["dropped"]] <- which(!keep)
@@ -89,8 +95,8 @@ NULL
                     n,
                     ngettext(
                         n = n,
-                        msg1 = "identifier",
-                        msg2 = "identifiers"
+                        msg1 = "element",
+                        msg2 = "elements"
                     )
                 ))
                 object <- object[keep, , drop = FALSE]
@@ -99,7 +105,8 @@ NULL
         assert(
             hasRows(object),
             hasNoDuplicates(object[[cols[[1L]]]]),
-            all(complete.cases(object))
+            all(complete.cases(object)),
+            msg = "Failed to generate Tx2Gene object."
         )
         object <- object[order(object), , drop = FALSE]
         metadata(object) <- meta
