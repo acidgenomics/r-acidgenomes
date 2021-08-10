@@ -27,7 +27,7 @@ Tx2Gene(object, ...)
 \item{...}{Arguments pass through to \code{DataFrame} method.}
 
 \item{completeCases}{\code{logical(1)}.
-Remove elements that don't contain clear mappings
+Automatically remove elements that don't contain clear mappings
 (e.g. gene identifier is \code{NA}).
 Calls \code{complete.cases} internally.
 If set \code{FALSE}, the function will intentionally error on any incompletes.}

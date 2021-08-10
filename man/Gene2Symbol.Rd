@@ -8,9 +8,14 @@
 \usage{
 Gene2Symbol(object, ...)
 
-\S4method{Gene2Symbol}{DataFrame}(object, format = c("makeUnique", "1:1", "unmodified"))
+\S4method{Gene2Symbol}{DataFrame}(
+  object,
+  format = c("makeUnique", "1:1", "unmodified"),
+  removeNA = TRUE,
+  quiet = FALSE
+)
 
-\S4method{Gene2Symbol}{GRanges}(object, format = c("makeUnique", "1:1", "unmodified"))
+\S4method{Gene2Symbol}{GRanges}(object, ...)
 }
 \arguments{
 \item{object}{Object.}
@@ -20,13 +25,21 @@ Gene2Symbol(object, ...)
 \item{format}{\code{character(1)}.
 Formatting method to apply:
 \itemize{
-\item \code{"makeUnique"}: \emph{Recommended.} Apply \code{\link[base:make.unique]{make.unique()}}
-to the \code{geneName} column. Gene symbols are made unique, while the gene
-identifiers remain unmodified.
+\item \code{"makeUnique"}: \emph{Recommended.} Apply \code{make.unique} to the \code{geneName}
+column. Gene symbols are made unique, while the identifiers remain
+unmodified.
 \item \code{"unmodified"}: Return \code{geneId} and \code{geneName} columns unmodified, in
 long format.
 \item \code{"1:1"}: For gene symbols that map to multiple gene identifiers, select
+only the first annotated gene identifier.
 }}
+
+\item{removeNA}{\code{logical(1)}.
+Drop identifiers that don't map to a gene symbol.
+Calls \code{complete.cases} internally.}
+
+\item{quiet}{\code{logical(1)}.
+Perform command quietly, suppressing messages.}
 }
 \value{
 \code{Gene2Symbol}.
@@ -42,7 +55,7 @@ the documentation for approaches that deal with this issue.
 For the \code{format} argument, note that "long" was used instead of
 "unmodified" prior to v0.10.10.
 
-Updated 2021-08-03.
+Updated 2021-08-09.
 }
 \examples{
 data(GRanges, package = "AcidTest")

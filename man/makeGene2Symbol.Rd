@@ -52,12 +52,13 @@ will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{ge
 \item{format}{\code{character(1)}.
 Formatting method to apply:
 \itemize{
-\item \code{"makeUnique"}: \emph{Recommended.} Apply \code{\link[base:make.unique]{make.unique()}}
-to the \code{geneName} column. Gene symbols are made unique, while the gene
-identifiers remain unmodified.
+\item \code{"makeUnique"}: \emph{Recommended.} Apply \code{make.unique} to the \code{geneName}
+column. Gene symbols are made unique, while the identifiers remain
+unmodified.
 \item \code{"unmodified"}: Return \code{geneId} and \code{geneName} columns unmodified, in
 long format.
 \item \code{"1:1"}: For gene symbols that map to multiple gene identifiers, select
+only the first annotated gene identifier.
 }}
 
 \item{object}{Object.}
