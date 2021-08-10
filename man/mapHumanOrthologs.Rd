@@ -49,15 +49,10 @@ genes <- c(
 )
 ## Protect against Ensembl timeouts causing build checks to fail.
 if (goalie::hasInternet("https://ensembl.org")) {
-    tryCatch(
-        expr = {
-            x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
-            print(x)
-        },
-        error = function(e) {
-            message(e)
-        }
-    )
+    try({
+        x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+        print(x)
+    })
 }
 }
 \seealso{
