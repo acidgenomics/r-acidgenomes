@@ -4,7 +4,7 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param completeCases `logical(1)`.
-#'   Remove elements that don't contain clear mappings
+#'   Automatically remove elements that don't contain clear mappings
 #'   (e.g. gene identifier is `NA`).
 #'   Calls `complete.cases` internally.
 #'   If set `FALSE`, the function will intentionally error on any incompletes.
@@ -84,7 +84,7 @@ NULL
         object <- decode(object)
         assert(allAreAtomic(object))
         object <- unique(object)
-        ## Harden against messy input with incomplete elements.
+        ## Optionally allow messy input with incomplete elements.
         if (isTRUE(completeCases)) {
             keep <- complete.cases(object)
             if (!all(keep)) {
