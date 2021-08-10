@@ -23,16 +23,19 @@
 #' - `biomaRt::useMart()`.
 #'
 #' @examples
+#' ## Expecting ENSMUSG00000000001, ENSMUSG00000000003 to not match here.
 #' genes <- c(
 #'     "ENSMUSG00000000001", "ENSMUSG00000000003",
 #'     "ENSMUSG00000000028", "ENSMUSG00000000031",
 #'     "ENSMUSG00000000037", "ENSMUSG00000000049"
 #' )
 #' ## Protect against Ensembl timeouts causing build checks to fail.
-#' ## > if (goalie::hasInternet("https://ensembl.org")) {
-#' ## >     x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
-#' ## >     print(x)
-#' ## > }
+#' if (goalie::hasInternet("https://ensembl.org")) {
+#'     try({
+#'         x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+#'         print(x)
+#'     })
+#' }
 mapHumanOrthologs <- function(
     genes,
     organism = NULL,
@@ -169,7 +172,6 @@ mapHumanOrthologs <- function(
         organism, "Homo sapiens"
     ))
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
-    ## FIXME Check NA value handling here.
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
@@ -179,7 +181,6 @@ mapHumanOrthologs <- function(
     g2s <- as(g2s, "DataFrame")
     assert(identical(colnames(g2s), c("geneId", "geneName")))
     alert("Getting {.emph Homo sapiens} gene symbols.")
-    ## FIXME Check NA value handling.
     g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
@@ -188,6 +189,7 @@ mapHumanOrthologs <- function(
     )
     g2sHuman <- as(g2sHuman, "DataFrame")
     colnames(g2sHuman) <- c("humanGeneId", "humanGeneName")
+    assert(all(complete.cases(g2sHuman)))
     ## Return.
     out <- map
     out <- leftJoin(out, g2s, by = "geneId")

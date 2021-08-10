@@ -41,16 +41,24 @@ currently supported.
 Updated 2021-08-03.
 }
 \examples{
+## Expecting ENSMUSG00000000001, ENSMUSG00000000003 to not match here.
 genes <- c(
     "ENSMUSG00000000001", "ENSMUSG00000000003",
     "ENSMUSG00000000028", "ENSMUSG00000000031",
     "ENSMUSG00000000037", "ENSMUSG00000000049"
 )
 ## Protect against Ensembl timeouts causing build checks to fail.
-## > if (goalie::hasInternet("https://ensembl.org")) {
-## >     x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
-## >     print(x)
-## > }
+if (goalie::hasInternet("https://ensembl.org")) {
+    tryCatch(
+        expr = {
+            x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
+            print(x)
+        },
+        error = function(e) {
+            message(e)
+        }
+    )
+}
 }
 \seealso{
 \itemize{
