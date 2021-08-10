@@ -568,7 +568,7 @@ setValidity(
 #' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `Ensembl2Entrez`.
 setClass(
@@ -578,11 +578,11 @@ setClass(
 setValidity(
     Class = "Ensembl2Entrez",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
@@ -607,7 +607,7 @@ setValidity(
 #' @inherit Ensembl2Entrez-class details
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `Entrez2Ensembl`.
 setClass(
@@ -617,11 +617,11 @@ setClass(
 setValidity(
     Class = "Entrez2Ensembl",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
@@ -662,11 +662,11 @@ setClass(
 setValidity(
     Class = "Gene2Symbol",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
@@ -693,7 +693,7 @@ setValidity(
 #' Contains a `DataFrame` with `hgnc` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `HGNC2Ensembl`.
 setClass(
@@ -703,11 +703,11 @@ setClass(
 setValidity(
     Class = "HGNC2Ensembl",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
@@ -734,7 +734,7 @@ setValidity(
 #' Contains a `DataFrame` with `mgi` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2021-02-01.
+#' @note Updated 2021-08-10.
 #'
 #' @return `MGI2Ensembl`.
 setClass(
@@ -744,11 +744,11 @@ setClass(
 setValidity(
     Class = "MGI2Ensembl",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
@@ -780,7 +780,7 @@ setValidity(
 #' `metadata()`.
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `Protein2Gene`.
 setClass(
@@ -790,11 +790,11 @@ setClass(
 setValidity(
     Class = "Protein2Gene",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 3L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c("proteinId", "geneId", "geneName")
@@ -828,7 +828,7 @@ setValidity(
 #' - `release`: 100L.
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `Tx2Gene`.
 setClass(
@@ -838,11 +838,11 @@ setClass(
 setValidity(
     Class = "Tx2Gene",
     method = function(object) {
-        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
-            hasRows(object)
+            hasRows(object),
+            all(complete.cases(object))
         )
         if (!isTRUE(ok)) return(ok)
         cols <- c(
