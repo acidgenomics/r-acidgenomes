@@ -1,7 +1,3 @@
-## FIXME Need to improve code coverage of NA value handling.
-
-
-
 context("Tx2Gene")
 
 test_that("Complete cases", {
