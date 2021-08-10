@@ -143,6 +143,8 @@ NULL
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
+                ## FIXME Need to add an index column to keep track.
+                ## FIXME And then we can reassign based on this order...
                 assert(all(complete.cases(object)))
                 alert(paste(
                     "Returning 1:1 mappings using oldest",
@@ -150,15 +152,18 @@ NULL
                 ))
                 x <- split(x = object, f = object[["geneName"]])
                 assert(is(x, "SplitDataFrameList"))
-                x <- lapply(
-                    X = x[, "geneId"],
+                x <- SplitDataFrameList(lapply(
+                    X = x,
                     FUN = function(x) {
-                        sort(x = x, decreasing = FALSE, na.last = TRUE)[[1L]]
+                        idx <- order(
+                            x = x[["geneId"]],
+                            decreasing = FALSE,
+                            na.last = TRUE
+                        )
+                        head(x[idx, , drop = FALSE], n = 1L)
                     }
-                )
-                x <- unlist(x, recursive = FALSE, use.names = TRUE)
-                object <- DataFrame(names(x), x)
-                dimnames(object) <- list(object[[1L]], cols)
+                ))
+                object <- do.call(what = rbind, args = x)
             },
             "unmodified" = {
                 if (isFALSE(quiet)) {
