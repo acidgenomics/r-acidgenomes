@@ -53,13 +53,15 @@ will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{ge
 Formatting method to apply:
 \itemize{
 \item \code{"makeUnique"}: \emph{Recommended.} Apply \code{make.unique} to the \code{geneName}
-column. Gene symbols are made unique, while the identifiers remain
-unmodified. \code{NA} gene symbols will be renamed to \code{"unannotated"}.
-\item \code{"1:1"}: For gene symbols that map to multiple gene identifiers, select
+column. Gene names are made unique, while the identifiers remain
+unmodified. \code{NA} gene names will be renamed to \code{"unannotated"}.
+\item \code{"1:1"}: For gene names that map to multiple gene identifiers, select
 only the first annotated gene identifier. Incomplete elements with
-\code{NA} gene symbol will be removed.
+\code{NA} gene name will be removed will be removed with an internal
+\code{complete.cases} call.
 \item \code{"unmodified"}: Return \code{geneId} and \code{geneName} columns unmodified, in
-long format. Incomplete elements with \code{NA} gene symbol will be removed.
+long format. Incomplete elements with \code{NA} gene name will be removed
+with an internal \code{complete.cases} call.
 }}
 
 \item{object}{Object.}

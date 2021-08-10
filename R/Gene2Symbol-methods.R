@@ -1,16 +1,3 @@
-## FIXME Need to check handling of this in other packages.
-## In particular check mapGenesToRownames, etc...
-
-## FIXME 1:1 isn't returning unique for gene symbols.
-## FIXME Need to think about this better for rRNA genes, etc.
-##
-## Use "rse.rds" example on desktop to better check this code. Need to
-## document more clearly, and ensure we recommend makeUnique by default.
-## FIXME makeUnique approach should convert NA_character_ to "NA", correct?
-## FIXME Dealing with this is such a pain...
-
-## FIXME Need to rework the "unmodified" handling here.
-
 ## FIXME Need to add coverage for NA handling here.
 
 
@@ -18,9 +5,9 @@
 #' @name Gene2Symbol
 #' @inherit Gene2Symbol-class title description return
 #'
-#' @note For some organisms, gene names and gene symbols do not map 1:1 (e.g.
-#'   *Homo sapiens* and *Mus musculus*). Refer to the `format` argument here in
-#'   the documentation for approaches that deal with this issue.
+#' @note For some organisms, gene identifiers and gene names do not map 1:1
+#'   (e.g. *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
+#'   here in the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
 #' @note Updated 2021-08-10.
@@ -31,14 +18,14 @@
 #'   Formatting method to apply:
 #'
 #'   - `"makeUnique"`: *Recommended.* Apply `make.unique` to the `geneName`
-#'     column. Gene symbols are made unique, while the identifiers remain
-#'     unmodified. `NA` gene symbols will be renamed to `"unannotated"`.
-#'   - `"1:1"`: For gene symbols that map to multiple gene identifiers, select
+#'     column. Gene names are made unique, while the identifiers remain
+#'     unmodified. `NA` gene names will be renamed to `"unannotated"`.
+#'   - `"1:1"`: For gene names that map to multiple gene identifiers, select
 #'     only the first annotated gene identifier. Incomplete elements with
-#'     `NA` gene symbol will be removed will be removed with an internal
+#'     `NA` gene name will be removed will be removed with an internal
 #'     `complete.cases` call.
 #'   - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
-#'     long format. Incomplete elements with `NA` gene symbol will be removed
+#'     long format. Incomplete elements with `NA` gene name will be removed
 #'     with an internal `complete.cases` call.
 #' @param ... Arguments pass through to `DataFrame` method.
 #'
@@ -68,18 +55,15 @@ NULL
 
 
 
-## NOTE "unmodified" argument is used by `AcidExperiment::mapGenes`.
 ## Updated 2021-08-10.
 `Gene2Symbol,DataFrame` <-  # nolint
     function(
         object,
         format = c("makeUnique", "1:1", "unmodified"),
-        completeCases = TRUE,
         quiet = FALSE
     ) {
         assert(
             hasColnames(object),
-            isFlag(completeCases),
             isFlag(quiet)
         )
         format <- match.arg(format)
@@ -98,8 +82,8 @@ NULL
         object <- decode(object)
         assert(allAreAtomic(object))
         object <- unique(object)
-        ## Optionally allow messy input with incomplete elements.
-        if (isTRUE(completeCases)) {
+        ## Remove incomplete elements, except for "makeUnique" mode.
+        if (!identical(format, "makeUnique")) {
             keep <- complete.cases(object)
             if (!all(keep)) {
                 ## e.g. applies to Ensembl Mus musculus GRCm39 104.
@@ -121,54 +105,57 @@ NULL
         }
         assert(hasRows(object))
         ## Enforce coercion of integer gene identifiers (e.g. NCBI Entrez).
-        if (is.integer(object[[cols[[1L]]]])) {
-            object[[cols[[1L]]]] <- as.character(object[[cols[[1L]]]])
+        if (is.integer(object[["geneId"]])) {
+            object[["geneId"]] <- as.character(object[["geneId"]])
         }
         switch(
             EXPR = format,
             "makeUnique" = {
-                ## Replace "NA" values with "unannotated"
-
-
+                ## Ensure we arrange by gene identifier prior to sanization.
+                object <- object[order(object), , drop = FALSE]
+                ## Replace any "NA" gene names with "unannotated".
+                if (any(is.na(object[["geneName"]]))) {
+                    object[["geneName"]][
+                        which(is.na(object[["geneName"]]))] <- "unannotated"
+                }
                 ## Inform the user about how many symbols multi-map.
+                ## Don't count "unannotated" genes as true duplicates here.
                 ## Note that `duplicated()` doesn't work on Rle.
                 dupes <- duplicated(object[["geneName"]])
                 if (any(dupes)) {
-                    dupes <- sort(unique(object[["geneName"]][dupes]))
-                    meta[["dupes"]] <- dupes
-                    if (isFALSE(quiet)) {
-                        n <- length(dupes)
-                        alertInfo(sprintf(
-                            "%d non-unique gene %s detected.",
-                            n,
-                            ngettext(
-                                n = n,
-                                msg1 = "symbol",
-                                msg2 = "symbols"
-                            )
-                        ))
+                    dupes <- setdiff(
+                        x = sort(unique(object[["geneName"]][dupes])),
+                        y = "unannotated"
+                    )
+                    if (hasLength(dupes)) {
+                        meta[["dupes"]] <- dupes
+                        if (isFALSE(quiet)) {
+                            n <- length(dupes)
+                            alertInfo(sprintf(
+                                "%d non-unique gene %s detected: %s.",
+                                n,
+                                ngettext(
+                                    n = n,
+                                    msg1 = "symbol",
+                                    msg2 = "symbols"
+                                ),
+                                toString(dupes, width = 200L)
+                            ))
+                        }
                     }
                 }
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
-
-                ## FIXME Need to omit NA values here...
-
-                ## FIXME Handle the dupes quietly here...
-                ## FIXME Don't think this is working quite right for 1:1
-                ## mappings.
-                ## FIXME This isn't working the way we want...
-                ## FIXME Check handling of ribosomal genes.
-                ## FIXME Need to split by the gene symbol
+                assert(all(complete.cases(object)))
                 alert(paste(
                     "Returning 1:1 mappings using oldest",
                     "gene identifier per symbol."
                 ))
-                x <- split(x = object, f = object[[1L]])
+                x <- split(x = object, f = object[["geneName"]])
                 assert(is(x, "SplitDataFrameList"))
                 x <- lapply(
-                    X = x[, 2L],
+                    X = x[, "geneId"],
                     FUN = function(x) {
                         sort(x = x, decreasing = FALSE, na.last = TRUE)[[1L]]
                     }
@@ -189,7 +176,7 @@ NULL
         assert(
             is(object, "DataFrame"),
             all(complete.cases(object)),
-            hasNoDuplicates(object[[cols[[1L]]]]),
+            hasNoDuplicates(object[["geneId"]]),
             msg = "Failed to generate Gene2Symbol object."
         )
         object <- object[order(object), , drop = FALSE]

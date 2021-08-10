@@ -11,7 +11,6 @@ Gene2Symbol(object, ...)
 \S4method{Gene2Symbol}{DataFrame}(
   object,
   format = c("makeUnique", "1:1", "unmodified"),
-  completeCases = TRUE,
   quiet = FALSE
 )
 
@@ -26,13 +25,15 @@ Gene2Symbol(object, ...)
 Formatting method to apply:
 \itemize{
 \item \code{"makeUnique"}: \emph{Recommended.} Apply \code{make.unique} to the \code{geneName}
-column. Gene symbols are made unique, while the identifiers remain
-unmodified. \code{NA} gene symbols will be renamed to \code{"unannotated"}.
-\item \code{"1:1"}: For gene symbols that map to multiple gene identifiers, select
+column. Gene names are made unique, while the identifiers remain
+unmodified. \code{NA} gene names will be renamed to \code{"unannotated"}.
+\item \code{"1:1"}: For gene names that map to multiple gene identifiers, select
 only the first annotated gene identifier. Incomplete elements with
-\code{NA} gene symbol will be removed.
+\code{NA} gene name will be removed will be removed with an internal
+\code{complete.cases} call.
 \item \code{"unmodified"}: Return \code{geneId} and \code{geneName} columns unmodified, in
-long format. Incomplete elements with \code{NA} gene symbol will be removed.
+long format. Incomplete elements with \code{NA} gene name will be removed
+with an internal \code{complete.cases} call.
 }}
 
 \item{quiet}{\code{logical(1)}.
@@ -45,9 +46,9 @@ Perform command quietly, suppressing messages.}
 Gene-to-symbol mappings
 }
 \note{
-For some organisms, gene names and gene symbols do not map 1:1 (e.g.
-\emph{Homo sapiens} and \emph{Mus musculus}). Refer to the \code{format} argument here in
-the documentation for approaches that deal with this issue.
+For some organisms, gene identifiers and gene names do not map 1:1
+(e.g. \emph{Homo sapiens} and \emph{Mus musculus}). Refer to the \code{format} argument
+here in the documentation for approaches that deal with this issue.
 
 For the \code{format} argument, note that "long" was used instead of
 "unmodified" prior to v0.10.10.
