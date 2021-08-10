@@ -143,8 +143,6 @@ NULL
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
-                ## FIXME Need to add an index column to keep track.
-                ## FIXME And then we can reassign based on this order...
                 assert(all(complete.cases(object)))
                 alert(paste(
                     "Returning 1:1 mappings using oldest",
