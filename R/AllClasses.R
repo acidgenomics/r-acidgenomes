@@ -578,6 +578,7 @@ setClass(
 setValidity(
     Class = "Ensembl2Entrez",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
@@ -616,6 +617,7 @@ setClass(
 setValidity(
     Class = "Entrez2Ensembl",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
@@ -650,7 +652,7 @@ setValidity(
 #' `metadata()`.
 #'
 #' @export
-#' @note Updated 2021-02-02.
+#' @note Updated 2021-08-10.
 #'
 #' @return `Gene2Symbol`.
 setClass(
@@ -660,6 +662,7 @@ setClass(
 setValidity(
     Class = "Gene2Symbol",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
@@ -700,6 +703,7 @@ setClass(
 setValidity(
     Class = "HGNC2Ensembl",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
@@ -740,6 +744,7 @@ setClass(
 setValidity(
     Class = "MGI2Ensembl",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
@@ -785,6 +790,7 @@ setClass(
 setValidity(
     Class = "Protein2Gene",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 3L),
             hasColnames(object),
@@ -832,6 +838,7 @@ setClass(
 setValidity(
     Class = "Tx2Gene",
     method = function(object) {
+        ## FIXME Don't allow any NA here -- use complete.cases.
         ok <- validate(
             identical(ncol(object), 2L),
             hasColnames(object),
