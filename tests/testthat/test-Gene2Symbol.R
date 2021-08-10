@@ -11,6 +11,8 @@ test_that("Gene2Symbol", {
 })
 
 test_that("makeUnique mode", {
+    ## Ensure duplicate gene names (symbols) are sanitized using `make.names`,
+    ## and that NA gene names are converted to "unannotated".
     object <- Gene2Symbol(
         object = DataFrame(
             "geneId" = c(
@@ -90,9 +92,95 @@ test_that("makeUnique mode", {
 })
 
 test_that("1:1 mode", {
+    object <- Gene2Symbol(
+        object = DataFrame(
+            "geneId" = c(
+                "gene2",
+                "gene1",
+                "gene4",
+                "gene3",
+                "gene5",
+                NA_character_
+            ),
+            "geneName" = c(
+                "symbol1",
+                "symbol1",
+                "symbol2",
+                "symbol2",
+                NA_character_,
+                "symbol3"
+            ),
+            row.names = c("A", "B", "C", "D", "E", "F")
+        ),
+        format = "1:1"
+    )
+    expected <- DataFrame(
+        "geneId" = c(
+            "gene1",
+            "gene3"
+        ),
+        "geneName" = c(
+            "symbol1",
+            "symbol2"
+        ),
+        row.names = c("B", "D")
+    )
+    metadata(expected) <- list(
+        "format" = "1:1",
+        "dropped" = c("E" = 5L, "F" = 6L)
+    )
+    expected <- new(Class = "Gene2Symbol", expected)
+    expect_identical(object, expected)
+
+
+
+
+
+
+
+    ## Don't allow "geneId" column to contain NA values.
+    expect_error(
+        Gene2Symbol(
+            object = DataFrame(
+                "geneId" = c(
+                    "gene1",
+                    NA_character_
+                ),
+                "geneName" = c(
+                    "symbol1",
+                    "symbol2"
+                )
+            ),
+            format = "makeUnique"
+        )
+    )
+    ## Ensure gene identifiers return sorted.
+    object <- Gene2Symbol(
+        object = DataFrame(
+            "geneId" = c(
+                "gene2",
+                "gene1"
+            ),
+            "geneName" = c(
+                "symbol2",
+                "symbol1"
+            ),
+            row.names = c("B", "A")
+        ),
+        format = "makeUnique"
+    )
+    expected <- DataFrame(
+        "geneId" = c("gene1", "gene2"),
+        "geneName" = c("symbol1", "symbol2"),
+        row.names = c("A", "B")
+    )
+    metadata(expected) <- list("format" = "makeUnique")
+    expected <- new(Class = "Gene2Symbol", expected)
+    expect_identical(object, expected)
 })
 
 test_that("unmodified mode", {
+    ## FIXME Add this.
 })
 
 test_that("summary", {
