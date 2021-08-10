@@ -3,11 +3,7 @@
 #' @note Updated 2021-08-10.
 #'
 #' @inheritParams AcidRoxygen::params
-#' @param completeCases `logical(1)`.
-#'   Automatically remove elements that don't contain clear mappings
-#'   (e.g. gene identifier is `NA`).
-#'   Calls `complete.cases` internally.
-#'   If set `FALSE`, the function will intentionally error on any incompletes.
+#' @inheritParams params
 #' @param ... Arguments pass through to `DataFrame` method.
 #'
 #' @seealso [makeTx2Gene()].
@@ -58,12 +54,14 @@ NULL
 `Tx2Gene,DataFrame` <-  # nolint
     function(
         object,
-        completeCases = TRUE
+        completeCases = TRUE,
+        quiet = FALSE
     ) {
         assert(
             hasColnames(object),
             hasRows(object),
-            isFlag(completeCases)
+            isFlag(completeCases),
+            isFlag(quiet)
         )
         meta <- metadata(object)
         cols <- c("txId", "geneId")
@@ -89,16 +87,18 @@ NULL
             keep <- complete.cases(object)
             if (!all(keep)) {
                 meta[["dropped"]] <- which(!keep)
-                n <- sum(!keep)
-                alertWarning(sprintf(
-                    "Dropping %d %s without transcript-to-gene mapping.",
-                    n,
-                    ngettext(
-                        n = n,
-                        msg1 = "element",
-                        msg2 = "elements"
-                    )
-                ))
+                if (isFALSE(quiet)) {
+                    n <- sum(!keep)
+                    alertWarning(sprintf(
+                        "Dropping %d %s without transcript-to-gene mapping.",
+                        n,
+                        ngettext(
+                            n = n,
+                            msg1 = "element",
+                            msg2 = "elements"
+                        )
+                    ))
+                }
                 object <- object[keep, , drop = FALSE]
             }
         }
