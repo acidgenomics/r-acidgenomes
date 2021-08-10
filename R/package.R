@@ -13,9 +13,10 @@
 #' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IntegerList
-#'   IRanges Rle %in% append as.data.frame complete.cases decode do.call encode
-#'   expand grep grepl gsub head is.unsorted lapply match mcols mcols<- metadata
-#'   metadata<- na.omit order ranges setdiff sort split tail trim unlist
+#'   IRanges Rle SplitDataFrameList %in% append as.data.frame complete.cases
+#'   decode do.call encode expand grep grepl gsub head is.unsorted lapply match
+#'   mcols mcols<- metadata metadata<- na.omit order ranges rbind setdiff sort
+#'   split tail trim unlist
 #' @importFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome genome<-
 #'   seqinfo seqinfo<- seqlevels
