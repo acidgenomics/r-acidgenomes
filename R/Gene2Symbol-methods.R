@@ -1,7 +1,3 @@
-## FIXME Need to add coverage for NA handling here.
-
-
-
 #' @name Gene2Symbol
 #' @inherit Gene2Symbol-class title description return
 #'
