@@ -1,3 +1,6 @@
+## FIXME Need to check handling of this in other packages.
+## In particular check mapGenesToRownames, etc...
+
 ## FIXME 1:1 isn't returning unique for gene symbols.
 ## FIXME Need to think about this better for rRNA genes, etc.
 ##
@@ -7,6 +10,8 @@
 ## FIXME Dealing with this is such a pain...
 
 ## FIXME Need to rework the "unmodified" handling here.
+
+## FIXME Need to add coverage for NA handling here.
 
 
 
@@ -18,7 +23,7 @@
 #'   the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-08-09.
+#' @note Updated 2021-08-10.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -27,11 +32,14 @@
 #'
 #'   - `"makeUnique"`: *Recommended.* Apply `make.unique` to the `geneName`
 #'     column. Gene symbols are made unique, while the identifiers remain
-#'     unmodified.
-#'   - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
-#'     long format.
+#'     unmodified. `NA` gene symbols will be renamed to `"unannotated"`.
 #'   - `"1:1"`: For gene symbols that map to multiple gene identifiers, select
-#'     only the first annotated gene identifier.
+#'     only the first annotated gene identifier. Incomplete elements with
+#'     `NA` gene symbol will be removed will be removed with an internal
+#'     `complete.cases` call.
+#'   - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
+#'     long format. Incomplete elements with `NA` gene symbol will be removed
+#'     with an internal `complete.cases` call.
 #' @param ... Arguments pass through to `DataFrame` method.
 #'
 #' @seealso [makeGene2Symbol()].
@@ -90,6 +98,7 @@ NULL
         object <- decode(object)
         assert(allAreAtomic(object))
         object <- unique(object)
+        ## Optionally allow messy input with incomplete elements.
         if (isTRUE(completeCases)) {
             keep <- complete.cases(object)
             if (!all(keep)) {
@@ -110,10 +119,6 @@ NULL
                 object <- object[keep, , drop = FALSE]
             }
         }
-
-        ## FIXME Don't use numeric columns here below...
-        ## FIXME Also change this convention in Tx2Gene code...
-
         assert(hasRows(object))
         ## Enforce coercion of integer gene identifiers (e.g. NCBI Entrez).
         if (is.integer(object[[cols[[1L]]]])) {
@@ -122,6 +127,9 @@ NULL
         switch(
             EXPR = format,
             "makeUnique" = {
+                ## Replace "NA" values with "unannotated"
+
+
                 ## Inform the user about how many symbols multi-map.
                 ## Note that `duplicated()` doesn't work on Rle.
                 dupes <- duplicated(object[["geneName"]])
@@ -144,6 +152,9 @@ NULL
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
+
+                ## FIXME Need to omit NA values here...
+
                 ## FIXME Handle the dupes quietly here...
                 ## FIXME Don't think this is working quite right for 1:1
                 ## mappings.
