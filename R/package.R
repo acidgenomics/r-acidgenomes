@@ -44,10 +44,6 @@
 #'
 #' @param cache `logical(1)`.
 #'   Cache URLs locally, using BiocFileCache internally.
-#' @param completeCases `logical(1)`.
-#'   Automatically remove elements that don't contain clear mappings.
-#'   Calls `complete.cases` internally.
-#'   If set `FALSE`, the function will intentionally error on any incompletes.
 #' @param ignoreVersion `logical(1)`.
 #'   Ignore identifier (e.g. transcript, gene) versions.
 #'   When applicable, the identifier containing version numbers will be stored
