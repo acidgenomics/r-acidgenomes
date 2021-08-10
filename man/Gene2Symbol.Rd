@@ -11,7 +11,7 @@ Gene2Symbol(object, ...)
 \S4method{Gene2Symbol}{DataFrame}(
   object,
   format = c("makeUnique", "1:1", "unmodified"),
-  removeNA = TRUE,
+  completeCases = TRUE,
   quiet = FALSE
 )
 
@@ -20,7 +20,7 @@ Gene2Symbol(object, ...)
 \arguments{
 \item{object}{Object.}
 
-\item{...}{Additional arguments.}
+\item{...}{Arguments pass through to \code{DataFrame} method.}
 
 \item{format}{\code{character(1)}.
 Formatting method to apply:
@@ -34,9 +34,10 @@ long format.
 only the first annotated gene identifier.
 }}
 
-\item{removeNA}{\code{logical(1)}.
-Drop identifiers that don't map to a gene symbol.
-Calls \code{complete.cases} internally.}
+\item{completeCases}{\code{logical(1)}.
+Automatically remove elements that don't contain clear mappings.
+Calls \code{complete.cases} internally.
+If set \code{FALSE}, the function will intentionally error on any incompletes.}
 
 \item{quiet}{\code{logical(1)}.
 Perform command quietly, suppressing messages.}
