@@ -169,6 +169,7 @@ mapHumanOrthologs <- function(
         organism, "Homo sapiens"
     ))
     alert(sprintf("Getting {.emph %s} gene symbols.", organism))
+    ## FIXME Check NA value handling here.
     g2s <- makeGene2SymbolFromEnsembl(
         organism = organism,
         release = ensemblRelease,
@@ -178,6 +179,7 @@ mapHumanOrthologs <- function(
     g2s <- as(g2s, "DataFrame")
     assert(identical(colnames(g2s), c("geneId", "geneName")))
     alert("Getting {.emph Homo sapiens} gene symbols.")
+    ## FIXME Check NA value handling.
     g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
