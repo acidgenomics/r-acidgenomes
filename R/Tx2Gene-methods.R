@@ -1,3 +1,7 @@
+## FIXME Need to add code coverage for NA handling here.
+
+
+
 #' @name Tx2Gene
 #' @inherit Tx2Gene-class title description return
 #' @note Updated 2021-08-10.
