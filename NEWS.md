@@ -1,3 +1,21 @@
+## AcidGenomes 0.2.17 (UNRELEASED)
+
+### Major changes
+
+- `Gene2Symbol`: Hardened internal identifier mapping code in `switch` call
+  to support `format` argument. Improved unit testing for expected behavior
+  of `format` argument. Fixed "1:1" mapping to split based on `geneName` column
+  rather than `geneId` column.
+- `Tx2Gene`: Improved code coverge and cleaned up internal `complete.cases`
+  handling.
+- All identifier mapping classes (e.g. `Ensembl2Entrez`, `Gene2Symbol`,
+  `Tx2Gene`) now check for `complete.cases` in S4 validity methods.
+
+### Minor changes
+
+- `currentEnsemblVersion` and `mapHumanOrthologs` working examples are now
+  re-enabled, wrapped in a `try` call.
+
 ## AcidGenomes 0.2.16 (2021-08-09)
 
 ### Major changes
