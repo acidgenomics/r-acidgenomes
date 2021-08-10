@@ -24,7 +24,7 @@ The \code{Tx2Gene} method automatically disables writing of column names, which
 is the intended input format for tximport.
 }
 \note{
-Updated 2020-12-10.
+Updated 2021-08-07.
 }
 \examples{
 object <- DataFrame(

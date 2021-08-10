@@ -28,7 +28,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2021-08-03.
+Updated 2021-08-09.
 }
 \section{Genome}{
 
