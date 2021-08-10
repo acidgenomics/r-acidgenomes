@@ -10,7 +10,7 @@ test_that("Gene2Symbol", {
     }
 })
 
-test_that("makeUnique mode", {
+test_that("format: makeUnique", {
     ## Ensure duplicate gene names (symbols) are sanitized using `make.names`,
     ## and that NA gene names are converted to "unannotated".
     object <- Gene2Symbol(
@@ -91,7 +91,7 @@ test_that("makeUnique mode", {
     expect_identical(object, expected)
 })
 
-test_that("1:1 mode", {
+test_that("format: 1:1", {
     object <- Gene2Symbol(
         object = DataFrame(
             "geneId" = c(
@@ -133,7 +133,7 @@ test_that("1:1 mode", {
     expect_identical(object, expected)
 })
 
-test_that("unmodified mode", {
+test_that("format: unmodified", {
     object <- Gene2Symbol(
         object = DataFrame(
             "geneId" = c(
@@ -175,7 +175,7 @@ test_that("unmodified mode", {
     expect_identical(object, expected)
 })
 
-test_that("summary", {
+test_that("summary method", {
     object <- gr
     x <- Gene2Symbol(object)
     output <- capture.output(summary(x))
