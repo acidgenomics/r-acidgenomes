@@ -11,7 +11,7 @@
 \usage{
 Tx2Gene(object, ...)
 
-\S4method{Tx2Gene}{DataFrame}(object, completeCases = TRUE, quiet = FALSE)
+\S4method{Tx2Gene}{DataFrame}(object, quiet = FALSE)
 
 \S4method{Tx2Gene}{GRanges}(object, ...)
 
@@ -25,11 +25,6 @@ Tx2Gene(object, ...)
 \item{object}{Object.}
 
 \item{...}{Arguments pass through to \code{DataFrame} method.}
-
-\item{completeCases}{\code{logical(1)}.
-Automatically remove elements that don't contain clear mappings.
-Calls \code{complete.cases} internally.
-If set \code{FALSE}, the function will intentionally error on any incompletes.}
 
 \item{quiet}{\code{logical(1)}.
 Perform command quietly, suppressing messages.}

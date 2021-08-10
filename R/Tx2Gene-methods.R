@@ -54,13 +54,11 @@ NULL
 `Tx2Gene,DataFrame` <-  # nolint
     function(
         object,
-        completeCases = TRUE,
         quiet = FALSE
     ) {
         assert(
             hasColnames(object),
             hasRows(object),
-            isFlag(completeCases),
             isFlag(quiet)
         )
         meta <- metadata(object)
@@ -82,25 +80,23 @@ NULL
         object <- decode(object)
         assert(allAreAtomic(object))
         object <- unique(object)
-        ## Optionally allow messy input with incomplete elements.
-        if (isTRUE(completeCases)) {
-            keep <- complete.cases(object)
-            if (!all(keep)) {
-                meta[["dropped"]] <- which(!keep)
-                if (isFALSE(quiet)) {
-                    n <- sum(!keep)
-                    alertWarning(sprintf(
-                        "Dropping %d %s without transcript-to-gene mapping.",
-                        n,
-                        ngettext(
-                            n = n,
-                            msg1 = "element",
-                            msg2 = "elements"
-                        )
-                    ))
-                }
-                object <- object[keep, , drop = FALSE]
+        ## Allowing sanitization of messy input with incomplete elements.
+        keep <- complete.cases(object)
+        if (!all(keep)) {
+            meta[["dropped"]] <- which(!keep)
+            if (isFALSE(quiet)) {
+                n <- sum(!keep)
+                alertWarning(sprintf(
+                    "Dropping %d %s without transcript-to-gene mapping.",
+                    n,
+                    ngettext(
+                        n = n,
+                        msg1 = "element",
+                        msg2 = "elements"
+                    )
+                ))
             }
+            object <- object[keep, , drop = FALSE]
         }
         assert(
             hasRows(object),
