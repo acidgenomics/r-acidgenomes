@@ -104,8 +104,8 @@ NULL
         }
         assert(
             hasRows(object),
-            hasNoDuplicates(object[[cols[[1L]]]]),
             all(complete.cases(object)),
+            hasNoDuplicates(object[[cols[[1L]]]]),
             msg = "Failed to generate Tx2Gene object."
         )
         object <- object[order(object), , drop = FALSE]
