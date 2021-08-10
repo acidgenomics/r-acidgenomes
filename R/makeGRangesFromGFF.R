@@ -275,6 +275,7 @@ makeGRangesFromGFF <- function(
             x = basename(file)
         )
     ) {
+        alertInfo("UCSC genome annotation file detected.")
         txdb <- makeTxDbFromGFF(file)
         gr <- makeGRangesFromTxDb(
             object = txdb,
