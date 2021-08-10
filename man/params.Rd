@@ -7,6 +7,11 @@
 \item{cache}{\code{logical(1)}.
 Cache URLs locally, using BiocFileCache internally.}
 
+\item{completeCases}{\code{logical(1)}.
+Automatically remove elements that don't contain clear mappings.
+Calls \code{complete.cases} internally.
+If set \code{FALSE}, the function will intentionally error on any incompletes.}
+
 \item{ignoreVersion}{\code{logical(1)}.
 Ignore identifier (e.g. transcript, gene) versions.
 When applicable, the identifier containing version numbers will be stored
