@@ -1,4 +1,4 @@
-## AcidGenomes 0.2.17 (UNRELEASED)
+## AcidGenomes 0.2.17 (2021-08-11)
 
 ### Major changes
 
