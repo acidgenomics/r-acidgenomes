@@ -29,7 +29,10 @@ mapEnsemblReleaseToURL <- function(release) {
     map <- tryCatch(
         expr = biomaRt::listEnsemblArchives(),
         error = function(e) {
-            stop("'biomaRt::listEnsemblArchives()' error: ", e)
+            abort(sprintf(
+                "{.pkg %s}::{.fun %s} error.",
+                "biomaRt", "listEnsemblArchives"
+            ))
         }
     )
     assert(
@@ -37,9 +40,9 @@ mapEnsemblReleaseToURL <- function(release) {
         isSubset(c("url", "version"), colnames(map))
     )
     if (!release %in% map[["version"]]) {
-        stop(sprintf(
+        abort(sprintf(
             "Supported Ensembl releases: %s.",
-            toString(map[["version"]])
+            toInlineString(map[["version"]], n = 10L)
         ))
     }
     ## Extract the matching row, so we can check if releast is current.

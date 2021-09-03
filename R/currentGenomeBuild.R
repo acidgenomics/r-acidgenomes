@@ -124,7 +124,7 @@ currentRefSeqGenomeBuild <- function(
 
 
 
-## Updated 2021-01-05.
+## Updated 2021-09-03.
 #' @rdname currentGenomeBuild
 #' @export
 currentUCSCGenomeBuild <- function(organism) {
@@ -150,7 +150,7 @@ currentUCSCGenomeBuild <- function(organism) {
     df <- rbindToDataFrame(l)
     df <- df[df[["active"]] == 1L, , drop = FALSE]
     if (!isSubset(organism, unique(df[["scientificName"]]))) {
-        stop("Invalid organism.")
+        abort(sprintf("Invalid organism: {.val %s}.", organism))
     }
     df <- df[df[["scientificName"]] == organism, , drop = FALSE]
     ## The latest genome build has the lowest "orderKey" value.

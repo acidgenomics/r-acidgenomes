@@ -1,3 +1,5 @@
+## FIXME Need to rework the `genomeBuild` documentation here.
+
 ## nolint start
 
 #' Download RefSeq reference genome
