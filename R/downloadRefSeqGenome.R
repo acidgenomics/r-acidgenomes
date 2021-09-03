@@ -1,5 +1,3 @@
-## FIXME Need to rework the `genomeBuild` documentation here.
-
 ## nolint start
 
 #' Download RefSeq reference genome
@@ -12,10 +10,14 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-08-03.
+#' @note Updated 2021-09-03.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
+#'
+#' @param genomeBuild `character(1)`.
+#'   RefSeq genome build assembly name (e.g. `"GCF_000001405.39_GRCh38.p12"`).
+#'   If set `NULL`, defauls to the most recent build available.
 #'
 #' @return Invisible `list`.
 #'

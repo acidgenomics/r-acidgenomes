@@ -1,11 +1,9 @@
-## FIXME Need to improve the genomeBuild documentation here.
-
 ## nolint start
 
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-08-09.
+#' @note Updated 2021-09-03.
 #'
 #' @section Genome:
 #'
@@ -30,6 +28,10 @@
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
+#'
+#' @param genomeBuild `character(1)`.
+#'   UCSC genome build assembly name (e.g. `"hg38"`).
+#'   If set `NULL`, defauls to the most recent build available.
 #'
 #' @return Invisible `list`.
 #'
