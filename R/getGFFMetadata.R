@@ -90,9 +90,9 @@ getGFFMetadata <- function(file) {
         ))) {
             l[["provider"]] <- "Ensembl"
         } else {
-            stop(sprintf(
-                "Failed to detect provider (e.g. Ensembl) from file: '%s'.",
-                file
+            abort(sprintf(
+                "Failed to detect provider (e.g. {.val %s}) from {.file %s}.",
+                "Ensembl", basename(file)
             ))
         }
     }

@@ -23,7 +23,7 @@
 #'   package, which gets loaded into the namespace when DESeq2 is attached.
 #'   Instead, we're exporting the character method here as a separate function
 #'   named `detectOrganism`.
-#' @note Updated 2021-03-03.
+#' @note Updated 2021-09-03.
 #'
 #' @param object `character`.
 #'
@@ -68,11 +68,11 @@ detectOrganism <- function(object) {
         x <- .detectOrganism(string = object[[i]], data = data)
         i <- i + 1L
     }
-    if (is.na(x)) {
-        stop("Failed to detect organism.")
-    } else {
-        x
-    }
+    assert(
+        isFALSE(is.na(x)),
+        msg = "Failed to detect organism."
+    )
+    x
 }
 
 

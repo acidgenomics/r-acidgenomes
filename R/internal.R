@@ -148,6 +148,6 @@
         "TAIR10"            = "araTha1",   # Arabidopsis thaliana
         "WBcel235"          = "ce11",      # Caenorhabditis elegans
         "WS220"             = "ce10",      # Caenorhabditis elegans
-        stop(sprintf("Unsupported genome build: '%s'.", x))
+        abort(sprintf("Unsupported genome build: {.val %s}.", x))
     )
 }

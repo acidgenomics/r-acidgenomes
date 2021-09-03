@@ -81,7 +81,10 @@ mapHumanOrthologs <- function(
             verbose = FALSE
         ),
         error = function(e) {
-            stop("'biomaRt::useMart()' error: ", e)
+            abort(sprintf(
+                "{.pkg %s}::{.fun %s} failure.",
+                "biomaRt", "useMart"
+            ))
         }
     )
     map <- tryCatch(
@@ -95,11 +98,14 @@ mapHumanOrthologs <- function(
             )
         ),
         error = function(e) {
-            stop("'biomaRt::select()' error: ", e)
+            abort(sprintf(
+                "{.pkg %s}::{.fun %s} failure.",
+                "biomaRt", "select"
+            ))
         }
     )
     if (!hasRows(map)) {
-        stop("Failed to map any genes.")
+        abort("Failed to map any genes.")
     }
     map <- as(map, "DataFrame")
     colnames(map) <- c("geneId", "humanGeneId")

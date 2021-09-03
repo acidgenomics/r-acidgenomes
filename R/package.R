@@ -10,7 +10,7 @@
 #' @importFrom AcidBase capture.output compress download fileExt forceDetach
 #'   initDir packageName packageVersion pasteURL printString realpath
 #'   requireNamespaces sessionInfo showSlotInfo standardizeCall
-#' @importFrom AcidCLI alert alertInfo alertSuccess alertWarning dl h1
+#' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList IntegerList
 #'   IRanges Rle SplitDataFrameList %in% append as.data.frame complete.cases

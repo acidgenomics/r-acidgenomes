@@ -76,9 +76,9 @@
         df <- df[complete.cases(df), , drop = FALSE]
         if (!areSetEqual(keys, unique(df[[keytype]]))) {
             setdiff <- setdiff(keys, unique(df[[keytype]]))
-            stop(sprintf(
+            abort(sprintf(
                 "Match failure: %s.",
-                toString(setdiff, width = 200L)
+                toInlineString(setdiff, n = 10L)
             ))
         }
     }

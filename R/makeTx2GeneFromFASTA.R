@@ -75,7 +75,7 @@ makeTx2GeneFromFASTA <- function(file) {
     x <- import(file = .cacheIt(file), format = "lines")
     x <- grep(pattern = "^>", x = x, value = TRUE)
     if (!hasLength(x)) {
-        stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
+        abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))
     }
     x <- substr(x, start = 2L, stop = nchar(x))
     ## Detect the provider of the FASTA.
@@ -109,7 +109,7 @@ makeTx2GeneFromFASTA <- function(file) {
     ))) {
         provider <- "WormBase"
     } else {
-        stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
+        abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))
     }
     alertInfo(sprintf("%s transcriptome detected.", provider))
     switch(
@@ -201,7 +201,7 @@ makeTx2GeneFromFASTA <- function(file) {
                 )
             )
         },
-        stop(sprintf("Unsupported FASTA: '%s'.", basename(file)))
+        abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))
     )
     out <- Tx2Gene(x)
     meta <- list(

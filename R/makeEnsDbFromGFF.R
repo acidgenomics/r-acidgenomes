@@ -58,7 +58,11 @@ makeEnsDbFromGFF <- function(file) {
         what <- ensembldb::ensDbFromGtf
         args <- append(x = args, values = list("gtf" = tmpfile))
     } else {
-        stop("Unsupported file extension.")  # nocov
+        ## nocov start
+        abort(sprintf(
+            "Unsupported file: {.file %s}.", basename(file)
+        ))
+        ## nocov end
     }
     suppressWarnings({
         suppressMessages({
