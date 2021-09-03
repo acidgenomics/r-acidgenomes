@@ -1,3 +1,11 @@
+## AcidGenomes 0.2.18 (2021-09-03)
+
+### Minor changes
+
+- Improved CLI message formatting.
+- `downloadRefSeqGenome`, `downloadUCSCGenome`: Improved the `genomeBuild`
+  documentation, with more specific examples.
+
 ## AcidGenomes 0.2.17 (2021-08-11)
 
 ### Major changes
