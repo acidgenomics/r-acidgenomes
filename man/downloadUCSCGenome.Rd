@@ -11,9 +11,8 @@ downloadUCSCGenome(organism, genomeBuild = NULL, outputDir = ".", cache = TRUE)
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{genomeBuild}{\code{character(1)}.
-Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
-defaults to the most recent build available.
-Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
+UCSC genome build assembly name (e.g. \code{"hg38"}).
+If set \code{NULL}, defauls to the most recent build available.}
 
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
@@ -28,7 +27,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2021-08-09.
+Updated 2021-09-03.
 }
 \section{Genome}{
 

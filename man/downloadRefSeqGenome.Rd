@@ -22,9 +22,8 @@ FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 Defining this manually avoids having to query the FTP server.}
 
 \item{genomeBuild}{\code{character(1)}.
-Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
-defaults to the most recent build available.
-Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
+RefSeq genome build assembly name (e.g. \code{"GCF_000001405.39_GRCh38.p12"}).
+If set \code{NULL}, defauls to the most recent build available.}
 
 \item{outputDir}{\code{character(1)}.
 Output directory path.}
@@ -39,7 +38,7 @@ Invisible \code{list}.
 Download RefSeq reference genome
 }
 \note{
-Updated 2021-08-03.
+Updated 2021-09-03.
 }
 \section{Stable release}{
 
