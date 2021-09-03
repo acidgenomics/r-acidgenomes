@@ -94,15 +94,6 @@ getEnsDb <- function(
     if (isInt(release)) {
         release <- as.integer(release)
     }
-    ## Error on request of unsupported legacy Ensembl release.
-    ## Don't hardcode against Ensembl 87 cutoff, in case older releases are
-    ## added back in a future ensembldb/AnnotationHub update.
-    ## > if (
-    ## >     is.integer(release) &&
-    ## >     release < 87L
-    ## > ) {
-    ## >     stop("ensembldb currently only supports Ensembl releases >= 87.")
-    ## > }
     ## Get AnnotationHub.
     if (is.null(ah)) {
         ah <- .annotationHub()
@@ -189,18 +180,18 @@ getEnsDb <- function(
     mcols <- mcols[idx, , drop = FALSE]
     ## Error if filtering was unsuccessful.
     if (!hasRows(mcols)) {
-        stop(sprintf(
+        abort(sprintf(
             fmt = paste(
-                "No entry matched on AnnotationHub %s.",
-                "  - %s: %s",
-                "  - %s: %s",
-                "  - %s: %s",
+                "No entry matched on AnnotationHub {.val %s}.",
+                "  - {.arg %s}: {.val %s}",
+                "  - {.arg %s}: {.val %s}",
+                "  - {.arg %s}: {.val %s}",
                 sep = "\n"
             ),
-            packageVersion("AnnotationHub"),
-            "Organism", deparse(organism),
-            "Genome build", deparse(genomeBuild),
-            "Ensembl release", deparse(release)
+            as.character(packageVersion("AnnotationHub")),
+            "Organism", as.character(organism),
+            "Genome build", as.character(genomeBuild),
+            "Ensembl release", as.character(release)
         ))
     }
     ## Select the most recent database (sorted by title, not identifier!).

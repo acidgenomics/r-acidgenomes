@@ -135,7 +135,7 @@ NULL
                                     msg1 = "symbol",
                                     msg2 = "symbols"
                                 ),
-                                toString(dupes, width = 200L)
+                                toInlineString(dupes, n = 10L, class = "val")
                             ))
                         }
                     }

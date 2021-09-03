@@ -46,7 +46,7 @@
             what <- .getFun(funName)
         },
         error = function(e) {
-            stop(sprintf("Unsupported GFF: '%s'.", basename(file)))
+            abort(sprintf("Unsupported GFF: {.file %s}.", basename(file)))
         }
     )
     gr <- do.call(what = what, args = list("object" = gr))

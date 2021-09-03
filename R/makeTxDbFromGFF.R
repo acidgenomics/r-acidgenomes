@@ -78,9 +78,9 @@ makeTxDbFromGFF <- function(file) {
         pattern = denylist[["refseq_gtf"]],
         x = basename(file)
     )) {
-        stop(sprintf(
+        abort(sprintf(
             paste(
-                "Unsupported file: '%s'.",
+                "Unsupported file: {.file %s}.",
                 "Use RefSeq GFF instead of GTF."
             ),
             basename(file)

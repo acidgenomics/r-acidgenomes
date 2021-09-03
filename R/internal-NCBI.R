@@ -357,7 +357,7 @@
 
 #' Locate RefSeq assembly report, from GFF file
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-09-03.
 #' @noRd
 #'
 #' @examples
@@ -417,6 +417,8 @@
         basename(file)
     )
     if (isAURL(file)) {
+        ## FIXME Need to rework duplicated dirname calls here with
+        ## `parentDir(xxx, n = 2L)` variation instead.
         if (identical(
             x = "seqs_for_alignment_pipelines.ucsc_ids",
             y = basename(dirname(file))
@@ -433,5 +435,7 @@
     ## `download-refseq-genome` download.
     x <- file.path(dirname(dirname(file)), "metadata", reportBasename)
     if (isAFile(x)) return(x)
-    stop(sprintf("Failed to locate RefSeq assembly report from '%s'.", file))
+    abort(sprintf(
+        "Failed to locate RefSeq assembly report from {.file %s}.", file
+    ))
 }
