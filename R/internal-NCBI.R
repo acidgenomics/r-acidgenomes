@@ -376,14 +376,6 @@
 #' x <- .locateRefSeqAssemblyReport(file)
 #' print(x)
 #'
-#' ## `download-refseq-genome` convention.
-#' file <- file.path(
-#'     "homo-sapiens-gcf-000001405-39-grch38-p13-refseq-204",
-#'     "annotation.gff3.gz"
-#' )
-#' x <- .locateRefSeqAssemblyReport(file)
-#' print(x)
-#'
 #' ## RefSeq assembly for alignment pipelines.
 #' file <- pasteURL(
 #'     "ftp.ncbi.nlm.nih.gov",
@@ -397,6 +389,14 @@
 #'     "seqs_for_alignment_pipelines.ucsc_ids",
 #'     "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
 #'     protocol = "ftp"
+#' )
+#' x <- .locateRefSeqAssemblyReport(file)
+#' print(x)
+#'
+#' ## `downloadRefSeqGenome` convention.
+#' file <- file.path(
+#'     "homo-sapiens-gcf-000001405-39-grch38-p13-refseq-204",
+#'     "annotation.gff3.gz"
 #' )
 #' x <- .locateRefSeqAssemblyReport(file)
 #' print(x)
@@ -417,13 +417,11 @@
         basename(file)
     )
     if (isAURL(file)) {
-        ## FIXME Need to rework duplicated dirname calls here with
-        ## `parentDir(xxx, n = 2L)` variation instead.
         if (identical(
             x = "seqs_for_alignment_pipelines.ucsc_ids",
             y = basename(dirname(file))
         )) {
-            x <- pasteURL(dirname(dirname(file)), reportBasename)
+            x <- pasteURL(parentDir(file, n = 2L), reportBasename)
         } else {
             x <- pasteURL(dirname(file), reportBasename)
         }
@@ -433,7 +431,7 @@
     x <- file.path(dirname(file), reportBasename)
     if (isAFile(x)) return(x)
     ## `download-refseq-genome` download.
-    x <- file.path(dirname(dirname(file)), "metadata", reportBasename)
+    x <- file.path(parentDir(file, n = 2L), "metadata", reportBasename)
     if (isAFile(x)) return(x)
     abort(sprintf(
         "Failed to locate RefSeq assembly report from {.file %s}.", file
