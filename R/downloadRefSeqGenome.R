@@ -79,7 +79,7 @@ downloadRefSeqGenome <-
         h1(sprintf(
             paste(
                 "Downloading RefSeq genome for {.emph %s}",
-                " %s %d from {.url %s} to {.path %s}."
+                "%s %d from {.url %s} to {.path %s}."
             ),
             organism, genomeBuild, release,
             releaseURL, outputDir

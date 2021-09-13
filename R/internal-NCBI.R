@@ -293,8 +293,8 @@
     )
     assert(isMatchingRegex(pattern = pattern, x = basename(file)))
     alert(sprintf(
-        "Getting {.var Seqinfo} from {.file %s}.",
-        basename(file)
+        "Getting {.cls %s} from {.file %s}.",
+        "Seqinfo", basename(file)
     ))
     ## e.g. "GRCh38.p13", which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
