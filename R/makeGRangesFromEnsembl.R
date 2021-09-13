@@ -137,7 +137,7 @@ makeGRangesFromEnsembl <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    alert("Making {.var GRanges} from Ensembl.")
+    alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
     edb <- getEnsDb(
         organism = organism,
         genomeBuild = genomeBuild,
@@ -179,7 +179,7 @@ makeGRangesFromEnsDb <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    alert(sprintf("Making {.var %s} from {.var %s}.", "GRanges", "EnsDb"))
+    alert(sprintf("Making {.cls %s} from {.var %s}.", "GRanges", "EnsDb"))
     if (isString(object)) {
         package <- object
         requireNamespaces(package)

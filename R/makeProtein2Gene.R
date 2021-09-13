@@ -30,7 +30,7 @@ makeProtein2GeneFromEnsembl <- function(
         isCharacter(ids),
         hasNoDuplicates(ids)
     )
-    alert("Making {.var Protein2Gene} from Ensembl.")
+    alert(sprintf("Making {.cls %s} from Ensembl.", "Protein2Gene"))
     if (is.null(organism)) {
         organism <- detectOrganism(ids)
     }
