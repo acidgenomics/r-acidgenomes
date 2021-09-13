@@ -37,7 +37,7 @@ makeEnsDbFromGFF <- function(file) {
         isMatchingRegex(pattern = pattern, x = basename(file)),
         msg = "Failed to detect Ensembl GFF file."
     )
-    alert(sprintf("Making {.var %s} from {.file %s}.", "EnsDb", file))
+    alert(sprintf("Making {.cls %s} from {.file %s}.", "EnsDb", file))
     requireNamespaces("ensembldb")
     args <- list()
     x <- str_match(

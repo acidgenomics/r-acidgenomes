@@ -69,7 +69,7 @@
 #' ## > print(t2g)
 makeTx2GeneFromFASTA <- function(file) {
     alert(sprintf(
-        "Making {.var %s} from FASTA file ({.file %s}).",
+        "Making {.cls %s} from FASTA file ({.file %s}).",
         "Tx2Gene", basename(file)
     ))
     x <- import(file = .cacheIt(file), format = "lines")
