@@ -66,7 +66,7 @@ downloadGencodeGenome <-
         h1(sprintf(
             paste(
                 "Downloading GENCODE genome for {.emph %s}",
-                " %s %s from {.url %s} to {.path %s}."
+                "%s %s from {.url %s} to {.path %s}."
             ),
             organism, genomeBuild, as.character(release),
             releaseURL, outputDir

@@ -250,7 +250,7 @@ getEnsDb <- function(
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
-    alert(sprintf("Getting {.var %s} from {.pkg %s}.", "EnsDb", package))
+    alert(sprintf("Getting {.cls %s} from {.pkg %s}.", "EnsDb", package))
     assert(isString(package))
     requireNamespaces(package)
     edb <- get(

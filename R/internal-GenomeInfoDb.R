@@ -121,7 +121,9 @@
             )
         }),
         error = function(e) {
-            alertWarning("Automatic {.var seqinfo} assignment failed.")
+            alertWarning(sprintf(
+                "Automatic {.cls %s} assignment failed.", "Seqinfo"
+            ))
             NULL
         }
     )

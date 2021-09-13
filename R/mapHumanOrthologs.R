@@ -68,9 +68,10 @@ mapHumanOrthologs <- function(
     alert(sprintf(
         fmt = paste(
             "Matching orthologs against {.var %s} ({.url %s}) with",
-            "{.pkg biomaRt} %s."
+            "{.pkg %s} %s."
         ),
-        dataset, host, packageVersion("biomaRt")
+        dataset, host, "bioMart",
+        as.character(packageVersion("biomaRt"))
     ))
     ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
     mart <- tryCatch(
@@ -186,7 +187,7 @@ mapHumanOrthologs <- function(
     )
     g2s <- as(g2s, "DataFrame")
     assert(identical(colnames(g2s), c("geneId", "geneName")))
-    alert("Getting {.emph Homo sapiens} gene symbols.")
+    alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
     g2sHuman <- makeGene2SymbolFromEnsembl(
         organism = "Homo sapiens",
         release = ensemblRelease,
