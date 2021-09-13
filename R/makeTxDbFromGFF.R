@@ -81,13 +81,14 @@ makeTxDbFromGFF <- function(file) {
         abort(sprintf(
             paste(
                 "Unsupported file: {.file %s}.",
-                "Use RefSeq GFF instead of GTF."
+                "Use RefSeq GFF instead of GTF.",
+                sep = "\n"
             ),
             basename(file)
         ))
     }
     alert(sprintf(
-        "Making {.var %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
+        "Making {.cls %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
