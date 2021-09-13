@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
 #' @export
-#' @note Updated 2021-08-04.
+#' @note Updated 2021-09-13.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -24,7 +24,11 @@ getEnsDb <- function(
         isString(genomeBuild, nullOK = TRUE),
         isInt(release, nullOK = TRUE)
     )
-    organism <- gsub(pattern = "_", replacement = " ", x = makeNames(organism))
+    organism <- gsub(
+        pattern = "_",
+        replacement = " ",
+        x = makeNames(organism)
+    )
     if (
         identical(tolower(organism), "homo sapiens") &&
         (
@@ -241,14 +245,14 @@ getEnsDb <- function(
 
 #' Get EnsDb from Package
 #'
-#' @note Updated 2021-01-18.
+#' @note Updated 2021-09-13.
 #' @noRd
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
     alert(sprintf("Getting {.var %s} from {.pkg %s}.", "EnsDb", package))
     assert(isString(package))
-    require(package, character.only = TRUE)
+    requireNamespaces(package)
     edb <- get(
         x = package,
         envir = asNamespace(package),
