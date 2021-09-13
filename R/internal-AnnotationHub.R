@@ -45,7 +45,7 @@
         isFlag(strict)
     )
     alert(sprintf(
-        "Matching identifiers using NCBI {.var %s} via {.pkg %s} %s.",
+        "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
         "OrgDb",
         "AnnotationHub",
         packageVersion("AnnotationHub")
