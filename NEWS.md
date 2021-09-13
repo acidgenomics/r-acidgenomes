@@ -1,3 +1,12 @@
+## AcidGenomes 0.2.19 (2021-09-13)
+
+### Minor changes
+
+- `getEnsDb` / `makeGRangesFromEnsembl`: Quieted down package loading from
+  Bioconductor when obtaining annotations for GRCh37 (`EnsDb.Hsapiens.v75`
+  release package).
+- Improved CLI messages to use S4 class when applicable.
+
 ## AcidGenomes 0.2.18 (2021-09-03)
 
 ### Minor changes
