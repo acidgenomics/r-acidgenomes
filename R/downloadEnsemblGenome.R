@@ -1,5 +1,7 @@
 ## FIXME Need to include a chromosome file that is compatible with kallisto.
 ## FIXME Look into generating decoy sequences recommended for sallmon.
+## FIXME Consider creating a GTF symlink for salmon that contains all
+## transcripts -- this needs to be haploytype scaffold GTF for Homo sapiens.
 
 
 
