@@ -1,3 +1,8 @@
+## FIXME Need to include a chromosome file that is compatible with kallisto.
+## FIXME Look into generating decoy sequences recommended for sallmon.
+
+
+
 #' Download Ensembl reference genome
 #'
 #' @export
