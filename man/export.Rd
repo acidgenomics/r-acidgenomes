@@ -2,10 +2,10 @@
 % Please edit documentation in R/export-methods.R
 \name{export}
 \alias{export}
-\alias{export,Tx2Gene-method}
-\title{Export}
+\alias{export,Tx2Gene,ANY,ANY-method}
+\title{Objects exported from other packages}
 \usage{
-\S4method{export}{Tx2Gene}(object, ...)
+\S4method{export}{Tx2Gene,ANY,ANY}(object, con, format, ...)
 }
 \arguments{
 \item{object}{Object.}
@@ -17,7 +17,14 @@ Invisible \code{character}.
 File path(s).
 }
 \description{
-Export data out of R and write to disk.
+These objects are imported from other packages. Follow the links
+below to see their documentation.
+
+\describe{
+  \item{IRanges}{\code{\link[IRanges:AtomicList-class]{CharacterList}}, \code{\link[IRanges:DataFrameList-class]{DataFrameList}}, \code{\link[IRanges:AtomicList-class]{FactorList}}, \code{\link[IRanges:IRanges-constructor]{IRanges}}, \code{\link[IRanges:AtomicList-class]{IntegerList}}, \code{\link[IRanges:AtomicList-class]{LogicalList}}, \code{\link[IRanges:AtomicList-class]{NumericList}}, \code{\link[IRanges:AtomicList-class]{RleList}}, \code{\link[IRanges:DataFrameList-class]{SplitDataFrameList}}}
+
+  \item{S4Vectors}{\code{\link[S4Vectors:DataFrame-class]{DataFrame}}, \code{\link[S4Vectors:Factor-class]{Factor}}, \code{\link[S4Vectors:LLint-class]{LLint}}, \code{\link[S4Vectors:List-class]{List}}, \code{\link[S4Vectors:Rle-class]{Rle}}, \code{\link[S4Vectors:SimpleList-class]{SimpleList}}}
+}
 }
 \details{
 The \code{Tx2Gene} method automatically disables writing of column names, which
