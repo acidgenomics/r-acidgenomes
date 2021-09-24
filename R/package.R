@@ -7,8 +7,8 @@
 #' @importClassesFrom AcidGenerics DataFrame DataFrameList Vector
 #' @importClassesFrom pipette CompressedGRangesList GRangesList GRanges
 #'
-#' @importFrom AcidBase capture.output compress download fileExt forceDetach
-#'   initDir packageName packageVersion parentDir pasteURL printString realpath
+#' @importFrom AcidBase capture.output download fileExt forceDetach initDir
+#'   packageName packageVersion parentDir pasteURL printString realpath
 #'   requireNamespaces sessionInfo showSlotInfo standardizeCall
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
