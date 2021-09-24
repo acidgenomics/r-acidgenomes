@@ -1,10 +1,11 @@
-## FIXME Need to rework this using BiocIO approach.
+## FIXME Need to ensure that export method works with new BiocIO approach.
+## FIXME Consider restricting "con" and "format" signature.
 
 
 
 #' @name export
 #' @inherit pipette::export description return title
-#' @note Updated 2021-08-07.
+#' @note Updated 2021-09-24.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
@@ -33,12 +34,23 @@ NULL
 
 
 
-## Updated 2021-08-07.
+## Updated 2021-09-24.
 `export,Tx2Gene` <-  # nolint
-    function(object, ...) {
+    function(
+        object,
+        con,
+        format,
+        ...
+    ) {
         df <- as(object, "DataFrame")
         rownames(df) <- NULL
-        export(object = df, colnames = FALSE, ...)
+        export(
+            object = df,
+            con = con,
+            format = format,
+            colnames = FALSE,
+            ...
+        )
     }
 
 
@@ -47,6 +59,10 @@ NULL
 #' @export
 setMethod(
     f = "export",
-    signature = signature("Tx2Gene"),
+    signature = signature(
+        object = "Tx2Gene",
+        con = "ANY",
+        format = "ANY"
+    ),
     definition = `export,Tx2Gene`
 )
