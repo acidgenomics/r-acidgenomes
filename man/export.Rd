@@ -31,7 +31,7 @@ The \code{Tx2Gene} method automatically disables writing of column names, which
 is the intended input format for tximport.
 }
 \note{
-Updated 2021-08-07.
+Updated 2021-09-24.
 }
 \examples{
 object <- DataFrame(
