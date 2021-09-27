@@ -106,7 +106,7 @@ getEnsDb <- function(
     preparerclass <- "AHEnsDbs"
     rdataclass <- "EnsDb"
     alert(sprintf(
-        "Getting {.var %s} from {.pkg %s} %s (%s).",
+        "Getting {.cls %s} from {.pkg %s} %s (%s).",
         rdataclass,
         "AnnotationHub",
         packageVersion("AnnotationHub"),
