@@ -23,7 +23,7 @@ test_that("Transcripts", {
 
 context("makeGRangesFromEnsDb : AnnotationHub")
 
-ah <- AnnotationHub::AnnotationHub()
+ah <- AnnotationHub::AnnotationHub(ask = FALSE)
 edb <- ah[["AH73881"]]
 
 test_that("Genes", {
