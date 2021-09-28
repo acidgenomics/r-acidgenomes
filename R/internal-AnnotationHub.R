@@ -1,6 +1,6 @@
 #' Connect to AnnotationHub
 #'
-#' @note Updated 2021-08-04.
+#' @note Updated 2021-09-28.
 #' @noRd
 #'
 #' @details
@@ -13,7 +13,7 @@
     invisible(
         capture.output({
             suppressMessages({
-                ah <- AnnotationHub::AnnotationHub()
+                ah <- AnnotationHub::AnnotationHub(ask = FALSE)
             })
         })
     )
