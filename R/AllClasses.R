@@ -1,3 +1,8 @@
+## FIXME Don't require that all column names are camelCase here.
+## This can cause issues with DESeq2 otherwise...
+
+
+
 ## Genome annotation classes ===================================================
 #' Shared GRanges validity checks
 #'
