@@ -429,10 +429,14 @@
     }
     ## Full local FTP pulldown.
     x <- file.path(dirname(file), reportBasename)
-    if (isAFile(x)) return(x)
+    if (isAFile(x)) {
+        return(x)
+    }
     ## `download-refseq-genome` download.
     x <- file.path(parentDir(file, n = 2L), "metadata", reportBasename)
-    if (isAFile(x)) return(x)
+    if (isAFile(x)) {
+        return(x)
+    }
     abort(sprintf(
         "Failed to locate RefSeq assembly report from {.file %s}.", file
     ))

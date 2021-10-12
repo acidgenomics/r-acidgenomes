@@ -17,7 +17,9 @@
             y = camelCase(colnames(mcols(gr)), strict = TRUE)
         )
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -30,7 +32,9 @@
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -42,11 +46,15 @@
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "Ensembl")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -55,14 +63,18 @@
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ## Can't always get the release version from GFF file, so just check
     ## for ensembldb return.
     if (isSubset("ensembldb", names(metadata(object)))) {
         ok <- validate(
             is.integer(metadata(object)[["release"]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
     }
     TRUE
 }
@@ -75,11 +87,15 @@
 #' @noRd
 .flybaseValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "FlyBase")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -91,11 +107,15 @@
 #' @noRd
 .gencodeValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "GENCODE")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -104,7 +124,9 @@
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -116,11 +138,15 @@
 #' @noRd
 .refseqValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "RefSeq")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -129,7 +155,9 @@
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -141,11 +169,15 @@
 #' @noRd
 .ucscValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "UCSC")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -154,7 +186,9 @@
         ),
         subset = TRUE
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -166,11 +200,15 @@
 #' @noRd
 .wormbaseValidity <- function(object) {
     ok <- .grangesValidity(object)
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validate(
         identical(metadata(object)[["provider"]], "WormBase")
     )
-    if (!isTRUE(ok)) return(ok)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     TRUE
 }
 
@@ -193,27 +231,13 @@ setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
         ok <- .ensemblValidity(object)
-        if (!isTRUE(ok)) return(ok)
-        ## NOTE This doesn't work for all organisms
-        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
-        ## > ok <- validate(
-        ## >     allAreMatchingRegex(
-        ## >         pattern = paste0(
-        ## >             "^",
-        ## >             "(",
-        ## >             "ENS([A-Z]+)?G[0-9]{11}",
-        ## >             "|",
-        ## >             "LRG_[0-9]+",
-        ## >             ")",
-        ## >             "(\\.[0-9]+)?",
-        ## >             "$"
-        ## >         ),
-        ## >         x = names(object)
-        ## >     )
-        ## > )
-        ## > if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validate(identical(metadata(object)[["level"]], "genes"))
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -237,27 +261,13 @@ setValidity(
     Class = "EnsemblTranscripts",
     method = function(object) {
         ok <- .ensemblValidity(object)
-        if (!isTRUE(ok)) return(ok)
-        ## NOTE This doesn't work for all organisms
-        ## (e.g. Caenorhabditis elegans, Drosophila melanogaster).
-        ## > ok <- validate(
-        ## >     allAreMatchingRegex(
-        ## >         pattern = paste0(
-        ## >             "^",
-        ## >             "(",
-        ## >             "ENS([A-Z]+)?T[0-9]{11}",
-        ## >             "|",
-        ## >             "LRG_[0-9]+t[0-9]+(-[0-9]+)?",
-        ## >             ")",
-        ## >             "(\\.[0-9]+)?",
-        ## >             "$"
-        ## >         ),
-        ## >         x = names(object)
-        ## >     )
-        ## > )
-        ## > if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -281,7 +291,9 @@ setValidity(
     Class = "FlyBaseGenes",
     method = function(object) {
         ok <- .flybaseValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -305,7 +317,9 @@ setValidity(
     Class = "FlyBaseTranscripts",
     method = function(object) {
         ok <- .flybaseValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -329,7 +343,9 @@ setValidity(
     Class = "GencodeGenes",
     method = function(object) {
         ok <- .gencodeValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -353,7 +369,9 @@ setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
         ok <- .gencodeValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -377,7 +395,9 @@ setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
         ok <- .refseqValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -401,7 +421,9 @@ setValidity(
     Class = "RefSeqTranscripts",
     method = function(object) {
         ok <- .refseqValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -425,7 +447,9 @@ setValidity(
     Class = "UCSCGenes",
     method = function(object) {
         ok <- .ucscValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -449,7 +473,9 @@ setValidity(
     Class = "UCSCTranscripts",
     method = function(object) {
         ok <- .ucscValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -473,7 +499,9 @@ setValidity(
     Class = "WormBaseGenes",
     method = function(object) {
         ok <- .wormbaseValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -497,7 +525,9 @@ setValidity(
     Class = "WormBaseTranscripts",
     method = function(object) {
         ok <- .wormbaseValidity(object)
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -541,7 +571,9 @@ setValidity(
             hasColnames(object),
             hasRows(object)
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "hgnc" = "hgncId",
             "ensembl" = "ensemblGeneId"
@@ -554,7 +586,9 @@ setValidity(
             is.integer(object[[cols[[1L]]]]),
             hasNoDuplicates(object[[cols[[1L]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -584,7 +618,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "ensembl" = "ensemblId",
             "entrez" = "entrezId"
@@ -595,7 +631,9 @@ setValidity(
         ok <- validate(
             is.integer(object[[cols[["entrez"]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -623,7 +661,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "entrez" = "entrezId",
             "ensembl" = "ensemblId"
@@ -634,7 +674,9 @@ setValidity(
         ok <- validate(
             is.integer(object[[cols[["entrez"]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -668,7 +710,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "gene" = "geneId",
             "symbol" = "geneName"
@@ -680,7 +724,9 @@ setValidity(
             is.character(object[[cols[["gene"]]]]),
             isAny(object[[cols[["symbol"]]]], c("character", "factor"))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -709,7 +755,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "hgnc" = "hgncId",
             "ensembl" = "ensemblId"
@@ -721,7 +769,9 @@ setValidity(
             is.integer(object[[cols[["hgnc"]]]]),
             hasNoDuplicates(object[[cols[["hgnc"]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -750,7 +800,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "mgi" = "mgiId",
             "ensembl" = "ensemblId"
@@ -762,7 +814,9 @@ setValidity(
             is.integer(object[[cols[["mgi"]]]]),
             hasNoDuplicates(object[[cols[["mgi"]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -796,7 +850,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c("proteinId", "geneId", "geneName")
         if (!identical(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
@@ -805,7 +861,9 @@ setValidity(
             identical(cols, colnames(object)),
             all(bapply(X = object, FUN = is.character))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -844,7 +902,9 @@ setValidity(
             hasRows(object),
             all(complete.cases(object))
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         cols <- c(
             "tx" = "txId",
             "gene" = "geneId"
@@ -860,7 +920,9 @@ setValidity(
             )),
             hasNoDuplicates(object[[cols[["tx"]]]])
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validate(
             !any(apply(
                 X = object,
@@ -871,7 +933,9 @@ setValidity(
             )),
             msg = "Some transcript and gene identifiers are identical."
         )
-        if (!isTRUE(ok)) return(ok)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
