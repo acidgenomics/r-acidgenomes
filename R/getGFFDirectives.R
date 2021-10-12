@@ -46,7 +46,9 @@ getGFFDirectives <- function(file, nMax = Inf) {
     )
     pattern <- "^(#!|#+)([a-z-]+)(:)?\\s+(.+)$"
     lines <- grep(pattern = pattern, x = lines, value = TRUE)
-    if (!hasLength(lines)) return(NULL)
+    if (!hasLength(lines)) {
+        return(NULL)
+    }
     mat <- str_match(
         string = grep(pattern = pattern, x = lines, value = TRUE),
         pattern = pattern
