@@ -60,7 +60,9 @@ HGNC <-  # nolint
 
 ## Updated 2021-03-19.
 .splitToCharacterList <- function(x, split = "|") {
-    if (all(is.na(x))) return(x)
+    if (all(is.na(x))) {
+        return(x)
+    }
     x <- strsplit(x, split = split, fixed = TRUE)
     x <- CharacterList(x)
     ## > x <- sort(unique(x))

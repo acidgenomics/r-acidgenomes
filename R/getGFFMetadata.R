@@ -259,13 +259,17 @@ getGFFMetadata <- function(file) {
             string = string,
             pattern = "genome \\(([^\\)]+)\\)"
         )[1L, 2L]
-        if (isString(x)) return(x)
+        if (isString(x)) {
+            return(x)
+        }
     }
     ## Otherwise we can parse for standard "genome-build" key, which is
     ## supported by Ensembl and RefSeq.
     .getValue <- function(key, df) {
         x <- df[match(x = key, table = df[["key"]]), "value", drop = TRUE]
-        if (is.na(x)) return(NULL)
+        if (is.na(x)) {
+            return(NULL)
+        }
         x
     }
     x <- .getValue(key = "genome-build", df = df)
