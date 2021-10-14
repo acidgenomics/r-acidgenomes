@@ -380,7 +380,7 @@ setValidity(
 #' @return `RefSeqGenes`.
 setClass(
     Class = "RefSeqGenes",
-    contains = "GenomicRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqGenes",
@@ -406,7 +406,7 @@ setValidity(
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "GenomicRangesList"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
