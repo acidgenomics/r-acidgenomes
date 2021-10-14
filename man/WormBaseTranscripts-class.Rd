@@ -11,8 +11,8 @@
 WormBase transcript annotations
 }
 \details{
-Contains a \code{GRanges} with WormBase transcript-level annotations.
+Contains \code{GenomicRanges} with WormBase transcript-level annotations.
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-10-14.
 }

@@ -11,8 +11,8 @@
 FlyBase transcript annotations
 }
 \details{
-Contains a \code{GRanges} with FlyBase transcript-level annotations.
+Contains \code{GenomicRanges} with FlyBase transcript-level annotations.
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-10-14.
 }

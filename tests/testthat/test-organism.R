@@ -1,17 +1,13 @@
 context("organism")
 
-## nolint start
-GRanges <- gr  # FIXME
-DataFrame <- as(as.data.frame(GRanges), "DataFrame")  # FIXME
-matrix <- as.matrix(DataFrame)
-## nolint end
+## FIXME Double check our new list appraoch here.
 
 test_that("organism", {
-    for (object in list(
-        "DataFrame" = DFrame,  # FIXME
-        "GenomicRanges" = GRanges,  # FIXME
-        "matrix" = matrix
-    )) {
+    list <- list()
+    list[["GenomicRanges"]] <- gr
+    list[["DataFrame"]] <- as.DataFrame(gr)
+    list[["matrix"]] <- as.matrix(list[["DataFrame"]])
+    for (object in list) {
         expect_identical(
             object = organism(object),
             expected = "Homo sapiens"

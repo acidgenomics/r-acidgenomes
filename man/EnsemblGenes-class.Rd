@@ -11,8 +11,8 @@
 Ensembl gene annotations
 }
 \details{
-Contains a \code{GRanges} with Ensembl gene-level annotations.
+Contains \code{GenomicRanges} with Ensembl gene-level annotations.
 }
 \note{
-Updated 2021-03-02.
+Updated 2021-10-14.
 }

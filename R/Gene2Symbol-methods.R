@@ -28,7 +28,7 @@
 #' @seealso [makeGene2Symbol()].
 #'
 #' @examples
-#' data(GRanges, package = "AcidTest")
+#' data(GenomicRanges, package = "AcidTest")
 #'
 #' ## DataFrame ====
 #' df <- DataFrame(
@@ -44,8 +44,8 @@
 #' x <- Gene2Symbol(df)
 #' print(x)
 #'
-#' ## GRanges ====
-#' object <- GRanges
+#' ## GenomicRanges ====
+#' object <- GenomicRanges
 #' x <- Gene2Symbol(object)
 NULL
 

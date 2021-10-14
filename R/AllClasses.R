@@ -1,5 +1,5 @@
 ## Genome annotation classes ===================================================
-#' Shared GRanges validity checks
+#' Shared GenomicRanges validity checks
 #'
 #' @note Note that genome build and organism are not defined in minimal FlyBase
 #'   GTF example.
@@ -208,10 +208,10 @@
 #' Ensembl gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with Ensembl gene-level annotations.
+#' Contains `GenomicRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-03-02.
+#' @note Updated 2021-10-14.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -238,10 +238,10 @@ setValidity(
 #' Ensembl transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with Ensembl transcript-level annotations.
+#' Contains `GenomicRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-03-02.
+#' @note Updated 2021-10-14.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -268,10 +268,10 @@ setValidity(
 #' FlyBase gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with FlyBase gene-level annotations.
+#' Contains `GenomicRanges` with FlyBase gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `FlyBaseGenes`.
 setClass(
@@ -294,10 +294,10 @@ setValidity(
 #' FlyBase transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with FlyBase transcript-level annotations.
+#' Contains `GenomicRanges` with FlyBase transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `FlyBaseTranscripts`.
 setClass(
@@ -320,10 +320,10 @@ setValidity(
 #' GENCODE gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with GENCODE gene-level annotations.
+#' Contains `GenomicRanges` with GENCODE gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `GencodeGenes`.
 setClass(
@@ -346,10 +346,10 @@ setValidity(
 #' GENCODE transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with GENCODE transcript-level annotations.
+#' Contains `GenomicRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `GencodeTranscripts`.
 setClass(
@@ -424,10 +424,10 @@ setValidity(
 #' UCSC gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with UCSC gene-level annotations.
+#' Contains `GenomicRanges` with UCSC gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `UCSCGenes`.
 setClass(
@@ -450,10 +450,10 @@ setValidity(
 #' UCSC transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with UCSC transcript-level annotations.
+#' Contains `GenomicRanges` with UCSC transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `UCSCTranscripts`.
 setClass(
@@ -476,10 +476,10 @@ setValidity(
 #' WormBase gene annotations
 #'
 #' @details
-#' Contains a `GRanges` with WormBase gene-level annotations.
+#' Contains `GenomicRanges` with WormBase gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `WormBaseGenes`.
 setClass(
@@ -502,10 +502,10 @@ setValidity(
 #' WormBase transcript annotations
 #'
 #' @details
-#' Contains a `GRanges` with WormBase transcript-level annotations.
+#' Contains `GenomicRanges` with WormBase transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-01-25.
+#' @note Updated 2021-10-14.
 #'
 #' @return `WormBaseTranscripts`.
 setClass(

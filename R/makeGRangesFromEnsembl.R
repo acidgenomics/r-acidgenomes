@@ -1,4 +1,4 @@
-#' Make GRanges from Ensembl
+#' Make GenomicRanges from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
 #' [Ensembl](https://www.ensembl.org/) using
@@ -242,7 +242,7 @@ makeGRangesFromEnsDb <- function(
         }
     )
     ## This step can warn about out-of-bound ranges that need to be trimmed.
-    ## We're taking care of trimming on the `.makeGRanges` call below.
+    ## We're taking care of trimming on the `.makeGRanges()` call below.
     suppressWarnings({
         gr <- do.call(what = fun, args = args)
     })
@@ -265,8 +265,7 @@ makeGRangesFromEnsDb <- function(
 
 #' @describeIn makeGRangesFromEnsembl
 #' Legacy convenience function that calls [makeGRangesFromEnsembl()] and returns
-#' a `tbl_df` (tibble) instead of `GRanges`. Note that `GRanges` can also be
-#' coerced using [`as.data.frame()`][base::as.data.frame].
+#' a `tbl_df` (tibble) instead of `GenomicRanges`.
 #' @export
 annotable <- function(...) {
     gr <- makeGRangesFromEnsembl(...)

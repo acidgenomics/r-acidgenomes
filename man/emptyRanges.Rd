@@ -20,16 +20,17 @@ ranges will be grouped. Defaults to \code{"unknown"} but \code{"transgene"}
 (transgenes) and \code{"spike"} (spike-ins) are also supported.}
 
 \item{mcolnames}{\code{character} or \code{NULL}.
-Metadata column names to be defined in the \code{mcols} of the \code{GRanges} return.
+Metadata column names to be defined in the \code{mcols} of the
+\code{GenomicRanges} return.
 Normally this does not need to be defined; useful when combining with
-another \code{GRanges} that contains metadata.}
+another \code{GenomicRanges} that contains metadata.}
 }
 \value{
-\code{GRanges}.
+\code{GenomicRanges}.
 }
 \description{
-Utility function that provides support for creating internal \code{GRanges} for
-transgene and FASTA spike-in sequences.
+Utility function that provides support for creating internal
+\code{GenomicRanges} for transgene and FASTA spike-in sequences.
 }
 \note{
 Updated 2019-08-21.
