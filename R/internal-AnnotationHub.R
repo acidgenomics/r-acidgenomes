@@ -86,6 +86,6 @@
     colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
     df[["entrezId"]] <- as.integer(df[["entrezId"]])
     forceDetach(keep = pkgs)
-    df <- as(df, "DFrame")
+    df <- as(df, "DataFrame")
     df
 }

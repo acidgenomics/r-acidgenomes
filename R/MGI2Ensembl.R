@@ -18,7 +18,7 @@ MGI2Ensembl <- function() {  # nolint
     suppressWarnings({
         df <- import(file = file, format = "tsv", colnames = TRUE)
     })
-    df <- as(df[, c(1L, 11L)], "DFrame")
+    df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgiId", "ensemblId")
     df <- df[complete.cases(df), , drop = FALSE]
     df[["mgiId"]] <- as.integer(gsub("^MGI\\:", "", df[["mgiId"]]))

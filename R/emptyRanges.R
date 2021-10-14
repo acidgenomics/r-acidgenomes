@@ -59,7 +59,7 @@ emptyRanges <- function(
         ncol = ncol,
         dimnames = list(names, mcolnames)
     )
-    mcols <- as(mcols, "DFrame")
+    mcols <- as(mcols, "DataFrame")
     mcols(gr) <- mcols
     gr
 }

@@ -27,7 +27,7 @@ NULL
 
 
 ## Updated 2021-10-13.
-`Tx2Gene,DFrame` <-  # nolint
+`Tx2Gene,DataFrame` <-  # nolint
     function(
         object,
         quiet = FALSE
@@ -90,7 +90,7 @@ NULL
 ## Updated 2021-08-09.
 `Tx2Gene,GRanges` <-  # nolint
     function(object, ...) {
-        df <- as(object, "DFrame")
+        df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
         Tx2Gene(df, ...)
     }
@@ -114,7 +114,7 @@ NULL
     function(object, ...) {
         assert(identical(ncol(object), 2L))
         colnames(object) <- c("txId", "geneId")
-        object <- as(object, "DFrame")
+        object <- as(object, "DataFrame")
         Tx2Gene(object, ...)
     }
 
@@ -137,8 +137,8 @@ NULL
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "DFrame"),
-    definition = `Tx2Gene,DFrame`
+    signature = signature(object = "DataFrame"),
+    definition = `Tx2Gene,DataFrame`
 )
 
 #' @rdname Tx2Gene

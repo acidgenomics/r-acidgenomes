@@ -54,7 +54,7 @@ EntrezGeneInfo <-  # nolint
             organism, url
         ))
         df <- import(file = .cacheIt(url), format = "tsv", colnames = TRUE)
-        df <- as(df, "DFrame")
+        df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
             isSubset(

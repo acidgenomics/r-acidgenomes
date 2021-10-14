@@ -44,7 +44,7 @@ getGFFMetadata <- function(file) {
     l[["sha256"]] <- .sha256(file)
     ## Attempt to get genome build and provider from GFF directives.
     df <- getGFFDirectives(file)
-    if (is(df, "DFrame")) {
+    if (is(df, "DataFrame")) {
         l[["directives"]] <- df
         ## These are GFF specific (not defined in GTF), but useful:
         l[["gffVersion"]] <-
@@ -245,7 +245,7 @@ getGFFMetadata <- function(file) {
 
 ## Updated 2021-08-05.
 .gffGenomeBuild <- function(df) {
-    assert(is(df, "DFrame"))
+    assert(is(df, "DataFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (
         identical(
@@ -302,7 +302,7 @@ getGFFMetadata <- function(file) {
 
 ## Updated 2021-01-22.
 .gffProvider <- function(df) {
-    assert(is(df, "DFrame"))
+    assert(is(df, "DataFrame"))
     annoSource <-
         df[df[["key"]] == "annotation-source", "value", drop = TRUE]
     geneBuildVersion <-
