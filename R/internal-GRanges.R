@@ -2,7 +2,7 @@
 
 #' Apply broad class definitions
 #'
-#' This function is intended to work rowwise on the GRanges mcols.
+#' This function is intended to work rowwise on the GenomicRanges mcols.
 #'
 #' @section Mitochondrial genes:
 #'
@@ -148,7 +148,7 @@
     )
     df <- as.data.frame(object)
     ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
-    ## only applies for transcript-level GRanges.
+    ## only applies for transcript-level GenomicRanges.
     if ("geneBiotype" %in% names(df)) {
         biotypeCol <- "geneBiotype"
         biotypeData <- df[[biotypeCol]]
@@ -168,7 +168,7 @@
         geneNameData <- NA_character_
     }
     ## Seqnames. This refers to the chromosome name. Note that data frame
-    ## coercion will define `seqnames` column from the `GRanges` object
+    ## coercion will define `seqnames` column from the `GenomicRanges` object
     ## (see above).
     if ("seqnames" %in% names(df)) {
         seqnamesCol <- "seqnames"
@@ -335,7 +335,7 @@
 
 
 ## Standardization =============================================================
-#' Apply run-length encoding and minimize `GRanges` mcols
+#' Apply run-length encoding and minimize `GenomicRanges` mcols
 #'
 #' @note Updated 2021-08-05.
 #' @noRd
@@ -344,8 +344,8 @@
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' This trimming step was added to handle GRanges from Ensembl 102, which won't
-#' return valid otherwise from ensembldb.
+#' This trimming step was added to handle GenomicRanges from Ensembl 102,
+#' which won't return valid otherwise from ensembldb.
 .encodeMcols <- function(object) {
     assert(is(object, "GenomicRanges"))
     length <- length(object)
@@ -386,7 +386,7 @@
 
 
 
-#' Match the identifier column in GRanges to use for names.
+#' Match the identifier column in GenomicRanges to use for names.
 #'
 #' @note Updated 2021-01-20.
 #' @noRd
@@ -420,12 +420,12 @@
 
 
 
-#' Standardize the GRanges mcols into desired naming conventions
+#' Standardize the GenomicRanges mcols into desired naming conventions
 #'
 #' @details
 #' Always return using camel case, even though GFF/GTF files use snake.
 #'
-#' Note that this step makes GRanges imported via `rtracklayer::import()`
+#' Note that this step makes GenomicRanges imported via `rtracklayer::import()`
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
@@ -522,9 +522,9 @@
 
 
 ## Main generator ==============================================================
-#' Make GRanges
+#' Make GenomicRanges
 #'
-#' This is the main GRanges final return generator, used by
+#' This is the main GenomicRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
 #' @note Updated 2021-03-10.

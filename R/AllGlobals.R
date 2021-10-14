@@ -83,7 +83,7 @@ NULL
 
 
 
-#' GRanges annotation levels
+#' GenomicRanges annotation levels
 #'
 #' @note Updated 2021-01-25.
 #' @noRd
