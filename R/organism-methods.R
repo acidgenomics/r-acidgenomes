@@ -78,7 +78,7 @@ NULL
 
 
 ## Updated 2021-02-02.
-`organism,GRanges` <-  # nolint
+`organism,GenomicRanges` <-  # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -120,8 +120,8 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature(object = "GRanges"),
-    definition = `organism,GRanges`
+    signature = signature(object = "GenomicRanges"),
+    definition = `organism,GenomicRanges`
 )
 
 #' @rdname organism

@@ -2,19 +2,19 @@
 % Please edit documentation in R/AllGenerics.R, R/Gene2Symbol-methods.R
 \name{Gene2Symbol}
 \alias{Gene2Symbol}
-\alias{Gene2Symbol,DFrame-method}
-\alias{Gene2Symbol,GRanges-method}
+\alias{Gene2Symbol,DataFrame-method}
+\alias{Gene2Symbol,GenomicRanges-method}
 \title{Gene-to-symbol mappings}
 \usage{
 Gene2Symbol(object, ...)
 
-\S4method{Gene2Symbol}{DFrame}(
+\S4method{Gene2Symbol}{DataFrame}(
   object,
   format = c("makeUnique", "1:1", "unmodified"),
   quiet = FALSE
 )
 
-\S4method{Gene2Symbol}{GRanges}(object, ...)
+\S4method{Gene2Symbol}{GenomicRanges}(object, ...)
 }
 \arguments{
 \item{object}{Object.}

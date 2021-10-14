@@ -138,7 +138,7 @@ formals(`Entrez2Ensembl,integer`)[["format"]] <-
 
 
 ## Updated 2021-02-01.
-`Ensembl2Entrez,GRanges` <-  # nolint
+`Ensembl2Entrez,GenomicRanges` <-  # nolint
     function(object, format) {
         assert(hasColnames(mcols(object)))
         colnames(mcols(object)) <-
@@ -161,7 +161,7 @@ formals(`Entrez2Ensembl,integer`)[["format"]] <-
         )
     }
 
-formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
+formals(`Ensembl2Entrez,GenomicRanges`)[["format"]] <-
     formals(.makeEnsembl2Entrez)[["format"]]
 
 
@@ -170,8 +170,8 @@ formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
 #' @export
 setMethod(
     f = "Ensembl2Entrez",
-    signature = signature(object = "GRanges"),
-    definition = `Ensembl2Entrez,GRanges`
+    signature = signature(object = "GenomicRanges"),
+    definition = `Ensembl2Entrez,GenomicRanges`
 )
 
 #' @rdname Ensembl2Entrez

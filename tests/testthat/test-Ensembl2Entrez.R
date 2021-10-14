@@ -1,6 +1,6 @@
 context("Ensembl2Entrez")
 
-formats <- eval(formals(`Ensembl2Entrez,GRanges`)[["format"]])
+formats <- eval(formals(`Ensembl2Entrez,GenomicRanges`)[["format"]])
 
 test_that("character", {
     genes <- c(

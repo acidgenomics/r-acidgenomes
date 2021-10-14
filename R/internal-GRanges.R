@@ -135,7 +135,7 @@
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
-        is(object, "GRanges"),
+        is(object, "GenomicRanges"),
         identical(
             x = names(mcols(object)),
             y = camelCase(names(mcols(object)), strict = TRUE)
@@ -210,7 +210,7 @@
 #' @details Currently supported only for Ensembl and GENCODE genomes.
 .addGeneSynonyms <- function(object) {
     assert(
-        is(object, "GRanges"),
+        is(object, "GenomicRanges"),
         isString(metadata(object)[["provider"]]),
         isSubset(
             x = metadata(object)[["provider"]],
@@ -268,7 +268,7 @@
         quiet = TRUE
     ) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isString(idCol),
             isString(idVersionCol),
             isString(idNoVersionCol),
@@ -347,7 +347,7 @@
 #' This trimming step was added to handle GRanges from Ensembl 102, which won't
 #' return valid otherwise from ensembldb.
 .encodeMcols <- function(object) {
-    assert(is(object, "GRanges"))
+    assert(is(object, "GenomicRanges"))
     length <- length(object)
     object <- trim(object)
     assert(hasLength(object, n = length))
@@ -392,7 +392,7 @@
 #' @noRd
 .matchGRangesNamesColumn <- function(object) {
     assert(
-        is(object, "GRanges"),
+        is(object, "GenomicRanges"),
         isString(metadata(object)[["level"]])
     )
     level <- match.arg(
@@ -432,7 +432,7 @@
 #' @note Updated 2021-02-12.
 #' @noRd
 .standardizeMcols <- function(object) {
-    assert(is(object, "GRanges"))
+    assert(is(object, "GenomicRanges"))
     mcols <- mcols(object)
     ## Remove any columns beginning with a capital letter, which are used in
     ## GFF3 files.
@@ -535,7 +535,7 @@
     synonyms
 ) {
     assert(
-        is(object, "GRanges"),
+        is(object, "GenomicRanges"),
         hasLength(object),
         isFlag(ignoreVersion),
         isFlag(synonyms),
@@ -584,7 +584,7 @@
     if (identical(provider, "RefSeq")) {
         alertInfo(sprintf(
             "Splitting {.var %s} by {.var %s} into {.var %s}.",
-            "GRanges", idCol, "GRangesList"
+            "GenomicRanges", idCol, "GenomicRangesList"
         ))
         ## Metadata gets dropped during `split()` call; stash and reassign.
         meta <- metadata(object)
@@ -598,10 +598,10 @@
             msg = "Invalid and/or duplicated identifiers detected."
         )
         names(object) <- names
-        ## This check fails for split GRangesList.
+        ## This check fails for split GenomicRangesList.
         assert(
             isFALSE(is.unsorted(object)),
-            msg = "GRanges are not sorted."
+            msg = "GenomicRanges are not sorted."
         )
     }
     ## Run final assert checks before returning.

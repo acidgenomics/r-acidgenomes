@@ -137,7 +137,7 @@ makeGRangesFromEnsembl <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
+    alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
     edb <- getEnsDb(
         organism = organism,
         genomeBuild = genomeBuild,
@@ -179,7 +179,7 @@ makeGRangesFromEnsDb <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    alert(sprintf("Making {.cls %s} from {.var %s}.", "GRanges", "EnsDb"))
+    alert(sprintf("Making {.cls %s} from {.var %s}.", "GenomicRanges", "EnsDb"))
     if (isString(object)) {
         package <- object
         requireNamespaces(package)
@@ -193,7 +193,7 @@ makeGRangesFromEnsDb <- function(
     args <- list(
         "x" = object,
         "order.type" = "asc",
-        "return.type" = "GRanges"
+        "return.type" = "GenomicRanges"
     )
     ## Ensembl 102 example (AH89180):
     ##  [1] "canonical_transcript" "description"          "entrezid"
@@ -246,7 +246,7 @@ makeGRangesFromEnsDb <- function(
     suppressWarnings({
         gr <- do.call(what = fun, args = args)
     })
-    assert(is(gr, "GRanges"))
+    assert(is(gr, "GenomicRanges"))
     metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
     gr <- .makeGRanges(
         object = gr,

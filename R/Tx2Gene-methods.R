@@ -88,7 +88,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GRanges` <-  # nolint
+`Tx2Gene,GenomicRanges` <-  # nolint
     function(object, ...) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
@@ -98,12 +98,12 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GRangesList` <-  # nolint
+`Tx2Gene,GenomicRangesList` <-  # nolint
     function(object, ...) {
-        x <- as(object, "GRangesList")
+        x <- as(object, "GenomicRangesList")
         x <- unname(x)
         gr <- unlist(x)
-        assert(is(gr, "GRanges"))
+        assert(is(gr, "GenomicRanges"))
         Tx2Gene(gr, ...)
     }
 
@@ -145,16 +145,16 @@ setMethod(
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "GRanges"),
-    definition = `Tx2Gene,GRanges`
+    signature = signature(object = "GenomicRanges"),
+    definition = `Tx2Gene,GenomicRanges`
 )
 
 #' @rdname Tx2Gene
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "GRangesList"),
-    definition = `Tx2Gene,GRangesList`
+    signature = signature(object = "GenomicRangesList"),
+    definition = `Tx2Gene,GenomicRangesList`
 )
 
 #' @rdname Tx2Gene
