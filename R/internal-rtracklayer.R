@@ -17,7 +17,7 @@
     )
     meta[["level"]] <- level
     gr <- import(file = .cacheIt(file))
-    assert(is(gr, "GRanges"))
+    assert(is(gr, "GenomicRanges"))
     format <- ifelse(
         test = grepl(pattern = "GTF", x = meta[["format"]]),
         yes = "GTF",
@@ -98,7 +98,7 @@
 .rtracklayerEnsemblGenesGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c(
                     "gene_id",
@@ -135,7 +135,7 @@
 .rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c(
                     "gene_id",
@@ -183,7 +183,7 @@
 .rtracklayerEnsemblGenesGff <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("Name", "biotype", "gene_id", "version"),
                 y = names(mcols(object))
@@ -222,7 +222,7 @@
         genes <- .rtracklayerEnsemblGenesGff(object)
         mcols(genes) <- removeNA(mcols(genes))
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("Name", "Parent", "biotype"),
                 y = names(mcols(object))
@@ -291,7 +291,7 @@
 .rtracklayerFlyBaseGenesGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("gene_id", "type"),
                 y = names(mcols(object))
@@ -313,7 +313,7 @@
 .rtracklayerFlyBaseTranscriptsGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("transcript_id", "type"),
                 y = names(mcols(object))
@@ -371,7 +371,7 @@
 .rtracklayerGencodeGenesGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("gene_id", "type"),
                 y = names(mcols(object))
@@ -401,7 +401,7 @@
 .rtracklayerGencodeTranscriptsGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c(
                     "gene_id",
@@ -443,7 +443,7 @@
 .rtracklayerGencodeGenesGff <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("ID", "gene_id", "type"),
                 y = names(mcols(object))
@@ -583,7 +583,7 @@
 .rtracklayerRefSeqGenesGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c(
                     "gene",
@@ -626,7 +626,7 @@
         genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(
             hasNoDuplicates(genesMcols[["parent_gene_id"]]),
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c(
                     "transcript_id",
@@ -674,7 +674,7 @@
 .rtracklayerRefSeqGenesGff <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("ID", "Parent", "description", "gene"),
                 y = names(mcols(object))
@@ -722,7 +722,7 @@
         genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(
             hasNoDuplicates(genesMcols[["parent_gene_id"]]),
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("Parent", "gene", "transcript_id"),
                 y = names(mcols(object))
@@ -818,7 +818,7 @@
 .rtracklayerWormBaseGenesGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("gene_id", "type"),
                 y = names(mcols(object))
@@ -846,7 +846,7 @@
 .rtracklayerWormBaseTranscriptsGtf <-
     function(object) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isSubset(
                 x = c("gene_id", "transcript_id", "type"),
                 y = names(mcols(object))

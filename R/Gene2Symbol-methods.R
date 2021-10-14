@@ -186,7 +186,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Gene2Symbol,GRanges` <-  # nolint
+`Gene2Symbol,GenomicRanges` <-  # nolint
     function(object, ...) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
@@ -207,6 +207,6 @@ setMethod(
 #' @export
 setMethod(
     f = "Gene2Symbol",
-    signature = signature(object = "GRanges"),
-    definition = `Gene2Symbol,GRanges`
+    signature = signature(object = "GenomicRanges"),
+    definition = `Gene2Symbol,GenomicRanges`
 )

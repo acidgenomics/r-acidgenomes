@@ -9,7 +9,7 @@ matrix <- as.matrix(DataFrame)
 test_that("organism", {
     for (object in list(
         "DataFrame" = DFrame,  # FIXME
-        "GRanges" = GRanges,  # FIXME
+        "GenomicRanges" = GRanges,  # FIXME
         "matrix" = matrix
     )) {
         expect_identical(

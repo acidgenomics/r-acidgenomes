@@ -6,7 +6,7 @@
 #' @note Updated 2021-03-03.
 #' @noRd
 .grangesValidity <- function(object) {
-    if (is(object, "GRangesList")) {
+    if (is(object, "GenomicRangesList")) {
         gr <- object[[1L]]
     } else {
         gr <- object
@@ -216,7 +216,7 @@
 #' @return `EnsemblGenes`.
 setClass(
     Class = "EnsemblGenes",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "EnsemblGenes",
@@ -246,7 +246,7 @@ setValidity(
 #' @return `EnsemblTranscripts`.
 setClass(
     Class = "EnsemblTranscripts",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "EnsemblTranscripts",
@@ -276,7 +276,7 @@ setValidity(
 #' @return `FlyBaseGenes`.
 setClass(
     Class = "FlyBaseGenes",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "FlyBaseGenes",
@@ -302,7 +302,7 @@ setValidity(
 #' @return `FlyBaseTranscripts`.
 setClass(
     Class = "FlyBaseTranscripts",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "FlyBaseTranscripts",
@@ -328,7 +328,7 @@ setValidity(
 #' @return `GencodeGenes`.
 setClass(
     Class = "GencodeGenes",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "GencodeGenes",
@@ -354,7 +354,7 @@ setValidity(
 #' @return `GencodeTranscripts`.
 setClass(
     Class = "GencodeTranscripts",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "GencodeTranscripts",
@@ -372,7 +372,7 @@ setValidity(
 #' RefSeq gene annotations
 #'
 #' @details
-#' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
+#' Contains a `GenomicRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -398,10 +398,10 @@ setValidity(
 #' RefSeq transcript annotations
 #'
 #' @details
-#' Contains a `CompressedGRangesList` with RefSeq transcript-level annotations.
+#' Contains a `GenomicRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-10-14.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
@@ -432,7 +432,7 @@ setValidity(
 #' @return `UCSCGenes`.
 setClass(
     Class = "UCSCGenes",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "UCSCGenes",
@@ -458,7 +458,7 @@ setValidity(
 #' @return `UCSCTranscripts`.
 setClass(
     Class = "UCSCTranscripts",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "UCSCTranscripts",
@@ -484,7 +484,7 @@ setValidity(
 #' @return `WormBaseGenes`.
 setClass(
     Class = "WormBaseGenes",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "WormBaseGenes",
@@ -510,7 +510,7 @@ setValidity(
 #' @return `WormBaseTranscripts`.
 setClass(
     Class = "WormBaseTranscripts",
-    contains = "GRanges"
+    contains = "GenomicRanges"
 )
 setValidity(
     Class = "WormBaseTranscripts",

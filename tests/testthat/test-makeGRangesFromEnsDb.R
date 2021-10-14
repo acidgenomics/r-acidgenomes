@@ -6,7 +6,7 @@ skip_if_not_installed(pkg)
 
 test_that("Genes", {
     x <- makeGRangesFromEnsDb(object = pkg, level = "genes")
-    expect_s4_class(x, "GRanges")
+    expect_s4_class(x, "GenomicRanges")
 })
 
 ## Note that transcript versions aren't saved in this object.
@@ -16,7 +16,7 @@ test_that("Transcripts", {
         level = "transcripts",
         ignoreVersion = TRUE
     )
-    expect_s4_class(x, "GRanges")
+    expect_s4_class(x, "GenomicRanges")
 })
 
 
@@ -28,7 +28,7 @@ edb <- ah[["AH73881"]]
 
 test_that("Genes", {
     x <- makeGRangesFromEnsDb(object = edb, level = "genes")
-    expect_s4_class(x, "GRanges")
+    expect_s4_class(x, "GenomicRanges")
 })
 
 test_that("Transcripts", {
@@ -37,5 +37,5 @@ test_that("Transcripts", {
         level = "transcripts",
         ignoreVersion = FALSE
     )
-    expect_s4_class(x, "GRanges")
+    expect_s4_class(x, "GenomicRanges")
 })
