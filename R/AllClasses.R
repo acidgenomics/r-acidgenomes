@@ -548,7 +548,7 @@ setValidity(
 #' @return `EntrezGeneInfo`.
 setClass(
     Class = "EntrezGeneInfo",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "EntrezGeneInfo",
@@ -567,7 +567,7 @@ setValidity(
 #' @return `HGNC`.
 setClass(
     Class = "HGNC",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "HGNC",
@@ -612,7 +612,7 @@ setValidity(
 #' @return `Ensembl2Entrez`.
 setClass(
     Class = "Ensembl2Entrez",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Ensembl2Entrez",
@@ -655,7 +655,7 @@ setValidity(
 #' @return `Entrez2Ensembl`.
 setClass(
     Class = "Entrez2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Entrez2Ensembl",
@@ -704,7 +704,7 @@ setValidity(
 #' @return `Gene2Symbol`.
 setClass(
     Class = "Gene2Symbol",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Gene2Symbol",
@@ -749,7 +749,7 @@ setValidity(
 #' @return `HGNC2Ensembl`.
 setClass(
     Class = "HGNC2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "HGNC2Ensembl",
@@ -794,7 +794,7 @@ setValidity(
 #' @return `MGI2Ensembl`.
 setClass(
     Class = "MGI2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "MGI2Ensembl",
@@ -844,7 +844,7 @@ setValidity(
 #' @return `Protein2Gene`.
 setClass(
     Class = "Protein2Gene",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Protein2Gene",
@@ -896,7 +896,7 @@ setValidity(
 #' @return `Tx2Gene`.
 setClass(
     Class = "Tx2Gene",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Tx2Gene",

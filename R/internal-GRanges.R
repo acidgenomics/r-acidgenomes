@@ -370,7 +370,7 @@
         }
     )
     mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
-    mcols <- as.DataFrame(mcolsList)
+    mcols <- as.DFrame(mcolsList)
     ## Ensure nested list columns return classed when possible.
     if (is.list(mcols[["entrezId"]])) {
         mcols[["entrezId"]] <- IntegerList(mcols[["entrezId"]])

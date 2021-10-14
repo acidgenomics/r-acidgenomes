@@ -26,32 +26,8 @@ NULL
 
 
 
-## Updated 2021-08-09.
-`Tx2Gene,matrix` <-  # nolint
-    function(object, ...) {
-        assert(
-            is.character(object),
-            identical(ncol(object), 2L)
-        )
-        object <- as.data.frame(object, stringsAsFactors = FALSE)
-        Tx2Gene(object, ...)
-    }
-
-
-
-## Updated 2021-08-09.
-`Tx2Gene,data.frame` <-  # nolint
-    function(object, ...) {
-        assert(identical(ncol(object), 2L))
-        colnames(object) <- c("txId", "geneId")
-        object <- as(object, "DataFrame")
-        Tx2Gene(object, ...)
-    }
-
-
-
-## Updated 2021-08-10.
-`Tx2Gene,DataFrame` <-  # nolint
+## Updated 2021-10-13.
+`Tx2Gene,DFrame` <-  # nolint
     function(
         object,
         quiet = FALSE
@@ -114,7 +90,7 @@ NULL
 ## Updated 2021-08-09.
 `Tx2Gene,GRanges` <-  # nolint
     function(object, ...) {
-        df <- as(object, "DataFrame")
+        df <- as(object, "DFrame")
         metadata(df) <- metadata(object)
         Tx2Gene(df, ...)
     }
@@ -133,19 +109,43 @@ NULL
 
 
 
+## Updated 2021-08-09.
+`Tx2Gene,data.frame` <-  # nolint
+    function(object, ...) {
+        assert(identical(ncol(object), 2L))
+        colnames(object) <- c("txId", "geneId")
+        object <- as(object, "DFrame")
+        Tx2Gene(object, ...)
+    }
+
+
+
+## Updated 2021-08-09.
+`Tx2Gene,matrix` <-  # nolint
+    function(object, ...) {
+        assert(
+            is.character(object),
+            identical(ncol(object), 2L)
+        )
+        object <- as.data.frame(object, stringsAsFactors = FALSE)
+        Tx2Gene(object, ...)
+    }
+
+
+
 #' @rdname Tx2Gene
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("DataFrame"),
-    definition = `Tx2Gene,DataFrame`
+    signature = signature(object = "DFrame"),
+    definition = `Tx2Gene,DFrame`
 )
 
 #' @rdname Tx2Gene
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("GRanges"),
+    signature = signature(object = "GRanges"),
     definition = `Tx2Gene,GRanges`
 )
 
@@ -153,7 +153,7 @@ setMethod(
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("GRangesList"),
+    signature = signature(object = "GRangesList"),
     definition = `Tx2Gene,GRangesList`
 )
 
@@ -161,7 +161,7 @@ setMethod(
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("data.frame"),
+    signature = signature(object = "data.frame"),
     definition = `Tx2Gene,data.frame`
 )
 
@@ -169,6 +169,6 @@ setMethod(
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature("matrix"),
+    signature = signature(object = "matrix"),
     definition = `Tx2Gene,matrix`
 )

@@ -2,13 +2,13 @@
 % Please edit documentation in R/AllGenerics.R, R/Gene2Symbol-methods.R
 \name{Gene2Symbol}
 \alias{Gene2Symbol}
-\alias{Gene2Symbol,DataFrame-method}
+\alias{Gene2Symbol,DFrame-method}
 \alias{Gene2Symbol,GRanges-method}
 \title{Gene-to-symbol mappings}
 \usage{
 Gene2Symbol(object, ...)
 
-\S4method{Gene2Symbol}{DataFrame}(
+\S4method{Gene2Symbol}{DFrame}(
   object,
   format = c("makeUnique", "1:1", "unmodified"),
   quiet = FALSE

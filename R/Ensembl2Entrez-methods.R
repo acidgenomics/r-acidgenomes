@@ -50,7 +50,7 @@ NULL
             "Entrez2Ensembl" = c("entrezId", "ensemblId")
         )
         assert(
-            is(object, "DataFrame"),
+            is(object, "DFrame"),
             hasRows(object),
             isSubset(cols, colnames(object))
         )
@@ -170,7 +170,7 @@ formals(`Ensembl2Entrez,GRanges`)[["format"]] <-
 #' @export
 setMethod(
     f = "Ensembl2Entrez",
-    signature = signature("GRanges"),
+    signature = signature(object = "GRanges"),
     definition = `Ensembl2Entrez,GRanges`
 )
 
@@ -178,7 +178,7 @@ setMethod(
 #' @export
 setMethod(
     f = "Ensembl2Entrez",
-    signature = signature("character"),
+    signature = signature(object = "character"),
     definition = `Ensembl2Entrez,character`
 )
 
@@ -186,6 +186,6 @@ setMethod(
 #' @export
 setMethod(
     f = "Entrez2Ensembl",
-    signature = signature("integer"),
+    signature = signature(object = "integer"),
     definition = `Entrez2Ensembl,integer`
 )
