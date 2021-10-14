@@ -1,10 +1,10 @@
 data(
-    GRanges,
+    GenomicRanges,
     package = "AcidTest",
     envir = environment()
 )
 
-gr <- GRanges
+gr <- GenomicRanges
 
 ## nolint start
 CompressedIntegerList <- structure(
