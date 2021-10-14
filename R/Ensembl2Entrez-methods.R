@@ -50,7 +50,7 @@ NULL
             "Entrez2Ensembl" = c("entrezId", "ensemblId")
         )
         assert(
-            is(object, "DFrame"),
+            is(object, "DataFrame"),
             hasRows(object),
             isSubset(cols, colnames(object))
         )

@@ -29,7 +29,7 @@ HGNC <-  # nolint
         suppressWarnings({
             df <- import(file, format = "tsv")
         })
-        df <- as(df, "DFrame")
+        df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
             isSubset("hgncId", colnames(df)),

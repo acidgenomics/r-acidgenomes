@@ -41,7 +41,7 @@ NULL
         if (missing(format)) {
             format <- NULL
         }
-        df <- as(object, "DFrame")
+        df <- as(object, "DataFrame")
         rownames(df) <- NULL
         export(
             object = df,

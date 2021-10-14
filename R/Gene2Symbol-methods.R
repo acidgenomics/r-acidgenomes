@@ -52,7 +52,7 @@ NULL
 
 
 ## Updated 2021-10-13.
-`Gene2Symbol,DFrame` <-  # nolint
+`Gene2Symbol,DataFrame` <-  # nolint
     function(
         object,
         format = c("makeUnique", "1:1", "unmodified"),
@@ -73,7 +73,7 @@ NULL
             isSubset(cols, colnames(object)),
             hasRows(object)
         )
-        object <- as(object, "DFrame")
+        object <- as(object, "DataFrame")
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
         assert(allAreAtomic(object))
@@ -173,7 +173,7 @@ NULL
             }
         )
         assert(
-            is(object, "DFrame"),
+            is(object, "DataFrame"),
             all(complete.cases(object)),
             hasNoDuplicates(object[["geneId"]]),
             msg = "Failed to generate Gene2Symbol object."
@@ -188,7 +188,7 @@ NULL
 ## Updated 2021-08-09.
 `Gene2Symbol,GRanges` <-  # nolint
     function(object, ...) {
-        df <- as(object, "DFrame")
+        df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
         Gene2Symbol(df, ...)
     }
@@ -199,8 +199,8 @@ NULL
 #' @export
 setMethod(
     f = "Gene2Symbol",
-    signature = signature(object = "DFrame"),
-    definition = `Gene2Symbol,DFrame`
+    signature = signature(object = "DataFrame"),
+    definition = `Gene2Symbol,DataFrame`
 )
 
 #' @rdname Gene2Symbol

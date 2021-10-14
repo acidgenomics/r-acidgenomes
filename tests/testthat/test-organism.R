@@ -1,15 +1,15 @@
 context("organism")
 
 ## nolint start
-GRanges <- gr
-DataFrame <- as(as.data.frame(GRanges), "DFrame")
+GRanges <- gr  # FIXME
+DataFrame <- as(as.data.frame(GRanges), "DataFrame")  # FIXME
 matrix <- as.matrix(DataFrame)
 ## nolint end
 
 test_that("organism", {
     for (object in list(
-        "DFrame" = DFrame,
-        "GRanges" = GRanges,
+        "DataFrame" = DFrame,  # FIXME
+        "GRanges" = GRanges,  # FIXME
         "matrix" = matrix
     )) {
         expect_identical(

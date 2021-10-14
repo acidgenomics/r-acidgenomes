@@ -1,11 +1,16 @@
+## FIXME Need to rework these:
+## #' @importClassesFrom pipette CompressedGRangesList GRangesList GRanges
+
+
+
 #' AcidGenomes
 #'
 #' Toolkit for downloading and processing genome annotations.
 #'
 #' @keywords internal
 #'
-#' @importClassesFrom AcidGenerics DataFrame DataFrameList Vector
-#' @importClassesFrom pipette CompressedGRangesList GRangesList GRanges
+#' @importClassesFrom AcidGenerics DataFrame DataFrameList GenomicRanges
+#'   GenomicRangesList Vector
 #'
 #' @importFrom AcidBase capture.output download fileExt forceDetach initDir
 #'   packageName packageVersion parentDir pasteURL printString realpath
@@ -31,7 +36,7 @@
 #' @importFrom httr GET content content_type stop_for_status
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #'   setValidity signature validObject
-#' @importFrom pipette GRanges as.DFrame as_tibble cacheURL export getJSON
+#' @importFrom pipette GRanges as.DataFrame as_tibble cacheURL export getJSON
 #'   getURL getURLDirList import md5 removeNA sanitizeNA sha256
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase

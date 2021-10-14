@@ -1,4 +1,4 @@
 library(basejump)
 object <- import("detect-organism.csv")
-object <- as(object, "DFrame")
+object <- as(object, "DataFrame")
 saveRDS(object = object, file = "detect-organism.rds")

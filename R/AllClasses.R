@@ -375,12 +375,12 @@ setValidity(
 #' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-08-06.
+#' @note Updated 2021-10-14.
 #'
 #' @return `RefSeqGenes`.
 setClass(
     Class = "RefSeqGenes",
-    contains = "CompressedGRangesList"
+    contains = "GenomicRangesList"
 )
 setValidity(
     Class = "RefSeqGenes",
@@ -406,7 +406,7 @@ setValidity(
 #' @return `RefSeqTranscripts`.
 setClass(
     Class = "RefSeqTranscripts",
-    contains = "CompressedGRangesList"
+    contains = "GenomicRangesList"
 )
 setValidity(
     Class = "RefSeqTranscripts",
@@ -534,7 +534,7 @@ setValidity(
 #' @return `EntrezGeneInfo`.
 setClass(
     Class = "EntrezGeneInfo",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "EntrezGeneInfo",
@@ -553,7 +553,7 @@ setValidity(
 #' @return `HGNC`.
 setClass(
     Class = "HGNC",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "HGNC",
@@ -598,7 +598,7 @@ setValidity(
 #' @return `Ensembl2Entrez`.
 setClass(
     Class = "Ensembl2Entrez",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "Ensembl2Entrez",
@@ -641,7 +641,7 @@ setValidity(
 #' @return `Entrez2Ensembl`.
 setClass(
     Class = "Entrez2Ensembl",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "Entrez2Ensembl",
@@ -690,7 +690,7 @@ setValidity(
 #' @return `Gene2Symbol`.
 setClass(
     Class = "Gene2Symbol",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "Gene2Symbol",
@@ -735,7 +735,7 @@ setValidity(
 #' @return `HGNC2Ensembl`.
 setClass(
     Class = "HGNC2Ensembl",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "HGNC2Ensembl",
@@ -780,7 +780,7 @@ setValidity(
 #' @return `MGI2Ensembl`.
 setClass(
     Class = "MGI2Ensembl",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "MGI2Ensembl",
@@ -830,7 +830,7 @@ setValidity(
 #' @return `Protein2Gene`.
 setClass(
     Class = "Protein2Gene",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "Protein2Gene",
@@ -882,7 +882,7 @@ setValidity(
 #' @return `Tx2Gene`.
 setClass(
     Class = "Tx2Gene",
-    contains = "DFrame"
+    contains = "DataFrame"
 )
 setValidity(
     Class = "Tx2Gene",
