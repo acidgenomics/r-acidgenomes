@@ -216,7 +216,7 @@
 #' @return `EnsemblGenes`.
 setClass(
     Class = "EnsemblGenes",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "EnsemblGenes",
@@ -246,7 +246,7 @@ setValidity(
 #' @return `EnsemblTranscripts`.
 setClass(
     Class = "EnsemblTranscripts",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "EnsemblTranscripts",
@@ -276,7 +276,7 @@ setValidity(
 #' @return `FlyBaseGenes`.
 setClass(
     Class = "FlyBaseGenes",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "FlyBaseGenes",
@@ -302,7 +302,7 @@ setValidity(
 #' @return `FlyBaseTranscripts`.
 setClass(
     Class = "FlyBaseTranscripts",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "FlyBaseTranscripts",
@@ -328,7 +328,7 @@ setValidity(
 #' @return `GencodeGenes`.
 setClass(
     Class = "GencodeGenes",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "GencodeGenes",
@@ -354,7 +354,7 @@ setValidity(
 #' @return `GencodeTranscripts`.
 setClass(
     Class = "GencodeTranscripts",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "GencodeTranscripts",
@@ -432,7 +432,7 @@ setValidity(
 #' @return `UCSCGenes`.
 setClass(
     Class = "UCSCGenes",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "UCSCGenes",
@@ -458,7 +458,7 @@ setValidity(
 #' @return `UCSCTranscripts`.
 setClass(
     Class = "UCSCTranscripts",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "UCSCTranscripts",
@@ -484,7 +484,7 @@ setValidity(
 #' @return `WormBaseGenes`.
 setClass(
     Class = "WormBaseGenes",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "WormBaseGenes",
@@ -510,7 +510,7 @@ setValidity(
 #' @return `WormBaseTranscripts`.
 setClass(
     Class = "WormBaseTranscripts",
-    contains = "GenomicRanges"
+    contains = "GRanges"
 )
 setValidity(
     Class = "WormBaseTranscripts",
