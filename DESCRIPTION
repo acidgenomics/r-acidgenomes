@@ -34,7 +34,7 @@ Imports:
     stringr (>= 1.4.0),
     syntactic (>= 0.5.0)
 Suggests:
-    AcidTest (>= 0.4.3),
+    AcidTest (>= 0.5.0),
     AnnotationDbi (>= 1.54.0),
     AnnotationHub (>= 3.0.0),
     EnsDb.Hsapiens.v75 (>= 2.99.0),
