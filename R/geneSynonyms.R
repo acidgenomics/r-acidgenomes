@@ -43,7 +43,7 @@ geneSynonyms <- function(
         isSubset(cols, colnames(df)),
         is(df[["geneSynonyms"]], "CharacterList")
     )
-    df <- as(df, "DFrame")
+    df <- as(df, "DataFrame")
     df <- df[, cols, drop = FALSE]
     keep <- !all(is.na(df[["geneSynonyms"]]))
     df <- df[keep, , drop = FALSE]

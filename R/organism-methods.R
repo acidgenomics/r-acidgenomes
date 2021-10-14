@@ -64,7 +64,7 @@ NULL
 
 
 ## Updated 2021-10-13.
-`organism,DFrame` <-  # nolint
+`organism,DataFrame` <-  # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -112,8 +112,8 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature(object = "DFrame"),
-    definition = `organism,DFrame`
+    signature = signature(object = "DataFrame"),
+    definition = `organism,DataFrame`
 )
 
 #' @rdname organism

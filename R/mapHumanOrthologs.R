@@ -108,7 +108,7 @@ mapHumanOrthologs <- function(
     if (!hasRows(map)) {
         abort("Failed to map any genes.")
     }
-    map <- as(map, "DFrame")
+    map <- as(map, "DataFrame")
     colnames(map) <- c("geneId", "humanGeneId")
     map <- sanitizeNA(map)
     keep <- complete.cases(map)
@@ -185,7 +185,7 @@ mapHumanOrthologs <- function(
         ignoreVersion = TRUE,
         format = "unmodified"
     )
-    g2s <- as(g2s, "DFrame")
+    g2s <- as(g2s, "DataFrame")
     assert(identical(colnames(g2s), c("geneId", "geneName")))
     alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
     g2sHuman <- makeGene2SymbolFromEnsembl(
@@ -194,7 +194,7 @@ mapHumanOrthologs <- function(
         ignoreVersion = TRUE,
         format = "unmodified"
     )
-    g2sHuman <- as(g2sHuman, "DFrame")
+    g2sHuman <- as(g2sHuman, "DataFrame")
     colnames(g2sHuman) <- c("humanGeneId", "humanGeneName")
     assert(all(complete.cases(g2sHuman)))
     ## Return.

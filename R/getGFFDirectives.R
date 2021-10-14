@@ -54,7 +54,7 @@ getGFFDirectives <- function(file, nMax = Inf) {
         pattern = pattern
     )
     assert(is.matrix(mat), hasRows(mat))
-    df <- as(mat, "DFrame")
+    df <- as(mat, "DataFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
     colnames(df) <- c("key", "value")
     df <- unique(df)
