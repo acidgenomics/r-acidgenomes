@@ -42,6 +42,15 @@ setGeneric(
 
 
 
+#' @rdname export
+#' @name export
+#' @importFrom AcidGenerics export
+#' @usage export(object, con, format, ...)
+#' @export
+NULL
+
+
+
 #' @rdname organism
 #' @name organism
 #' @importFrom AcidGenerics organism
