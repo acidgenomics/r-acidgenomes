@@ -1,11 +1,6 @@
-## FIXME Need to ensure that export method works with new BiocIO approach.
-## FIXME Consider restricting "con" and "format" signature.
-
-
-
 #' @name export
 #' @inherit pipette::export description return title
-#' @note Updated 2021-09-24.
+#' @note Updated 2021-10-14.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
@@ -29,7 +24,7 @@
 #'     )
 #' )
 #' export(object, file = "tx2gene.csv")
-#' unlink("tx2gene.csv")
+#' file.remove("tx2gene.csv")
 NULL
 
 
@@ -42,6 +37,12 @@ NULL
         format,
         ...
     ) {
+        if (missing(con)) {
+            con <- NULL
+        }
+        if (missing(format)) {
+            format <- NULL
+        }
         df <- as(object, "DFrame")
         rownames(df) <- NULL
         export(
