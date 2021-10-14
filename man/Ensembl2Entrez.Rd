@@ -3,7 +3,7 @@
 \name{Ensembl2Entrez}
 \alias{Ensembl2Entrez}
 \alias{Entrez2Ensembl}
-\alias{Ensembl2Entrez,GRanges-method}
+\alias{Ensembl2Entrez,GenomicRanges-method}
 \alias{Ensembl2Entrez,character-method}
 \alias{Entrez2Ensembl,integer-method}
 \title{Ensembl-to-Entrez gene identifier mappings}
@@ -12,7 +12,7 @@ Ensembl2Entrez(object, ...)
 
 Entrez2Ensembl(object, ...)
 
-\S4method{Ensembl2Entrez}{GRanges}(object, format = c("1:1", "long"))
+\S4method{Ensembl2Entrez}{GenomicRanges}(object, format = c("1:1", "long"))
 
 \S4method{Ensembl2Entrez}{character}(object, organism = NULL, format = c("1:1", "long"))
 

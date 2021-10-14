@@ -11,8 +11,8 @@
 RefSeq transcript annotations
 }
 \details{
-Contains a \code{CompressedGRangesList} with RefSeq transcript-level annotations.
+Contains a \code{GenomicRangesList} with RefSeq transcript-level annotations.
 }
 \note{
-Updated 2021-02-17.
+Updated 2021-10-14.
 }

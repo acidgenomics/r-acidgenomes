@@ -267,7 +267,7 @@ makeGRangesFromGFF <- function(
     level <- match.arg(level)
     alert(sprintf(
         fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-        "GRanges", basename(file)
+        "GenomicRanges", basename(file)
     ))
     if (
         isMatchingRegex(
