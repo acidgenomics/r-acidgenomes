@@ -1,12 +1,10 @@
 #' @name export
-#' @inherit pipette::export description return title
+#' @inherit pipette::export description params return title
 #' @note Updated 2021-10-14.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
 #' is the intended input format for tximport.
-#'
-#' @inheritParams AcidRoxygen::params
 #'
 #' @examples
 #' object <- DataFrame(
