@@ -193,7 +193,7 @@ makeGRangesFromEnsDb <- function(
     args <- list(
         "x" = object,
         "order.type" = "asc",
-        "return.type" = "GenomicRanges"
+        "return.type" = "GRanges"
     )
     ## Ensembl 102 example (AH89180):
     ##  [1] "canonical_transcript" "description"          "entrezid"
