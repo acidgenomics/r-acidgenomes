@@ -1,7 +1,7 @@
 context("Gene2Symbol")
 
 test_that("Gene2Symbol", {
-    formats <- eval(formals(`Gene2Symbol,DataFrame`)[["format"]])
+    formats <- eval(formals(`Gene2Symbol,DFrame`)[["format"]])
     for (format in formats) {
         object <- gr
         object <- Gene2Symbol(object, format = format)

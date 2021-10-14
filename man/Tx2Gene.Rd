@@ -2,7 +2,7 @@
 % Please edit documentation in R/AllGenerics.R, R/Tx2Gene-methods.R
 \name{Tx2Gene}
 \alias{Tx2Gene}
-\alias{Tx2Gene,DataFrame-method}
+\alias{Tx2Gene,DFrame-method}
 \alias{Tx2Gene,GRanges-method}
 \alias{Tx2Gene,GRangesList-method}
 \alias{Tx2Gene,data.frame-method}
@@ -11,7 +11,7 @@
 \usage{
 Tx2Gene(object, ...)
 
-\S4method{Tx2Gene}{DataFrame}(object, quiet = FALSE)
+\S4method{Tx2Gene}{DFrame}(object, quiet = FALSE)
 
 \S4method{Tx2Gene}{GRanges}(object, ...)
 

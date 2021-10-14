@@ -60,16 +60,6 @@ NULL
 
 
 
-#' @rdname summary
-#' @export
-setMethod(
-    f = "summary",
-    signature = signature("Gene2Symbol"),
-    definition = `summary,Gene2Symbol`
-)
-
-
-
 ## Updated 2021-03-03.
 `summary,Tx2Gene` <-  # nolint
     function(object) {
@@ -92,6 +82,14 @@ setMethod(
 #' @export
 setMethod(
     f = "summary",
-    signature = signature("Tx2Gene"),
+    signature = signature(object = "Gene2Symbol"),
+    definition = `summary,Gene2Symbol`
+)
+
+#' @rdname summary
+#' @export
+setMethod(
+    f = "summary",
+    signature = signature(object = "Tx2Gene"),
     definition = `summary,Tx2Gene`
 )

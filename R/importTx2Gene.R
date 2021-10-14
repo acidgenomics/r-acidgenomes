@@ -44,7 +44,7 @@ importTx2Gene <- function(
     )
     data <- import(file = file, rownames = FALSE, colnames = FALSE)
     colnames(data) <- c("txId", "geneId")
-    data <- as(data, "DataFrame")
+    data <- as(data, "DFrame")
     if (isTRUE(ignoreVersion[["tx"]])) {
         data[["txId"]] <-
             stripTranscriptVersions(data[["txId"]])

@@ -8,7 +8,7 @@ HGNC2Ensembl <-  # nolint
     function() {
         hgnc <- HGNC()
         alert("Mapping HGNC identifiers to Ensembl.")
-        df <- as(hgnc, "DataFrame")
+        df <- as(hgnc, "DFrame")
         cols <- c("hgncId", "ensemblGeneId")
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols]

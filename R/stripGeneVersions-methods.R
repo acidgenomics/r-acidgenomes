@@ -62,7 +62,7 @@ NULL
 #' @export
 setMethod(
     f = "stripGeneVersions",
-    signature = signature("Matrix"),
+    signature = signature(object = "Matrix"),
     definition = `stripGeneVersions,Matrix`
 )
 
@@ -70,7 +70,7 @@ setMethod(
 #' @export
 setMethod(
     f = "stripGeneVersions",
-    signature = signature("character"),
+    signature = signature(object = "character"),
     definition = `stripGeneVersions,character`
 )
 
@@ -78,6 +78,6 @@ setMethod(
 #' @export
 setMethod(
     f = "stripGeneVersions",
-    signature = signature("matrix"),
+    signature = signature(object = "matrix"),
     definition = `stripGeneVersions,matrix`
 )

@@ -4,7 +4,7 @@
 \alias{organism}
 \alias{organism<-}
 \alias{organism,Annotated-method}
-\alias{organism,DataFrame-method}
+\alias{organism,DFrame-method}
 \alias{organism,GRanges-method}
 \alias{organism,Matrix-method}
 \alias{organism,data.frame-method}
@@ -18,7 +18,7 @@ organism(object) <- value
 
 \S4method{organism}{Annotated}(object)
 
-\S4method{organism}{DataFrame}(object)
+\S4method{organism}{DFrame}(object)
 
 \S4method{organism}{GRanges}(object)
 
