@@ -1,6 +1,11 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO downloadGenome functions: Need to include a chromosome file that is
+   compatible with kallisto.
+** TODO Look into generating decoy sequences recommended for sallmon.
+** TODO Consider creating a GTF symlink for salmon that contains all
+   transcripts. this needs to be haploytype scaffold GTF for Homo sapiens.
 ** TODO Consider adding file caching support for genome downloader functions.
 ** TODO Consider classing gene/transcript return from EnsDb and TxDb.
 ** TODO Consider adding better support for CDS, exon, and promoter extraction
