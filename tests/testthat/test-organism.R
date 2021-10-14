@@ -1,7 +1,5 @@
 context("organism")
 
-## FIXME Double check our new list appraoch here.
-
 test_that("organism", {
     list <- list()
     list[["GenomicRanges"]] <- gr
