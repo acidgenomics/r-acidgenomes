@@ -54,7 +54,7 @@ NULL
 
 
 
-## Note that DataFrame and GRanges inherit from this class.
+## Note that DataFrame and GenomicRanges inherit from this class.
 ## Updated 2019-07-22.
 `organism,Annotated` <-  # nolint
     function(object) {

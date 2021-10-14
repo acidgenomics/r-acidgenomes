@@ -11,8 +11,8 @@
 GENCODE gene annotations
 }
 \details{
-Contains a \code{GRanges} with GENCODE gene-level annotations.
+Contains \code{GenomicRanges} with GENCODE gene-level annotations.
 }
 \note{
-Updated 2021-01-25.
+Updated 2021-10-14.
 }

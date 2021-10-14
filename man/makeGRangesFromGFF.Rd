@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeGRangesFromGFF.R
 \name{makeGRangesFromGFF}
 \alias{makeGRangesFromGFF}
-\title{Make GRanges from a GFF/GTF file}
+\title{Make GenomicRanges from a GFF/GTF file}
 \usage{
 makeGRangesFromGFF(
   file,
@@ -29,10 +29,10 @@ Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
 }
 \value{
-\code{GRanges}.
+\code{GenomicRanges}.
 }
 \description{
-Make GRanges from a GFF/GTF file
+Make GenomicRanges from a GFF/GTF file
 }
 \details{
 Remote URLs and compressed files are supported.

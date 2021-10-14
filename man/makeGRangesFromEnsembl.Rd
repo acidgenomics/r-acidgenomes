@@ -4,7 +4,7 @@
 \alias{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsDb}
 \alias{annotable}
-\title{Make GRanges from Ensembl}
+\title{Make GenomicRanges from Ensembl}
 \usage{
 makeGRangesFromEnsembl(
   organism,
@@ -91,8 +91,7 @@ annotation source. Alternatively, can pass in an EnsDb package name as
 a \code{character(1)}.
 
 \item \code{annotable}: Legacy convenience function that calls \code{\link[=makeGRangesFromEnsembl]{makeGRangesFromEnsembl()}} and returns
-a \code{tbl_df} (tibble) instead of \code{GRanges}. Note that \code{GRanges} can also be
-coerced using \code{\link[base:as.data.frame]{as.data.frame()}}.
+a \code{tbl_df} (tibble) instead of \code{GenomicRanges}.
 }}
 
 \note{

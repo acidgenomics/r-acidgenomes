@@ -8,7 +8,7 @@
 
 ## nolint start
 
-#' Make GRanges from a GFF/GTF file
+#' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
 #' @note Updated 2021-08-06.
@@ -164,7 +164,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `GRanges`.
+#' @return `GenomicRanges`.
 #'
 #' @seealso
 #' - `rtracklayer::import()`.

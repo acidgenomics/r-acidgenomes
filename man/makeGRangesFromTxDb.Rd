@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeGRangesFromTxDb.R
 \name{makeGRangesFromTxDb}
 \alias{makeGRangesFromTxDb}
-\title{Make GRanges from TxDb object}
+\title{Make GenomicRanges from TxDb object}
 \usage{
 makeGRangesFromTxDb(
   object,
@@ -28,10 +28,10 @@ Include gene synonyms.
 Queries the Ensembl web server, and is CPU intensive.}
 }
 \value{
-\code{GRanges}.
+\code{GenomicRanges}.
 }
 \description{
-Make GRanges from TxDb object
+Make GenomicRanges from TxDb object
 }
 \note{
 Updated 2021-04-27.

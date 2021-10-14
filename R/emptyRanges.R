@@ -1,7 +1,7 @@
 #' Generate empty genomic ranges
 #'
-#' Utility function that provides support for creating internal `GRanges` for
-#' transgene and FASTA spike-in sequences.
+#' Utility function that provides support for creating internal
+#' `GenomicRanges` for transgene and FASTA spike-in sequences.
 #'
 #' @export
 #' @note Updated 2019-08-21.
@@ -13,11 +13,12 @@
 #'   ranges will be grouped. Defaults to `"unknown"` but `"transgene"`
 #'   (transgenes) and `"spike"` (spike-ins) are also supported.
 #' @param mcolnames `character` or `NULL`.
-#'   Metadata column names to be defined in the `mcols` of the `GRanges` return.
+#'   Metadata column names to be defined in the `mcols` of the
+#'   `GenomicRanges` return.
 #'   Normally this does not need to be defined; useful when combining with
-#'   another `GRanges` that contains metadata.
+#'   another `GenomicRanges` that contains metadata.
 #'
-#' @return `GRanges`.
+#' @return `GenomicRanges`.
 #'
 #' @seealso `help("seqinfo", "GenomeInfoDb")`.
 #'
