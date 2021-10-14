@@ -1,8 +1,3 @@
-## FIXME Don't require that all column names are camelCase here.
-## This can cause issues with DESeq2 otherwise...
-
-
-
 ## Genome annotation classes ===================================================
 #' Shared GRanges validity checks
 #'
@@ -15,15 +10,6 @@
         gr <- object[[1L]]
     } else {
         gr <- object
-    }
-    ok <- validate(
-        identical(
-            x = colnames(mcols(gr)),
-            y = camelCase(colnames(mcols(gr)), strict = TRUE)
-        )
-    )
-    if (!isTRUE(ok)) {
-        return(ok)
     }
     ok <- validateClasses(
         object = metadata(object),
