@@ -42,7 +42,7 @@ NULL
         format,
         ...
     ) {
-        df <- as(object, "DataFrame")
+        df <- as(object, "DFrame")
         rownames(df) <- NULL
         export(
             object = df,

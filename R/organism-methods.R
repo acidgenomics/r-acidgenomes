@@ -63,8 +63,8 @@ NULL
 
 
 
-## Updated 2019-07-22.
-`organism,DataFrame` <-  # nolint
+## Updated 2021-10-13.
+`organism,DFrame` <-  # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -104,7 +104,7 @@ NULL
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("Annotated"),
+    signature = signature(object = "Annotated"),
     definition = `organism,Annotated`
 )
 
@@ -112,15 +112,15 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("DataFrame"),
-    definition = `organism,DataFrame`
+    signature = signature(object = "DFrame"),
+    definition = `organism,DFrame`
 )
 
 #' @rdname organism
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("GRanges"),
+    signature = signature(object = "GRanges"),
     definition = `organism,GRanges`
 )
 
@@ -128,7 +128,7 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("Matrix"),
+    signature = signature(object = "Matrix"),
     definition = `organism,Matrix`
 )
 
@@ -136,7 +136,7 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("data.frame"),
+    signature = signature(object = "data.frame"),
     definition = `organism,data.frame`
 )
 
@@ -144,16 +144,15 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature("matrix"),
+    signature = signature(object = "matrix"),
     definition = `organism,matrix`
 )
 
-
-
+## NOTE Can't define "value" in signature here.
 #' @rdname organism
 #' @export
 setReplaceMethod(
     f = "organism",
-    signature = signature("Annotated"),
+    signature = signature(object = "Annotated"),
     definition = `organism<-,Annotated,character`
 )
