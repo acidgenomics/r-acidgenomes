@@ -7,7 +7,7 @@
 \alias{Tx2Gene,GenomicRangesList-method}
 \alias{Tx2Gene,data.frame-method}
 \alias{Tx2Gene,matrix-method}
-\title{Transcript-to-gene identifier mappings}
+\title{Transcript-to-gene mappings}
 \usage{
 Tx2Gene(object, ...)
 
@@ -33,7 +33,7 @@ Perform command quietly, suppressing messages.}
 \code{Tx2Gene}.
 }
 \description{
-Transcript-to-gene identifier mappings
+Transcript-to-gene mappings
 }
 \note{
 Updated 2021-08-10.

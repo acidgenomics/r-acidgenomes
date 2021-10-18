@@ -719,8 +719,6 @@ setValidity(
 
 
 
-## FIXME Inherit the documentation from AcidGenerics.
-
 #' HGNC-to-Ensembl gene identifier mappings
 #'
 #' @details
@@ -766,8 +764,6 @@ setValidity(
 
 
 
-## FIXME Inherit the documentation from AcidGenerics.
-
 #' MGI-to-Ensembl gene identifier mappings
 #'
 #' @details
@@ -812,8 +808,6 @@ setValidity(
 )
 
 
-
-## FIXME Inherit the documentation from AcidGenerics.
 
 #' Protein-to-gene mappings
 #'
@@ -862,9 +856,9 @@ setValidity(
 
 
 
-## FIXME Inherit the documentation from AcidGenerics.
-
-#' Transcript-to-gene identifier mappings
+#' @inherit AcidGenerics::Tx2Gene description return title
+#' @export
+#' @note Updated 2021-10-18.
 #'
 #' @details
 #' Contains a `DataFrame` with `txId` and `geneId` columns.
@@ -878,11 +872,6 @@ setValidity(
 #' - `organism`: "Homo sapiens".
 #' - `genomeBuild`: "GRCh38".
 #' - `release`: 100L.
-#'
-#' @export
-#' @note Updated 2021-08-10.
-#'
-#' @return `Tx2Gene`.
 setClass(
     Class = "Tx2Gene",
     contains = "DataFrame"
