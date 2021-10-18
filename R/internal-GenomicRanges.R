@@ -583,7 +583,7 @@
     metadata(object) <- metadata(object)[sort(names(metadata(object)))]
     if (identical(provider, "RefSeq")) {
         alertInfo(sprintf(
-            "Splitting {.var %s} by {.var %s} into {.var %s}.",
+            "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
             "GenomicRanges", idCol, "GenomicRangesList"
         ))
         ## Metadata gets dropped during `split()` call; stash and reassign.
