@@ -89,7 +89,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `GRanges`.
+#' @return `EnsemblGenes` or `EnsemblTranscripts`.
 #'
 #' @seealso
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
