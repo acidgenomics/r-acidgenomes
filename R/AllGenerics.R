@@ -1,46 +1,30 @@
 #' @rdname Ensembl2Entrez
+#' @name Ensembl2Entrez
+#' @importFrom AcidGenerics Ensembl2Entrez
+#' @usage Ensembl2Entrez(object, ...)
 #' @export
-setGeneric(
-    name = "Ensembl2Entrez",
-    def = function(object, ...) {
-        standardGeneric("Ensembl2Entrez")
-    }
-)
+NULL
 
-
-
-#' @rdname Ensembl2Entrez
+#' @rdname Entrez2Ensembl
+#' @name Entrez2Ensembl
+#' @importFrom AcidGenerics Entrez2Ensembl
+#' @usage Entrez2Ensembl(object, ...)
 #' @export
-setGeneric(
-    name = "Entrez2Ensembl",
-    def = function(object, ...) {
-        standardGeneric("Entrez2Ensembl")
-    }
-)
-
-
+NULL
 
 #' @rdname Gene2Symbol
+#' @name Gene2Symbol
+#' @importFrom AcidGenerics Gene2Symbol
+#' @usage Gene2Symbol(object, ...)
 #' @export
-setGeneric(
-    name = "Gene2Symbol",
-    def = function(object, ...) {
-        standardGeneric("Gene2Symbol")
-    }
-)
-
-
+NULL
 
 #' @rdname Tx2Gene
+#' @name Tx2Gene
+#' @importFrom AcidGenerics Tx2Gene
+#' @usage Tx2Gene(object, ...)
 #' @export
-setGeneric(
-    name = "Tx2Gene",
-    def = function(object, ...) {
-        standardGeneric("Tx2Gene")
-    }
-)
-
-
+NULL
 
 #' @rdname export
 #' @name export
@@ -48,8 +32,6 @@ setGeneric(
 #' @usage export(object, con, format, ...)
 #' @export
 NULL
-
-
 
 #' @rdname organism
 #' @name organism
@@ -65,8 +47,6 @@ NULL
 #' @export
 NULL
 
-
-
 #' @rdname stripGeneVersions
 #' @name stripGeneVersions
 #' @importFrom AcidGenerics stripGeneVersions
@@ -80,8 +60,6 @@ NULL
 #' @usage stripTranscriptVersions(object, ...)
 #' @export
 NULL
-
-
 
 #' @rdname summary
 #' @name summary

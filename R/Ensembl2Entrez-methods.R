@@ -1,6 +1,6 @@
-#' @inherit Ensembl2Entrez-class title description return
 #' @name Ensembl2Entrez
-#' @note Updated 2021-08-03.
+#' @inherit AcidGenerics::Ensembl2Entrez description return title
+#' @note Updated 2021-08-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
@@ -20,12 +20,6 @@
 #' ## Ensembl-to-Entrez.
 #' genes <- c("ENSG00000000003", "ENSG00000000005")
 #' x <- Ensembl2Entrez(object = genes, organism = organism)
-#' print(x)
-#'
-#' ## integer ====
-#' ## Entrez-to-Ensembl.
-#' genes <- c(1L, 2L)
-#' x <- Entrez2Ensembl(object = genes, organism = organism)
 #' print(x)
 NULL
 
@@ -116,27 +110,6 @@ formals(`Ensembl2Entrez,character`)[["format"]] <-
 
 
 
-## Updated 2021-01-18.
-`Entrez2Ensembl,integer` <-  # nolint
-    function(object, organism, format) {
-        df <- .getEnsembl2EntrezFromOrgDb(
-            keys = as.character(object),
-            keytype = "ENTREZID",
-            columns = "ENSEMBL",
-            organism = organism
-        )
-        .makeEnsembl2Entrez(
-            object = df,
-            format = match.arg(format),
-            return = "Entrez2Ensembl"
-        )
-    }
-
-formals(`Entrez2Ensembl,integer`)[["format"]] <-
-    formals(.makeEnsembl2Entrez)[["format"]]
-
-
-
 ## Updated 2021-02-01.
 `Ensembl2Entrez,GenomicRanges` <-  # nolint
     function(object, format) {
@@ -180,12 +153,4 @@ setMethod(
     f = "Ensembl2Entrez",
     signature = signature(object = "character"),
     definition = `Ensembl2Entrez,character`
-)
-
-#' @rdname Ensembl2Entrez
-#' @export
-setMethod(
-    f = "Entrez2Ensembl",
-    signature = signature(object = "integer"),
-    definition = `Entrez2Ensembl,integer`
 )
