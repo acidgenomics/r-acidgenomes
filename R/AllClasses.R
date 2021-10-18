@@ -672,9 +672,9 @@ setValidity(
 
 
 
-## FIXME Inherit the documentation from AcidGenerics.
-
-#' Gene-to-symbol mappings
+#' @inherit AcidGenerics::Gene2Symbol description return title
+#' @export
+#' @note Updated 2021-08-10.
 #'
 #' @details
 #' Contains a `DataFrame` with `geneId` and `geneName` columns.
@@ -683,11 +683,6 @@ setValidity(
 #'
 #' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
 #' `metadata()`.
-#'
-#' @export
-#' @note Updated 2021-08-10.
-#'
-#' @return `Gene2Symbol`.
 setClass(
     Class = "Gene2Symbol",
     contains = "DataFrame"
