@@ -1,4 +1,5 @@
 ## Genome annotation classes ===================================================
+
 #' Shared GenomicRanges validity checks
 #'
 #' @note Note that genome build and organism are not defined in minimal FlyBase
@@ -526,6 +527,7 @@ setValidity(
 
 
 ## Identifier classes ==========================================================
+
 #' NCBI Entrez gene identifier information
 #'
 #' @export
@@ -587,13 +589,13 @@ setValidity(
 
 
 ## Identifier mapping classes ==================================================
-#' Ensembl-to-Entrez gene identifier mappings
+
+#' @inherit AcidGenerics::Ensembl2Entrez description return title
+#' @note Updated 2021-08-18.
+#' @export
 #'
 #' @details
 #' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
-#'
-#' @export
-#' @note Updated 2021-08-10.
 #'
 #' @return `Ensembl2Entrez`.
 setClass(
@@ -630,6 +632,8 @@ setValidity(
 )
 
 
+
+## FIXME Inherit the documentation from AcidGenerics.
 
 #' Entrez-to-Ensembl gene identifier mappings
 #'
@@ -673,6 +677,8 @@ setValidity(
 )
 
 
+
+## FIXME Inherit the documentation from AcidGenerics.
 
 #' Gene-to-symbol mappings
 #'
@@ -724,6 +730,8 @@ setValidity(
 
 
 
+## FIXME Inherit the documentation from AcidGenerics.
+
 #' HGNC-to-Ensembl gene identifier mappings
 #'
 #' @details
@@ -769,6 +777,8 @@ setValidity(
 
 
 
+## FIXME Inherit the documentation from AcidGenerics.
+
 #' MGI-to-Ensembl gene identifier mappings
 #'
 #' @details
@@ -813,6 +823,8 @@ setValidity(
 )
 
 
+
+## FIXME Inherit the documentation from AcidGenerics.
 
 #' Protein-to-gene mappings
 #'
@@ -860,6 +872,8 @@ setValidity(
 )
 
 
+
+## FIXME Inherit the documentation from AcidGenerics.
 
 #' Transcript-to-gene identifier mappings
 #'
