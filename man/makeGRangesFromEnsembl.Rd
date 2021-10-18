@@ -60,7 +60,7 @@ versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").}
 \item{...}{Additional arguments.}
 }
 \value{
-\code{GRanges}.
+\code{EnsemblGenes} or \code{EnsemblTranscripts}.
 }
 \description{
 Quickly obtain gene and transcript annotations from

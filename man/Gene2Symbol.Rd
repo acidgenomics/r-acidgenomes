@@ -19,8 +19,6 @@ Gene2Symbol(object, ...)
 \arguments{
 \item{object}{Object.}
 
-\item{...}{Arguments pass through to \code{DataFrame} method.}
-
 \item{format}{\code{character(1)}.
 Formatting method to apply:
 \itemize{
@@ -38,6 +36,8 @@ with an internal \code{complete.cases} call.
 
 \item{quiet}{\code{logical(1)}.
 Perform command quietly, suppressing messages.}
+
+\item{...}{Arguments pass through to \code{DataFrame} method.}
 }
 \value{
 \code{Gene2Symbol}.
