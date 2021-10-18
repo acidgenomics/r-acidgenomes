@@ -591,13 +591,11 @@ setValidity(
 ## Identifier mapping classes ==================================================
 
 #' @inherit AcidGenerics::Ensembl2Entrez description return title
-#' @note Updated 2021-08-18.
 #' @export
+#' @note Updated 2021-08-18.
 #'
 #' @details
 #' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
-#'
-#' @return `Ensembl2Entrez`.
 setClass(
     Class = "Ensembl2Entrez",
     contains = "DataFrame"
@@ -633,16 +631,12 @@ setValidity(
 
 
 
-## FIXME Inherit the documentation from AcidGenerics.
-
-#' Entrez-to-Ensembl gene identifier mappings
-#'
-#' @inherit Ensembl2Entrez-class details
-#'
+#' @inherit AcidGenerics::Entrez2Ensembl description return title
 #' @export
-#' @note Updated 2021-08-10.
+#' @note Updated 2021-08-18.
 #'
-#' @return `Entrez2Ensembl`.
+#' @details
+#' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
 setClass(
     Class = "Entrez2Ensembl",
     contains = "DataFrame"
