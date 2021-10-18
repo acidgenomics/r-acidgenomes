@@ -2,9 +2,29 @@
 % Please edit documentation in R/AllGenerics.R, R/Entrez2Ensembl-methods.R
 \name{Entrez2Ensembl}
 \alias{Entrez2Ensembl}
+\alias{Entrez2Ensembl,integer-method}
 \title{Entrez-to-Ensembl gene identifier mappings}
 \usage{
 Entrez2Ensembl(object, ...)
+
+\S4method{Entrez2Ensembl}{integer}(object, organism, format = c("1:1", "long"))
+}
+\arguments{
+\item{object}{Object.}
+
+\item{organism}{\code{character(1)}.
+Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{format}{\code{character(1)}.
+Formatting method to apply:
+\itemize{
+\item \code{"1:1"}: \emph{Recommended.}
+Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
+Entrez, pick the oldest Entrez identifier. Genes that don't map to
+Entrez will contain \code{NA} in \code{entrezId} column.
+\item \code{"long"}:
+Return 1:many in long format.
+}}
 }
 \value{
 \code{Entrez2Ensembl}.

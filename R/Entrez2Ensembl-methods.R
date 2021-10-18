@@ -3,6 +3,7 @@
 #' @note Updated 2021-08-18.
 #'
 #' @inheritParams AcidRoxygen::params
+#' @inheritParams Ensembl2Entrez
 #'
 #' @examples
 #' organism <- "Homo sapiens"
@@ -37,7 +38,7 @@ formals(`Entrez2Ensembl,integer`)[["format"]] <-
 
 
 
-#' @rdname Ensembl2Entrez
+#' @rdname Entrez2Ensembl
 #' @export
 setMethod(
     f = "Entrez2Ensembl",
