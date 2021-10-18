@@ -1,5 +1,26 @@
 ## AcidGenomes 0.2.20 (UNRELEASED)
 
+### Minor changes
+
+- Relaxed `GenomicRanges` `mcols` column name validity checks to no longer
+  require strict camelCase formatting. This check can run into issues when
+  slotting into a `DESeqDataSet` object, which appends non-camelCase-formatted
+  columns into the `mcols` (corresponding to the `rowRanges` of the object).
+- Migrated some generics to AcidGenerics, and reexporting here (non-breaking
+  change): `Ensembl2Entrez`, `Entrez2Ensembl`, `Gene2Symbol`, `Tx2Gene`.
+- Updated references from `GRanges` to `GenomicRanges` (virtual class)
+  where applicable in the package.
+- Split out documentation on `Ensembl2Entrez` and `Entrez2Ensembl` methods
+  into separate files.
+- Increased the verbosity of `setMethod` calls, particular in the `signature`
+  argument, where applicable.
+- Calls to `AnnotationHub` internally now should never prompt the user about
+  whether to create cache directory. This is achieved by setting `ask = FALSE`
+  internally.
+- Updated internal class checks inside of `assert` calls to check for
+  `GenomicRanges` virtual class rather than `GRanges`.
+- Improved alphabetical sorting of exported S4 methods.
+
 ## AcidGenomes 0.2.19 (2021-09-13)
 
 ### Minor changes
