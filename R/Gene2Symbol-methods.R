@@ -1,12 +1,12 @@
 #' @name Gene2Symbol
-#' @inherit Gene2Symbol-class title description return
+#' @inherit AcidGenerics::Gene2Symbol description return title
 #'
 #' @note For some organisms, gene identifiers and gene names do not map 1:1
 #'   (e.g. *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
 #'   here in the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
 #'   "unmodified" prior to v0.10.10.
-#' @note Updated 2021-08-10.
+#' @note Updated 2021-10-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
