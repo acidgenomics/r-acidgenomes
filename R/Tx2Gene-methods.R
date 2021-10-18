@@ -1,6 +1,6 @@
 #' @name Tx2Gene
-#' @inherit Tx2Gene-class title description return
-#' @note Updated 2021-08-10.
+#' @inherit AcidGenerics::Tx2Gene description return title
+#' @note Updated 2021-08-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
