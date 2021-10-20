@@ -4,7 +4,11 @@
 \name{reexports}
 \alias{reexports}
 \alias{DataFrame}
+\alias{Seqinfo}
+\alias{genome}
 \alias{pasteURL}
+\alias{seqinfo}
+\alias{seqlevels}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -15,5 +19,7 @@ below to see their documentation.
   \item{AcidBase}{\code{\link[AcidBase]{pasteURL}}}
 
   \item{AcidGenerics}{\code{\link[AcidGenerics:reexports]{DataFrame}}}
+
+  \item{GenomeInfoDb}{\code{\link[GenomeInfoDb:Seqinfo-class]{Seqinfo}}, \code{\link[GenomeInfoDb:seqinfo]{genome}}, \code{\link[GenomeInfoDb]{seqinfo}}, \code{\link[GenomeInfoDb:seqinfo]{seqlevels}}}
 }}
 

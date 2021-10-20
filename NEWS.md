@@ -20,6 +20,9 @@
 - Updated internal class checks inside of `assert` calls to check for
   `GenomicRanges` virtual class rather than `GRanges`.
 - Improved alphabetical sorting of exported S4 methods.
+- Reexporting some additional functions from GenomeInfoDb: `Seqinfo`,
+  `genome`, `seqinfo`, and `seqlevels`. Note that corresponding assignment
+  methods (if applicable) are intentionally not reexported here.
 
 ## AcidGenomes 0.2.19 (2021-09-13)
 
