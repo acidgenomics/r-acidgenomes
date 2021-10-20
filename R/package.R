@@ -15,13 +15,12 @@
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
 #' @importFrom AcidGenerics CharacterList DataFrame DataFrameList GRanges
-#'   IntegerList IRanges Rle SplitDataFrameList %in% append as.DataFrame
-#'   as.data.frame complete.cases decode do.call encode expand grep grepl gsub
-#'   head is.unsorted lapply match mcols mcols<- metadata metadata<- na.omit
-#'   order ranges rbind setdiff sort split tail trim unlist
+#'   IntegerList IRanges Rle Seqinfo SplitDataFrameList %in% append as.DataFrame
+#'   as.data.frame complete.cases decode do.call encode expand genome genome<-
+#'   getChromInfoFromEnsembl grep grepl gsub head is.unsorted lapply match mcols
+#'   mcols<- metadata metadata<- na.omit order ranges rbind setdiff seqinfo
+#'   seqinfo<- seqlevels sort split tail trim unlist
 #' @importFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
-#' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl genome genome<-
-#'   seqinfo seqinfo<- seqlevels
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
