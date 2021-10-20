@@ -26,7 +26,6 @@ Imports:
     AcidCLI (>= 0.1.7),
     AcidGenerics (>= 0.6.0),
     AcidPlyr (>= 0.1.22),
-    GenomeInfoDb (>= 1.28.0),
     goalie (>= 0.5.5),
     httr (>= 1.4.2),
     methods,
