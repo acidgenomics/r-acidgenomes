@@ -54,5 +54,7 @@ object <- DataFrame(
 )
 con <- file.path(tempdir(), "tx2gene.csv")
 export(object = object, con = con)
+x <- readLines(con, n = 4L)
+print(x)
 file.remove(con)
 }
