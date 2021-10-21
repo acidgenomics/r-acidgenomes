@@ -25,6 +25,8 @@ Entrez will contain \code{NA} in \code{entrezId} column.
 \item \code{"long"}:
 Return 1:many in long format.
 }}
+
+\item{...}{Additional arguments.}
 }
 \value{
 \code{Entrez2Ensembl}.
@@ -33,7 +35,7 @@ Return 1:many in long format.
 Entrez-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2021-08-18.
+Updated 2021-10-21.
 }
 \examples{
 organism <- "Homo sapiens"

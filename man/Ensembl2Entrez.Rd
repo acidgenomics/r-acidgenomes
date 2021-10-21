@@ -28,6 +28,8 @@ Return 1:many in long format.
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{...}{Additional arguments.}
 }
 \value{
 \code{Ensembl2Entrez}.
