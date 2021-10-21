@@ -1,10 +1,14 @@
+## FIXME Unit tests need to download to tempdir.
+
+
+
 context("downloadGenome")
 
 test_that("downloadEnsemblGenome", {
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 104L,
+        release = 103L,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]

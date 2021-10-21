@@ -8,7 +8,7 @@ downloadEnsemblGenome(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  outputDir = ".",
+  outputDir = getwd(),
   cache = TRUE
 )
 }

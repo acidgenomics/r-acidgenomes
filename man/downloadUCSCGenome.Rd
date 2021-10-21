@@ -4,7 +4,12 @@
 \alias{downloadUCSCGenome}
 \title{Download UCSC reference genome}
 \usage{
-downloadUCSCGenome(organism, genomeBuild = NULL, outputDir = ".", cache = TRUE)
+downloadUCSCGenome(
+  organism,
+  genomeBuild = NULL,
+  outputDir = getwd(),
+  cache = TRUE
+)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
