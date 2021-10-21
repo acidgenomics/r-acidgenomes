@@ -21,7 +21,7 @@ downloadGencodeGenome <-
         organism,
         genomeBuild = NULL,
         release = NULL,
-        outputDir = ".",
+        outputDir = getwd(),
         cache = TRUE
     ) {
         assert(

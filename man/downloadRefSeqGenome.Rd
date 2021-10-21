@@ -8,7 +8,7 @@ downloadRefSeqGenome(
   organism,
   taxonomicGroup = NULL,
   genomeBuild = NULL,
-  outputDir = ".",
+  outputDir = getwd(),
   cache = TRUE
 )
 }

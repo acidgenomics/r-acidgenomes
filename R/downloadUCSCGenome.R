@@ -48,7 +48,7 @@ downloadUCSCGenome <-
     function(
         organism,
         genomeBuild = NULL,
-        outputDir = ".",
+        outputDir = getwd(),
         cache = TRUE
     ) {
         assert(
