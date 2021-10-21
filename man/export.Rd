@@ -2,12 +2,18 @@
 % Please edit documentation in R/AllGenerics.R, R/export-methods.R
 \name{export}
 \alias{export}
-\alias{export,Tx2Gene,ANY,ANY-method}
+\alias{export,Tx2Gene,character,missingOrNULL-method}
+\alias{export,Tx2Gene,missingOrNULL,character-method}
+\alias{export,Tx2Gene,missingOrNULL,missingOrNULL-method}
 \title{Export}
 \usage{
 export(object, con, format, ...)
 
-\S4method{export}{Tx2Gene,ANY,ANY}(object, con, format, ...)
+\S4method{export}{Tx2Gene,character,missingOrNULL}(object, con, format, ...)
+
+\S4method{export}{Tx2Gene,missingOrNULL,character}(object, con, format, ...)
+
+\S4method{export}{Tx2Gene,missingOrNULL,missingOrNULL}(object, con, format, ...)
 }
 \arguments{
 \item{object}{Object.
@@ -52,6 +58,7 @@ object <- DataFrame(
         "gene0002"
     )
 )
+object <- Tx2Gene(object)
 con <- file.path(tempdir(), "tx2gene.csv")
 export(object = object, con = con)
 x <- readLines(con, n = 4L)

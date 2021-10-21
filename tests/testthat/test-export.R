@@ -1,9 +1,5 @@
 context("export")
 
-## FIXME Need to check that this doesn't export with column names.
-## FIXME This isn't inheriting our defined S4 method. Need to tighten up
-## in the package.
-
 test_that("Tx2Gene", {
     object <- DataFrame(
         "txId" = c(
@@ -26,14 +22,17 @@ test_that("Tx2Gene", {
     expect_false(file.exists(con))
     export(object = object, con = con)
     expect_true(file.exists(con))
-    ## FIXME This is keeping the column names....our method isn't working argh.
     expect_identical(
-        object = readLines(con, n = 4L),
+        object = import(
+            con = con,
+            format = "lines",
+            nMax = 4L
+        ),
         expected = c(
-            "tx0001,gene0001",
-            "tx0002,gene0001",
-            "tx0003,gene0002",
-            "tx0004,gene0002"
+            "\"tx0001\",\"gene0001\"",
+            "\"tx0002\",\"gene0001\"",
+            "\"tx0003\",\"gene0002\"",
+            "\"tx0004\",\"gene0002\""
         )
     )
     unlink(con, recursive = FALSE)
