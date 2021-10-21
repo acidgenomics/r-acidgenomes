@@ -1,10 +1,10 @@
+## FIXME Need to export the additional files required for kallisto.
+## FIXME Can we generate decoy information for salmon?
+##       Refer to the respective documentation to resolve these issues.
+
 context("downloadGenome")
 
 testdir <- file.path(tempdir(), "genome")
-
-## FIXME This may not be saving tx2gene to disk correctly, resulting in the
-## number of transcript-to-gene rows being off by 1....argh.
-## FIXME This likely is due to the BiocIO export migration...
 
 test_that("downloadEnsemblGenome", {
     unlink(testdir, recursive = TRUE)
@@ -31,11 +31,25 @@ test_that("downloadEnsemblGenome", {
             "tx2gene.rds"
         )
     ))))
-
-
-    ## FIXME Check the number of genes in GRanges.
-    ## FIXME Check the number of transcripts in GRanges.
-
+    genes <- import(file.path(outputDir, "genes.rds"))
+    expect_s4_class(genes, "EnsemblGenes")
+    expect_identical(
+        object = length(genes),
+        expected = 60664L
+    )
+    expect_identical(
+        object = head(sort(names(genes)), n = 3L),
+        expected = c("ENSG00000000003", "ENSG00000000005", "ENSG00000000419")
+    )
+    transcripts <- import(file.path(outputDir, "transcripts.rds"))
+    expect_identical(
+        object = length(transcripts),
+        expected = 236920L
+    )
+    expect_identical(
+        object = head(sort(names(transcripts)), n = 3L),
+        expected = c("ENST00000000233", "ENST00000000412", "ENST00000000442")
+    )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
@@ -45,18 +59,10 @@ test_that("downloadEnsemblGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
-
-    ## FIXME This method isn't inheriting in package correctly...
-    ## FIXME This BiocIO change is problematic with file, need to rework...
-    ## FIXME The export method is including colnames for tx2gene.csv....
-    ## we don't want this behavior...
-    ## FIXME Double check that tx2gene.csv DOESN'T contain column names.
-
     tx2gene <- import(
         file = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
