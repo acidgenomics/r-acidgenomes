@@ -17,10 +17,23 @@ test_that("Tx2Gene", {
             "gene0002"
         )
     )
+    object <- Tx2Gene(object)
+    expect_s4_class(object, "Tx2Gene")
     con <- file.path(tempdir(), "tx2gene.csv")
-    unlink(file)
+    unlink(con, recursive = FALSE)
     expect_false(file.exists(con))
     export(object, con = con)
     expect_true(file.exists(con))
-    unlink(con)
+    ## FIXME This check is currently failing, need to rethink pasthrough to
+    ## pipette here.
+    expect_identical(
+        object = readLines(con, n = 4L),
+        expected = c(
+            "tx0001,gene0001",
+            "tx0002,gene0001",
+            "tx0003,gene0002",
+            "tx0004,gene0002",
+        )
+    )
+    unlink(con, recursive = FALSE)
 })
