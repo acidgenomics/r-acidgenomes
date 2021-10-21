@@ -1,6 +1,10 @@
+## FIXME We need to provide non-breaking support for "file" argument here.
+
+
+
 #' @name export
 #' @inherit pipette::export description params return title
-#' @note Updated 2021-10-14.
+#' @note Updated 2021-10-21.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
@@ -21,8 +25,9 @@
 #'         "gene0002"
 #'     )
 #' )
-#' export(object, file = "tx2gene.csv")
-#' file.remove("tx2gene.csv")
+#' con <- file.path(tempdir(), "tx2gene.csv")
+#' export(object = object, con = con)
+#' file.remove(con)
 NULL
 
 
@@ -51,6 +56,12 @@ NULL
             ...
         )
     }
+
+
+
+
+## FIXME Need to add legacy support for file here.
+## FIXME Need to tignten up the methods here.
 
 
 
