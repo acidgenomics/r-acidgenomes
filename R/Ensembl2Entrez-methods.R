@@ -12,6 +12,7 @@
 #'       Entrez will contain `NA` in `entrezId` column.
 #'   - `"long"`:
 #'       Return 1:many in long format.
+#' @param ... Additional arguments.
 #'
 #' @examples
 #' organism <- "Homo sapiens"
