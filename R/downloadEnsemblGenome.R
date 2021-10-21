@@ -39,7 +39,7 @@ downloadEnsemblGenome <-
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
         }
-        if (genomeBuild == "GRCh37") {
+        if (identical(genomeBuild, "GRCh37")) {
             assert(is.null(release))
             baseURL <- pasteURL(baseURL, "grch37")
             release <- 87L
@@ -372,6 +372,8 @@ downloadEnsemblGenome <-
             format = "lines"
         )
         mergeFasta <- do.call(what = c, args = fastaList)
+        ## FIXME This is now failing due to formatChoices check in pipette...
+        ## FIXME Need to rework this.
         mergeFastaFile <- export(
             object = mergeFasta,
             con = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
