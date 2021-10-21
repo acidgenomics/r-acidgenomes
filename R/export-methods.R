@@ -43,6 +43,7 @@ NULL
         format,
         ...
     ) {
+        stop("FIXME HELLO THERE")
         if (missing(con)) {
             con <- NULL
         }
@@ -60,12 +61,6 @@ NULL
             ...
         )
     }
-
-
-
-
-## FIXME Need to add legacy support for file here.
-## FIXME Need to tignten up the methods here.
 
 
 
