@@ -1,14 +1,18 @@
-## FIXME Unit tests need to download to tempdir.
-
-
-
 context("downloadGenome")
 
+testdir <- file.path(tempdir(), "genome")
+
+## Don't test against the latest Ensembl release version. It seems to be the
+## case that Ensembl sometimes makes changes to current stable release, which
+## seems to be evident with 104 release in 2021.
+
 test_that("downloadEnsemblGenome", {
+    unlink(testdir, recursive = TRUE)
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
         release = 103L,
+        outputDir = testdir,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
@@ -48,16 +52,16 @@ test_that("downloadEnsemblGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
-    if (dir.exists(outputDir)) {
-        unlink(outputDir, recursive = TRUE)
-    }
+    unlink(testdir, recursive = TRUE)
 })
 
 test_that("downloadGencodeGenome", {
+    unlink(testdir, recursive = TRUE)
     info <- downloadGencodeGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
         release = 38L,
+        outputDir = testdir,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
@@ -97,16 +101,16 @@ test_that("downloadGencodeGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
-    if (dir.exists(outputDir)) {
-        unlink(outputDir, recursive = TRUE)
-    }
+    unlink(testdir, recursive = TRUE)
 })
 
 test_that("downloadRefSeqGenome", {
+    unlink(testdir, recursive = TRUE)
     info <- downloadRefSeqGenome(
         organism = "Homo sapiens",
         taxonomicGroup = "vertebrate_mammalian",
         genomeBuild = "GCF_000001405.39_GRCh38.p13",
+        outputDir = testdir,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
@@ -145,15 +149,15 @@ test_that("downloadRefSeqGenome", {
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
-    if (dir.exists(outputDir)) {
-        unlink(outputDir, recursive = TRUE)
-    }
+    unlink(testdir, recursive = TRUE)
 })
 
 test_that("downloadUCSCGenome", {
+    unlink(testdir, recursive = TRUE)
     info <- downloadUCSCGenome(
         organism = "Homo sapiens",
         genomeBuild = "hg38",
+        outputDir = testdir,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
@@ -190,7 +194,5 @@ test_that("downloadUCSCGenome", {
             "geneId" = "ENSG00000004059"
         )
     )
-    if (dir.exists(outputDir)) {
-        unlink(outputDir, recursive = TRUE)
-    }
+    unlink(testdir, recursive = TRUE)
 })
