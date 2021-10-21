@@ -1,8 +1,3 @@
-## FIXME We need to provide non-breaking support for "file" argument here.
-## FIXME pipette colnames = FALSE may not be working the way we want here...
-
-
-
 #' @name export
 #' @inherit pipette::export description params return title
 #' @note Updated 2021-10-21.
@@ -26,6 +21,7 @@
 #'         "gene0002"
 #'     )
 #' )
+#' object <- Tx2Gene(object)
 #' con <- file.path(tempdir(), "tx2gene.csv")
 #' export(object = object, con = con)
 #' x <- readLines(con, n = 4L)
@@ -43,20 +39,21 @@ NULL
         format,
         ...
     ) {
-        stop("FIXME HELLO THERE")
         if (missing(con)) {
             con <- NULL
         }
         if (missing(format)) {
             format <- NULL
         }
-        df <- as(object, "DataFrame")
-        rownames(df) <- NULL
+        alertInfo(sprintf(
+            "Exporting {.cls %s} intentionally without dimnames.",
+            "Tx2Gene"
+        ))
         export(
-            object = df,
+            object = as(object, "DataFrame"),
             con = con,
             format = format,
-            ## FIXME This setting isn't propagating the way we want downstream...
+            rownames = FALSE,
             colnames = FALSE,
             ...
         )
@@ -70,8 +67,32 @@ setMethod(
     f = "export",
     signature = signature(
         object = "Tx2Gene",
-        con = "ANY",
-        format = "ANY"
+        con = "character",
+        format = "missingOrNULL"
+    ),
+    definition = `export,Tx2Gene`
+)
+
+#' @rdname export
+#' @export
+setMethod(
+    f = "export",
+    signature = signature(
+        object = "Tx2Gene",
+        con = "missingOrNULL",
+        format = "character"
+    ),
+    definition = `export,Tx2Gene`
+)
+
+#' @rdname export
+#' @export
+setMethod(
+    f = "export",
+    signature = signature(
+        object = "Tx2Gene",
+        con = "missingOrNULL",
+        format = "missingOrNULL"
     ),
     definition = `export,Tx2Gene`
 )
