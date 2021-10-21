@@ -1,9 +1,9 @@
 #' @name Entrez2Ensembl
 #' @inherit AcidGenerics::Entrez2Ensembl description return title
-#' @note Updated 2021-08-18.
+#' @note Updated 2021-10-21.
 #'
-#' @inheritParams AcidRoxygen::params
 #' @inheritParams Ensembl2Entrez
+#' @param ... Additional arguments.
 #'
 #' @examples
 #' organism <- "Homo sapiens"
