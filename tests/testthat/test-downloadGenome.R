@@ -2,16 +2,16 @@ context("downloadGenome")
 
 testdir <- file.path(tempdir(), "genome")
 
-## Don't test against the latest Ensembl release version. It seems to be the
-## case that Ensembl sometimes makes changes to current stable release, which
-## seems to be evident with 104 release in 2021.
+## FIXME This may not be saving tx2gene to disk correctly, resulting in the
+## number of transcript-to-gene rows being off by 1....argh.
+## FIXME This likely is due to the BiocIO export migration...
 
 test_that("downloadEnsemblGenome", {
     unlink(testdir, recursive = TRUE)
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 103L,
+        release = 104L,
         outputDir = testdir,
         cache = TRUE
     )
@@ -31,6 +31,11 @@ test_that("downloadEnsemblGenome", {
             "tx2gene.rds"
         )
     ))))
+
+
+    ## FIXME Check the number of genes in GRanges.
+    ## FIXME Check the number of transcripts in GRanges.
+
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
@@ -40,10 +45,18 @@ test_that("downloadEnsemblGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
+
+    ## FIXME This method isn't inheriting in package correctly...
+    ## FIXME This BiocIO change is problematic with file, need to rework...
+    ## FIXME The export method is including colnames for tx2gene.csv....
+    ## we don't want this behavior...
+    ## FIXME Double check that tx2gene.csv DOESN'T contain column names.
+
     tx2gene <- import(
         file = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
+
     expect_identical(nrow(tx2gene), 257575L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],

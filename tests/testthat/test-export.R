@@ -1,5 +1,7 @@
 context("export")
 
+## FIXME Need to check that this doesn't export with column names.
+
 test_that("Tx2Gene", {
     object <- DataFrame(
         "txId" = c(
@@ -15,10 +17,10 @@ test_that("Tx2Gene", {
             "gene0002"
         )
     )
-    file <- "tx2gene.csv"
+    con <- file.path(tempdir(), "tx2gene.csv")
     unlink(file)
-    expect_false(file.exists(file))
-    export(object, file = file)
-    expect_true(file.exists(file))
-    unlink(file)
+    expect_false(file.exists(con))
+    export(object, con = con)
+    expect_true(file.exists(con))
+    unlink(con)
 })

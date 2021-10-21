@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-08-03.
+#' @note Updated 2021-10-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -374,7 +374,7 @@ downloadEnsemblGenome <-
         mergeFasta <- do.call(what = c, args = fastaList)
         mergeFastaFile <- export(
             object = mergeFasta,
-            file = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
+            con = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
             overwrite = TRUE
         )
         ## Save transcript-to-gene mappings.
@@ -382,7 +382,7 @@ downloadEnsemblGenome <-
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(
             object = tx2gene,
-            file = file.path(outputDir, "tx2gene.csv.gz")
+            con = file.path(outputDir, "tx2gene.csv.gz")
         )
         files <- list(
             "fasta" = list(
