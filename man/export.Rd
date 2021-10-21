@@ -35,7 +35,7 @@ The \code{Tx2Gene} method automatically disables writing of column names, which
 is the intended input format for tximport.
 }
 \note{
-Updated 2021-10-14.
+Updated 2021-10-21.
 }
 \examples{
 object <- DataFrame(
@@ -52,6 +52,7 @@ object <- DataFrame(
         "gene0002"
     )
 )
-export(object, file = "tx2gene.csv")
-file.remove("tx2gene.csv")
+con <- file.path(tempdir(), "tx2gene.csv")
+export(object = object, con = con)
+file.remove(con)
 }
