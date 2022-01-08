@@ -1,18 +1,16 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
-** TODO Consider adding code coverage for export of EnsemblGenes output that
-   contains Entrez identifier mappings. We expected these to be written to
-   disk formatted via toString.
-** TODO downloadGenome functions: Need to include a chromosome file that is
-   compatible with kallisto.
+** TODO Caching URL needs to show progress bar for large files.
+    (e.g. Ensembl primary assembly FASTA)
+** TODO Consider adding code coverage for export of EnsemblGenes output that contains Entrez identifier mappings.
+    We expected these to be written to disk formatted via toString.
+** TODO downloadGenome functions: Need to include a chromosome file that is compatible with kallisto.
 ** TODO Look into generating decoy sequences recommended for sallmon.
-** TODO Consider creating a GTF symlink for salmon that contains all
-   transcripts. this needs to be haploytype scaffold GTF for Homo sapiens.
+** TODO Consider creating a GTF symlink for salmon that contains all transcripts.
+    This needs to be haploytype scaffold GTF for Homo sapiens.
 ** TODO Consider adding file caching support for genome downloader functions.
 ** TODO Consider classing gene/transcript return from EnsDb and TxDb.
-** TODO Consider adding better support for CDS, exon, and promoter extraction
-   from EnsDb/TxDb objects in a future update.
+** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
 ** TODO Add automatic tx2gene output for RefSeq genome download.
-** TODO Need to include current gene name (symbol) in the synonyms, in case
-   we're mapping to an older reference, such as GRCh37.
+** TODO Need to include current gene name (symbol) in the synonyms, in case we're mapping to an older reference, such as GRCh37.
