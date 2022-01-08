@@ -906,19 +906,22 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ok <- validate(
-            !any(apply(
-                X = object,
-                MARGIN = 1L,
-                FUN = function(x) {
-                    identical(x[[cols[["tx"]]]], x[[cols[["gene"]]]])
-                }
-            )),
-            msg = "Some transcript and gene identifiers are identical."
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
+        ## This check for identical transcript and gene identifiers is not
+        ## compatible with the sacCer3 genome, unfortunately. Disabling this
+        ## check until we can come up with an improved approach.
+        ## See related issue:
+        ## https://github.com/bcbio/bcbio-nextgen/issues/3565
+        ## > ok <- validate(
+        ## >     !any(apply(
+        ## >         X = object,
+        ## >         MARGIN = 1L,
+        ## >         FUN = function(x) {
+        ## >             identical(x[[cols[["tx"]]]], x[[cols[["gene"]]]])
+        ## >         }
+        ## >     )),
+        ## >     msg = "Some transcript and gene identifiers are identical."
+        ## > )
+        ## > if (!isTRUE(ok)) return(ok)
         TRUE
     }
 )
