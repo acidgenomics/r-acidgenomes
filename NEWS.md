@@ -1,4 +1,4 @@
-## AcidGenomes 0.2.20 (UNRELEASED)
+## AcidGenomes 0.2.21 (UNRELEASED)
 
 ### Minor changes
 
@@ -23,6 +23,15 @@
 - Reexporting some additional functions from GenomeInfoDb: `Seqinfo`,
   `genome`, `seqinfo`, and `seqlevels`. Note that corresponding assignment
   methods (if applicable) are intentionally not reexported here.
+
+## AcidGenomes 0.2.20 (2022-01-08)
+
+### Minor changes
+
+- `Tx2Gene` class check: disabling check that looks for identical transcript
+  and gene identifiers. This check is not compatible with the
+  *Saccharomyces cerevisiae* (sacCer3) reference genome. Thanks for pointing
+  this out @amizeranschi.
 
 ## AcidGenomes 0.2.19 (2021-09-13)
 
