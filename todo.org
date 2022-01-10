@@ -2,6 +2,7 @@
 #+STARTUP: content
 * Development
 ** TODO Need to add 'mapGencodeReleaseToEnsembl' function.
+** TODO Consider also adding 'mapEnsemblReleaseToGencode' function.
 ** TODO Caching URL needs to show progress bar for large files.
     (e.g. Ensembl primary assembly FASTA)
 ** TODO Consider adding code coverage for export of EnsemblGenes output that contains Entrez identifier mappings.
