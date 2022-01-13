@@ -138,7 +138,7 @@ makeGRangesFromEnsembl <- function(
     )
     level <- match.arg(level)
     alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
-    edb <- getEnsDb(
+    edb <- .getEnsDb(
         organism = organism,
         genomeBuild = genomeBuild,
         release = release
