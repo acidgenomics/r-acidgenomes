@@ -1,7 +1,7 @@
 #' Get EnsDb from Bioconductor
 #'
-#' @export
-#' @note Updated 2021-09-13.
+#' @note Updated 2022-01-12.
+#' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -12,9 +12,9 @@
 #' @return `EnsDb`.
 #'
 #' @examples
-#' edb <- getEnsDb(organism = "Homo sapiens", release = 100L)
+#' edb <- .getEnsDb(organism = "Homo sapiens", release = 100L)
 #' print(edb)
-getEnsDb <- function(
+.getEnsDb <- function(
     organism,
     genomeBuild = NULL,
     release = NULL
