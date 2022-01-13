@@ -50,7 +50,7 @@ makeEnsDbFromGFF <- function(file) {
     args[["outfile"]] <- tempfile()
     ext <- fileExt(file)
     tmpfile <- .cacheIt(file)
-    meta <- getGFFMetadata(file)
+    meta <- .getGFFMetadata(file)
     if (grepl(pattern = "gff", x = ext, ignore.case = TRUE)) {
         what <- ensembldb::ensDbFromGff
         args <- append(x = args, values = list("gff" = tmpfile))

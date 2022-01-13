@@ -66,7 +66,7 @@
     pkgs <- .packages()
     ## Allowing pass-in of either file or GFF metadata list here.
     if (!is.list(x)) {
-        x <- getGFFMetadata(file = x)
+        x <- .getGFFMetadata(file = x)
     }
     assert(is.list(x))
     if (!isSubset(
