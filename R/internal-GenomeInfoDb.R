@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2021-08-09.
+#' @note Updated 2022-01-12.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -80,7 +80,8 @@
         isString(x[["genomeBuild"]]),
         isString(x[["organism"]]),
         isString(x[["provider"]]),
-        isScalar(x[["release"]]) || is.null(x[["release"]])
+        isScalar(x[["release"]]) || is.null(x[["release"]]),
+        msg = "GFF file does not contain sufficient metadata."
     )
     seq <- NULL
     tryCatch(
