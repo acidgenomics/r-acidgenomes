@@ -1,19 +1,20 @@
-## Updated 2021-08-05.
+## Updated 2022-01-12.
 .makeGRangesFromRtracklayer <- function(
     file,
     level,
     ignoreVersion,
-    synonyms
+    synonyms,
+    meta
 ) {
-    assert(isString(file))
+    assert(
+        isString(file),
+        is.list(meta),
+        isString(meta[["format"]]),
+        isString(meta[["provider"]])
+    )
     level <- match.arg(
         arg = level,
         choices = c("genes", "transcripts")
-    )
-    meta <- getGFFMetadata(file)
-    assert(
-        isString(meta[["format"]]),
-        isString(meta[["provider"]])
     )
     meta[["level"]] <- level
     gr <- import(file = .cacheIt(file))
