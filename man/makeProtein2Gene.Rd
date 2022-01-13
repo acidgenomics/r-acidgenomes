@@ -39,9 +39,10 @@ ensembldb in use.}
 Map protein identifiers to genes
 }
 \note{
-Updated 2021-04-27.
+Updated 2022-01-12.
 }
 \examples{
 ids <- c("ENSP00000238714", "ENSP00000338157")
-makeProtein2GeneFromEnsembl(ids)
+p2g <- makeProtein2GeneFromEnsembl(ids)
+print(p2g)
 }
