@@ -1,7 +1,73 @@
+#' Get the directives from a GFF file
+#'
+#' @note Updated 2022-01-12.
+#' @noRd
+#'
+#' @inheritParams AcidRoxygen::params
+#'
+#' @details
+#' Matches lines beginning with `#!<key> <value>` or `##<key>: <value>`
+#'
+#' @section GFF3:
+#'
+#' Lines beginning with '##' are directives (sometimes called pragmas or
+#' meta-data) and provide meta-information about the document as a whole. Blank
+#' lines should be ignored by parsers and lines beginning with a single '#' are
+#' used for human-readable comments and can be ignored by parsers. End-of-line
+#' comments (comments preceded by # at the end of and on the same line as a
+#' feature or directive line) are not allowed.
+#'
+#' @seealso
+#' - https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
+#'
+#' @return `DataFrame` or `NULL`.
+#'
+#' @examples
+#' url <- pasteURL(
+#'     "ftp.ensembl.org",
+#'     "pub",
+#'     "release-102",
+#'     "gtf",
+#'     "homo_sapiens",
+#'     "Homo_sapiens.GRCh38.102.gtf.gz",
+#'     protocol = "ftp"
+#' )
+#' df <- .getGFFDirectives(url)
+#' print(df)
+.getGFFDirectives <- function(file, nMax = Inf) {
+    assert(.isSupportedGFF(file))
+    file <- .cacheIt(file)
+    lines <- import(
+        file = file,
+        format = "lines",
+        comment = "",
+        nMax = nMax,
+        quiet = TRUE
+    )
+    pattern <- "^(#!|#+)([a-z-]+)(:)?\\s+(.+)$"
+    lines <- grep(pattern = pattern, x = lines, value = TRUE)
+    if (!hasLength(lines)) {
+        return(NULL)
+    }
+    mat <- str_match(
+        string = grep(pattern = pattern, x = lines, value = TRUE),
+        pattern = pattern
+    )
+    assert(is.matrix(mat), hasRows(mat))
+    df <- as(mat, "DataFrame")
+    df <- df[, c(3L, 5L), drop = FALSE]
+    colnames(df) <- c("key", "value")
+    df <- unique(df)
+    df <- df[order(df[["key"]]), , drop = FALSE]
+    df
+}
+
+
+
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2021-08-06.
-#' @export
+#' @note Updated 2022-01-12.
+#' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -17,9 +83,6 @@
 #'   - `release`
 #'   - `sha256`
 #'
-#' @seealso
-#' - [getGFFDirectives()].
-#'
 #' @examples
 #' url <- pasteURL(
 #'     "ftp.ensembl.org",
@@ -30,15 +93,15 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' x <- getGFFMetadata(url)
+#' x <- .getGFFMetadata(url)
 #' print(x)
-getGFFMetadata <- function(file) {
+.getGFFMetadata <- function(file) {
     assert(.isSupportedGFF(file))
+    file <- .cacheIt(file)
     l <- list()
     if (isAFile(file)) {
         file <- realpath(file)
     }
-    alert(sprintf("Getting GFF metadata for {.file %s}.", basename(file)))
     l[["file"]] <- file
     l[["md5"]] <- .md5(file)
     l[["sha256"]] <- .sha256(file)
@@ -61,15 +124,17 @@ getGFFMetadata <- function(file) {
     if (isString(l[["gffVersion"]])) {
         l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
     }
+    ## Parse the first 100 elements of the GFF file. We can use this to identify
+    ## ambiguous sources or genomes with non-standard identifiers.
+    lines <- import(
+        file = .cacheIt(file),
+        format = "lines",
+        nMax = 1000L,
+        quiet = TRUE
+    )
+    lines <- lines[!grepl(pattern = "^#", x = lines)]
+    lines <- head(lines, n = 100L)
     if (!isString(l[["provider"]])) {
-        lines <- import(
-            file = .cacheIt(file),
-            format = "lines",
-            nMax = 1000L,
-            quiet = TRUE
-        )
-        lines <- lines[!grepl(pattern = "^#", x = lines)]
-        lines <- head(lines, n = 10L)
         if (any(grepl(
             pattern = "\t(ensGene|knownGene|ncbiRefSeq|refGene)\t",
             x = lines
@@ -89,6 +154,13 @@ getGFFMetadata <- function(file) {
             pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
         ))) {
             l[["provider"]] <- "Ensembl"
+        } else if (
+            identical(basename(file), "ref-transcripts.gtf") &&
+            any(grepl(pattern = "^chrI", x = lines))
+        ) {
+            ## bcbio-nextgen genome, processed with gffutils.
+            ## https://github.com/daler/gffutils
+            l[["provider"]] <- "UCSC"
         } else {
             abort(sprintf(
                 "Failed to detect provider (e.g. {.val %s}) from {.file %s}.",
@@ -220,13 +292,20 @@ getGFFMetadata <- function(file) {
     if (!isOrganism(l[["organism"]])) {
         match <- str_match(
             string = lines,
-            pattern = "\tgene_id \"([^\"]+)\""
+            pattern = "(\t|\\s)gene_id\\s\"([^\"]+)\""
         )
-        genes <- na.omit(match[, 2L, drop = TRUE])
+        genes <- unique(na.omit(match[, 3L, drop = TRUE]))
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(genes),
             error = function(e) NULL
         )
+    }
+    ## Genome-specific organism workarounds.
+    if (
+        !isOrganism(l[["organism"]]) &&
+        any(grepl(pattern = "gene_source \"sgd\"", x = lines))
+    ) {
+        l[["organism"]] <- "Saccharomyces cerevisiae"
     }
     l <- Filter(f = hasLength, x = l)
     l <- l[sort(names(l))]
@@ -236,7 +315,8 @@ getGFFMetadata <- function(file) {
         isString(l[["md5"]]),
         isOrganism(l[["organism"]]),
         isString(l[["provider"]]),
-        isString(l[["sha256"]])
+        isString(l[["sha256"]]),
+        msg = sprintf("Unsupported GFF: {.file %s}.", basename(file))
     )
     l
 }
