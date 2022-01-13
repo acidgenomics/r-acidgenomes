@@ -66,52 +66,6 @@
 
 
 
-#' Is the input GFF file supported in the package?
-#'
-## See `.gffPatterns` for pattern matching details.
-#'
-#' @note Updated 2021-08-06.
-#' @noRd
-.isSupportedGFF <- function(file) {
-    ok <- isString(file)
-    if (!ok) { return(FALSE) }
-    denylist <- c(
-        "flybase_gff" = paste0(
-            "^([a-z0-9]+_)?",
-            "^([^-]+)",
-            "-([^-]+)",
-            "-(r[0-9]+\\.[0-9]+)",
-            "\\.gff",
-            "(\\.gz)?$"
-        ),
-        "wormbase_gff" = paste0(
-            "^([a-z0-9]+_)?",
-            "^([a-z]_[a-z]+)",
-            "\\.([A-Z0-9]+)",
-            "\\.(WS[0-9]+)",
-            "\\.([a-z_]+)",
-            "\\.gff3",
-            "(\\.gz)?$"
-        )
-    )
-    if (isMatchingRegex(
-        pattern = denylist[["flybase_gff"]],
-        x = basename(file)
-    )) {
-        alertWarning("Use FlyBase GTF instead of GFF.")
-        return(FALSE)
-    } else if (isMatchingRegex(
-        pattern = denylist[["wormbase_gff"]],
-        x = basename(file)
-    )) {
-        alertWarning("Use WormBase GTF instead of GFF.")
-        return(FALSE)
-    }
-    TRUE
-}
-
-
-
 #' Map a genome build to UCSC
 #'
 #' @details
