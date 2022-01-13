@@ -1,8 +1,6 @@
-## NOTE Can consider using ensembldb to parse GFF files once v2.15.2 is
-##      available on Bioconductor. Current stable version has issues parsing
-##      compressed GFF3 files.
-##      See issue:
-##      - https://github.com/jorainer/ensembldb/issues/114
+## NOTE Can consider using ensembldb to parse Ensembl GFF files.
+## See related:
+## - https://github.com/jorainer/ensembldb/issues/114
 
 
 
@@ -11,7 +9,7 @@
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2021-08-06.
+#' @note Updated 2022-01-12.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -267,17 +265,14 @@ makeGRangesFromGFF <- function(
     level <- match.arg(level)
     alert(sprintf(
         fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-        "GenomicRanges", basename(file)
+        "GenomicRanges", file
     ))
-    if (
-        isMatchingRegex(
-            pattern = .gffPatterns[["ucsc"]],
-            x = basename(file)
-        )
-    ) {
+    file <- .cacheIt(file)
+    meta <- .getGFFMetadata(file)
+    if (identical(meta[["provider"]], "UCSC")) {
         alertInfo("UCSC genome annotation file detected.")
-        txdb <- makeTxDbFromGFF(file)
-        gr <- makeGRangesFromTxDb(
+        txdb <- .makeTxDbFromGFF(file = file, meta = meta)
+        gr <- .makeGRangesFromTxDb(
             object = txdb,
             level = level,
             ignoreVersion = ignoreVersion,
@@ -288,7 +283,8 @@ makeGRangesFromGFF <- function(
             file = file,
             level = level,
             ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+            synonyms = synonyms,
+            meta = meta
         )
     }
     metadata(gr)[["call"]] <- tryCatch(
