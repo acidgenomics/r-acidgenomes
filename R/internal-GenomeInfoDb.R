@@ -69,9 +69,18 @@
         x <- .getGFFMetadata(x)
     }
     assert(is.list(x))
-    if (!isSubset(
-        x = c("genomeBuild", "organism", "provider"),
-        y = names(x))
+    if (
+        !isSubset(
+            x = c("genomeBuild", "organism", "provider"),
+            y = names(x)
+        ) ||
+        any(
+            is.na(c(
+                x[["genomeBuild"]],
+                x[["organism"]],
+                x[["provider"]]
+            ))
+        )
     ) {
         return(NULL)
     }
