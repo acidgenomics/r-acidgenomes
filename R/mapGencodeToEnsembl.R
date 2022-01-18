@@ -32,5 +32,6 @@ mapGencodeToEnsembl <- function(release) {
     )
     out <- data[["ensembl"]][idx]
     assert(isInt(out))
+    out <- as.integer(out)
     out
 }
