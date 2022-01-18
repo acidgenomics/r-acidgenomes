@@ -1,5 +1,10 @@
 ## AcidGenomes 0.2.21 (UNRELEASED)
 
+### New functions
+
+- `mapGencodeToEnsembl`: Convenience function for mapping human GENCODE release
+  (e.g. `39`) to corresponding Ensembl release (e.g. `105`).
+
 ### Minor changes
 
 - Relaxed `GenomicRanges` `mcols` column name validity checks to no longer
