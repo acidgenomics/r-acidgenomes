@@ -44,7 +44,7 @@ is the intended input format for tximport.
 Updated 2021-10-21.
 }
 \examples{
-object <- DataFrame(
+object <- S4Vectors::DataFrame(
     "txId" = c(
         "tx0001",
         "tx0002",
