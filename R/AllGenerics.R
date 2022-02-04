@@ -28,21 +28,21 @@ NULL
 
 #' @rdname export
 #' @name export
-#' @importFrom AcidGenerics export
+#' @importFrom pipette export
 #' @usage export(object, con, format, ...)
 #' @export
 NULL
 
 #' @rdname organism
 #' @name organism
-#' @importFrom AcidGenerics organism
+#' @importFrom BiocGenerics organism
 #' @usage organism(object)
 #' @export
 NULL
 
 #' @rdname organism
 #' @name organism<-
-#' @importFrom AcidGenerics organism<-
+#' @importFrom BiocGenerics organism<-
 #' @usage organism(object) <- value
 #' @export
 NULL
@@ -63,7 +63,7 @@ NULL
 
 #' @rdname summary
 #' @name summary
-#' @importFrom AcidGenerics summary
+#' @importFrom S4Vectors summary
 #' @usage summary(object, ...)
 #' @export
 NULL
