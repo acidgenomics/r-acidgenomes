@@ -1,7 +1,7 @@
 Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
-Version: 0.2.21.9000
+Version: 0.3.0.9000
 Date: 2022-02-04
 Authors@R: c(
     person(
