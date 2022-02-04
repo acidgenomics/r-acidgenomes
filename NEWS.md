@@ -1,4 +1,4 @@
-## AcidGenomes 0.2.21 (UNRELEASED)
+## AcidGenomes 0.3.0 (UNRELEASED)
 
 ### New functions
 
@@ -7,6 +7,8 @@
 
 ### Minor changes
 
+- Reworked NAMESPACE to inherit from Bioconductor packages, migrating from
+  previous approach that used generics defined only in AcidGenerics.
 - Relaxed `GenomicRanges` `mcols` column name validity checks to no longer
   require strict camelCase formatting. This check can run into issues when
   slotting into a `DESeqDataSet` object, which appends non-camelCase-formatted
