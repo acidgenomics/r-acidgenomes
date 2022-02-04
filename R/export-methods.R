@@ -7,7 +7,7 @@
 #' is the intended input format for tximport.
 #'
 #' @examples
-#' object <- DataFrame(
+#' object <- S4Vectors::DataFrame(
 #'     "txId" = c(
 #'         "tx0001",
 #'         "tx0002",

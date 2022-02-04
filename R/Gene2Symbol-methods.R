@@ -31,7 +31,7 @@
 #' data(GenomicRanges, package = "AcidTest")
 #'
 #' ## DataFrame ====
-#' df <- DataFrame(
+#' df <- S4Vectors::DataFrame(
 #'     "geneId" = c(
 #'         "ENSG00000228572.7",
 #'         "ENSG00000182378.14"
