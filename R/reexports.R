@@ -1,6 +1,6 @@
 #' @export
-#' @importFrom AcidGenerics DataFrame
-AcidGenerics::DataFrame
+#' @importFrom S4Vectors DataFrame
+S4Vectors::DataFrame
 
 #' @export
 #' @importFrom AcidBase pasteURL

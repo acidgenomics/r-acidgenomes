@@ -4,23 +4,27 @@
 #'
 #' @keywords internal
 #'
-#' @importClassesFrom AcidGenerics DataFrame DataFrameList GenomicRanges
-#'   GenomicRangesList Vector
+#' @importClassesFrom GenomicRanges GenomicRanges GenomicRangesList
+#' @importClassesFrom IRanges DataFrameList
+#' @importClassesFrom S4Vectors DataFrame Vector
 #'
 #' @importMethodsFrom pipette as.DataFrame coerce
 #'
-#' @importFrom AcidBase capture.output download fileExt forceDetach initDir
-#'   packageName packageVersion parentDir pasteURL printString realpath
-#'   requireNamespaces sessionInfo showSlotInfo standardizeCall
+#' @importFrom AcidBase download fileExt forceDetach initDir parentDir pasteURL
+#'   printString realpath requireNamespaces showSlotInfo standardizeCall
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #'   toInlineString
-#' @importFrom AcidGenerics CharacterList DataFrame DataFrameList GRanges
-#'   IntegerList IRanges Rle Seqinfo SplitDataFrameList %in% append as.DataFrame
-#'   as.data.frame complete.cases decode do.call encode expand genome genome<-
-#'   getChromInfoFromEnsembl grep grepl gsub head is.unsorted lapply match mcols
-#'   mcols<- metadata metadata<- na.omit order ranges rbind setdiff seqinfo
-#'   seqinfo<- seqlevels sort split tail trim unlist
+#' @importFrom AcidGenerics as.DataFrame encode
 #' @importFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
+#' @importFrom BiocGenerics %in% append as.data.frame do.call grep grepl
+#'   is.unsorted lapply match order rbind setdiff sort unlist
+#' @importFrom IRanges CharacterList DataFrameList IntegerList IRanges
+#'   SplitDataFrameList gsub ranges trim
+#' @importFrom GenomeInfoDb getChromInfoFromEnsembl Seqinfo genome genome<-
+#'   seqinfo seqinfo<- seqlevels
+#' @importFrom GenomicRanges GRanges
+#' @importFrom S4Vectors DataFrame Rle complete.cases decode expand head mcols
+#'   mcols<- metadata metadata<- na.omit split tail
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #'   allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #'   areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
@@ -36,6 +40,7 @@
 #'   import md5 removeNA sanitizeNA sha256
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom syntactic camelCase kebabCase makeNames snakeCase upperCamelCase
+#' @importFrom utils capture.output packageName packageVersion sessionInfo
 "_PACKAGE"
 
 
