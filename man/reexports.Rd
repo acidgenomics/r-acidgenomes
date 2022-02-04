@@ -14,6 +14,6 @@ below to see their documentation.
 \describe{
   \item{AcidBase}{\code{\link[AcidBase]{pasteURL}}}
 
-  \item{AcidGenerics}{\code{\link[AcidGenerics:reexports]{DataFrame}}}
+  \item{S4Vectors}{\code{\link[S4Vectors:DataFrame-class]{DataFrame}}}
 }}
 

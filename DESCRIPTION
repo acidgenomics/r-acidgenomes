@@ -1,8 +1,8 @@
 Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
-Version: 0.2.21
-Date: 2022-01-19
+Version: 0.2.21.9000
+Date: 2022-02-04
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -22,25 +22,31 @@ License: AGPL-3
 Encoding: UTF-8
 Depends: R (>= 4.1)
 Imports:
-    AcidBase (>= 0.4.6),
+    AcidBase (>= 0.5.0),
     AcidCLI (>= 0.1.8),
     AcidGenerics (>= 0.6.0),
-    AcidPlyr (>= 0.1.23),
+    AcidPlyr (>= 0.2.0),
+    BiocGenerics,
+    GenomeInfoDb,
+    GenomicRanges,
+    IRanges,
+    S4Vectors,
     goalie (>= 0.6.0),
-    httr (>= 1.4.2),
+    httr,
     methods,
     pipette (>= 0.8.0),
-    stringr (>= 1.4.0),
-    syntactic (>= 0.5.1)
+    stringr,
+    syntactic (>= 0.5.1),
+    utils
 Suggests:
     AcidTest (>= 0.5.0),
-    AnnotationDbi (>= 1.56.0),
-    AnnotationHub (>= 3.2.0),
-    EnsDb.Hsapiens.v75 (>= 2.99.0),
-    GenomicFeatures (>= 1.46.0),
-    biomaRt (>= 2.50.0),
-    ensembldb (>= 2.18.0),
-    testthat (>= 3.1.1)
+    AnnotationDbi,
+    AnnotationHub,
+    EnsDb.Hsapiens.v75,
+    GenomicFeatures,
+    biomaRt,
+    ensembldb,
+    testthat
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Additional_repositories: https://r.acidgenomics.com
