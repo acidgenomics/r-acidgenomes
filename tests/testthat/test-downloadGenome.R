@@ -7,7 +7,7 @@ test_that("downloadEnsemblGenome", {
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 104L,
+        release = 105L,
         outputDir = testdir,
         cache = TRUE
     )
@@ -31,7 +31,7 @@ test_that("downloadEnsemblGenome", {
     expect_s4_class(genes, "EnsemblGenes")
     expect_identical(
         object = length(genes),
-        expected = 60664L
+        expected = 61541L
     )
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
@@ -40,14 +40,14 @@ test_that("downloadEnsemblGenome", {
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_identical(
         object = length(transcripts),
-        expected = 236920L
+        expected = 244825L
     )
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c("ENST00000000233", "ENST00000000412", "ENST00000000442")
     )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_identical(nrow(tx2gene), 257575L)
+    expect_identical(nrow(tx2gene), 265480L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -59,7 +59,7 @@ test_that("downloadEnsemblGenome", {
         file = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 257575L)
+    expect_identical(nrow(tx2gene), 265480L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -75,7 +75,7 @@ test_that("downloadGencodeGenome", {
     info <- downloadGencodeGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 38L,
+        release = 39L,
         outputDir = testdir,
         cache = TRUE
     )
@@ -96,7 +96,7 @@ test_that("downloadGencodeGenome", {
         )
     ))))
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_identical(nrow(tx2gene), 237012L)
+    expect_identical(nrow(tx2gene), 244939L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -108,7 +108,7 @@ test_that("downloadGencodeGenome", {
         file = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 237012L)
+    expect_identical(nrow(tx2gene), 244939L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
