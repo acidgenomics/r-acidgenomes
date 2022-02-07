@@ -1,14 +1,3 @@
-## FIXME Add detection support against yeast genome for:
-##
-##  [1] "YDL248W"   "YDL247W-A" "YDL247W"   "YDL246C"   "YDL245C"
-##  [6] "YDL244W"   "YDL243C"   "YDL242W"   "YDL241W"   "YDL240C-A"
-## [11] "YDL240W"   "YDL239C"   "YDL238C"   "YDL237W"   "YDL236W"
-## [16] "YDL235C"   "YDL234C"
-##
-## See SGD website for details, https://www.yeastgenome.org/
-
-
-
 #' Detect organism
 #'
 #' Supports organism detection from Ensembl identifier or genome build.
@@ -34,7 +23,7 @@
 #'   package, which gets loaded into the namespace when DESeq2 is attached.
 #'   Instead, we're exporting the character method here as a separate function
 #'   named `detectOrganism`.
-#' @note Updated 2021-09-03.
+#' @note Updated 2022-02-07.
 #'
 #' @param object `character`.
 #'
