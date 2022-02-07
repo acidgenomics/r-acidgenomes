@@ -372,8 +372,6 @@ downloadEnsemblGenome <-
             format = "lines"
         )
         mergeFasta <- do.call(what = c, args = fastaList)
-        ## FIXME This is now failing due to formatChoices check in pipette...
-        ## FIXME Need to rework this.
         mergeFastaFile <- export(
             object = mergeFasta,
             con = file.path(outputDir, "transcriptome", "transcriptome.fa.gz"),
