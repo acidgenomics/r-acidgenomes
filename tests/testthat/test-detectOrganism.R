@@ -16,7 +16,7 @@ test_that("Homo sapiens", {
     }
 })
 
-test_that("detectOrganism : Mus musculus", {
+test_that("Mus musculus", {
     for (object in c(
         "Mus musculus",
         "mmusculus",
@@ -121,6 +121,25 @@ test_that("Ovis aries", {
         expect_identical(
             object = detectOrganism(object),
             expected = "Ovis aries"
+        )
+    }
+})
+
+## See also SGD website (https://www.yeastgenome.org/) for details.
+test_that("Saccharomyces cerevisiae", {
+    for (object in c(
+        "Saccharomyces cerevisiae",
+        "scerevisiae",
+        "R64-1-1",
+        "sacCer3",
+        "YDL234C",
+        "YDL236W",
+        "YDL240C-A",
+        "YDL247W-A"
+    )) {
+        expect_identical(
+            object = detectOrganism(object),
+            expected = "Saccharomyces cerevisiae"
         )
     }
 })

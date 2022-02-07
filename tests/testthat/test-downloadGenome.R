@@ -1,7 +1,3 @@
-## FIXME Need to export the additional files required for kallisto.
-## FIXME Can we generate decoy information for salmon?
-##       Refer to the respective documentation to resolve these issues.
-
 context("downloadGenome")
 
 testdir <- file.path(tempdir(), "genome")
