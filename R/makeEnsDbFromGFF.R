@@ -15,7 +15,7 @@
 #' - `ensembldb::ensDbFromGtf()`.
 #'
 #' @examples
-#' ## > file <- pasteURL(
+#' ## > file <- AcidBase::pasteURL(
 #' ## >     "ftp.ensembl.org",
 #' ## >     "pub",
 #' ## >     "release-102",
