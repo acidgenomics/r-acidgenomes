@@ -1,6 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Do we need to download additional chromosome information for kallisto?
 ** TODO Need to add 'mapGencodeReleaseToEnsembl' function.
 ** TODO Consider also adding 'mapEnsemblReleaseToGencode' function.
 ** TODO Caching URL needs to show progress bar for large files.
