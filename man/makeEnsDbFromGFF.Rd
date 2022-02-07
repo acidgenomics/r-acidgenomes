@@ -20,7 +20,7 @@ Wrapper for ensembldb importer functions.
 Updated 2021-08-06.
 }
 \examples{
-## > file <- pasteURL(
+## > file <- AcidBase::pasteURL(
 ## >     "ftp.ensembl.org",
 ## >     "pub",
 ## >     "release-102",

@@ -72,7 +72,7 @@ if ("EnsDb.Hsapiens.v75" \%in\% rownames(installed.packages())) {
 }
 
 ## makeTx2GeneFromGFF ====
-file <- pasteURL(
+file <- AcidBase::pasteURL(
     "ftp.ensembl.org",
     "pub",
     "release-102",

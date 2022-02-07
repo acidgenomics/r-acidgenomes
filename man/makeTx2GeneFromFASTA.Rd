@@ -25,7 +25,7 @@ Updated 2021-01-29.
 }
 \examples{
 ## Ensembl ====
-file <- pasteURL(
+file <- AcidBase::pasteURL(
     "ftp.ensembl.org",
     "pub",
     "release-102",
@@ -39,7 +39,7 @@ t2g <- makeTx2GeneFromFASTA(file)
 print(t2g)
 
 ## GENCODE ====
-## > file <- pasteURL(
+## > file <- AcidBase::pasteURL(
 ## >     "ftp.ebi.ac.uk",
 ## >     "pub",
 ## >     "databases",
@@ -53,7 +53,7 @@ print(t2g)
 ## > print(t2g)
 
 ## FlyBase ====
-## > file <- pasteURL(
+## > file <- AcidBase::pasteURL(
 ## >     "ftp.flybase.net",
 ## >     "releases",
 ## >     "FB2019_05",
@@ -66,7 +66,7 @@ print(t2g)
 ## > print(t2g)
 
 ## WormBase ====
-## > file <- pasteURL(
+## > file <- AcidBase::pasteURL(
 ## >     "ftp.wormbase.org",
 ## >     "pub",
 ## >     "wormbase",

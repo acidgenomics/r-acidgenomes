@@ -28,7 +28,7 @@
 #' }
 #'
 #' ## makeGene2SymbolFromGFF ====
-#' file <- pasteURL(
+#' file <- AcidBase::pasteURL(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",

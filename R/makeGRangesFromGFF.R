@@ -179,7 +179,7 @@
 #' ## can cause CI timeouts.
 #'
 #' ## Ensembl ====
-#' file <- pasteURL(
+#' file <- AcidBase::pasteURL(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",
@@ -202,7 +202,7 @@
 #' ## > summary(transcripts)
 #'
 #' ## GENCODE ====
-#' ## > file <- pasteURL(
+#' ## > file <- AcidBase::pasteURL(
 #' ## >     "ftp.ebi.ac.uk",
 #' ## >     "pub",
 #' ## >     "databases",
@@ -218,7 +218,7 @@
 #' ## > summary(transcripts)
 #'
 #' ## RefSeq ====
-#' ## > file <- pasteURL(
+#' ## > file <- AcidBase::pasteURL(
 #' ## >     "ftp.ncbi.nlm.nih.gov",
 #' ## >     "genomes",
 #' ## >     "refseq",
@@ -235,7 +235,7 @@
 #' ## > summary(transcripts)
 #'
 #' ## UCSC ====
-#' ## > file <- pasteURL(
+#' ## > file <- AcidBase::pasteURL(
 #' ## >     "hgdownload.soe.ucsc.edu",
 #' ## >     "goldenPath",
 #' ## >     "hg38",
