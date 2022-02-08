@@ -123,7 +123,13 @@
                     genome(seq) <- x[["genomeBuild"]]
                 },
                 "RefSeq" = {
-                    seq <- .getRefSeqSeqinfo(file)
+                    seq <- .getRefSeqSeqinfo(
+                        file = ifelse(
+                            test = isAURL(x[["url"]]),
+                            yes = x[["url"]],
+                            no = x[["file"]]
+                        )
+                    )
                 },
                 "UCSC" = {
                     seq <- Seqinfo(genome = x[["genomeBuild"]])
