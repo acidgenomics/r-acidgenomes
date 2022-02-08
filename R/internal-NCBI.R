@@ -222,7 +222,7 @@
 #'
 #' Parse the assembly report file to get `seqlengths` per chromosome.
 #'
-#' @note Updated 2021-08-06.
+#' @note Updated 2022-02-08.
 #' @noRd
 #'
 #' @param file `character(1)`.
@@ -231,7 +231,7 @@
 #' @return `Seqinfo`.
 #'
 #' @seealso
-#' - `tximeta:::gtf2RefSeq`.
+#' - `tximeta:::gtf2RefSeq()`.
 #'
 #' @examples
 #' ## RefSeq GRCh38.p12.
@@ -357,7 +357,7 @@
 
 #' Locate RefSeq assembly report, from GFF file
 #'
-#' @note Updated 2021-09-03.
+#' @note Updated 2022-02-08.
 #' @noRd
 #'
 #' @examples
@@ -414,7 +414,7 @@
             "\\.(gff|gtf)(\\.gz)?$"
         ),
         replacement = "_assembly_report\\.txt",
-        basename(file)
+        x = basename(file)
     )
     if (isAURL(file)) {
         if (identical(
@@ -432,7 +432,7 @@
     if (isAFile(x)) {
         return(x)
     }
-    ## `download-refseq-genome` download.
+    ## `downloadRefSeqGenome()` download.
     x <- file.path(parentDir(file, n = 2L), "metadata", reportBasename)
     if (isAFile(x)) {
         return(x)
