@@ -23,13 +23,14 @@ seqnames <- GenomeInfoDb::seqnames
 simpleClass <- AcidBase::simpleClass
 ## nolint end
 
-## NOTE These aren't currently used in unit tests.
-## Updated 2021-08-05.
-fastas <- c(
+## FIXME Need to add unit tests to cover these.
+## FIXME In particular, check if we can make Tx2Gene objects from these.
+## Updated 2022-02-08.
+txFastas <- c(
     "ensembl" = pasteURL(
         "ftp.ensembl.org",
         "pub",
-        "release-104",
+        "release-105",
         "fasta",
         "homo_sapiens",
         "cdna",
@@ -39,10 +40,10 @@ fastas <- c(
     "flybase" = pasteURL(
         "ftp.flybase.net",
         "releases",
-        "FB2021_03",
-        "dmel_r6.40",
+        "FB2021_06",
+        "dmel_r6.43",
         "fasta",
-        "dmel-all-transcript-r6.40.fasta.gz",
+        "dmel-all-transcript-r6.43.fasta.gz",
         protocol = "ftp"
     ),
     "gencode" = pasteURL(
@@ -51,8 +52,8 @@ fastas <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_38",
-        "gencode.v38.transcripts.fa.gz",
+        "release_39",
+        "gencode.v39.transcripts.fa.gz",
         protocol = "ftp"
     ),
     "wormbase" = pasteURL(
@@ -60,22 +61,23 @@ fastas <- c(
         "pub",
         "wormbase",
         "releases",
-        "WS281",
+        "WS283",
         "species",
         "c_elegans",
         "PRJNA13758",
-        "c_elegans.PRJNA13758.WS281.mRNA_transcripts.fa.gz",
+        "c_elegans.PRJNA13758.WS283.mRNA_transcripts.fa.gz",
         protocol = "ftp"
     )
 )
 
-## Updated 2021-08-05.
+## FIXME Need to update the verisons here.
+## Updated 2022-02-08.
 gffs <- c(
     "ensembl_grch37_gff3" = pasteURL(
         "ftp.ensembl.org",
         "pub",
         "grch37",
-        "release-104",
+        "release-105",
         "gff3",
         "homo_sapiens",
         "Homo_sapiens.GRCh37.87.gff3.gz",
@@ -85,7 +87,7 @@ gffs <- c(
         "ftp.ensembl.org",
         "pub",
         "grch37",
-        "release-104",
+        "release-105",
         "gtf",
         "homo_sapiens",
         "Homo_sapiens.GRCh37.87.gtf.gz",
@@ -94,19 +96,19 @@ gffs <- c(
     "ensembl_grch38_gff3" = pasteURL(
         "ftp.ensembl.org",
         "pub",
-        "release-104",
+        "release-105",
         "gff3",
         "homo_sapiens",
-        "Homo_sapiens.GRCh38.104.gff3.gz",
+        "Homo_sapiens.GRCh38.105.gff3.gz",
         protocol = "ftp"
     ),
     "ensembl_grch38_gtf" = pasteURL(
         "ftp.ensembl.org",
         "pub",
-        "release-104",
+        "release-105",
         "gtf",
         "homo_sapiens",
-        "Homo_sapiens.GRCh38.104.gtf.gz",
+        "Homo_sapiens.GRCh38.105.gtf.gz",
         protocol = "ftp"
     ),
     ## NOTE Not supported yet in the package.
@@ -122,10 +124,10 @@ gffs <- c(
     "flybase_gtf" = pasteURL(
         "ftp.flybase.net",
         "releases",
-        "FB2021_03",
-        "dmel_r6.40",
+        "FB2021_06",
+        "dmel_r6.43",
         "gtf",
-        "dmel-all-r6.40.gtf.gz",
+        "dmel-all-r6.43.gtf.gz",
         protocol = "ftp"
     ),
     "gencode_grch37_gff3" = pasteURL(
@@ -134,9 +136,9 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_38",
+        "release_39",
         "GRCh37_mapping",
-        "gencode.v38lift37.annotation.gff3.gz",
+        "gencode.v39lift37.annotation.gff3.gz",
         protocol = "ftp"
     ),
     "gencode_grch37_gtf" = pasteURL(
@@ -145,9 +147,9 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_38",
+        "release_39",
         "GRCh37_mapping",
-        "gencode.v38lift37.annotation.gtf.gz",
+        "gencode.v39lift37.annotation.gtf.gz",
         protocol = "ftp"
     ),
     "gencode_grch38_gff3" = pasteURL(
@@ -156,8 +158,8 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_38",
-        "gencode.v38.annotation.gff3.gz",
+        "release_39",
+        "gencode.v39.annotation.gff3.gz",
         protocol = "ftp"
     ),
     "gencode_grch38_gtf" = pasteURL(
@@ -166,8 +168,8 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_human",
-        "release_38",
-        "gencode.v38.annotation.gtf.gz",
+        "release_39",
+        "gencode.v39.annotation.gtf.gz",
         protocol = "ftp"
     ),
     "gencode_grcm38_gff3" = pasteURL(
@@ -176,8 +178,8 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_mouse",
-        "release_M27",
-        "gencode.vM27.annotation.gff3.gz",
+        "release_M28",
+        "gencode.vM28.annotation.gff3.gz",
         protocol = "ftp"
     ),
     "gencode_grcm38_gtf" = pasteURL(
@@ -186,8 +188,8 @@ gffs <- c(
         "databases",
         "gencode",
         "Gencode_mouse",
-        "release_M27",
-        "gencode.vM27.annotation.gtf.gz",
+        "release_M28",
+        "gencode.vM28.annotation.gtf.gz",
         protocol = "ftp"
     ),
     "refseq_grch38_gff3" = pasteURL(
@@ -282,11 +284,11 @@ gffs <- c(
         "pub",
         "wormbase",
         "releases",
-        "WS281",
+        "WS283",
         "species",
         "c_elegans",
         "PRJNA13758",
-        "c_elegans.PRJNA13758.WS281.annotations.gff3.gz",
+        "c_elegans.PRJNA13758.WS283.annotations.gff3.gz",
         protocol = "ftp"
     ),
     "wormbase_gtf" = pasteURL(
@@ -294,11 +296,11 @@ gffs <- c(
         "pub",
         "wormbase",
         "releases",
-        "WS281",
+        "WS283",
         "species",
         "c_elegans",
         "PRJNA13758",
-        "c_elegans.PRJNA13758.WS281.canonical_geneset.gtf.gz",
+        "c_elegans.PRJNA13758.WS283.canonical_geneset.gtf.gz",
         protocol = "ftp"
     )
 )
