@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2022-01-12.
+#' @note Updated 2022-02-08.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -123,7 +123,13 @@
                     genome(seq) <- x[["genomeBuild"]]
                 },
                 "RefSeq" = {
-                    seq <- .getRefSeqSeqinfo(x[["file"]])
+                    seq <- .getRefSeqSeqinfo(
+                        file = ifelse(
+                            test = isAURL(x[["url"]]),
+                            yes = x[["url"]],
+                            no = x[["file"]]
+                        )
+                    )
                 },
                 "UCSC" = {
                     seq <- Seqinfo(genome = x[["genomeBuild"]])
