@@ -272,6 +272,13 @@ makeGRangesFromGFF <- function(
     ))
     tmpfile <- .cacheIt(file)
     meta <- .getGFFMetadata(tmpfile)
+    if (isAURL(file)) {
+        meta[["url"]] <- file
+    }
+    meta[["call"]] <- tryCatch(
+        expr = standardizeCall(),
+        error = function(e) NULL
+    )
     if (identical(meta[["provider"]], "UCSC")) {
         alertInfo("UCSC genome annotation file detected.")
         txdb <- .makeTxDbFromGFF(file = tmpfile, meta = meta)
@@ -290,10 +297,5 @@ makeGRangesFromGFF <- function(
             meta = meta
         )
     }
-    metadata(gr)[["file"]] <- file
-    metadata(gr)[["call"]] <- tryCatch(
-        expr = standardizeCall(),
-        error = function(e) NULL
-    )
     gr
 }
