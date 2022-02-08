@@ -10,7 +10,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2021-09-03.
+#' @note Updated 2022-02-08.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -46,7 +46,7 @@ downloadRefSeqGenome <-
         taxonomicGroup = NULL,
         genomeBuild = NULL,
         outputDir = getwd(),
-        cache = TRUE
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),

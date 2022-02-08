@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2021-10-21.
+#' @note Updated 2022-02-08.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -24,7 +24,7 @@ downloadEnsemblGenome <-
         genomeBuild = NULL,
         release = NULL,
         outputDir = getwd(),
-        cache = TRUE
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),

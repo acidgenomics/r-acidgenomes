@@ -3,7 +3,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2021-09-03.
+#' @note Updated 2022-02-08.
 #'
 #' @section Genome:
 #'
@@ -49,7 +49,7 @@ downloadUCSCGenome <-
         organism,
         genomeBuild = NULL,
         outputDir = getwd(),
-        cache = TRUE
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),

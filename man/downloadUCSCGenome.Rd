@@ -8,7 +8,7 @@ downloadUCSCGenome(
   organism,
   genomeBuild = NULL,
   outputDir = getwd(),
-  cache = TRUE
+  cache = FALSE
 )
 }
 \arguments{
@@ -32,7 +32,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2021-09-03.
+Updated 2022-02-08.
 }
 \section{Genome}{
 
