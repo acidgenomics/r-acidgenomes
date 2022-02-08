@@ -9,7 +9,7 @@ downloadRefSeqGenome(
   taxonomicGroup = NULL,
   genomeBuild = NULL,
   outputDir = getwd(),
-  cache = TRUE
+  cache = FALSE
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ Invisible \code{list}.
 Download RefSeq reference genome
 }
 \note{
-Updated 2021-09-03.
+Updated 2022-02-08.
 }
 \section{Stable release}{
 
