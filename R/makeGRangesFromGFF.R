@@ -263,6 +263,9 @@ makeGRangesFromGFF <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
+    if (isAFile(file)) {
+        file <- realpath(file)
+    }
     alert(sprintf(
         fmt = "Making {.cls %s} from GFF file ({.file %s}).",
         "GenomicRanges", file
