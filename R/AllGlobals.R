@@ -19,7 +19,7 @@ NULL
 
 #' GFF file name pattern matching
 #'
-#' @note Updated 2021-01-27.
+#' @note Updated 2021-02-08.
 #' @noRd
 .gffPatterns <- list(
     "ensembl" = paste0(
@@ -54,7 +54,7 @@ NULL
     "refseq" = paste0(
         ## "GCF_000001405.38_GRCh38.p12_genomic.gff.gz"
         ## "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz"
-        "^([0-9a-z]_)?",             # BiocFileCache
+        "^([0-9a-z]+_)?",            # BiocFileCache
         "(GC[AF]_[0-9]+\\.[0-9]+)",  # "GCF_000001405.38"
         "_([^_]+)",                  # "GRCh38.p12"
         "_(.+)",                     # "genomic" or "full_analysis_set"
@@ -63,7 +63,7 @@ NULL
     ),
     "ucsc" = paste0(
         ## "hg38.ensGene.gtf.gz"
-        "^([0-9a-z]_)?",                              # BiocFileCache
+        "^([0-9a-z]+_)?",                             # BiocFileCache
         "([a-z]+[A-Za-z]+[0-9]+)",                    # "hg38"
         "\\.(ensGene|knownGene|ncbiRefSeq|refGene)",  # "ensGene"
         "\\.gtf",
