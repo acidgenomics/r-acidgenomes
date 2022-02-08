@@ -287,9 +287,7 @@ makeGRangesFromGFF <- function(
             meta = meta
         )
     }
-    if (isAURL(file)) {
-        metadata(gr)[["url"]] <- file
-    }
+    metadata(gr)[["file"]] <- file
     metadata(gr)[["call"]] <- tryCatch(
         expr = standardizeCall(),
         error = function(e) NULL
