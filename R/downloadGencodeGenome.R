@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2021-08-03.
+#' @note Updated 2022-02-08.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -22,7 +22,7 @@ downloadGencodeGenome <-
         genomeBuild = NULL,
         release = NULL,
         outputDir = getwd(),
-        cache = TRUE
+        cache = FALSE
     ) {
         assert(
             isOrganism(organism),

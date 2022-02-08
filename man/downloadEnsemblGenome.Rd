@@ -9,7 +9,7 @@ downloadEnsemblGenome(
   genomeBuild = NULL,
   release = NULL,
   outputDir = getwd(),
-  cache = TRUE
+  cache = FALSE
 )
 }
 \arguments{
@@ -41,7 +41,7 @@ Invisible \code{list}.
 Download Ensembl reference genome
 }
 \note{
-Updated 2021-10-21.
+Updated 2022-02-08.
 }
 \examples{
 ## This example is bandwidth intensive.
