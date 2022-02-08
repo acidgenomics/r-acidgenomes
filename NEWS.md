@@ -30,6 +30,7 @@
 - Reexporting some additional functions from GenomeInfoDb: `Seqinfo`,
   `genome`, `seqinfo`, and `seqlevels`. Note that corresponding assignment
   methods (if applicable) are intentionally not reexported here.
+- Genome download functions no longer cache using BiocFileCache by default.
 
 ## AcidGenomes 0.2.20 (2022-01-08)
 
