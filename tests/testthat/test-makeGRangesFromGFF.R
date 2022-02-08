@@ -918,6 +918,8 @@ test_that("GTF genes", {
             "type" = rep("gene", 2L)
         )
     )
+    ## FIXME This test is now failing.
+    ## FIXME Seqinfo assignment is now failing, what happened?
     expect_identical(
         object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
         expected = list(
@@ -1098,6 +1100,8 @@ test_that("GFF3 genes", {
             "type" = rep("gene", 2L)
         )
     )
+    ## FIXME This test is now failing.
+    ## FIXME Seqinfo assignment is now failing, what happened?
     expect_identical(
         object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
         expected = list(
