@@ -83,8 +83,11 @@ test_that("GTF genes", {
             "genome" = "GRCh38.p13"
         )
     )
+    expect_true(
+        isAFile(metadata(object)[["file"]])
+    )
     expect_identical(
-        object = metadata(object)[["file"]],
+        object = metadata(object)[["url"]],
         expected = file
     )
     expect_identical(
@@ -249,8 +252,11 @@ test_that("GFF3 genes", {
             "genome" = "GRCh38.p13"
         )
     )
+    expect_true(
+        isAFile(metadata(object)[["file"]])
+    )
     expect_identical(
-        object = metadata(object)[["file"]],
+        object = metadata(object)[["url"]],
         expected = file
     )
     expect_identical(
