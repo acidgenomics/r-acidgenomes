@@ -9,7 +9,7 @@
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2022-01-12.
+#' @note Updated 2022-02-08.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -267,11 +267,11 @@ makeGRangesFromGFF <- function(
         fmt = "Making {.cls %s} from GFF file ({.file %s}).",
         "GenomicRanges", file
     ))
-    file <- .cacheIt(file)
-    meta <- .getGFFMetadata(file)
+    tmpfile <- .cacheIt(file)
+    meta <- .getGFFMetadata(tmpfile)
     if (identical(meta[["provider"]], "UCSC")) {
         alertInfo("UCSC genome annotation file detected.")
-        txdb <- .makeTxDbFromGFF(file = file, meta = meta)
+        txdb <- .makeTxDbFromGFF(file = tmpfile, meta = meta)
         gr <- .makeGRangesFromTxDb(
             object = txdb,
             level = level,
@@ -280,12 +280,15 @@ makeGRangesFromGFF <- function(
         )
     } else {
         gr <- .makeGRangesFromRtracklayer(
-            file = file,
+            file = tmpfile,
             level = level,
             ignoreVersion = ignoreVersion,
             synonyms = synonyms,
             meta = meta
         )
+    }
+    if (isAURL(file)) {
+        metadata(gr)[["url"]] <- file
     }
     metadata(gr)[["call"]] <- tryCatch(
         expr = standardizeCall(),
