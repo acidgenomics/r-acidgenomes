@@ -1,4 +1,4 @@
-context("makeTx2Gene")
+context("makeTx2GeneFromEnsDb")
 
 skip_if_not_installed("EnsDb.Hsapiens.v75")
 
