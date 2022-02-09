@@ -23,8 +23,6 @@ seqnames <- GenomeInfoDb::seqnames
 simpleClass <- AcidBase::simpleClass
 ## nolint end
 
-## FIXME Need to add unit tests to cover these.
-## FIXME In particular, check if we can make Tx2Gene objects from these.
 ## Updated 2022-02-08.
 txFastas <- c(
     "ensembl" = pasteURL(
@@ -70,7 +68,6 @@ txFastas <- c(
     )
 )
 
-## FIXME Need to update the verisons here.
 ## Updated 2022-02-08.
 gffs <- c(
     "ensembl_grch37_gff3" = pasteURL(
