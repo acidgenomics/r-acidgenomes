@@ -179,7 +179,10 @@ makeGRangesFromEnsDb <- function(
         isFlag(synonyms)
     )
     level <- match.arg(level)
-    alert(sprintf("Making {.cls %s} from {.var %s}.", "GenomicRanges", "EnsDb"))
+    alert(sprintf(
+        "Making {.cls %s} from {.cls %s}.",
+        "GenomicRanges", "EnsDb"
+    ))
     if (isString(object)) {
         package <- object
         requireNamespaces(package)
