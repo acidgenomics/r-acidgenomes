@@ -1,13 +1,17 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO `Ensembl2Entrez()`: Consider returning as factor?
+    Check `summary()` method to see if it is informative enough.
+** TODO For gene/transcript level, consider using `featureType` instead of `level`.
+
 ** TODO Do we need to download additional chromosome information for kallisto?
 ** TODO Need to add 'mapGencodeReleaseToEnsembl' function.
 ** TODO Consider also adding 'mapEnsemblReleaseToGencode' function.
 ** TODO Caching URL needs to show progress bar for large files.
-    (e.g. Ensembl primary assembly FASTA)
+    - e.g. Ensembl primary assembly FASTA)
 ** TODO Consider adding code coverage for export of EnsemblGenes output that contains Entrez identifier mappings.
-    We expected these to be written to disk formatted via toString.
+    - We expected these to be written to disk formatted via toString.
 ** TODO downloadGenome functions: Need to include a chromosome file that is compatible with kallisto.
 ** TODO Look into generating decoy sequences recommended for sallmon.
 ** TODO Consider creating a GTF symlink for salmon that contains all transcripts.
@@ -17,3 +21,5 @@
 ** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
 ** TODO Add automatic tx2gene output for RefSeq genome download.
 ** TODO Need to include current gene name (symbol) in the synonyms, in case we're mapping to an older reference, such as GRCh37.
+** TODO Improve WormBase GTF identifier sanitization.
+    - WormBase has some malformed entries in GTF (e.g. Transcript:AC8.13). We may want to add a filter for these.
