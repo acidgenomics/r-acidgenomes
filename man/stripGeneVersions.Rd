@@ -4,6 +4,7 @@
 \alias{stripGeneVersions}
 \alias{stripGeneVersions,Matrix-method}
 \alias{stripGeneVersions,character-method}
+\alias{stripGeneVersions,integer-method}
 \alias{stripGeneVersions,matrix-method}
 \title{Strip gene identifier versions}
 \usage{
@@ -12,6 +13,8 @@ stripGeneVersions(object, ...)
 \S4method{stripGeneVersions}{Matrix}(object)
 
 \S4method{stripGeneVersions}{character}(object)
+
+\S4method{stripGeneVersions}{integer}(object)
 
 \S4method{stripGeneVersions}{matrix}(object)
 }
@@ -32,7 +35,7 @@ Intentionally does not strip transcript versions, if defined in the object.
 To perform that action in parallel, use \code{stripVersions} instead.
 }
 \note{
-Updated 2021-08-03.
+Updated 2022-03-09.
 
 This method is strict, and will only strip Ensembl gene identifiers
 beginning with \code{"ENS.*G"}.

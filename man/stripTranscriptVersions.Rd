@@ -5,6 +5,7 @@
 \alias{stripTranscriptVersions}
 \alias{stripTranscriptVersions,Matrix-method}
 \alias{stripTranscriptVersions,character-method}
+\alias{stripTranscriptVersions,integer-method}
 \alias{stripTranscriptVersions,matrix-method}
 \title{Strip transcript identifier versions}
 \usage{
@@ -13,6 +14,8 @@ stripTranscriptVersions(object, ...)
 \S4method{stripTranscriptVersions}{Matrix}(object)
 
 \S4method{stripTranscriptVersions}{character}(object)
+
+\S4method{stripTranscriptVersions}{integer}(object)
 
 \S4method{stripTranscriptVersions}{matrix}(object)
 }

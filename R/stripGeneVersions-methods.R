@@ -1,6 +1,6 @@
 #' @name stripGeneVersions
 #' @inherit AcidGenerics::stripGeneVersions
-#' @note Updated 2021-08-03.
+#' @note Updated 2022-03-09.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -40,6 +40,16 @@ NULL
 
 
 
+## Allow passthrough support of NCBI Entrez identifiers (e.g. "7157", which
+## corresponds to "TP53". This method is used in DepMapAnalysis package.
+## Updated 2022-03-09.
+`stripGeneVersions,integer` <-  # nolint
+    function(object) {
+        return(object)
+    }
+
+
+
 ## Updated 2021-01-27.
 `stripGeneVersions,matrix` <-  # nolint
     function(object) {
@@ -72,6 +82,14 @@ setMethod(
     f = "stripGeneVersions",
     signature = signature(object = "character"),
     definition = `stripGeneVersions,character`
+)
+
+#' @rdname stripGeneVersions
+#' @export
+setMethod(
+    f = "stripGeneVersions",
+    signature = signature(object = "integer"),
+    definition = `stripGeneVersions,integer`
 )
 
 #' @rdname stripGeneVersions
