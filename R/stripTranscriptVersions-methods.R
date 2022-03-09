@@ -43,6 +43,14 @@ NULL
 
 
 
+## Updated 2022-03-09.
+`stripTranscriptVersions,integer` <-  # nolint
+    function(object) {
+        return(object)
+    }
+
+
+
 ## Updated 2019-07-22.
 `stripTranscriptVersions,matrix` <-  # nolint
     function(object) {
@@ -75,6 +83,14 @@ setMethod(
     f = "stripTranscriptVersions",
     signature = signature(object = "character"),
     definition = `stripTranscriptVersions,character`
+)
+
+#' @rdname stripTranscriptVersions
+#' @export
+setMethod(
+    f = "stripTranscriptVersions",
+    signature = signature(object = "integer"),
+    definition = `stripGeneVersions,integer`
 )
 
 #' @rdname stripTranscriptVersions
