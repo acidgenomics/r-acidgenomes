@@ -4,7 +4,7 @@
 #' @examples
 #' object <- MGI2Ensembl()
 #' print(object)
-MGI2Ensembl <- function() {  # nolint
+MGI2Ensembl <- function() { # nolint
     assert(hasInternet())
     alert("Importing MGI-to-Ensembl gene ID mappings.")
     url <- pasteURL(

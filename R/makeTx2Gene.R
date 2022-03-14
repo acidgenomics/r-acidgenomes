@@ -43,12 +43,10 @@ NULL
 #' @export
 ## Updated 2021-03-10.
 makeTx2GeneFromEnsembl <-
-    function(
-        organism,
-        genomeBuild = NULL,
-        release = NULL,
-        ignoreVersion = TRUE
-    ) {
+    function(organism,
+             genomeBuild = NULL,
+             release = NULL,
+             ignoreVersion = TRUE) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
             genomeBuild = genomeBuild,
@@ -65,10 +63,8 @@ makeTx2GeneFromEnsembl <-
 #' @export
 ## Updated 2021-03-10.
 makeTx2GeneFromEnsDb <-
-    function(
-        object,
-        ignoreVersion = TRUE
-    ) {
+    function(object,
+             ignoreVersion = TRUE) {
         gr <- makeGRangesFromEnsDb(
             object = object,
             ignoreVersion = ignoreVersion,
@@ -83,10 +79,8 @@ makeTx2GeneFromEnsDb <-
 #' @export
 ## Updated 2021-03-10.
 makeTx2GeneFromGFF <-
-    function(
-        file,
-        ignoreVersion = TRUE
-    ) {
+    function(file,
+             ignoreVersion = TRUE) {
         gr <- makeGRangesFromGFF(
             file = file,
             ignoreVersion = ignoreVersion,

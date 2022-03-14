@@ -3,10 +3,8 @@
 #' @note Updated 2021-02-25.
 #' @noRd
 .matchNcbiTaxonomicGroup <-
-    function(
-        organism,
-        mode = c("geneInfo", "refseq")
-    ) {
+    function(organism,
+             mode = c("geneInfo", "refseq")) {
         assert(isOrganism(organism))
         mode <- match.arg(mode)
         baseURL <- switch(
@@ -123,7 +121,7 @@
 #' @noRd
 #'
 #' @param file `character(1)`.
-#'   RefSeq assembly summary file or URL.
+#' RefSeq assembly summary file or URL.
 #'
 #' @seealso
 #' - [File format details](ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt).
@@ -142,9 +140,9 @@
 #' )
 #' x <- .getRefSeqAssemblySummary(file)
 #' names(x)
-
+#'
 ## nolint end
-
+#'
 .getRefSeqAssemblySummary <-
     function(file) {
         pattern <- "assembly_summary.txt"
@@ -182,39 +180,38 @@
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
-.getRefSeqGenomeURL <- function(
-    organism,
-    taxonomicGroup = NULL,
-    quiet = FALSE
-) {
-    assert(
-        isOrganism(organism),
-        isString(taxonomicGroup, nullOK = TRUE),
-        isFlag(quiet)
-    )
-    if (isFALSE(quiet)) {
-        alert(sprintf(
-            "Locating {.emph %s} genome on RefSeq FTP server.",
-            organism
-        ))
-    }
-    baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
-    if (is.null(taxonomicGroup)) {
-        taxonomicGroup <- .matchNcbiTaxonomicGroup(
-            organism = organism,
-            mode = "refseq"
+.getRefSeqGenomeURL <-
+    function(organism,
+             taxonomicGroup = NULL,
+             quiet = FALSE) {
+        assert(
+            isOrganism(organism),
+            isString(taxonomicGroup, nullOK = TRUE),
+            isFlag(quiet)
         )
+        if (isFALSE(quiet)) {
+            alert(sprintf(
+                "Locating {.emph %s} genome on RefSeq FTP server.",
+                organism
+            ))
+        }
+        baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
+        if (is.null(taxonomicGroup)) {
+            taxonomicGroup <- .matchNcbiTaxonomicGroup(
+                organism = organism,
+                mode = "refseq"
+            )
+        }
+        url <- pasteURL(
+            baseURL,
+            taxonomicGroup,
+            gsub(pattern = " ", replacement = "_", x = organism)
+        )
+        if (isFALSE(quiet)) {
+            dl(c("URL" = url))
+        }
+        url
     }
-    url <- pasteURL(
-        baseURL,
-        taxonomicGroup,
-        gsub(pattern = " ", replacement = "_", x = organism)
-    )
-    if (isFALSE(quiet)) {
-        dl(c("URL" = url))
-    }
-    url
-}
 
 
 
@@ -226,7 +223,7 @@
 #' @noRd
 #'
 #' @param file `character(1)`.
-#'   RefSeq GFF file.
+#' RefSeq GFF file.
 #'
 #' @return `Seqinfo`.
 #'
@@ -271,10 +268,10 @@
             x = "seqs_for_alignment_pipelines.ucsc_ids",
             y = basename(dirname(file))
         ) ||
-        isMatchingFixed(
-            pattern = "_full_analysis_set.refseq_annotation",
-            x = basename(file)
-        )
+            isMatchingFixed(
+                pattern = "_full_analysis_set.refseq_annotation",
+                x = basename(file)
+            )
     ) {
         ucsc <- TRUE
     } else {

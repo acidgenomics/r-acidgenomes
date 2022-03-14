@@ -27,65 +27,64 @@
 #'
 #' @note Updated 2021-04-27.
 #' @noRd
-.getEnsembl2EntrezFromOrgDb <- function(
-    keys,
-    keytype,
-    columns,
-    organism,
-    strict = TRUE
-) {
-    requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
-    pkgs <- .packages()
-    assert(
-        isCharacter(keys),
-        hasNoDuplicates(keys),
-        isString(keytype),
-        isCharacter(columns),
-        isOrganism(organism),
-        isFlag(strict)
-    )
-    alert(sprintf(
-        "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
-        "OrgDb",
-        "AnnotationHub",
-        packageVersion("AnnotationHub")
-    ))
-    ah <- .annotationHub()
-    ahs <- AnnotationHub::query(ah, pattern = c(organism, "NCBI", "OrgDb"))
-    id <- tail(names(ahs), n = 1L)
-    suppressMessages({
-        orgdb <- ah[[id]]
-    })
-    assert(is(orgdb, "OrgDb"))
-    alertInfo(sprintf(
-        "{.val %s} (%s): %s.",
-        id,
-        mcols(ahs)[id, "title"],
-        mcols(ahs)[id, "description"]
-    ))
-    suppressMessages({
-        df <- AnnotationDbi::select(
-            x = orgdb,
-            keys = keys,
-            keytype = keytype,
-            columns = columns
+.getEnsembl2EntrezFromOrgDb <-
+    function(keys,
+             keytype,
+             columns,
+             organism,
+             strict = TRUE) {
+        requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
+        pkgs <- .packages()
+        assert(
+            isCharacter(keys),
+            hasNoDuplicates(keys),
+            isString(keytype),
+            isCharacter(columns),
+            isOrganism(organism),
+            isFlag(strict)
         )
-    })
-    assert(is.data.frame(df))
-    if (isTRUE(strict)) {
-        df <- df[complete.cases(df), , drop = FALSE]
-        if (!areSetEqual(keys, unique(df[[keytype]]))) {
-            setdiff <- setdiff(keys, unique(df[[keytype]]))
-            abort(sprintf(
-                "Match failure: %s.",
-                toInlineString(setdiff, n = 10L)
-            ))
+        alert(sprintf(
+            "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
+            "OrgDb",
+            "AnnotationHub",
+            packageVersion("AnnotationHub")
+        ))
+        ah <- .annotationHub()
+        ahs <- AnnotationHub::query(ah, pattern = c(organism, "NCBI", "OrgDb"))
+        id <- tail(names(ahs), n = 1L)
+        suppressMessages({
+            orgdb <- ah[[id]]
+        })
+        assert(is(orgdb, "OrgDb"))
+        alertInfo(sprintf(
+            "{.val %s} (%s): %s.",
+            id,
+            mcols(ahs)[id, "title"],
+            mcols(ahs)[id, "description"]
+        ))
+        suppressMessages({
+            df <- AnnotationDbi::select(
+                x = orgdb,
+                keys = keys,
+                keytype = keytype,
+                columns = columns
+            )
+        })
+        assert(is.data.frame(df))
+        if (isTRUE(strict)) {
+            df <- df[complete.cases(df), , drop = FALSE]
+            if (!areSetEqual(keys, unique(df[[keytype]]))) {
+                setdiff <- setdiff(keys, unique(df[[keytype]]))
+                abort(sprintf(
+                    "Match failure: %s.",
+                    toInlineString(setdiff, n = 10L)
+                ))
+            }
         }
+        colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblId"
+        colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
+        df[["entrezId"]] <- as.integer(df[["entrezId"]])
+        forceDetach(keep = pkgs)
+        df <- as(df, "DataFrame")
+        df
     }
-    colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblId"
-    colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
-    df[["entrezId"]] <- as.integer(df[["entrezId"]])
-    forceDetach(keep = pkgs)
-    df <- as(df, "DataFrame")
-    df
-}

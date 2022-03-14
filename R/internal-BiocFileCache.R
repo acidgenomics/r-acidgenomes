@@ -5,10 +5,10 @@
 #' @noRd
 #'
 #' @param file `character`.
-#'   URLs and/or local files.
+#' URLs and/or local files.
 #'
 #' @return `character`.
-#'   Local file paths.
+#' Local file paths.
 #'
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")

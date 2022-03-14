@@ -13,8 +13,8 @@
 #' - *M. musculus*: "mt-" gene name.
 #' - *D. melanogaster*: "mt:" gene name.
 #' - *C. elegans*: Can't match by gene name. Match by "MtDNA" chromosome.
-#'   Alternatively, can match using "MTCE" sequence name (parent clone).
-#'   https://www.wormbase.org/species/c_elegans/clone/MTCE
+#' Alternatively, can match using "MTCE" sequence name (parent clone).
+#' https://www.wormbase.org/species/c_elegans/clone/MTCE
 #'
 #' Note that this might not be perfect for other genomes, so consider
 #' atttempting to improve support here in a future update.
@@ -35,32 +35,33 @@
 #' [biotypes guide]: https://m.ensembl.org/info/genome/genebuild/biotypes.html
 #'
 #' @seealso Can use `dplyr::case_when()` instead, which allows for a rowwise
-#'   vectorized if/else call stack.
+#' vectorized if/else call stack.
 #'
 #' @note Can return `NA_character_` here instead. Keeping this as "other", to
-#'   main consistency with previous data sets. Also note that `NA` can behave
-#'   inconsistently in plotting engines.
+#' main consistency with previous data sets. Also note that `NA` can behave
+#' inconsistently in plotting engines.
 #' @note Updated 2021-05-18.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
 #' @noRd
 #'
 #' @param x `list`.
-#'   List returned via apply call using `MARGIN = 1`.
+#' List returned via apply call using `MARGIN = 1`.
 #'
 #' @return `character(1)`.
 
 .applyBroadClass <- function(x) {
     if (
-        isTRUE(grepl(pattern = "^MT",
+        isTRUE(grepl(
+            pattern = "^MT",
             x = x[["chromosome"]],
             ignore.case = TRUE
         )) ||
-        isTRUE(grepl(
-            pattern = "^mt[\\:\\-]",
-            x = x[["geneName"]],
-            ignore.case = TRUE
-        ))
+            isTRUE(grepl(
+                pattern = "^mt[\\:\\-]",
+                x = x[["geneName"]],
+                ignore.case = TRUE
+            ))
     ) {
         "mito"
     } else if (identical(
@@ -113,7 +114,8 @@
             ignore.case = TRUE
         ))
     ) {
-        "ig"  ## immunoglobulin
+        ## Immunoglobulin.
+        "ig"
     } else if (
         isTRUE(grepl(
             pattern = "^tr_",
@@ -121,7 +123,8 @@
             ignore.case = TRUE
         ))
     ) {
-        "tcr"  ## T cell receptor
+        ## T cell receptor.
+        "tcr"
     } else {
         "other"
     }
@@ -260,13 +263,11 @@
 #' @note Updated 2021-01-30.
 #' @noRd
 .includeVersion <-
-    function(
-        object,
-        idCol,
-        idVersionCol,
-        idNoVersionCol,
-        quiet = TRUE
-    ) {
+    function(object,
+             idCol,
+             idVersionCol,
+             idNoVersionCol,
+             quiet = TRUE) {
         assert(
             is(object, "GenomicRanges"),
             isString(idCol),
@@ -456,19 +457,19 @@
             replacement = "\\1Id",
             x = names(mcols),
             ignore.case = FALSE
-    )
+        )
     ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
     ## Note that ensembldb output "symbol" duplicate by default.
     if (isSubset(c("geneName", "symbol"), names(mcols))) {
         mcols[["symbol"]] <- NULL
     } else if (
         isSubset("symbol", names(mcols)) &&
-        !isSubset("geneName", names(mcols))
+            !isSubset("geneName", names(mcols))
     ) {
         names(mcols)[names(mcols) == "symbol"] <- "geneName"
     } else if (
         isSubset("geneSymbol", names(mcols)) &&
-        !isSubset("geneName", names(mcols))
+            !isSubset("geneName", names(mcols))
     ) {
         ## e.g. FlyBase GTF.
         names(mcols)[names(mcols) == "geneSymbol"] <- "geneName"
@@ -476,7 +477,7 @@
     ## Always prefer use of "txName" instead of "txSymbol".
     if (
         isSubset("txSymbol", names(mcols)) &&
-        !isSubset("txName", names(mcols))
+            !isSubset("txName", names(mcols))
     ) {
         ## e.g. FlyBase GTF.
         names(mcols)[names(mcols) == "txSymbol"] <- "txName"
@@ -484,33 +485,33 @@
     ## Add geneName column if missing.
     if (
         isSubset("geneId", names(mcols)) &&
-        !isSubset("geneName", names(mcols))
+            !isSubset("geneName", names(mcols))
     ) {
         mcols[["geneName"]] <- mcols[["geneId"]]
     }
     ## Add txName column if missing.
     if (
         isSubset("txId", names(mcols)) &&
-        !isSubset("txName", names(mcols))
+            !isSubset("txName", names(mcols))
     ) {
         mcols[["txName"]] <- mcols[["txId"]]
     }
     ## Always prefer use of "geneBiotype" instead of "geneType" or "biotype".
     if (
         isSubset("geneType", names(mcols)) &&
-        !isSubset("geneBiotype", names(mcols))
+            !isSubset("geneBiotype", names(mcols))
     ) {
         ## e.g. GENCODE GFF.
         names(mcols)[names(mcols) == "geneType"] <- "geneBiotype"
     } else if (
         isSubset("biotype", names(mcols)) &&
-        !isSubset("geneBiotype", names(mcols))
+            !isSubset("geneBiotype", names(mcols))
     ) {
         names(mcols)[names(mcols) == "biotype"] <- "geneBiotype"
     }
     if (
         isSubset("txType", names(mcols)) &&
-        !isSubset("txBiotype", names(mcols))
+            !isSubset("txBiotype", names(mcols))
     ) {
         ## e.g. GENCODE GFF.
         names(mcols)[names(mcols) == "txType"] <- "txBiotype"
@@ -529,11 +530,9 @@
 #'
 #' @note Updated 2021-03-10.
 #' @noRd
-.makeGRanges <- function(
-    object,
-    ignoreVersion,
-    synonyms
-) {
+.makeGRanges <- function(object,
+                         ignoreVersion,
+                         synonyms) {
     assert(
         is(object, "GenomicRanges"),
         hasLength(object),

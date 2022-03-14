@@ -47,17 +47,15 @@ NULL
 
 
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from Ensembl using
-#'   an AnnotationHub lookup.
+#' an AnnotationHub lookup.
 #' @export
 ## Updated 2021-08-03.
 makeGene2SymbolFromEnsembl <-
-    function(
-        organism,
-        genomeBuild = NULL,
-        release = NULL,
-        ignoreVersion = TRUE,
-        format = c("makeUnique", "1:1", "unmodified")
-    ) {
+    function(organism,
+             genomeBuild = NULL,
+             release = NULL,
+             ignoreVersion = TRUE,
+             format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
             genomeBuild = genomeBuild,
@@ -71,15 +69,13 @@ makeGene2SymbolFromEnsembl <-
 
 
 #' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from an `EnsDb`
-#'   object or annotation package.
+#' object or annotation package.
 #' @export
 ## Updated 2021-08-03.
 makeGene2SymbolFromEnsDb <-
-    function(
-        object,
-        ignoreVersion = TRUE,
-        format = c("makeUnique", "1:1", "unmodified")
-    ) {
+    function(object,
+             ignoreVersion = TRUE,
+             format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromEnsDb(
             object = object,
             ignoreVersion = ignoreVersion,
@@ -94,11 +90,9 @@ makeGene2SymbolFromEnsDb <-
 #' @export
 ## Updated 2020-08-03.
 makeGene2SymbolFromGFF <-
-    function(
-        file,
-        ignoreVersion = TRUE,
-        format = c("makeUnique", "1:1", "unmodified")
-    ) {
+    function(file,
+             ignoreVersion = TRUE,
+             format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromGFF(
             file = file,
             ignoreVersion = ignoreVersion,

@@ -72,16 +72,16 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `list`.
-#'   Containing values, when possible:
-#'   - `directives`
-#'   - `format`
-#'   - `genomeBuild`
-#'   - `gffVersion`
-#'   - `md5`
-#'   - `organism`
-#'   - `provider`
-#'   - `release`
-#'   - `sha256`
+#' Containing values, when possible:
+#' - `directives`
+#' - `format`
+#' - `genomeBuild`
+#' - `gffVersion`
+#' - `md5`
+#' - `organism`
+#' - `provider`
+#' - `release`
+#' - `sha256`
 #'
 #' @examples
 #' url <- pasteURL(
@@ -156,7 +156,7 @@
             l[["provider"]] <- "Ensembl"
         } else if (
             identical(basename(file), "ref-transcripts.gtf") &&
-            any(grepl(pattern = "^chrI", x = lines))
+                any(grepl(pattern = "^chrI", x = lines))
         ) {
             ## bcbio-nextgen genome, processed with gffutils.
             ## https://github.com/daler/gffutils
@@ -198,7 +198,7 @@
                     )[1L, , drop = TRUE]
                     if (
                         !isString(l[["organism"]]) &&
-                        identical(x[[3L]], "dmel")
+                            identical(x[[3L]], "dmel")
                     ) {
                         l[["organism"]] <- "Drosophila melanogaster"
                     }
@@ -264,7 +264,7 @@
                     )[1L, , drop = TRUE]
                     if (
                         !isString(l[["organism"]]) &&
-                        identical(x[[3L]], "c_elegans")
+                            identical(x[[3L]], "c_elegans")
                     ) {
                         l[["organism"]] <- "Caenorhabditis elegans"
                     }
@@ -281,7 +281,7 @@
     ## Attempt to detect the organism from the genome build, if necessary.
     if (
         !isOrganism(l[["organism"]]) &&
-        isString(l[["genomeBuild"]])
+            isString(l[["genomeBuild"]])
     ) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
@@ -303,7 +303,7 @@
     ## Genome-specific organism workarounds.
     if (
         !isOrganism(l[["organism"]]) &&
-        any(grepl(pattern = "gene_source \"sgd\"", x = lines))
+            any(grepl(pattern = "gene_source \"sgd\"", x = lines))
     ) {
         l[["organism"]] <- "Saccharomyces cerevisiae"
     }
@@ -332,7 +332,7 @@
             x = df[which(df[["key"]] == "provider"), "value"],
             y = "GENCODE"
         ) &&
-        isTRUE("description" %in% df[["key"]])
+            isTRUE("description" %in% df[["key"]])
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
         x <- str_match(
@@ -420,7 +420,9 @@
 #' @noRd
 .isSupportedGFF <- function(file) {
     ok <- isString(file)
-    if (!ok) { return(FALSE) }
+    if (!ok) {
+        return(FALSE)
+    }
     denylist <- c(
         "flybase_gff" = paste0(
             "^([a-z0-9]+_)?",

@@ -20,9 +20,9 @@
 #'
 #' @export
 #' @note `BiocGenerics::organism()` `character` method conflicts with annotate
-#'   package, which gets loaded into the namespace when DESeq2 is attached.
-#'   Instead, we're exporting the character method here as a separate function
-#'   named `detectOrganism`.
+#' package, which gets loaded into the namespace when DESeq2 is attached.
+#' Instead, we're exporting the character method here as a separate function
+#' named `detectOrganism`.
 #' @note Updated 2022-02-07.
 #'
 #' @param object `character`.
@@ -37,8 +37,8 @@
 #' detectOrganism("ENSG00000000003")
 #'
 #' ## Match by genome build.
-#' detectOrganism("GRCh38")  # Ensembl
-#' detectOrganism("hg38")    # UCSC
+#' detectOrganism("GRCh38") # Ensembl
+#' detectOrganism("hg38") # UCSC
 #'
 #' ## Match by alternate organism name.
 #' detectOrganism("H. sapiens")
@@ -63,7 +63,7 @@ detectOrganism <- function(object) {
     i <- 1L
     while (
         is.na(x) &&
-        i <= min(length(object), 50L)
+            i <= min(length(object), 50L)
     ) {
         x <- .detectOrganism(string = object[[i]], data = data)
         i <- i + 1L
@@ -78,7 +78,7 @@ detectOrganism <- function(object) {
 
 
 ## Updated 2020-10-06.
-.detectOrganism <-  # nolint
+.detectOrganism <- # nolint
     function(string, data) {
         ## Generate a logical matrix of grep matches.
         hits <- apply(

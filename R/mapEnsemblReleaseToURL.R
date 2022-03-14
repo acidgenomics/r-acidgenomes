@@ -4,10 +4,10 @@
 #' @export
 #'
 #' @param release `integer(1)` or `character(1)`.
-#'   Ensembl release (e.g. `100`).
+#' Ensembl release (e.g. `100`).
 #'
 #' @return `character(1)`.
-#'   URL.
+#' URL.
 #'
 #' @seealso
 #' - `biomaRt::listEnsemblArchives()`.

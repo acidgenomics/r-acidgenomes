@@ -6,7 +6,7 @@
 #' @param ... Additional arguments.
 #'
 #' @note This method is strict, and will only strip Ensembl transcript
-#'   identifiers beginning with `"ENS.*T"`.
+#' identifiers beginning with `"ENS.*T"`.
 #'
 #' @seealso
 #' - http://www.ensembl.org/info/genome/stable_ids/index.html
@@ -25,7 +25,7 @@ NULL
 
 
 ## Updated 2021-01-27.
-`stripTranscriptVersions,character` <-  # nolint
+`stripTranscriptVersions,character` <- # nolint
     function(object) {
         assert(isCharacter(object))
         pattern <- "^(ENS.*T[0-9]{11})(\\.[0-9]+)(_.+)?$"
@@ -44,15 +44,15 @@ NULL
 
 
 ## Updated 2022-03-09.
-`stripTranscriptVersions,integer` <-  # nolint
+`stripTranscriptVersions,integer` <- # nolint
     function(object) {
-        return(object)
+        object
     }
 
 
 
 ## Updated 2019-07-22.
-`stripTranscriptVersions,matrix` <-  # nolint
+`stripTranscriptVersions,matrix` <- # nolint
     function(object) {
         assert(hasRownames(object))
         rownames <- rownames(object)
@@ -64,7 +64,7 @@ NULL
 
 
 ## Updated 2020-01-30.
-`stripTranscriptVersions,Matrix` <-  # nolint
+`stripTranscriptVersions,Matrix` <- # nolint
     `stripTranscriptVersions,matrix`
 
 

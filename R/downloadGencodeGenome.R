@@ -17,13 +17,11 @@
 #' ## >     annotation = "gtf"
 #' ## > )
 downloadGencodeGenome <-
-    function(
-        organism,
-        genomeBuild = NULL,
-        release = NULL,
-        outputDir = getwd(),
-        cache = FALSE
-    ) {
+    function(organism,
+             genomeBuild = NULL,
+             release = NULL,
+             outputDir = getwd(),
+             cache = FALSE) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
@@ -111,13 +109,11 @@ downloadGencodeGenome <-
 
 ## Updated 2021-08-03.
 .downloadGencodeAnnotation <-
-    function(
-        genomeBuild,
-        outputDir,
-        release,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             release,
+             releaseURL,
+             cache) {
         urls <- c(
             "gff" = pasteURL(
                 releaseURL,
@@ -199,12 +195,10 @@ downloadGencodeGenome <-
 
 ## Updated 2021-08-03.
 .downloadGencodeGenome <-
-    function(
-        genomeBuild,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             releaseURL,
+             cache) {
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
@@ -242,12 +236,10 @@ downloadGencodeGenome <-
 
 ## Updated 2021-08-03.
 .downloadGencodeMetadata <-
-    function(
-        genomeBuild,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             releaseURL,
+             cache) {
         urls <- c(
             "readme" = pasteURL(
                 releaseURL,
@@ -271,13 +263,11 @@ downloadGencodeGenome <-
 
 ## Updated 2021-08-03.
 .downloadGencodeTranscriptome <-
-    function(
-        genomeBuild,
-        outputDir,
-        release,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             release,
+             releaseURL,
+             cache) {
         urls <- c(
             "fasta" = pasteURL(
                 releaseURL,
