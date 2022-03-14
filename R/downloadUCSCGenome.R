@@ -8,17 +8,17 @@
 #' @section Genome:
 #'
 #' - `<GENOME_BUILD>.chrom.sizes`: Two-column tab-separated text file containing
-#'   assembly sequence names and sizes.
-#'  - `<GENOME_BUILD>.chromAlias.txt`: Sequence name alias file, one line for
-#'    each sequence name.  First column is sequence name followed by tab
-#'    separated alias names.
+#' assembly sequence names and sizes.
+#' - `<GENOME_BUILD>.chromAlias.txt`: Sequence name alias file, one line for
+#' each sequence name.  First column is sequence name followed by tab
+#' separated alias names.
 #'
 #' @section Transcriptome:
 #'
 #' - `mrna.fa.gz`: Human mRNA from GenBank. This sequence data is updated
-#'   regularly via automatic GenBank updates.
+#' regularly via automatic GenBank updates.
 #' - `refMrna.fa.gz`: RefSeq mRNA from the same species as the genome.
-#'   This sequence data is updated regularly via automatic GenBank updates.
+#' This sequence data is updated regularly via automatic GenBank updates.
 #'
 #' @section Gene annotations:
 #' :
@@ -30,8 +30,8 @@
 #' @inheritParams downloadEnsemblGenome
 #'
 #' @param genomeBuild `character(1)`.
-#'   UCSC genome build assembly name (e.g. `"hg38"`).
-#'   If set `NULL`, defauls to the most recent build available.
+#' UCSC genome build assembly name (e.g. `"hg38"`).
+#' If set `NULL`, defauls to the most recent build available.
 #'
 #' @return Invisible `list`.
 #'
@@ -41,16 +41,14 @@
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadUCSCGenome(organism = "Homo sapiens")
-
+#'
 ## nolint end
-
+#'
 downloadUCSCGenome <-
-    function(
-        organism,
-        genomeBuild = NULL,
-        outputDir = getwd(),
-        cache = FALSE
-    ) {
+    function(organism,
+             genomeBuild = NULL,
+             outputDir = getwd(),
+             cache = FALSE) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
@@ -129,12 +127,10 @@ downloadUCSCGenome <-
 
 ## Updated 2021-08-03.
 .downloadUCSCAnnotation <-
-    function(
-        genomeBuild,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             releaseURL,
+             cache) {
         genesURL <- pasteURL(releaseURL, "genes")
         urls <- c(
             "readme" = pasteURL(genesURL, "README.txt"),
@@ -206,12 +202,10 @@ downloadUCSCGenome <-
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
 ## Updated 2021-08-03.
 .downloadUCSCGenome <-
-    function(
-        genomeBuild,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             outputDir,
+             releaseURL,
+             cache) {
         isHuman <- grepl(pattern = "^hg[0-9]+$", x = genomeBuild)
         latestURL <- ifelse(
             test = isHuman,
@@ -272,11 +266,9 @@ downloadUCSCGenome <-
 
 ## Updated 2021-08-03.
 .downloadUCSCMetadata <-
-    function(
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(outputDir,
+             releaseURL,
+             cache) {
         urls <- c("readme" = pasteURL(releaseURL, "README.txt"))
         files <- .downloadURLs(
             urls = urls,
@@ -290,11 +282,9 @@ downloadUCSCGenome <-
 
 ## Updated 2021-08-03.
 .downloadUCSCTranscriptome <-
-    function(
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(outputDir,
+             releaseURL,
+             cache) {
         urls <- c(
             "mrna" = pasteURL(releaseURL, "mrna.fa.gz"),
             "mrnaChecksum" = pasteURL(releaseURL, "mrna.fa.gz.md5"),

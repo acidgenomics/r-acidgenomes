@@ -49,7 +49,7 @@ test_that("Genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -132,7 +132,7 @@ test_that("Transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000635602.1"]),  # nolint
+            X = as.data.frame(object["ENST00000635602.1"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),

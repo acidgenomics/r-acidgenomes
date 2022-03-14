@@ -5,8 +5,8 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param taxonomicGroup `character(1)`.
-#'   NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
-#'   Defining this manually avoids having to query the FTP server.
+#' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
+#' Defining this manually avoids having to query the FTP server.
 #'
 #' @return `EntrezGeneInfo`.
 #'
@@ -20,11 +20,9 @@
 #'     taxonomicGroup = "Mammalia"
 #' )
 #' print(object)
-EntrezGeneInfo <-  # nolint
-    function(
-        organism,
-        taxonomicGroup = NULL
-    ) {
+EntrezGeneInfo <- # nolint
+    function(organism,
+             taxonomicGroup = NULL) {
         assert(
             hasInternet(),
             isOrganism(organism),

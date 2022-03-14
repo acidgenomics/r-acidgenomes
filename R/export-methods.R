@@ -32,13 +32,11 @@ NULL
 
 
 ## Updated 2021-10-21.
-`export,Tx2Gene` <-  # nolint
-    function(
-        object,
-        con,
-        format,
-        ...
-    ) {
+`export,Tx2Gene` <- # nolint
+    function(object,
+             con,
+             format,
+             ...) {
         if (missing(con)) {
             con <- NULL
         }

@@ -23,14 +23,14 @@
 #' generalizes the gene types into a smaller number of semantically-meaningful
 #' groups:
 #'
-#'   - `coding`.
-#'   - `noncoding`.
-#'   - `pseudo`.
-#'   - `small`.
-#'   - `decaying`.
-#'   - `ig` (immunoglobulin).
-#'   - `tcr` (T cell receptor).
-#'   - `other`.
+#' - `coding`.
+#' - `noncoding`.
+#' - `pseudo`.
+#' - `small`.
+#' - `decaying`.
+#' - `ig` (immunoglobulin).
+#' - `tcr` (T cell receptor).
+#' - `other`.
 #'
 #' @section GRCh37 (hg19) legacy annotations:
 #'
@@ -40,48 +40,6 @@
 #' GENCODE or Ensembl.
 #'
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
-#'
-#' @section AnnotationHub queries:
-#'
-#' Here's how to perform manual, customized AnnotationHub queries.
-#'
-#' ```
-#' suppressPackageStartupMessages({
-#'     library(AnnotationHub)
-#'     library(ensembldb)
-#' })
-#' ah <- AnnotationHub()
-#'
-#' # Human ensembldb (EnsDb) records.
-#' ahs <- query(
-#'     x = ah,
-#'     pattern = c(
-#'         "Homo sapiens",
-#'         "GRCh38",
-#'         "Ensembl",
-#'         "EnsDb"
-#'     )
-#' )
-#' mcols(ahs)
-#' print(ahs)
-#' # EnsDb (Ensembl GRCh38 94; 2018-10-11)
-#' ah[["AH64923"]]
-#'
-#' # Human UCSC TxDb records.
-#' ahs <- query(
-#'     x = ah,
-#'     pattern = c(
-#'         "Homo sapiens",
-#'         "UCSC",
-#'         "TxDb",
-#'         "knownGene"
-#'     )
-#' )
-#' mcols(ahs)
-#' print(ahs)
-#' # TxDb (UCSC hg38 GENCODE 24; 2016-12-22)
-#' ah[["AH52260"]]
-#' ```
 #'
 #' @name makeGRangesFromEnsembl
 #' @note Updated 2021-08-04.
@@ -122,147 +80,145 @@ NULL
 
 
 #' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
-#'   querying AnnotationHub.
+#' querying AnnotationHub.
 #' @export
-makeGRangesFromEnsembl <- function(
-    organism,
-    level = c("genes", "transcripts"),
-    genomeBuild = NULL,
-    release = NULL,
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    assert(
-        isFlag(ignoreVersion),
-        isFlag(synonyms)
-    )
-    level <- match.arg(level)
-    alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
-    edb <- .getEnsDb(
-        organism = organism,
-        genomeBuild = genomeBuild,
-        release = release
-    )
-    gr <- makeGRangesFromEnsDb(
-        object = edb,
-        level = level,
-        ignoreVersion = ignoreVersion,
-        synonyms = synonyms
-    )
-    metadata(gr)[["call"]] <- tryCatch(
-        expr = standardizeCall(),
-        error = function(e) NULL
-    )
-    gr
-}
+makeGRangesFromEnsembl <-
+    function(organism,
+             level = c("genes", "transcripts"),
+             genomeBuild = NULL,
+             release = NULL,
+             ignoreVersion = TRUE,
+             synonyms = FALSE) {
+        assert(
+            isFlag(ignoreVersion),
+            isFlag(synonyms)
+        )
+        level <- match.arg(level)
+        alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
+        edb <- .getEnsDb(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release
+        )
+        gr <- makeGRangesFromEnsDb(
+            object = edb,
+            level = level,
+            ignoreVersion = ignoreVersion,
+            synonyms = synonyms
+        )
+        metadata(gr)[["call"]] <- tryCatch(
+            expr = standardizeCall(),
+            error = function(e) NULL
+        )
+        gr
+    }
 
 
 
 #' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
-#'   annotation source. Alternatively, can pass in an EnsDb package name as
-#'   a `character(1)`.
+#' annotation source. Alternatively, can pass in an EnsDb package name as
+#' a `character(1)`.
 #' @export
 #'
 #' @param object `EnsDb` or `character(1)`.
-#'   `EnsDb` object or name of specific annotation package containing a
-#'   versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
-makeGRangesFromEnsDb <- function(
-    object,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    pkgs <- .packages()
-    requireNamespaces("ensembldb")
-    assert(
-        isFlag(ignoreVersion),
-        isFlag(synonyms)
-    )
-    level <- match.arg(level)
-    alert(sprintf(
-        "Making {.cls %s} from {.cls %s}.",
-        "GenomicRanges", "EnsDb"
-    ))
-    if (isString(object)) {
-        package <- object
-        requireNamespaces(package)
-        object <- get(
-            x = package,
-            envir = asNamespace(package),
-            inherits = FALSE
+#' `EnsDb` object or name of specific annotation package containing a
+#' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
+makeGRangesFromEnsDb <-
+    function(object,
+             level = c("genes", "transcripts"),
+             ignoreVersion = TRUE,
+             synonyms = FALSE) {
+        pkgs <- .packages()
+        requireNamespaces("ensembldb")
+        assert(
+            isFlag(ignoreVersion),
+            isFlag(synonyms)
         )
-    }
-    assert(is(object, "EnsDb"))
-    args <- list(
-        "x" = object,
-        "order.type" = "asc",
-        "return.type" = "GRanges"
-    )
-    ## Ensembl 102 example (AH89180):
-    ##  [1] "canonical_transcript" "description"          "entrezid"
-    ##  [4] "gene_biotype"         "gene_id"              "gene_id_version"
-    ##  [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
-    ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
-    ## [13] "symbol"
-    geneCols <- sort(unique(c(
-        ensembldb::listColumns(object, "gene"),
-        "entrezid"
-    )))
-    ## Ensembl 102 example (AH89180):
-    ##  [1] "canonical_transcript" "description"          "entrezid"
-    ##  [4] "gc_content"           "gene_biotype"         "gene_id"
-    ##  [7] "gene_id_version"      "gene_name"            "gene_seq_end"
-    ## [10] "gene_seq_start"       "seq_coord_system"     "seq_name"
-    ## [13] "seq_strand"           "symbol"               "tx_biotype"
-    ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
-    ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
-    ## [22] "tx_seq_start"         "tx_support_level"
-    txCols <- sort(unique(c(
-        ensembldb::listColumns(object, "tx"),
-        geneCols
-    )))
-    switch(
-        EXPR = level,
-        "genes" = {
-            fun <- ensembldb::genes
-            args <- append(
-                x = args,
-                values = list(
-                    "columns" = geneCols,
-                    "order.by" = "gene_id"
-                )
-            )
-        },
-        "transcripts" = {
-            fun <- ensembldb::transcripts
-            args <- append(
-                x = args,
-                values = list(
-                    "columns" = txCols,
-                    "order.by" = "tx_id"
-                )
+        level <- match.arg(level)
+        alert(sprintf(
+            "Making {.cls %s} from {.cls %s}.",
+            "GenomicRanges", "EnsDb"
+        ))
+        if (isString(object)) {
+            package <- object
+            requireNamespaces(package)
+            object <- get(
+                x = package,
+                envir = asNamespace(package),
+                inherits = FALSE
             )
         }
-    )
-    ## This step can warn about out-of-bound ranges that need to be trimmed.
-    ## We're taking care of trimming on the `.makeGRanges()` call below.
-    suppressWarnings({
-        gr <- do.call(what = fun, args = args)
-    })
-    assert(is(gr, "GenomicRanges"))
-    metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-    gr <- .makeGRanges(
-        object = gr,
-        ignoreVersion = ignoreVersion,
-        synonyms = synonyms
-    )
-    metadata(gr)[["call"]] <- tryCatch(
-        expr = standardizeCall(),
-        error = function(e) NULL
-    )
-    forceDetach(keep = pkgs)
-    gr
-}
+        assert(is(object, "EnsDb"))
+        args <- list(
+            "x" = object,
+            "order.type" = "asc",
+            "return.type" = "GRanges"
+        )
+        ## Ensembl 102 example (AH89180):
+        ## [1] "canonical_transcript" "description"          "entrezid"
+        ## [4] "gene_biotype"         "gene_id"              "gene_id_version"
+        ## [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
+        ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
+        ## [13] "symbol"
+        geneCols <- sort(unique(c(
+            ensembldb::listColumns(object, "gene"),
+            "entrezid"
+        )))
+        ## Ensembl 102 example (AH89180):
+        ## [1] "canonical_transcript" "description"          "entrezid"
+        ## [4] "gc_content"           "gene_biotype"         "gene_id"
+        ## [7] "gene_id_version"      "gene_name"            "gene_seq_end"
+        ## [10] "gene_seq_start"       "seq_coord_system"     "seq_name"
+        ## [13] "seq_strand"           "symbol"               "tx_biotype"
+        ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
+        ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
+        ## [22] "tx_seq_start"         "tx_support_level"
+        txCols <- sort(unique(c(
+            ensembldb::listColumns(object, "tx"),
+            geneCols
+        )))
+        switch(
+            EXPR = level,
+            "genes" = {
+                fun <- ensembldb::genes
+                args <- append(
+                    x = args,
+                    values = list(
+                        "columns" = geneCols,
+                        "order.by" = "gene_id"
+                    )
+                )
+            },
+            "transcripts" = {
+                fun <- ensembldb::transcripts
+                args <- append(
+                    x = args,
+                    values = list(
+                        "columns" = txCols,
+                        "order.by" = "tx_id"
+                    )
+                )
+            }
+        )
+        ## This step can warn about out-of-bound ranges that need to be trimmed.
+        ## We're taking care of trimming on the `.makeGRanges()` call below.
+        suppressWarnings({
+            gr <- do.call(what = fun, args = args)
+        })
+        assert(is(gr, "GenomicRanges"))
+        metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
+        gr <- .makeGRanges(
+            object = gr,
+            ignoreVersion = ignoreVersion,
+            synonyms = synonyms
+        )
+        metadata(gr)[["call"]] <- tryCatch(
+            expr = standardizeCall(),
+            error = function(e) NULL
+        )
+        forceDetach(keep = pkgs)
+        gr
+    }
 
 
 

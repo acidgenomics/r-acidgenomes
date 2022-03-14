@@ -2,27 +2,27 @@
 #' @inherit AcidGenerics::Gene2Symbol description return title
 #'
 #' @note For some organisms, gene identifiers and gene names do not map 1:1
-#'   (e.g. *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
-#'   here in the documentation for approaches that deal with this issue.
+#' (e.g. *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
+#' here in the documentation for approaches that deal with this issue.
 #' @note For the `format` argument, note that "long" was used instead of
-#'   "unmodified" prior to v0.10.10.
+#' "unmodified" prior to v0.10.10.
 #' @note Updated 2021-10-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #' @param format `character(1)`.
-#'   Formatting method to apply:
+#' Formatting method to apply:
 #'
-#'   - `"makeUnique"`: *Recommended.* Apply `make.unique` to the `geneName`
-#'     column. Gene names are made unique, while the identifiers remain
-#'     unmodified. `NA` gene names will be renamed to `"unannotated"`.
-#'   - `"1:1"`: For gene names that map to multiple gene identifiers, select
-#'     only the first annotated gene identifier. Incomplete elements with
-#'     `NA` gene name will be removed will be removed with an internal
-#'     `complete.cases` call.
-#'   - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
-#'     long format. Incomplete elements with `NA` gene name will be removed
-#'     with an internal `complete.cases` call.
+#' - `"makeUnique"`: *Recommended.* Apply `make.unique` to the `geneName`
+#' column. Gene names are made unique, while the identifiers remain
+#' unmodified. `NA` gene names will be renamed to `"unannotated"`.
+#' - `"1:1"`: For gene names that map to multiple gene identifiers, select
+#' only the first annotated gene identifier. Incomplete elements with
+#' `NA` gene name will be removed will be removed with an internal
+#' `complete.cases` call.
+#' - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
+#' long format. Incomplete elements with `NA` gene name will be removed
+#' with an internal `complete.cases` call.
 #' @param ... Arguments pass through to `DataFrame` method.
 #'
 #' @seealso [makeGene2Symbol()].
@@ -52,12 +52,10 @@ NULL
 
 
 ## Updated 2021-10-13.
-`Gene2Symbol,DataFrame` <-  # nolint
-    function(
-        object,
-        format = c("makeUnique", "1:1", "unmodified"),
-        quiet = FALSE
-    ) {
+`Gene2Symbol,DataFrame` <- # nolint
+    function(object,
+             format = c("makeUnique", "1:1", "unmodified"),
+             quiet = FALSE) {
         assert(
             hasColnames(object),
             isFlag(quiet)
@@ -112,7 +110,8 @@ NULL
                 ## Replace any "NA" gene names with "unannotated".
                 if (any(is.na(object[["geneName"]]))) {
                     object[["geneName"]][
-                        which(is.na(object[["geneName"]]))] <- "unannotated"
+                        which(is.na(object[["geneName"]]))
+                    ] <- "unannotated"
                 }
                 ## Inform the user about how many symbols multi-map.
                 ## Don't count "unannotated" genes as true duplicates here.
@@ -186,7 +185,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Gene2Symbol,GenomicRanges` <-  # nolint
+`Gene2Symbol,GenomicRanges` <- # nolint
     function(object, ...) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)

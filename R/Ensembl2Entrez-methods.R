@@ -4,14 +4,14 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param format `character(1)`.
-#'   Formatting method to apply:
+#' Formatting method to apply:
 #'
-#'   - `"1:1"`: *Recommended.*
-#'       Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
-#'       Entrez, pick the oldest Entrez identifier. Genes that don't map to
-#'       Entrez will contain `NA` in `entrezId` column.
-#'   - `"long"`:
-#'       Return 1:many in long format.
+#' - `"1:1"`: *Recommended.*
+#' Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
+#' Entrez, pick the oldest Entrez identifier. Genes that don't map to
+#' Entrez will contain `NA` in `entrezId` column.
+#' - `"long"`:
+#' Return 1:many in long format.
 #' @param ... Additional arguments.
 #'
 #' @examples
@@ -31,12 +31,10 @@ NULL
 #' @note Updated 2021-02-24.
 #' @noRd
 .makeEnsembl2Entrez <-
-    function(
-        object,
-        format = c("1:1", "long"),
-        ## Internal-only args:
-        return = c("Ensembl2Entrez", "Entrez2Ensembl")
-    ) {
+    function(object,
+             format = c("1:1", "long"),
+             ## Internal-only args:
+             return = c("Ensembl2Entrez", "Entrez2Ensembl")) {
         format <- match.arg(format)
         return <- match.arg(return)
         cols <- switch(
@@ -81,12 +79,10 @@ NULL
 
 
 ## Updated 2021-02-10.
-`Ensembl2Entrez,character` <-  # nolint
-    function(
-        object,
-        organism = NULL,
-        format
-    ) {
+`Ensembl2Entrez,character` <- # nolint
+    function(object,
+             organism = NULL,
+             format) {
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
@@ -112,7 +108,7 @@ formals(`Ensembl2Entrez,character`)[["format"]] <-
 
 
 ## Updated 2021-02-01.
-`Ensembl2Entrez,GenomicRanges` <-  # nolint
+`Ensembl2Entrez,GenomicRanges` <- # nolint
     function(object, format) {
         assert(hasColnames(mcols(object)))
         colnames(mcols(object)) <-

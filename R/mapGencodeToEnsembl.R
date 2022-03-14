@@ -4,10 +4,10 @@
 #' @note Updated 2022-01-17.
 #'
 #' @param release `integer(1)`.
-#'   Human GENCODE release (e.g. `39`).
+#' Human GENCODE release (e.g. `39`).
 #'
 #' @return `integer(1)`.
-#'   Ensembl release.
+#' Ensembl release.
 #'
 #' @seealso
 #' - https://www.gencodegenes.org/

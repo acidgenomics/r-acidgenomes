@@ -4,7 +4,7 @@
 #' @examples
 #' object <- HGNC2Ensembl()
 #' print(object)
-HGNC2Ensembl <-  # nolint
+HGNC2Ensembl <- # nolint
     function() {
         hgnc <- HGNC()
         alert("Mapping HGNC identifiers to Ensembl.")
