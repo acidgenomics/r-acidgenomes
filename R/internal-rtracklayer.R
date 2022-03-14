@@ -1,67 +1,66 @@
 ## Updated 2022-01-12.
-.makeGRangesFromRtracklayer <- function(
-    file,
-    level,
-    ignoreVersion,
-    synonyms,
-    meta
-) {
-    assert(
-        isString(file),
-        is.list(meta),
-        isString(meta[["format"]]),
-        isString(meta[["provider"]])
-    )
-    level <- match.arg(
-        arg = level,
-        choices = c("genes", "transcripts")
-    )
-    meta[["level"]] <- level
-    gr <- import(file = .cacheIt(file))
-    assert(is(gr, "GenomicRanges"))
-    format <- ifelse(
-        test = grepl(pattern = "GTF", x = meta[["format"]]),
-        yes = "GTF",
-        no = "GFF"
-    )
-    provider <- match.arg(
-        arg = meta[["provider"]],
-        choices = c(
-            "Ensembl",
-            "FlyBase",
-            "GENCODE",
-            "RefSeq",
-            "UCSC",
-            "WormBase"
+.makeGRangesFromRtracklayer <-
+    function(file,
+             level,
+             ignoreVersion,
+             synonyms,
+             meta) {
+        assert(
+            isString(file),
+            is.list(meta),
+            isString(meta[["format"]]),
+            isString(meta[["provider"]])
         )
-    )
-    funName <- paste0(
-        ".",
-        camelCase(
-            object = paste("rtracklayer", provider, level, format),
-            strict = TRUE
+        level <- match.arg(
+            arg = level,
+            choices = c("genes", "transcripts")
         )
-    )
-    tryCatch(
-        expr = {
-            what <- .getFun(funName)
-        },
-        error = function(e) {
-            abort(sprintf("Unsupported GFF: {.file %s}.", basename(file)))
+        meta[["level"]] <- level
+        gr <- import(file = .cacheIt(file))
+        assert(is(gr, "GenomicRanges"))
+        format <- ifelse(
+            test = grepl(pattern = "GTF", x = meta[["format"]]),
+            yes = "GTF",
+            no = "GFF"
+        )
+        provider <- match.arg(
+            arg = meta[["provider"]],
+            choices = c(
+                "Ensembl",
+                "FlyBase",
+                "GENCODE",
+                "RefSeq",
+                "UCSC",
+                "WormBase"
+            )
+        )
+        funName <- paste0(
+            ".",
+            camelCase(
+                object = paste("rtracklayer", provider, level, format),
+                strict = TRUE
+            )
+        )
+        tryCatch(
+            expr = {
+                what <- .getFun(funName)
+            },
+            error = function(e) {
+                abort(sprintf("Unsupported GFF: {.file %s}.", basename(file)))
+            }
+        )
+        gr <- do.call(what = what, args = list("object" = gr))
+        metadata(gr) <- meta
+        seqinfo <- .getSeqinfo(meta)
+        if (is(seqinfo, "Seqinfo")) {
+            seqinfo(gr) <- seqinfo[seqlevels(gr)]
         }
-    )
-    gr <- do.call(what = what, args = list("object" = gr))
-    metadata(gr) <- meta
-    seqinfo <- .getSeqinfo(meta)
-    if (is(seqinfo, "Seqinfo")) {
-        seqinfo(gr) <- seqinfo[seqlevels(gr)]
+        .makeGRanges(
+            object = gr,
+            ignoreVersion = ignoreVersion,
+            synonyms = synonyms
+        )
     }
-    .makeGRanges(
-        object = gr,
-        ignoreVersion = ignoreVersion,
-        synonyms = synonyms
-    )
-}
 
 
 
@@ -202,9 +201,11 @@
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
         names(mcols(object))[
-            names(mcols(object)) == "Name"] <- "gene_name"
+            names(mcols(object)) == "Name"
+        ] <- "gene_name"
         names(mcols(object))[
-            names(mcols(object)) == "biotype"] <- "gene_biotype"
+            names(mcols(object)) == "biotype"
+        ] <- "gene_biotype"
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],
@@ -248,9 +249,11 @@
         )
         mcols(object) <- removeNA(mcols(object))
         names(mcols(object))[
-            names(mcols(object)) == "biotype"] <- "transcript_biotype"
+            names(mcols(object)) == "biotype"
+        ] <- "transcript_biotype"
         names(mcols(object))[
-            names(mcols(object)) == "Name"] <- "transcript_name"
+            names(mcols(object)) == "Name"
+        ] <- "transcript_name"
         mcols(object)[["gene_id"]] <- gsub(
             pattern = "^gene:",
             replacement = "",
@@ -516,9 +519,9 @@
 
 ## RefSeq ======================================================================
 ## GTF:
-##  [1] "source"             "type"               "score"
-##  [4] "phase"              "gene_id"            "transcript_id"
-##  [7] "db_xref"            "description"        "gbkey"
+## [1] "source"             "type"               "score"
+## [4] "phase"              "gene_id"            "transcript_id"
+## [7] "db_xref"            "description"        "gbkey"
 ## [10] "gene"               "gene_biotype"       "pseudo"
 ## [13] "product"            "transcript_biotype" "exon_number"
 ## [16] "gene_synonym"       "model_evidence"     "tag"
@@ -528,11 +531,11 @@
 ## [28] "transl_table"
 
 ## GFF:
-##  [1] "source"                    "type"
-##  [3] "score"                     "phase"
-##  [5] "ID"                        "Dbxref"
-##  [7] "Name"                      "chromosome"
-##  [9] "gbkey"                     "genome"
+## [1] "source"                    "type"
+## [3] "score"                     "phase"
+## [5] "ID"                        "Dbxref"
+## [7] "Name"                      "chromosome"
+## [9] "gbkey"                     "genome"
 ## [11] "mol_type"                  "description"
 ## [13] "gene"                      "gene_biotype"
 ## [15] "pseudo"                    "Parent"
@@ -601,9 +604,11 @@
         )
         object <- object[keep]
         names(mcols(object))[
-            names(mcols(object)) == "gene_id"] <- "parent_gene_id"
+            names(mcols(object)) == "gene_id"
+        ] <- "parent_gene_id"
         names(mcols(object))[
-            names(mcols(object)) == "gene"] <- "gene_id"
+            names(mcols(object)) == "gene"
+        ] <- "gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
         object
     }
@@ -650,9 +655,11 @@
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         names(mcols(object))[
-            names(mcols(object)) == "gene_id"] <- "parent_gene_id"
+            names(mcols(object)) == "gene_id"
+        ] <- "parent_gene_id"
         names(mcols(object))[
-            names(mcols(object)) == "gene"] <- "gene_id"
+            names(mcols(object)) == "gene"
+        ] <- "gene_id"
         cols <- c(
             setdiff(
                 x = colnames(mcols(object)),
@@ -687,7 +694,7 @@
         )
         keep <-
             !is.na(mcols(object)[["gbkey"]]) &
-            mcols(object)[["gbkey"]] == "Gene"
+                mcols(object)[["gbkey"]] == "Gene"
         assert(
             any(keep),
             msg = "Failed to extract any genes."
@@ -807,9 +814,9 @@
 
 ## WormBase ====================================================================
 ## GTF (2021-08-05):
-##  [1] "source"             "type"               "score"
-##  [4] "phase"              "gene_id"            "gene_version"
-##  [7] "gene_source"        "gene_biotype"       "gene_name"
+## [1] "source"             "type"               "score"
+## [4] "phase"              "gene_id"            "gene_version"
+## [7] "gene_source"        "gene_biotype"       "gene_name"
 ## [10] "transcript_id"      "transcript_source"  "transcript_biotype"
 ## [13] "exon_number"        "exon_id"            "protein_id"
 

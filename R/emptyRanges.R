@@ -7,16 +7,17 @@
 #' @note Updated 2019-08-21.
 #'
 #' @param names `character`.
-#'   Gene or transcript names.
+#' Gene or transcript names.
+#'
 #' @param seqname `character(1)`.
-#'   Name of the alternative chromosome to be defined in `seqnames` where these
-#'   ranges will be grouped. Defaults to `"unknown"` but `"transgene"`
-#'   (transgenes) and `"spike"` (spike-ins) are also supported.
+#' Name of the alternative chromosome to be defined in `seqnames` where these
+#' ranges will be grouped. Defaults to `"unknown"` but `"transgene"`
+#' (transgenes) and `"spike"` (spike-ins) are also supported.
+#'
 #' @param mcolnames `character` or `NULL`.
-#'   Metadata column names to be defined in the `mcols` of the
-#'   `GenomicRanges` return.
-#'   Normally this does not need to be defined; useful when combining with
-#'   another `GenomicRanges` that contains metadata.
+#' Metadata column names to be defined in the `mcols` of the
+#' `GenomicRanges` return. Normally this does not need to be defined; useful
+#' when combining with another `GenomicRanges` that contains metadata.
 #'
 #' @return `GenomicRanges`.
 #'
@@ -31,36 +32,35 @@
 #'
 #' ## Spike-ins.
 #' emptyRanges("ERCC", seqname = "spike")
-emptyRanges <- function(
-    names,
-    seqname = c("unknown", "transgene", "spike"),
-    mcolnames = NULL
-) {
-    assert(
-        isCharacter(names),
-        isAny(mcolnames, c("character", "NULL"))
-    )
-    seqname <- match.arg(seqname)
-    gr <- GRanges(
-        seqnames = seqname,
-        ranges = IRanges(
-            start = (seq_len(length(names)) - 1L) * 100L + 1L,
-            width = 100L
+emptyRanges <-
+    function(names,
+             seqname = c("unknown", "transgene", "spike"),
+             mcolnames = NULL) {
+        assert(
+            isCharacter(names),
+            isAny(mcolnames, c("character", "NULL"))
         )
-    )
-    names(gr) <- names
-    ## Create the required empty metadata columns.
-    if (!hasLength(mcolnames)) {
-        ncol <- 0L
-    } else {
-        ncol <- length(mcolnames)
+        seqname <- match.arg(seqname)
+        gr <- GRanges(
+            seqnames = seqname,
+            ranges = IRanges(
+                start = (seq_len(length(names)) - 1L) * 100L + 1L,
+                width = 100L
+            )
+        )
+        names(gr) <- names
+        ## Create the required empty metadata columns.
+        if (!hasLength(mcolnames)) {
+            ncol <- 0L
+        } else {
+            ncol <- length(mcolnames)
+        }
+        mcols <- matrix(
+            nrow = length(names),
+            ncol = ncol,
+            dimnames = list(names, mcolnames)
+        )
+        mcols <- as(mcols, "DataFrame")
+        mcols(gr) <- mcols
+        gr
     }
-    mcols <- matrix(
-        nrow = length(names),
-        ncol = ncol,
-        dimnames = list(names, mcolnames)
-    )
-    mcols <- as(mcols, "DataFrame")
-    mcols(gr) <- mcols
-    gr
-}

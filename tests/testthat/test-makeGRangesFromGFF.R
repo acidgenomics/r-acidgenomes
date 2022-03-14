@@ -47,7 +47,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -108,7 +108,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "a216357b01a2fe31e78c26b1c10e68a8bed84fb5dd1a7f7daa800e1aca5a701e"  # nolint
+        expected = "a216357b01a2fe31e78c26b1c10e68a8bed84fb5dd1a7f7daa800e1aca5a701e" # nolint
     )
 })
 
@@ -149,7 +149,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
+            X = as.data.frame(object["ENST00000456328.2"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -212,7 +212,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -277,7 +277,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "6b4b0b29ad47e7abf55e507246ee5b1064c0b017079c1471547e92f30f44ff07"  # nolint
+        expected = "6b4b0b29ad47e7abf55e507246ee5b1064c0b017079c1471547e92f30f44ff07" # nolint
     )
 })
 
@@ -318,7 +318,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
+            X = as.data.frame(object["ENST00000456328.2"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -383,7 +383,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBgn0031208"]),  # nolint
+            X = as.data.frame(object["FBgn0031208"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -433,7 +433,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "d13cb9d83b51499b96dc7b89cc3c88fd95a7a85a904d84eefc2ad1021d0df149"  # nolint
+        expected = "d13cb9d83b51499b96dc7b89cc3c88fd95a7a85a904d84eefc2ad1021d0df149" # nolint
     )
 })
 
@@ -462,7 +462,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBtr0475186"]),  # nolint
+            X = as.data.frame(object["FBtr0475186"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -521,7 +521,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -588,7 +588,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "bcb44a66c1cf567c8ebc941a12d3fe9565710d8aee10b0833a6f5b47d63c5c3a"  # nolint
+        expected = "bcb44a66c1cf567c8ebc941a12d3fe9565710d8aee10b0833a6f5b47d63c5c3a" # nolint
     )
 })
 
@@ -633,7 +633,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
+            X = as.data.frame(object["ENST00000456328.2"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -703,7 +703,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -771,7 +771,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "4de5cef7b089a5da30d9d3f090e31a887219ff6dad688780a44dd14b2adaed29"  # nolint
+        expected = "4de5cef7b089a5da30d9d3f090e31a887219ff6dad688780a44dd14b2adaed29" # nolint
     )
 })
 
@@ -816,7 +816,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]),  # nolint
+            X = as.data.frame(object["ENST00000456328.2"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -887,7 +887,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]),  # nolint
+            X = as.data.frame(object[["A1BG"]][1L]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -927,7 +927,7 @@ test_that("GTF genes", {
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
             "dbXref" = rep("MIM:608463", 2L),
-            "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
+            "description" = rep("apoptosis antagonizing transcription factor", 2L), # nolint
             "exception" = rep(NA_character_, 2L),
             "gbkey" = rep("Gene", 2L),
             "geneBiotype" = rep("protein_coding", 2L),
@@ -1005,7 +1005,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]),  # nolint
+            X = as.data.frame(object[["NM_000014.6"]][1L]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1072,7 +1072,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]),  # nolint
+            X = as.data.frame(object[["A1BG"]][1L]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1113,7 +1113,7 @@ test_that("GFF3 genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
-            "description" = rep("apoptosis antagonizing transcription factor", 2L),  # nolint
+            "description" = rep("apoptosis antagonizing transcription factor", 2L), # nolint
             "endRange" = rep("character(0)", 2L),
             "exception" = rep(NA_character_, 2L),
             "experiment" = rep("character(0)", 2L),
@@ -1121,7 +1121,7 @@ test_that("GFF3 genes", {
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),
             "geneName" = rep("AATF", 2L),
-            "geneSynonym" = rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),  # nolint
+            "geneSynonym" = rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L), # nolint
             "parentGeneId" = c("AATF", "AATF-2"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
@@ -1196,7 +1196,7 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]),  # nolint
+            X = as.data.frame(object[["NM_000014.6"]][1L]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1257,7 +1257,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1320,7 +1320,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]),  # nolint
+            X = as.data.frame(object["ENST00000456328"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1377,7 +1377,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["WBGene00022276"]),  # nolint
+            X = as.data.frame(object["WBGene00022276"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1435,7 +1435,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "652410d129662197a8c010d8cc1e37ee01ad35df34146216bc98fe8511db903a"  # nolint
+        expected = "652410d129662197a8c010d8cc1e37ee01ad35df34146216bc98fe8511db903a" # nolint
     )
 })
 
@@ -1469,7 +1469,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["Y74C9A.2a.3"]),  # nolint
+            X = as.data.frame(object["Y74C9A.2a.3"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1527,7 +1527,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]),  # nolint
+            X = as.data.frame(object["ENSG00000223972"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1587,7 +1587,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]),  # nolint
+            X = as.data.frame(object["ENST00000456328"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),

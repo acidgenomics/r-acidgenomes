@@ -42,7 +42,7 @@ NULL
 
 
 ## Updated 2021-03-03.
-`summary,Gene2Symbol` <-  # nolint
+`summary,Gene2Symbol` <- # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
@@ -61,7 +61,7 @@ NULL
 
 
 ## Updated 2021-03-03.
-`summary,Tx2Gene` <-  # nolint
+`summary,Tx2Gene` <- # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(

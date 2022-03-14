@@ -6,7 +6,7 @@
 #' @param ... Additional arguments.
 #'
 #' @note This method is strict, and will only strip Ensembl gene identifiers
-#'   beginning with `"ENS.*G"`.
+#' beginning with `"ENS.*G"`.
 #'
 #' @seealso
 #' - http://www.ensembl.org/info/genome/stable_ids/index.html
@@ -22,7 +22,7 @@ NULL
 
 
 ## Updated 2021-01-27.
-`stripGeneVersions,character` <-  # nolint
+`stripGeneVersions,character` <- # nolint
     function(object) {
         assert(isCharacter(object))
         pattern <- "^(ENS.*G[0-9]{11})(\\.[0-9]+)(_.+)?$"
@@ -43,15 +43,15 @@ NULL
 ## Allow passthrough support of NCBI Entrez identifiers (e.g. "7157", which
 ## corresponds to "TP53". This method is used in DepMapAnalysis package.
 ## Updated 2022-03-09.
-`stripGeneVersions,integer` <-  # nolint
+`stripGeneVersions,integer` <- # nolint
     function(object) {
-        return(object)
+        object
     }
 
 
 
 ## Updated 2021-01-27.
-`stripGeneVersions,matrix` <-  # nolint
+`stripGeneVersions,matrix` <- # nolint
     function(object) {
         assert(hasRownames(object))
         rownames <- rownames(object)
@@ -63,7 +63,7 @@ NULL
 
 
 ## Updated 2021-01-27.
-`stripGeneVersions,Matrix` <-  # nolint
+`stripGeneVersions,Matrix` <- # nolint
     `stripGeneVersions,matrix`
 
 

@@ -34,7 +34,7 @@ NULL
 
 ## Assuming gene identifiers are defined in the rownames.
 ## Updated 2019-07-22.
-`organism,matrix` <-  # nolint
+`organism,matrix` <- # nolint
     function(object) {
         assert(hasRownames(object))
         detectOrganism(rownames(object))
@@ -43,20 +43,20 @@ NULL
 
 
 ## Updated 2020-01-30.
-`organism,Matrix` <-  # nolint
+`organism,Matrix` <- # nolint
     `organism,matrix`
 
 
 
 ## Updated 2019-07-22.
-`organism,data.frame` <-  # nolint
+`organism,data.frame` <- # nolint
     `organism,matrix`
 
 
 
 ## Note that DataFrame and GenomicRanges inherit from this class.
 ## Updated 2019-07-22.
-`organism,Annotated` <-  # nolint
+`organism,Annotated` <- # nolint
     function(object) {
         metadata(object)[["organism"]]
     }
@@ -64,7 +64,7 @@ NULL
 
 
 ## Updated 2021-10-13.
-`organism,DataFrame` <-  # nolint
+`organism,DataFrame` <- # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -78,7 +78,7 @@ NULL
 
 
 ## Updated 2021-02-02.
-`organism,GenomicRanges` <-  # nolint
+`organism,GenomicRanges` <- # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -92,7 +92,7 @@ NULL
 
 
 ## Updated 2019-08-06.
-`organism<-,Annotated,character` <-  # nolint
+`organism<-,Annotated,character` <- # nolint
     function(object, value) {
         metadata(object)[["organism"]] <- value
         object

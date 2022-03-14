@@ -74,13 +74,13 @@
             x = c("genomeBuild", "organism", "provider"),
             y = names(x)
         ) ||
-        any(
-            is.na(c(
-                x[["genomeBuild"]],
-                x[["organism"]],
-                x[["provider"]]
-            ))
-        )
+            any(
+                is.na(c(
+                    x[["genomeBuild"]],
+                    x[["organism"]],
+                    x[["provider"]]
+                ))
+            )
     ) {
         return(NULL)
     }
@@ -108,7 +108,8 @@
                     ## GenomeInfoDb v1.26.2, but may be improved in the future.
                     if (isMatchingFixed(
                         pattern = "GRCh37",
-                        x = x[["genomeBuild"]])
+                        x = x[["genomeBuild"]]
+                    )
                     ) {
                         args[["use.grch37"]] <- TRUE
                     }

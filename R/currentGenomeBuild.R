@@ -8,7 +8,7 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `character(1)`.
-#'   Genome assembly build version.
+#' Genome assembly build version.
 #'
 #' @seealso
 #' - [Ensembl REST API](https://rest.ensembl.org).
@@ -59,103 +59,105 @@ NULL
 ## Updated 2021-01-21.
 #' @rdname currentGenomeBuild
 #' @export
-currentEnsemblGenomeBuild <- function(organism) {
-    assert(isOrganism(organism))
-    organism <- snakeCase(organism)
-    json <- getJSON(pasteURL(
-        "rest.ensembl.org",
-        "info",
-        "assembly",
-        paste0(organism, "?"),
-        protocol = "https"
-    ))
-    assert(isSubset("assembly_name", names(json)))
-    out <- json[["assembly_name"]]
-    assert(isString(out))
-    out
-}
+currentEnsemblGenomeBuild <-
+    function(organism) {
+        assert(isOrganism(organism))
+        organism <- snakeCase(organism)
+        json <- getJSON(pasteURL(
+            "rest.ensembl.org",
+            "info",
+            "assembly",
+            paste0(organism, "?"),
+            protocol = "https"
+        ))
+        assert(isSubset("assembly_name", names(json)))
+        out <- json[["assembly_name"]]
+        assert(isString(out))
+        out
+    }
 
 
 
 ## Updated 2021-01-31.
 #' @rdname currentGenomeBuild
 #' @export
-currentGencodeGenomeBuild <- function(organism) {
-    organism <- match.arg(
-        arg = organism,
-        choices = c("Homo sapiens", "Mus musculus")
-    )
-    currentEnsemblGenomeBuild(organism)
-}
+currentGencodeGenomeBuild <-
+    function(organism) {
+        organism <- match.arg(
+            arg = organism,
+            choices = c("Homo sapiens", "Mus musculus")
+        )
+        currentEnsemblGenomeBuild(organism)
+    }
 
 
 
 ## Alternate approach using URL only:
 ## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/<taxonomic_group>/<organism>/
-##     latest_assembly_versions/
+## latest_assembly_versions/
 
 ## Updated 2021-01-14.
 #' @rdname currentGenomeBuild
 #' @param taxonomicGroup `character(1)`.
-#'   *Only applies to RefSeq*.
-#'   FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
-#'   Defining this manually avoids having to query the FTP server.
+#' *Only applies to RefSeq*.
+#' FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
+#' Defining this manually avoids having to query the FTP server.
 #' @export
-currentRefSeqGenomeBuild <- function(
-    organism,
-    taxonomicGroup = NULL
-) {
-    assert(
-        isOrganism(organism),
-        isString(taxonomicGroup, nullOK = TRUE)
-    )
-    baseURL <- .getRefSeqGenomeURL(
-        organism = organism,
-        taxonomicGroup = taxonomicGroup,
-        quiet = TRUE
-    )
-    summary <- .getRefSeqAssemblySummary(
-        file = pasteURL(baseURL, "assembly_summary.txt")
-    )
-    assert(isSubset("ftp_path", names(summary)))
-    out <- basename(summary[["ftp_path"]])
-    out
-}
+currentRefSeqGenomeBuild <-
+    function(organism,
+             taxonomicGroup = NULL) {
+        assert(
+            isOrganism(organism),
+            isString(taxonomicGroup, nullOK = TRUE)
+        )
+        baseURL <- .getRefSeqGenomeURL(
+            organism = organism,
+            taxonomicGroup = taxonomicGroup,
+            quiet = TRUE
+        )
+        summary <- .getRefSeqAssemblySummary(
+            file = pasteURL(baseURL, "assembly_summary.txt")
+        )
+        assert(isSubset("ftp_path", names(summary)))
+        out <- basename(summary[["ftp_path"]])
+        out
+    }
 
 
 
 ## Updated 2021-09-03.
 #' @rdname currentGenomeBuild
 #' @export
-currentUCSCGenomeBuild <- function(organism) {
-    assert(isOrganism(organism))
-    json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
-    assert(isSubset("ucscGenomes", names(json)))
-    json <- json[["ucscGenomes"]]
-    l <- mapply(
-        name = names(json),
-        x = json,
-        FUN = function(name, x) {
-            ## Other useful keys: description, sourceName.
-            c(
-                "build" = name,
-                "active" = x[["active"]],
-                "orderKey" = x[["orderKey"]],
-                "scientificName" = x[["scientificName"]]
-            )
-        },
-        SIMPLIFY = FALSE,
-        USE.NAMES = FALSE
-    )
-    df <- rbindToDataFrame(l)
-    df <- df[df[["active"]] == 1L, , drop = FALSE]
-    if (!isSubset(organism, unique(df[["scientificName"]]))) {
-        abort(sprintf("Invalid organism: {.val %s}.", organism))
+currentUCSCGenomeBuild <-
+    function(organism) {
+        assert(isOrganism(organism))
+        json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
+        assert(isSubset("ucscGenomes", names(json)))
+        json <- json[["ucscGenomes"]]
+        l <- mapply(
+            name = names(json),
+            x = json,
+            FUN = function(name, x) {
+                ## Other useful keys: description, sourceName.
+                c(
+                    "build" = name,
+                    "active" = x[["active"]],
+                    "orderKey" = x[["orderKey"]],
+                    "scientificName" = x[["scientificName"]]
+                )
+            },
+            SIMPLIFY = FALSE,
+            USE.NAMES = FALSE
+        )
+        df <- rbindToDataFrame(l)
+        df <- df[df[["active"]] == 1L, , drop = FALSE]
+        if (!isSubset(organism, unique(df[["scientificName"]]))) {
+            abort(sprintf("Invalid organism: {.val %s}.", organism))
+        }
+        df <- df[df[["scientificName"]] == organism, , drop = FALSE]
+        ## The latest genome build has the lowest "orderKey" value.
+        df <- df[order(df[["orderKey"]]), , drop = FALSE]
+        out <- df[["build"]][[1L]]
+        assert(isString(out))
+        out
     }
-    df <- df[df[["scientificName"]] == organism, , drop = FALSE]
-    ## The latest genome build has the lowest "orderKey" value.
-    df <- df[order(df[["orderKey"]]), , drop = FALSE]
-    out <- df[["build"]][[1L]]
-    assert(isString(out))
-    out
-}

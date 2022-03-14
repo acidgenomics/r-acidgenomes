@@ -7,7 +7,7 @@
 #' @inheritParams params
 #'
 #' @param outputDir `character(1)`.
-#'   Output directory path.
+#' Output directory path.
 #'
 #' @return Invisible `list`.
 #'
@@ -19,13 +19,11 @@
 #' ## >     release = 100L
 #' ## > )
 downloadEnsemblGenome <-
-    function(
-        organism,
-        genomeBuild = NULL,
-        release = NULL,
-        outputDir = getwd(),
-        cache = FALSE
-    ) {
+    function(organism,
+             genomeBuild = NULL,
+             release = NULL,
+             outputDir = getwd(),
+             cache = FALSE) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOK = TRUE),
@@ -101,14 +99,12 @@ downloadEnsemblGenome <-
 
 ## Updated 2021-08-03.
 .downloadEnsemblGFF <-
-    function(
-        genomeBuild,
-        organism,
-        outputDir,
-        releaseURL,
-        release,
-        cache
-    ) {
+    function(genomeBuild,
+             organism,
+             outputDir,
+             releaseURL,
+             release,
+             cache) {
         baseURL <- pasteURL(releaseURL, "gff3", snakeCase(organism))
         urls <- c(
             "readme" = pasteURL(baseURL, "README"),
@@ -127,11 +123,11 @@ downloadEnsemblGenome <-
                 x = organism,
                 y = c("Homo sapiens", "Mus musculus")
             ) &&
-            ## NOTE Not supported for new GRCm39 build.
-            isSubset(
-                x = genomeBuild,
-                y = c("GRCh37", "GRCh38", "GRCm38")
-            )
+                ## NOTE Not supported for new GRCm39 build.
+                isSubset(
+                    x = genomeBuild,
+                    y = c("GRCh37", "GRCh38", "GRCm38")
+                )
         ) {
             urls[["gff2"]] <- pasteURL(
                 baseURL,
@@ -173,14 +169,12 @@ downloadEnsemblGenome <-
 
 ## Updated 2021-08-03.
 .downloadEnsemblGTF <-
-    function(
-        genomeBuild,
-        organism,
-        outputDir,
-        release,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             organism,
+             outputDir,
+             release,
+             releaseURL,
+             cache) {
         baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
         urls <- c(
             "readme" = pasteURL(baseURL, "README"),
@@ -199,11 +193,11 @@ downloadEnsemblGenome <-
                 x = organism,
                 y = c("Homo sapiens", "Mus musculus")
             ) &&
-            ## NOTE Not supported for new GRCm39 build.
-            isSubset(
-                x = genomeBuild,
-                y = c("GRCh37", "GRCh38", "GRCm38")
-            )
+                ## NOTE Not supported for new GRCm39 build.
+                isSubset(
+                    x = genomeBuild,
+                    y = c("GRCh37", "GRCh38", "GRCm38")
+                )
         ) {
             urls[["gtf2"]] <- pasteURL(
                 baseURL,
@@ -256,13 +250,11 @@ downloadEnsemblGenome <-
 
 ## Updated 2021-08-03.
 .downloadEnsemblGenome <-
-    function(
-        genomeBuild,
-        organism,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             organism,
+             outputDir,
+             releaseURL,
+             cache) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
         urls <- c(
             "readme" = pasteURL(baseURL, "README"),
@@ -315,13 +307,11 @@ downloadEnsemblGenome <-
 
 ## Updated 2021-08-03.
 .downloadEnsemblTranscriptome <-
-    function(
-        genomeBuild,
-        organism,
-        outputDir,
-        releaseURL,
-        cache
-    ) {
+    function(genomeBuild,
+             organism,
+             outputDir,
+             releaseURL,
+             cache) {
         baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
         ## Download cDNA FASTA files.
         cdnaBaseURL <- pasteURL(baseURL, "cdna")
@@ -357,7 +347,7 @@ downloadEnsemblGenome <-
             )
         )
         ncrnaFiles <- .downloadURLs(
-            urls =  urls,
+            urls = urls,
             outputDir = file.path(outputDir, "transcriptome", "ncrna"),
             cache = cache
         )

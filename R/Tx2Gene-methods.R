@@ -27,11 +27,9 @@ NULL
 
 
 ## Updated 2021-10-13.
-`Tx2Gene,DataFrame` <-  # nolint
-    function(
-        object,
-        quiet = FALSE
-    ) {
+`Tx2Gene,DataFrame` <- # nolint
+    function(object,
+             quiet = FALSE) {
         assert(
             hasColnames(object),
             hasRows(object),
@@ -88,7 +86,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GenomicRanges` <-  # nolint
+`Tx2Gene,GenomicRanges` <- # nolint
     function(object, ...) {
         df <- as(object, "DataFrame")
         metadata(df) <- metadata(object)
@@ -98,7 +96,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GenomicRangesList` <-  # nolint
+`Tx2Gene,GenomicRangesList` <- # nolint
     function(object, ...) {
         x <- as(object, "GenomicRangesList")
         x <- unname(x)
@@ -110,7 +108,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,data.frame` <-  # nolint
+`Tx2Gene,data.frame` <- # nolint
     function(object, ...) {
         assert(identical(ncol(object), 2L))
         colnames(object) <- c("txId", "geneId")
@@ -121,7 +119,7 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,matrix` <-  # nolint
+`Tx2Gene,matrix` <- # nolint
     function(object, ...) {
         assert(
             is.character(object),

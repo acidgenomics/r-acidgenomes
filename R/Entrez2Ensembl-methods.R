@@ -18,7 +18,7 @@ NULL
 
 
 ## Updated 2021-01-18.
-`Entrez2Ensembl,integer` <-  # nolint
+`Entrez2Ensembl,integer` <- # nolint
     function(object, organism, format) {
         df <- .getEnsembl2EntrezFromOrgDb(
             keys = as.character(object),

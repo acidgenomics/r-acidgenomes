@@ -12,7 +12,7 @@
 #' @examples
 #' object <- HGNC()
 #' print(object)
-HGNC <-  # nolint
+HGNC <- # nolint
     function() {
         alert("Importing HGNC complete set.")
         url <- pasteURL(

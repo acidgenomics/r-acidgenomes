@@ -27,11 +27,11 @@
 #' @section Feature type:
 #'
 #' - `CDS`: **C**o**D**ing **S**sequence. A contiguous sequence that contains a
-#'   genomic interval bounded by start and stop codons. CDS refers to the
-#'   portion of a genomic DNA sequence that is translated, from the start codon
-#'   to the stop codon.
+#' genomic interval bounded by start and stop codons. CDS refers to the
+#' portion of a genomic DNA sequence that is translated, from the start codon
+#' to the stop codon.
 #' - `exon`: Genomic interval containing 5' UTR (`five_prime_UTR`), CDS, and
-#'   3' UTR (`three_prime_UTR`).
+#' 3' UTR (`three_prime_UTR`).
 #' - `mRNA`: Processed (spliced) mRNA transcript.
 #'
 #' See also:
@@ -65,25 +65,25 @@
 #' Example URLs:
 #'
 #' - Ensembl *Homo sapiens* GRCh38.p13, release 102
-#'   [GTF](ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz),
-#'   [GFF3](ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz)
+#' [GTF](ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz),
+#' [GFF3](ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz)
 #' - Ensembl *Homo sapiens* GRCh37, release 102 (87)
-#'   [GTF](ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
-#'   [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
+#' [GTF](ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
+#' [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
 #'
 #' @section GENCODE:
 #'
 #' Example URLs:
 #'
 #' - GENCODE *Homo sapiens* GRCh38.p13, release 36
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz)
+#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz),
+#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz)
 #' - GENCODE *Homo sapiens* GRCh37, release 36
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz)
+#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz),
+#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz)
 #' - GENCODE *Mus musculus* GRCm38.p6, release M25
-#'   [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
-#'   [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
+#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz),
+#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz)
 #'
 #' @section GENCODE vs. Ensembl:
 #'
@@ -119,8 +119,8 @@
 #' Example URLs:
 #'
 #' - RefSeq *Homo sapiens* GRCh38.p12
-#'   [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz),
-#'   [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
+#' [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz),
+#' [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz)
 #'
 #' See also:
 #'
@@ -132,10 +132,10 @@
 #' Example URLs:
 #'
 #' - UCSC *Homo sapiens* hg38 GTF files:
-#'   [hg38.ensGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
-#'   [hg38.knownGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
-#'   [hg38.ncbiRefSeq.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
-#'   [hg38.refGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
+#' [hg38.ensGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
+#' [hg38.knownGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
+#' [hg38.ncbiRefSeq.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
+#' [hg38.refGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
 #' Related URLs:
 #'
@@ -148,16 +148,16 @@
 #' Example URLs:
 #'
 #' - FlyBase *Drosophila melanogaster* r6.24
-#'   [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz),
-#'   [GFF3](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz)
+#' [GTF](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz),
+#' [GFF3](ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz)
 #'
 #' @section WormBase:
 #'
 #' Example URLs:
 #'
 #' - WormBase *Caenorhabditis elegans* WS267
-#'   [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz),
-#'   [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz)
+#' [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz),
+#' [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz)
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -172,7 +172,7 @@
 #' - `tximeta:::getRanges()`.
 #' - `AnnotationDbi::columns()`.
 #' - `GenomeInfoDb::GenomeDescription-class`, which describes useful `organism`,
-#'   `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
+#' `commonName`, `providerVersion`, `provider`, and `releaseDate` accessors.
 #'
 #' @examples
 #' ## Some examples here are commented because they are CPU-intensive and
@@ -248,54 +248,53 @@
 #' ## > summary(genes)
 #' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 #' ## > summary(transcripts)
-
+#'
 ## nolint end
-
-makeGRangesFromGFF <- function(
-    file,
-    level = c("genes", "transcripts"),
-    ignoreVersion = TRUE,
-    synonyms = FALSE
-) {
-    assert(
-        .isSupportedGFF(file),
-        isFlag(ignoreVersion),
-        isFlag(synonyms)
-    )
-    level <- match.arg(level)
-    if (isAFile(file)) {
-        file <- realpath(file)
-    }
-    alert(sprintf(
-        fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-        "GenomicRanges", file
-    ))
-    tmpfile <- .cacheIt(file)
-    meta <- .getGFFMetadata(tmpfile)
-    if (isAURL(file)) {
-        meta[["url"]] <- file
-    }
-    meta[["call"]] <- tryCatch(
-        expr = standardizeCall(),
-        error = function(e) NULL
-    )
-    if (identical(meta[["provider"]], "UCSC")) {
-        alertInfo("UCSC genome annotation file detected.")
-        txdb <- .makeTxDbFromGFF(file = tmpfile, meta = meta)
-        gr <- .makeGRangesFromTxDb(
-            object = txdb,
-            level = level,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+#'
+makeGRangesFromGFF <-
+    function(file,
+             level = c("genes", "transcripts"),
+             ignoreVersion = TRUE,
+             synonyms = FALSE) {
+        assert(
+            .isSupportedGFF(file),
+            isFlag(ignoreVersion),
+            isFlag(synonyms)
         )
-    } else {
-        gr <- .makeGRangesFromRtracklayer(
-            file = tmpfile,
-            level = level,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms,
-            meta = meta
+        level <- match.arg(level)
+        if (isAFile(file)) {
+            file <- realpath(file)
+        }
+        alert(sprintf(
+            fmt = "Making {.cls %s} from GFF file ({.file %s}).",
+            "GenomicRanges", file
+        ))
+        tmpfile <- .cacheIt(file)
+        meta <- .getGFFMetadata(tmpfile)
+        if (isAURL(file)) {
+            meta[["url"]] <- file
+        }
+        meta[["call"]] <- tryCatch(
+            expr = standardizeCall(),
+            error = function(e) NULL
         )
+        if (identical(meta[["provider"]], "UCSC")) {
+            alertInfo("UCSC genome annotation file detected.")
+            txdb <- .makeTxDbFromGFF(file = tmpfile, meta = meta)
+            gr <- .makeGRangesFromTxDb(
+                object = txdb,
+                level = level,
+                ignoreVersion = ignoreVersion,
+                synonyms = synonyms
+            )
+        } else {
+            gr <- .makeGRangesFromRtracklayer(
+                file = tmpfile,
+                level = level,
+                ignoreVersion = ignoreVersion,
+                synonyms = synonyms,
+                meta = meta
+            )
+        }
+        gr
     }
-    gr
-}

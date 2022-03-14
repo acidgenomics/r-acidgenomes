@@ -9,7 +9,7 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @param ignoreVersion `logical(2)`.
-#'   Ignore transcript ("tx") and/or gene ("gene") versions.
+#' Ignore transcript ("tx") and/or gene ("gene") versions.
 #'
 #' @return `Tx2Gene`.
 #'
@@ -25,39 +25,38 @@
 #'     release = 100L
 #' )
 #' print(x)
-importTx2Gene <- function(
-    file,
-    organism = NULL,
-    genomeBuild = NULL,
-    release = NULL,
-    ignoreVersion = c(
-        "tx" = FALSE,
-        "gene" = FALSE
-    )
-) {
-    assert(
-        is.logical(ignoreVersion),
-        areSetEqual(
-            x = c("tx", "gene"),
-            y = names(ignoreVersion)
+importTx2Gene <-
+    function(file,
+             organism = NULL,
+             genomeBuild = NULL,
+             release = NULL,
+             ignoreVersion = c(
+                 "tx" = FALSE,
+                 "gene" = FALSE
+             )) {
+        assert(
+            is.logical(ignoreVersion),
+            areSetEqual(
+                x = c("tx", "gene"),
+                y = names(ignoreVersion)
+            )
         )
-    )
-    data <- import(file = file, rownames = FALSE, colnames = FALSE)
-    colnames(data) <- c("txId", "geneId")
-    data <- as(data, "DataFrame")
-    if (isTRUE(ignoreVersion[["tx"]])) {
-        data[["txId"]] <-
-            stripTranscriptVersions(data[["txId"]])
+        data <- import(file = file, rownames = FALSE, colnames = FALSE)
+        colnames(data) <- c("txId", "geneId")
+        data <- as(data, "DataFrame")
+        if (isTRUE(ignoreVersion[["tx"]])) {
+            data[["txId"]] <-
+                stripTranscriptVersions(data[["txId"]])
+        }
+        if (isTRUE(ignoreVersion[["gene"]])) {
+            data[["geneId"]] <-
+                stripGeneVersions(data[["geneId"]])
+        }
+        metadata(data) <- list(
+            "genomeBuild" = genomeBuild,
+            "ignoreVersion" = ignoreVersion,
+            "organism" = organism,
+            "release" = release
+        )
+        Tx2Gene(data)
     }
-    if (isTRUE(ignoreVersion[["gene"]])) {
-        data[["geneId"]] <-
-            stripGeneVersions(data[["geneId"]])
-    }
-    metadata(data) <- list(
-        "genomeBuild" = genomeBuild,
-        "ignoreVersion" = ignoreVersion,
-        "organism" = organism,
-        "release" = release
-    )
-    Tx2Gene(data)
-}
