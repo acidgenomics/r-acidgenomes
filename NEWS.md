@@ -1,3 +1,13 @@
+# AcidGenomes 0.3.1 (UNRELEASED)
+
+## Major changes
+
+- S4 classes containing identifier mappins now are set to contain `DFrame`
+  instead of `DataFrame`, as the previous definition approach no longer works
+  with Bioconductor 3.15. This applies to `Ensembl2Entrez`, `Entrez2Ensembl`,
+  `EntrezGeneInfo`, `Gene2Symbol`, `HGNC`, `HGNC2Ensembl`, `Protein2Gene`,
+  and `Tx2Gene` classes.
+
 # AcidGenomes 0.3.0 (2022-03-11)
 
 ## New functions
