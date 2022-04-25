@@ -531,12 +531,12 @@ setValidity(
 #' NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2021-02-12.
+#' @note Updated 2022-04-25.
 #'
 #' @return `EntrezGeneInfo`.
 setClass(
     Class = "EntrezGeneInfo",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "EntrezGeneInfo",
@@ -550,12 +550,12 @@ setValidity(
 #' HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2021-02-07.
+#' @note Updated 2022-04-25.
 #'
 #' @return `HGNC`.
 setClass(
     Class = "HGNC",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "HGNC",
@@ -592,13 +592,13 @@ setValidity(
 
 #' @inherit AcidGenerics::Ensembl2Entrez description return title
 #' @export
-#' @note Updated 2021-08-18.
+#' @note Updated 2022-04-25.
 #'
 #' @details
-#' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
+#' Contains a `DFrame` with `ensemblId` and `entrezId` columns.
 setClass(
     Class = "Ensembl2Entrez",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Ensembl2Entrez",
@@ -633,13 +633,13 @@ setValidity(
 
 #' @inherit AcidGenerics::Entrez2Ensembl description return title
 #' @export
-#' @note Updated 2021-08-18.
+#' @note Updated 2022-04-25.
 #'
 #' @details
-#' Contains a `DataFrame` with `ensemblId` and `entrezId` columns.
+#' Contains a `DFrame` with `ensemblId` and `entrezId` columns.
 setClass(
     Class = "Entrez2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Entrez2Ensembl",
@@ -674,10 +674,10 @@ setValidity(
 
 #' @inherit AcidGenerics::Gene2Symbol description return title
 #' @export
-#' @note Updated 2021-08-10.
+#' @note Updated 2022-04-25.
 #'
 #' @details
-#' Contains a `DataFrame` with `geneId` and `geneName` columns.
+#' Contains a `DFrame` with `geneId` and `geneName` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -685,7 +685,7 @@ setValidity(
 #' `metadata()`.
 setClass(
     Class = "Gene2Symbol",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Gene2Symbol",
@@ -722,15 +722,15 @@ setValidity(
 #' HGNC-to-Ensembl gene identifier mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `hgnc` and `ensembl` columns.
+#' Contains a `DFrame` with `hgnc` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2021-08-10.
+#' @note Updated 2022-04-25.
 #'
 #' @return `HGNC2Ensembl`.
 setClass(
     Class = "HGNC2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "HGNC2Ensembl",
@@ -767,15 +767,15 @@ setValidity(
 #' MGI-to-Ensembl gene identifier mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `mgi` and `ensembl` columns.
+#' Contains a `DFrame` with `mgi` and `ensembl` columns.
 #'
 #' @export
-#' @note Updated 2021-08-10.
+#' @note Updated 2022-04-25.
 #'
 #' @return `MGI2Ensembl`.
 setClass(
     Class = "MGI2Ensembl",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "MGI2Ensembl",
@@ -812,7 +812,7 @@ setValidity(
 #' Protein-to-gene mappings
 #'
 #' @details
-#' Contains a `DataFrame` with `proteinId`, `geneId`, and `geneName` columns.
+#' Contains a `DFrame` with `proteinId`, `geneId`, and `geneName` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -820,12 +820,12 @@ setValidity(
 #' `metadata()`.
 #'
 #' @export
-#' @note Updated 2021-08-10.
+#' @note Updated 2022-04-25.
 #'
 #' @return `Protein2Gene`.
 setClass(
     Class = "Protein2Gene",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Protein2Gene",
@@ -858,10 +858,10 @@ setValidity(
 
 #' @inherit AcidGenerics::Tx2Gene description return title
 #' @export
-#' @note Updated 2021-10-18.
+#' @note Updated 2022-04-25.
 #'
 #' @details
-#' Contains a `DataFrame` with `txId` and `geneId` columns.
+#' Contains a `DFrame` with `txId` and `geneId` columns.
 #'
 #' @section Genome metadata:
 #'
@@ -874,7 +874,7 @@ setValidity(
 #' - `release`: 100L.
 setClass(
     Class = "Tx2Gene",
-    contains = "DataFrame"
+    contains = "DFrame"
 )
 setValidity(
     Class = "Tx2Gene",

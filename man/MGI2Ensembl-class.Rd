@@ -11,8 +11,8 @@
 MGI-to-Ensembl gene identifier mappings
 }
 \details{
-Contains a \code{DataFrame} with \code{mgi} and \code{ensembl} columns.
+Contains a \code{DFrame} with \code{mgi} and \code{ensembl} columns.
 }
 \note{
-Updated 2021-08-10.
+Updated 2022-04-25.
 }

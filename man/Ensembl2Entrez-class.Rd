@@ -11,8 +11,8 @@
 Ensembl-to-Entrez gene identifier mappings
 }
 \details{
-Contains a \code{DataFrame} with \code{ensemblId} and \code{entrezId} columns.
+Contains a \code{DFrame} with \code{ensemblId} and \code{entrezId} columns.
 }
 \note{
-Updated 2021-08-18.
+Updated 2022-04-25.
 }
