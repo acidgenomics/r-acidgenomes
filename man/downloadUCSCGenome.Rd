@@ -66,6 +66,8 @@ ncbiRefSeq, refGene, ensGene, knownGene.
 \examples{
 ## This example is bandwidth intensive.
 ## > downloadUCSCGenome(organism = "Homo sapiens")
+
+
 }
 \seealso{
 \itemize{

@@ -290,6 +290,8 @@ summary(genes)
 ## > summary(genes)
 ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 ## > summary(transcripts)
+
+
 }
 \seealso{
 \itemize{

@@ -34,7 +34,7 @@ Return as genes or transcripts.}
 \item{genomeBuild}{\code{character(1)}.
 Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
 defaults to the most recent build available.
-Note: don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
+\emph{Note:} don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{release}{\code{integer(1)}.
 Ensembl release version (e.g. \code{90}). We recommend setting this value if
@@ -122,47 +122,6 @@ groups:
 75) build by internally querying the \href{https://bioconductor.org/packages/EnsDb.Hsapiens.v75/}{EnsDb.Hsapiens.v75} package.
 Alternatively, the corresponding GTF/GFF file can be loaded directly from
 GENCODE or Ensembl.
-}
-
-\section{AnnotationHub queries}{
-
-
-Here's how to perform manual, customized AnnotationHub queries.\preformatted{suppressPackageStartupMessages(\{
-    library(AnnotationHub)
-    library(ensembldb)
-\})
-ah <- AnnotationHub()
-
-# Human ensembldb (EnsDb) records.
-ahs <- query(
-    x = ah,
-    pattern = c(
-        "Homo sapiens",
-        "GRCh38",
-        "Ensembl",
-        "EnsDb"
-    )
-)
-mcols(ahs)
-print(ahs)
-# EnsDb (Ensembl GRCh38 94; 2018-10-11)
-ah[["AH64923"]]
-
-# Human UCSC TxDb records.
-ahs <- query(
-    x = ah,
-    pattern = c(
-        "Homo sapiens",
-        "UCSC",
-        "TxDb",
-        "knownGene"
-    )
-)
-mcols(ahs)
-print(ahs)
-# TxDb (UCSC hg38 GENCODE 24; 2016-12-22)
-ah[["AH52260"]]
-}
 }
 
 \examples{

@@ -49,8 +49,8 @@ Updated 2022-02-07.
 detectOrganism("ENSG00000000003")
 
 ## Match by genome build.
-detectOrganism("GRCh38")  # Ensembl
-detectOrganism("hg38")    # UCSC
+detectOrganism("GRCh38") # Ensembl
+detectOrganism("hg38") # UCSC
 
 ## Match by alternate organism name.
 detectOrganism("H. sapiens")

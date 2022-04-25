@@ -2,7 +2,7 @@
 
 #' @importClassesFrom GenomicRanges GenomicRanges GenomicRangesList
 #' @importClassesFrom IRanges DataFrameList
-#' @importClassesFrom S4Vectors DataFrame Vector
+#' @importClassesFrom S4Vectors DFrame DataFrame Vector
 NULL
 
 

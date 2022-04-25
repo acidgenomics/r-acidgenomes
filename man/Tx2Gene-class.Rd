@@ -11,10 +11,10 @@
 Transcript-to-gene mappings
 }
 \details{
-Contains a \code{DataFrame} with \code{txId} and \code{geneId} columns.
+Contains a \code{DFrame} with \code{txId} and \code{geneId} columns.
 }
 \note{
-Updated 2021-10-18.
+Updated 2022-04-25.
 }
 \section{Genome metadata}{
 

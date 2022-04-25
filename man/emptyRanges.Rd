@@ -21,9 +21,8 @@ ranges will be grouped. Defaults to \code{"unknown"} but \code{"transgene"}
 
 \item{mcolnames}{\code{character} or \code{NULL}.
 Metadata column names to be defined in the \code{mcols} of the
-\code{GenomicRanges} return.
-Normally this does not need to be defined; useful when combining with
-another \code{GenomicRanges} that contains metadata.}
+\code{GenomicRanges} return. Normally this does not need to be defined; useful
+when combining with another \code{GenomicRanges} that contains metadata.}
 }
 \value{
 \code{GenomicRanges}.
