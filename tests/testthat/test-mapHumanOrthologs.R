@@ -13,7 +13,7 @@ test_that("mapHumanOrthologs", {
         expr = mapHumanOrthologs(
             genes = genes,
             organism = NULL,
-            ensemblRelease = 87L
+            ensemblRelease = 100L
         ),
         error = function(e) e
     )
