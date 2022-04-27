@@ -1,3 +1,8 @@
+## FIXME Need to rework to better keep NCBI Entrez gene identifiers
+## for RefSeq GFF and GTF input.
+
+
+
 ## NOTE Can consider using ensembldb to parse Ensembl GFF files.
 ## See related:
 ## - https://github.com/jorainer/ensembldb/issues/114
