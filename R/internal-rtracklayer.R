@@ -649,8 +649,6 @@
 
 
 
-## FIXME This isn't keeping track of `entrezId` in the metadata...
-
 ## Updated 2022-05-03.
 .rtracklayerRefSeqTranscriptsGtf <-
     function(object) {
