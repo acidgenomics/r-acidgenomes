@@ -1,20 +1,9 @@
-## FIXME Need to rework to better keep NCBI Entrez gene identifiers
-## for RefSeq GFF and GTF input.
-
-
-
-## NOTE Can consider using ensembldb to parse Ensembl GFF files.
-## See related:
-## - https://github.com/jorainer/ensembldb/issues/114
-
-
-
 ## nolint start
 
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2022-02-08.
+#' @note Updated 2022-05-03.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
