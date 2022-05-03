@@ -34,6 +34,7 @@ Imports:
     goalie,
     methods,
     pipette,
+    stringi,
     syntactic,
     utils
 Suggests:
@@ -45,7 +46,6 @@ Suggests:
     RCurl,
     biomaRt,
     ensembldb,
-    stringi,
     testthat
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
