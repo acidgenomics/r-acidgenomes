@@ -1,6 +1,4 @@
-## FIXME Need to improve Entrez gene identifier handling.
-
-
+## FIXME Can we include Ensembl identifier mappings here?
 
 ## nolint start
 
@@ -14,7 +12,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2022-02-08.
+#' @note Updated 2022-05-03.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
