@@ -63,8 +63,8 @@
              genomeBuild = NULL,
              release = NULL,
              ah = NULL) {
-        requireNamespaces("AnnotationHub")
         assert(
+            requireNamespaces(c("AnnotationHub", "stringi")),
             isString(organism),
             isString(genomeBuild, nullOK = TRUE),
             isInt(release, nullOK = TRUE),
@@ -183,9 +183,9 @@
         ## > AH73881 | Ensembl 97 EnsDb for Homo sapiens
         ## > AH73986 | Ensembl 79 EnsDb for Homo sapiens
         ## > AH79689 | Ensembl 100 EnsDb for Homo sapiens
-        match <- str_match(
-            string = mcols[["title"]],
-            pattern = "^Ensembl ([0-9]+) EnsDb.+$"
+        match <- stringi::stri_match_first(
+            str = mcols[["title"]],
+            regex = "^Ensembl ([0-9]+) EnsDb.+$"
         )
         idx <- order(as.integer(match[, 2L]))
         mcols <- mcols[idx, , drop = FALSE]
