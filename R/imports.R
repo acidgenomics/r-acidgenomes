@@ -50,6 +50,5 @@ NULL
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity signature validObject
 #' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256
-#' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
 NULL
