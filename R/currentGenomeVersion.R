@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2020-12-09.
+#' @note Updated 2022-05-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -35,7 +35,7 @@ currentEnsemblVersion <- function() {
         quiet = TRUE
     )
     x <- x[[3L]]
-    x <- str_split_fixed(x, pattern = boundary("word"), n = 4L)[1L, 3L]
+    x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]][[3L]]
     x <- as.integer(x)
     x
 }
@@ -46,19 +46,29 @@ currentEnsemblVersion <- function() {
 #' @export
 currentGencodeVersion <-
     function(organism = c("Homo sapiens", "Mus musculus")) {
+        assert(requireNamespaces("RCurl"))
         organism <- match.arg(organism)
         url <- "https://www.gencodegenes.org"
-        if (identical(organism, "Homo sapiens")) {
-            shortName <- "human"
-            pattern <- "Release [[:digit:]]+"
-        } else if (identical(organism, "Mus musculus")) {
-            shortName <- "mouse"
-            pattern <- "Release M[[:digit:]]+"
-        }
+        switch(
+            EXPR = organism,
+            "Homo sapiens" = {
+                shortName <- "human"
+                pattern <- "Release [[:digit:]]+"
+            },
+            "Mus musculus" = {
+                shortName <- "mouse"
+                pattern <- "Release M[[:digit:]]+"
+            }
+        )
         url <- paste0(url, "/", shortName, "/")
-        x <- getURL(url)
-        x <- str_extract(x, pattern = pattern)
-        x <- str_split_fixed(x, pattern = boundary("word"), n = 2L)[1L, 2L]
+        x <- RCurl::getURL(url)
+        x <- strsplit(x = x, split = "\n")[[1L]]
+        x <- grep(
+            pattern = paste0("^<h1>", pattern),
+            x = x,
+            value = TRUE
+        )
+        x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]][[2L]]
         if (identical(organism, "Homo sapiens")) {
             x <- as.integer(x)
         }
@@ -89,13 +99,12 @@ currentFlyBaseVersion <- function(dmel = FALSE) {
     if (isTRUE(dmel)) {
         x <- getURLDirList(paste0(url, "current/"))
         x <- grep(pattern = "^dmel_r[.0-9]+$", x = x, value = TRUE)
-        x <- str_split_fixed(x, pattern = "_", n = 2L)[1L, 2L]
+        x <- strsplit(x = x, split = "_", fixed = TRUE)[[1L]][[2L]]
     } else {
         x <- getURLDirList(url)
         x <- grep(pattern = "^FB[0-9]{4}_[0-9]{2}$", x = x, value = TRUE)
+        x <- tail(sort(x), n = 1L)
     }
-    x <- sort(x)
-    x <- tail(x, n = 1L)
     x
 }
 
@@ -114,6 +123,6 @@ currentWormBaseVersion <- function() {
     )
     x <- getURLDirList(paste0(url, "/"))
     x <- grep(pattern = "letter.WS[0-9]+", x = x, value = TRUE)
-    x <- str_split_fixed(x, pattern = "\\.", n = 2L)[1L, 2L]
+    x <- strsplit(x = x, split = ".", fixed = TRUE)[[1L]][[2L]]
     x
 }
