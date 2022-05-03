@@ -1,8 +1,3 @@
-## FIXME Keep track of gencode.v40.metadata.EntrezGene.gz.
-## FIXME Work on including this in the GRanges objects.
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
@@ -95,7 +90,13 @@ downloadGencodeGenome <-
         info[["transcriptome"]] <-
             do.call(what = .downloadGencodeTranscriptome, args = args)
         info[["annotation"]] <-
-            do.call(what = .downloadGencodeAnnotation, args = args)
+            do.call(
+                what = .downloadGencodeAnnotation,
+                args = append(
+                    x = args,
+                    values = list("metadataFiles" = info[["metadata"]])
+                )
+            )
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -112,9 +113,10 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-03.
 .downloadGencodeAnnotation <-
     function(genomeBuild,
+             metadataFiles,
              outputDir,
              release,
              releaseURL,
@@ -183,8 +185,87 @@ downloadGencodeGenome <-
             setwd(wd)
         }
         ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
-        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        genes <- makeGRangesFromGFF(
+            gtfFile,
+            level = "genes",
+            ignoreVersion = FALSE
+        )
+        transcripts <- makeGRangesFromGFF(
+            gtfFile,
+            level = "transcripts",
+            ignoreVersion = FALSE
+        )
+        ## Get Entrez and RefSeq identifier mappings.
+        entrezGene <- import(
+            file = metadataFiles[["files"]][["entrezGene"]],
+            format = "tsv",
+            colnames = c("txId", "entrezId")
+        )
+        entrezGene <- as(entrezGene, "DataFrame")
+        entrezGene <- leftJoin(
+            x = entrezGene,
+            y = mcols(transcripts)[, c("txId", "geneId")],
+            by = "txId"
+        )
+        refSeq <- import(
+            file = metadataFiles[["files"]][["refSeq"]],
+            format = "tsv",
+            colnames = c(
+                "txId",
+                "refSeqRnaId",
+                "refSeqProteinId"
+            )
+        )
+        refSeq <- as(refSeq, "DataFrame")
+        refSeq <- leftJoin(
+            x = refSeq,
+            y = mcols(transcripts)[, c("txId", "geneId")],
+            by = "txId"
+        )
+        ## Add Entrez and RefSeq identifiers to gene metadata.
+        mcols <- mcols(genes)
+        mcols <- leftJoin(
+            x = mcols,
+            y = .nest2(
+                object = entrezGene,
+                by = "geneId",
+                exclude = "txId"
+            ),
+            by = "geneId"
+        )
+        mcols <- leftJoin(
+            x = mcols,
+            y = .nest2(
+                object = refSeq,
+                by = "geneId",
+                exclude = "txId"
+            ),
+            by = "geneId"
+        )
+        mcols <- mcols[, sort(colnames(mcols))]
+        mcols(genes) <- mcols
+        ## Add Entrez and RefSeq identifiers to transcript metadata.
+        mcols <- mcols(transcripts)
+        mcols <- leftJoin(
+            x = mcols,
+            y = .nest2(
+                object = entrezGene,
+                by = "txId",
+                exclude = "geneId"
+            ),
+            by = "txId"
+        )
+        mcols <- leftJoin(
+            x = mcols,
+            y = .nest2(
+                object = refSeq,
+                by = "txId",
+                exclude = "geneId"
+            ),
+            by = "txId"
+        )
+        mcols <- mcols[, sort(colnames(mcols))]
+        mcols(transcripts) <- mcols
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
