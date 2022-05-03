@@ -21,8 +21,6 @@ makeGRangesFromEnsDb(
   ignoreVersion = TRUE,
   synonyms = FALSE
 )
-
-annotable(...)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -89,9 +87,6 @@ querying AnnotationHub.
 \item \code{makeGRangesFromEnsDb}: Use a specific \code{EnsDb} object as the
 annotation source. Alternatively, can pass in an EnsDb package name as
 a \code{character(1)}.
-
-\item \code{annotable}: Legacy convenience function that calls \code{\link[=makeGRangesFromEnsembl]{makeGRangesFromEnsembl()}} and returns
-a \code{tbl_df} (tibble) instead of \code{GenomicRanges}.
 }}
 
 \note{
