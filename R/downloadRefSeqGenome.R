@@ -1,5 +1,3 @@
-## FIXME Can we include Ensembl identifier mappings here?
-
 ## nolint start
 
 #' Download RefSeq reference genome
