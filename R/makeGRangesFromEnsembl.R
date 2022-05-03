@@ -222,13 +222,9 @@ makeGRangesFromEnsDb <-
 
 
 
-#' @describeIn makeGRangesFromEnsembl
-#' Legacy convenience function that calls [makeGRangesFromEnsembl()] and returns
-#' a `tbl_df` (tibble) instead of `GenomicRanges`.
+#' @rdname makeGRangesFromEnsembl
+#' @usage NULL
 #' @export
 annotable <- function(...) {
-    gr <- makeGRangesFromEnsembl(...)
-    mcols(gr) <- decode(mcols(gr))
-    df <- as_tibble(x = gr, rownames = NULL)
-    df
+    .Defunct("makeGRangesFromEnsembl")
 }
