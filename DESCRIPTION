@@ -45,7 +45,6 @@ Suggests:
     RCurl,
     biomaRt,
     ensembldb,
-    stringr,
     testthat
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
