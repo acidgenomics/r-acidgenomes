@@ -7,13 +7,6 @@ NULL
 
 
 
-## S3 generics =================================================================
-
-#' @importFrom pipette as_tibble
-NULL
-
-
-
 ## S4 generics and methods =====================================================
 
 #' @importFrom AcidGenerics as.DataFrame camelCase encode kebabCase leftJoin
@@ -25,12 +18,10 @@ NULL
 #' @importFrom IRanges gsub ranges trim
 #' @importFrom S4Vectors complete.cases decode expand head mcols mcols<-
 #' metadata metadata<- na.omit split tail
-#' @importFrom methods coerce
 #' @importFrom pipette export import
 #'
 #' @importMethodsFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
-#' @importMethodsFrom pipette as.DataFrame coerce export import removeNA
-#' sanitizeNA
+#' @importMethodsFrom pipette as.DataFrame export import removeNA sanitizeNA
 #' @importMethodsFrom syntactic camelCase kebabCase makeNames snakeCase
 #' upperCamelCase
 NULL
@@ -56,10 +47,9 @@ NULL
 #' isInt isMatchingFixed isMatchingRegex isNotMatchingFixed isOrganism
 #' isScalar isString isSubset isSystemCommand isWindows validate
 #' validateClasses
-#' @importFrom httr GET content content_type stop_for_status
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity signature validObject
-#' @importFrom pipette cacheURL getJSON getURL getURLDirList md5 sha256
+#' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256
 #' @importFrom stringr boundary str_extract str_match str_split_fixed
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
 NULL
