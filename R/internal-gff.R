@@ -35,7 +35,10 @@
 #' df <- .getGFFDirectives(url)
 #' print(df)
 .getGFFDirectives <- function(file, nMax = Inf) {
-    assert(.isSupportedGFF(file))
+    assert(
+        requireNamespaces("stringi"),
+        .isSupportedGFF(file)
+    )
     file <- .cacheIt(file)
     lines <- import(
         file = file,
@@ -49,10 +52,7 @@
     if (!hasLength(lines)) {
         return(NULL)
     }
-    mat <- str_match(
-        string = grep(pattern = pattern, x = lines, value = TRUE),
-        pattern = pattern
-    )
+    mat <- stringi::stri_match_first(str = lines, regex = pattern)
     assert(is.matrix(mat), hasRows(mat))
     df <- as(mat, "DataFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
