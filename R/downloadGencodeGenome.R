@@ -6,7 +6,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2022-02-08.
+#' @note Updated 2022-05-03.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -87,11 +87,11 @@ downloadGencodeGenome <-
         )
         info <- list()
         info[["date"]] <- Sys.Date()
-        info[["metadata"]] <-
-            do.call(what = .downloadGencodeMetadata, args = args)
         info[["genome"]] <-
             do.call(what = .downloadGencodeGenome, args = args)
         args <- append(x = args, values = list("release" = release))
+        info[["metadata"]] <-
+            do.call(what = .downloadGencodeMetadata, args = args)
         info[["transcriptome"]] <-
             do.call(what = .downloadGencodeTranscriptome, args = args)
         info[["annotation"]] <-
@@ -239,10 +239,11 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-03.
 .downloadGencodeMetadata <-
     function(genomeBuild,
              outputDir,
+             release,
              releaseURL,
              cache) {
         urls <- c(
@@ -254,7 +255,17 @@ downloadGencodeGenome <-
                     "_README.TXT"
                 )
             ),
-            "md5sums" = pasteURL(releaseURL, "MD5SUMS")
+            "md5sums" = pasteURL(releaseURL, "MD5SUMS"),
+            ## TSV (without colnames) mapping transcripts to Entrez gene IDs.
+            "entrezGene" = pasteURL(
+                releaseURL,
+                paste0("gencode.v", release, ".metadata.EntrezGene.gz")
+            ),
+            ## TSV (without colnames) mapping transcripts to RefSeq IDs.
+            "refSeq" = pasteURL(
+                releaseURL,
+                paste0("gencode.v", release, ".metadata.RefSeq.gz")
+            )
         )
         files <- .downloadURLs(
             urls = urls,
