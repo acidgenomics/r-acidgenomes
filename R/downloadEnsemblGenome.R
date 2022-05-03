@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2022-02-08.
+#' @note Updated 2022-05-03.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -167,7 +167,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-03.
 .downloadEnsemblGTF <-
     function(genomeBuild,
              organism,
@@ -233,8 +233,16 @@ downloadEnsemblGenome <-
             setwd(wd)
         }
         ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(gtfFile, level = "genes")
-        transcripts <- makeGRangesFromGFF(gtfFile, level = "transcripts")
+        genes <- makeGRangesFromGFF(
+            file = gtfFile,
+            level = "genes",
+            ignoreVersion = FALSE
+        )
+        transcripts <- makeGRangesFromGFF(
+            file = gtfFile,
+            level = "transcripts",
+            ignoreVersion = FALSE
+        )
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
