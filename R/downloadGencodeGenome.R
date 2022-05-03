@@ -1,3 +1,8 @@
+## FIXME Keep track of gencode.v40.metadata.EntrezGene.gz.
+## FIXME Work on including this in the GRanges objects.
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
