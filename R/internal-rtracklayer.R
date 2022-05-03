@@ -595,12 +595,15 @@
     keep <- grepl(pattern = "GeneID:", x = mcols[["db_xref"]], fixed = TRUE)
     mcols <- unique(mcols[keep, c("gene_id", "db_xref")])
     assert(hasNoDuplicates(mcols[["gene_id"]]))
+    geneIds <- mcols[["gene_id"]]
+    entrezIds <- stri_match_first_regex(
+        str = mcols[["db_xref"]],
+        pattern = "GeneID:([[:digit:]]+)"
+    )[, 2L]
+    entrezIds <- as.integer(entrezIds)
     out <- DataFrame(
-        "gene_id" = mcols[["gene_id"]],
-        "entrez_id" = stri_match_first_regex(
-            str = mcols[["db_xref"]],
-            pattern = "GeneID:([[:digit:]]+)"
-        )[, 2L]
+        "gene_id" = geneIds,
+        "entrez_id" = entrezIds
     )
     out <- out[complete.cases(out), ]
     out
@@ -646,21 +649,22 @@
 
 
 
-## Updated 2021-08-06.
+## FIXME This isn't keeping track of `entrezId` in the metadata...
+
+## Updated 2022-05-03.
 .rtracklayerRefSeqTranscriptsGtf <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGtf(object)
         genesMcols <- mcols(genes)[
             ,
             c(
-                "parent_gene_id",
+                "description",
+                "entrez_id",
                 "gene_biotype",
-                "description"
+                "parent_gene_id"
             ),
             drop = FALSE
         ]
-        keep <- complete.cases(genesMcols)
-        genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(
             hasNoDuplicates(genesMcols[["parent_gene_id"]]),
             is(object, "GenomicRanges"),
@@ -754,17 +758,20 @@
 
 
 
-## Updated 2021-08-06.
+## Updated 2022-05-03.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGff(object)
         genesMcols <- mcols(genes)[
             ,
-            c("parent_gene_id", "gene_biotype", "description"),
+            c(
+                "description",
+                "entrez_id",
+                "gene_biotype",
+                "parent_gene_id"
+            ),
             drop = FALSE
         ]
-        keep <- complete.cases(genesMcols)
-        genesMcols <- genesMcols[keep, , drop = FALSE]
         assert(
             hasNoDuplicates(genesMcols[["parent_gene_id"]]),
             is(object, "GenomicRanges"),
