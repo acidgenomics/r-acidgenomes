@@ -104,3 +104,49 @@
         abort(sprintf("Unsupported genome build: {.val %s}.", x))
     )
 }
+
+
+
+#' Nest an S4 Data Frame by a grouping factor
+#'
+#' Consider migrating this to AcidPlyr in a future update.
+#'
+#' @note Updated 2022-05-03.
+#' @noRd
+#'
+#' @param object Object.
+#' @param by `character(1)`.
+#' Identifier column.
+#' @param exclude `character` or `NULL`.
+#' Column names to exclude.
+#'
+#' @return `DataFrame`.
+#'
+#' @seealso
+#' - `tidyr::nest`.
+.nest2 <- function(object, by, exclude = NULL) {
+    assert(
+        isString(by),
+        isCharacter(exclude, nullOK = TRUE)
+    )
+    if (!is.null(exclude)) {
+        object <- object[, setdiff(colnames(object), exclude)]
+    }
+    object <- unique(object[complete.cases(object), ])
+    spl <- split(x = object, f = as.factor(object[[by]]))
+    args <- list()
+    args[[by]] <- names(spl)
+    args <- append(
+        x = args,
+        values = mapply(
+            col = setdiff(colnames(object), by),
+            MoreArgs = list("spl" = spl),
+            FUN = function(col, spl) {
+                unname(spl[, col])
+            },
+            SIMPLIFY = FALSE,
+            USE.NAMES = TRUE
+        )
+    )
+    do.call(what = DataFrame, args = args)
+}
