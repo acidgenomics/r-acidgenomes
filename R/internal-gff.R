@@ -35,10 +35,7 @@
 #' df <- .getGFFDirectives(url)
 #' print(df)
 .getGFFDirectives <- function(file, nMax = Inf) {
-    assert(
-        requireNamespaces("stringi"),
-        .isSupportedGFF(file)
-    )
+    assert(.isSupportedGFF(file))
     file <- .cacheIt(file)
     lines <- import(
         file = file,
@@ -52,7 +49,7 @@
     if (!hasLength(lines)) {
         return(NULL)
     }
-    mat <- stringi::stri_match_first(str = lines, regex = pattern)
+    mat <- stri_match_first_regex(str = lines, pattern = pattern)
     assert(is.matrix(mat), hasRows(mat))
     df <- as(mat, "DataFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
@@ -96,10 +93,7 @@
 #' x <- .getGFFMetadata(url)
 #' print(x)
 .getGFFMetadata <- function(file) {
-    assert(
-        requireNamespaces("stringi"),
-        .isSupportedGFF(file)
-    )
+    assert(.isSupportedGFF(file))
     file <- .cacheIt(file)
     l <- list()
     if (isAFile(file)) {
@@ -178,9 +172,9 @@
             EXPR = l[["provider"]],
             "Ensembl" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stringi::stri_match_first(
+                    x <- stri_match_first_regex(
                         str = basename(file),
-                        regex = pattern
+                        pattern = pattern
                     )[1L, , drop = TRUE]
                     if (!isOrganism(l[["organism"]])) {
                         l[["organism"]] <- gsub("_", " ", x[[3L]])
@@ -195,9 +189,9 @@
             },
             "FlyBase" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stringi::stri_match_first(
+                    x <- stri_match_first_regex(
                         str = basename(file),
-                        regex = pattern
+                        pattern = pattern
                     )[1L, , drop = TRUE]
                     if (
                         !isString(l[["organism"]]) &&
@@ -215,9 +209,9 @@
             },
             "GENCODE" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stringi::stri_match_first(
+                    x <- stri_match_first_regex(
                         str = basename(file),
-                        regex = pattern
+                        pattern = pattern
                     )[1L, , drop = TRUE]
                     if (!isScalar(l[["release"]])) {
                         l[["release"]] <- x[[3L]]
@@ -234,21 +228,21 @@
             "RefSeq" = {
                 if (!isScalar(l[["release"]])) {
                     ## e.g. "109.20190125".
-                    l[["release"]] <- stringi::stri_match_first(
+                    l[["release"]] <- stri_match_first_regex(
                         str = df[
                             df[["key"]] == "annotation-source",
                             "value",
                             drop = TRUE
                         ],
-                        regex = "^NCBI.+Annotation\\sRelease\\s([.0-9]+)$"
+                        pattern = "^NCBI.+Annotation\\sRelease\\s([.0-9]+)$"
                     )[1L, 2L]
                 }
             },
             "UCSC" = {
                 if (!isString(l[["genomeBuild"]])) {
-                    l[["genomeBuild"]] <- stringi::stri_match_first(
+                    l[["genomeBuild"]] <- stri_match_first_regex(
                         str = basename(file),
-                        regex = pattern
+                        pattern = pattern
                     )[1L, 3L]
                 }
             },
@@ -261,9 +255,9 @@
                     ]
                 }
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stringi::stri_match_first(
+                    x <- stri_match_first_regex(
                         str = basename(file),
-                        regex = pattern
+                        pattern = pattern
                     )[1L, , drop = TRUE]
                     if (
                         !isString(l[["organism"]]) &&
@@ -293,9 +287,9 @@
     }
     ## Attempt to detect the organism from gene identifiers, if necessary.
     if (!isOrganism(l[["organism"]])) {
-        match <- stringi::stri_match_first(
+        match <- stri_match_first_regex(
             str = lines,
-            regex = "(\t|\\s)gene_id\\s\"([^\"]+)\""
+            pattern = "(\t|\\s)gene_id\\s\"([^\"]+)\""
         )
         genes <- unique(na.omit(match[, 3L, drop = TRUE]))
         l[["organism"]] <- tryCatch(
@@ -328,10 +322,7 @@
 
 ## Updated 2022-05-03.
 .gffGenomeBuild <- function(df) {
-    assert(
-        requireNamespaces("stringi"),
-        is(df, "DataFrame")
-    )
+    assert(is(df, "DataFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (
         identical(
@@ -341,8 +332,8 @@
             isTRUE("description" %in% df[["key"]])
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
-        x <- stringi::stri_match_first(
-            string = string,
+        x <- stri_match_first_regex(
+            str = string,
             pattern = "genome \\(([^\\)]+)\\)"
         )[1L, 2L]
         if (isString(x)) {
