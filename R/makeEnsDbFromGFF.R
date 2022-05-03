@@ -28,7 +28,10 @@
 #' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
     pkgs <- .packages()
-    assert(.isSupportedGFF(file))
+    assert(
+        requireNamespaces(c("ensembldb", "stringi")),
+        .isSupportedGFF(file)
+    )
     if (isAFile(file)) {
         file <- realpath(file)
     }
@@ -38,11 +41,10 @@ makeEnsDbFromGFF <- function(file) {
         msg = "Failed to detect Ensembl GFF file."
     )
     alert(sprintf("Making {.cls %s} from {.file %s}.", "EnsDb", file))
-    requireNamespaces("ensembldb")
     args <- list()
-    x <- str_match(
-        string = basename(file),
-        pattern = pattern
+    x <- stringi::stri_match_first(
+        str = basename(file),
+        regex = pattern
     )[1L, , drop = TRUE]
     args[["genomeBuild"]] <- x[[4L]]
     args[["organism"]] <- gsub(pattern = "_", replacement = " ", x = x[[3L]])
