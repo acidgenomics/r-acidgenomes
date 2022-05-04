@@ -13,7 +13,7 @@ MGI2Ensembl()
 MGI-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2021-02-10.
+Updated 2022-05-04.
 }
 \examples{
 object <- MGI2Ensembl()
