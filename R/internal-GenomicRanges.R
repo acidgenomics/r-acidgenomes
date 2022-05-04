@@ -49,7 +49,6 @@
 #' List returned via apply call using `MARGIN = 1`.
 #'
 #' @return `character(1)`.
-
 .applyBroadClass <- function(x) {
     if (
         isTRUE(grepl(
@@ -430,17 +429,11 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2021-02-12.
+#' @note Updated 2022-05-04.
 #' @noRd
 .standardizeMcols <- function(object) {
     assert(is(object, "GenomicRanges"))
     mcols <- mcols(object)
-    ## Remove any columns beginning with a capital letter, which are used in
-    ## GFF3 files.
-    keep <- !grepl(pattern = "^[A-Z]", x = names(mcols))
-    mcols <- mcols[keep]
-    ## Changed to strict format here in v0.2.0 release. This results in
-    ## returning "Id" identifier suffix instead of "ID".
     names(mcols) <- camelCase(names(mcols), strict = TRUE)
     ## Ensure "tx" prefix is used consistently instead of "transcript".
     ## This convention was changed in v0.2.0 release.
@@ -530,94 +523,95 @@
 #'
 #' @note Updated 2021-03-10.
 #' @noRd
-.makeGRanges <- function(object,
-                         ignoreVersion,
-                         synonyms) {
-    assert(
-        is(object, "GenomicRanges"),
-        hasLength(object),
-        isFlag(ignoreVersion),
-        isFlag(synonyms),
-        isString(metadata(object)[["level"]]),
-        isString(metadata(object)[["provider"]])
-    )
-    level <- match.arg(
-        arg = metadata(object)[["level"]],
-        choices = .grangesLevels
-    )
-    provider <- metadata(object)[["provider"]]
-    object <- .standardizeMcols(object)
-    if (isFALSE(ignoreVersion)) {
-        object <- .includeGeneVersion(object)
-        object <- .includeTxVersion(object)
-    }
-    object <- .addBroadClass(object)
-    if (isTRUE(synonyms)) {
-        object <- .addGeneSynonyms(object)
-    }
-    ## Run the encoding step after all modifications above.
-    object <- .encodeMcols(object)
-    idCol <- .matchGRangesNamesColumn(object)
-    assert(isSubset(idCol, names(mcols(object))))
-    alert(sprintf(
-        "Defining names by {.var %s} column in {.fun %s}.",
-        idCol, "mcols"
-    ))
-    ## Sort the ranges by genomic location.
-    ## Previously we sorted by the identifier column, until v0.2.0.
-    object <- sort(object)
-    ## Sort the mcols alphabetically.
-    mcols(object) <-
-        mcols(object)[, sort(names(mcols(object))), drop = FALSE]
-    ## Ensure metadata elements are all sorted alphabetically.
-    metadata(object) <- append(
-        x = metadata(object),
-        values = list(
-            "date" = Sys.Date(),
-            "ignoreVersion" = ignoreVersion,
-            "packageVersion" = .pkgVersion,
-            "synonyms" = synonyms
+.makeGRanges <-
+    function(object,
+             ignoreVersion,
+             synonyms) {
+        assert(
+            is(object, "GenomicRanges"),
+            hasLength(object),
+            isFlag(ignoreVersion),
+            isFlag(synonyms),
+            isString(metadata(object)[["level"]]),
+            isString(metadata(object)[["provider"]])
         )
-    )
-    metadata(object) <- metadata(object)[sort(names(metadata(object)))]
-    if (identical(provider, "RefSeq")) {
-        alertInfo(sprintf(
-            "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
-            "GenomicRanges", idCol, "GenomicRangesList"
+        level <- match.arg(
+            arg = metadata(object)[["level"]],
+            choices = .grangesLevels
+        )
+        provider <- metadata(object)[["provider"]]
+        object <- .standardizeMcols(object)
+        if (isFALSE(ignoreVersion)) {
+            object <- .includeGeneVersion(object)
+            object <- .includeTxVersion(object)
+        }
+        object <- .addBroadClass(object)
+        if (isTRUE(synonyms)) {
+            object <- .addGeneSynonyms(object)
+        }
+        ## Run the encoding step after all modifications above.
+        object <- .encodeMcols(object)
+        idCol <- .matchGRangesNamesColumn(object)
+        assert(isSubset(idCol, names(mcols(object))))
+        alert(sprintf(
+            "Defining names by {.var %s} column in {.fun %s}.",
+            idCol, "mcols"
         ))
-        ## Metadata gets dropped during `split()` call; stash and reassign.
-        meta <- metadata(object)
-        object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
-        metadata(object) <- meta
-    } else {
-        names <- as.character(mcols(object)[[idCol]])
-        assert(
-            hasNoDuplicates(names),
-            !any(is.na(names)),
-            msg = "Invalid and/or duplicated identifiers detected."
+        ## Sort the ranges by genomic location.
+        ## Previously we sorted by the identifier column, until v0.2.0.
+        object <- sort(object)
+        ## Sort the mcols alphabetically.
+        mcols(object) <-
+            mcols(object)[, sort(names(mcols(object))), drop = FALSE]
+        ## Ensure metadata elements are all sorted alphabetically.
+        metadata(object) <- append(
+            x = metadata(object),
+            values = list(
+                "date" = Sys.Date(),
+                "ignoreVersion" = ignoreVersion,
+                "packageVersion" = .pkgVersion,
+                "synonyms" = synonyms
+            )
         )
-        names(object) <- names
-        ## This check fails for split GenomicRangesList.
-        assert(
-            isFALSE(is.unsorted(object)),
-            msg = "GenomicRanges are not sorted."
-        )
-    }
-    ## Run final assert checks before returning.
-    validObject(object)
-    if (isSubset(level, c("genes", "transcripts"))) {
-        class <- upperCamelCase(
-            object = paste(
-                switch(
-                    EXPR = provider,
-                    "GENCODE" = "Gencode",
-                    provider
+        metadata(object) <- metadata(object)[sort(names(metadata(object)))]
+        if (identical(provider, "RefSeq")) {
+            alertInfo(sprintf(
+                "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
+                "GenomicRanges", idCol, "GenomicRangesList"
+            ))
+            ## Metadata gets dropped during `split()` call; stash and reassign.
+            meta <- metadata(object)
+            object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
+            metadata(object) <- meta
+        } else {
+            names <- as.character(mcols(object)[[idCol]])
+            assert(
+                hasNoDuplicates(names),
+                !any(is.na(names)),
+                msg = "Invalid and/or duplicated identifiers detected."
+            )
+            names(object) <- names
+            ## This check fails for split GenomicRangesList.
+            assert(
+                isFALSE(is.unsorted(object)),
+                msg = "GenomicRanges are not sorted."
+            )
+        }
+        ## Run final assert checks before returning.
+        validObject(object)
+        if (isSubset(level, c("genes", "transcripts"))) {
+            class <- upperCamelCase(
+                object = paste(
+                    switch(
+                        EXPR = provider,
+                        "GENCODE" = "Gencode",
+                        provider
+                    ),
+                    level
                 ),
-                level
-            ),
-            strict = FALSE
-        )
-        object <- new(Class = class, object)
+                strict = FALSE
+            )
+            object <- new(Class = class, object)
+        }
+        object
     }
-    object
-}
