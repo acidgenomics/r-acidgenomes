@@ -591,10 +591,6 @@
 
 
 
-## FIXME Filter by exon here to speed up.
-## FIXME Check the Entrez identifier handling of TRNA genes (see above).
-## FIXME Need to rework using unmodified column names.
-
 #' Extract Entrez gene identifiers from RefSeq GTF file.
 #'
 #' @note Updated 2022-05-04.
