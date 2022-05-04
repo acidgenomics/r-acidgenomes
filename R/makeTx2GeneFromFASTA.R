@@ -70,9 +70,8 @@
 #' ## > t2g <- makeTx2GeneFromFASTA(file)
 #' ## > print(t2g)
 makeTx2GeneFromFASTA <-
-    function(
-        file,
-        ignoreVersion = TRUE) {
+    function(file,
+             ignoreVersion = TRUE) {
         assert(
             isString(file),
             isFlag(ignoreVersion)
