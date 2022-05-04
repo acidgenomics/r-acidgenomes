@@ -144,8 +144,8 @@
         ),
         !isSubset("broadClass", names(mcols(object))),
         allAreNotMatchingRegex(
-            pattern = "^transcript",
-            x = names(mcols(object))
+            x = names(mcols(object)),
+            pattern = "^transcript"
         )
     )
     df <- as.data.frame(object)
