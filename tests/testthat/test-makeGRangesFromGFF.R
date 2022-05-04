@@ -1350,7 +1350,7 @@ test_that("GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "WormBaseGenes")
-    expect_identical(length(object), 46926L)
+    expect_identical(length(object), 46925L)
     expect_identical(
         object = names(object),
         expected = as.character(mcols(object)[["geneId"]])
@@ -1412,11 +1412,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "WS283"
+        expected = "WS284"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "6f7884e2cd331d8757b688e3c47bc286"
+        expected = "d1bcb4cc329c2eb23460fd53717dea5e"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -1424,11 +1424,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = "WS283"
+        expected = "WS284"
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "652410d129662197a8c010d8cc1e37ee01ad35df34146216bc98fe8511db903a" # nolint
+        expected = "c176ff7fcf1c24844c40df18602736ecc5aa6c3105d2d924227e2ba29a9273f0" # nolint
     )
 })
 
@@ -1438,7 +1438,7 @@ test_that("GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "WormBaseTranscripts")
-    expect_identical(length(object), 60109L)
+    expect_identical(length(object), 60128L)
     expect_identical(
         object = names(object),
         expected = as.character(mcols(object)[["txId"]])
