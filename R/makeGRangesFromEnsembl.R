@@ -42,7 +42,7 @@
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2021-08-04.
+#' @note Updated 2022-05-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -219,12 +219,3 @@ makeGRangesFromEnsDb <-
         forceDetach(keep = pkgs)
         gr
     }
-
-
-
-#' @rdname makeGRangesFromEnsembl
-#' @usage NULL
-#' @export
-annotable <- function(...) {
-    .Defunct("makeGRangesFromEnsembl")
-}
