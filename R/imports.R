@@ -44,9 +44,8 @@ NULL
 #' areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
 #' hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows
 #' hasValidNames isADir isAFile isAURL isAny isCharacter isFlag isInstalled
-#' isInt isMatchingFixed isMatchingRegex isNotMatchingFixed isOrganism
-#' isScalar isString isSubset isSystemCommand isWindows validate
-#' validateClasses
+#' isInt isMatchingFixed isMatchingRegex isOrganism isScalar isString isSubset
+#' isSystemCommand isWindows validate validateClasses
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity signature validObject
 #' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256

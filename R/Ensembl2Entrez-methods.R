@@ -85,7 +85,7 @@ NULL
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
-        if (allAreMatchingFixed(pattern = ".", x = object)) {
+        if (allAreMatchingFixed(x = object, pattern = ".")) {
             object <- stripGeneVersions(object)
         }
         df <- .getEnsembl2EntrezFromOrgDb(

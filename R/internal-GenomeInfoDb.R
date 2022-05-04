@@ -106,9 +106,10 @@
                     )
                     ## The `use.grch37` flag isn't currently working with
                     ## GenomeInfoDb v1.26.2, but may be improved in the future.
-                    if (isMatchingFixed(
+                    if (grepl(
                         pattern = "GRCh37",
-                        x = x[["genomeBuild"]]
+                        x = x[["genomeBuild"]],
+                        fixed = TRUE
                     )
                     ) {
                         args[["use.grch37"]] <- TRUE

@@ -148,7 +148,7 @@
         pattern <- "assembly_summary.txt"
         assert(
             isString(file),
-            isMatchingFixed(pattern = pattern, x = basename(file))
+            isMatchingFixed(x = basename(file), pattern = pattern)
         )
         file <- .cacheIt(file)
         lines <- import(
@@ -268,9 +268,10 @@
             x = "seqs_for_alignment_pipelines.ucsc_ids",
             y = basename(dirname(file))
         ) ||
-            isMatchingFixed(
+            grepl(
                 pattern = "_full_analysis_set.refseq_annotation",
-                x = basename(file)
+                x = basename(file),
+                fixed = TRUE
             )
     ) {
         ucsc <- TRUE
@@ -288,7 +289,7 @@
         "(.+ucsc_names)?",
         "\\.txt$"
     )
-    assert(isMatchingRegex(pattern = pattern, x = basename(file)))
+    assert(isMatchingRegex(x = basename(file), pattern = pattern))
     alert(sprintf(
         "Getting {.cls %s} from {.file %s}.",
         "Seqinfo", basename(file)
@@ -306,7 +307,7 @@
     lines <- import(file = file, format = "lines", quiet = TRUE)
     comments <- grep(pattern = "^#", x = lines, value = TRUE)
     colnames <- comments[length(comments)]
-    assert(isMatchingFixed(pattern = "\t", x = colnames))
+    assert(isMatchingFixed(x = colnames, pattern = "\t"))
     colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
     colnames <- strsplit(colnames, split = "\t")[[1L]]
     colnames <- camelCase(colnames, strict = TRUE)
@@ -402,8 +403,8 @@
         file <- realpath(file)
     }
     assert(isMatchingRegex(
-        pattern = .gffPatterns[["refseq"]],
-        x = basename(file)
+        x = basename(file),
+        pattern = .gffPatterns[["refseq"]]
     ))
     reportBasename <- sub(
         pattern = paste0(

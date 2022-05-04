@@ -439,13 +439,13 @@
             "(\\.gz)?$"
         )
     )
-    if (isMatchingRegex(
+    if (grepl(
         pattern = denylist[["flybase_gff"]],
         x = basename(file)
     )) {
         alertWarning("Use FlyBase GTF instead of GFF.")
         return(FALSE)
-    } else if (isMatchingRegex(
+    } else if (grepl(
         pattern = denylist[["wormbase_gff"]],
         x = basename(file)
     )) {

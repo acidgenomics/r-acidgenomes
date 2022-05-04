@@ -210,7 +210,7 @@
         id <- rownames(mcols)
         assert(
             isString(id),
-            unname(isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$"))
+            isMatchingRegex(x = id, pattern = "^AH[[:digit:]]+$")
         )
         alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
         id

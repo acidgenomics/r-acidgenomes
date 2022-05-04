@@ -176,8 +176,8 @@
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
-                pattern = "^gene:",
-                x = as.character(mcols(object)[["Parent"]])
+                x = as.character(mcols(object)[["Parent"]]),
+                pattern = "^gene:"
             )
         )
         mcols(object) <- removeNA(mcols(object))
@@ -815,8 +815,8 @@
         assert(
             hasNoDuplicates(mcols(object)[["gene_id"]]),
             allAreMatchingRegex(
-                pattern = "^WBGene[[:digit:]]{8}$",
-                x = mcols(object)[["gene_id"]]
+                x = mcols(object)[["gene_id"]],
+                pattern = "^WBGene[[:digit:]]{8}$"
             )
         )
         object
@@ -851,8 +851,8 @@
         assert(
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
-                pattern = "^WBGene[[:digit:]]{8}$",
-                x = mcols(object)[["gene_id"]]
+                x = mcols(object)[["gene_id"]],
+                pattern = "^WBGene[[:digit:]]{8}$"
             )
         )
         mcols <- mcols(object)
