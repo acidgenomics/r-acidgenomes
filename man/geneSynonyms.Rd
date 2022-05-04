@@ -28,7 +28,7 @@ Type of gene identifier to return in the \code{geneId} column.}
 Look up gene synonyms from NCBI.
 }
 \note{
-Updated 2021-02-13.
+Updated 2022-05-04.
 }
 \section{\emph{Caenorhabditis elegans}}{
 

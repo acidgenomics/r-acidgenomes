@@ -38,7 +38,7 @@ Make GenomicRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2022-02-08.
+Updated 2022-05-03.
 }
 \section{GFF/GTF specification}{
 
@@ -290,8 +290,6 @@ summary(genes)
 ## > summary(genes)
 ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 ## > summary(transcripts)
-
-
 }
 \seealso{
 \itemize{
