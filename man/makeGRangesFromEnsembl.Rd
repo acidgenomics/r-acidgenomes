@@ -3,7 +3,6 @@
 \name{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsDb}
-\alias{annotable}
 \title{Make GenomicRanges from Ensembl}
 \usage{
 makeGRangesFromEnsembl(
@@ -54,8 +53,6 @@ Queries the Ensembl web server, and is CPU intensive.}
 \item{object}{\code{EnsDb} or \code{character(1)}.
 \code{EnsDb} object or name of specific annotation package containing a
 versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").}
-
-\item{...}{Additional arguments.}
 }
 \value{
 \code{EnsemblGenes} or \code{EnsemblTranscripts}.
@@ -90,7 +87,7 @@ a \code{character(1)}.
 }}
 
 \note{
-Updated 2021-08-04.
+Updated 2022-05-04.
 }
 \section{Broad class definitions}{
 
