@@ -68,9 +68,13 @@
 #' ## > t2g <- makeTx2GeneFromFASTA(file)
 #' ## > print(t2g)
 makeTx2GeneFromFASTA <- function(file) {
+    assert(isString(file))
+    if (isAFile(file)) {
+        file <- realpath(file)
+    }
     alert(sprintf(
         "Making {.cls %s} from FASTA file ({.file %s}).",
-        "Tx2Gene", basename(file)
+        "Tx2Gene", file
     ))
     x <- import(file = .cacheIt(file), format = "lines")
     x <- grep(pattern = "^>", x = x, value = TRUE)
