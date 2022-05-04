@@ -1,5 +1,5 @@
 #' @inherit MGI2Ensembl-class title description return
-#' @note Updated 2021-02-10.
+#' @note Updated 2022-05-04.
 #' @export
 #' @examples
 #' object <- MGI2Ensembl()
@@ -15,8 +15,14 @@ MGI2Ensembl <- function() { # nolint
         protocol = "http"
     )
     file <- .cacheIt(url)
+    ## Base import engine returns NAs introduced by coercion.
     suppressWarnings({
-        df <- import(file = file, format = "tsv", colnames = TRUE)
+        df <- import(
+            file = file,
+            format = "tsv",
+            colnames = TRUE,
+            engine = "readr"
+        )
     })
     df <- as(df[, c(1L, 11L)], "DataFrame")
     colnames(df) <- c("mgiId", "ensemblId")
