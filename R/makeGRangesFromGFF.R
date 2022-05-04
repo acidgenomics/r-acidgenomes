@@ -1,5 +1,4 @@
 ## nolint start
-
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
@@ -242,9 +241,7 @@
 #' ## > summary(genes)
 #' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 #' ## > summary(transcripts)
-
 ## nolint end
-
 makeGRangesFromGFF <-
     function(file,
              level = c("genes", "transcripts"),
