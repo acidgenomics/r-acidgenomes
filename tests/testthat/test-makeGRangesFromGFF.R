@@ -1,6 +1,3 @@
-## FIXME Consider improving "dbxref" (GFF) vs. "dbXref" (GTF) consistency
-## between GFF and GTF files here.
-
 context("makeGRangesFromGFF")
 
 test_that("Unsupported files", {
@@ -1063,13 +1060,12 @@ test_that("GTF genes", {
             "broadClass" = "Rle",
             "dbXref" = "Rle",
             "description" = "Rle",
+            "entrezId" = "Rle",
             "exception" = "Rle",
-            "gbkey" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneName" = "Rle",
             "geneSynonym" = "Rle",
-            "note" = "Rle",
             "parentGeneId" = "Rle",
             "partial" = "Rle",
             "pseudo" = "Rle",
@@ -1079,7 +1075,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]), # nolint
+            X = as.data.frame(object[["A1BG"]]),
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1092,13 +1088,12 @@ test_that("GTF genes", {
             "broadClass" = "coding",
             "dbXref" = "MIM:138670",
             "description" = "alpha-1-B glycoprotein",
+            "entrezId" = "1",
             "exception" = NA_character_,
-            "gbkey" = "Gene",
             "geneBiotype" = "protein_coding",
             "geneId" = "A1BG",
             "geneName" = "A1BG",
             "geneSynonym" = "HYST2477",
-            "note" = NA_character_,
             "parentGeneId" = "A1BG",
             "partial" = NA_character_,
             "pseudo" = NA_character_,
@@ -1119,14 +1114,14 @@ test_that("GTF genes", {
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
             "dbXref" = rep("MIM:608463", 2L),
-            "description" = rep("apoptosis antagonizing transcription factor", 2L), # nolint
+            "description" =
+                rep("apoptosis antagonizing transcription factor", 2L),
+            "entrezId" = rep("26574", 2L),
             "exception" = rep(NA_character_, 2L),
-            "gbkey" = rep("Gene", 2L),
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),
             "geneName" = rep("AATF", 2L),
             "geneSynonym" = rep("DED", 2L),
-            "note" = rep(NA_character_, 2L),
             "parentGeneId" = c("AATF", "AATF_1"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
@@ -1139,7 +1134,7 @@ test_that("GTF genes", {
         expected = list(
             "seqlengths" = 248956422L,
             "isCircular" = NA,
-            "genome" = "GRCh38.p13"
+            "genome" = "GRCh38.p14"
         )
     )
     expect_identical(
@@ -1151,7 +1146,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
+        expected = "GRCh38.p14"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -1175,14 +1170,13 @@ test_that("GTF transcripts", {
             "broadClass" = "Rle",
             "dbXref" = "Rle",
             "description" = "Rle",
+            "entrezId" = "Rle",
             "exception" = "Rle",
-            "gbkey" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneName" = "Rle",
             "inference" = "Rle",
             "modelEvidence" = "Rle",
-            "note" = "Rle",
             "parentGeneId" = "Rle",
             "partial" = "Rle",
             "product" = "Rle",
@@ -1197,7 +1191,7 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]), # nolint
+            X = as.data.frame(object[["NM_000014.6"]]),
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -1210,14 +1204,13 @@ test_that("GTF transcripts", {
             "broadClass" = "coding",
             "dbXref" = "GeneID:2",
             "description" = "alpha-2-macroglobulin",
+            "entrezId" = "2",
             "exception" = NA_character_,
-            "gbkey" = "mRNA",
             "geneBiotype" = "protein_coding",
             "geneId" = "A2M",
             "geneName" = "A2M",
             "inference" = NA_character_,
             "modelEvidence" = NA_character_,
-            "note" = NA_character_,
             "parentGeneId" = "A2M",
             "partial" = NA_character_,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
@@ -1237,6 +1230,7 @@ test_that("GTF transcripts", {
 context("makeGRangesFromGFF : UCSC")
 
 skip_if_not(hasInternet(url = "ftp://hgdownload.soe.ucsc.edu/"))
+
 file <- gffs[["ucsc_hg38_ensgene_gtf"]]
 
 test_that("GTF genes", {
@@ -1246,7 +1240,6 @@ test_that("GTF genes", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "UCSCGenes")
-
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -1348,6 +1341,7 @@ test_that("GTF transcripts", {
 context("makeGRangesFromGFF : WormBase")
 
 skip_if_not(hasInternet(url = "ftp://ftp.wormbase.org/"))
+
 file <- gffs[["wormbase_gtf"]]
 
 test_that("GTF genes", {
