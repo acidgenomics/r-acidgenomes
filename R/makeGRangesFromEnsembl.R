@@ -68,7 +68,7 @@
 #' summary(transcripts)
 #'
 #' ## Get annotations from specific EnsDb object or package.
-#' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
+#' if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
 #'     genes <- makeGRangesFromEnsDb(
 #'         object = "EnsDb.Hsapiens.v75",
 #'         level = "genes"

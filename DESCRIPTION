@@ -41,7 +41,6 @@ Suggests:
     AcidTest,
     AnnotationDbi,
     AnnotationHub,
-    EnsDb.Hsapiens.v75,
     GenomicFeatures,
     RCurl,
     biomaRt,
