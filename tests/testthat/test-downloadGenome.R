@@ -35,7 +35,11 @@ test_that("downloadEnsemblGenome", {
     )
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
-        expected = c("ENSG00000000003", "ENSG00000000005", "ENSG00000000419")
+        expected = c(
+            "ENSG00000000003.15",
+            "ENSG00000000005.6",
+            "ENSG00000000419.14"
+        )
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_identical(
@@ -44,7 +48,11 @@ test_that("downloadEnsemblGenome", {
     )
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
-        expected = c("ENST00000000233", "ENST00000000412", "ENST00000000442")
+        expected = c(
+            "ENST00000000233.10",
+            "ENST00000000412.8",
+            "ENST00000000442.11"
+        )
     )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(nrow(tx2gene), 265480L)
