@@ -4,11 +4,17 @@
 \alias{makeTx2GeneFromFASTA}
 \title{Make a Tx2Gene object from transcriptome FASTA}
 \usage{
-makeTx2GeneFromFASTA(file)
+makeTx2GeneFromFASTA(file, ignoreVersion = TRUE)
 }
 \arguments{
 \item{file}{\code{character(1)}.
 File path.}
+
+\item{ignoreVersion}{\code{logical(1)}.
+Ignore identifier (e.g. transcript, gene) versions.
+When applicable, the identifier containing version numbers will be stored
+in \code{txIdVersion} and \code{geneIdVersion}, and the variants without versions
+will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
 }
 \value{
 \code{Tx2Gene}.
@@ -16,12 +22,12 @@ File path.}
 \description{
 Make a Tx2Gene object from transcriptome FASTA
 }
+\details{
+RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
+doesn't contain gene identifiers, and is not supported.
+}
 \note{
-RefSeq transcript FASTA
-(e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz") doesn't contain gene
-identifiers, and is not supported.
-
-Updated 2021-01-29.
+Updated 2022-05-04.
 }
 \examples{
 ## Ensembl ====

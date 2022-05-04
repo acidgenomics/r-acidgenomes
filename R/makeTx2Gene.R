@@ -18,8 +18,8 @@
 #' print(x)
 #'
 #' ## makeTx2GeneFromEnsDb ====
-#' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
-#'     x <- makeTx2GeneFromEnsDb("EnsDb.Hsapiens.v75")
+#' if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
+#'     x <- makeTx2GeneFromEnsDb(object = "EnsDb.Hsapiens.v75")
 #'     print(x)
 #' }
 #'
