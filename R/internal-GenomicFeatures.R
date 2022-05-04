@@ -229,7 +229,7 @@ NULL
             "(\\.gz)?$"
         )
     )
-    if (isMatchingRegex(
+    if (grepl(
         pattern = denylist[["refseq_gtf"]],
         x = basename(file)
     )) {

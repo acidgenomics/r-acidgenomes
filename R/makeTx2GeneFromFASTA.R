@@ -144,12 +144,12 @@ makeTx2GeneFromFASTA <-
                 )
                 assert(
                     allAreMatchingRegex(
-                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+$",
-                        x = x[, 1L]
+                        x = x[, 1L],
+                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+$"
                     ),
                     allAreMatchingRegex(
-                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+$",
-                        x = x[, 2L]
+                        x = x[, 2L],
+                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+$"
                     )
                 )
             },
@@ -169,12 +169,12 @@ makeTx2GeneFromFASTA <-
                 )
                 assert(
                     allAreMatchingRegex(
-                        pattern = "^FBtr[0-9]{7}$",
-                        x = x[, 1L]
+                        x = x[, 1L],
+                        pattern = "^FBtr[0-9]{7}$"
                     ),
                     allAreMatchingRegex(
-                        pattern = "^FBgn[0-9]{7}$",
-                        x = x[, 2L]
+                        x = x[, 2L],
+                        pattern = "^FBgn[0-9]{7}$"
                     )
                 )
             },
@@ -189,12 +189,12 @@ makeTx2GeneFromFASTA <-
                 x <- do.call(what = rbind, args = x)
                 assert(
                     allAreMatchingRegex(
-                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+(_PAR_Y)?$",
-                        x = x[, 1L]
+                        x = x[, 1L],
+                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+(_PAR_Y)?$"
                     ),
                     allAreMatchingRegex(
-                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+(_PAR_Y)?$",
-                        x = x[, 2L]
+                        x = x[, 2L],
+                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+(_PAR_Y)?$"
                     )
                 )
             },
@@ -214,12 +214,12 @@ makeTx2GeneFromFASTA <-
                 )
                 assert(
                     allAreMatchingRegex(
-                        pattern = "^[A-Za-z0-9_]+\\.[a-z0-9]+\\.[0-9]+$",
-                        x = x[, 1L]
+                        x = x[, 1L],
+                        pattern = "^[A-Za-z0-9_]+\\.[a-z0-9]+\\.[0-9]+$"
                     ),
                     allAreMatchingRegex(
-                        pattern = "^WBGene[0-9]{8}$",
-                        x = x[, 2L]
+                        x = x[, 2L],
+                        pattern = "^WBGene[0-9]{8}$"
                     )
                 )
             },

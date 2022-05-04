@@ -37,7 +37,7 @@ makeEnsDbFromGFF <- function(file) {
     }
     pattern <- .gffPatterns[["ensembl"]]
     assert(
-        isMatchingRegex(pattern = pattern, x = basename(file)),
+        grepl(pattern = pattern, x = basename(file)),
         msg = "Failed to detect Ensembl GFF file."
     )
     alert(sprintf("Making {.cls %s} from {.file %s}.", "EnsDb", file))
