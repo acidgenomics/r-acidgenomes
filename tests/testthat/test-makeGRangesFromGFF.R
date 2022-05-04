@@ -508,7 +508,6 @@ test_that("GFF3 genes", {
         object = names(object),
         expected = as.character(mcols(object)[["geneId"]])
     )
-    ## FIXME The ont column is persisting here argh...
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -583,7 +582,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "df9776074fc21c1fa302ae5d1da3869f"
+        expected = "c3655ad23ed3844e7cf025cbb47d1372"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -591,11 +590,11 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 39L
+        expected = 40L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "4de5cef7b089a5da30d9d3f090e31a887219ff6dad688780a44dd14b2adaed29" # nolint
+        expected = "aab8237aca2fce38fee709de6728c270fdf0c35e2938fddbb508285aae68349f" # nolint
     )
 })
 
@@ -606,7 +605,7 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_identical(length(object), 244939L)
+    expect_identical(length(object), 246624L)
     expect_identical(
         object = names(object),
         expected = as.character(mcols(object)[["txId"]])
@@ -625,7 +624,6 @@ test_that("GFF3 transcripts", {
             "havanaTranscript" = "Rle",
             "hgncId" = "Rle",
             "level" = "Rle",
-            "ont" = "CompressedCharacterList",
             "proteinId" = "Rle",
             "source" = "Rle",
             "tag" = "CompressedCharacterList",
@@ -661,7 +659,6 @@ test_that("GFF3 transcripts", {
             "havanaTranscript" = "OTTHUMT00000362751.1",
             "hgncId" = "HGNC:37102",
             "level" = "2",
-            "ont" = "character(0)",
             "proteinId" = NA_character_,
             "source" = "HAVANA",
             "tag" = "basic",
@@ -675,9 +672,6 @@ test_that("GFF3 transcripts", {
         )
     )
 })
-
-
-
 
 
 
@@ -811,7 +805,6 @@ test_that("GTF transcripts", {
             "havanaTranscript" = "Rle",
             "hgncId" = "Rle",
             "level" = "Rle",
-            "ont" = "Rle",
             "proteinId" = "Rle",
             "source" = "Rle",
             "tag" = "Rle",
@@ -847,7 +840,6 @@ test_that("GTF transcripts", {
             "havanaTranscript" = "OTTHUMT00000362751.1",
             "hgncId" = "HGNC:37102",
             "level" = "2",
-            "ont" = NA_character_,
             "proteinId" = NA_character_,
             "source" = "HAVANA",
             "tag" = "basic",
@@ -867,6 +859,186 @@ test_that("GTF transcripts", {
 context("makeGRangesFromGFF : RefSeq")
 
 skip_if_not(hasInternet(url = "ftp://ftp.ncbi.nlm.nih.gov/"))
+
+file <- gffs[["refseq_grch38_gff3"]]
+
+test_that("GFF3 genes", {
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "genes"
+    )
+    expect_s4_class(object, "RefSeqGenes")
+    expect_identical(
+        object = lapply(mcols(object[[1L]]), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "dbxref" = "CompressedCharacterList",
+            "description" = "Rle",
+            "entrezId" = "Rle",
+            "exception" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSynonym" = "CompressedCharacterList",
+            "parentGeneId" = "Rle",
+            "partial" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["A1BG"]]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000019.10",
+            "start" = "58345183",
+            "end" = "58353492",
+            "width" = "8310",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "dbxref" = "c(\"GeneID:1\", \"HGNC:HGNC:5\", \"MIM:138670\")",
+            "description" = "alpha-1-B glycoprotein",
+            "entrezId" = "1",
+            "exception" = NA_character_,
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A1BG",
+            "geneName" = "A1BG",
+            "geneSynonym" = "c(\"A1B\", \"ABG\", \"GAB\", \"HYST2477\")",
+            "parentGeneId" = "A1BG",
+            "partial" = NA_character_,
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = lapply(
+            X = as.data.frame(object[["AATF"]]),
+            FUN = as.character
+        ),
+        expected = list(
+            "seqnames" = c("NC_000017.11", "NT_187614.1"),
+            "start" = c("36948954", "1185319"),
+            "end" = c("37056871", "1293236"),
+            "width" = rep("107918", 2L),
+            "strand" = rep("+", 2L),
+            "broadClass" = rep("coding", 2L),
+            "dbxref" = c(
+                "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")",
+                "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")"
+            ),
+            "description" =
+                rep("apoptosis antagonizing transcription factor", 2L),
+            "entrezId" = rep("26574", 2L),
+            "exception" = rep(NA_character_, 2L),
+            "geneBiotype" = rep("protein_coding", 2L),
+            "geneId" = rep("AATF", 2L),
+            "geneName" = rep("AATF", 2L),
+            "geneSynonym" =
+                rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),
+            "parentGeneId" = c("AATF", "AATF-2"),
+            "partial" = rep(NA_character_, 2L),
+            "pseudo" = rep(NA_character_, 2L),
+            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
+            "type" = rep("gene", 2L)
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p14"
+        )
+    )
+    expect_identical(
+        object = metadata(object)[["url"]],
+        expected = file
+    )
+    expect_true(
+        isAFile(metadata(object)[["file"]])
+    )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38.p14"
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+})
+
+test_that("GFF3 transcripts", {
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "transcripts"
+    )
+    expect_s4_class(object, "RefSeqTranscripts")
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = names(object)
+    )))
+    expect_identical(
+        object = lapply(mcols(object[[1L]]), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "description" = "Rle",
+            "exception" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneName" = "Rle",
+            "geneSynonym" = "CompressedCharacterList",
+            "inference" = "Rle",
+            "modelEvidence" = "Rle",
+            "parentGeneId" = "Rle",
+            "partial" = "Rle",
+            "product" = "Rle",
+            "pseudo" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txId" = "Rle",
+            "txName" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object[["NM_000014.6"]]),
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "NC_000012.12",
+            "start" = "9067708",
+            "end" = "9115919",
+            "width" = "48212",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "description" = "alpha-2-macroglobulin",
+            "exception" = NA_character_,
+            "geneBiotype" = "protein_coding",
+            "geneId" = "A2M",
+            "geneName" = "A2M",
+            "geneSynonym" = "character(0)",
+            "inference" = NA_character_,
+            "modelEvidence" = NA_character_,
+            "parentGeneId" = "A2M",
+            "partial" = NA_character_,
+            "product" = "alpha-2-macroglobulin, transcript variant 1",
+            "pseudo" = NA_character_,
+            "source" = "BestRefSeq",
+            "tag" = "MANE Select",
+            "txId" = "NM_000014.6",
+            "txName" = "NM_000014.6",
+            "type" = "mRNA"
+        )
+    )
+})
+
 file <- gffs[["refseq_grch38_gtf"]]
 
 test_that("GTF genes", {
@@ -1046,199 +1218,6 @@ test_that("GTF transcripts", {
             "txId" = "NM_000014.6",
             "txName" = "NM_000014.6",
             "type" = "transcript"
-        )
-    )
-})
-
-file <- gffs[["refseq_grch38_gff3"]]
-
-test_that("GFF3 genes", {
-    object <- makeGRangesFromGFF(
-        file = file,
-        level = "genes"
-    )
-    expect_s4_class(object, "RefSeqGenes")
-    expect_identical(
-        object = lapply(mcols(object[[1L]]), simpleClass),
-        expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "endRange" = "CompressedCharacterList",
-            "exception" = "Rle",
-            "experiment" = "CompressedCharacterList",
-            "gbkey" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSynonym" = "CompressedCharacterList",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "startRange" = "CompressedCharacterList",
-            "translExcept" = "CompressedCharacterList",
-            "type" = "Rle"
-        )
-    )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object[["A1BG"]][1L]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "NC_000019.10",
-            "start" = "58345183",
-            "end" = "58353492",
-            "width" = "8310",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "description" = "alpha-1-B glycoprotein",
-            "endRange" = "character(0)",
-            "exception" = NA_character_,
-            "experiment" = "character(0)",
-            "gbkey" = "Gene",
-            "geneBiotype" = "protein_coding",
-            "geneId" = "A1BG",
-            "geneName" = "A1BG",
-            "geneSynonym" = "c(\"A1B\", \"ABG\", \"GAB\", \"HYST2477\")",
-            "parentGeneId" = "A1BG",
-            "partial" = NA_character_,
-            "pseudo" = NA_character_,
-            "source" = "BestRefSeq",
-            "startRange" = "character(0)",
-            "translExcept" = "character(0)",
-            "type" = "gene"
-        )
-    )
-    expect_identical(
-        object = lapply(
-            X = as.data.frame(object[["AATF"]]),
-            FUN = as.character
-        ),
-        expected = list(
-            "seqnames" = c("NC_000017.11", "NT_187614.1"),
-            "start" = c("36948954", "1185319"),
-            "end" = c("37056871", "1293236"),
-            "width" = rep("107918", 2L),
-            "strand" = rep("+", 2L),
-            "broadClass" = rep("coding", 2L),
-            "description" = rep("apoptosis antagonizing transcription factor", 2L), # nolint
-            "endRange" = rep("character(0)", 2L),
-            "exception" = rep(NA_character_, 2L),
-            "experiment" = rep("character(0)", 2L),
-            "gbkey" = rep("Gene", 2L),
-            "geneBiotype" = rep("protein_coding", 2L),
-            "geneId" = rep("AATF", 2L),
-            "geneName" = rep("AATF", 2L),
-            "geneSynonym" = rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L), # nolint
-            "parentGeneId" = c("AATF", "AATF-2"),
-            "partial" = rep(NA_character_, 2L),
-            "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
-            "startRange" = rep("character(0)", 2L),
-            "translExcept" = rep("character(0)", 2L),
-            "type" = rep("gene", 2L)
-        )
-    )
-    expect_identical(
-        object = as.data.frame(seqinfo(object))["NC_000001.11", , drop = TRUE],
-        expected = list(
-            "seqlengths" = 248956422L,
-            "isCircular" = NA,
-            "genome" = "GRCh38.p13"
-        )
-    )
-    expect_identical(
-        object = metadata(object)[["url"]],
-        expected = file
-    )
-    expect_true(
-        isAFile(metadata(object)[["file"]])
-    )
-    expect_identical(
-        object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
-    )
-    expect_identical(
-        object = metadata(object)[["organism"]],
-        expected = "Homo sapiens"
-    )
-})
-
-test_that("GFF3 transcripts", {
-    object <- makeGRangesFromGFF(
-        file = file,
-        level = "transcripts"
-    )
-    expect_s4_class(object, "RefSeqTranscripts")
-    expect_true(all(grepl(
-        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
-        x = names(object)
-    )))
-    expect_identical(
-        object = lapply(mcols(object[[1L]]), simpleClass),
-        expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "endRange" = "CompressedCharacterList",
-            "exception" = "Rle",
-            "experiment" = "CompressedCharacterList",
-            "gbkey" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSynonym" = "CompressedCharacterList",
-            "inference" = "Rle",
-            "modelEvidence" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "product" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "startRange" = "CompressedCharacterList",
-            "tag" = "Rle",
-            "translExcept" = "CompressedCharacterList",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
-        )
-    )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object[["NM_000014.6"]][1L]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "NC_000012.12",
-            "start" = "9067708",
-            "end" = "9115919",
-            "width" = "48212",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "description" = "alpha-2-macroglobulin",
-            "endRange" = "character(0)",
-            "exception" = NA_character_,
-            "experiment" = "character(0)",
-            "gbkey" = "mRNA",
-            "geneBiotype" = "protein_coding",
-            "geneId" = "A2M",
-            "geneName" = "A2M",
-            "geneSynonym" = "character(0)",
-            "inference" = NA_character_,
-            "modelEvidence" = NA_character_,
-            "parentGeneId" = "A2M",
-            "partial" = NA_character_,
-            "product" = "alpha-2-macroglobulin, transcript variant 1",
-            "pseudo" = NA_character_,
-            "source" = "BestRefSeq",
-            "startRange" = "character(0)",
-            "tag" = "MANE Select",
-            "translExcept" = "character(0)",
-            "txId" = "NM_000014.6",
-            "txName" = "NM_000014.6",
-            "type" = "mRNA"
         )
     )
 })
