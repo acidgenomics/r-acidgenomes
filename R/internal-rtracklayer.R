@@ -559,7 +559,7 @@
         )
         keep <-
             !is.na(mcols(object)[["gbkey"]]) &
-            mcols(object)[["gbkey"]] == "Gene"
+                mcols(object)[["gbkey"]] == "Gene"
         assert(
             any(keep),
             msg = "Failed to extract any genes."
