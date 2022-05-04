@@ -986,7 +986,9 @@ test_that("GFF3 transcripts", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "Rle",
+            "dbxref" = "CompressedCharacterList",
             "description" = "Rle",
+            "entrezId" = "Rle",
             "exception" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -1018,7 +1020,15 @@ test_that("GFF3 transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
+            "dbxref" = paste(
+                "c(\"Ensembl:ENST00000318602.12\",",
+                "\"GeneID:2\",",
+                "\"Genbank:NM_000014.6\",",
+                "\"HGNC:HGNC:7\",",
+                "\"MIM:103950\")"
+            ),
             "description" = "alpha-2-macroglobulin",
+            "entrezId" = "2",
             "exception" = NA_character_,
             "geneBiotype" = "protein_coding",
             "geneId" = "A2M",

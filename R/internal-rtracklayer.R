@@ -628,6 +628,8 @@
 
 
 
+## NOTE Consider including "ensemblTxId" from "dbxref" here.
+
 ## Updated 2022-05-04.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
@@ -709,6 +711,7 @@
             y = genesMcols,
             by = "parent_gene_id"
         )
+        mcols(object)[["ID"]] <- NULL
         mcols(object)[["Name"]] <- NULL
         mcols(object)[["Note"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
