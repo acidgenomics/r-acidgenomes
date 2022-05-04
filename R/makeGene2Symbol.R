@@ -22,7 +22,7 @@
 #' print(x)
 #'
 #' ## makeTx2GeneFromEnsDb ====
-#' if ("EnsDb.Hsapiens.v75" %in% rownames(installed.packages())) {
+#' if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
 #'     x <- makeGene2SymbolFromEnsDb("EnsDb.Hsapiens.v75")
 #'     print(x)
 #' }

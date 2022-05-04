@@ -18,12 +18,10 @@ Ensembl2Entrez(object, ...)
 \item{format}{\code{character(1)}.
 Formatting method to apply:
 \itemize{
-\item \code{"1:1"}: \emph{Recommended.}
-Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
-Entrez, pick the oldest Entrez identifier. Genes that don't map to
-Entrez will contain \code{NA} in \code{entrezId} column.
-\item \code{"long"}:
-Return 1:many in long format.
+\item \code{"1:1"}: \emph{Recommended.} Return with 1:1 mappings. For Ensembl genes that
+don't map 1:1 with Entrez, pick the oldest Entrez identifier. Genes that
+don't map to Entrez will contain \code{NA} in \code{entrezId} column.
+\item \code{"long"}: Return \code{1:many} in long format.
 }}
 
 \item{organism}{\code{character(1)}.
@@ -38,7 +36,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Ensembl-to-Entrez gene identifier mappings
 }
 \note{
-Updated 2021-08-18.
+Updated 2022-05-04.
 }
 \examples{
 organism <- "Homo sapiens"

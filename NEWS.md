@@ -7,6 +7,22 @@
   with Bioconductor 3.15. This applies to `Ensembl2Entrez`, `Entrez2Ensembl`,
   `EntrezGeneInfo`, `Gene2Symbol`, `HGNC`, `HGNC2Ensembl`, `Protein2Gene`,
   and `Tx2Gene` classes.
+- `downloadGencodeGenome`: Added support for Entrez and RefSeq identifiers,
+  which are now defined in `mcols` of `GRanges` objects.
+- Reworked internal code of rtracklayer runner functions. In particular,
+  improved identifier handling for RefSeq GFF and GTF runners, adding support
+  for extraction of Entrez gene identifiers.
+
+## Minor changes
+
+- Reformatted code using styler conventions.
+- Removed internal dependencies on stringr, in favor of base R when possible
+  and stringi package otherwise.
+- Hardened import of external files using readr package, where applicable.
+  Applies primarily to Entrez, HGNC, and MGI file import.
+- `makeTx2GeneFromFASTA`: Added `ignoreVersions` argument, which is now enabled
+  by default, to match other `Tx2Gene` functions.
+- Updated unit tests to cover most recent versions of genome assembly files.
 
 # AcidGenomes 0.3.0 (2022-03-11)
 
