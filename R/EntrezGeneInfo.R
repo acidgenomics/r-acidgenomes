@@ -1,7 +1,7 @@
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2021-02-25.
+#' @note Updated 2022-05-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param taxonomicGroup `character(1)`.
@@ -51,7 +51,14 @@ EntrezGeneInfo <- # nolint
             "Downloading {.emph %s} gene info from NCBI at {.url %s}.",
             organism, url
         ))
-        df <- import(file = .cacheIt(url), format = "tsv", colnames = TRUE)
+        ## Input TSV is malformed, as of 2022-05-04. Readr handles this more
+        ## gracefull than the base import engine.
+        df <- import(
+            file = .cacheIt(url),
+            format = "tsv",
+            colnames = TRUE,
+            engine = "readr"
+        )
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
