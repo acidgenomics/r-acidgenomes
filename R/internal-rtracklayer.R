@@ -623,6 +623,8 @@
             names(mcols(object)) == "gene"
         ] <- "gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
+        mcols(object)[["gbkey"]] <- NULL
+        mcols(object)[["note"]] <- NULL
         object
     }
 
@@ -725,7 +727,9 @@
 
 
 
-## Updated 2022-05-03.
+## NOTE Consider including "ensemblTxId" from "dbxref" here.
+
+## Updated 2022-05-04.
 .rtracklayerRefSeqTranscriptsGtf <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGtf(object)
@@ -782,6 +786,9 @@
             y = genesMcols,
             by = "parent_gene_id"
         )
+        mcols(object)[["experiment"]] <- NULL
+        mcols(object)[["gbkey"]] <- NULL
+        mcols(object)[["note"]] <- NULL
         object
     }
 
