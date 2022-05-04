@@ -66,119 +66,6 @@
 
 
 ## Ensembl =====================================================================
-## GTF:
-## >  [1] "source"                   "type"
-## >  [3] "score"                    "phase"
-## >  [5] "gene_id"                  "gene_version"
-## >  [7] "gene_name"                "gene_source"
-## >  [9] "gene_biotype"             "transcript_id"
-## > [11] "transcript_version"       "transcript_name"
-## > [13] "transcript_source"        "transcript_biotype"
-## > [15] "tag"                      "transcript_support_level"
-## > [17] "exon_number"              "exon_id"
-## > [19] "exon_version"             "protein_id"
-## > [21] "protein_version"          "ccds_id"
-##
-## GFF:
-## >  [1] "source"                   "type"
-## >  [3] "score"                    "phase"
-## >  [5] "ID"                       "Alias"
-## >  [7] "external_name"            "logic_name"
-## >  [9] "Name"                     "biotype"
-## > [11] "description"              "gene_id"
-## > [13] "version"                  "Parent"
-## > [15] "tag"                      "transcript_id"
-## > [17] "transcript_support_level" "constitutive"
-## > [19] "ensembl_end_phase"        "ensembl_phase"
-## > [21] "exon_id"                  "rank"
-## > [23] "protein_id"               "ccdsid"
-
-
-
-## Updated 2021-01-27.
-.rtracklayerEnsemblGenesGtf <-
-    function(object) {
-        assert(
-            is(object, "GenomicRanges"),
-            isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = "gene_id_version",
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "gene"
-        assert(
-            any(keep),
-            msg = "Failed to extract any genes."
-        )
-        object <- object[keep]
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
-        object
-    }
-
-
-
-## Updated 2021-01-27.
-.rtracklayerEnsemblTranscriptsGtf <-
-    function(object) {
-        assert(
-            is(object, "GenomicRanges"),
-            isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "transcript_id",
-                    "transcript_version",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "gene_id_version",
-                    "transcript_id_version"
-                ),
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "transcript"
-        assert(
-            any(keep),
-            msg = "Failed to extract any transcripts."
-        )
-        object <- object[keep]
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["transcript_id_version"]] <-
-            paste(
-                mcols(object)[["transcript_id"]],
-                mcols(object)[["transcript_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
-        mcols(object)[["transcript_version"]] <- NULL
-        object
-    }
-
-
 
 ## Updated 2021-01-27.
 .rtracklayerEnsemblGenesGff <-
@@ -214,6 +101,43 @@
                 sep = "."
             )
         mcols(object)[["version"]] <- NULL
+        object
+    }
+
+
+
+## Updated 2021-01-27.
+.rtracklayerEnsemblGenesGtf <-
+    function(object) {
+        assert(
+            is(object, "GenomicRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id_version",
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
         object
     }
 
@@ -284,13 +208,55 @@
 
 
 
+## Updated 2021-01-27.
+.rtracklayerEnsemblTranscriptsGtf <-
+    function(object) {
+        assert(
+            is(object, "GenomicRanges"),
+            isSubset(
+                x = c(
+                    "gene_id",
+                    "gene_version",
+                    "transcript_id",
+                    "transcript_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_version",
+                    "transcript_id_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
+        object <- object[keep]
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["transcript_id_version"]] <-
+            paste(
+                mcols(object)[["transcript_id"]],
+                mcols(object)[["transcript_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_version"]] <- NULL
+        mcols(object)[["transcript_version"]] <- NULL
+        object
+    }
+
+
+
 ## FlyBase =====================================================================
-## GTF:
-## > [1] "source"            "type"              "score"
-## > [4] "phase"             "gene_id"           "gene_symbol"
-## > [7] "transcript_id"     "transcript_symbol" "#"
-
-
 
 ## Updated 2021-01-27.
 .rtracklayerFlyBaseGenesGtf <-
@@ -373,6 +339,39 @@
 
 
 ## Updated 2021-01-27.
+.rtracklayerGencodeGenesGff <-
+    function(object) {
+        assert(
+            is(object, "GenomicRanges"),
+            isSubset(
+                x = c("ID", "gene_id", "type"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "gene_id_no_version",
+                    "gene_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "gene"
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
+        object <- object[keep]
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
+        mcols(object)[["ID"]] <- NULL
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
+        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        object
+    }
+
+
+
+## Updated 2021-01-27.
 .rtracklayerGencodeGenesGtf <-
     function(object) {
         assert(
@@ -397,6 +396,47 @@
             mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id"]])
+        object
+    }
+
+
+
+## Updated 2021-01-27.
+.rtracklayerGencodeTranscriptsGff <-
+    function(object) {
+        assert(
+            isSubset(
+                x = c(
+                    "ID",
+                    "gene_id",
+                    "transcript_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "transcript_id_no_version",
+                    "transcript_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
+        object <- object[keep]
+        mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
+        mcols(object)[["ID"]] <- NULL
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
+        mcols(object)[["gene_id_version"]] <-
+            as.character(mcols(object)[["Parent"]])
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
         object
     }
 
@@ -439,80 +479,6 @@
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id"]])
-        object
-    }
-
-
-
-## Updated 2021-01-27.
-.rtracklayerGencodeGenesGff <-
-    function(object) {
-        assert(
-            is(object, "GenomicRanges"),
-            isSubset(
-                x = c("ID", "gene_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "gene_id_no_version",
-                    "gene_version"
-                ),
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "gene"
-        assert(
-            any(keep),
-            msg = "Failed to extract any genes."
-        )
-        object <- object[keep]
-        mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
-        mcols(object)[["ID"]] <- NULL
-        mcols(object)[["gene_id"]] <-
-            stripGeneVersions(mcols(object)[["gene_id_version"]])
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        object
-    }
-
-
-
-## Updated 2021-01-27.
-.rtracklayerGencodeTranscriptsGff <-
-    function(object) {
-        assert(
-            isSubset(
-                x = c(
-                    "ID",
-                    "gene_id",
-                    "transcript_id",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "transcript_id_no_version",
-                    "transcript_version"
-                ),
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "transcript"
-        assert(
-            any(keep),
-            msg = "Failed to extract any transcripts."
-        )
-        object <- object[keep]
-        mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
-        mcols(object)[["ID"]] <- NULL
-        mcols(object)[["transcript_id"]] <-
-            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
-        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
-        mcols(object)[["gene_id_version"]] <-
-            as.character(mcols(object)[["Parent"]])
-        mcols(object)[["gene_id"]] <-
-            stripGeneVersions(mcols(object)[["gene_id_version"]])
         object
     }
 
@@ -584,30 +550,115 @@
 
 
 
+#' Extract Entrez gene identifiers from RefSeq GFF/GTF file.
+#'
+#' @section GCF_000001405.40_GRCh38.p14 genes with multiple Entrez identifiers:
+#'
+#' - TRNAA-AGC: 124901561, 124901562, 124901563, 124901564, 124901565
+#' - TRNAE-UUC: 107987368, 124905580, 124905583, 124905584, 124905586
+#' - TRNAG-CCC: 124905578, 124905581, 124905588
+#' - TRNAN-GUU: 124905579, 124905582, 124905585, 124905587
+#' - TRNAV-CAC: 107985614, 107985615
+#'
+#' Note that these are RefSeq status: MODEL.
+#'
+#' @note Updated 2022-05-04.
+#' @noRd
+.getEntrezIdsFromRefSeqGff <- function(object) {
+    mcols <- mcols(object)[, c("ID", "Dbxref")]
+    geneIds <- mcols[["ID"]]
+    dbxref <- mcols[["Dbxref"]]
+    lgl <- grepl(pattern = "GeneID:", x = dbxref, fixed = TRUE)
+    assert(
+        is(dbxref, "CharacterList"),
+        is(lgl, "LogicalList")
+    )
+    entrezIds <- unlist(dbxref[lgl], recursive = FALSE)
+    assert(identical(length(entrezIds), length(geneIds)))
+    entrezIds <- do.call(
+        what = rbind,
+        args = strsplit(x = entrezIds, split = ":", fixed = TRUE)
+    )[, 2L]
+    entrezIds <- as.integer(entrezIds)
+    df <- DataFrame(
+        "ID" = geneIds,
+        "entrez_id" = entrezIds
+    )
+    df <- unique(df[complete.cases(df), ])
+    assert(hasNoDuplicates(df[["ID"]]))
+    df
+}
+
+
+
+## FIXME Filter by exon here to speed up.
+## FIXME Check the Entrez identifier handling of TRNA genes (see above).
+## FIXME Need to rework using unmodified column names.
+
 #' Extract Entrez gene identifiers from RefSeq GTF file.
 #'
-#' These are defined in exon annotations.
-#'
-#' @note Updated 2022-05-03.
+#' @note Updated 2022-05-04.
 #' @noRd
-.getRefSeqEntrezGeneIds <- function(object) {
-    mcols <- mcols(object)
+.getEntrezIdsFromRefSeqGtf <- function(object) {
+    mcols <- mcols(object)[, c("gene", "db_xref")]
     keep <- grepl(pattern = "GeneID:", x = mcols[["db_xref"]], fixed = TRUE)
-    mcols <- unique(mcols[keep, c("gene_id", "db_xref")])
-    assert(hasNoDuplicates(mcols[["gene_id"]]))
-    geneIds <- mcols[["gene_id"]]
+    mcols <- unique(mcols[keep, ])
+    assert(hasNoDuplicates(mcols[["gene"]]))
+    geneIds <- mcols[["gene"]]
     entrezIds <- stri_match_first_regex(
         str = mcols[["db_xref"]],
         pattern = "GeneID:([[:digit:]]+)"
     )[, 2L]
     entrezIds <- as.integer(entrezIds)
-    out <- DataFrame(
-        "gene_id" = geneIds,
+    df <- DataFrame(
+        "gene" = geneIds,
         "entrez_id" = entrezIds
     )
-    out <- out[complete.cases(out), ]
-    out
+    df <- df[complete.cases(df), ]
+    assert(hasNoDuplicates(df[["gene"]]))
+    df
 }
+
+
+
+## Updated 2022-05-04.
+.rtracklayerRefSeqGenesGff <-
+    function(object) {
+        assert(
+            is(object, "GenomicRanges"),
+            isSubset(
+                x = c("ID", "Parent", "description", "gene"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = "gene_id",
+                y = names(mcols(object))
+            )
+        )
+        keep <-
+            !is.na(mcols(object)[["gbkey"]]) &
+            mcols(object)[["gbkey"]] == "Gene"
+        assert(
+            any(keep),
+            msg = "Failed to extract any genes."
+        )
+        object <- object[keep]
+        entrezIds <- .getEntrezIdsFromRefSeqGff(object)
+        mcols(object) <- leftJoin(x = mcols(object), y = entrezIds, by = "ID")
+        names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
+        assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
+        names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
+        assert(all(grepl(
+            pattern = "^gene-",
+            x = mcols(object)[["parent_gene_id"]]
+        )))
+        mcols(object)[["parent_gene_id"]] <- gsub(
+            pattern = "^gene-",
+            replacement = "",
+            x = mcols(object)[["parent_gene_id"]]
+        )
+        object
+    }
 
 
 
@@ -625,13 +676,18 @@
                 y = names(mcols(object))
             )
         )
-        entrezIds <- .getRefSeqEntrezGeneIds(object)
+        entrezIds <- .getEntrezIdsFromRefSeqGtf(object)
         keep <- mcols(object)[["type"]] == "gene"
         assert(
             any(keep),
             msg = "Failed to extract any genes."
         )
         object <- object[keep]
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = entrezIds,
+            by = "gene"
+        )
         names(mcols(object))[
             names(mcols(object)) == "gene_id"
         ] <- "parent_gene_id"
@@ -639,118 +695,6 @@
             names(mcols(object)) == "gene"
         ] <- "gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
-        mcols(object) <- leftJoin(
-            x = mcols(object),
-            y = entrezIds,
-            by = "gene_id"
-        )
-        object
-    }
-
-
-
-## Updated 2022-05-03.
-.rtracklayerRefSeqTranscriptsGtf <-
-    function(object) {
-        genes <- .rtracklayerRefSeqGenesGtf(object)
-        genesMcols <- mcols(genes)[
-            ,
-            c(
-                "description",
-                "entrez_id",
-                "gene_biotype",
-                "parent_gene_id"
-            ),
-            drop = FALSE
-        ]
-        assert(
-            hasNoDuplicates(genesMcols[["parent_gene_id"]]),
-            is(object, "GenomicRanges"),
-            isSubset(
-                x = c(
-                    "transcript_id",
-                    "type"
-                ),
-                y = names(mcols(object))
-            )
-        )
-        keep <- mcols(object)[["type"]] == "transcript"
-        assert(
-            any(keep),
-            msg = "Failed to extract any transcripts."
-        )
-        object <- object[keep]
-        ## e.g. "NM_000014.6".
-        keep <- grepl(
-            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
-            x = mcols(object)[["transcript_id"]]
-        )
-        object <- object[keep]
-        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
-        names(mcols(object))[
-            names(mcols(object)) == "gene_id"
-        ] <- "parent_gene_id"
-        names(mcols(object))[
-            names(mcols(object)) == "gene"
-        ] <- "gene_id"
-        cols <- c(
-            setdiff(
-                x = colnames(mcols(object)),
-                y = colnames(genesMcols)
-            ),
-            "parent_gene_id"
-        )
-        mcols(object) <- mcols(object)[, cols]
-        mcols(object) <- leftJoin(
-            x = mcols(object),
-            y = genesMcols,
-            by = "parent_gene_id"
-        )
-        object
-    }
-
-
-
-## Updated 2022-05-03.
-.rtracklayerRefSeqGenesGff <-
-    function(object) {
-        assert(
-            is(object, "GenomicRanges"),
-            isSubset(
-                x = c("ID", "Parent", "description", "gene"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = "gene_id",
-                y = names(mcols(object))
-            )
-        )
-        entrezIds <- .getRefSeqEntrezGeneIds(object)
-        keep <-
-            !is.na(mcols(object)[["gbkey"]]) &
-                mcols(object)[["gbkey"]] == "Gene"
-        assert(
-            any(keep),
-            msg = "Failed to extract any genes."
-        )
-        object <- object[keep]
-        names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
-        assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
-        names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
-        assert(all(grepl(
-            pattern = "^gene-",
-            x = mcols(object)[["parent_gene_id"]]
-        )))
-        mcols(object)[["parent_gene_id"]] <- gsub(
-            pattern = "^gene-",
-            replacement = "",
-            x = mcols(object)[["parent_gene_id"]]
-        )
-        mcols(object) <- leftJoin(
-            x = mcols(object),
-            y = entrezIds,
-            by = "gene_id"
-        )
         object
     }
 
@@ -825,6 +769,68 @@
         )
         mcols(object)[["Parent"]] <- NULL
         names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
+        cols <- c(
+            setdiff(
+                x = colnames(mcols(object)),
+                y = colnames(genesMcols)
+            ),
+            "parent_gene_id"
+        )
+        mcols(object) <- mcols(object)[, cols]
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = genesMcols,
+            by = "parent_gene_id"
+        )
+        object
+    }
+
+
+
+## Updated 2022-05-03.
+.rtracklayerRefSeqTranscriptsGtf <-
+    function(object) {
+        genes <- .rtracklayerRefSeqGenesGtf(object)
+        genesMcols <- mcols(genes)[
+            ,
+            c(
+                "description",
+                "entrez_id",
+                "gene_biotype",
+                "parent_gene_id"
+            ),
+            drop = FALSE
+        ]
+        assert(
+            hasNoDuplicates(genesMcols[["parent_gene_id"]]),
+            is(object, "GenomicRanges"),
+            isSubset(
+                x = c(
+                    "transcript_id",
+                    "type"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "transcript"
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
+        object <- object[keep]
+        ## e.g. "NM_000014.6".
+        keep <- grepl(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        )
+        object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
+        names(mcols(object))[
+            names(mcols(object)) == "gene_id"
+        ] <- "parent_gene_id"
+        names(mcols(object))[
+            names(mcols(object)) == "gene"
+        ] <- "gene_id"
         cols <- c(
             setdiff(
                 x = colnames(mcols(object)),
