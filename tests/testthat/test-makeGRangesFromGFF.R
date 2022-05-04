@@ -1,3 +1,6 @@
+## FIXME Consider improving "dbxref" (GFF) vs. "dbXref" (GTF) consistency
+## between GFF and GTF files here.
+
 context("makeGRangesFromGFF")
 
 test_that("Unsupported files", {
@@ -16,171 +19,6 @@ test_that("Unsupported files", {
 
 context("makeGRangesFromGFF : Ensembl")
 
-skip_if_not(hasInternet(url = "ftp://ftp.ensembl.org/"))
-file <- gffs[["ensembl_grch38_gtf"]]
-
-test_that("GTF genes", {
-    object <- makeGRangesFromGFF(
-        file = file,
-        level = "genes",
-        ignoreVersion = FALSE
-    )
-    expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 61541L)
-    expect_identical(
-        object = names(object),
-        expected = as.character(mcols(object)[["geneId"]])
-    )
-    expect_identical(
-        object = lapply(mcols(object), simpleClass),
-        expected = list(
-            "broadClass" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
-        )
-    )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "geneSource" = "havana",
-            "source" = "havana",
-            "type" = "gene"
-        )
-    )
-    expect_identical(
-        object = levels(seqnames(object))[seq_len(25L)],
-        expected = c(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
-        )
-    )
-    expect_identical(
-        object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
-        expected = list(
-            "seqlengths" = 248956422L,
-            "isCircular" = NA,
-            "genome" = "GRCh38.p13"
-        )
-    )
-    expect_identical(
-        object = metadata(object)[["url"]],
-        expected = file
-    )
-    expect_true(
-        isAFile(metadata(object)[["file"]])
-    )
-    expect_identical(
-        object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
-    )
-    expect_identical(
-        object = metadata(object)[["md5"]],
-        expected = "1f8687d6d809e03bb7e9b0cbbe6d2313"
-    )
-    expect_identical(
-        object = metadata(object)[["organism"]],
-        expected = "Homo sapiens"
-    )
-    expect_identical(
-        object = metadata(object)[["release"]],
-        expected = 105L
-    )
-    expect_identical(
-        object = metadata(object)[["sha256"]],
-        expected = "a216357b01a2fe31e78c26b1c10e68a8bed84fb5dd1a7f7daa800e1aca5a701e" # nolint
-    )
-})
-
-test_that("GTF transcripts", {
-    object <- makeGRangesFromGFF(
-        file = file,
-        level = "transcripts",
-        ignoreVersion = FALSE
-    )
-    expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 244825L)
-    expect_identical(
-        object = names(object),
-        expected = as.character(mcols(object)[["txId"]])
-    )
-    expect_identical(
-        object = lapply(mcols(object), simpleClass),
-        expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
-        )
-    )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "ccdsId" = NA_character_,
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "geneSource" = "havana",
-            "source" = "havana",
-            "tag" = "basic",
-            "txBiotype" = "processed_transcript",
-            "txId" = "ENST00000456328.2",
-            "txIdNoVersion" = "ENST00000456328",
-            "txIdVersion" = "ENST00000456328.2",
-            "txName" = "DDX11L1-202",
-            "txSource" = "havana",
-            "txSupportLevel" = "1",
-            "type" = "transcript"
-        )
-    )
-})
-
 file <- gffs[["ensembl_grch38_gff3"]]
 
 test_that("GFF3 genes", {
@@ -190,7 +28,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 61541L)
+    expect_identical(length(object), 61552L)
     expect_identical(
         object = names(object),
         expected = as.character(mcols(object)[["geneId"]])
@@ -265,7 +103,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "3d7bbc8abbff71628f9baa240e929411"
+        expected = "01ec78760f4fa3bba458e95c876bc513"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -273,11 +111,11 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 105L
+        expected = 106L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "6b4b0b29ad47e7abf55e507246ee5b1064c0b017079c1471547e92f30f44ff07" # nolint
+        expected = "095dcafc99438fdf027e470f088f806925eff1cdb04bbb5cde0b6ac40441122d" # nolint
     )
 })
 
@@ -349,6 +187,175 @@ test_that("GFF3 transcripts", {
             "txName" = "DDX11L1-202",
             "txSupportLevel" = "1",
             "type" = "lnc_RNA"
+        )
+    )
+})
+
+
+
+
+
+skip_if_not(hasInternet(url = "ftp://ftp.ensembl.org/"))
+file <- gffs[["ensembl_grch38_gtf"]]
+
+test_that("GTF genes", {
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "genes",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblGenes")
+    expect_identical(length(object), 61552L)
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["geneId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = levels(seqnames(object))[seq_len(25L)],
+        expected = c(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38.p13"
+        )
+    )
+    expect_identical(
+        object = metadata(object)[["url"]],
+        expected = file
+    )
+    expect_true(
+        isAFile(metadata(object)[["file"]])
+    )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38.p13"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "9e4e55e43a9ecb8e4acfaa2266ac4e77"
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+    expect_identical(
+        object = metadata(object)[["release"]],
+        expected = 106L
+    )
+    expect_identical(
+        object = metadata(object)[["sha256"]],
+        expected = "9f9cc8ea19f03659875a4a3b57220c379f0282b4c361fc7cb637e6f083967871" # nolint
+    )
+})
+
+test_that("GTF transcripts", {
+    object <- makeGRangesFromGFF(
+        file = file,
+        level = "transcripts",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblTranscripts")
+    expect_identical(length(object), 246511L)
+    expect_identical(
+        object = names(object),
+        expected = as.character(mcols(object)[["txId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "Rle",
+            "ccdsId" = "Rle",
+            "geneBiotype" = "Rle",
+            "geneId" = "Rle",
+            "geneIdNoVersion" = "Rle",
+            "geneIdVersion" = "Rle",
+            "geneName" = "Rle",
+            "geneSource" = "Rle",
+            "source" = "Rle",
+            "tag" = "Rle",
+            "txBiotype" = "Rle",
+            "txId" = "Rle",
+            "txIdNoVersion" = "Rle",
+            "txIdVersion" = "Rle",
+            "txName" = "Rle",
+            "txSource" = "Rle",
+            "txSupportLevel" = "Rle",
+            "type" = "Rle"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000456328.2"]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "1",
+            "start" = "11869",
+            "end" = "14409",
+            "width" = "2541",
+            "strand" = "+",
+            "broadClass" = "pseudo",
+            "ccdsId" = NA_character_,
+            "geneBiotype" = "transcribed_unprocessed_pseudogene",
+            "geneId" = "ENSG00000223972.5",
+            "geneIdNoVersion" = "ENSG00000223972",
+            "geneIdVersion" = "ENSG00000223972.5",
+            "geneName" = "DDX11L1",
+            "geneSource" = "havana",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "processed_transcript",
+            "txId" = "ENST00000456328.2",
+            "txIdNoVersion" = "ENST00000456328",
+            "txIdVersion" = "ENST00000456328.2",
+            "txName" = "DDX11L1-202",
+            "txSource" = "havana",
+            "txSupportLevel" = "1",
+            "type" = "transcript"
         )
     )
 })
