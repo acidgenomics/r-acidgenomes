@@ -2,10 +2,11 @@
 
 #' Shared GenomicRanges validity checks
 #'
-#' @note Note that genome build and organism are not defined in minimal FlyBase
-#' GTF example.
 #' @note Updated 2021-03-03.
 #' @noRd
+#'
+#' @details
+#' Genome build and organism are not defined in minimal FlyBase GTF example.
 .grangesValidity <- function(object) {
     if (is(object, "GenomicRangesList")) {
         gr <- object[[1L]]
