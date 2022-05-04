@@ -1,18 +1,17 @@
 #' @name Ensembl2Entrez
 #' @inherit AcidGenerics::Ensembl2Entrez description return title
-#' @note Updated 2021-08-18.
+#' @note Updated 2022-05-04.
 #'
 #' @inheritParams AcidRoxygen::params
+#' @param ... Additional arguments.
+#'
 #' @param format `character(1)`.
 #' Formatting method to apply:
 #'
-#' - `"1:1"`: *Recommended.*
-#' Return with 1:1 mappings. For Ensembl genes that don't map 1:1 with
-#' Entrez, pick the oldest Entrez identifier. Genes that don't map to
-#' Entrez will contain `NA` in `entrezId` column.
-#' - `"long"`:
-#' Return 1:many in long format.
-#' @param ... Additional arguments.
+#' - `"1:1"`: *Recommended.* Return with 1:1 mappings. For Ensembl genes that
+#' don't map 1:1 with Entrez, pick the oldest Entrez identifier. Genes that
+#' don't map to Entrez will contain `NA` in `entrezId` column.
+#' - `"long"`: Return `1:many` in long format.
 #'
 #' @examples
 #' organism <- "Homo sapiens"
