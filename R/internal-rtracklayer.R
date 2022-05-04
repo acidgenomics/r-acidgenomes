@@ -579,6 +579,14 @@
             replacement = "",
             x = mcols(object)[["parent_gene_id"]]
         )
+        mcols(object)[["Name"]] <- NULL
+        mcols(object)[["Note"]] <- NULL
+        mcols(object)[["Parent"]] <- NULL
+        mcols(object)[["end_range"]] <- NULL
+        mcols(object)[["experiment"]] <- NULL
+        mcols(object)[["gbkey"]] <- NULL
+        mcols(object)[["start_range"]] <- NULL
+        mcols(object)[["transl_except"]] <- NULL
         object
     }
 
@@ -620,7 +628,7 @@
 
 
 
-## Updated 2022-05-03.
+## Updated 2022-05-04.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGff(object)
@@ -687,7 +695,6 @@
             FUN.VALUE = character(1L),
             USE.NAMES = FALSE
         )
-        mcols(object)[["Parent"]] <- NULL
         names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
         cols <- c(
             setdiff(
@@ -702,6 +709,14 @@
             y = genesMcols,
             by = "parent_gene_id"
         )
+        mcols(object)[["Name"]] <- NULL
+        mcols(object)[["Note"]] <- NULL
+        mcols(object)[["Parent"]] <- NULL
+        mcols(object)[["end_range"]] <- NULL
+        mcols(object)[["experiment"]] <- NULL
+        mcols(object)[["gbkey"]] <- NULL
+        mcols(object)[["start_range"]] <- NULL
+        mcols(object)[["transl_except"]] <- NULL
         object
     }
 
