@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2022-05-03.
+#' @note Updated 2022-05-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -376,7 +376,10 @@ downloadEnsemblGenome <-
             overwrite = TRUE
         )
         ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromFASTA(mergeFastaFile)
+        tx2gene <- makeTx2GeneFromFASTA(
+            file = mergeFastaFile,
+            ignoreVersion = FALSE
+        )
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(
             object = tx2gene,

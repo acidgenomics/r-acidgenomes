@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2022-05-03.
+#' @note Updated 2022-05-04.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -386,7 +386,10 @@ downloadGencodeGenome <-
         )
         fastaFile <- files[["fasta"]]
         ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromFASTA(fastaFile)
+        tx2gene <- makeTx2GeneFromFASTA(
+            file = fastaFile,
+            ignoreVersion = FALSE
+        )
         saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
         tx2geneFile <- export(
             object = tx2gene,
