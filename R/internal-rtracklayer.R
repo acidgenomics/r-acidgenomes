@@ -596,22 +596,21 @@
 #' @note Updated 2022-05-04.
 #' @noRd
 .getEntrezIdsFromRefSeqGtf <- function(object) {
-    mcols <- mcols(object)[, c("gene", "db_xref")]
+    mcols <- mcols(object)[, c("gene_id", "db_xref")]
     keep <- grepl(pattern = "GeneID:", x = mcols[["db_xref"]], fixed = TRUE)
     mcols <- unique(mcols[keep, ])
-    assert(hasNoDuplicates(mcols[["gene"]]))
-    geneIds <- mcols[["gene"]]
+    assert(hasNoDuplicates(mcols[["gene_id"]]))
+    geneIds <- mcols[["gene_id"]]
     entrezIds <- stri_match_first_regex(
         str = mcols[["db_xref"]],
         pattern = "GeneID:([[:digit:]]+)"
     )[, 2L]
     entrezIds <- as.integer(entrezIds)
     df <- DataFrame(
-        "gene" = geneIds,
+        "gene_id" = geneIds,
         "entrez_id" = entrezIds
     )
     df <- df[complete.cases(df), ]
-    assert(hasNoDuplicates(df[["gene"]]))
     df
 }
 
@@ -658,7 +657,7 @@
 
 
 
-## Updated 2022-05-03.
+## Updated 2022-05-04.
 .rtracklayerRefSeqGenesGtf <-
     function(object) {
         assert(
@@ -672,17 +671,17 @@
                 y = names(mcols(object))
             )
         )
-        entrezIds <- .getEntrezIdsFromRefSeqGtf(object)
         keep <- mcols(object)[["type"]] == "gene"
         assert(
             any(keep),
             msg = "Failed to extract any genes."
         )
         object <- object[keep]
+        entrezIds <- .getEntrezIdsFromRefSeqGtf(object)
         mcols(object) <- leftJoin(
             x = mcols(object),
             y = entrezIds,
-            by = "gene"
+            by = "gene_id"
         )
         names(mcols(object))[
             names(mcols(object)) == "gene_id"
