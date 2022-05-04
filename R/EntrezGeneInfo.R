@@ -52,7 +52,8 @@ EntrezGeneInfo <- # nolint
             organism, url
         ))
         ## Input TSV is malformed, as of 2022-05-04. Readr handles this more
-        ## gracefull than the base import engine.
+        ## gracefully than the base import engine.
+        ## Error: line 47 did not have 16 elements
         df <- import(
             file = .cacheIt(url),
             format = "tsv",
