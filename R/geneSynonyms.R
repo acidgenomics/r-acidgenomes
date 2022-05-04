@@ -2,7 +2,7 @@
 #'
 #' Look up gene synonyms from NCBI.
 #'
-#' @note Updated 2021-02-13.
+#' @note Updated 2022-05-04.
 #' @export
 #'
 #' @section *Caenorhabditis elegans*:
