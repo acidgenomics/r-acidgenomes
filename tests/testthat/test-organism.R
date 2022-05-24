@@ -1,5 +1,3 @@
-context("organism")
-
 test_that("organism", {
     list <- list()
     list[["GenomicRanges"]] <- gr

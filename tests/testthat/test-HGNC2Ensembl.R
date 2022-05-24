@@ -1,5 +1,3 @@
-context("HGNC2Ensembl")
-
 skip_if_not(hasInternet())
 
 test_that("HGNC2Ensembl", {

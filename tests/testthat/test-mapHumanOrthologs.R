@@ -1,7 +1,5 @@
 ## This code depends on biomaRt and Ensembl, which can time out.
 
-context("mapHumanOrthologs")
-
 test_that("mapHumanOrthologs", {
     genes <- c(
         "ENSMUSG00000000001", "ENSMUSG00000000003",

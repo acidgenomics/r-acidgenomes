@@ -1,5 +1,3 @@
-context("makeGene2Symbol")
-
 test_that("makeGene2SymbolFromEnsDb", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     formats <- eval(formals(makeGene2SymbolFromEnsDb)[["format"]])

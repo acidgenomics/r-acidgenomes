@@ -1,5 +1,3 @@
-context("detectOrganism")
-
 test_that("Homo sapiens", {
     for (object in c(
         "Homo sapiens",

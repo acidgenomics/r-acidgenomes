@@ -1,5 +1,3 @@
-context("Ensembl2Entrez")
-
 formats <- eval(formals(`Ensembl2Entrez,GenomicRanges`)[["format"]])
 
 test_that("character", {
@@ -49,8 +47,6 @@ test_that("character", {
 })
 
 
-
-context("Entrez2Ensembl")
 
 test_that("character", {
     ## These are from the Ensembl return above.
