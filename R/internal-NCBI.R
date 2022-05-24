@@ -336,8 +336,8 @@
     seqnames <- df[[whatCols[["seqnames"]]]]
     seqlengths <- df[[whatCols[["seqlengths"]]]]
     assert(
-        !any(is.na(seqnames)),
-        !any(is.na(seqlengths)),
+        !anyNA(seqnames),
+        !anyNA(seqlengths),
         hasNoDuplicates(seqnames)
     )
     seq <- Seqinfo(

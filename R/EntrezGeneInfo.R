@@ -69,7 +69,7 @@ EntrezGeneInfo <- # nolint
             ),
             hasNoDuplicates(df[["geneId"]]),
             ## Ensure that any "-" values get sanitized to "NA".
-            any(is.na(df[["locusTag"]]))
+            anyNA(df[["locusTag"]])
         )
         df[["fullNameFromNomenclatureAuthority"]] <- NULL
         df[["symbolFromNomenclatureAuthority"]] <- NULL

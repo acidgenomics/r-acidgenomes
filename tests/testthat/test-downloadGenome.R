@@ -27,10 +27,7 @@ test_that("downloadEnsemblGenome", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_identical(
-        object = length(genes),
-        expected = 61541L
-    )
+    expect_length(genes, 61541L)
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -40,10 +37,7 @@ test_that("downloadEnsemblGenome", {
         )
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
-    expect_identical(
-        object = length(transcripts),
-        expected = 244825L
-    )
+    expect_length(transcripts, 244825L)
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
