@@ -1,9 +1,8 @@
 ## nolint start
-
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2022-02-08.
+#' @note Updated 2022-05-24.
 #'
 #' @section Genome:
 #'
@@ -41,9 +40,7 @@
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadUCSCGenome(organism = "Homo sapiens")
-#'
 ## nolint end
-#'
 downloadUCSCGenome <-
     function(organism,
              genomeBuild = NULL,
@@ -125,7 +122,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadUCSCAnnotation <-
     function(genomeBuild,
              outputDir,
@@ -157,23 +154,21 @@ downloadUCSCGenome <-
             cache = cache
         )
         gtfFile <- files[["ensGene"]]
-        ## Create symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlink.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gtfRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = gtfFile
             )
-            assert(
-                isAFile(gtfFile),
-                isAFile(gtfRelativeFile)
-            )
             gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
-            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+                }
+            )
             files[["gtfSymlink"]] <- gtfSymlink
-            setwd(wd)
         }
         ## Save genomic ranges.
         genes <- makeGRangesFromGFF(gtfFile, level = "genes")
@@ -200,7 +195,7 @@ downloadUCSCGenome <-
 
 
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadUCSCGenome <-
     function(genomeBuild,
              outputDir,
@@ -240,24 +235,22 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "genome"),
             cache = cache
         )
-        ## Create FASTA symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlink.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- files[["fasta"]]
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -280,7 +273,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadUCSCTranscriptome <-
     function(outputDir,
              releaseURL,
@@ -296,24 +289,22 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        ## Create symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlink.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- files[["mrna"]]
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
