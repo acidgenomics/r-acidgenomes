@@ -144,20 +144,17 @@ downloadEnsemblGenome <-
             cache = cache
         )
         ## Create relative path symlink.
-        if (!isWindows()) {
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gffFile <- files[["gff"]]
-            assert(isAFile(gffFile))
             gffRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = gffFile
             )
             gffSymlink <- paste0("annotation.", fileExt(gffFile))
-            assert(requireNamespaces("withr"))
             withr::with_dir(
                 new = outputDir,
                 code = {
-                    assert(isAFile(gffRelativeFile))
                     file.symlink(from = gffRelativeFile, to = gffSymlink)
                 }
             )
@@ -215,20 +212,17 @@ downloadEnsemblGenome <-
             cache = cache
         )
         gtfFile <- files[["gtf"]]
-        assert(isAFile(gtfFile))
         ## Create relative path symlink.
-        if (!isWindows()) {
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gtfRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = gtfFile
             )
             gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
-            assert(requireNamespaces("withr"))
             withr::with_dir(
                 new = outputDir,
                 code = {
-                    assert(isAFile(gtfRelativeFile))
                     file.symlink(from = gtfRelativeFile, to = gtfSymlink)
                 }
             )
@@ -292,20 +286,17 @@ downloadEnsemblGenome <-
             cache = cache
         )
         ## Create relative path symlink.
-        if (!isWindows()) {
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- files[["fasta"]]
-            assert(isAFile(fastaFile))
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
-            assert(requireNamespaces("withr"))
             withr::with_dir(
                 new = outputDir,
                 code = {
-                    assert(isAFile(fastaRelativeFile))
                     file.symlink(from = fastaRelativeFile, to = fastaSymlink)
                 }
             )
@@ -397,7 +388,7 @@ downloadEnsemblGenome <-
             "tx2gene" = tx2geneFile
         )
         ## Create relative path symlink.
-        if (!isWindows()) {
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- mergeFastaFile
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
@@ -405,11 +396,9 @@ downloadEnsemblGenome <-
                 x = fastaFile
             )
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
-            assert(requireNamespaces("withr"))
             withr::with_dir(
                 new = outputDir,
                 code = {
-                    assert(isAFile(fastaRelativeFile))
                     file.symlink(from = fastaRelativeFile, to = fastaSymlink)
                 }
             )
