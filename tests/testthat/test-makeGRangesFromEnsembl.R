@@ -1,5 +1,3 @@
-context("makeGRangesFromEnsembl")
-
 skip_if_not(hasInternet())
 
 test_that("Genes", {

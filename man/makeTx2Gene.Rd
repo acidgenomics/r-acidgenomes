@@ -28,7 +28,7 @@ defaults to the most recent build available.
 \emph{Note:} don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
 
 \item{release}{\code{integer(1)}.
-Ensembl release version (e.g. \code{90}). We recommend setting this value if
+Ensembl release version (e.g. \code{100}). We recommend setting this value if
 possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and

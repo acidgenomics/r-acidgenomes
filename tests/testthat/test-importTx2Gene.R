@@ -1,5 +1,3 @@
-context("importTx2Gene")
-
 args <- list(
     "file" = file.path("cache", "tx2gene.csv"),
     "organism" = "Homo sapiens",
