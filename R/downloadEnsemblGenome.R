@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2022-05-04.
+#' @note Updated 2022-05-24.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -97,7 +97,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadEnsemblGFF <-
     function(genomeBuild,
              organism,
@@ -143,31 +143,32 @@ downloadEnsemblGenome <-
             outputDir = file.path(outputDir, "annotation", "gff3"),
             cache = cache
         )
-        ## Create symlink.
+        ## Create relative path symlink.
         if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
             gffFile <- files[["gff"]]
+            assert(isAFile(gffFile))
             gffRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = gffFile
             )
-            assert(
-                isAFile(gffFile),
-                isAFile(gffRelativeFile)
-            )
             gffSymlink <- paste0("annotation.", fileExt(gffFile))
-            file.symlink(from = gffRelativeFile, to = gffSymlink)
+            assert(requireNamespaces("withr"))
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    assert(isAFile(gffRelativeFile))
+                    file.symlink(from = gffRelativeFile, to = gffSymlink)
+                }
+            )
             files[["gffSymlink"]] <- gffSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2022-05-03.
+## Updated 2022-05-24.
 .downloadEnsemblGTF <-
     function(genomeBuild,
              organism,
@@ -214,23 +215,24 @@ downloadEnsemblGenome <-
             cache = cache
         )
         gtfFile <- files[["gtf"]]
-        ## Create symlink.
+        assert(isAFile(gtfFile))
+        ## Create relative path symlink.
         if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
             gtfRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = gtfFile
             )
-            assert(
-                isAFile(gtfFile),
-                isAFile(gtfRelativeFile)
-            )
             gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
-            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+            assert(requireNamespaces("withr"))
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    assert(isAFile(gtfRelativeFile))
+                    file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+                }
+            )
             files[["gtfSymlink"]] <- gtfSymlink
-            setwd(wd)
         }
         ## Save genomic ranges.
         genes <- makeGRangesFromGFF(
@@ -256,7 +258,7 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadEnsemblGenome <-
     function(genomeBuild,
              organism,
@@ -289,31 +291,32 @@ downloadEnsemblGenome <-
             outputDir = file.path(outputDir, "genome"),
             cache = cache
         )
-        ## Create symlink.
+        ## Create relative path symlink.
         if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
             fastaFile <- files[["fasta"]]
+            assert(isAFile(fastaFile))
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            assert(requireNamespaces("withr"))
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    assert(isAFile(fastaRelativeFile))
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadEnsemblTranscriptome <-
     function(genomeBuild,
              organism,
@@ -393,24 +396,24 @@ downloadEnsemblGenome <-
             ),
             "tx2gene" = tx2geneFile
         )
-        ## Create FASTA symlink.
+        ## Create relative path symlink.
         if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
             fastaFile <- mergeFastaFile
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            assert(requireNamespaces("withr"))
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    assert(isAFile(fastaRelativeFile))
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
