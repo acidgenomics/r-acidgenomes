@@ -587,7 +587,7 @@
             names <- as.character(mcols(object)[[idCol]])
             assert(
                 hasNoDuplicates(names),
-                !any(is.na(names)),
+                !anyNA(names),
                 msg = "Invalid and/or duplicated identifiers detected."
             )
             names(object) <- names
