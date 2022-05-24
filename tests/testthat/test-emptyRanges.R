@@ -20,8 +20,8 @@ test_that("mcolnames", {
         seqname = "transgene",
         mcolnames = c("geneId", "geneName")
     )
-    expect_identical(
-        object = names(mcols(object)),
+    expect_named(
+        object = mcols(object),
         expected = c("geneId", "geneName")
     )
 })

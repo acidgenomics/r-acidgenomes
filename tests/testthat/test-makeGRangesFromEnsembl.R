@@ -20,7 +20,7 @@ test_that("Genes", {
             "release" = 102L
         )
     )
-    expect_identical(length(object), 68001L)
+    expect_length(object, 68001L)
     expect_identical(
         object = head(names(object), 3L),
         expected = c(
@@ -95,7 +95,7 @@ test_that("Transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 254853L)
+    expect_length(object, 254853L)
     expect_identical(
         object = head(names(object), n = 2L),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
@@ -174,7 +174,7 @@ test_that("GRCh37", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 64102L)
+    expect_length(object, 64102L)
     expect_identical(head(names(object), 1L), "ENSG00000228572")
     ## Transcripts
     object <- makeGRangesFromEnsembl(
