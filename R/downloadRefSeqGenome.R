@@ -1,5 +1,4 @@
 ## nolint start
-
 #' Download RefSeq reference genome
 #'
 #' @section Stable release:
@@ -10,7 +9,7 @@
 #' "GCF_000001405.39_GRCh38.p13" build).
 #'
 #' @export
-#' @note Updated 2022-05-03.
+#' @note Updated 2022-05-24.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -37,9 +36,7 @@
 #' ## >     taxonomicGroup = "vertebrate_mammalian",
 #' ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
 #' ## > )
-#'
 ## nolint end
-#'
 downloadRefSeqGenome <-
     function(organism,
              taxonomicGroup = NULL,
@@ -119,7 +116,7 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadRefSeqAnnotation <-
     function(genomeBuild,
              outputDir,
@@ -142,10 +139,8 @@ downloadRefSeqGenome <-
         )
         gffFile <- files[["gff"]]
         gtfFile <- files[["gtf"]]
-        ## Create GFF and GTF symlinks.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlinks.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gffRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
@@ -156,19 +151,17 @@ downloadRefSeqGenome <-
                 replacement = "",
                 x = gtfFile
             )
-            assert(
-                isAFile(gffFile),
-                isAFile(gffRelativeFile),
-                isAFile(gtfFile),
-                isAFile(gtfRelativeFile)
-            )
             gffSymlink <- "annotation.gff3.gz"
             gtfSymlink <- "annotation.gtf.gz"
-            file.symlink(from = gffRelativeFile, to = gffSymlink)
-            file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = gffRelativeFile, to = gffSymlink)
+                    file.symlink(from = gtfRelativeFile, to = gtfSymlink)
+                }
+            )
             files[["gffSymlink"]] <- gffSymlink
             files[["gtfSymlink"]] <- gtfSymlink
-            setwd(wd)
         }
         ## Save genomic ranges.
         genes <- makeGRangesFromGFF(gffFile, level = "genes")
@@ -194,7 +187,7 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadRefSeqGenome <-
     function(genomeBuild,
              outputDir,
@@ -211,24 +204,22 @@ downloadRefSeqGenome <-
             outputDir = file.path(outputDir, "genome"),
             cache = cache
         )
-        ## Create FASTA symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlink.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- files[["fasta"]]
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- "genome.fa.gz"
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
@@ -269,7 +260,7 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2022-05-24.
 .downloadRefSeqTranscriptome <-
     function(genomeBuild,
              outputDir,
@@ -286,24 +277,22 @@ downloadRefSeqGenome <-
             outputDir = file.path(outputDir, "transcriptome"),
             cache = cache
         )
-        ## Create FASTA symlink.
-        if (!isWindows()) {
-            wd <- getwd()
-            setwd(outputDir)
+        ## Create relative path symlink.
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaFile <- files[["fasta"]]
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
                 x = fastaFile
             )
-            assert(
-                isAFile(fastaFile),
-                isAFile(fastaRelativeFile)
-            )
             fastaSymlink <- "transcriptome.fa.gz"
-            file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
+                }
+            )
             files[["fastaSymlink"]] <- fastaSymlink
-            setwd(wd)
         }
         invisible(list("files" = files, "urls" = urls))
     }
