@@ -1,5 +1,3 @@
-context("makeTx2GeneFromFASTA")
-
 test_that("Ensembl", {
     file <- txFastas[["ensembl"]]
     object <- makeTx2GeneFromFASTA(

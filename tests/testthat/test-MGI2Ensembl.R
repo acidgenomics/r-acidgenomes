@@ -1,5 +1,3 @@
-context("MGI2Ensembl")
-
 skip_if_not(hasInternet())
 
 test_that("MGI2Ensembl", {

@@ -1,5 +1,3 @@
-context("makeGRangesFromEnsDb : GRCh37 (hg19)")
-
 ## Conditionally test if optional EnsDb.Hsapiens.v75 package is installed.
 pkg <- "EnsDb.Hsapiens.v75"
 skip_if_not_installed(pkg)
@@ -20,8 +18,6 @@ test_that("Transcripts", {
 })
 
 
-
-context("makeGRangesFromEnsDb : AnnotationHub")
 
 ah <- AnnotationHub::AnnotationHub(ask = FALSE)
 edb <- ah[["AH73881"]]

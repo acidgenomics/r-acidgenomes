@@ -1,3 +1,9 @@
+# AcidGenomes 0.4.1 (2022-05-24)
+
+## Minor changes
+
+- Updated lintr checks and testthat unit tests.
+
 # AcidGenomes 0.4.0 (2022-05-04)
 
 ## Major changes

@@ -1,5 +1,3 @@
-context("export")
-
 test_that("Tx2Gene", {
     object <- DataFrame(
         "txId" = c(

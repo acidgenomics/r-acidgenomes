@@ -1,5 +1,3 @@
-context("downloadGenome")
-
 testdir <- file.path(tempdir(), "genome")
 
 test_that("downloadEnsemblGenome", {

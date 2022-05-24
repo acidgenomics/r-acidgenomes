@@ -1,5 +1,3 @@
-context("emptyRanges")
-
 test_that("default", {
     object <- emptyRanges("XXX")
     expect_identical(

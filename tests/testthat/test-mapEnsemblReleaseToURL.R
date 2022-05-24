@@ -1,7 +1,5 @@
 ## This code depends on Ensembl server, which can time out.
 
-context("mapEnsemblReleaseToURL")
-
 skip_if_not(hasInternet(url = "https://ensembl.org/"))
 
 test_that("Ensembl 100", {

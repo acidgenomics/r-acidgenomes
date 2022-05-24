@@ -1,5 +1,3 @@
-context("makeGRangesFromGFF")
-
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",
@@ -13,8 +11,6 @@ test_that("Unsupported files", {
 })
 
 
-
-context("makeGRangesFromGFF : Ensembl")
 
 skip_if_not(hasInternet(url = "ftp://ftp.ensembl.org/"))
 
@@ -356,8 +352,6 @@ test_that("GTF transcripts", {
 
 
 
-context("makeGRangesFromGFF : FlyBase")
-
 skip_if_not(hasInternet(url = "ftp://ftp.flybase.net/"))
 
 file <- gffs[["flybase_gtf"]]
@@ -486,8 +480,6 @@ test_that("GTF transcripts", {
 })
 
 
-
-context("makeGRangesFromGFF : GENCODE")
 
 skip_if_not(hasInternet(url = "ftp://ftp.ebi.ac.uk/"))
 
@@ -852,8 +844,6 @@ test_that("GTF transcripts", {
 })
 
 
-
-context("makeGRangesFromGFF : RefSeq")
 
 skip_if_not(hasInternet(url = "ftp://ftp.ncbi.nlm.nih.gov/"))
 
@@ -1227,8 +1217,6 @@ test_that("GTF transcripts", {
 
 
 
-context("makeGRangesFromGFF : UCSC")
-
 skip_if_not(hasInternet(url = "ftp://hgdownload.soe.ucsc.edu/"))
 
 file <- gffs[["ucsc_hg38_ensgene_gtf"]]
@@ -1337,8 +1325,6 @@ test_that("GTF transcripts", {
 })
 
 
-
-context("makeGRangesFromGFF : WormBase")
 
 skip_if_not(hasInternet(url = "ftp://ftp.wormbase.org/"))
 
@@ -1489,8 +1475,6 @@ test_that("GTF transcripts", {
 })
 
 
-
-context("makeGRangesFromGFF : bcbio")
 
 file <- file.path("cache", "ref-transcripts.gtf")
 

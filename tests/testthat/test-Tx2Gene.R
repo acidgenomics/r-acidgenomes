@@ -1,5 +1,3 @@
-context("Tx2Gene")
-
 test_that("Complete cases", {
     df <- DataFrame(
         "txId" = c(

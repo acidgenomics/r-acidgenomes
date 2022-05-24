@@ -1,5 +1,3 @@
-context("Gene2Symbol")
-
 test_that("Gene2Symbol", {
     formats <- eval(formals(`Gene2Symbol,DataFrame`)[["format"]])
     for (format in formats) {
