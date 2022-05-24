@@ -74,13 +74,11 @@
             x = c("genomeBuild", "organism", "provider"),
             y = names(x)
         ) ||
-            any(
-                is.na(c(
-                    x[["genomeBuild"]],
-                    x[["organism"]],
-                    x[["provider"]]
-                ))
-            )
+            anyNA(c(
+                x[["genomeBuild"]],
+                x[["organism"]],
+                x[["provider"]]
+            ))
     ) {
         return(NULL)
     }

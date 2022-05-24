@@ -186,7 +186,7 @@ test_that("GRCh37", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 215647L)
+    expect_length(object, 215647L)
     expect_identical(head(names(object), 1L), "ENST00000478759")
 })
 
