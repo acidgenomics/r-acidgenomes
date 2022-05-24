@@ -1,5 +1,3 @@
-skip_if_not(hasInternet())
-
 test_that("Genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
