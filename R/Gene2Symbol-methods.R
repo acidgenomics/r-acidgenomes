@@ -108,7 +108,7 @@ NULL
                 ## Ensure we arrange by gene identifier prior to sanization.
                 object <- object[order(object), , drop = FALSE]
                 ## Replace any "NA" gene names with "unannotated".
-                if (any(is.na(object[["geneName"]]))) {
+                if (anyNA(object[["geneName"]])) {
                     object[["geneName"]][
                         which(is.na(object[["geneName"]]))
                     ] <- "unannotated"

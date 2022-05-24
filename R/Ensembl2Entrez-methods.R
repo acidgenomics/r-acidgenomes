@@ -101,7 +101,7 @@ NULL
         )
     }
 
-formals(`Ensembl2Entrez,character`)[["format"]] <-
+formals(`Ensembl2Entrez,character`)[["format"]] <- # nolint
     formals(.makeEnsembl2Entrez)[["format"]]
 
 
@@ -130,7 +130,7 @@ formals(`Ensembl2Entrez,character`)[["format"]] <-
         )
     }
 
-formals(`Ensembl2Entrez,GenomicRanges`)[["format"]] <-
+formals(`Ensembl2Entrez,GenomicRanges`)[["format"]] <- # nolint
     formals(.makeEnsembl2Entrez)[["format"]]
 
 

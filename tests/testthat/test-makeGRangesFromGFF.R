@@ -10,10 +10,6 @@ test_that("Unsupported files", {
     }
 })
 
-
-
-skip_if_not(hasInternet(url = "ftp://ftp.ensembl.org/"))
-
 file <- gffs[["ensembl_grch38_gff3"]]
 
 test_that("GFF3 genes", {
@@ -23,9 +19,9 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 61552L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 61552L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -121,9 +117,9 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 246509L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 246509L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -195,9 +191,9 @@ test_that("GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_identical(length(object), 61552L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 61552L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -288,9 +284,9 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_identical(length(object), 246511L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 246511L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -350,10 +346,6 @@ test_that("GTF transcripts", {
     )
 })
 
-
-
-skip_if_not(hasInternet(url = "ftp://ftp.flybase.net/"))
-
 file <- gffs[["flybase_gtf"]]
 
 test_that("GTF genes", {
@@ -362,9 +354,9 @@ test_that("GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "FlyBaseGenes")
-    expect_identical(length(object), 17872L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 17872L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -439,9 +431,9 @@ test_that("GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "FlyBaseTranscripts")
-    expect_identical(length(object), 35664L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 35664L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -479,10 +471,6 @@ test_that("GTF transcripts", {
     )
 })
 
-
-
-skip_if_not(hasInternet(url = "ftp://ftp.ebi.ac.uk/"))
-
 file <- gffs[["gencode_grch38_gff3"]]
 
 test_that("GFF3 genes", {
@@ -492,9 +480,9 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_identical(length(object), 61544L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 61544L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -594,9 +582,9 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_identical(length(object), 246624L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 246624L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -662,8 +650,6 @@ test_that("GFF3 transcripts", {
     )
 })
 
-
-
 file <- gffs[["gencode_grch38_gtf"]]
 
 test_that("GTF genes", {
@@ -673,9 +659,9 @@ test_that("GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_identical(length(object), 61544L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 61544L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -775,9 +761,9 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_identical(length(object), 246624L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 246624L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -842,10 +828,6 @@ test_that("GTF transcripts", {
         )
     )
 })
-
-
-
-skip_if_not(hasInternet(url = "ftp://ftp.ncbi.nlm.nih.gov/"))
 
 file <- gffs[["refseq_grch38_gff3"]]
 
@@ -1215,10 +1197,6 @@ test_that("GTF transcripts", {
     )
 })
 
-
-
-skip_if_not(hasInternet(url = "ftp://hgdownload.soe.ucsc.edu/"))
-
 file <- gffs[["ucsc_hg38_ensgene_gtf"]]
 
 test_that("GTF genes", {
@@ -1324,10 +1302,6 @@ test_that("GTF transcripts", {
     )
 })
 
-
-
-skip_if_not(hasInternet(url = "ftp://ftp.wormbase.org/"))
-
 file <- gffs[["wormbase_gtf"]]
 
 test_that("GTF genes", {
@@ -1336,9 +1310,9 @@ test_that("GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "WormBaseGenes")
-    expect_identical(length(object), 46925L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 46925L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -1424,9 +1398,9 @@ test_that("GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "WormBaseTranscripts")
-    expect_identical(length(object), 60128L)
-    expect_identical(
-        object = names(object),
+    expect_length(object, 60128L)
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(
@@ -1474,8 +1448,6 @@ test_that("GTF transcripts", {
     )
 })
 
-
-
 file <- file.path("cache", "ref-transcripts.gtf")
 
 test_that("GTF genes", {
@@ -1485,8 +1457,8 @@ test_that("GTF genes", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, n = 60L)
-    expect_identical(
-        object = names(object),
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
@@ -1537,8 +1509,8 @@ test_that("GTF transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, n = 167L)
-    expect_identical(
-        object = names(object),
+    expect_named(
+        object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
     expect_identical(

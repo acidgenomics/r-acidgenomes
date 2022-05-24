@@ -33,7 +33,7 @@ NULL
         )
     }
 
-formals(`Entrez2Ensembl,integer`)[["format"]] <-
+formals(`Entrez2Ensembl,integer`)[["format"]] <- # nolint
     formals(.makeEnsembl2Entrez)[["format"]]
 
 
