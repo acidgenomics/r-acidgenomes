@@ -175,7 +175,7 @@ test_that("GRCh37", {
         genomeBuild = "GRCh37",
         ignoreVersion = TRUE
     )
-    expect_is(object, "EnsemblGenes")
+    expect_s4_class(object, "EnsemblGenes")
     expect_identical(length(object), 64102L)
     expect_identical(head(names(object), 1L), "ENSG00000228572")
     ## Transcripts
@@ -185,7 +185,7 @@ test_that("GRCh37", {
         genomeBuild = "GRCh37",
         ignoreVersion = TRUE
     )
-    expect_is(object, "EnsemblTranscripts")
+    expect_s4_class(object, "EnsemblTranscripts")
     expect_identical(length(object), 215647L)
     expect_identical(head(names(object), 1L), "ENST00000478759")
 })

@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2021-07-27.
+#' @note Updated 2022-05-24.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -125,7 +125,7 @@ currentRefSeqGenomeBuild <-
 
 
 
-## Updated 2021-09-03.
+## Updated 2022-05-24.
 #' @rdname currentGenomeBuild
 #' @export
 currentUCSCGenomeBuild <-
@@ -134,10 +134,10 @@ currentUCSCGenomeBuild <-
         json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
         assert(isSubset("ucscGenomes", names(json)))
         json <- json[["ucscGenomes"]]
-        l <- mapply(
+        l <- Map(
             name = names(json),
             x = json,
-            FUN = function(name, x) {
+            f = function(name, x) {
                 ## Other useful keys: description, sourceName.
                 c(
                     "build" = name,
@@ -146,7 +146,6 @@ currentUCSCGenomeBuild <-
                     "scientificName" = x[["scientificName"]]
                 )
             },
-            SIMPLIFY = FALSE,
             USE.NAMES = FALSE
         )
         df <- rbindToDataFrame(l)
