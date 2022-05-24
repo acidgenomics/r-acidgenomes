@@ -1,6 +1,6 @@
 #' Download multiple genome files in a single call
 #'
-#' @note Updated 2021-08-03.
+#' @note Updated 2022-05-24.
 #' @noRd
 #'
 #' @return `character`
@@ -33,13 +33,7 @@
                 recursive = FALSE
             )
         } else {
-            mapply(
-                url = urls,
-                destfile = destFiles,
-                FUN = download,
-                SIMPLIFY = TRUE,
-                USE.NAMES = FALSE
-            )
+            Map(url = urls, destfile = destFiles, f = download)
         }
         out <- destFiles
         names(out) <- names(urls)
@@ -138,14 +132,12 @@
     args[[by]] <- names(spl)
     args <- append(
         x = args,
-        values = mapply(
+        values = Map(
             col = setdiff(colnames(object), by),
             MoreArgs = list("spl" = spl),
-            FUN = function(col, spl) {
+            f = function(col, spl) {
                 unname(spl[, col])
-            },
-            SIMPLIFY = FALSE,
-            USE.NAMES = TRUE
+            }
         )
     )
     do.call(what = DataFrame, args = args)

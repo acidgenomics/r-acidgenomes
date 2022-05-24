@@ -17,8 +17,8 @@ files <- c(
     "ucsc.gtf",
     "wormbase.gtf"
 )
-mapply(
-    FUN = function(remoteDir, file, envir) {
+Map(
+    f = function(remoteDir, file, envir) {
         destfile <- file.path("cache", file)
         if (!file.exists(destfile)) {
             utils::download.file(
