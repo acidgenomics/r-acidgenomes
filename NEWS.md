@@ -1,3 +1,11 @@
+# AcidGenomes 0.4.2 (2022-05-24)
+
+## Minor changes
+
+- `Ensembl2Entrez`: Simplified `format` `"1:1"` handling, based on new code
+  approach used in AcidGSEA package. This now keeps track of original rownames,
+  which is necessary for bcbioRNASeq clusterProfiler R Markdown template.
+
 # AcidGenomes 0.4.1 (2022-05-24)
 
 ## Minor changes
