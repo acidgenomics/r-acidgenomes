@@ -6,11 +6,9 @@
 #' @param ... Additional arguments.
 #'
 #' @examples
-#' organism <- "Homo sapiens"
-#'
 #' ## integer ====
-#' ## Entrez-to-Ensembl.
 #' genes <- c(1L, 2L)
+#' organism <- "Homo sapiens"
 #' x <- Entrez2Ensembl(object = genes, organism = organism)
 #' print(x)
 NULL

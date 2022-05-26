@@ -36,11 +36,9 @@ Entrez-to-Ensembl gene identifier mappings
 Updated 2021-10-21.
 }
 \examples{
-organism <- "Homo sapiens"
-
 ## integer ====
-## Entrez-to-Ensembl.
 genes <- c(1L, 2L)
+organism <- "Homo sapiens"
 x <- Entrez2Ensembl(object = genes, organism = organism)
 print(x)
 }
