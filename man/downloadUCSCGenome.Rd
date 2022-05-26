@@ -32,7 +32,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2022-02-08.
+Updated 2022-05-24.
 }
 \section{Genome}{
 
@@ -66,8 +66,6 @@ ncbiRefSeq, refGene, ensGene, knownGene.
 \examples{
 ## This example is bandwidth intensive.
 ## > downloadUCSCGenome(organism = "Homo sapiens")
-
-
 }
 \seealso{
 \itemize{

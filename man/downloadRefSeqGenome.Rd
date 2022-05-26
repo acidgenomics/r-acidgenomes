@@ -38,7 +38,7 @@ Invisible \code{list}.
 Download RefSeq reference genome
 }
 \note{
-Updated 2022-05-03.
+Updated 2022-05-24.
 }
 \section{Stable release}{
 
@@ -56,8 +56,6 @@ a genome build one version behind as a stable release
 ## >     taxonomicGroup = "vertebrate_mammalian",
 ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
 ## > )
-
-
 }
 \seealso{
 \itemize{
