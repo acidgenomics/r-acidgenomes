@@ -1,4 +1,4 @@
-# AcidGenomes 0.4.2 (2022-05-24)
+# AcidGenomes 0.4.2 (2022-05-27)
 
 ## Minor changes
 
