@@ -1,6 +1,6 @@
 #' @name Entrez2Ensembl
 #' @inherit AcidGenerics::Entrez2Ensembl description return title
-#' @note Updated 2021-10-21.
+#' @note Updated 2022-05-27.
 #'
 #' @inheritParams Ensembl2Entrez
 #' @param ... Additional arguments.
@@ -15,7 +15,7 @@ NULL
 
 
 
-## Updated 2021-01-18.
+## Updated 2022-05-27.
 `Entrez2Ensembl,integer` <- # nolint
     function(object, organism, format) {
         df <- .getEnsembl2EntrezFromOrgDb(
@@ -24,11 +24,16 @@ NULL
             columns = "ENSEMBL",
             organism = organism
         )
-        .makeEnsembl2Entrez(
+        out <- .makeEnsembl2Entrez(
             object = df,
             format = match.arg(format),
             return = "Entrez2Ensembl"
         )
+        if (identical(format, "1:1")) {
+            idx <- match(x = object, table = out[[1L]])
+            out <- out[idx, ]
+        }
+        out
     }
 
 formals(`Entrez2Ensembl,integer`)[["format"]] <- # nolint
