@@ -81,14 +81,16 @@ NULL
                     )
                     df <- do.call(what = rbind, args = spl)
                 }
-                assert(
-                    hasNoDuplicates(df[[1L]]),
-                    hasNoDuplicates(df[[2L]])
-                )
+                ## This step is useful for character method handling.
+                if (!hasRownames(object)) {
+                    rownames(df) <- df[[1L]]
+                }
+                assert(hasNoDuplicates(df[[1L]]))
             },
             "long" = {
                 rownames(df) <- NULL
                 df <- expand(df)
+                df <- df[order(df), ]
             }
         )
         assert(is(df, "DataFrame"))
@@ -102,7 +104,7 @@ NULL
 
 
 
-## Updated 2021-02-10.
+## Updated 2022-05-27.
 `Ensembl2Entrez,character` <- # nolint
     function(object,
              organism = NULL,
@@ -119,11 +121,16 @@ NULL
             columns = "ENTREZID",
             organism = organism
         )
-        .makeEnsembl2Entrez(
+        out <- .makeEnsembl2Entrez(
             object = df,
             format = match.arg(format),
             return = "Ensembl2Entrez"
         )
+        if (identical(format, "1:1")) {
+            idx <- match(x = object, table = out[[1L]])
+            out <- out[idx, ]
+        }
+        out
     }
 
 formals(`Ensembl2Entrez,character`)[["format"]] <- # nolint

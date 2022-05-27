@@ -1,18 +1,18 @@
 formats <- eval(formals(`Ensembl2Entrez,GenomicRanges`)[["format"]])
 
-test_that("character", {
+test_that("Ensembl2Entrez : character", {
     genes <- c(
-        "ENSG00000000003",
-        "ENSG00000000005",
+        "ENSG00000063587",
         "ENSG00000004866",
-        "ENSG00000063587"
+        "ENSG00000000005",
+        "ENSG00000000003"
     )
     ## 1:1 mapping.
     object <- Ensembl2Entrez(genes, format = "1:1")
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
         "ensemblId" = genes,
-        "entrezId" = c(7105L, 64102L, 7982L, 10838L),
+        "entrezId" = c(10838L, 7982L, 64102L, 7105L),
         row.names = genes
     )
     expect_identical(
@@ -46,11 +46,16 @@ test_that("character", {
     )
 })
 
-
-
-test_that("character", {
+test_that("Entrez2Ensembl : character", {
     ## These are from the Ensembl return above.
-    genes <- c(7105L, 7982L, 10838L, 64102L, 93655L, 105373378L)
+    genes <- c(
+        105373378L,
+        93655L,
+        64102L,
+        10838L,
+        7982L,
+        7105L
+    )
     ## 1:1 mapping (of input keys, note the expected Ensembl dupes here).
     object <- Entrez2Ensembl(
         object = genes,
@@ -61,12 +66,12 @@ test_that("character", {
     expected <- DataFrame(
         "entrezId" = genes,
         "ensemblId" = c(
-            "ENSG00000000003",
-            "ENSG00000004866",
             "ENSG00000063587",
-            "ENSG00000000005",
             "ENSG00000004866",
-            "ENSG00000063587"
+            "ENSG00000000005",
+            "ENSG00000063587",
+            "ENSG00000004866",
+            "ENSG00000000003"
         ),
         row.names = genes
     )
@@ -82,7 +87,14 @@ test_that("character", {
     )
     expect_identical(metadata(object)[["format"]], "long")
     expected <- DataFrame(
-        "entrezId" = genes,
+        "entrezId" = c(
+            7105L,
+            7982L,
+            10838L,
+            64102L,
+            93655L,
+            105373378L
+        ),
         "ensemblId" = c(
             "ENSG00000000003",
             "ENSG00000004866",
