@@ -1,6 +1,6 @@
 #' @name Ensembl2Entrez
 #' @inherit AcidGenerics::Ensembl2Entrez description return title
-#' @note Updated 2022-05-26.
+#' @note Updated 2022-05-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -27,7 +27,7 @@ NULL
 
 #' Make an Ensembl2Entrez (or Entrez2Ensembl) object
 #'
-#' @note Updated 2022-05-26.
+#' @note Updated 2022-05-27.
 #' @noRd
 .makeEnsembl2Entrez <-
     function(object,
@@ -57,24 +57,46 @@ NULL
         switch(
             EXPR = format,
             "1:1" = {
-                x <- lapply(
-                    X = df[, 2L],
-                    FUN = function(x) {
-                        sort(x = x, decreasing = FALSE, na.last = TRUE)[[1L]]
-                    }
+                if (isAny(df[[2L]], c("List", "list"))) {
+                    x <- lapply(
+                        X = df[, 2L],
+                        FUN = function(x) {
+                            sort(
+                                x = x,
+                                decreasing = FALSE,
+                                na.last = TRUE
+                            )[[1L]]
+                        }
+                    )
+                    x <- unlist(x, recursive = FALSE, use.names = FALSE)
+                    df[[2L]] <- x
+                } else if (hasDuplicates(df[[1L]])) {
+                    df <- df[order(df, decreasing = FALSE, na.last = TRUE), ]
+                    spl <- split(x = df, f = df[[1L]])
+                    spl <- lapply(
+                        X = spl,
+                        FUN = function(x) {
+                            x[1L, ]
+                        }
+                    )
+                    df <- do.call(what = rbind, args = spl)
+                }
+                assert(
+                    hasNoDuplicates(df[[1L]]),
+                    hasNoDuplicates(df[[2L]])
                 )
-                x <- unlist(x, recursive = FALSE, use.names = FALSE)
-                df[[2L]] <- x
             },
             "long" = {
+                rownames(df) <- NULL
                 df <- expand(df)
-                if (nrow(df) > nrow(object)) {
-                    rownames(df) <- NULL
-                }
             }
         )
+        assert(is(df, "DataFrame"))
         df <- df[complete.cases(df), , drop = FALSE]
-        metadata(df)[["format"]] <- format
+        metadata(df) <- append(
+            x = metadata(object),
+            values = list("format" = format)
+        )
         new(Class = return, df)
     }
 
