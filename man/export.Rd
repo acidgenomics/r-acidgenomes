@@ -59,9 +59,9 @@ object <- S4Vectors::DataFrame(
     )
 )
 object <- Tx2Gene(object)
-con <- file.path(tempdir(), "tx2gene.csv")
+con <- file.path(AcidBase::tempdir2(), "tx2gene.csv")
 export(object = object, con = con)
 x <- readLines(con, n = 4L)
 print(x)
-file.remove(con)
+AcidBase::unlink2(con)
 }
