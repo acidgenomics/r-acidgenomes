@@ -21,6 +21,8 @@ seqinfo <- GenomeInfoDb::seqinfo
 seqlengths <- GenomeInfoDb::seqlengths
 seqnames <- GenomeInfoDb::seqnames
 simpleClass <- AcidBase::simpleClass
+tempdir2 <- AcidBase::tempdir2
+unlink2 <- AcidBase::unlink2
 ## nolint end
 
 ## Updated 2022-05-04.

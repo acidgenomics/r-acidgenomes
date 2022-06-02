@@ -36,7 +36,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Ensembl-to-Entrez gene identifier mappings
 }
 \note{
-Updated 2022-05-26.
+Updated 2022-05-27.
 }
 \examples{
 organism <- "Homo sapiens"

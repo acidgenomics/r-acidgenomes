@@ -15,8 +15,7 @@ test_that("Tx2Gene", {
     )
     object <- Tx2Gene(object)
     expect_s4_class(object, "Tx2Gene")
-    con <- file.path(tempdir(), "tx2gene.csv")
-    unlink(con, recursive = FALSE)
+    con <- file.path(tempdir2(), "tx2gene.csv")
     expect_false(file.exists(con))
     export(object = object, con = con)
     expect_true(file.exists(con))
@@ -33,5 +32,5 @@ test_that("Tx2Gene", {
             "\"tx0004\",\"gene0002\""
         )
     )
-    unlink(con, recursive = FALSE)
+    unlink2(con)
 })

@@ -33,7 +33,7 @@ don't map to Entrez will contain \code{NA} in \code{entrezId} column.
 Entrez-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2021-10-21.
+Updated 2022-05-27.
 }
 \examples{
 ## integer ====

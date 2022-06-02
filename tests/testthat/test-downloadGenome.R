@@ -1,7 +1,5 @@
-testdir <- file.path(tempdir(), "genome")
-
 test_that("downloadEnsemblGenome", {
-    unlink(testdir, recursive = TRUE)
+    testdir <- tempdir2()
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
@@ -67,11 +65,11 @@ test_that("downloadEnsemblGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
-    unlink(testdir, recursive = TRUE)
+    unlink2(testdir)
 })
 
 test_that("downloadGencodeGenome", {
-    unlink(testdir, recursive = TRUE)
+    testdir <- tempdir2()
     info <- downloadGencodeGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
@@ -116,11 +114,11 @@ test_that("downloadGencodeGenome", {
             "geneId" = "ENSG00000004059.11"
         )
     )
-    unlink(testdir, recursive = TRUE)
+    unlink2(testdir)
 })
 
 test_that("downloadRefSeqGenome", {
-    unlink(testdir, recursive = TRUE)
+    testdir <- tempdir2()
     info <- downloadRefSeqGenome(
         organism = "Homo sapiens",
         taxonomicGroup = "vertebrate_mammalian",
@@ -164,11 +162,11 @@ test_that("downloadRefSeqGenome", {
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
-    unlink(testdir, recursive = TRUE)
+    unlink2(testdir)
 })
 
 test_that("downloadUCSCGenome", {
-    unlink(testdir, recursive = TRUE)
+    testdir <- tempdir2()
     info <- downloadUCSCGenome(
         organism = "Homo sapiens",
         genomeBuild = "hg38",
@@ -209,5 +207,5 @@ test_that("downloadUCSCGenome", {
             "geneId" = "ENSG00000004059"
         )
     )
-    unlink(testdir, recursive = TRUE)
+    unlink2(testdir)
 })
