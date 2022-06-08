@@ -250,26 +250,6 @@
 
 
 
-## NOTE Consider moving this to AcidBase.
-
-#' Suppress all warnings and messages
-#'
-#' @note Updated 2022-06-08.
-#' @noRd
-.suppressAll <- function(expr) {
-    invisible({
-        capture.output({
-            suppressWarnings({
-                suppressMessages({
-                    expr
-                })
-            })
-        })
-    })
-}
-
-
-
 #' Get EnsDb from Package
 #'
 #' @note Updated 2021-09-13.
@@ -333,4 +313,24 @@
     }
     dl(items)
     list
+}
+
+
+
+## NOTE Consider moving this to AcidBase.
+
+#' Suppress all warnings and messages
+#'
+#' @note Updated 2022-06-08.
+#' @noRd
+.suppressAll <- function(expr) {
+    invisible({
+        capture.output({
+            suppressWarnings({
+                suppressMessages({
+                    expr
+                })
+            })
+        })
+    })
 }
