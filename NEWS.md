@@ -5,6 +5,9 @@
 - `makeGRangesFromEnsembl`: Hardened internal code to suppress spurious warnings
   from rtracklayer due to masking of `download.file` function. See
   [issue #71](https://github.com/lawremi/rtracklayer/issues/71) for details.
+- Improved temporary directory creation and deletion using `tempdir2` and
+  `unlink2` internally, which improves support for continuous integration (CI)
+  checks on Windows.
 
 # AcidGenomes 0.4.2 (2022-05-27)
 
