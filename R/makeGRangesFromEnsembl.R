@@ -160,10 +160,10 @@ makeGRangesFromEnsDb <-
         ## [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
         ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
         ## [13] "symbol"
-        geneCols <- sort(unique(c(
-            ensembldb::listColumns(object, "gene"),
-            "entrezid"
-        )))
+        suppressWarnings({
+            geneCols <- ensembldb::listColumns(object, "gene")
+        })
+        geneCols <- sort(unique(c(geneCols, "entrezid")))
         ## Ensembl 102 example (AH89180):
         ## [1] "canonical_transcript" "description"          "entrezid"
         ## [4] "gc_content"           "gene_biotype"         "gene_id"
@@ -173,10 +173,10 @@ makeGRangesFromEnsDb <-
         ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
         ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
         ## [22] "tx_seq_start"         "tx_support_level"
-        txCols <- sort(unique(c(
-            ensembldb::listColumns(object, "tx"),
-            geneCols
-        )))
+        suppressWarnings({
+            txCols <- ensembldb::listColumns(object, "tx")
+        })
+        txCols <- sort(unique(c(txCols, geneCols)))
         switch(
             EXPR = level,
             "genes" = {
@@ -200,8 +200,6 @@ makeGRangesFromEnsDb <-
                 )
             }
         )
-        ## This step can warn about out-of-bound ranges that need to be trimmed.
-        ## We're taking care of trimming on the `.makeGRanges()` call below.
         suppressWarnings({
             gr <- do.call(what = fun, args = args)
         })
