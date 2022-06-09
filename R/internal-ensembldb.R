@@ -290,7 +290,7 @@
     ]
     assert(isString(genomeBuild))
     suppressWarnings({
-        ensembldb::ensemblVersion(object)
+        release <- ensembldb::ensemblVersion(object)
     })
     release <- as.integer(release)
     list <- list(
