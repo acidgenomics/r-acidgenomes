@@ -289,12 +289,16 @@
         drop = TRUE
     ]
     assert(isString(genomeBuild))
+    suppressWarnings({
+        ensembldb::ensemblVersion(object)
+    })
+    release <- as.integer(release)
     list <- list(
         "ensembldb" = metadata,
         "genomeBuild" = genomeBuild,
         "organism" = organism(object),
         "provider" = "Ensembl",
-        "release" = as.integer(ensembldb::ensemblVersion(object))
+        "release" = release
     )
     if (!is.null(level)) {
         list[["level"]] <- level

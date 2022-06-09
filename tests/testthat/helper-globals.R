@@ -17,6 +17,7 @@ Rle <- structure(
 )
 DataFrame <- S4Vectors::DataFrame
 hasInternet <- goalie::hasInternet
+pasteURL <- AcidBase::pasteURL
 seqinfo <- GenomeInfoDb::seqinfo
 seqlengths <- GenomeInfoDb::seqlengths
 seqnames <- GenomeInfoDb::seqnames

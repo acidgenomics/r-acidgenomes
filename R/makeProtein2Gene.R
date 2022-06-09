@@ -41,12 +41,14 @@ makeProtein2GeneFromEnsembl <-
             release = release
         )
         ## The `select()` generic is defined in AnnotationDbi.
-        df <- ensembldb::select(
-            x = edb,
-            keys = ids,
-            keytype = "PROTEINID",
-            columns = c("GENEID", "GENENAME")
-        )
+        suppressWarnings({
+            df <- ensembldb::select(
+                x = edb,
+                keys = ids,
+                keytype = "PROTEINID",
+                columns = c("GENEID", "GENENAME")
+            )
+        })
         df <- as(df, "DataFrame")
         colnames(df) <- tolower(colnames(df))
         colnames(df) <- gsub("id$", "Id", colnames(df))
