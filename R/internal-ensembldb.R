@@ -252,14 +252,16 @@
 
 #' Get EnsDb from Package
 #'
-#' @note Updated 2021-09-13.
+#' @note Updated 2022-06-09.
 #' @noRd
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
     alert(sprintf("Getting {.cls %s} from {.pkg %s}.", "EnsDb", package))
     assert(isString(package))
-    requireNamespaces(package)
+    suppressWarnings({
+        requireNamespaces(package)
+    })
     edb <- get(
         x = package,
         envir = asNamespace(package),
