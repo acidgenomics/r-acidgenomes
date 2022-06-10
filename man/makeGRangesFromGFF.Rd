@@ -66,10 +66,9 @@ to the stop codon.
 
 See also:
 \itemize{
-\item \href{https://pythonhosted.org/gffutils/}{gffutils documentation}
+\item \href{https://daler.github.io/gffutils/}{gffutils documentation}
 \item \href{https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/}{GenBank GFF documentation}
 \item \href{https://ccb.jhu.edu/software/stringtie/gff.shtml}{stringtie GFF documentation}
-\item \href{http://gmod.org/wiki/GFF}{gmod.org GFF wiki}
 \item \href{https://mblab.wustl.edu/GTF2.html}{Brent Lab GTF2 spec notes}
 \item \href{https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md}{Sequence Ontology GFF3 spec notes}
 }
@@ -180,17 +179,17 @@ See also:
 Example URLs:
 \itemize{
 \item UCSC \emph{Homo sapiens} hg38 GTF files:
-\href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz}{hg38.ensGene.gtf.gz},
-\href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
-\href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
-\href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz}{hg38.refGene.gtf.gz}
+\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz}{hg38.ensGene.gtf.gz},
+\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
+\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
+\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz}{hg38.refGene.gtf.gz}
 }
 
 Related URLs:
 \itemize{
 \item \href{http://hgdownload.soe.ucsc.edu/downloads.html}{UCSC downloads}
-\item \href{ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/}{UCSC hg38 bigZips FTP}
-\item \href{http://genome.ucsc.edu/cgi-bin/hgTables}{UCSC hgTables}
+\item \href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/}{UCSC hg38 bigZips}
+\item \href{https://genome.ucsc.edu/cgi-bin/hgTables}{UCSC hgTables}
 }
 }
 
