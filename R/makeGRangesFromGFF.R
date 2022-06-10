@@ -29,10 +29,9 @@
 #'
 #' See also:
 #'
-#' - [gffutils documentation](https://pythonhosted.org/gffutils/)
+#' - [gffutils documentation](https://daler.github.io/gffutils/)
 #' - [GenBank GFF documentation](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
 #' - [stringtie GFF documentation](https://ccb.jhu.edu/software/stringtie/gff.shtml)
-#' - [gmod.org GFF wiki](http://gmod.org/wiki/GFF)
 #' - [Brent Lab GTF2 spec notes](https://mblab.wustl.edu/GTF2.html)
 #' - [Sequence Ontology GFF3 spec notes](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
 #'
@@ -125,16 +124,16 @@
 #' Example URLs:
 #'
 #' - UCSC *Homo sapiens* hg38 GTF files:
-#' [hg38.ensGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
-#' [hg38.knownGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
-#' [hg38.ncbiRefSeq.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
-#' [hg38.refGene.gtf.gz](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
+#' [hg38.ensGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
+#' [hg38.knownGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
+#' [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
+#' [hg38.refGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
 #' Related URLs:
 #'
 #' - [UCSC downloads](http://hgdownload.soe.ucsc.edu/downloads.html)
-#' - [UCSC hg38 bigZips FTP](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
-#' - [UCSC hgTables](http://genome.ucsc.edu/cgi-bin/hgTables)
+#' - [UCSC hg38 bigZips](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/)
+#' - [UCSC hgTables](https://genome.ucsc.edu/cgi-bin/hgTables)
 #'
 #' @section FlyBase:
 #'
