@@ -18,7 +18,7 @@
 mapGencodeToEnsembl <- function(release) {
     assert(isInt(release))
     data <- import(
-        file = system.file(
+        con = system.file(
             "extdata", "gencode-to-ensembl.rds",
             package = .pkgName
         ),

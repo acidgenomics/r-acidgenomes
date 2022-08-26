@@ -18,7 +18,7 @@ MGI2Ensembl <- function() { # nolint
     ## Base import engine returns NAs introduced by coercion.
     suppressWarnings({
         df <- import(
-            file = file,
+            con = file,
             format = "tsv",
             colnames = TRUE,
             engine = "readr"

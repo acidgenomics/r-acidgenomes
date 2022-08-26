@@ -1,3 +1,7 @@
+## FIXME We need to apply improved factorization of metadata columns here.
+
+
+
 ## Metadata modification =======================================================
 
 #' Apply broad class definitions
