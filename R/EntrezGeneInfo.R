@@ -55,7 +55,7 @@ EntrezGeneInfo <- # nolint
         ## gracefully than the base import engine.
         ## Error: line 47 did not have 16 elements
         df <- import(
-            file = .cacheIt(url),
+            con = .cacheIt(url),
             format = "tsv",
             colnames = TRUE,
             engine = "readr"

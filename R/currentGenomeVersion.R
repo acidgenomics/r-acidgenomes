@@ -30,7 +30,7 @@ NULL
 #' @export
 currentEnsemblVersion <- function() {
     x <- import(
-        file = "ftp://ftp.ensembl.org/pub/current_README",
+        con = "ftp://ftp.ensembl.org/pub/current_README",
         format = "lines",
         quiet = TRUE
     )
@@ -81,7 +81,7 @@ currentGencodeVersion <-
 #' @export
 currentRefSeqVersion <- function() {
     x <- import(
-        file = "ftp://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
+        con = "ftp://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
         format = "lines",
         quiet = TRUE
     )

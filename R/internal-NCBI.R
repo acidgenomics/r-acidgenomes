@@ -152,7 +152,7 @@
         )
         file <- .cacheIt(file)
         lines <- import(
-            file = file,
+            con = file,
             format = "lines",
             skip = 1L,
             quiet = TRUE
@@ -304,7 +304,7 @@
     ## Need to parse the comments in the assembly file to extract the column
     ## names for the data frame. Note that the number of columns differs in
     ## the report file for the "seqs_for_alignment_pipelines.ucsc_ids" assembly.
-    lines <- import(file = file, format = "lines", quiet = TRUE)
+    lines <- import(con = file, format = "lines", quiet = TRUE)
     comments <- grep(pattern = "^#", x = lines, value = TRUE)
     colnames <- comments[length(comments)]
     assert(isMatchingFixed(x = colnames, pattern = "\t"))
@@ -324,7 +324,7 @@
     ## NOTE `data.table::fread` doesn't currently support comment exclusion,
     ## so we're intentionally using the base R engine for import here instead.
     df <- import(
-        file = file,
+        con = file,
         format = "tsv",
         colnames = colnames,
         comment = "#",

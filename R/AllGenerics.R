@@ -1,3 +1,6 @@
+## FIXME Migrate the imports to "imports.R" file.
+
+
 #' @rdname Ensembl2Entrez
 #' @name Ensembl2Entrez
 #' @importFrom AcidGenerics Ensembl2Entrez

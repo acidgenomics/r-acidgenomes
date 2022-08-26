@@ -30,7 +30,7 @@ HGNC <- # nolint
         ## line 534 did not have 54 elements
         suppressWarnings({
             df <- import(
-                file = file,
+                con = file,
                 format = "tsv",
                 engine = "readr"
             )

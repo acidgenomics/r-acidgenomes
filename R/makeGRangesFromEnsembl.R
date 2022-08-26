@@ -1,3 +1,7 @@
+## FIXME This isn't detaching ensembldb correctly.
+
+
+
 #' Make GenomicRanges from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from

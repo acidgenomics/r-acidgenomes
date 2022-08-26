@@ -197,7 +197,7 @@ downloadGencodeGenome <-
         )
         ## Get Entrez and RefSeq identifier mappings.
         entrezGene <- import(
-            file = metadataFiles[["files"]][["entrezGene"]],
+            con = metadataFiles[["files"]][["entrezGene"]],
             format = "tsv",
             colnames = c("txId", "entrezId")
         )
@@ -208,7 +208,7 @@ downloadGencodeGenome <-
             by = "txId"
         )
         refSeq <- import(
-            file = metadataFiles[["files"]][["refSeq"]],
+            con = metadataFiles[["files"]][["refSeq"]],
             format = "tsv",
             colnames = c(
                 "txId",

@@ -1,6 +1,9 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Consider adding mcols support for rowRanges mcols
+** TODO Need to ensure that `geneBiotype` and other repeated values columns are converted to factor-Rle for makeGRangesFromEnsembl.
+    This is currently the case for broadClass, but not the other biotype columns currently.
 ** TODO `Ensembl2Entrez()`: Consider returning as factor?
     Check `summary()` method to see if it is informative enough.
 ** TODO For gene/transcript level, consider using `featureType` instead of `level`.

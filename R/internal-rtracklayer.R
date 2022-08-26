@@ -22,7 +22,7 @@
             choices = c("genes", "transcripts")
         )
         meta[["level"]] <- level
-        gr <- import(file = .cacheIt(file))
+        gr <- import(con = .cacheIt(file))
         assert(is(gr, "GenomicRanges"))
         format <- ifelse(
             test = grepl(pattern = "GTF", x = meta[["format"]]),
