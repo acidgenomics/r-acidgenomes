@@ -54,7 +54,7 @@ test_that("downloadEnsemblGenome", {
         )
     )
     tx2gene <- import(
-        file = file.path(outputDir, "tx2gene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(nrow(tx2gene), 265480L)
@@ -103,7 +103,7 @@ test_that("downloadGencodeGenome", {
         )
     )
     tx2gene <- import(
-        file = file.path(outputDir, "tx2gene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(nrow(tx2gene), 244939L)
@@ -156,7 +156,7 @@ test_that("downloadRefSeqGenome", {
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
     tx2gene <- import(
-        file = file.path(outputDir, "tx2gene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
@@ -197,7 +197,7 @@ test_that("downloadUCSCGenome", {
         )
     )
     tx2gene <- import(
-        file = file.path(outputDir, "tx2gene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(

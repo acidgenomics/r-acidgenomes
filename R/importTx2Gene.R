@@ -41,7 +41,7 @@ importTx2Gene <-
                 y = names(ignoreVersion)
             )
         )
-        data <- import(file = file, rownames = FALSE, colnames = FALSE)
+        data <- import(con = file, rownames = FALSE, colnames = FALSE)
         colnames(data) <- c("txId", "geneId")
         data <- as(data, "DataFrame")
         if (isTRUE(ignoreVersion[["tx"]])) {

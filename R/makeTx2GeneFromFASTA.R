@@ -83,7 +83,7 @@ makeTx2GeneFromFASTA <-
             "Making {.cls %s} from FASTA file ({.file %s}).",
             "Tx2Gene", file
         ))
-        x <- import(file = .cacheIt(file), format = "lines")
+        x <- import(con = .cacheIt(file), format = "lines")
         x <- grep(pattern = "^>", x = x, value = TRUE)
         if (!hasLength(x)) {
             abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))

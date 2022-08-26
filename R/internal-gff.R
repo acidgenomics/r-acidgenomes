@@ -38,7 +38,7 @@
     assert(.isSupportedGFF(file))
     file <- .cacheIt(file)
     lines <- import(
-        file = file,
+        con = file,
         format = "lines",
         comment = "",
         nMax = nMax,
@@ -124,7 +124,7 @@
     ## Parse the first 100 elements of the GFF file. We can use this to identify
     ## ambiguous sources or genomes with non-standard identifiers.
     lines <- import(
-        file = .cacheIt(file),
+        con = .cacheIt(file),
         format = "lines",
         nMax = 1000L,
         quiet = TRUE
