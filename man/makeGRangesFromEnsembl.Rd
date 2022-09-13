@@ -78,14 +78,14 @@ we're querying Ensembl and not UCSC.
 }
 \section{Functions}{
 \itemize{
-\item \code{makeGRangesFromEnsembl}: Obtain annotations from Ensembl by
+\item \code{makeGRangesFromEnsembl()}: Obtain annotations from Ensembl by
 querying AnnotationHub.
 
-\item \code{makeGRangesFromEnsDb}: Use a specific \code{EnsDb} object as the
+\item \code{makeGRangesFromEnsDb()}: Use a specific \code{EnsDb} object as the
 annotation source. Alternatively, can pass in an EnsDb package name as
 a \code{character(1)}.
-}}
 
+}}
 \note{
 Updated 2022-05-04.
 }

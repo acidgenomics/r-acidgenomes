@@ -77,15 +77,15 @@ Make a Gene2Symbol object
 }
 \section{Functions}{
 \itemize{
-\item \code{makeGene2SymbolFromEnsembl}: Make a \code{Gene2Symbol} object from Ensembl using
+\item \code{makeGene2SymbolFromEnsembl()}: Make a \code{Gene2Symbol} object from Ensembl using
 an AnnotationHub lookup.
 
-\item \code{makeGene2SymbolFromEnsDb}: Make a \code{Gene2Symbol} object from an \code{EnsDb}
+\item \code{makeGene2SymbolFromEnsDb()}: Make a \code{Gene2Symbol} object from an \code{EnsDb}
 object or annotation package.
 
-\item \code{makeGene2SymbolFromGFF}: Make a \code{Gene2Symbol} object from a GFF file.
-}}
+\item \code{makeGene2SymbolFromGFF()}: Make a \code{Gene2Symbol} object from a GFF file.
 
+}}
 \note{
 Updated 2021-08-03.
 }

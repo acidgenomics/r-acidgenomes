@@ -25,7 +25,7 @@ File path.
 Alternatively, can leave unset and use \code{ext} and \code{dir} arguments instead.}
 
 \item{format}{\code{character(1)}, \code{missing}, or \code{NULL}.
-Output file format extension.}
+\emph{Currently not supported.}}
 
 \item{...}{Additional arguments.}
 }
