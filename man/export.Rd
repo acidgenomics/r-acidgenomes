@@ -2,18 +2,12 @@
 % Please edit documentation in R/AllGenerics.R, R/export-methods.R
 \name{export}
 \alias{export}
-\alias{export,Tx2Gene,character,missingOrNULL-method}
-\alias{export,Tx2Gene,missingOrNULL,character-method}
-\alias{export,Tx2Gene,missingOrNULL,missingOrNULL-method}
+\alias{export,Tx2Gene,character,missing-method}
 \title{Export}
 \usage{
 export(object, con, format, ...)
 
-\S4method{export}{Tx2Gene,character,missingOrNULL}(object, con, format, ...)
-
-\S4method{export}{Tx2Gene,missingOrNULL,character}(object, con, format, ...)
-
-\S4method{export}{Tx2Gene,missingOrNULL,missingOrNULL}(object, con, format, ...)
+\S4method{export}{Tx2Gene,character,missing}(object, con, format, ...)
 }
 \arguments{
 \item{object}{Object.
@@ -41,7 +35,7 @@ The \code{Tx2Gene} method automatically disables writing of column names, which
 is the intended input format for tximport.
 }
 \note{
-Updated 2021-10-21.
+Updated 2022-09-13.
 }
 \examples{
 object <- S4Vectors::DataFrame(
