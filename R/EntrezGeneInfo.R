@@ -1,3 +1,7 @@
+## FIXME Add `cache = TRUE` to function here.
+
+
+
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
