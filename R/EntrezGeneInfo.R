@@ -1,11 +1,12 @@
 ## FIXME Add `cache = TRUE` to function here.
+## FIXME Need to rename `xTaxId` to `taxId`.
 
 
 
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2022-05-04.
+#' @note Updated 2022-09-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param taxonomicGroup `character(1)`.
