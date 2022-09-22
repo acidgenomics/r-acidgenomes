@@ -20,6 +20,7 @@
                 protocol = "ftp"
             )
         )
+        ## FIXME Also speed up matching for D. melanogaster, C. elegans, etc.
         ## Quickly return value for commonly used organisms without querying
         ## the NCBI FTP server.
         if (isSubset(
