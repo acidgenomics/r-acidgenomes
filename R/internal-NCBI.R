@@ -192,7 +192,7 @@
 
 #' Get the RefSeq base genome URL for an organism
 #'
-#' @note Updated 2021-01-08.
+#' @note Updated 2022-09-22.
 #' @noRd
 #'
 #' @examples
@@ -215,7 +215,10 @@
                 organism
             ))
         }
-        baseUrl <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
+        baseUrl <- pasteURL(
+            "ftp.ncbi.nlm.nih.gov", "genomes", "refseq",
+            protocol = "ftp"
+        )
         if (is.null(taxonomicGroup)) {
             taxonomicGroup <- .matchNcbiTaxonomicGroup(
                 organism = organism,
