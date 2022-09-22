@@ -192,7 +192,6 @@
         row.names = names(object),
         stringsAsFactors = TRUE
     )
-    ## NOTE Consider using BiocParallel here for improved speed.
     x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
     x <- as.factor(x)
     if (all(x == "other")) {
