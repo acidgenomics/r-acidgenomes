@@ -1,13 +1,13 @@
 #' Match NCBI taxonomic group for gene info or RefSeq.
 #'
-#' @note Updated 2021-02-25.
+#' @note Updated 2022-09-22.
 #' @noRd
 .matchNcbiTaxonomicGroup <-
     function(organism,
              mode = c("geneInfo", "refseq")) {
         assert(isOrganism(organism))
         mode <- match.arg(mode)
-        baseURL <- switch(
+        baseUrl <- switch(
             EXPR = mode,
             "geneInfo" = pasteURL(
                 "ftp.ncbi.nih.gov",
@@ -20,14 +20,13 @@
                 protocol = "ftp"
             )
         )
-        ## FIXME Also speed up matching for D. melanogaster, C. elegans, etc.
-        ## Quickly return value for commonly used organisms without querying
-        ## the NCBI FTP server.
         if (isSubset(
             x = organism,
             y = c(
-                "Homo sapiens",
-                "Mus musculus"
+                "Danio rerio", # Zebrafish
+                "Homo sapiens", # Human
+                "Mus musculus", # Mouse
+                "Rattus norvegicus" # Rat
             )
         )) {
             return(switch(
@@ -35,15 +34,36 @@
                 "geneInfo" = "Mammalia",
                 "refseq" = "vertebrate_mammalian"
             ))
+        } else if (isSubset(
+            x = organism,
+            y = c(
+                "Caenorhabditis elegans", # Worm
+                "Drosophila melanogaster" # Fruitfly
+            )
+        )) {
+            return(switch(
+                EXPR = mode,
+                "geneInfo" = "Invertebrates",
+                "refseq" = "invertebrate"
+            ))
+        } else if (isSubset(
+            x = organism,
+            y = "Saccharomyces cerevisiae" # Yeast
+        )) {
+            return(switch(
+                EXPR = mode,
+                "geneInfo" = "Fungi",
+                "refseq" = "fungi"
+            ))
         }
         alertWarning(sprintf(
             paste(
-                "Detecting taxonomic group from {.var %s}.",
+                "Detecting taxonomic group from {.var %s} at {.url %s}.",
                 "Set {.var %s} manually to speed up this step."
             ),
-            "organism", "taxonimicGroup"
+            "organism", baseUrl, "taxonimicGroup"
         ))
-        x <- getURLDirList(url = baseURL)
+        x <- getURLDirList(url = baseUrl)
         pattern <- switch(
             EXPR = mode,
             "geneInfo" = "^[A-Z][A-Za-z_-]+$",
@@ -51,13 +71,12 @@
         )
         keep <- grepl(pattern = pattern, x = x)
         groups <- sort(x[keep])
-        bplapply <- eval(.bplapply)
-        list <- bplapply(
+        list <- lapply(
             X = groups,
-            baseURL = baseURL,
+            baseUrl = baseUrl,
             mode = mode,
-            FUN = function(group, baseURL, mode) {
-                url <- pasteURL(baseURL, group)
+            FUN = function(group, baseUrl, mode) {
+                url <- pasteURL(baseUrl, group)
                 x <- getURLDirList(url = url)
                 switch(
                     EXPR = mode,
@@ -196,7 +215,7 @@
                 organism
             ))
         }
-        baseURL <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
+        baseUrl <- "ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq"
         if (is.null(taxonomicGroup)) {
             taxonomicGroup <- .matchNcbiTaxonomicGroup(
                 organism = organism,
@@ -204,7 +223,7 @@
             )
         }
         url <- pasteURL(
-            baseURL,
+            baseUrl,
             taxonomicGroup,
             gsub(pattern = " ", replacement = "_", x = organism)
         )
