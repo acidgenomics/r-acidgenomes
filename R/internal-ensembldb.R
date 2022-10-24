@@ -1,8 +1,3 @@
-## FIXME Need to ensure ensembldb force detaches correctly.
-## This can mask dplyr select otherwise...need to unit test for this.
-
-
-
 #' Get EnsDb from Bioconductor
 #'
 #' @note Updated 2022-01-12.

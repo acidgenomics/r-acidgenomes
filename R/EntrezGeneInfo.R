@@ -1,14 +1,13 @@
-## FIXME Add `cache = TRUE` to function here.
-## FIXME Need to rename `xTaxId` to `taxId`.
-
-
-
 #' Import NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2022-09-21.
+#' @note Updated 2022-10-24.
 #'
 #' @inheritParams AcidRoxygen::params
+#'
+#' @param cache `logical(1)`.
+#' Cache the gene info file from NCBI Entrez FTP server using BiocFileCache.
+#'
 #' @param taxonomicGroup `character(1)`.
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 #' Defining this manually avoids having to query the FTP server.
@@ -27,11 +26,13 @@
 #' print(object)
 EntrezGeneInfo <- # nolint
     function(organism,
-             taxonomicGroup = NULL) {
+             taxonomicGroup = NULL,
+             cache = TRUE) {
         assert(
             hasInternet(),
             isOrganism(organism),
-            isString(taxonomicGroup, nullOK = TRUE)
+            isString(taxonomicGroup, nullOK = TRUE),
+            isFlag(cache)
         )
         baseURL <- pasteURL(
             "ftp.ncbi.nih.gov",
@@ -58,9 +59,12 @@ EntrezGeneInfo <- # nolint
         ))
         ## Input TSV is malformed, as of 2022-05-04. Readr handles this more
         ## gracefully than the base import engine.
-        ## Error: line 47 did not have 16 elements
         df <- import(
-            con = .cacheIt(url),
+            con = ifelse(
+                test = cache,
+                yes = .cacheIt(url),
+                no = url
+            ),
             format = "tsv",
             colnames = TRUE,
             engine = "readr"
@@ -81,6 +85,7 @@ EntrezGeneInfo <- # nolint
         df[["geneId"]] <- as.integer(df[["geneId"]])
         colnames(df)[colnames(df) == "symbol"] <- "geneName"
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
+        colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
         df <- removeNA(df)
         df <- df[, sort(colnames(df))]
         rownames(df) <- df[["geneId"]]
