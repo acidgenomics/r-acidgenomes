@@ -11,5 +11,5 @@
 NCBI Entrez gene identifier information
 }
 \note{
-Updated 2022-04-25.
+Updated 2022-10-24.
 }
