@@ -1,6 +1,9 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Package is no longer detaching ensembldb correctly?
+    Confirm that this is working with `makeGRangesFromEnsembl`.
+    In particular, ensure that `select` verb is not being attached into environment.
 ** TODO Consider adding mcols support for rowRanges mcols
 ** TODO Need to ensure that `geneBiotype` and other repeated values columns are converted to factor-Rle for makeGRangesFromEnsembl.
     This is currently the case for broadClass, but not the other biotype columns currently.
