@@ -4,7 +4,7 @@
 \alias{EntrezGeneInfo}
 \title{Import NCBI Entrez gene identifier information}
 \usage{
-EntrezGeneInfo(organism, taxonomicGroup = NULL)
+EntrezGeneInfo(organism, taxonomicGroup = NULL, cache = TRUE)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -13,6 +13,9 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 \item{taxonomicGroup}{\code{character(1)}.
 NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 Defining this manually avoids having to query the FTP server.}
+
+\item{cache}{\code{logical(1)}.
+Cache the gene info file from NCBI Entrez FTP server using BiocFileCache.}
 }
 \value{
 \code{EntrezGeneInfo}.
@@ -21,7 +24,7 @@ Defining this manually avoids having to query the FTP server.}
 Import NCBI Entrez gene identifier information
 }
 \note{
-Updated 2022-05-04.
+Updated 2022-10-24.
 }
 \examples{
 object <- EntrezGeneInfo(

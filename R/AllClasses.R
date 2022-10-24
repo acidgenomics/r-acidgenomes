@@ -527,7 +527,7 @@ setValidity(
 #' NCBI Entrez gene identifier information
 #'
 #' @export
-#' @note Updated 2022-04-25.
+#' @note Updated 2022-10-24.
 #'
 #' @return `EntrezGeneInfo`.
 setClass(
@@ -537,6 +537,34 @@ setClass(
 setValidity(
     Class = "EntrezGeneInfo",
     method = function(object) {
+        ok <- validate(
+            hasColnames(object),
+            hasRows(object)
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        cols <- c(
+            "chromosome",
+            "dbXrefs",
+            "description",
+            "featureType",
+            "geneId",
+            "geneName",
+            "geneSynonyms",
+            "mapLocation",
+            "modificationDate",
+            "nomenclatureStatus",
+            "otherDesignations",
+            "taxonomyId",
+            "typeOfGene"
+        )
+        ok <- validate(
+            isSubset(cols, colnames(object))
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
