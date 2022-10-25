@@ -69,7 +69,7 @@ See also:
 \item \href{https://daler.github.io/gffutils/}{gffutils documentation}
 \item \href{https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/}{GenBank GFF documentation}
 \item \href{https://ccb.jhu.edu/software/stringtie/gff.shtml}{stringtie GFF documentation}
-\item \href{https://mblab.wustl.edu/GTF2.html}{Brent Lab GTF2 spec notes}
+\item \href{http://mblab.wustl.edu/GTF2.html}{Brent Lab GTF2 spec notes}
 \item \href{https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md}{Sequence Ontology GFF3 spec notes}
 }
 }
