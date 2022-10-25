@@ -32,7 +32,7 @@
 #' - [gffutils documentation](https://daler.github.io/gffutils/)
 #' - [GenBank GFF documentation](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
 #' - [stringtie GFF documentation](https://ccb.jhu.edu/software/stringtie/gff.shtml)
-#' - [Brent Lab GTF2 spec notes](https://mblab.wustl.edu/GTF2.html)
+#' - [Brent Lab GTF2 spec notes](http://mblab.wustl.edu/GTF2.html)
 #' - [Sequence Ontology GFF3 spec notes](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
 #'
 #' @section Supported sources:
