@@ -1,5 +1,7 @@
 # AcidGenomes
 
+[![Install with Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/r-acidgenomes/README.html)
+
 Toolkit for downloading and processing genome annotations.
 
 ## Installation
