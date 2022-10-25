@@ -1,5 +1,19 @@
 # Release notes
 
+## AcidGenomes 0.4.4 (2022-10-25)
+
+Minor changes:
+
+- Compatibility update to provide support for breaking changes introduced with
+  pipette 0.10.0 release.
+- `EntrezGeneInfo`: Added column name checks. Renamed `xTaxId` to `taxonomyId`.
+- Migrated all `importFrom` calls to `imports.R` file.
+- Removed BiocParallel bplapply usage.
+- `export`: Updated methods to match new conventions defined in pipette.
+- Improved support for quick detection of NCBI taxonomic group for commonly
+  used model organisms. Previously human and mouse were supported. Added support
+  for zebrafish, rat, worm, fruitfly, and yeast.
+
 ## AcidGenomes 0.4.3 (2022-06-09)
 
 Minor chagnes:
