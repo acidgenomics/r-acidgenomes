@@ -1,6 +1,9 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Add support for T2T genome from NCBI.
+    Can we also support from UCSC?
+    Not yet up on Ensembl or GENCODE.
 ** TODO Package is no longer detaching ensembldb correctly?
     Confirm that this is working with `makeGRangesFromEnsembl`.
     In particular, ensure that `select` verb is not being attached into environment.
