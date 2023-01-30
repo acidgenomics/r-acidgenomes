@@ -7,7 +7,7 @@
 mapGencodeToEnsembl(release)
 }
 \arguments{
-\item{release}{\code{integer(1)}.
+\item{release}{\code{integer(1)} or \code{character(1)}.
 Human (e.g. \code{42}) or mouse (e.g. \code{"M21"}) GENCODE release.}
 }
 \value{
@@ -24,7 +24,7 @@ Updated 2023-01-30.
 ## Homo sapiens.
 mapGencodeToEnsembl(42L)
 ## Mus musculus.
-mapGencodeToEnsembl("M21L")
+mapGencodeToEnsembl("M31")
 }
 \seealso{
 \itemize{

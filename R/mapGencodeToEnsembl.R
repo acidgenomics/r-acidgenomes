@@ -3,7 +3,7 @@
 #' @export
 #' @note Updated 2023-01-30.
 #'
-#' @param release `integer(1)`.
+#' @param release `integer(1)` or `character(1)`.
 #' Human (e.g. `42`) or mouse (e.g. `"M21"`) GENCODE release.
 #'
 #' @return `integer(1)`.
