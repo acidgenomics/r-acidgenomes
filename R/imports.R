@@ -16,6 +16,7 @@ NULL
 #' @importFrom BiocGenerics %in% append as.data.frame do.call grep grepl
 #' is.unsorted lapply match order organism organism<- rbind setdiff sort unlist
 #' @importFrom GenomeInfoDb genome genome<- seqinfo seqinfo<- seqlevels
+#' seqnames<- seqnames
 #' @importFrom IRanges gsub ranges trim
 #' @importFrom S4Vectors complete.cases decode expand head mcols mcols<-
 #' metadata metadata<- na.omit split summary tail
