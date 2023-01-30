@@ -1,6 +1,3 @@
-## FIXME Note that there are now gene and transcript differences between
-## Ensembl and GENCODE...what are the differences?
-
 test_that("downloadEnsemblGenome", {
     testdir <- tempdir2()
     info <- downloadEnsemblGenome(
@@ -229,13 +226,28 @@ test_that("downloadUCSCGenome", {
             "tx2gene.rds"
         )
     ))))
-
-
-    ## FIXME Need to check genes and transcripts.
-
-
-
+    genes <- import(file.path(outputDir, "genes.rds"))
+    expect_s4_class(genes, "UCSCGenes")
+    expect_identical(
+        object = head(sort(names(genes)), n = 3L),
+        expected = c(
+            "ENSG00000000003",
+            "ENSG00000000005",
+            "ENSG00000000419"
+        )
+    )
+    transcripts <- import(file.path(outputDir, "transcripts.rds"))
+    expect_s4_class(transcripts, "UCSCTranscripts")
+    expect_identical(
+        object = head(sort(names(transcripts)), n = 3L),
+        expected = c(
+            "ENST00000000233",
+            "ENST00000000412",
+            "ENST00000000442"
+        )
+    )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
+    expect_s4_class(tx2gene, "Tx2Gene")
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
