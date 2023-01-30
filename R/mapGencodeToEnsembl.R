@@ -1,22 +1,27 @@
 #' Map GENCODE release to Ensembl
 #'
 #' @export
-#' @note Updated 2022-01-17.
+#' @note Updated 2023-01-30.
 #'
 #' @param release `integer(1)`.
-#' Human GENCODE release (e.g. `39`).
+#' Human (e.g. `42`) or mouse (e.g. `"M21"`) GENCODE release.
 #'
 #' @return `integer(1)`.
 #' Ensembl release.
 #'
 #' @seealso
-#' - https://www.gencodegenes.org/
+#' - https://www.gencodegenes.org/human/releases.html
+#' - https://www.gencodegenes.org/mouse/releases.html
 #' - https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/_README.TXT
+#' - https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/_README.TXT
 #'
 #' @examples
-#' mapGencodeToEnsembl(39L)
+#' ## Homo sapiens.
+#' mapGencodeToEnsembl(42L)
+#' ## Mus musculus.
+#' mapGencodeToEnsembl("M31")
 mapGencodeToEnsembl <- function(release) {
-    assert(isInt(release))
+    assert(isScalar(release))
     data <- import(
         con = system.file(
             "extdata", "gencode-to-ensembl.rds",
@@ -25,13 +30,16 @@ mapGencodeToEnsembl <- function(release) {
         quiet = TRUE
     )
     assert(isSubset(c("gencode", "ensembl"), colnames(data)))
-    idx <- match(x = release, table = data[["gencode"]])
+    idx <- match(x = as.character(release), table = data[["gencode"]])
     assert(
         isInt(idx),
-        msg = "Failed to match GENCODE release."
+        msg = sprintf(
+            "Failed to match GENCODE release: {.var %s}.",
+            release
+        )
     )
     out <- data[["ensembl"]][idx]
-    assert(isInt(out))
+    assert(isIntegerish(out))
     out <- as.integer(out)
     out
 }

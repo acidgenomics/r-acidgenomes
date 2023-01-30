@@ -8,7 +8,7 @@ mapGencodeToEnsembl(release)
 }
 \arguments{
 \item{release}{\code{integer(1)}.
-Human GENCODE release (e.g. \code{39}).}
+Human (e.g. \code{42}) or mouse (e.g. \code{"M21"}) GENCODE release.}
 }
 \value{
 \code{integer(1)}.
@@ -18,14 +18,19 @@ Ensembl release.
 Map GENCODE release to Ensembl
 }
 \note{
-Updated 2022-01-17.
+Updated 2023-01-30.
 }
 \examples{
-mapGencodeToEnsembl(39L)
+## Homo sapiens.
+mapGencodeToEnsembl(42L)
+## Mus musculus.
+mapGencodeToEnsembl("M21L")
 }
 \seealso{
 \itemize{
-\item https://www.gencodegenes.org/
+\item https://www.gencodegenes.org/human/releases.html
+\item https://www.gencodegenes.org/mouse/releases.html
 \item https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/_README.TXT
+\item https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/_README.TXT
 }
 }
