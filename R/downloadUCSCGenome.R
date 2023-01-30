@@ -1,13 +1,9 @@
-## FIXME No longer bundling README.txt on FTP server...
-
-
-
 ## nolint start
 
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2022-05-24.
+#' @note Updated 2023-01-30.
 #'
 #' @section Genome:
 #'
@@ -61,19 +57,18 @@ downloadUCSCGenome <-
         )
         outputDir <- initDir(outputDir)
         if (is.null(genomeBuild)) {
-            genomeBuild <- currentUCSCGenomeBuild(organism)
+            ## Homo sapiens is now defaulting to "hs1", which is the
+            ## experimental new T2T-CHM13 assembly. We're not quite ready to
+            ## support this yet, so keep pinned to hg38.
+            genomeBuild <- switch(
+                EXPR = organism,
+                "Homo sapiens" = "hg38",
+                currentUCSCGenomeBuild(organism)
+            )
         }
         ## UCSC is updated on a rolling schedule, so use today's date as a
         ## substitution for release number.
         release <- Sys.Date()
-        ## Consider downloading over rsync (preferred by UCSC) instead of FTP
-        ## in a future update. This requires updating internal downloader to
-        ## support rsync, which is currently only useful here.
-        ## > protocol <- ifelse(
-        ## >     test = isTRUE(isSystemCommand("rsync")),
-        ## >     yes = "rsync",
-        ## >     no = "ftp"
-        ## > )
         baseURL <- pasteURL(
             "hgdownload.soe.ucsc.edu",
             "goldenPath",
