@@ -1,9 +1,12 @@
+## FIXME Note that there are now gene and transcript differences between
+## Ensembl and GENCODE...what are the differences?
+
 test_that("downloadEnsemblGenome", {
     testdir <- tempdir2()
     info <- downloadEnsemblGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 105L,
+        release = 108L,
         outputDir = testdir,
         cache = FALSE
     )
@@ -25,7 +28,7 @@ test_that("downloadEnsemblGenome", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 61541L)
+    expect_length(genes, 62703L)
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -35,7 +38,8 @@ test_that("downloadEnsemblGenome", {
         )
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
-    expect_length(transcripts, 244825L)
+    expect_s4_class(transcripts, "EnsemblTranscripts")
+    expect_length(transcripts, 252301L)
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
@@ -45,7 +49,8 @@ test_that("downloadEnsemblGenome", {
         )
     )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_identical(nrow(tx2gene), 265480L)
+    expect_s4_class(tx2gene, "Tx2Gene")
+    expect_identical(nrow(tx2gene), 272929L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -57,7 +62,7 @@ test_that("downloadEnsemblGenome", {
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 265480L)
+    expect_identical(nrow(tx2gene), 272929L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -73,7 +78,7 @@ test_that("downloadGencodeGenome", {
     info <- downloadGencodeGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 39L,
+        release = 42L,
         outputDir = testdir,
         cache = FALSE
     )
@@ -93,8 +98,31 @@ test_that("downloadGencodeGenome", {
             "tx2gene.rds"
         )
     ))))
+    genes <- import(file.path(outputDir, "genes.rds"))
+    expect_s4_class(genes, "GencodeGenes")
+    expect_length(genes, 62696L)
+    expect_identical(
+        object = head(sort(names(genes)), n = 3L),
+        expected = c(
+            "ENSG00000000003.15",
+            "ENSG00000000005.6",
+            "ENSG00000000419.14"
+        )
+    )
+    transcripts <- import(file.path(outputDir, "transcripts.rds"))
+    expect_s4_class(transcripts, "GencodeTranscripts")
+    expect_length(transcripts, 252416L)
+    expect_identical(
+        object = head(sort(names(transcripts)), n = 3L),
+        expected = c(
+            "ENST00000000233.10",
+            "ENST00000000412.8",
+            "ENST00000000442.11"
+        )
+    )
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_identical(nrow(tx2gene), 244939L)
+    expect_s4_class(tx2gene, "Tx2Gene")
+    expect_identical(nrow(tx2gene), 252416L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -106,7 +134,7 @@ test_that("downloadGencodeGenome", {
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 244939L)
+    expect_identical(nrow(tx2gene), 252416L)
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
         expected = list(
@@ -122,7 +150,7 @@ test_that("downloadRefSeqGenome", {
     info <- downloadRefSeqGenome(
         organism = "Homo sapiens",
         taxonomicGroup = "vertebrate_mammalian",
-        genomeBuild = "GCF_000001405.39_GRCh38.p13",
+        genomeBuild = "GCF_000001405.40_GRCh38.p14",
         outputDir = testdir,
         cache = FALSE
     )
@@ -142,16 +170,29 @@ test_that("downloadRefSeqGenome", {
             "tx2gene.rds"
         )
     ))))
+    genes <- import(file.path(outputDir, "genes.rds"))
+    expect_s4_class(genes, "RefSeqGenes")
+    expect_identical(
+        object = head(sort(names(genes)), n = 3L),
+        expected = c("A1BG", "A1BG-AS1", "A1CF")
+    )
+    transcripts <- import(file.path(outputDir, "transcripts.rds"))
+    expect_s4_class(transcripts, "RefSeqTranscripts")
+    expect_identical(
+        object = head(sort(names(transcripts)), n = 3L),
+        expected = c("NM_000014.6", "NM_000015.3", "NM_000016.6")
+    )
+    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
+    expect_s4_class(tx2gene, "Tx2Gene")
+    tx2gene <- as.data.frame(tx2gene)
     aatfExpected <- data.frame(
         "txId" = c(
             "NM_012138.4",
             "XM_011524611.2",
-            "XR_934439.3"
+            "XM_047435748.1"
         ),
         "geneId" = rep("AATF", 3L)
     )
-    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    tx2gene <- as.data.frame(tx2gene)
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
@@ -188,6 +229,12 @@ test_that("downloadUCSCGenome", {
             "tx2gene.rds"
         )
     ))))
+
+
+    ## FIXME Need to check genes and transcripts.
+
+
+
     tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_identical(
         object = as.data.frame(tx2gene)[1L, , drop = TRUE],
