@@ -1,7 +1,3 @@
-## FIXME This still isn't getting defined correctly for GENCODE...
-
-
-
 #' Get Seqinfo
 #'
 #' @note Updated 2023-01-30.
@@ -134,6 +130,7 @@
                 x[["genomeBuild"]]
             )
         )
+        seq <- seq[sort(seqnames(seq))]
     }
     forceDetach(keep = pkgs)
     seq
@@ -182,20 +179,18 @@
         genomeBuild = genomeBuild,
         release = mapGencodeToEnsembl(release)
     )
-    ## Need to remove the patch version here (e.g. "p13").
     genome(seq) <- sub(
         pattern = "\\.p[0-9]+$",
         replacement = "",
         x = genome(seq)
     )
-    ## Only keep the primary chromosomes of interest.
     keep <- intersect(
         x = seqnames(seq),
         y = c(seq(from = 1L, to = 23L), "MT", "X", "Y")
     )
-    ## Need to append with "chr" to match GENCODE conventions.
     seq <- seq[keep]
-    seqnames(seq) <- paste("chr", seqnames(seq))
+    seqnames(seq)[seqnames(seq) == "MT"] <- "M"
+    seqnames(seq) <- paste0("chr", seqnames(seq))
     seq
 }
 
