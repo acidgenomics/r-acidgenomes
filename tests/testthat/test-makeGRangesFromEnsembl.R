@@ -86,16 +86,15 @@ test_that("Genes", {
     )
 })
 
-## Transcript verion metadata isn't saved in older EnsDb releases, such as v87.
 test_that("Transcripts", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "transcripts",
-        release = 102L,
+        release = 108L,
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 254853L)
+    expect_length(object, 275721L)
     expect_identical(
         object = head(names(object), n = 2L),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
@@ -119,46 +118,53 @@ test_that("Transcripts", {
             "txBiotype" = "Rle",
             "txCdsSeqEnd" = "Rle",
             "txCdsSeqStart" = "Rle",
+            "txExternalName" = "Rle",
             "txId" = "Rle",
             "txIdNoVersion" = "Rle",
             "txIdVersion" = "Rle",
+            "txIsCanonical" = "Rle",
             "txName" = "Rle",
             "txSupportLevel" = "Rle"
         )
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000635602.1"]), # nolint
+            X = as.data.frame(object["ENST00000397062.8"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "7",
-            "start" = "12704",
-            "end" = "27199",
-            "width" = "14496",
-            "strand" = "+",
-            "broadClass" = "noncoding",
-            "canonicalTranscript" = "ENST00000635602",
-            "description" = "novel transcript",
-            "entrezId" = "NA",
-            "gcContent" = "42.090395480226",
-            "geneBiotype" = "lncRNA",
-            "geneId" = "ENSG00000283061.1",
-            "geneIdNoVersion" = "ENSG00000283061",
-            "geneIdVersion" = "ENSG00000283061.1",
-            "geneName" = "AC215522.3",
-            "geneSeqEnd" = "27234",
-            "geneSeqStart" = "12704",
+            "seqnames" = "2",
+            "start" = "177230308",
+            "end" = "177264727",
+            "width" = "34420",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "canonicalTranscript" = "ENST00000397062",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "entrezId" = "4780",
+            "gcContent" = "42.1095666394113",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSeqEnd" = "177392756",
+            "geneSeqStart" = "177218667",
             "seqCoordSystem" = "chromosome",
-            "txBiotype" = "lncRNA",
-            "txCdsSeqEnd" = NA_character_,
-            "txCdsSeqStart" = NA_character_,
-            "txId" = "ENST00000635602.1",
-            "txIdNoVersion" = "ENST00000635602",
-            "txIdVersion" = "ENST00000635602.1",
-            "txName" = "ENST00000635602",
-            "txSupportLevel" = "5"
+            "txBiotype" = "protein_coding",
+            "txCdsSeqEnd" = "177264576",
+            "txCdsSeqStart" = "177230785",
+            "txExternalName" = "NFE2L2-201",
+            "txId" = "ENST00000397062.8",
+            "txIdNoVersion" = "ENST00000397062",
+            "txIdVersion" = "ENST00000397062.8",
+            "txIsCanonical" = "1",
+            "txName" = "ENST00000397062",
+            "txSupportLevel" = "1"
         )
     )
 })

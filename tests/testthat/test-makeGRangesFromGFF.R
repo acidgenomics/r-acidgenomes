@@ -1,3 +1,6 @@
+## FIXME Ensure that we check seqnames for Ensembl, GENCODE, RefSeq, UCSC
+## Note that UCSC is currently failing.
+
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",
