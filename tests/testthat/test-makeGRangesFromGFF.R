@@ -122,7 +122,7 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 246509L)
+    expect_length(object, 252300L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -140,7 +140,7 @@ test_that("GFF3 transcripts", {
             "geneName" = "Rle",
             "logicName" = "Rle",
             "source" = "Rle",
-            "tag" = "Rle",
+            "tag" = "CompressedCharacterList",
             "txBiotype" = "Rle",
             "txId" = "Rle",
             "txIdNoVersion" = "Rle",
@@ -152,37 +152,37 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]), # nolint
+            X = as.data.frame(object["ENST00000397062.8"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "ccdsId" = NA_character_,
+            "seqnames" = "2",
+            "start" = "177230308",
+            "end" = "177264727",
+            "width" = "34420",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS42782.1",
             "description" = paste(
-                "DEAD/H-box helicase 11 like 1 (pseudogene)",
-                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "logicName" = "havana_homo_sapiens",
-            "source" = "havana",
-            "tag" = "basic",
-            "txBiotype" = "processed_transcript",
-            "txId" = "ENST00000456328.2",
-            "txIdNoVersion" = "ENST00000456328",
-            "txIdVersion" = "ENST00000456328.2",
-            "txName" = "DDX11L1-202",
-            "txSupportLevel" = "1",
-            "type" = "lnc_RNA"
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "logicName" = "ensembl_havana_gene_homo_sapiens",
+            "source" = "ensembl_havana",
+            "tag" = "c(\"basic\", \"Ensembl_canonical\", \"MANE_Select\")",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000397062.8",
+            "txIdNoVersion" = "ENST00000397062",
+            "txIdVersion" = "ENST00000397062.8",
+            "txName" = "NFE2L2-201",
+            "txSupportLevel" = "1 (assigned to previous version 7)",
+            "type" = "mRNA"
         )
     )
 })
