@@ -17,8 +17,6 @@ test_that("Transcripts", {
     expect_s4_class(x, "GenomicRanges")
 })
 
-
-
 ah <- AnnotationHub::AnnotationHub(ask = FALSE)
 edb <- ah[["AH73881"]]
 
