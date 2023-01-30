@@ -161,7 +161,9 @@
     ) {
         args[["use.grch37"]] <- TRUE
     }
-    seq <- do.call(what = getChromInfoFromEnsembl, args = args)
+    suppressPackageStartupMessages({
+        seq <- do.call(what = getChromInfoFromEnsembl, args = args)
+    })
     assert(is(seq, "Seqinfo"))
     validObject(seq)
     seq
@@ -203,7 +205,9 @@
 .getUcscSeqinfo <- function(genomeBuild) {
     tryCatch(
         expr = {
-            Seqinfo(genome = genomeBuild)
+            suppressPackageStartupMessages({
+                Seqinfo(genome = genomeBuild)
+            })
         },
         error = function(e) {
             NULL
