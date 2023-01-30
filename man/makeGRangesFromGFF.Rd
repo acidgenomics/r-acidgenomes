@@ -38,7 +38,7 @@ Make GenomicRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2022-05-03.
+Updated 2023-01-30.
 }
 \section{GFF/GTF specification}{
 
@@ -99,12 +99,12 @@ If you must load a GFF/GTF file directly, then use \code{\link[=makeGRangesFromG
 
 Example URLs:
 \itemize{
-\item Ensembl \emph{Homo sapiens} GRCh38.p13, release 102
-\href{ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.gtf.gz}{GTF},
-\href{ftp://ftp.ensembl.org/pub/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh38.102.gff3.gz}{GFF3}
-\item Ensembl \emph{Homo sapiens} GRCh37, release 102 (87)
-\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz}{GTF},
-\href{ftp://ftp.ensembl.org/pub/grch37/release-102/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz}{GFF3}
+\item Ensembl \emph{Homo sapiens} GRCh38.p13, release 108
+\href{ftp://ftp.ensembl.org/pub/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh38.108.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh38.108.gff3.gz}{GFF3}
+\item Ensembl \emph{Homo sapiens} GRCh37, release 108 (87)
+\href{ftp://ftp.ensembl.org/pub/grch37/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz}{GTF},
+\href{ftp://ftp.ensembl.org/pub/grch37/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz}{GFF3}
 }
 }
 
@@ -113,15 +113,15 @@ Example URLs:
 
 Example URLs:
 \itemize{
-\item GENCODE \emph{Homo sapiens} GRCh38.p13, release 36
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gff3.gz}{GFF3}
-\item GENCODE \emph{Homo sapiens} GRCh37, release 36
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/GRCh37_mapping/gencode.v36lift37.annotation.gff3.gz}{GFF3}
-\item GENCODE \emph{Mus musculus} GRCm38.p6, release M25
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz}{GTF},
-\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh38.p13, release 42
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Homo sapiens} GRCh37, release 42
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gff3.gz}{GFF3}
+\item GENCODE \emph{Mus musculus} GRCm39, release M31
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gtf.gz}{GTF},
+\href{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gff3.gz}{GFF3}
 }
 }
 
@@ -161,9 +161,9 @@ for details.
 
 Example URLs:
 \itemize{
-\item RefSeq \emph{Homo sapiens} GRCh38.p12
-\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gtf.gz}{GTF},
-\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.38_GRCh38.p12/GCF_000001405.38_GRCh38.p12_genomic.gff.gz}{GFF3}
+\item RefSeq \emph{Homo sapiens} GRCh38.p14
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz}{GTF},
+\href{ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz}{GFF3}
 }
 
 See also:
@@ -198,9 +198,9 @@ Related URLs:
 
 Example URLs:
 \itemize{
-\item FlyBase \emph{Drosophila melanogaster} r6.24
-\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gtf/dmel-all-r6.37.gtf.gz}{GTF},
-\href{ftp://ftp.flybase.net/releases/FB2020_06/dmel_r6.37/gff/dmel-all-r6.37.gff.gz}{GFF3}
+\item FlyBase \emph{Drosophila melanogaster} r6.49
+\href{ftp://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz}{GTF},
+\href{ftp://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz}{GFF3}
 }
 }
 
@@ -209,24 +209,21 @@ Example URLs:
 
 Example URLs:
 \itemize{
-\item WormBase \emph{Caenorhabditis elegans} WS267
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.canonical_geneset.gtf.gz}{GTF},
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS279/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS279.annotations.gff3.gz}{GFF3}
+\item WormBase \emph{Caenorhabditis elegans} WS287
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.canonical_geneset.gtf.gz}{GTF},
+\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.annotations.gff3.gz}{GFF3}
 }
 }
 
 \examples{
-## Some examples here are commented because they are CPU-intensive and
-## can cause CI timeouts.
-
 ## Ensembl ====
 file <- AcidBase::pasteURL(
     "ftp.ensembl.org",
     "pub",
-    "release-102",
+    "release-108",
     "gtf",
     "homo_sapiens",
-    "Homo_sapiens.GRCh38.102.gtf.gz",
+    "Homo_sapiens.GRCh38.108.gtf.gz",
     protocol = "ftp"
 )
 genes <- makeGRangesFromGFF(
@@ -249,8 +246,8 @@ summary(genes)
 ## >     "databases",
 ## >     "gencode",
 ## >     "Gencode_human",
-## >     "release_36",
-## >     "gencode.v36.annotation.gtf.gz",
+## >     "release_42",
+## >     "gencode.v42.annotation.gtf.gz",
 ## >     protocol = "ftp"
 ## > )
 ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
@@ -266,8 +263,8 @@ summary(genes)
 ## >     "vertebrate_mammalian",
 ## >     "Homo_sapiens",
 ## >     "all_assembly_versions",
-## >     "GCF_000001405.39_GRCh38.p13",
-## >     "GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
+## >     "GCF_000001405.40_GRCh38.p14",
+## >     "GCF_000001405.40_GRCh38.p14_genomic.gff.gz",
 ## >     protocol = "ftp"
 ## > )
 ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
