@@ -1,4 +1,5 @@
-## https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/_README.TXT
+## https://www.gencodegenes.org/human/releases.html
+## https://www.gencodegenes.org/mouse/releases.html
 ## nolint start
 suppressPackageStartupMessages({
     library(pipette)
