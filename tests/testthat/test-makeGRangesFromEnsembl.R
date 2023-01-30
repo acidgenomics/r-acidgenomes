@@ -2,7 +2,7 @@ test_that("Genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
-        release = 102L,
+        release = 108L,
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
@@ -14,13 +14,13 @@ test_that("Genes", {
             "release"
         )],
         expected = list(
-            "annotationHubId" = "AH89180",
+            "annotationHubId" = "AH109336",
             "genomeBuild" = "GRCh38",
             "organism" = "Homo sapiens",
-            "release" = 102L
+            "release" = 108L
         )
     )
-    expect_length(object, 68001L)
+    expect_length(object, 70616L)
     expect_identical(
         object = head(names(object), 3L),
         expected = c(
@@ -45,27 +45,27 @@ test_that("Genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]), # nolint
+            X = as.data.frame(object["ENSG00000116044"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "canonicalTranscript" = "ENST00000456328",
+            "seqnames" = "2",
+            "start" = "177218667",
+            "end" = "177392756",
+            "width" = "174090",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "canonicalTranscript" = "ENST00000397062",
             "description" = paste(
-                "DEAD/H-box helicase 11 like 1 (pseudogene)",
-                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "entrezId" = "c(84771, 727856, 100287102, 100287596, 102725121)",
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
+            "entrezId" = "4780",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
             "seqCoordSystem" = "chromosome"
         )
     )
