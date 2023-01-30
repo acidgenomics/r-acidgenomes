@@ -1,21 +1,3 @@
-## FIXME Getting the Seqinfo from UCSC now appears to be broken on Bioconductor.
-## Error in .order_seqlevels(chrom_sizes[, "chrom"]) :
-##   !anyNA(m32) is not TRUE
-## Calls: <Anonymous> ... FETCH_ORDERED_CHROM_SIZES -> .order_seqlevels -> stopifnot
-## Backtrace:
-##     ▆
-##  1. └─GenomeInfoDb::Seqinfo(genome = "hg38")
-##  2.   └─GenomeInfoDb:::.make_Seqinfo_from_genome(genome)
-##  3.     └─GenomeInfoDb::getChromInfoFromUCSC(genome, as.Seqinfo = TRUE)
-##  4.       └─GenomeInfoDb:::.get_chrom_info_for_registered_UCSC_genome(...)
-##  5.         └─GenomeInfoDb:::.get_raw_chrom_info_for_registered_UCSC_genome(...)
-##  6.           └─GenomeInfoDb:::.fetch_raw_chrom_info_from_UCSC(...)
-##  7.             └─GenomeInfoDb (local) FETCH_ORDERED_CHROM_SIZES(goldenPath.url = goldenPath.url)
-##  8.               └─GenomeInfoDb (local) .order_seqlevels(chrom_sizes[, "chrom"]) at registered/UCSC_genomes/hg38.R:69:4
-##  9.                 └─base::stopifnot(!anyNA(m32)) at registered/UCSC_genomes/hg38.R:37:4
-
-
-
 #' Get Seqinfo
 #'
 #' @note Updated 2023-01-30.
@@ -125,6 +107,12 @@
                         organism = x[["organism"]],
                         genomeBuild = x[["genomeBuild"]],
                         release = mapGencodeToEnsembl(x[["release"]])
+                    )
+                    ## Need to remove the patch version here.
+                    genome(seq) <- sub(
+                        pattern = "\\.p[0-9]+$",
+                        replacement = "",
+                        x = genome(seq)
                     )
                 },
                 "RefSeq" = {
