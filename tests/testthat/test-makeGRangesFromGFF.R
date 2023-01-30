@@ -22,7 +22,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 61552L)
+    expect_length(object, 62703L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -39,34 +39,36 @@ test_that("GFF3 genes", {
             "geneName" = "Rle",
             "logicName" = "Rle",
             "source" = "Rle",
+            "tag" = "CompressedCharacterList",
             "type" = "Rle"
         )
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
+            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
+            "seqnames" = "2",
+            "start" = "177218667",
+            "end" = "177392756",
+            "width" = "174090",
+            "strand" = "-",
+            "broadClass" = "coding",
             "description" = paste(
-                "DEAD/H-box helicase 11 like 1 (pseudogene)",
-                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "logicName" = "havana_homo_sapiens",
-            "source" = "havana",
-            "type" = "pseudogene"
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "logicName" = "ensembl_havana_gene_homo_sapiens",
+            "source" = "ensembl_havana",
+            "tag" = "character(0)",
+            "type" = "gene"
         )
     )
     expect_identical(
@@ -97,7 +99,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "01ec78760f4fa3bba458e95c876bc513"
+        expected = "0d9311600fa404a31f517b752002dcda"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -105,11 +107,11 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 106L
+        expected = 108L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "095dcafc99438fdf027e470f088f806925eff1cdb04bbb5cde0b6ac40441122d" # nolint
+        expected = "4cf5bfc008e3a9b8d22d7613d989ee72dd7424dca552ce14cc3d5a87e0ca8048" # nolint
     )
 })
 
