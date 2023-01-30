@@ -1,3 +1,7 @@
+## FIXME This still isn't getting defined correctly for GENCODE...
+
+
+
 #' Get Seqinfo
 #'
 #' @note Updated 2023-01-30.
@@ -68,7 +72,6 @@
     if (!is.list(x)) {
         x <- .getGFFMetadata(x)
     }
-    assert(is.list(x))
     if (
         !isSubset(
             x = c("genomeBuild", "organism", "provider"),
@@ -90,53 +93,36 @@
         isScalar(x[["release"]]) || is.null(x[["release"]]),
         msg = "GFF file does not contain sufficient metadata."
     )
-    seq <- NULL
-    tryCatch(
-        expr = suppressPackageStartupMessages({
-            switch(
-                EXPR = x[["provider"]],
-                "Ensembl" = {
-                    seq <- .getEnsemblSeqinfo(
-                        organism = x[["organism"]],
-                        genomeBuild = x[["genomeBuild"]],
-                        release = x[["release"]]
-                    )
-                },
-                "GENCODE" = {
-                    seq <- .getEnsemblSeqinfo(
-                        organism = x[["organism"]],
-                        genomeBuild = x[["genomeBuild"]],
-                        release = mapGencodeToEnsembl(x[["release"]])
-                    )
-                    ## Need to remove the patch version here.
-                    genome(seq) <- sub(
-                        pattern = "\\.p[0-9]+$",
-                        replacement = "",
-                        x = genome(seq)
-                    )
-                },
-                "RefSeq" = {
-                    seq <- .getRefSeqSeqinfo(
-                        file = ifelse(
-                            test = isAURL(x[["url"]]),
-                            yes = x[["url"]],
-                            no = x[["file"]]
-                        )
-                    )
-                },
-                "UCSC" = {
-                    seq <- Seqinfo(genome = x[["genomeBuild"]])
-                }
+    seq <- switch(
+        EXPR = x[["provider"]],
+        "Ensembl" = {
+            .getEnsemblSeqinfo(
+                organism = x[["organism"]],
+                genomeBuild = x[["genomeBuild"]],
+                release = x[["release"]]
             )
-        }),
-        error = function(e) {
-            alertWarning(sprintf(
-                "Automatic {.cls %s} assignment failed.", "Seqinfo"
-            ))
-            NULL
-        }
+        },
+        "GENCODE" = {
+            .getGencodeSeqinfo(
+                organism = x[["organism"]],
+                genomeBuild = x[["genomeBuild"]],
+                release = x[["release"]]
+            )
+        },
+        "RefSeq" = {
+            .getRefSeqSeqinfo(
+                file = ifelse(
+                    test = isAURL(x[["url"]]),
+                    yes = x[["url"]],
+                    no = x[["file"]]
+                )
+            )
+        },
+        "UCSC" = {
+            .getUcscSeqinfo(genomeBuild = x[["genomeBuild"]])
+        },
+        NULL
     )
-    assert(isAny(seq, c("Seqinfo", "NULL")))
     if (is(seq, "Seqinfo")) {
         assert(
             identical(
@@ -155,7 +141,10 @@
 
 
 
-## Updated 2023-01-30.
+#' Get Ensembl genome assembly seqinfo
+#'
+#' @note Updated 2023-01-30.
+#' @noRd
 .getEnsemblSeqinfo <- function(organism, genomeBuild, release) {
     assert(
         isString(organism),
@@ -167,8 +156,6 @@
         "release" = release,
         "as.Seqinfo" = TRUE
     )
-    ## The `use.grch37` flag isn't currently working with
-    ## GenomeInfoDb v1.26.2, but may be improved in the future.
     if (grepl(
         pattern = "GRCh37",
         x = genomeBuild,
@@ -177,8 +164,54 @@
     ) {
         args[["use.grch37"]] <- TRUE
     }
-    do.call(
-        what = getChromInfoFromEnsembl,
-        args = args
+    seq <- do.call(what = getChromInfoFromEnsembl, args = args)
+    assert(is(seq, "Seqinfo"))
+    validObject(seq)
+    seq
+}
+
+
+
+#' Get GENCODE genome assembly seqinfo
+#'
+#' @note Updated 2023-01-30.
+#' @noRd
+.getGencodeSeqinfo <- function(organism, genomeBuild, release) {
+    seq <- .getEnsemblSeqinfo(
+        organism = organism,
+        genomeBuild = genomeBuild,
+        release = mapGencodeToEnsembl(release)
+    )
+    ## Need to remove the patch version here (e.g. "p13").
+    genome(seq) <- sub(
+        pattern = "\\.p[0-9]+$",
+        replacement = "",
+        x = genome(seq)
+    )
+    ## Only keep the primary chromosomes of interest.
+    keep <- intersect(
+        x = seqnames(seq),
+        y = c(seq(from = 1L, to = 23L), "MT", "X", "Y")
+    )
+    ## Need to append with "chr" to match GENCODE conventions.
+    seq <- seq[keep]
+    seqnames(seq) <- paste("chr", seqnames(seq))
+    seq
+}
+
+
+
+#' Get UCSC genome assembly seqinfo
+#'
+#' @note Updated 2023-01-30.
+#' @noRd
+.getUcscSeqinfo <- function(genomeBuild) {
+    tryCatch(
+        expr = {
+            Seqinfo(genome = genomeBuild)
+        },
+        error = function(e) {
+            NULL
+        }
     )
 }
