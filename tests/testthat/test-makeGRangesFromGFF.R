@@ -872,34 +872,6 @@ test_that("GFF3 genes", {
         )
     )
     expect_identical(
-        object = vapply(
-            X = as.data.frame(object[["A1BG"]]),
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "NC_000019.10",
-            "start" = "58345183",
-            "end" = "58353492",
-            "width" = "8310",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "dbxref" = "c(\"GeneID:1\", \"HGNC:HGNC:5\", \"MIM:138670\")",
-            "description" = "alpha-1-B glycoprotein",
-            "entrezId" = "1",
-            "exception" = NA_character_,
-            "geneBiotype" = "protein_coding",
-            "geneId" = "A1BG",
-            "geneName" = "A1BG",
-            "geneSynonym" = "c(\"A1B\", \"ABG\", \"GAB\", \"HYST2477\")",
-            "parentGeneId" = "A1BG",
-            "partial" = NA_character_,
-            "pseudo" = NA_character_,
-            "source" = "BestRefSeq",
-            "type" = "gene"
-        )
-    )
-    expect_identical(
         object = lapply(
             X = as.data.frame(object[["AATF"]]),
             FUN = as.character
@@ -1058,34 +1030,6 @@ test_that("GTF genes", {
             "pseudo" = "Rle",
             "source" = "Rle",
             "type" = "Rle"
-        )
-    )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object[["A1BG"]]),
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "NC_000019.10",
-            "start" = "58345183",
-            "end" = "58353492",
-            "width" = "8310",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "dbXref" = "MIM:138670",
-            "description" = "alpha-1-B glycoprotein",
-            "entrezId" = "1",
-            "exception" = NA_character_,
-            "geneBiotype" = "protein_coding",
-            "geneId" = "A1BG",
-            "geneName" = "A1BG",
-            "geneSynonym" = "HYST2477",
-            "parentGeneId" = "A1BG",
-            "partial" = NA_character_,
-            "pseudo" = NA_character_,
-            "source" = "BestRefSeq",
-            "type" = "gene"
         )
     )
     expect_identical(
@@ -1325,7 +1269,7 @@ test_that("GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "WormBaseGenes")
-    expect_length(object, 46925L)
+    expect_length(object, 46928L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1387,11 +1331,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "WS284"
+        expected = "WS287"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "d1bcb4cc329c2eb23460fd53717dea5e"
+        expected = "5c45625e18ee2b5d4b9830da34cd01bf"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -1399,11 +1343,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = "WS284"
+        expected = "WS287"
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "c176ff7fcf1c24844c40df18602736ecc5aa6c3105d2d924227e2ba29a9273f0" # nolint
+        expected = "6b8756bd1dfd5995e0c242d35bf3b3d3b04208a65cbf16bc7bfb9befb9a3684f" # nolint
     )
 })
 
@@ -1413,7 +1357,7 @@ test_that("GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "WormBaseTranscripts")
-    expect_length(object, 60128L)
+    expect_length(object, 60136L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
