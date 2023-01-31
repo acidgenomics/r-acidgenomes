@@ -359,7 +359,7 @@ test_that("GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "FlyBaseGenes")
-    expect_length(object, 17872L)
+    expect_length(object, 17896L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -376,19 +376,19 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBgn0031208"]), # nolint
+            X = as.data.frame(object["FBgn0262975"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "2L",
-            "start" = "7529",
-            "end" = "9484",
-            "width" = "1956",
-            "strand" = "+",
+            "seqnames" = "3R",
+            "start" = "23185580",
+            "end" = "23226711",
+            "width" = "41132",
+            "strand" = "-",
             "broadClass" = "other",
-            "geneId" = "FBgn0031208",
-            "geneName" = "CR11023",
+            "geneId" = "FBgn0262975",
+            "geneName" = "cnc",
             "source" = "FlyBase",
             "type" = "gene"
         )
@@ -410,11 +410,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "r6.45"
+        expected = "r6.49"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "8910e1172661d508b43ca384fab0c618"
+        expected = "722ba353d2dd6d3036d747f1498a2e9f"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -422,11 +422,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = "r6.45"
+        expected = "r6.49"
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "7e1d9c6b6ad1afe2458ab4b0d9202b6fddc0376081aff6a52d6ec07a8ef967e4" # nolint
+        expected = "565b486cbfe78942127482018e4439a28a6b171d71624d8ffe2a3611e162a101" # nolint
     )
 })
 
@@ -436,7 +436,7 @@ test_that("GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "FlyBaseTranscripts")
-    expect_length(object, 35664L)
+    expect_length(object, 35723L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -455,23 +455,23 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["FBtr0475186"]), # nolint
+            X = as.data.frame(object["FBtr0306744"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "2L",
-            "start" = "7529",
-            "end" = "9484",
-            "width" = "1956",
-            "strand" = "+",
+            "seqnames" = "3R",
+            "start" = "23185580",
+            "end" = "23191120",
+            "width" = "5541",
+            "strand" = "-",
             "broadClass" = "other",
-            "geneId" = "FBgn0031208",
-            "geneName" = "CR11023",
+            "geneId" = "FBgn0262975",
+            "geneName" = "cnc",
             "source" = "FlyBase",
-            "txId" = "FBtr0475186",
-            "txName" = "CR11023-RE",
-            "type" = "pseudogene"
+            "txId" = "FBtr0306744",
+            "txName" = "cnc-RF",
+            "type" = "mRNA"
         )
     )
 })

@@ -116,15 +116,15 @@ gffs <- c(
         "ftp.flybase.net",
         "releases",
         "FB2022_06",
-        "dmel_r6.45",
+        "dmel_r6.49",
         "gff",
-        "dmel-all-r6.45.gff.gz",
+        "dmel-all-r6.49.gff.gz",
         protocol = "ftp"
     ),
     "flybase_gtf" = pasteURL(
         "ftp.flybase.net",
         "releases",
-        "FB2022_02",
+        "FB2022_06",
         "dmel_r6.49",
         "gtf",
         "dmel-all-r6.49.gtf.gz",
