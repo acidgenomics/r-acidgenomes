@@ -589,7 +589,7 @@ test_that("GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 246624L)
+    expect_length(object, 252416L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -622,35 +622,41 @@ test_that("GFF3 transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]), # nolint
+            X = as.data.frame(object["ENST00000397062.8"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "ccdsId" = NA_character_,
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "havanaGene" = "OTTHUMG00000000961.2",
-            "havanaTranscript" = "OTTHUMT00000362751.1",
-            "hgncId" = "HGNC:37102",
+            "seqnames" = "chr2",
+            "start" = "177230308",
+            "end" = "177264727",
+            "width" = "34420",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS42782.1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "havanaTranscript" = "OTTHUMT00000257752.5",
+            "hgncId" = "HGNC:7782",
             "level" = "2",
-            "proteinId" = NA_character_,
+            "proteinId" = "ENSP00000380252.3",
             "source" = "HAVANA",
-            "tag" = "basic",
-            "txBiotype" = "processed_transcript",
-            "txId" = "ENST00000456328.2",
-            "txIdNoVersion" = "ENST00000456328",
-            "txIdVersion" = "ENST00000456328.2",
-            "txName" = "DDX11L1-202",
+            "tag" = paste(
+                "c(\"basic\",",
+                "\"Ensembl_canonical\",",
+                "\"MANE_Select\",",
+                "\"appris_alternative_1\",",
+                "\"CCDS\")"
+            ),
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000397062.8",
+            "txIdNoVersion" = "ENST00000397062",
+            "txIdVersion" = "ENST00000397062.8",
+            "txName" = "NFE2L2-201",
             "txSupportLevel" = "1",
             "type" = "transcript"
         )
@@ -666,7 +672,7 @@ test_that("GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 61544L)
+    expect_length(object, 62696L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -674,6 +680,7 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
+            "artifDupl" = "Rle",
             "broadClass" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -690,27 +697,28 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
+            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "havanaGene" = "OTTHUMG00000000961.2",
-            "hgncId" = "HGNC:37102",
-            "level" = "2",
+            "seqnames" = "chr2",
+            "start" = "177218667",
+            "end" = "177392756",
+            "width" = "174090",
+            "strand" = "-",
+            "artifDupl" = NA,
+            "broadClass" = "coding",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "hgncId" = "HGNC:7782",
+            "level" = "1",
             "source" = "HAVANA",
-            "tag" = NA_character_,
+            "tag" = "overlapping_locus",
             "type" = "gene"
         )
     )
@@ -728,7 +736,7 @@ test_that("GTF genes", {
         object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
         expected = list(
             "seqlengths" = 248956422L,
-            "isCircular" = FALSE,
+            "isCircular" = NA,
             "genome" = "GRCh38"
         )
     )
@@ -745,7 +753,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "14a867b82917c8c3006838c3a5053a3e"
+        expected = "b3a1bb9b1239d8075dd2b031817a36da"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -753,11 +761,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 40L
+        expected = 42L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "6254e1c52470d74c37f5a7969ee5b1b7debdd9d6bbd9bf722e65fc3d873f3104" # nolint
+        expected = "f59a5b38c6de1472430ccd0181927a01df0b4ad8d78f598e521badc9da80a76e" # nolint
     )
 })
 
@@ -768,7 +776,7 @@ test_that("GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 246624L)
+    expect_length(object, 252416L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -801,35 +809,35 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328.2"]), # nolint
+            X = as.data.frame(object["ENST00000397062.8"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "ccdsId" = NA_character_,
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "havanaGene" = "OTTHUMG00000000961.2",
-            "havanaTranscript" = "OTTHUMT00000362751.1",
-            "hgncId" = "HGNC:37102",
+            "seqnames" = "chr2",
+            "start" = "177230308",
+            "end" = "177264727",
+            "width" = "34420",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS42782.1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "havanaTranscript" = "OTTHUMT00000257752.5",
+            "hgncId" = "HGNC:7782",
             "level" = "2",
-            "proteinId" = NA_character_,
+            "proteinId" = "ENSP00000380252.3",
             "source" = "HAVANA",
-            "tag" = "basic",
-            "txBiotype" = "processed_transcript",
-            "txId" = "ENST00000456328.2",
-            "txIdNoVersion" = "ENST00000456328",
-            "txIdVersion" = "ENST00000456328.2",
-            "txName" = "DDX11L1-202",
+            "tag" = "CCDS",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000397062.8",
+            "txIdNoVersion" = "ENST00000397062",
+            "txIdVersion" = "ENST00000397062.8",
+            "txName" = "NFE2L2-201",
             "txSupportLevel" = "1",
             "type" = "transcript"
         )
