@@ -485,7 +485,7 @@ test_that("GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 61544L)
+    expect_length(object, 62696L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -493,6 +493,7 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
+            "artifDupl" = "Rle",
             "broadClass" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -509,27 +510,28 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972.5"]), # nolint
+            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "broadClass" = "pseudo",
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972.5",
-            "geneIdNoVersion" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "havanaGene" = "OTTHUMG00000000961.2",
-            "hgncId" = "HGNC:37102",
-            "level" = "2",
+            "seqnames" = "chr2",
+            "start" = "177218667",
+            "end" = "177392756",
+            "width" = "174090",
+            "strand" = "-",
+            "artifDupl" = NA_character_,
+            "broadClass" = "coding",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "hgncId" = "HGNC:7782",
+            "level" = "1",
             "source" = "HAVANA",
-            "tag" = "character(0)",
+            "tag" = "c(\"ncRNA_host\", \"overlapping_locus\")",
             "type" = "gene"
         )
     )
@@ -547,7 +549,7 @@ test_that("GFF3 genes", {
         object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
         expected = list(
             "seqlengths" = 248956422L,
-            "isCircular" = FALSE,
+            "isCircular" = NA,
             "genome" = "GRCh38"
         )
     )
@@ -564,7 +566,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "c3655ad23ed3844e7cf025cbb47d1372"
+        expected = "b0199f8b1522f61093896e8d48750a0c"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -572,11 +574,11 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 40L
+        expected = 42L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "aab8237aca2fce38fee709de6728c270fdf0c35e2938fddbb508285aae68349f" # nolint
+        expected = "10d01b26b75d0142677d0bddf369af375c2e24f6b4c99ce04f408032c51ca432" # nolint
     )
 })
 
