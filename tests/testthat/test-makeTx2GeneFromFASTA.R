@@ -5,7 +5,7 @@ test_that("Ensembl", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "Tx2Gene")
-    expect_identical(nrow(object), 204563L)
+    expect_identical(nrow(object), 205131L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
@@ -46,7 +46,7 @@ test_that("FlyBase", {
     file <- txFastas[["flybase"]]
     object <- makeTx2GeneFromFASTA(file)
     expect_s4_class(object, "Tx2Gene")
-    expect_identical(nrow(object), 30748L)
+    expect_identical(nrow(object), 30799L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
@@ -71,7 +71,7 @@ test_that("GENCODE", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "Tx2Gene")
-    expect_identical(nrow(object), 246624L)
+    expect_identical(nrow(object), 252416L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
@@ -112,7 +112,7 @@ test_that("WormBase", {
     file <- txFastas[["wormbase"]]
     object <- makeTx2GeneFromFASTA(file)
     expect_s4_class(object, "Tx2Gene")
-    expect_identical(nrow(object), 31989L)
+    expect_identical(nrow(object), 31998L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
