@@ -1,5 +1,19 @@
 # Release notes
 
+## AcidGenomes 0.4.5 (2023-01-31)
+
+Minor changes:
+
+- `downloadUCSCGenome`: Added a manual override for defaulting to `"hg38"`
+  for *Homo sapiens*, which has switched over to experimental `"hs1"` T2T
+  genome build.
+- `mapGencodeToEnsembl`: Added support for mapping *Mus musculus* releases.
+- Internal `Seqinfo` generators now default to pulling annotations from Ensembl
+  for GENCODE reference, rather than UCSC. Note that UCSC `Seqinfo` function
+  is currently broken for hg38, but will be fixed in pending GenomeInfoDb
+  v1.34.8.
+- Updated unit tests to check against latest genome build releases.
+
 ## AcidGenomes 0.4.4 (2022-10-25)
 
 Minor changes:
