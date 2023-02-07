@@ -141,6 +141,7 @@
 ## FIXME Need to allow failures here, as some old GTFs are problematic.
 ## Mus_musculus.GRCm38.90.gtf.gz
 ## see bcbio unit tests...
+## /Users/mike/git/monorepo/r-packages/r-bcbiornaseq/tests/testthat/cache/Mus_musculus.GRCm38.90.gtf.gz
 
 #' Get Ensembl genome assembly seqinfo
 #'
