@@ -138,6 +138,10 @@
 
 
 
+## FIXME Need to allow failures here, as some old GTFs are problematic.
+## Mus_musculus.GRCm38.90.gtf.gz
+## see bcbio unit tests...
+
 #' Get Ensembl genome assembly seqinfo
 #'
 #' @note Updated 2023-01-30.
