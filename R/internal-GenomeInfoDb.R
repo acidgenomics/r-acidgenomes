@@ -138,14 +138,9 @@
 
 
 
-## FIXME Need to allow failures here, as some old GTFs are problematic.
-## Mus_musculus.GRCm38.90.gtf.gz
-## see bcbio unit tests...
-## /Users/mike/git/monorepo/r-packages/r-bcbiornaseq/tests/testthat/cache/Mus_musculus.GRCm38.90.gtf.gz
-
 #' Get Ensembl genome assembly seqinfo
 #'
-#' @note Updated 2023-01-30.
+#' @note Updated 2023-02-08.
 #' @noRd
 .getEnsemblSeqinfo <- function(organism, genomeBuild, release) {
     assert(
@@ -153,25 +148,20 @@
         isString(genomeBuild),
         isInt(release)
     )
-    args <- list(
-        "species" = organism,
-        "release" = release,
-        "as.Seqinfo" = TRUE
-    )
-    if (grepl(
-        pattern = "GRCh37",
-        x = genomeBuild,
-        fixed = TRUE
-    )
-    ) {
+    args <- list("species" = organism, "release" = release, "as.Seqinfo" = TRUE)
+    if (grepl(pattern = "GRCh37", x = genomeBuild, fixed = TRUE)) {
         args[["use.grch37"]] <- TRUE
     }
-    suppressPackageStartupMessages({
-        seq <- do.call(what = getChromInfoFromEnsembl, args = args)
-    })
-    assert(is(seq, "Seqinfo"))
-    validObject(seq)
-    seq
+    tryCatch(
+        expr = {
+            suppressPackageStartupMessages({
+                do.call(what = getChromInfoFromEnsembl, args = args)
+            })
+        },
+        error = function(e) {
+            NULL
+        }
+    )
 }
 
 
