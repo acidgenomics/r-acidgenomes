@@ -6,6 +6,8 @@ Minor changes:
 
 - Migrated `requireNamespaces` import from AcidBase to goalie.
 - Updated dependency versions.
+- Now allowing Ensembl `Seqinfo` fetch step to fail, to avoid unit test
+  issues with *Mus musulus* Ensembl 90 GTF file (for bcbioRNASeq).
 
 ## AcidGenomes 0.4.5 (2023-01-31)
 
