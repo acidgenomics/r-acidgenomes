@@ -1,5 +1,12 @@
 # Release notes
 
+## AcidGenomes 0.4.6 (2023-02-09)
+
+Minor changes:
+
+- Migrated `requireNamespaces` import from AcidBase to goalie.
+- Updated dependency versions.
+
 ## AcidGenomes 0.4.5 (2023-01-31)
 
 Minor changes:
