@@ -1,7 +1,7 @@
 #' Map GENCODE release to Ensembl
 #'
 #' @export
-#' @note Updated 2023-01-30.
+#' @note Updated 2023-02-10.
 #'
 #' @param release `integer(1)` or `character(1)`.
 #' Human (e.g. `42`) or mouse (e.g. `"M21"`) GENCODE release.
@@ -22,15 +22,14 @@
 #' mapGencodeToEnsembl("M31")
 mapGencodeToEnsembl <- function(release) {
     assert(isScalar(release))
-    data <- import(
-        con = system.file(
-            "extdata", "gencode-to-ensembl.rds",
-            package = .pkgName
-        ),
-        quiet = TRUE
+    organism <- ifelse(
+        test = grepl(pattern = "^M", x = release),
+        yes = "Mus musculus",
+        no = "Homo sapiens"
     )
-    assert(isSubset(c("gencode", "ensembl"), colnames(data)))
-    idx <- match(x = as.character(release), table = data[["gencode"]])
+    df <- gencodeReleaseHistory(organism = organism)
+    assert(isSubset(c("gencodeRelease", "ensemblRelease"), colnames(df)))
+    idx <- match(x = as.character(release), table = df[["gencodeRelease"]])
     assert(
         isInt(idx),
         msg = sprintf(
@@ -38,7 +37,7 @@ mapGencodeToEnsembl <- function(release) {
             release
         )
     )
-    out <- data[["ensembl"]][idx]
+    out <- as.numeric(df[["ensemblRelease"]][idx])
     assert(isIntegerish(out))
     out <- as.integer(out)
     out
