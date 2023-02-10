@@ -2,11 +2,20 @@
 
 ## AcidGenomes 0.4.7 (2023-02-10)
 
+New functions:
+
+- `gencodeReleaseHistory`: This function scrapes the GENCODE website to return
+  the full release history for either human or mouse genomes.
+
 Minor changes:
 
 - `currentEnsemblVersion`: Fix for breaking change on Ensembl FTP server.
   The file this function parses has been renamed from `current_README` to
   simply `README`.
+- `mapGencodeToEnsembl`: Now using `gencodeReleaseHistory` internally to
+  dynamically fetch metadata directly from the GENCODE website, instead of
+  relying on an internal CSV mapping file. This helps avoid having to update
+  the package every time a new Ensembl/GENCODE release comes out.
 
 ## AcidGenomes 0.4.6 (2023-02-09)
 
