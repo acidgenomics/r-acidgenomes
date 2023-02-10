@@ -45,6 +45,7 @@ Suggests:
     RCurl (>= 1.98),
     biomaRt (>= 2.54.0),
     ensembldb (>= 2.22.0),
+    rvest (>= 1.0.3),
     testthat (>= 3.1.6),
     withr (>= 2.5.0)
 Additional_repositories: https://r.acidgenomics.com
