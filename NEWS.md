@@ -1,5 +1,13 @@
 # Release notes
 
+## AcidGenomes 0.4.7 (2023-02-10)
+
+Minor changes:
+
+- `currentEnsemblVersion`: Fix for breaking change on Ensembl FTP server.
+  The file this function parses has been renamed from `current_README` to
+  simply `README`.
+
 ## AcidGenomes 0.4.6 (2023-02-09)
 
 Minor changes:
