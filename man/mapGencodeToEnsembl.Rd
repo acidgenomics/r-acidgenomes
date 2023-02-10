@@ -18,7 +18,7 @@ Ensembl release.
 Map GENCODE release to Ensembl
 }
 \note{
-Updated 2023-01-30.
+Updated 2023-02-10.
 }
 \examples{
 ## Homo sapiens.
