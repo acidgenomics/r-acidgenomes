@@ -27,6 +27,8 @@ gencodeReleaseHistory <-
             "releases.html",
             protocol = "https"
         )
+        ## NOTE Don't cache the URL here. This helps avoid the edge case
+        ## situation of `currentGencodeVersion` returning a newer version.
         html <- rvest::read_html(url)
         table <- rvest::html_table(html)
         df <- as(table[[1L]], "DataFrame")
