@@ -1,10 +1,10 @@
-organism,nickname,idGrep,ensemblGrep,ucscGrep,organismGrep
-Caenorhabditis elegans,roundworm,WBGene[[:digit:]]{8},WBcel[[:digit:]]{3},ce[[:digit:]]{2},C(aenorhabditis)?([._[:space:]]+)?elegans
-Danio rerio,zebrafish,ENSDAR(G|P|T)[[:digit:]]{11},GRCz[[:digit:]]+,danRer[[:digit:]]+,D(anio)?([._[:space:]]+)?rerio
-Drosophila melanogaster,fruitfly,FB(gn|tr)[[:digit:]]{7},BDGP[[:digit:]]+,dm[[:digit:]]+,D(rosophila)?([._[:space:]]+)?melanogaster
-Gallus gallus,chicken,ENSGAL(G|P|T)[[:digit:]]{11},Gallus_gallus-[[:graph:]]+,galGal[[:digit:]]+,G(allus)?([._[:space:]]+)?gallus
-Homo sapiens,human,ENS(G|P|T)[[:digit:]]{11},GRCh[[:digit:]]{2}([[:space:]]p[[:digit:]]+)?,hg[[:digit:]]{2},H(omo)?([._[:space:]]+)?sapiens
-Mus musculus,mouse,ENSMUS(G|P|T)[[:digit:]]{11},GRCm[[:digit:]]{2}([[:space:]]p[[:digit:]]+)?,mm[[:digit:]]{2},M(us)?([._[:space:]]+)?musculus
-Ovis aries,sheep,ENSOAR(G|P|T)[[:digit:]]{11},Oar_v[[:graph:]]+,oviAri[[:digit:]]+,O(vis)?([._[:space:]]+)?aries
-Rattus norvegicus,rat,ENSRNO(G|P|T)[[:digit:]]{11},Rnor_[[:graph:]]+,rn[[:digit:]]+,R(attus)?([._[:space:]]+)?norvegicus
-Saccharomyces cerevisiae,yeast,YDL[0-9]{3}[CW](-A)?,R[[:digit:]]{2}-[[:digit:]]-[[:digit:]],sacCer[[:digit:]]+,S(accharomyces)?([._[:space:]]+)?cerevisiae
+"organism","nickname","idGrep","ensemblGrep","ucscGrep","organismGrep"
+"Caenorhabditis elegans","roundworm","WBGene[[:digit:]]{8}","WBcel[[:digit:]]{3}","ce[[:digit:]]{2}","C(aenorhabditis)?([._[:space:]]+)?elegans"
+"Danio rerio","zebrafish","ENSDAR(G|P|T)[[:digit:]]{11}","GRCz[[:digit:]]+","danRer[[:digit:]]+","D(anio)?([._[:space:]]+)?rerio"
+"Drosophila melanogaster","fruitfly","FB(gn|tr)[[:digit:]]{7}","BDGP[[:digit:]]+","dm[[:digit:]]+","D(rosophila)?([._[:space:]]+)?melanogaster"
+"Gallus gallus","chicken","ENSGAL(G|P|T)[[:digit:]]{11}","Gallus_gallus-[[:graph:]]+","galGal[[:digit:]]+","G(allus)?([._[:space:]]+)?gallus"
+"Homo sapiens","human","ENS(G|P|T)[[:digit:]]{11}","GRCh[[:digit:]]{2}([[:space:]]p[[:digit:]]+)?","hg[[:digit:]]{2}","H(omo)?([._[:space:]]+)?sapiens"
+"Mus musculus","mouse","ENSMUS(G|P|T)[[:digit:]]{11}","GRCm[[:digit:]]{2}([[:space:]]p[[:digit:]]+)?","mm[[:digit:]]{2}","M(us)?([._[:space:]]+)?musculus"
+"Ovis aries","sheep","ENSOAR(G|P|T)[[:digit:]]{11}","Oar_v[[:graph:]]+","oviAri[[:digit:]]+","O(vis)?([._[:space:]]+)?aries"
+"Rattus norvegicus","rat","ENSRNO(G|P|T)[[:digit:]]{11}","Rnor_[[:graph:]]+","rn[[:digit:]]+","R(attus)?([._[:space:]]+)?norvegicus"
+"Saccharomyces cerevisiae","yeast","YDL[0-9]{3}[CW](-A)?","R[[:digit:]]{2}-[[:digit:]]-[[:digit:]]","sacCer[[:digit:]]+","S(accharomyces)?([._[:space:]]+)?cerevisiae"
