@@ -95,12 +95,11 @@ NULL
 
 
 
-## Updated 2021-08-09.
+## Updated 2023-02-16.
 `Tx2Gene,GenomicRangesList` <- # nolint
     function(object, ...) {
-        x <- as(object, "GenomicRangesList")
-        x <- unname(x)
-        gr <- unlist(x)
+        grl <- as(object, "GenomicRangesList")
+        gr <- unlist(grl, recursive = FALSE, use.names = TRUE)
         assert(is(gr, "GenomicRanges"))
         Tx2Gene(gr, ...)
     }
