@@ -1,5 +1,12 @@
 # Release notes
 
+## AcidGenomes 0.4.8 (2023-02-16)
+
+Minor changes:
+
+- `makeTx2GeneFromGFF`, `Tx2Gene`: Ensure that rownames are defined for RefSeq
+  genome annotations, which are constructed from `GenomicRangesList` method.
+
 ## AcidGenomes 0.4.7 (2023-02-10)
 
 New functions:
