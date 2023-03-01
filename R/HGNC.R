@@ -1,7 +1,3 @@
-## FIXME Rename entrez.
-
-
-
 #' Import HGNC complete set metadata
 #'
 #' @export
