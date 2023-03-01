@@ -450,7 +450,7 @@
             x = names(mcols),
             ignore.case = FALSE
         )
-    ## Use "NCBI" instead of "Entrez".
+    ## Use NCBI instead of Entrez for database name.
     if (isSubset("entrezId", names(mcols))) {
         names(mcols)[names(mcols) == "entrezId"] <- "ncbiGeneId"
     }

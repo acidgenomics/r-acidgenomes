@@ -1,3 +1,7 @@
+## FIXME Need to rename Entrez here.
+
+
+
 formats <- eval(formals(`Ensembl2Entrez,GenomicRanges`)[["format"]])
 
 test_that("Ensembl2Entrez : character", {

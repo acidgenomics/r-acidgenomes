@@ -1,3 +1,7 @@
+## FIXME Need to rename Entrez here.
+
+
+
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",

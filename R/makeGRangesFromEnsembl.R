@@ -154,25 +154,10 @@ makeGRangesFromEnsDb <-
             "order.type" = "asc",
             "return.type" = "GRanges"
         )
-        ## Ensembl 102 example (AH89180):
-        ## [1] "canonical_transcript" "description"          "entrezid"
-        ## [4] "gene_biotype"         "gene_id"              "gene_id_version"
-        ## [7] "gene_name"            "gene_seq_end"         "gene_seq_start"
-        ## [10] "seq_coord_system"     "seq_name"             "seq_strand"
-        ## [13] "symbol"
         suppressWarnings({
             geneCols <- ensembldb::listColumns(object, "gene")
         })
         geneCols <- sort(unique(c(geneCols, "entrezid")))
-        ## Ensembl 102 example (AH89180):
-        ## [1] "canonical_transcript" "description"          "entrezid"
-        ## [4] "gc_content"           "gene_biotype"         "gene_id"
-        ## [7] "gene_id_version"      "gene_name"            "gene_seq_end"
-        ## [10] "gene_seq_start"       "seq_coord_system"     "seq_name"
-        ## [13] "seq_strand"           "symbol"               "tx_biotype"
-        ## [16] "tx_cds_seq_end"       "tx_cds_seq_start"     "tx_id"
-        ## [19] "tx_id_version"        "tx_name"              "tx_seq_end"
-        ## [22] "tx_seq_start"         "tx_support_level"
         suppressWarnings({
             txCols <- ensembldb::listColumns(object, "tx")
         })
