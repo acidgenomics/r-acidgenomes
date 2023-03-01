@@ -336,7 +336,7 @@
 ## Standardization =============================================================
 #' Apply run-length encoding and minimize `GenomicRanges` mcols
 #'
-#' @note Updated 2021-08-05.
+#' @note Updated 2023-03-01.
 #' @noRd
 #'
 #' @details
@@ -371,8 +371,8 @@
     mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
     mcols <- as.DataFrame(mcolsList)
     ## Ensure nested list columns return classed when possible.
-    if (is.list(mcols[["entrezId"]])) {
-        mcols[["entrezId"]] <- IntegerList(mcols[["entrezId"]])
+    if (is.list(mcols[["ncbiGeneId"]])) {
+        mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
     ## This step is necessary here until we can fix unwanted coercion with join
     ## operations due to internal DataFrame `merge()` call in AcidPlyr.
@@ -442,7 +442,7 @@
         x = names(mcols),
         ignore.case = FALSE
     )
-    ## Ensure "Id" is always capitalized (e.g. "entrezid" to "entrezId").
+    ## Ensure "Id" is always capitalized at the end.
     names(mcols) <-
         gsub(
             pattern = "(.+)id$",
