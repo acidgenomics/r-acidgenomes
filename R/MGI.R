@@ -1,4 +1,4 @@
-#' Import Mouse Genome Informatics (MGI) metadata from the Jackson Laboratory
+#' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
 #' @note Updated 2023-03-01.
