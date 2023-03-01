@@ -40,8 +40,8 @@ NULL
 
 
 
-## Allow passthrough support of NCBI Entrez identifiers (e.g. "7157", which
-## corresponds to "TP53". This method is used in DepMapAnalysis package.
+## Allow passthrough support of NCBI (Entrez) gene identifiers (e.g. "7157",
+## which corresponds to "TP53". This method is used in DepMapAnalysis package.
 ## Updated 2022-03-09.
 `stripGeneVersions,integer` <- # nolint
     function(object) {
