@@ -1,3 +1,7 @@
+## FIXME Need to rename Entrez here.
+
+
+
 #' Make GRanges from rtracklayer
 #'
 #' @note Updated 2022-05-04.
@@ -477,9 +481,9 @@
 
 ## RefSeq ======================================================================
 
-#' Extract Entrez gene identifiers from RefSeq GFF/GTF file.
+#' Extract NCBI gene identifiers from RefSeq GFF/GTF file.
 #'
-#' @section GCF_000001405.40_GRCh38.p14 genes with multiple Entrez identifiers:
+#' @section GCF_000001405.40_GRCh38.p14 genes with multiple NCBI identifiers:
 #'
 #' - TRNAA-AGC: 124901561, 124901562, 124901563, 124901564, 124901565
 #' - TRNAE-UUC: 107987368, 124905580, 124905583, 124905584, 124905586
