@@ -611,8 +611,6 @@ setValidity(
 
 ## Identifier mapping classes ==================================================
 
-## FIXME Rename to "ensemblGeneId" and "ncbiGeneId" columns.
-
 #' @inherit AcidGenerics::Ensembl2Ncbi description return title
 #' @export
 #' @note Updated 2023-03-01.
@@ -700,8 +698,6 @@ setValidity(
 )
 
 
-
-## FIXME Update the column names here.
 
 #' @inherit AcidGenerics::Ncbi2Ensembl description return title
 #' @export
