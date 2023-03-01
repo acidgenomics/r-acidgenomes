@@ -1,3 +1,7 @@
+## FIXME Rename entrez.
+
+
+
 #' Import HGNC complete set metadata
 #'
 #' @export
@@ -31,13 +35,18 @@ HGNC <- # nolint
         })
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
+        idCol <- "hgncId"
         assert(
-            isSubset("hgncId", colnames(df)),
-            hasNoDuplicates(df[["hgncId"]])
+            isSubset(idCol, colnames(df)),
+            hasNoDuplicates(df[[idCol]])
         )
-        df[["hgncId"]] <- as.integer(gsub("^HGNC\\:", "", df[["hgncId"]]))
-        df <- df[order(df[["hgncId"]]), , drop = FALSE]
-        rownames(df) <- df[["hgncId"]]
+        df[[idCol]] <- as.integer(sub(
+            pattern = "^HGNC\\:",
+            replacement = "",
+            x = df[[idCol]]
+        ))
+        df <- df[order(df[[idCol]]), , drop = FALSE]
+        rownames(df) <- df[[idCol]]
         isNested <- bapply(
             X = df,
             FUN = function(x) {
@@ -53,6 +62,8 @@ HGNC <- # nolint
                 split = "|"
             )
         }
+        colnames(df)[colnames(df) == "entrezId"] <- "ncbiGeneId"
+        df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         new("HGNC", df)
     }
 
