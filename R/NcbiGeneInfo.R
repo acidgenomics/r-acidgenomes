@@ -1,30 +1,30 @@
-#' Import NCBI Entrez gene identifier information
+#' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2022-10-24.
+#' @note Updated 2023-03-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
 #' @param cache `logical(1)`.
-#' Cache the gene info file from NCBI Entrez FTP server using BiocFileCache.
+#' Cache the gene info file from NCBI FTP server using BiocFileCache.
 #'
 #' @param taxonomicGroup `character(1)`.
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 #' Defining this manually avoids having to query the FTP server.
 #'
-#' @return `EntrezGeneInfo`.
+#' @return `NcbiGeneInfo`.
 #'
 #' @seealso
 #' - ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
 #' - [geneSynonyms()].
 #'
 #' @examples
-#' object <- EntrezGeneInfo(
+#' object <- NcbiGeneInfo(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "Mammalia"
 #' )
 #' print(object)
-EntrezGeneInfo <- # nolint
+NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
              cache = TRUE) {
@@ -111,5 +111,5 @@ EntrezGeneInfo <- # nolint
             "taxonomicGroup" = "taxonomicGroup",
             "url" = url
         )
-        new(Class = "EntrezGeneInfo", df)
+        new(Class = "NcbiGeneInfo", df)
     }
