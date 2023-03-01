@@ -562,6 +562,57 @@ setValidity(
 
 
 
+#' Mouse Genomic Informatics (MGI) metadata
+#'
+#' @export
+#' @note Updated 2023-03-01.
+#'
+#' @return `MGI`.
+setClass(
+    Class = "MGI",
+    contains = "DFrame"
+)
+setValidity(
+    Class = "MGI",
+    method = function(object) {
+        ok <- validate(
+            hasColnames(object),
+            hasRows(object)
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        cols <- c(
+            "mgiAccessionId",
+            "markerType",
+            "markerSymbol",
+            "markerName",
+            "genomeBuild",
+            "ncbiGeneId",
+            "ncbiGeneChromosome",
+            "ncbiGeneStart",
+            "ncbiGeneEnd",
+            "ncbiGeneStrand",
+            "ensemblGeneId",
+            "ensemblGeneChromosome",
+            "ensemblGeneStart",
+            "ensemblGeneEnd",
+            "ensemblGeneStrand"
+        )
+        ok <- validate(
+            isSubset(cols, colnames(object)),
+            is.integer(object[[cols[[1L]]]]),
+            hasNoDuplicates(object[[cols[[1L]]]])
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' NCBI gene identifier information
 #'
 #' @export
