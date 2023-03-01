@@ -2,13 +2,16 @@
 % Please edit documentation in R/AllGenerics.R, R/Ensembl2Ncbi-methods.R
 \name{Ensembl2Ncbi}
 \alias{Ensembl2Ncbi}
-\alias{Ensembl2Ncbi,GenomicRanges-method}
+\alias{Ensembl2Ncbi,EnsemblGenes-method}
+\alias{Ensembl2Ncbi,GencodeGenes-method}
 \alias{Ensembl2Ncbi,character-method}
 \title{Ensembl-to-NCBI gene identifier mappings}
 \usage{
 Ensembl2Ncbi(object, ...)
 
-\S4method{Ensembl2Ncbi}{GenomicRanges}(object, format = c("1:1", "long"))
+\S4method{Ensembl2Ncbi}{EnsemblGenes}(object, format = c("1:1", "long"))
+
+\S4method{Ensembl2Ncbi}{GencodeGenes}(object, format = c("1:1", "long"))
 
 \S4method{Ensembl2Ncbi}{character}(object, organism = NULL, format = c("1:1", "long"))
 }

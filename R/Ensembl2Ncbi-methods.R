@@ -138,12 +138,8 @@ formals(`Ensembl2Ncbi,character`)[["format"]] <- # nolint
 
 
 
-## FIXME Consider reworking this approach.
-## FIXME This should only apply if gene identifier contains Ensembl identifiers.
-## FIXME Let's just class this against EnsemblGenes or GencodeGenes instead.
-
 ## Updated 2023-03-01.
-`Ensembl2Ncbi,GenomicRanges` <- # nolint
+`Ensembl2Ncbi,EnsemblGenes` <- # nolint
     function(object, format) {
         assert(hasColnames(mcols(object)))
         colnames(mcols(object)) <-
@@ -160,14 +156,21 @@ formals(`Ensembl2Ncbi,character`)[["format"]] <- # nolint
         df <- mcols(object)
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
-        .makeEnsembl2Ncbi(
+        out <- .makeEnsembl2Ncbi(
             object = df,
             format = match.arg(format)
         )
+        out
     }
 
-formals(`Ensembl2Ncbi,GenomicRanges`)[["format"]] <- # nolint
+formals(`Ensembl2Ncbi,EnsemblGenes`)[["format"]] <- # nolint
     formals(.makeEnsembl2Ncbi)[["format"]]
+
+
+
+## Updated 2023-03-01.
+`Ensembl2Ncbi,GencodeGenes` <- # nolint
+    `Ensembl2Ncbi,EnsemblGenes`
 
 
 
@@ -175,8 +178,16 @@ formals(`Ensembl2Ncbi,GenomicRanges`)[["format"]] <- # nolint
 #' @export
 setMethod(
     f = "Ensembl2Ncbi",
-    signature = signature(object = "GenomicRanges"),
-    definition = `Ensembl2Ncbi,GenomicRanges`
+    signature = signature(object = "EnsemblGenes"),
+    definition = `Ensembl2Ncbi,EnsemblGenes`
+)
+
+#' @rdname Ensembl2Ncbi
+#' @export
+setMethod(
+    f = "Ensembl2Ncbi",
+    signature = signature(object = "GencodeGenes"),
+    definition = `Ensembl2Ncbi,GencodeGenes`
 )
 
 #' @rdname Ensembl2Ncbi
