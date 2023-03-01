@@ -3,12 +3,12 @@
 \docType{class}
 \name{HGNC-class}
 \alias{HGNC-class}
-\title{HGNC complete set metadata}
+\title{Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata}
 \value{
 \code{HGNC}.
 }
 \description{
-HGNC complete set metadata
+Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 }
 \note{
 Updated 2023-03-01.
