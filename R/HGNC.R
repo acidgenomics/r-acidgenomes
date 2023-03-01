@@ -1,4 +1,5 @@
-#' Import HGNC complete set metadata
+#' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
+#' metadata
 #'
 #' @export
 #' @note Updated 2023-03-01.

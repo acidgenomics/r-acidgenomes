@@ -2,7 +2,7 @@
 % Please edit documentation in R/MGI.R
 \name{MGI}
 \alias{MGI}
-\title{Import MGI metadata from Jackson labs}
+\title{Import Mouse Genome Informatics (MGI) metadata from the Jackson Laboratory}
 \usage{
 MGI()
 }
@@ -10,7 +10,7 @@ MGI()
 \code{MGI}.
 }
 \description{
-Import MGI metadata from Jackson labs
+Import Mouse Genome Informatics (MGI) metadata from the Jackson Laboratory
 }
 \note{
 Updated 2023-03-01.
