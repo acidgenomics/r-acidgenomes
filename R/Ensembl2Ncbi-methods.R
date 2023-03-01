@@ -1,6 +1,6 @@
-#' @name Ensembl2Entrez
-#' @inherit AcidGenerics::Ensembl2Entrez description return title
-#' @note Updated 2022-05-27.
+#' @name Ensembl2Ncbi
+#' @inherit AcidGenerics::Ensembl2Ncbi description return title
+#' @note Updated 2023-03-01.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -9,42 +9,42 @@
 #' Formatting method to apply:
 #'
 #' - `"1:1"`: *Recommended.* Return with 1:1 mappings. For Ensembl genes that
-#' don't map 1:1 with Entrez, pick the oldest Entrez identifier. Genes that
-#' don't map to Entrez will contain `NA` in `entrezId` column.
+#' don't map 1:1 with NCBI, pick the oldest NCBI identifier. Genes that don't
+#' map to NCBI will contain `NA` in `ncbiGeneId` column.
 #' - `"long"`: Return `1:many` in long format.
 #'
 #' @examples
 #' organism <- "Homo sapiens"
 #'
 #' ## character ====
-#' ## Ensembl-to-Entrez.
+#' ## Ensembl-to-NCBI.
 #' genes <- c("ENSG00000000003", "ENSG00000000005")
-#' x <- Ensembl2Entrez(object = genes, organism = organism)
+#' x <- Ensembl2Ncbi(object = genes, organism = organism)
 #' print(x)
 NULL
 
 
 
-#' Make an Ensembl2Entrez (or Entrez2Ensembl) object
+#' Make an `Ensembl2Ncbi` (or `Ncbi2Ensembl`) object
 #'
-#' @note Updated 2022-05-27.
+#' @note Updated 2023-03-01.
 #' @noRd
-.makeEnsembl2Entrez <-
+.makeEnsembl2Ncbi <-
     function(object,
              format = c("1:1", "long"),
              ## Internal-only args:
-             return = c("Ensembl2Entrez", "Entrez2Ensembl")) {
+             return = c("Ensembl2Ncbi", "Ncbi2Ensembl")) {
         format <- match.arg(format)
         return <- match.arg(return)
         switch(
             EXPR = return,
-            "Ensembl2Entrez" = {
-                fromCol <- "ensemblId"
-                toCol <- "entrezId"
+            "Ensembl2Ncbi" = {
+                fromCol <- "ensemblGeneId"
+                toCol <- "ncbiGeneId"
             },
-            "Entrez2Ensembl" = {
-                fromCol <- "entrezId"
-                toCol <- "ensemblId"
+            "Ncbi2Ensembl" = {
+                fromCol <- "ncbiGeneId"
+                toCol <- "ensemblGeneId"
             }
         )
         cols <- c(fromCol, toCol)
@@ -105,7 +105,7 @@ NULL
 
 
 ## Updated 2022-05-27.
-`Ensembl2Entrez,character` <- # nolint
+`Ensembl2Ncbi,character` <- # nolint
     function(object,
              organism = NULL,
              format) {
@@ -115,16 +115,16 @@ NULL
         if (allAreMatchingFixed(x = object, pattern = ".")) {
             object <- stripGeneVersions(object)
         }
-        df <- .getEnsembl2EntrezFromOrgDb(
+        df <- .getEnsembl2NcbiFromOrgDb(
             keys = object,
             keytype = "ENSEMBL",
             columns = "ENTREZID",
             organism = organism
         )
-        out <- .makeEnsembl2Entrez(
+        out <- .makeEnsembl2Ncbi(
             object = df,
             format = match.arg(format),
-            return = "Ensembl2Entrez"
+            return = "Ensembl2Ncbi"
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
@@ -133,13 +133,17 @@ NULL
         out
     }
 
-formals(`Ensembl2Entrez,character`)[["format"]] <- # nolint
-    formals(.makeEnsembl2Entrez)[["format"]]
+formals(`Ensembl2Ncbi,character`)[["format"]] <- # nolint
+    formals(.makeEnsembl2Ncbi)[["format"]]
 
 
 
-## Updated 2022-05-26.
-`Ensembl2Entrez,GenomicRanges` <- # nolint
+## FIXME Consider reworking this approach.
+## FIXME This should only apply if gene identifier contains Ensembl identifiers.
+## FIXME Let's just class this against EnsemblGenes or GencodeGenes instead.
+
+## Updated 2023-03-01.
+`Ensembl2Ncbi,GenomicRanges` <- # nolint
     function(object, format) {
         assert(hasColnames(mcols(object)))
         colnames(mcols(object)) <-
@@ -149,36 +153,36 @@ formals(`Ensembl2Entrez,character`)[["format"]] <- # nolint
             )
         assert(
             isSubset(
-                x = c("geneId", "entrezId"),
+                x = c("geneId", "ncbiGeneId"),
                 y = colnames(mcols(object))
             )
         )
         df <- mcols(object)
-        colnames(df)[colnames(df) == "geneId"] <- "ensemblId"
+        colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
-        .makeEnsembl2Entrez(
+        .makeEnsembl2Ncbi(
             object = df,
             format = match.arg(format)
         )
     }
 
-formals(`Ensembl2Entrez,GenomicRanges`)[["format"]] <- # nolint
-    formals(.makeEnsembl2Entrez)[["format"]]
+formals(`Ensembl2Ncbi,GenomicRanges`)[["format"]] <- # nolint
+    formals(.makeEnsembl2Ncbi)[["format"]]
 
 
 
-#' @rdname Ensembl2Entrez
+#' @rdname Ensembl2Ncbi
 #' @export
 setMethod(
-    f = "Ensembl2Entrez",
+    f = "Ensembl2Ncbi",
     signature = signature(object = "GenomicRanges"),
-    definition = `Ensembl2Entrez,GenomicRanges`
+    definition = `Ensembl2Ncbi,GenomicRanges`
 )
 
-#' @rdname Ensembl2Entrez
+#' @rdname Ensembl2Ncbi
 #' @export
 setMethod(
-    f = "Ensembl2Entrez",
+    f = "Ensembl2Ncbi",
     signature = signature(object = "character"),
-    definition = `Ensembl2Entrez,character`
+    definition = `Ensembl2Ncbi,character`
 )
