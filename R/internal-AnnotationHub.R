@@ -23,9 +23,9 @@
 
 
 
-#' Get Ensembl/Entrez mappings from NCBI OrgDb via AnnotationHub
+#' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2021-04-27.
+#' @note Updated 2023-03-01.
 #' @noRd
 .getEnsembl2EntrezFromOrgDb <-
     function(keys,
@@ -81,9 +81,9 @@
                 ))
             }
         }
-        colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblId"
-        colnames(df)[colnames(df) == "ENTREZID"] <- "entrezId"
-        df[["entrezId"]] <- as.integer(df[["entrezId"]])
+        colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblGeneId"
+        colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
+        df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         forceDetach(keep = pkgs)
         df <- as(df, "DataFrame")
         df
