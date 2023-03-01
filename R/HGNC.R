@@ -1,7 +1,7 @@
 #' Import HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #'
 #' @return `HGNC`.
 #'
@@ -26,14 +26,8 @@ HGNC <- # nolint
             protocol = "ftp"
         )
         file <- .cacheIt(url)
-        ## TSV is currently malformed, as of 2022-05-14.
-        ## line 534 did not have 54 elements
         suppressWarnings({
-            df <- import(
-                con = file,
-                format = "tsv",
-                engine = "readr"
-            )
+            df <- import(con = file, format = "tsv", engine = "readr")
         })
         df <- as(df, "DataFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
