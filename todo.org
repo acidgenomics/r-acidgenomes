@@ -1,6 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Consider renaming "entrezId" to "ncbiGeneId".
 ** TODO Add support for legacy RefSeq hg38 reference for assembly pipelines.
     This has the advantage of ALT contig removal, which is nice for STAR.
 ** TODO Add support for T2T genome from NCBI.
