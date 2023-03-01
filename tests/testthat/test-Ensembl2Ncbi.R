@@ -1,10 +1,6 @@
-## FIXME Need to rename Entrez here.
+formats <- eval(formals(`Ensembl2Ncbi,GenomicRanges`)[["format"]])
 
-
-
-formats <- eval(formals(`Ensembl2Entrez,GenomicRanges`)[["format"]])
-
-test_that("Ensembl2Entrez : character", {
+test_that("Ensembl2Ncbi : character", {
     genes <- c(
         "ENSG00000063587",
         "ENSG00000004866",
@@ -12,11 +8,11 @@ test_that("Ensembl2Entrez : character", {
         "ENSG00000000003"
     )
     ## 1:1 mapping.
-    object <- Ensembl2Entrez(genes, format = "1:1")
+    object <- Ensembl2Ncbi(genes, format = "1:1")
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
-        "ensemblId" = genes,
-        "entrezId" = c(10838L, 7982L, 64102L, 7105L),
+        "ensemblGeneId" = genes,
+        "ncbiGeneId" = c(10838L, 7982L, 64102L, 7105L),
         row.names = genes
     )
     expect_identical(
@@ -24,10 +20,10 @@ test_that("Ensembl2Entrez : character", {
         expected = as.data.frame(expected)
     )
     ## Long format (non-unique).
-    object <- Ensembl2Entrez(genes, format = "long")
+    object <- Ensembl2Ncbi(genes, format = "long")
     expect_identical(metadata(object)[["format"]], "long")
     expected <- DataFrame(
-        "ensemblId" = c(
+        "ensemblGeneId" = c(
             "ENSG00000000003",
             "ENSG00000000005",
             "ENSG00000004866",
@@ -35,7 +31,7 @@ test_that("Ensembl2Entrez : character", {
             "ENSG00000063587",
             "ENSG00000063587"
         ),
-        "entrezId" = c(
+        "ncbiGeneId" = c(
             7105L,
             64102L,
             7982L,
@@ -50,7 +46,7 @@ test_that("Ensembl2Entrez : character", {
     )
 })
 
-test_that("Entrez2Ensembl : character", {
+test_that("Ncbi2Ensembl : character", {
     ## These are from the Ensembl return above.
     genes <- c(
         105373378L,
@@ -61,15 +57,15 @@ test_that("Entrez2Ensembl : character", {
         7105L
     )
     ## 1:1 mapping (of input keys, note the expected Ensembl dupes here).
-    object <- Entrez2Ensembl(
+    object <- Ncbi2Ensembl(
         object = genes,
         organism = "Homo sapiens",
         format = "1:1"
     )
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
-        "entrezId" = genes,
-        "ensemblId" = c(
+        "ncbiGeneId" = genes,
+        "ensemblGeneId" = c(
             "ENSG00000063587",
             "ENSG00000004866",
             "ENSG00000000005",
@@ -84,14 +80,14 @@ test_that("Entrez2Ensembl : character", {
         expected = as.data.frame(expected)
     )
     ## Long format (non-unique).
-    object <- Entrez2Ensembl(
+    object <- Ncbi2Ensembl(
         object = genes,
         organism = "Homo sapiens",
         format = "long"
     )
     expect_identical(metadata(object)[["format"]], "long")
     expected <- DataFrame(
-        "entrezId" = c(
+        "ncbiGeneId" = c(
             7105L,
             7982L,
             10838L,
@@ -99,7 +95,7 @@ test_that("Entrez2Ensembl : character", {
             93655L,
             105373378L
         ),
-        "ensemblId" = c(
+        "ensemblGeneId" = c(
             "ENSG00000000003",
             "ENSG00000004866",
             "ENSG00000063587",
