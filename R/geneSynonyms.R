@@ -2,7 +2,7 @@
 #'
 #' Look up gene synonyms from NCBI.
 #'
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #' @export
 #'
 #' @section *Caenorhabditis elegans*:
@@ -12,7 +12,7 @@
 #'
 #'
 #' @inheritParams AcidRoxygen::params
-#' @inheritParams EntrezGeneInfo
+#' @inheritParams NcbiGeneInfo
 #' @inheritParams params
 #' @param geneIdType `character(1)`.
 #' Type of gene identifier to return in the `geneId` column.
@@ -29,9 +29,9 @@
 geneSynonyms <-
     function(organism,
              taxonomicGroup = NULL,
-             geneIdType = c("Entrez", "Ensembl", "HGNC", "OMIM")) {
+             geneIdType = c("NCBI", "Ensembl", "HGNC", "OMIM")) {
         geneIdType <- match.arg(geneIdType)
-        df <- EntrezGeneInfo(
+        df <- NcbiGeneInfo(
             organism = organism,
             taxonomicGroup = taxonomicGroup
         )
@@ -46,7 +46,7 @@ geneSynonyms <-
         df <- df[, cols, drop = FALSE]
         keep <- !all(is.na(df[["geneSynonyms"]]))
         df <- df[keep, , drop = FALSE]
-        if (identical(geneIdType, "Entrez")) {
+        if (identical(geneIdType, "NCBI")) {
             df[["geneId"]] <- decode(df[["geneId"]])
             assert(is.integer(df[["geneId"]]))
             df[["dbXrefs"]] <- NULL
@@ -69,7 +69,7 @@ geneSynonyms <-
         x <- x[grepl(pattern = pattern, x = x)]
         x <- gsub(pattern = pattern, replacement = "\\1", x = x)
         assert(is(x, "CharacterList"))
-        ## Handle cases where identifiers don't map 1:1 to Entrez.
+        ## Handle cases where identifiers don't map 1:1 to NCBI.
         ## In this case, the first (oldest) identifier will be used.
         x <- unlist(
             x = lapply(X = x, FUN = `[[`, 1L),
