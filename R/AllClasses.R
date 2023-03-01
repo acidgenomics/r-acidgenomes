@@ -1,33 +1,5 @@
 ## Genome annotation classes ===================================================
 
-#' Shared GenomicRanges validity checks
-#'
-#' @note Updated 2022-05-24.
-#' @noRd
-#'
-#' @details
-#' Genome build and organism are not defined in minimal FlyBase GTF example.
-.grangesValidity <- function(object) {
-    ok <- validateClasses(
-        object = metadata(object),
-        expected = list(
-            "date" = "Date",
-            "ignoreVersion" = "logical",
-            "level" = "character",
-            "packageVersion" = "package_version",
-            "provider" = "character",
-            "synonyms" = "logical"
-        ),
-        subset = TRUE
-    )
-    if (!isTRUE(ok)) {
-        return(ok)
-    }
-    TRUE
-}
-
-
-
 #' Shared Ensembl validity checks
 #'
 #' @note Updated 2021-02-26.
@@ -109,6 +81,34 @@
         expected = list(
             "genomeBuild" = "character",
             "organism" = "character"
+        ),
+        subset = TRUE
+    )
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
+    TRUE
+}
+
+
+
+#' Shared GenomicRanges validity checks
+#'
+#' @note Updated 2022-05-24.
+#' @noRd
+#'
+#' @details
+#' Genome build and organism are not defined in minimal FlyBase GTF example.
+.grangesValidity <- function(object) {
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "date" = "Date",
+            "ignoreVersion" = "logical",
+            "level" = "character",
+            "packageVersion" = "package_version",
+            "provider" = "character",
+            "synonyms" = "logical"
         ),
         subset = TRUE
     )
@@ -524,18 +524,56 @@ setValidity(
 
 ## Identifier classes ==========================================================
 
-#' NCBI Entrez gene identifier information
+#' HGNC complete set metadata
 #'
 #' @export
-#' @note Updated 2022-10-24.
+#' @note Updated 2023-03-01.
 #'
-#' @return `EntrezGeneInfo`.
+#' @return `HGNC`.
 setClass(
-    Class = "EntrezGeneInfo",
+    Class = "HGNC",
     contains = "DFrame"
 )
 setValidity(
-    Class = "EntrezGeneInfo",
+    Class = "HGNC",
+    method = function(object) {
+        ok <- validate(
+            hasColnames(object),
+            hasRows(object)
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        cols <- c("hgncId", "ensemblGeneId", "entrezId")
+        if (!isSubset(cols, colnames(object))) {
+            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+        }
+        ok <- validate(
+            isSubset(cols, colnames(object)),
+            is.integer(object[[cols[[1L]]]]),
+            hasNoDuplicates(object[[cols[[1L]]]])
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
+#' NCBI gene identifier information
+#'
+#' @export
+#' @note Updated 2023-03-01.
+#'
+#' @return `NcbiGeneInfo`.
+setClass(
+    Class = "NcbiGeneInfo",
+    contains = "DFrame"
+)
+setValidity(
+    Class = "NcbiGeneInfo",
     method = function(object) {
         ok <- validate(
             hasColnames(object),
@@ -571,61 +609,22 @@ setValidity(
 
 
 
-#' HGNC complete set metadata
-#'
-#' @export
-#' @note Updated 2022-04-25.
-#'
-#' @return `HGNC`.
-setClass(
-    Class = "HGNC",
-    contains = "DFrame"
-)
-setValidity(
-    Class = "HGNC",
-    method = function(object) {
-        ok <- validate(
-            hasColnames(object),
-            hasRows(object)
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        cols <- c(
-            "hgnc" = "hgncId",
-            "ensembl" = "ensemblGeneId"
-        )
-        if (!isSubset(cols, colnames(object))) {
-            colnames(object) <- camelCase(colnames(object), strict = TRUE)
-        }
-        ok <- validate(
-            isSubset(cols, colnames(object)),
-            is.integer(object[[cols[[1L]]]]),
-            hasNoDuplicates(object[[cols[[1L]]]])
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        TRUE
-    }
-)
-
-
-
 ## Identifier mapping classes ==================================================
 
-#' @inherit AcidGenerics::Ensembl2Entrez description return title
+## FIXME Rename to "ensemblGeneId" and "ncbiGeneId" columns.
+
+#' @inherit AcidGenerics::Ensembl2Ncbi description return title
 #' @export
-#' @note Updated 2022-04-25.
+#' @note Updated 2023-03-01.
 #'
 #' @details
-#' Contains a `DFrame` with `ensemblId` and `entrezId` columns.
+#' Contains a `DFrame` with `ensemblGeneId` and `ncbiGeneId` columns.
 setClass(
-    Class = "Ensembl2Entrez",
+    Class = "Ensembl2Ncbi",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Ensembl2Entrez",
+    Class = "Ensembl2Ncbi",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
@@ -637,55 +636,14 @@ setValidity(
             return(ok)
         }
         cols <- c(
-            "ensembl" = "ensemblId",
-            "entrez" = "entrezId"
+            "ensembl" = "ensemblGeneId",
+            "ncbi" = "ncbiGeneId"
         )
         if (!identical(cols, colnames(object))) {
             colnames(object) <- unname(cols)
         }
         ok <- validate(
-            is.integer(object[[cols[["entrez"]]]])
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        TRUE
-    }
-)
-
-
-
-#' @inherit AcidGenerics::Entrez2Ensembl description return title
-#' @export
-#' @note Updated 2022-04-25.
-#'
-#' @details
-#' Contains a `DFrame` with `ensemblId` and `entrezId` columns.
-setClass(
-    Class = "Entrez2Ensembl",
-    contains = "DFrame"
-)
-setValidity(
-    Class = "Entrez2Ensembl",
-    method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 2L),
-            hasColnames(object),
-            hasRows(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        cols <- c(
-            "entrez" = "entrezId",
-            "ensembl" = "ensemblId"
-        )
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- unname(cols)
-        }
-        ok <- validate(
-            is.integer(object[[cols[["entrez"]]]])
+            is.integer(object[[cols[["ncbi"]]]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -743,21 +701,20 @@ setValidity(
 
 
 
-#' HGNC-to-Ensembl gene identifier mappings
+## FIXME Update the column names here.
+
+#' @inherit AcidGenerics::Ncbi2Ensembl description return title
+#' @export
+#' @note Updated 2023-03-01.
 #'
 #' @details
-#' Contains a `DFrame` with `hgnc` and `ensembl` columns.
-#'
-#' @export
-#' @note Updated 2022-04-25.
-#'
-#' @return `HGNC2Ensembl`.
+#' Contains a `DFrame` with `ncbiGeneId` and `ensemblGeneId` columns.
 setClass(
-    Class = "HGNC2Ensembl",
+    Class = "Ncbi2Ensembl",
     contains = "DFrame"
 )
 setValidity(
-    Class = "HGNC2Ensembl",
+    Class = "Ncbi2Ensembl",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
@@ -769,60 +726,14 @@ setValidity(
             return(ok)
         }
         cols <- c(
-            "hgnc" = "hgncId",
-            "ensembl" = "ensemblId"
+            "ncbi" = "ncbiGeneId",
+            "ensembl" = "ensemblGeneId"
         )
         if (!identical(cols, colnames(object))) {
             colnames(object) <- unname(cols)
         }
         ok <- validate(
-            is.integer(object[[cols[["hgnc"]]]]),
-            hasNoDuplicates(object[[cols[["hgnc"]]]])
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        TRUE
-    }
-)
-
-
-
-#' MGI-to-Ensembl gene identifier mappings
-#'
-#' @details
-#' Contains a `DFrame` with `mgi` and `ensembl` columns.
-#'
-#' @export
-#' @note Updated 2022-04-25.
-#'
-#' @return `MGI2Ensembl`.
-setClass(
-    Class = "MGI2Ensembl",
-    contains = "DFrame"
-)
-setValidity(
-    Class = "MGI2Ensembl",
-    method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 2L),
-            hasColnames(object),
-            hasRows(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        cols <- c(
-            "mgi" = "mgiId",
-            "ensembl" = "ensemblId"
-        )
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- unname(cols)
-        }
-        ok <- validate(
-            is.integer(object[[cols[["mgi"]]]]),
-            hasNoDuplicates(object[[cols[["mgi"]]]])
+            is.integer(object[[cols[["ncbi"]]]])
         )
         if (!isTRUE(ok)) {
             return(ok)
