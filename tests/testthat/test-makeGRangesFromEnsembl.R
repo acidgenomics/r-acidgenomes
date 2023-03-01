@@ -1,7 +1,3 @@
-## FIXME Need to rename Entrez here.
-
-
-
 test_that("Genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
@@ -39,11 +35,11 @@ test_that("Genes", {
             "broadClass" = "Rle",
             "canonicalTranscript" = "Rle",
             "description" = "Rle",
-            "entrezId" = "CompressedIntegerList",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneIdVersion" = "Rle",
             "geneName" = "Rle",
+            "ncbiGeneId" = "CompressedIntegerList",
             "seqCoordSystem" = "Rle"
         )
     )
@@ -65,11 +61,11 @@ test_that("Genes", {
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "entrezId" = "4780",
             "geneBiotype" = "protein_coding",
             "geneId" = "ENSG00000116044",
             "geneIdVersion" = "ENSG00000116044.17",
             "geneName" = "NFE2L2",
+            "ncbiGeneId" = "4780",
             "seqCoordSystem" = "chromosome"
         )
     )
@@ -109,7 +105,6 @@ test_that("Transcripts", {
             "broadClass" = "Rle",
             "canonicalTranscript" = "Rle",
             "description" = "Rle",
-            "entrezId" = "CompressedIntegerList",
             "gcContent" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -118,6 +113,7 @@ test_that("Transcripts", {
             "geneName" = "Rle",
             "geneSeqEnd" = "Rle",
             "geneSeqStart" = "Rle",
+            "ncbiGeneId" = "CompressedIntegerList",
             "seqCoordSystem" = "Rle",
             "txBiotype" = "Rle",
             "txCdsSeqEnd" = "Rle",
@@ -149,7 +145,6 @@ test_that("Transcripts", {
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "entrezId" = "4780",
             "gcContent" = "42.1095666394113",
             "geneBiotype" = "protein_coding",
             "geneId" = "ENSG00000116044.17",
@@ -158,6 +153,7 @@ test_that("Transcripts", {
             "geneName" = "NFE2L2",
             "geneSeqEnd" = "177392756",
             "geneSeqStart" = "177218667",
+            "ncbiGeneId" = "4780",
             "seqCoordSystem" = "chromosome",
             "txBiotype" = "protein_coding",
             "txCdsSeqEnd" = "177264576",
