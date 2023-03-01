@@ -1,4 +1,4 @@
-formats <- eval(formals(`Ensembl2Ncbi,GenomicRanges`)[["format"]])
+formats <- eval(formals(`Ensembl2Ncbi,character`)[["format"]])
 
 test_that("Ensembl2Ncbi : character", {
     genes <- c(
