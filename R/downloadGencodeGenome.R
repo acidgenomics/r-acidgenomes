@@ -1,7 +1,11 @@
+## FIXME Work toward renaming entrezGene to ncbiGeneId.
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2022-05-24.
+#' @note Updated 2023-03-01.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -196,14 +200,13 @@ downloadGencodeGenome <-
             ignoreVersion = FALSE
         )
         ## Get Entrez and RefSeq identifier mappings.
-        entrezGene <- import(
-            con = metadataFiles[["files"]][["entrezGene"]],
+        ncbiGene <- import(
+            con = metadataFiles[["files"]][["ncbiGene"]],
             format = "tsv",
-            colnames = c("txId", "entrezId")
+            colnames = c("txId", "ncbiGeneId")
         )
-        entrezGene <- as(entrezGene, "DataFrame")
-        entrezGene <- leftJoin(
-            x = entrezGene,
+        ncbiGene <- leftJoin(
+            x = as(ncbiGene, "DataFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
@@ -216,9 +219,8 @@ downloadGencodeGenome <-
                 "refSeqProteinId"
             )
         )
-        refSeq <- as(refSeq, "DataFrame")
         refSeq <- leftJoin(
-            x = refSeq,
+            x = as(refSeq, "DataFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
@@ -226,42 +228,26 @@ downloadGencodeGenome <-
         mcols <- mcols(genes)
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(
-                object = entrezGene,
-                by = "geneId",
-                exclude = "txId"
-            ),
+            y = .nest2(object = ncbiGene, by = "geneId", exclude = "txId"),
             by = "geneId"
         )
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(
-                object = refSeq,
-                by = "geneId",
-                exclude = "txId"
-            ),
+            y = .nest2(object = refSeq, by = "geneId", exclude = "txId"),
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
         mcols(genes) <- mcols
-        ## Add Entrez and RefSeq identifiers to transcript metadata.
+        ## Add NCBI and RefSeq identifiers to transcript metadata.
         mcols <- mcols(transcripts)
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(
-                object = entrezGene,
-                by = "txId",
-                exclude = "geneId"
-            ),
+            y = .nest2(object = ncbiGene, by = "txId", exclude = "geneId"),
             by = "txId"
         )
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(
-                object = refSeq,
-                by = "txId",
-                exclude = "geneId"
-            ),
+            y = .nest2(object = refSeq, by = "txId", exclude = "geneId"),
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
@@ -335,8 +321,9 @@ downloadGencodeGenome <-
                 )
             ),
             "md5sums" = pasteURL(releaseURL, "MD5SUMS"),
-            ## TSV (without colnames) mapping transcripts to Entrez gene IDs.
-            "entrezGene" = pasteURL(
+            ## TSV (without colnames) mapping transcripts to NCBI (Entrez)
+            ## gene identifiers.
+            "ncbiGene" = pasteURL(
                 releaseURL,
                 paste0("gencode.v", release, ".metadata.EntrezGene.gz")
             ),
