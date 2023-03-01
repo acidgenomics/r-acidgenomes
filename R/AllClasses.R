@@ -544,7 +544,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        cols <- c("hgncId", "ensemblGeneId", "entrezId")
+        cols <- c("hgncId", "ensemblGeneId", "ncbiGeneId")
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
         }
