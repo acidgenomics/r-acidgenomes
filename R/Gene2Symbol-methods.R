@@ -98,7 +98,7 @@ NULL
             }
         }
         assert(hasRows(object))
-        ## Enforce coercion of integer gene identifiers (e.g. NCBI Entrez).
+        ## Enforce coercion of integer gene identifiers (e.g. NCBI).
         if (is.integer(object[["geneId"]])) {
             object[["geneId"]] <- as.character(object[["geneId"]])
         }
