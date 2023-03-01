@@ -42,11 +42,10 @@ Ensembl-to-NCBI gene identifier mappings
 Updated 2023-03-01.
 }
 \examples{
-organism <- "Homo sapiens"
-
 ## character ====
-## Ensembl-to-NCBI.
-genes <- c("ENSG00000000003", "ENSG00000000005")
-x <- Ensembl2Ncbi(object = genes, organism = organism)
+x <- Ensembl2Ncbi(
+    object = c("ENSG00000000003", "ENSG00000000005"),
+    organism = "Homo sapiens"
+)
 print(x)
 }

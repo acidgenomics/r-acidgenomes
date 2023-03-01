@@ -37,8 +37,6 @@ Updated 2023-03-01.
 }
 \examples{
 ## integer ====
-genes <- c(1L, 2L)
-organism <- "Homo sapiens"
-x <- Ncbi2Ensembl(object = genes, organism = organism)
+x <- Ncbi2Ensembl(object = c(1L, 2L), organism = "Homo sapiens")
 print(x)
 }

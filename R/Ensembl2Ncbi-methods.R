@@ -14,12 +14,11 @@
 #' - `"long"`: Return `1:many` in long format.
 #'
 #' @examples
-#' organism <- "Homo sapiens"
-#'
 #' ## character ====
-#' ## Ensembl-to-NCBI.
-#' genes <- c("ENSG00000000003", "ENSG00000000005")
-#' x <- Ensembl2Ncbi(object = genes, organism = organism)
+#' x <- Ensembl2Ncbi(
+#'     object = c("ENSG00000000003", "ENSG00000000005"),
+#'     organism = "Homo sapiens"
+#' )
 #' print(x)
 NULL
 
