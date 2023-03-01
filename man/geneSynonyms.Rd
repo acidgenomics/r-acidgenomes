@@ -7,7 +7,7 @@
 geneSynonyms(
   organism,
   taxonomicGroup = NULL,
-  geneIdType = c("NCBI", "Ensembl", "HGNC", "OMIM", "Entrez")
+  geneIdType = c("NCBI", "Ensembl", "HGNC", "OMIM")
 )
 }
 \arguments{
