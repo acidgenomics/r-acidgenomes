@@ -1,7 +1,3 @@
-## FIXME Work toward renaming entrezGene to ncbiGeneId.
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
