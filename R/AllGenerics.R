@@ -1,12 +1,12 @@
-#' @rdname Ensembl2Entrez
-#' @name Ensembl2Entrez
-#' @usage Ensembl2Entrez(object, ...)
+#' @rdname Ensembl2Ncbi
+#' @name Ensembl2Ncbi
+#' @usage Ensembl2Ncbi(object, ...)
 #' @export
 NULL
 
-#' @rdname Entrez2Ensembl
-#' @name Entrez2Ensembl
-#' @usage Entrez2Ensembl(object, ...)
+#' @rdname Ncbi2Ensembl
+#' @name Ncbi2Ensembl
+#' @usage Ncbi2Ensembl(object, ...)
 #' @export
 NULL
 
