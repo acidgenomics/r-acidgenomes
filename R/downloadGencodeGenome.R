@@ -195,7 +195,7 @@ downloadGencodeGenome <-
             level = "transcripts",
             ignoreVersion = FALSE
         )
-        ## Get Entrez and RefSeq identifier mappings.
+        ## Get NCBI gene and RefSeq identifier mappings.
         ncbiGene <- import(
             con = metadataFiles[["files"]][["ncbiGene"]],
             format = "tsv",
@@ -220,7 +220,7 @@ downloadGencodeGenome <-
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
-        ## Add Entrez and RefSeq identifiers to gene metadata.
+        ## Add NCBI and RefSeq identifiers to gene metadata.
         mcols <- mcols(genes)
         mcols <- leftJoin(
             x = mcols,
@@ -317,8 +317,7 @@ downloadGencodeGenome <-
                 )
             ),
             "md5sums" = pasteURL(releaseURL, "MD5SUMS"),
-            ## TSV (without colnames) mapping transcripts to NCBI (Entrez)
-            ## gene identifiers.
+            ## TSV mapping transcripts to NCBI (Entrez) genes.
             "ncbiGene" = pasteURL(
                 releaseURL,
                 paste0("gencode.v", release, ".metadata.EntrezGene.gz")
