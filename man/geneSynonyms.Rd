@@ -7,7 +7,7 @@
 geneSynonyms(
   organism,
   taxonomicGroup = NULL,
-  geneIdType = c("Entrez", "Ensembl", "HGNC", "OMIM")
+  geneIdType = c("NCBI", "Ensembl", "HGNC", "OMIM", "Entrez")
 )
 }
 \arguments{
@@ -28,7 +28,7 @@ Type of gene identifier to return in the \code{geneId} column.}
 Look up gene synonyms from NCBI.
 }
 \note{
-Updated 2022-05-04.
+Updated 2023-03-01.
 }
 \section{\emph{Caenorhabditis elegans}}{
 
