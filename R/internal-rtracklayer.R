@@ -1,10 +1,6 @@
-## FIXME Need to rename Entrez here.
-
-
-
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #' @noRd
 #'
 #' @details
@@ -493,9 +489,9 @@
 #'
 #' Note that these are RefSeq status: MODEL.
 #'
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #' @noRd
-.getEntrezIdsFromRefSeqGff <- function(object) {
+.getNcbiGeneIdsFromRefSeqGff <- function(object) {
     mcols <- mcols(object)[, c("ID", "Dbxref")]
     geneIds <- mcols[["ID"]]
     dbxref <- mcols[["Dbxref"]]
@@ -504,17 +500,14 @@
         is(dbxref, "CharacterList"),
         is(lgl, "LogicalList")
     )
-    entrezIds <- unlist(dbxref[lgl], recursive = FALSE)
-    assert(identical(length(entrezIds), length(geneIds)))
-    entrezIds <- do.call(
+    ncbiGeneIds <- unlist(dbxref[lgl], recursive = FALSE)
+    assert(identical(length(ncbiGeneIds), length(geneIds)))
+    ncbiGeneIds <- do.call(
         what = rbind,
-        args = strsplit(x = entrezIds, split = ":", fixed = TRUE)
+        args = strsplit(x = ncbiGeneIds, split = ":", fixed = TRUE)
     )[, 2L]
-    entrezIds <- as.integer(entrezIds)
-    df <- DataFrame(
-        "ID" = geneIds,
-        "entrez_id" = entrezIds
-    )
+    ncbiGeneIds <- as.integer(ncbiGeneIds)
+    df <- DataFrame("ID" = geneIds, "ncbi_gene_id" = ncbiGeneIds)
     df <- unique(df[complete.cases(df), ])
     assert(hasNoDuplicates(df[["ID"]]))
     df
@@ -522,25 +515,22 @@
 
 
 
-#' Extract Entrez gene identifiers from RefSeq GTF file.
+#' Extract NCBI gene identifiers from RefSeq GTF file.
 #'
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #' @noRd
-.getEntrezIdsFromRefSeqGtf <- function(object) {
+.getNcbiGeneIdsFromRefSeqGtf <- function(object) {
     mcols <- mcols(object)[, c("gene_id", "db_xref")]
     keep <- grepl(pattern = "GeneID:", x = mcols[["db_xref"]], fixed = TRUE)
     mcols <- unique(mcols[keep, ])
     assert(hasNoDuplicates(mcols[["gene_id"]]))
     geneIds <- mcols[["gene_id"]]
-    entrezIds <- stri_match_first_regex(
+    ncbiGeneIds <- stri_match_first_regex(
         str = mcols[["db_xref"]],
         pattern = "GeneID:([[:digit:]]+)"
     )[, 2L]
-    entrezIds <- as.integer(entrezIds)
-    df <- DataFrame(
-        "gene_id" = geneIds,
-        "entrez_id" = entrezIds
-    )
+    ncbiGeneIds <- as.integer(ncbiGeneIds)
+    df <- DataFrame("gene_id" = geneIds, "ncbi_gene_id" = ncbiGeneIds)
     df <- df[complete.cases(df), ]
     df
 }
@@ -569,8 +559,8 @@
             msg = "Failed to extract any genes."
         )
         object <- object[keep]
-        entrezIds <- .getEntrezIdsFromRefSeqGff(object)
-        mcols(object) <- leftJoin(x = mcols(object), y = entrezIds, by = "ID")
+        ncbiGeneIds <- .getNcbiGeneIdsFromRefSeqGff(object)
+        mcols(object) <- leftJoin(x = mcols(object), y = ncbiGeneIds, by = "ID")
         names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
         names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
@@ -607,8 +597,8 @@
             )
         )
         ## Need to run this before gene filtering, because only exons in GTF
-        ## file contain the Entrez gene identifiers.
-        entrezIds <- .getEntrezIdsFromRefSeqGtf(object)
+        ## file contain the NCBI gene identifiers.
+        ncbiGeneIds <- .getNcbiGeneIdsFromRefSeqGtf(object)
         keep <- mcols(object)[["type"]] == "gene"
         assert(
             any(keep),
@@ -617,7 +607,7 @@
         object <- object[keep]
         mcols(object) <- leftJoin(
             x = mcols(object),
-            y = entrezIds,
+            y = ncbiGeneIds,
             by = "gene_id"
         )
         names(mcols(object))[
@@ -636,7 +626,7 @@
 
 ## NOTE Consider including "ensemblTxId" from "dbxref" here.
 
-## Updated 2022-05-04.
+## Updated 2023-03-01.
 .rtracklayerRefSeqTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGff(object)
@@ -644,8 +634,8 @@
             ,
             c(
                 "description",
-                "entrez_id",
                 "gene_biotype",
+                "ncbi_gene_id",
                 "parent_gene_id"
             ),
             drop = FALSE
@@ -733,7 +723,7 @@
 
 ## NOTE Consider including "ensemblTxId" from "dbxref" here.
 
-## Updated 2022-05-04.
+## Updated 2023-03-01.
 .rtracklayerRefSeqTranscriptsGtf <-
     function(object) {
         genes <- .rtracklayerRefSeqGenesGtf(object)
@@ -741,8 +731,8 @@
             ,
             c(
                 "description",
-                "entrez_id",
                 "gene_biotype",
+                "ncbi_gene_id",
                 "parent_gene_id"
             ),
             drop = FALSE
