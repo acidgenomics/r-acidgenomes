@@ -428,7 +428,7 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-03-01.
 #' @noRd
 .standardizeMcols <- function(object) {
     assert(is(object, "GenomicRanges"))
@@ -450,6 +450,10 @@
             x = names(mcols),
             ignore.case = FALSE
         )
+    ## Use "NCBI" instead of "Entrez".
+    if (isSubset("entrezId", names(mcols))) {
+        names(mcols)[names(mcols) == "entrezId"] <- "ncbiGeneId"
+    }
     ## Always prefer use of "geneName" instead of "geneSymbol" or "symbol".
     ## Note that ensembldb output "symbol" duplicate by default.
     if (isSubset(c("geneName", "symbol"), names(mcols))) {
