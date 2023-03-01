@@ -2,7 +2,8 @@
 % Please edit documentation in R/HGNC.R
 \name{HGNC}
 \alias{HGNC}
-\title{Import HGNC complete set metadata}
+\title{Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
+metadata}
 \usage{
 HGNC()
 }
@@ -10,7 +11,8 @@ HGNC()
 \code{HGNC}.
 }
 \description{
-Import HGNC complete set metadata
+Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
+metadata
 }
 \note{
 Updated 2023-03-01.
