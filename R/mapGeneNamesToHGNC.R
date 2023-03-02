@@ -19,7 +19,7 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         isCharacter(genes),
         is(hgnc, "HGNC")
     )
-    hgncDf <- as(hgnc, "DataFrame")
+    df <- as(hgnc, "DataFrame")
     pool <- function(df) {
         lst <- apply(
             X = df,
@@ -44,7 +44,8 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         out <- list("rep" = rep, "unlist" = unlist)
         out
     }
-    pool <- pool(df = hgncDf[, c("symbol", "prevSymbol", "aliasSymbol")])
+    cols <- c("symbol", "prevSymbol", "aliasSymbol")
+    pool <- pool(df = df[, cols])
     idx <- match(x = genes, table = pool[["unlist"]])
     assert(
         !anyNA(idx),
