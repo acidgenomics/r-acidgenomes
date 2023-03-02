@@ -21,7 +21,6 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
     )
     df <- as(hgnc, "DataFrame")
     ## FIXME Move this to AcidBase.
-    ## FIXME This needs to return NA for match failures.
     nestedMatch <- function(x, table) {
         lst <- apply(
             X = table,
