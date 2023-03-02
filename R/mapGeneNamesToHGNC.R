@@ -41,6 +41,8 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
             )
         )
         unlist <- unlist(x = lst, recursive = FALSE, use.names = FALSE)
+        ## FIXME Is it more memory efficient structured to dump this into
+        ## a data frame instead?
         out <- list("rep" = rep, "unlist" = unlist)
         out
     }
