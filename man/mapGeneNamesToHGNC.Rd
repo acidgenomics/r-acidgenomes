@@ -4,17 +4,21 @@
 \alias{mapGeneNamesToHGNC}
 \title{Map gene names (symbols) to HGNC identifiers}
 \usage{
-mapGeneNamesToHGNC(hgnc, genes)
+mapGeneNamesToHGNC(genes, hgnc = NULL)
 }
 \arguments{
-\item{hgnc}{\code{HGNC}.}
-
 \item{genes}{\code{character}.
-Gene names (e.g. \code{"TP53"}).}
+Gene names (e.g. \code{"TUT4"}).}
+
+\item{hgnc}{\code{HGNC} or \code{NULL}.
+If \code{NULL}, \code{HGNC} annotations will be downloaded automatically.}
 }
 \description{
 Map gene names (symbols) to HGNC identifiers
 }
 \note{
 Updated 2023-03-02.
+}
+\examples{
+x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
 }
