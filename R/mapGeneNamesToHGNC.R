@@ -4,7 +4,7 @@
 #' @note Updated 2023-03-02.
 #'
 #' @param genes `character`.
-#' Gene names (e.g. `"TP53"`).
+#' Gene names (e.g. `"TUT4"`).
 #'
 #' @param hgnc `HGNC` or `NULL`.
 #' If `NULL`, `HGNC` annotations will be downloaded automatically.
@@ -20,9 +20,11 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         is(hgnc, "HGNC")
     )
     df <- as(hgnc, "DataFrame")
-    pool <- function(df) {
+    ## FIXME Move this to AcidBase.
+    ## FIXME This needs to return NA for match failures.
+    nestedMatch <- function(x, table) {
         lst <- apply(
-            X = df,
+            X = table,
             MARGIN = 1L,
             FUN = function(x) {
                 x <- unlist(x, recursive = TRUE, use.names = FALSE)
@@ -32,7 +34,7 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
             },
             simplify = FALSE
         )
-        rep <- rep(
+        idx <- rep(
             x = seq_along(lst),
             times = vapply(
                 X = lst,
@@ -40,20 +42,18 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
                 FUN.VALUE = integer(1L)
             )
         )
-        unlist <- unlist(x = lst, recursive = FALSE, use.names = FALSE)
-        ## FIXME Is it more memory efficient structured to dump this into
-        ## a data frame instead?
-        out <- list("rep" = rep, "unlist" = unlist)
+        value <- unlist(x = lst, recursive = FALSE, use.names = FALSE)
+        df <- data.frame("idx" = idx, "value" = value)
+        df <- df[!duplicated(df[["value"]]), , drop = FALSE]
+        idx <- match(x = x, table = df[["value"]])
+        out <- df[["idx"]][idx]
         out
     }
-    cols <- c("symbol", "prevSymbol", "aliasSymbol")
-    pool <- pool(df = df[, cols])
-    idx <- match(x = genes, table = pool[["unlist"]])
-    assert(
-        !anyNA(idx),
-        msg = "Failed to map all genes."
+    idx <- nestedMatch(
+        x = genes,
+        table = df[, c("symbol", "prevSymbol", "aliasSymbol")]
     )
-    idx2 <- pool[["rep"]][idx]
-    out <- hgnc[idx2, "hgncId", drop = TRUE]
+    assert(!anyNA(idx), msg = "Failed to map all genes.")
+    out <- hgnc[idx, "hgncId", drop = TRUE]
     out
 }
