@@ -1,8 +1,3 @@
-## FIXME Add support for this.
-## FIXME Need to add support for
-
-
-
 #' Map gene names to NCBI
 #'
 #' @export
