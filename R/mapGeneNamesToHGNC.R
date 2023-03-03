@@ -1,13 +1,13 @@
 #' Map gene names (symbols) to HGNC identifiers
 #'
 #' @export
-#' @note Updated 2023-03-02.
+#' @note Updated 2023-03-03.
 #'
 #' @param genes `character`.
 #' Gene names (e.g. `"TUT4"`).
 #'
 #' @param hgnc `HGNC` or `NULL`.
-#' If `NULL`, `HGNC` annotations will be downloaded automatically.
+#' If `NULL`, HGNC annotations will be downloaded automatically.
 #'
 #' @examples
 #' x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
@@ -21,7 +21,7 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
     )
     df <- as(hgnc, "DataFrame")
     ## FIXME Move this to AcidBase.
-    nestedMatch <- function(x, table) {
+    matchNested <- function(x, table) {
         lst <- apply(
             X = table,
             MARGIN = 1L,
@@ -48,7 +48,7 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         out <- df[["idx"]][idx]
         out
     }
-    idx <- nestedMatch(
+    idx <- matchNested(
         x = genes,
         table = df[, c("symbol", "prevSymbol", "aliasSymbol")]
     )

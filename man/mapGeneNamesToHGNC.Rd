@@ -11,13 +11,13 @@ mapGeneNamesToHGNC(genes, hgnc = NULL)
 Gene names (e.g. \code{"TUT4"}).}
 
 \item{hgnc}{\code{HGNC} or \code{NULL}.
-If \code{NULL}, \code{HGNC} annotations will be downloaded automatically.}
+If \code{NULL}, HGNC annotations will be downloaded automatically.}
 }
 \description{
 Map gene names (symbols) to HGNC identifiers
 }
 \note{
-Updated 2023-03-02.
+Updated 2023-03-03.
 }
 \examples{
 x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
