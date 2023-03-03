@@ -19,11 +19,9 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         isCharacter(genes),
         is(hgnc, "HGNC")
     )
-    df <- as(hgnc, "DataFrame")
-    idx <- matchNested(
-        x = genes,
-        table = df[, c("symbol", "prevSymbol", "aliasSymbol")]
-    )
+    table <- as(hgnc, "DataFrame")
+    table <- table[, c("symbol", "prevSymbol", "aliasSymbol")]
+    idx <- matchNested(x = genes, table = table)
     assert(!anyNA(idx), msg = "Failed to map all genes.")
     out <- hgnc[idx, "hgncId", drop = TRUE]
     out
