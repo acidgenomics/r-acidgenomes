@@ -20,34 +20,6 @@ mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
         is(hgnc, "HGNC")
     )
     df <- as(hgnc, "DataFrame")
-    ## FIXME Move this to AcidBase.
-    matchNested <- function(x, table) {
-        lst <- apply(
-            X = table,
-            MARGIN = 1L,
-            FUN = function(x) {
-                x <- unlist(x, recursive = TRUE, use.names = FALSE)
-                x <- na.omit(x)
-                x <- unique(x)
-                x
-            },
-            simplify = FALSE
-        )
-        idx <- rep(
-            x = seq_along(lst),
-            times = vapply(
-                X = lst,
-                FUN = length,
-                FUN.VALUE = integer(1L)
-            )
-        )
-        value <- unlist(x = lst, recursive = FALSE, use.names = FALSE)
-        df <- data.frame("idx" = idx, "value" = value)
-        df <- df[!duplicated(df[["value"]]), , drop = FALSE]
-        idx <- match(x = x, table = df[["value"]])
-        out <- df[["idx"]][idx]
-        out
-    }
     idx <- matchNested(
         x = genes,
         table = df[, c("symbol", "prevSymbol", "aliasSymbol")]
