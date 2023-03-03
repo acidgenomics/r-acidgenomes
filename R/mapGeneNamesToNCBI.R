@@ -1,3 +1,7 @@
+## FIXME Add code coverage against Mus musculus.
+
+
+
 #' Map gene names to NCBI
 #'
 #' @export
