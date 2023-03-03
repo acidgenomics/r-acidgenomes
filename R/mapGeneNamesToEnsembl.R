@@ -24,6 +24,7 @@
 #'     genomeBuild = "GRCh38",
 #'     release = 109L
 #' )
+#' print(x)
 #'
 #' ## Mus musculus
 #' x <- mapGeneNamesToEnsembl(
@@ -32,6 +33,7 @@
 #'     genomeBuild = "GRCm39",
 #'     release = 109L
 #' )
+#' print(x)
 mapGeneNamesToEnsembl <- function(
         genes,
         organism,
