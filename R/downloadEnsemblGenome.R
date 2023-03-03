@@ -1,3 +1,23 @@
+## FIXME Add these files for Ensembl genome download:
+##
+## This contains peptide mapping info:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.ena.tsv
+##
+## This contains Entrez identifier mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.entrez.tsv.gz
+##
+## This contains the seqlengths:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.karyotype.tsv.gz
+##
+## This contains RefSeq mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/
+##
+## This contains UniProt peptide mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.uniprot.tsv.gz
+## Can use this to map to gene identifiers for DepMapProteomics dataset!
+
+
+
 #' Download Ensembl reference genome
 #'
 #' @export
