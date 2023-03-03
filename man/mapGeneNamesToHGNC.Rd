@@ -8,7 +8,7 @@ mapGeneNamesToHGNC(genes, hgnc = NULL)
 }
 \arguments{
 \item{genes}{\code{character}.
-Gene names (e.g. \code{"TUT4"}).}
+Human gene names (e.g. \code{"TUT4"}).}
 
 \item{hgnc}{\code{HGNC} or \code{NULL}.
 If \code{NULL}, HGNC annotations will be downloaded automatically.}
@@ -20,6 +20,7 @@ Map gene names (symbols) to HGNC identifiers
 Updated 2023-03-03.
 }
 \examples{
+## Homo sapiens (only).
 x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
 print(x)
 }
