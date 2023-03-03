@@ -1,3 +1,8 @@
+## FIXME Match using HGNC internally for Homo sapiens.
+## FIXME Add code coverage against Mus musculus here.
+
+
+
 #' Map gene names to Ensembl
 #'
 #' @export
@@ -36,6 +41,32 @@ mapGeneNamesToEnsembl <- function(
     if (is.null(release)) {
         release <- currentEnsemblVersion()
     }
+    if (identical(organism, "Homo sapiens")) {
+        hgnc <- HGNC()
+        ids <- mapGeneNamesToHGNC(genes = genes, hgnc = hgnc)
+        map <- as(hgnc, "DataFrame")
+        map <- map[, c("hgncId", "ensemblGeneId")]
+    } else {
+        ids <- mapGeneNamesToNCBI(genes = genes, organism = organism)
+        map <- .importEnsemblNcbiMap(
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release
+        )
+    }
+    idx <- match(x = ids, table = map[[1L]])
+    assert(!anyNA(idx), msg = "Failed to map all genes.")
+    out <- map[idx, 2L, drop = TRUE]
+    out
+}
+
+
+
+#' Import Ensembl-to-NCBI gene identifier mappings
+#'
+#' @note Updated 2023-03-02.
+#' @noRd
+.importEnsemblNcbiMap <- function(organism, genomeBuild, release) {
     ## Ensure we remove the patch version.
     genomeBuild <- sub(
         pattern = "\\.p[0-9]+$",
@@ -79,9 +110,4 @@ mapGeneNamesToEnsembl <- function(
     map <- map[idx, , drop = FALSE]
     keep <- !duplicated(map[["ncbiGeneId"]])
     map <- map[keep, , drop = FALSE]
-    ncbiIds <- mapGeneNamesToNCBI(genes = genes, organism = organism)
-    idx <- match(x = ncbiIds, table = map[["ncbiGeneId"]])
-    assert(!anyNA(idx), msg = "Failed to map all genes.")
-    out <- map[idx, "ensemblGeneId", drop = TRUE]
-    out
 }
