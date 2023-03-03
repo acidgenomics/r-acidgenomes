@@ -11,6 +11,7 @@
 #'
 #' @examples
 #' x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
+#' print(x)
 mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
     if (is.null(hgnc)) {
         hgnc <- HGNC()

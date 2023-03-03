@@ -21,4 +21,5 @@ Updated 2023-03-03.
 }
 \examples{
 x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
+print(x)
 }

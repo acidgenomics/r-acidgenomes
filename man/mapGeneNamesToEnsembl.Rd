@@ -35,10 +35,21 @@ gene synonym matching.
 Updated 2023-03-03.
 }
 \examples{
+## Homo sapiens.
 x <- mapGeneNamesToEnsembl(
     genes = c("TUT4", "ZCCHC11", "TENT3A"),
     organism = "Homo sapiens",
     genomeBuild = "GRCh38",
-    release = 108L
+    release = 109L
 )
+print(x)
+
+## Mus musculus
+x <- mapGeneNamesToEnsembl(
+    genes = c("Nfe2l2", "Nrf2"),
+    organism = "Mus musculus",
+    genomeBuild = "GRCm39",
+    release = 109L
+)
+print(x)
 }
