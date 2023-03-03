@@ -4,7 +4,7 @@
 \alias{mapGeneNamesToNCBI}
 \title{Map gene names to NCBI}
 \usage{
-mapGeneNamesToNCBI(genes, organism, ncbi)
+mapGeneNamesToNCBI(genes, organism, ncbi = NULL)
 }
 \arguments{
 \item{genes}{\code{character}.

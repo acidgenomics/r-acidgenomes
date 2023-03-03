@@ -22,11 +22,20 @@
 #'     organism = "Homo sapiens"
 #' )
 mapGeneNamesToNCBI <-
-    function(
-        genes,
-        organism,
-        ncbi
-    ) {
-        ## FIXME Ensure that organism and NCBI match.
-
+    function(genes, organism, ncbi = NULL) {
+        if (is.null(ncbi)) {
+            ncbi <- NcbiGeneInfo(organism = organism)
+        }
+        assert(
+            isCharacter(genes),
+            is(ncbi, "NcbiGeneInfo"),
+            identical(organism, metadata(ncbi)[["organism"]])
+        )
+        table <- as(ncbi, "DataFrame")
+        table <- table[, c("geneName", "geneSynonyms")]
+        idx <- matchNested(x = genes, table = table)
+        assert(!anyNA(idx), msg = "Failed to map all genes.")
+        out <- ncbi[idx, "geneId", drop = TRUE]
+        out <- decode(out)
+        out
     }
