@@ -4,12 +4,13 @@
 #' @note Updated 2023-03-03.
 #'
 #' @param genes `character`.
-#' Gene names (e.g. `"TUT4"`).
+#' Human gene names (e.g. `"TUT4"`).
 #'
 #' @param hgnc `HGNC` or `NULL`.
 #' If `NULL`, HGNC annotations will be downloaded automatically.
 #'
 #' @examples
+#' ## Homo sapiens (only).
 #' x <- mapGeneNamesToHGNC(genes = c("TUT4", "ZCCHC11", "TENT3A"))
 #' print(x)
 mapGeneNamesToHGNC <- function(genes, hgnc = NULL) {
