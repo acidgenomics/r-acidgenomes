@@ -17,11 +17,20 @@
 #' Gene names (e.g. `"TUT4"`).
 #'
 #' @examples
+#' ## Homo sapiens.
 #' x <- mapGeneNamesToEnsembl(
 #'     genes = c("TUT4", "ZCCHC11", "TENT3A"),
 #'     organism = "Homo sapiens",
 #'     genomeBuild = "GRCh38",
-#'     release = 108L
+#'     release = 109L
+#' )
+#'
+#' ## Mus musculus
+#' x <- mapGeneNamesToEnsembl(
+#'     genes = c("Nfe2l2", "Nrf2"),
+#'     organism = "Mus musculus",
+#'     genomeBuild = "GRCm39",
+#'     release = 109L
 #' )
 mapGeneNamesToEnsembl <- function(
         genes,
@@ -43,16 +52,16 @@ mapGeneNamesToEnsembl <- function(
     }
     if (identical(organism, "Homo sapiens")) {
         hgnc <- HGNC()
-        ids <- mapGeneNamesToHGNC(genes = genes, hgnc = hgnc)
         map <- as(hgnc, "DataFrame")
         map <- map[, c("hgncId", "ensemblGeneId")]
+        ids <- mapGeneNamesToHGNC(genes = genes, hgnc = hgnc)
     } else {
-        ids <- mapGeneNamesToNCBI(genes = genes, organism = organism)
         map <- .importEnsemblNcbiMap(
             organism = organism,
             genomeBuild = genomeBuild,
             release = release
         )
+        ids <- mapGeneNamesToNCBI(genes = genes, organism = organism)
     }
     idx <- match(x = ids, table = map[[1L]])
     assert(!anyNA(idx), msg = "Failed to map all genes.")
@@ -94,20 +103,23 @@ mapGeneNamesToEnsembl <- function(
         ),
         protocol = "https"
     )
-    map <- import(con = .cacheIt(url))
-    colnames(map) <- camelCase(colnames(map))
-    keep <- map[["dbName"]] == "EntrezGene"
-    map <- map[keep, , drop = FALSE]
-    keep <- map[["infoType"]] == "DEPENDENT"
-    map <- map[keep, , drop = FALSE]
-    map <- map[, c("xref", "geneStableId")]
-    map <- map[complete.cases(map), , drop = FALSE]
-    map <- unique(map)
-    assert(all(grepl(pattern = "^[0-9]+$", x = map[["xref"]])))
-    colnames(map) <- c("ncbiGeneId", "ensemblGeneId")
-    map[["ncbiGeneId"]] <- as.integer(map[["ncbiGeneId"]])
-    idx <- order(map[["ncbiGeneId"]], map[["ensemblGeneId"]])
-    map <- map[idx, , drop = FALSE]
-    keep <- !duplicated(map[["ncbiGeneId"]])
-    map <- map[keep, , drop = FALSE]
+    df <- import(con = .cacheIt(url))
+    df <- as(df, "DataFrame")
+    rownames(df) <- NULL
+    colnames(df) <- camelCase(colnames(df))
+    keep <- df[["dbName"]] == "EntrezGene"
+    df <- df[keep, , drop = FALSE]
+    keep <- df[["infoType"]] == "DEPENDENT"
+    df <- df[keep, , drop = FALSE]
+    df <- df[, c("xref", "geneStableId")]
+    df <- df[complete.cases(df), , drop = FALSE]
+    df <- unique(df)
+    assert(all(grepl(pattern = "^[0-9]+$", x = df[["xref"]])))
+    colnames(df) <- c("ncbiGeneId", "ensemblGeneId")
+    df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
+    idx <- order(df[["ncbiGeneId"]], df[["ensemblGeneId"]])
+    df <- df[idx, , drop = FALSE]
+    keep <- !duplicated(df[["ncbiGeneId"]])
+    df <- df[keep, , drop = FALSE]
+    df
 }
