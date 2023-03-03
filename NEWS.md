@@ -1,5 +1,13 @@
 # Release notes
 
+## AcidGenomes 0.4.9 (UNRELEASED)
+
+New functions
+
+- `mapGeneNamesToEnsembl`.
+- `mapGeneNamesToHGNC`.
+- `mapGeneNamesToNCBI`.
+
 ## AcidGenomes 0.4.8 (2023-02-16)
 
 Minor changes:
