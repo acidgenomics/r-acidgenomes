@@ -202,6 +202,8 @@
 
 
 
+## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
+
 #' Ensembl gene annotations
 #'
 #' @details
@@ -231,6 +233,8 @@ setValidity(
 )
 
 
+
+## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
 
 #' Ensembl transcript annotations
 #'
