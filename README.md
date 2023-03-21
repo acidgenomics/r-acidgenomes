@@ -28,22 +28,22 @@ Configure [Conda][] to use the [Bioconda][] channels.
 
 ```sh
 # Don't install recipe into base environment.
-name='r-acidgenomes'
-conda create --name="$name" "$name"
-conda activate "$name"
+conda create --name='r-acidgenomes@0.4.8' 'r-acidgenomes==0.4.8'
+conda activate 'r-acidgenomes@0.4.8'
 R
 ```
 
 ### [Docker][] method
 
 ```sh
-image='quay.io/biocontainers/r-acidgenomes'
+image='quay.io/biocontainers/r-acidgenomes:0.4.8--r42hdfd78af_1'
 workdir='/mnt/work'
 docker pull "$image"
 docker run -it \
     --volume="${PWD}:${workdir}" \
     --workdir="$workdir" \
-    "$image"
+    "$image" \
+    R
 ```
 
 [bioconda]: https://bioconda.github.io/
