@@ -37,7 +37,7 @@ R
 ### [Docker][] method
 
 ```sh
-image='acidgenomics/r-packages:acidgenomes'
+image='quay.io/biocontainers/r-acidgenomes'
 workdir='/mnt/work'
 docker pull "$image"
 docker run -it \
