@@ -10,7 +10,6 @@
 #' Synonym support for *Caenorhabditis elegans* is poor on NCBI. Use the
 #' [WormBase](https://r.acidgenomics.com/packages/wormbase/) package instead.
 #'
-#'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams NcbiGeneInfo
 #' @inheritParams params
