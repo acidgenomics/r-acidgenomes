@@ -1,6 +1,6 @@
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-04-12.
 #' @noRd
 #'
 #' @details
@@ -9,7 +9,6 @@
     function(file,
              level,
              ignoreVersion,
-             synonyms,
              meta) {
         assert(
             isString(file),
@@ -63,8 +62,7 @@
         }
         .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+            ignoreVersion = ignoreVersion
         )
     }
 
