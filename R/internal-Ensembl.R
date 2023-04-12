@@ -1,5 +1,3 @@
-## FIXME Add support for defining this in GRanges from ensembldb and GTF.
-
 #' Get extra gene metadata from Ensembl
 #'
 #' @note Updated 2023-04-12.
@@ -66,7 +64,7 @@
         )
         df1 <- gene
         df1 <- df1[, c(8, 13, 10)]
-        colnames(df1) <- c("mysqlId", "geneId", "description")
+        colnames(df1) <- c("mysqlId", "geneIdNoVersion", "description")
         df1 <- as(df1, "DataFrame")
         df2 <- synonym
         df2 <- unique(df2)
@@ -85,11 +83,11 @@
         df3 <- split(x = df3, f = df3[[1L]])
         df3 <- lapply(X = df3, FUN = `[[`, 2L)
         df3 <- as.DataFrame(list(
-            "geneId" = names(df3),
+            "geneIdNoVersion" = names(df3),
             "ncbiGeneId" = unname(df3)
         ))
         out <- leftJoin(x = df1, y = df2, by = "mysqlId")
-        out <- leftJoin(x = out, y = df3, by = "geneId")
+        out <- leftJoin(x = out, y = df3, by = "geneIdNoVersion")
         out[["mysqlId"]] <- NULL
         out <- out[, sort(colnames(out))]
         out
