@@ -2,11 +2,16 @@
 
 ## AcidGenomes 0.4.9 (UNRELEASED)
 
-New functions
+New functions:
 
 - `mapGeneNamesToEnsembl`.
 - `mapGeneNamesToHGNC`.
 - `mapGeneNamesToNCBI`.
+
+Minor changes:
+
+- Removed `geneSynonyms` from `NAMESPACE`. Consider using `NcbiGeneInfo`
+  or `HGNC` instead for synonym information.
 
 ## AcidGenomes 0.4.8 (2023-02-16)
 
