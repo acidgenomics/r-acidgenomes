@@ -7,8 +7,7 @@
 makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
-  ignoreVersion = TRUE,
-  synonyms = FALSE
+  ignoreVersion = TRUE
 )
 }
 \arguments{
@@ -23,10 +22,6 @@ Ignore identifier (e.g. transcript, gene) versions.
 When applicable, the identifier containing version numbers will be stored
 in \code{txIdVersion} and \code{geneIdVersion}, and the variants without versions
 will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
-
-\item{synonyms}{\code{logical(1)}.
-Include gene synonyms.
-Queries the Ensembl web server, and is CPU intensive.}
 }
 \value{
 \code{GenomicRanges}.
@@ -38,7 +33,7 @@ Make GenomicRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2023-01-30.
+Updated 2023-04-12.
 }
 \section{GFF/GTF specification}{
 

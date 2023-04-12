@@ -36,6 +36,5 @@ print(object)
 \seealso{
 \itemize{
 \item ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
-\item \code{\link[=geneSynonyms]{geneSynonyms()}}.
 }
 }
