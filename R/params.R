@@ -10,8 +10,4 @@
 #' When applicable, the identifier containing version numbers will be stored
 #' in `txIdVersion` and `geneIdVersion`, and the variants without versions
 #' will be stored in `txId`, `txIdNoVersion`, `geneId`, and `geneIdNoVersion`.
-#'
-#' @param synonyms `logical(1)`.
-#' Include gene synonyms.
-#' Queries the Ensembl web server, and is CPU intensive.
 NULL
