@@ -94,7 +94,7 @@
 
 #' Shared GenomicRanges validity checks
 #'
-#' @note Updated 2022-05-24.
+#' @note Updated 2023-04-12.
 #' @noRd
 #'
 #' @details
@@ -107,8 +107,7 @@
             "ignoreVersion" = "logical",
             "level" = "character",
             "packageVersion" = "package_version",
-            "provider" = "character",
-            "synonyms" = "logical"
+            "provider" = "character"
         ),
         subset = TRUE
     )
