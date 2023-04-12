@@ -59,7 +59,8 @@
                 "gene.txt.gz"
             )),
             format = "tsv",
-            colnames = FALSE
+            colnames = FALSE,
+            engine = "readr"
         )
         synonym <- import(
             con = .cacheIt(pasteURL(
