@@ -3,7 +3,9 @@
 #' @note Updated 2023-04-12.
 #' @noRd
 #'
-#' @return `DFrame`.
+#' @param object `GRanges`.
+#'
+#' @return `GRanges`.
 #'
 #' @examples
 #' df <- .ensemblFtpGeneMcols(
@@ -11,16 +13,31 @@
 #'     genomeBuild = "GRCh38",
 #'     release = 109L
 #' )
-.ensemblFtpGeneMcols <-
-    function(
-        organism,
-        genomeBuild,
-        release) {
+.addEnsemblFtpMcols <-
+    function(object, ignoreVersion) {
         assert(
-            isOrganism(organism),
-            isString(genomeBuild),
-            isInt(release)
+            is(object, "GRanges"),
+            isFlag(ignoreVersion)
         )
+        geneIdCol <- ifelse(
+            test = ignoreVersion,
+            yes = "geneId",
+            no = "geneIdNoVersion"
+        )
+        if (isSubset(
+            x = c(
+                geneIdCol,
+                "description",
+                "geneSynonyms",
+                "ncbiGeneId"
+            ),
+            y = colnames(mcols(object))
+        )) {
+            return(object)
+        }
+        genomeBuild <- metadata(object)[["genomeBuild"]]
+        organism <- metadata(object)[["organism"]]
+        release <- metadata(object)[["release"]]
         ftpBaseUrl <- pasteURL(
             "ftp.ensembl.org",
             "pub",
@@ -91,9 +108,20 @@
             "geneIdNoVersion" = names(df3),
             "ncbiGeneId" = unname(df3)
         ))
-        out <- leftJoin(x = df1, y = df2, by = "mysqlId")
-        out <- leftJoin(x = out, y = df3, by = "geneIdNoVersion")
-        out[["mysqlId"]] <- NULL
-        out <- out[, sort(colnames(out))]
-        out
+        df <- leftJoin(x = df1, y = df2, by = "mysqlId")
+        df <- leftJoin(x = df, y = df3, by = "geneIdNoVersion")
+        df[["mysqlId"]] <- NULL
+        df <- df[, sort(colnames(df))]
+        if (isSubset("description", colnames(mcols(object)))) {
+            df[["description"]] <- NULL
+        }
+        if (isSubset("geneSynonyms", colnames(mcols(object)))) {
+            df[["geneSynonyms"]] <- NULL
+        }
+        if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
+            df[["ncbiGeneId"]] <- NULL
+        }
+        mcols <- leftJoin(x = mcols(object), y = df, by = geneIdCol)
+        mcols(object) <- mcols
+        object
     }
