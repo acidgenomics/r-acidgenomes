@@ -2,7 +2,7 @@
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-01-30.
+#' @note Updated 2023-04-12.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -241,12 +241,10 @@
 makeGRangesFromGFF <-
     function(file,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE,
-             synonyms = FALSE) {
+             ignoreVersion = TRUE) {
         assert(
             .isSupportedGFF(file),
-            isFlag(ignoreVersion),
-            isFlag(synonyms)
+            isFlag(ignoreVersion)
         )
         level <- match.arg(level)
         if (isAFile(file)) {
@@ -271,15 +269,13 @@ makeGRangesFromGFF <-
             gr <- .makeGRangesFromTxDb(
                 object = txdb,
                 level = level,
-                ignoreVersion = ignoreVersion,
-                synonyms = synonyms
+                ignoreVersion = ignoreVersion
             )
         } else {
             gr <- .makeGRangesFromRtracklayer(
                 file = tmpfile,
                 level = level,
                 ignoreVersion = ignoreVersion,
-                synonyms = synonyms,
                 meta = meta
             )
         }
