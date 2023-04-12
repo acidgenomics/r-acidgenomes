@@ -42,7 +42,7 @@
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-04-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -87,12 +87,8 @@ makeGRangesFromEnsembl <-
              level = c("genes", "transcripts"),
              genomeBuild = NULL,
              release = NULL,
-             ignoreVersion = TRUE,
-             synonyms = FALSE) {
-        assert(
-            isFlag(ignoreVersion),
-            isFlag(synonyms)
-        )
+             ignoreVersion = TRUE) {
+        assert(isFlag(ignoreVersion))
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
         edb <- .getEnsDb(
@@ -103,8 +99,7 @@ makeGRangesFromEnsembl <-
         gr <- makeGRangesFromEnsDb(
             object = edb,
             level = level,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+            ignoreVersion = ignoreVersion
         )
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -126,13 +121,11 @@ makeGRangesFromEnsembl <-
 makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE,
-             synonyms = FALSE) {
+             ignoreVersion = TRUE) {
         pkgs <- .packages()
-        requireNamespaces("ensembldb")
         assert(
-            isFlag(ignoreVersion),
-            isFlag(synonyms)
+            requireNamespaces("ensembldb"),
+            isFlag(ignoreVersion)
         )
         level <- match.arg(level)
         alert(sprintf(
@@ -141,7 +134,7 @@ makeGRangesFromEnsDb <-
         ))
         if (isString(object)) {
             package <- object
-            requireNamespaces(package)
+            assert(requireNamespaces(package))
             object <- get(
                 x = package,
                 envir = asNamespace(package),
@@ -192,8 +185,7 @@ makeGRangesFromEnsDb <-
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
         gr <- .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+            ignoreVersion = ignoreVersion
         )
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
