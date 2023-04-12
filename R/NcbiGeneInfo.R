@@ -16,7 +16,6 @@
 #'
 #' @seealso
 #' - ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
-#' - [geneSynonyms()].
 #'
 #' @examples
 #' object <- NcbiGeneInfo(
