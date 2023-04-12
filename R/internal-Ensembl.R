@@ -1,16 +1,21 @@
-#' Get extra gene metadata from Ensembl
+#' Get extra gene metadata columns (mcols) from Ensembl
 #'
 #' @note Updated 2023-04-12.
 #' @noRd
 #'
+#' @return `DFrame`.
+#'
 #' @examples
-#' df <- .ensemblGeneMetadata(
+#' df <- .ensemblFtpGeneMcols(
 #'     organism = "Homo sapiens",
 #'     genomeBuild = "GRCh38",
 #'     release = 109L
 #' )
-.ensemblGeneMetadata <-
-    function(organism, genomeBuild, release) {
+.ensemblFtpGeneMcols <-
+    function(
+        organism,
+        genomeBuild,
+        release) {
         assert(
             isOrganism(organism),
             isString(genomeBuild),
