@@ -203,59 +203,8 @@
 
 
 
-#' Add Ensembl gene synonyms
-#'
-#' @note Updated 2021-02-12.
-#' @noRd
-#'
-#' @details Currently supported only for Ensembl and GENCODE genomes.
-.addGeneSynonyms <- function(object) {
-    assert(
-        is(object, "GenomicRanges"),
-        isString(metadata(object)[["provider"]]),
-        isSubset(
-            x = metadata(object)[["provider"]],
-            y = c("Ensembl", "GENCODE")
-        ),
-        isSubset("geneId", names(mcols(object)))
-    )
-    mcols <- mcols(object)
-    organism <- organism(object)
-    assert(isOrganism(organism))
-    alert(sprintf(
-        "Adding gene synonyms for {.emph %s} to {.var %s} column.",
-        organism, "geneSynonyms"
-    ))
-    syns <- geneSynonyms(
-        organism = organism,
-        ## Avoid the speed penalty quering the FTP server for human or mouse.
-        taxonomicGroup = switch(
-            EXPR = organism,
-            "Homo sapiens" = "Mammalia",
-            "Mus musculus" = "Mammalia",
-            NULL
-        ),
-        geneIdType = "Ensembl"
-    )
-    assert(identical(c("geneId", "geneSynonyms"), colnames(syns)))
-    joinCol <- ".join"
-    colnames(syns)[colnames(syns) == "geneId"] <- joinCol
-    suppressMessages({
-        mcols[[joinCol]] <- stripGeneVersions(as.character(mcols[["geneId"]]))
-    })
-    ## NOTE The join step here currently will coerce complex S4 columns such as
-    ## CharacterList to standard list. There's no easy way around this without
-    ## significantly reworking the internal code in AcidPlyr to not use the
-    ## DataFrame `merge()` method internally.
-    mcols <- leftJoin(x = mcols, y = syns, by = joinCol)
-    mcols[[joinCol]] <- NULL
-    mcols(object) <- mcols
-    object
-}
-
-
-
 ## Identifier versions =========================================================
+
 #' Include identifier version in primary identifier
 #'
 #' @note Updated 2021-01-30.
@@ -334,6 +283,7 @@
 
 
 ## Standardization =============================================================
+
 #' Apply run-length encoding and minimize `GenomicRanges` mcols
 #'
 #' @note Updated 2023-03-01.
@@ -519,22 +469,21 @@
 
 
 ## Main generator ==============================================================
+
 #' Make GenomicRanges
 #'
 #' This is the main GenomicRanges final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2021-03-10.
+#' @note Updated 2023-04-12.
 #' @noRd
 .makeGRanges <-
     function(object,
-             ignoreVersion,
-             synonyms) {
+             ignoreVersion) {
         assert(
             is(object, "GenomicRanges"),
             hasLength(object),
             isFlag(ignoreVersion),
-            isFlag(synonyms),
             isString(metadata(object)[["level"]]),
             isString(metadata(object)[["provider"]])
         )
@@ -549,10 +498,42 @@
             object <- .includeTxVersion(object)
         }
         object <- .addBroadClass(object)
-        if (isTRUE(synonyms)) {
-            object <- .addGeneSynonyms(object)
+        if(
+            isSubset(
+                x = metadata(object)[["provider"]],
+                y = c("Ensembl", "GENCODE")
+            ) &&
+            !isSubset(
+                x = c(
+                    "description",
+                    "geneIdNoVersion",
+                    "geneSynonyms",
+                    "ncbiGeneId"
+                ),
+                y = colnames(mcols(object))
+            )
+        ) {
+            assert(isSubset("geneIdNoVersion", colnames(mcols(object))))
+            extraMcols <- .ensemblFtpGeneMcols(
+                organism = metadata(object)[["organism"]],
+                genomeBuild = metadata(object)[["genomeBuild"]],
+                release = metadata(object)[["release"]]
+            )
+            if (isSubset("description", colnames(mcols(object)))) {
+                extraMcols[["description"]] <- NULL
+            }
+            if (isSubset("geneSynonyms", colnames(mcols(object)))) {
+                extraMcols[["geneSynonyms"]] <- NULL
+            }
+            if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
+                extraMcols[["ncbiGeneId"]] <- NULL
+            }
+            mcols <- leftJoin(
+                x = mcols(object),
+                y = extraMcols,
+                by = "geneIdNoVersion"
+            )
         }
-        ## Run the encoding step after all modifications above.
         object <- .encodeMcols(object)
         idCol <- .matchGRangesNamesColumn(object)
         assert(isSubset(idCol, names(mcols(object))))
@@ -561,19 +542,17 @@
             idCol, "mcols"
         ))
         ## Sort the ranges by genomic location.
-        ## Previously we sorted by the identifier column, until v0.2.0.
         object <- sort(object)
         ## Sort the mcols alphabetically.
         mcols(object) <-
             mcols(object)[, sort(names(mcols(object))), drop = FALSE]
-        ## Ensure metadata elements are all sorted alphabetically.
+        ## Sort the metadata elements alphabetically.
         metadata(object) <- append(
             x = metadata(object),
             values = list(
                 "date" = Sys.Date(),
                 "ignoreVersion" = ignoreVersion,
-                "packageVersion" = .pkgVersion,
-                "synonyms" = synonyms
+                "packageVersion" = .pkgVersion
             )
         )
         metadata(object) <- metadata(object)[sort(names(metadata(object)))]
