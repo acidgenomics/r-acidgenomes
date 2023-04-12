@@ -1,3 +1,5 @@
+## FIXME Add support for defining this in GRanges from ensembldb and GTF.
+
 #' Get extra gene metadata from Ensembl
 #'
 #' @note Updated 2023-04-12.
