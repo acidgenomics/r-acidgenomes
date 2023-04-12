@@ -498,40 +498,13 @@
             object <- .includeTxVersion(object)
         }
         object <- .addBroadClass(object)
-        if(
-            isSubset(
-                x = metadata(object)[["provider"]],
-                y = c("Ensembl", "GENCODE")
-            ) &&
-            !isSubset(
-                x = c(
-                    "description",
-                    "geneIdNoVersion",
-                    "geneSynonyms",
-                    "ncbiGeneId"
-                ),
-                y = colnames(mcols(object))
-            )
-        ) {
-            assert(isSubset("geneIdNoVersion", colnames(mcols(object))))
-            extraMcols <- .ensemblFtpGeneMcols(
-                organism = metadata(object)[["organism"]],
-                genomeBuild = metadata(object)[["genomeBuild"]],
-                release = metadata(object)[["release"]]
-            )
-            if (isSubset("description", colnames(mcols(object)))) {
-                extraMcols[["description"]] <- NULL
-            }
-            if (isSubset("geneSynonyms", colnames(mcols(object)))) {
-                extraMcols[["geneSynonyms"]] <- NULL
-            }
-            if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
-                extraMcols[["ncbiGeneId"]] <- NULL
-            }
-            mcols <- leftJoin(
-                x = mcols(object),
-                y = extraMcols,
-                by = "geneIdNoVersion"
+        if(isSubset(
+            x = metadata(object)[["provider"]],
+            y = c("Ensembl", "GENCODE")
+        )) {
+            object <- .addEnsemblFtpMcols(
+                object = object,
+                ignoreVersion = ignoreVersion
             )
         }
         object <- .encodeMcols(object)
