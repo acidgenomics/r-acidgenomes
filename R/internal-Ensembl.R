@@ -51,6 +51,8 @@
             pattern = snakeCase(paste(organism, "core", release))
         )
         assert(isString(mysqlSubdir))
+        ## FIXME This step is problematic for Mus musculus.
+        ## "ftp://ftp.ensembl.org/pub/release-109/mysql/mus_musculus_core_109_39/gene.txt.gz"
         gene <- import(
             con = .cacheIt(pasteURL(
                 ftpBaseUrl, "mysql", mysqlSubdir,
@@ -88,7 +90,7 @@
         )
         df1 <- gene
         df1 <- df1[, c(8, 13, 10)]
-        colnames(df1) <- c("mysqlId", "geneIdNoVersion", "description")
+        colnames(df1) <- c("mysqlId", geneIdCol, "description")
         df1 <- as(df1, "DataFrame")
         df2 <- synonym
         df2 <- unique(df2)
@@ -106,22 +108,22 @@
         df3 <- unique(df3)
         df3 <- split(x = df3, f = df3[[1L]])
         df3 <- lapply(X = df3, FUN = `[[`, 2L)
-        df3 <- as.DataFrame(list(
-            "geneIdNoVersion" = names(df3),
-            "ncbiGeneId" = unname(df3)
-        ))
-        df <- leftJoin(x = df1, y = df2, by = "mysqlId")
-        df <- leftJoin(x = df, y = df3, by = "geneIdNoVersion")
-        df[["mysqlId"]] <- NULL
-        df <- df[, sort(colnames(df))]
+        df3lst <- list()
+        df3lst[[geneIdCol]] <- names(df3)
+        df3lst[["ncbiGeneId"]] <- unname(df3)
+        df3 <- as.DataFrame(df3lst)
+        mcols <- leftJoin(x = df1, y = df2, by = "mysqlId")
+        mcols <- leftJoin(x = mcols, y = df3, by = geneIdCol)
+        mcols[["mysqlId"]] <- NULL
+        mcols <- mcols[, sort(colnames(mcols))]
         if (isSubset("description", colnames(mcols(object)))) {
-            df[["description"]] <- NULL
+            mcols[["description"]] <- NULL
         }
         if (isSubset("geneSynonyms", colnames(mcols(object)))) {
-            df[["geneSynonyms"]] <- NULL
+            mcols[["geneSynonyms"]] <- NULL
         }
         if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
-            df[["ncbiGeneId"]] <- NULL
+            mcols[["ncbiGeneId"]] <- NULL
         }
         mcols <- leftJoin(x = mcols(object), y = df, by = geneIdCol)
         mcols(object) <- mcols
