@@ -1,6 +1,6 @@
 #' Make GenomicRanges from TxDb object
 #'
-#' @note Updated 2022-01-12.
+#' @note Updated 2023-04-12.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -24,8 +24,7 @@
 .makeGRangesFromTxDb <-
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
-             ignoreVersion = TRUE,
-             synonyms = FALSE) {
+             ignoreVersion = TRUE) {
         pkgs <- .packages()
         requireNamespaces("AnnotationDbi")
         assert(is(object, "TxDb"))
@@ -152,8 +151,7 @@
         metadata(gr) <- meta
         gr <- .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion,
-            synonyms = synonyms
+            ignoreVersion = ignoreVersion
         )
         forceDetach(keep = pkgs)
         gr
