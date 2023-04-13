@@ -92,6 +92,7 @@
             format = "tsv",
             colnames = FALSE
         )
+        ## FIXME This step is problematic for Saccharomyces cerevisiae.
         synonym <- import(
             con = .cacheIt(pasteURL(
                 ftpBaseUrl, "mysql", mysqlSubdir,
@@ -125,7 +126,7 @@
         df1 <- df1[complete.cases(df1), , drop = FALSE]
         df1 <- as(df1, "DataFrame")
         df2 <- synonym
-        assert(all(complete.cases(df2)))
+        df2 <- df2[complete.cases(df2), , drop = FALSE]
         df2 <- unique(df2)
         df2 <- split(x = df2, f = df2[[1L]])
         df2 <- lapply(X = df2, FUN = `[[`, 2L)
@@ -135,9 +136,9 @@
         ))
         df3 <- entrez
         df3 <- df3[, c("gene_stable_id", "xref"), drop = FALSE]
+        df3 <- df3[complete.cases(df3), , drop = FALSE]
         keep <- grepl(pattern = "^[0-9]+$", x = df3[["xref"]])
         df3 <- df3[keep, , drop = FALSE]
-        assert(all(complete.cases(df3)))
         df3[["xref"]] <- as.integer(df3[["xref"]])
         df3 <- unique(df3)
         df3 <- split(x = df3, f = df3[[1L]])
