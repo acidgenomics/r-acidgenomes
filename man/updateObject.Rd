@@ -18,6 +18,12 @@ updateObject(object, ..., verbose = FALSE)
 
 \S4method{updateObject}{GencodeTranscripts}(object, verbose = FALSE)
 }
+\arguments{
+\item{object}{Object.}
+
+\item{verbose}{\code{logical(1)}.
+Run the function with verbose output.}
+}
 \description{
 Update object
 }
