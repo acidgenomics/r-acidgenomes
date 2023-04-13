@@ -10,19 +10,24 @@
 \usage{
 updateObject(object, ..., verbose = FALSE)
 
-\S4method{updateObject}{EnsemblGenes}(object, ..., verbose = FALSE)
+\S4method{updateObject}{EnsemblGenes}(object, verbose = FALSE)
 
-\S4method{updateObject}{EnsemblTranscripts}(object, ..., verbose = FALSE)
+\S4method{updateObject}{EnsemblTranscripts}(object, verbose = FALSE)
 
-\S4method{updateObject}{GencodeGenes}(object, ..., verbose = FALSE)
+\S4method{updateObject}{GencodeGenes}(object, verbose = FALSE)
 
-\S4method{updateObject}{GencodeTranscripts}(object, ..., verbose = FALSE)
+\S4method{updateObject}{GencodeTranscripts}(object, verbose = FALSE)
 }
 \description{
 Update object
 }
 \note{
-Updated 2023-03-07.
+Updated 2023-04-13.
+}
+\examples{
+# > object <- makeGRangesFromEnsembl("Homo sapiens")
+# > object <- updateObject(object)
+# > print(object)
 }
 \author{
 Michael Steinbaugh
