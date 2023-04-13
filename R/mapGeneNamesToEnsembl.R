@@ -1,12 +1,7 @@
-## FIXME Match using HGNC internally for Homo sapiens.
-## FIXME Add code coverage against Mus musculus here.
-
-
-
 #' Map gene names to Ensembl
 #'
 #' @export
-#' @note Updated 2023-03-03.
+#' @note Updated 2023-04-13.
 #'
 #' @details Internally matches using `mapGenesToNCBI` first, so we can support
 #' gene synonym matching.
