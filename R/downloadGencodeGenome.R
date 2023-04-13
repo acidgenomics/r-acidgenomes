@@ -149,7 +149,7 @@ downloadGencodeGenome <-
                 )
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "annotation"),
             cache = cache
@@ -273,7 +273,7 @@ downloadGencodeGenome <-
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "genome"),
             cache = cache
@@ -328,7 +328,7 @@ downloadGencodeGenome <-
                 paste0("gencode.v", release, ".metadata.RefSeq.gz")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
@@ -359,7 +359,7 @@ downloadGencodeGenome <-
                 )
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome"),
             cache = cache
