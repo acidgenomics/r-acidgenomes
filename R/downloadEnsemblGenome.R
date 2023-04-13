@@ -1,26 +1,7 @@
-## FIXME Add these files for Ensembl genome download:
-##
-## This contains peptide mapping info:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.ena.tsv
-##
-## This contains Entrez identifier mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.entrez.tsv.gz
-##
-## This contains the seqlengths:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.karyotype.tsv.gz
-##
-## This contains RefSeq mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.refseq.tsv.gz
-##
-## This contains UniProt peptide mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.uniprot.tsv.gz
-
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2022-05-24.
+#' @note Updated 2023-04-13.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -51,20 +32,20 @@ downloadEnsemblGenome <-
             isFlag(cache)
         )
         outputDir <- initDir(outputDir)
-        baseURL <- "ftp://ftp.ensembl.org/pub"
+        baseUrl <- "ftp://ftp.ensembl.org/pub"
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
         }
         if (identical(genomeBuild, "GRCh37")) {
             assert(is.null(release))
-            baseURL <- pasteURL(baseURL, "grch37")
+            baseUrl <- pasteURL(baseUrl, "grch37")
             release <- 87L
         }
         if (is.null(release)) {
             release <- currentEnsemblVersion()
         }
-        releaseURL <- pasteURL(baseURL, paste0("release-", release))
+        releaseUrl <- pasteURL(baseUrl, paste0("release-", release))
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "ensembl", release
         )))
@@ -75,7 +56,7 @@ downloadEnsemblGenome <-
                 "%s %d from {.url %s} to {.path %s}."
             ),
             organism, genomeBuild, release,
-            releaseURL, outputDir
+            releaseUrl, outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -86,7 +67,7 @@ downloadEnsemblGenome <-
             "genomeBuild" = genomeBuild,
             "organism" = organism,
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL,
+            "releaseUrl" = releaseUrl,
             "cache" = cache
         )
         info <- list()
@@ -116,20 +97,22 @@ downloadEnsemblGenome <-
 
 
 
+## FIXME Use strict camel case here.
+
 ## Updated 2022-05-24.
 .downloadEnsemblGFF <-
     function(genomeBuild,
              organism,
              outputDir,
-             releaseURL,
+             releaseUrl,
              release,
              cache) {
-        baseURL <- pasteURL(releaseURL, "gff3", snakeCase(organism))
+        baseUrl <- pasteURL(releaseUrl, "gff3", snakeCase(organism))
         urls <- c(
-            "readme" = pasteURL(baseURL, "README"),
-            "checksums" = pasteURL(baseURL, "CHECKSUMS"),
+            "readme" = pasteURL(baseUrl, "README"),
+            "checksums" = pasteURL(baseUrl, "CHECKSUMS"),
             "gff" = pasteURL(
-                baseURL,
+                baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, release, "gff3.gz",
@@ -149,7 +132,7 @@ downloadEnsemblGenome <-
                 )
         ) {
             urls[["gff2"]] <- pasteURL(
-                baseURL,
+                baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, release, "chr_patch_hapl_scaff", "gff3.gz",
@@ -157,7 +140,7 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "annotation", "gff3"),
             cache = cache
@@ -184,20 +167,22 @@ downloadEnsemblGenome <-
 
 
 
+## FIXME Use strict camel case here.
+
 ## Updated 2022-05-24.
 .downloadEnsemblGTF <-
     function(genomeBuild,
              organism,
              outputDir,
              release,
-             releaseURL,
+             releaseUrl,
              cache) {
-        baseURL <- pasteURL(releaseURL, "gtf", snakeCase(organism))
+        baseUrl <- pasteURL(releaseUrl, "gtf", snakeCase(organism))
         urls <- c(
-            "readme" = pasteURL(baseURL, "README"),
-            "checksums" = pasteURL(baseURL, "CHECKSUMS"),
+            "readme" = pasteURL(baseUrl, "README"),
+            "checksums" = pasteURL(baseUrl, "CHECKSUMS"),
             "gtf" = pasteURL(
-                baseURL,
+                baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, release, "gtf.gz",
@@ -217,7 +202,7 @@ downloadEnsemblGenome <-
                 )
         ) {
             urls[["gtf2"]] <- pasteURL(
-                baseURL,
+                baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
@@ -225,7 +210,7 @@ downloadEnsemblGenome <-
                 )
             )
         }
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "annotation", "gtf"),
             cache = cache
@@ -276,12 +261,12 @@ downloadEnsemblGenome <-
     function(genomeBuild,
              organism,
              outputDir,
-             releaseURL,
+             releaseUrl,
              cache) {
-        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism), "dna")
+        baseUrl <- pasteURL(releaseUrl, "fasta", snakeCase(organism), "dna")
         urls <- c(
-            "readme" = pasteURL(baseURL, "README"),
-            "checksums" = pasteURL(baseURL, "CHECKSUMS")
+            "readme" = pasteURL(baseUrl, "README"),
+            "checksums" = pasteURL(baseUrl, "CHECKSUMS")
         )
         if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
             assembly <- "primary_assembly"
@@ -289,7 +274,7 @@ downloadEnsemblGenome <-
             assembly <- "toplevel"
         }
         urls[["fasta"]] <- pasteURL(
-            baseURL,
+            baseUrl,
             paste(
                 gsub(pattern = " ", replacement = "_", x = organism),
                 genomeBuild,
@@ -299,7 +284,7 @@ downloadEnsemblGenome <-
                 sep = "."
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "genome"),
             cache = cache
@@ -326,21 +311,46 @@ downloadEnsemblGenome <-
 
 
 
+## FIXME Add these files for Ensembl genome download:
+##
+## This contains peptide mapping info:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.ena.tsv
+##
+## This contains Entrez identifier mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.entrez.tsv.gz
+##
+## This contains the seqlengths:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.karyotype.tsv.gz
+##
+## This contains RefSeq mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.refseq.tsv.gz
+##
+## This contains UniProt peptide mappings:
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.uniprot.tsv.gz
+
+## Updated 2023-04-13.
+.downloadEnsemblMetadata <-
+    function(FIXME) {
+        stop("FIXME")
+    }
+
+
+
 ## Updated 2022-05-24.
 .downloadEnsemblTranscriptome <-
     function(genomeBuild,
              organism,
              outputDir,
-             releaseURL,
+             releaseUrl,
              cache) {
-        baseURL <- pasteURL(releaseURL, "fasta", snakeCase(organism))
+        baseUrl <- pasteURL(releaseUrl, "fasta", snakeCase(organism))
         ## Download cDNA FASTA files.
-        cdnaBaseURL <- pasteURL(baseURL, "cdna")
+        cdnaBaseUrl <- pasteURL(baseUrl, "cdna")
         urls <- c(
-            "readme" = pasteURL(cdnaBaseURL, "README"),
-            "checksums" = pasteURL(cdnaBaseURL, "CHECKSUMS"),
+            "readme" = pasteURL(cdnaBaseUrl, "README"),
+            "checksums" = pasteURL(cdnaBaseUrl, "CHECKSUMS"),
             "fasta" = pasteURL(
-                cdnaBaseURL,
+                cdnaBaseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, "cdna", "all", "fa.gz",
@@ -348,18 +358,18 @@ downloadEnsemblGenome <-
                 )
             )
         )
-        cdnaFiles <- .downloadURLs(
+        cdnaFiles <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome", "cdna"),
             cache = cache
         )
         ## Download ncRNA FASTA files.
-        ncrnaBaseURL <- pasteURL(baseURL, "ncrna")
+        ncrnaBaseUrl <- pasteURL(baseUrl, "ncrna")
         urls <- c(
-            "readme" = pasteURL(ncrnaBaseURL, "README"),
-            "checksums" = pasteURL(ncrnaBaseURL, "CHECKSUMS"),
+            "readme" = pasteURL(ncrnaBaseUrl, "README"),
+            "checksums" = pasteURL(ncrnaBaseUrl, "CHECKSUMS"),
             "fasta" = pasteURL(
-                ncrnaBaseURL,
+                ncrnaBaseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
                     genomeBuild, "ncrna", "fa.gz",
@@ -367,7 +377,7 @@ downloadEnsemblGenome <-
                 )
             )
         )
-        ncrnaFiles <- .downloadURLs(
+        ncrnaFiles <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome", "ncrna"),
             cache = cache

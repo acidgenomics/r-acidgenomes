@@ -132,7 +132,7 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_genomic.gtf.gz")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "annotation"),
             cache = cache
@@ -199,7 +199,7 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_genomic.fna.gz")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "genome"),
             cache = cache
@@ -250,7 +250,7 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_assembly_stats.txt")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
@@ -272,7 +272,7 @@ downloadRefSeqGenome <-
                 paste0(genomeBuild, "_rna.fna.gz")
             )
         )
-        files <- .downloadURLs(
+        files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "transcriptome"),
             cache = cache
