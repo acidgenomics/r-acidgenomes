@@ -38,7 +38,7 @@
             id <- "EnsDb.Hsapiens.v75"
             edb <- .getEnsDbFromPackage(package = id)
         } else {
-            id <- .getEnsDbAnnotationHubID(
+            id <- .getEnsDbAnnotationHubId(
                 organism = organism,
                 genomeBuild = genomeBuild,
                 release = release
@@ -53,12 +53,12 @@
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2021-08-04.
+#' @note Updated 2023-04-13.
 #' @noRd
 #'
 #' @examples
-#' .getAnnotationHubID("Homo sapiens")
-.getEnsDbAnnotationHubID <-
+#' .getAnnotationHubId("Homo sapiens")
+.getEnsDbAnnotationHubId <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
@@ -144,8 +144,10 @@
             ),
             y = colnames(mcols)
         ))
-        ## Ensure organism (species) matches exactly.
-        keep <- mcols[["species"]] == organism
+        keep <- grepl(
+            pattern = paste0("^", organism),
+            x = mcols[["species"]]
+        )
         mcols <- mcols[keep, , drop = FALSE]
         ## Ensure genome build matches exactly.
         if (!is.null(genomeBuild)) {
@@ -275,7 +277,7 @@
 
 #' Get metadata inside EnsDb object
 #'
-#' @note Updated 2021-04-27.
+#' @note Updated 2023-04-13.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
     requireNamespaces("ensembldb")
@@ -291,6 +293,15 @@
         drop = TRUE
     ]
     assert(isString(genomeBuild))
+    organism <- organism(object)
+    organism <- switch(
+        EXPR = organism,
+        "Saccharomyces cerevisiae S288c" = {
+            ## AH109740 Ensembl 109.
+            "Saccharomyces cerevisiae"
+        },
+        organism
+    )
     suppressWarnings({
         release <- ensembldb::ensemblVersion(object)
     })
@@ -298,7 +309,7 @@
     list <- list(
         "ensembldb" = metadata,
         "genomeBuild" = genomeBuild,
-        "organism" = organism(object),
+        "organism" = organism,
         "provider" = "Ensembl",
         "release" = release
     )
