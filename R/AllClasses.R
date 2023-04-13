@@ -209,7 +209,7 @@
 #' Contains `GenomicRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-04-13.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -317,6 +317,8 @@ setValidity(
 
 
 
+## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
+
 #' GENCODE gene annotations
 #'
 #' @details
@@ -342,6 +344,8 @@ setValidity(
 )
 
 
+
+## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
 
 #' GENCODE transcript annotations
 #'
