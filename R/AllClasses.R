@@ -2,7 +2,7 @@
 
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2021-02-26.
+#' @note Updated 2023-04-13.
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -94,7 +94,7 @@
 
 #' Shared GenomicRanges validity checks
 #'
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-13.
 #' @noRd
 #'
 #' @details
@@ -110,6 +110,16 @@
             "provider" = "character"
         ),
         subset = TRUE
+    )
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
+    ok <- validate(
+        !isSubset("entrezId", colnames(mcols(object))),
+        msg = sprintf(
+            "Object contains {.var %s} instead of {.var %s} in {.var %s}.",
+            "entrezId", "ncbiGeneId", "mcols"
+        )
     )
     if (!isTRUE(ok)) {
         return(ok)
@@ -201,8 +211,6 @@
 
 
 
-## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
-
 #' Ensembl gene annotations
 #'
 #' @details
@@ -233,15 +241,13 @@ setValidity(
 
 
 
-## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
-
 #' Ensembl transcript annotations
 #'
 #' @details
 #' Contains `GenomicRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-04-13.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
