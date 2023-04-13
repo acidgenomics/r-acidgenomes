@@ -1,22 +1,20 @@
-## FIXME Rename `entrezId` to `ncbiGeneId`.
-## FIXME Add updateObject support for EnsemblGenes.
-## FIXME Also add updateObject support for EnsemblTranscripts here.
-## FIXME Add update support for GencodeGenes and GencodeTranscripts.
-
-
-
 #' Update object
 #'
 #' @name updateObject
 #' @author Michael Steinbaugh
-#' @note Updated 2023-03-07.
+#' @note Updated 2023-04-13.
+#'
+#' @examples
+#' # > object <- makeGRangesFromEnsembl("Homo sapiens")
+#' # > object <- updateObject(object)
+#' # > print(object)
 NULL
 
 
 
 ## Updated 2023-04-13.
 .updateGRanges <-
-    function(object, ..., verbose = FALSE) {
+    function(object, verbose = FALSE) {
         if (isSubset("entrezId", colnames(mcols(object)))) {
             if (isTRUE(verbose)) {
                 alert(sprintf(
