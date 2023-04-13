@@ -4,6 +4,8 @@
 #' @author Michael Steinbaugh
 #' @note Updated 2023-04-13.
 #'
+#' @inheritParams AcidRoxygen::params
+#'
 #' @examples
 #' # > object <- makeGRangesFromEnsembl("Homo sapiens")
 #' # > object <- updateObject(object)
