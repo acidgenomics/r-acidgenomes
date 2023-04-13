@@ -57,3 +57,9 @@ NULL
 #' @usage summary(object, ...)
 #' @export
 NULL
+
+#' @export
+#' @name updateObject
+#' @rdname updateObject
+#' @usage updateObject(object, ..., verbose = FALSE)
+NULL

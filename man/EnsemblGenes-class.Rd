@@ -14,5 +14,5 @@ Ensembl gene annotations
 Contains \code{GenomicRanges} with Ensembl gene-level annotations.
 }
 \note{
-Updated 2021-10-14.
+Updated 2023-04-13.
 }
