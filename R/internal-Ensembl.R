@@ -123,7 +123,7 @@
             quote = ""
         )
         df1 <- gene
-        df1 <- df1[, c(8, 13, 10)]
+        df1 <- df1[, c(8L, 13L, 10L)]
         colnames(df1) <- c("mysqlId", "geneId", "description")
         df1 <- df1[complete.cases(df1), , drop = FALSE]
         df1 <- as(df1, "DataFrame")
