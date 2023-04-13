@@ -90,16 +90,17 @@
                 "gene.txt.gz"
             )),
             format = "tsv",
-            colnames = FALSE
+            colnames = FALSE,
+            quote = ""
         )
-        ## FIXME This step is problematic for Saccharomyces cerevisiae.
         synonym <- import(
             con = .cacheIt(pasteURL(
                 ftpBaseUrl, "mysql", mysqlSubdir,
                 "external_synonym.txt.gz"
             )),
             format = "tsv",
-            colnames = FALSE
+            colnames = FALSE,
+            quote = ""
         )
         entrez <- import(
             con = .cacheIt(pasteURL(
@@ -118,7 +119,8 @@
                 )
             )),
             format = "tsv",
-            colnames = TRUE
+            colnames = TRUE,
+            quote = ""
         )
         df1 <- gene
         df1 <- df1[, c(8, 13, 10)]
