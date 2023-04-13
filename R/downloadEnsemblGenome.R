@@ -10,11 +10,10 @@
 ## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.karyotype.tsv.gz
 ##
 ## This contains RefSeq mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/
+## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.refseq.tsv.gz
 ##
 ## This contains UniProt peptide mappings:
 ## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.uniprot.tsv.gz
-## Can use this to map to gene identifiers for DepMapProteomics dataset!
 
 
 
