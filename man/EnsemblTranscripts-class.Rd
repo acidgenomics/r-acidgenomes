@@ -14,5 +14,5 @@ Ensembl transcript annotations
 Contains \code{GenomicRanges} with Ensembl transcript-level annotations.
 }
 \note{
-Updated 2021-10-14.
+Updated 2023-04-13.
 }
