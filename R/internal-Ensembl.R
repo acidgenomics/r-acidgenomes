@@ -1,24 +1,15 @@
-## FIXME This is problematic for Mus musculus GRCm39 109...debug.
-
-#' Get extra gene metadata columns (mcols) from Ensembl
+#' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-13.
 #' @noRd
 #'
 #' @param object `GRanges`.
 #'
 #' @return `GRanges`.
-#'
-#' @examples
-#' df <- .ensemblFtpGeneMcols(
-#'     organism = "Homo sapiens",
-#'     genomeBuild = "GRCh38",
-#'     release = 109L
-#' )
 .addEnsemblFtpMcols <-
     function(object, ignoreVersion) {
         assert(
-            is(object, "GRanges"),
+            is(object, "GenomicRanges"),
             isFlag(ignoreVersion)
         )
         geneIdCol <- ifelse(
@@ -27,19 +18,61 @@
             no = "geneIdNoVersion"
         )
         if (isSubset(
-            x = c(
-                geneIdCol,
-                "description",
-                "geneSynonyms",
-                "ncbiGeneId"
-            ),
+            x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
             y = colnames(mcols(object))
         )) {
             return(object)
         }
-        genomeBuild <- metadata(object)[["genomeBuild"]]
-        organism <- metadata(object)[["organism"]]
-        release <- metadata(object)[["release"]]
+        extraMcols <- .ensemblFtpGeneMetadata(
+            organism = metadata(object)[["organism"]],
+            genomeBuild = metadata(object)[["genomeBuild"]],
+            release = metadata(object)[["release"]]
+        )
+        if (isFALSE(ignoreVersion)) {
+            colnames(extraMcols)[
+                colnames(extraMcols) == "geneId"] <- "geneIdNoVersion"
+        }
+        if (isSubset("description", colnames(mcols(object)))) {
+            extraMcols[["description"]] <- NULL
+        }
+        if (isSubset("geneSynonyms", colnames(mcols(object)))) {
+            extraMcols[["geneSynonyms"]] <- NULL
+        }
+        if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
+            extraMcols[["ncbiGeneId"]] <- NULL
+        }
+        mcols <- leftJoin(x = mcols(object), y = extraMcols, by = geneIdCol)
+        mcols(object) <- mcols
+        object
+    }
+
+
+
+#' Get a data frame of extra gene-level metadata from Ensembl FTP server
+#'
+#' @note Updated 2023-04-13.
+#' @noRd
+#'
+#' @return `DataFrame`.
+#'
+#' @examples
+#' df <- .ensemblFtpGeneMetadata(
+#'     organism = "Homo sapiens",
+#'     genomeBuild = "GRCh38",
+#'     release = 109L
+#' )
+#' df <- .ensemblFtpGeneMetadata(
+#'     organism = "Mus musculus",
+#'     genomeBuild = "GRCm39",
+#'     release = 109L
+#' )
+.ensemblFtpGeneMetadata <-
+    function(organism, genomeBuild, release) {
+        assert(
+            isOrganism(organism),
+            isString(genomeBuild),
+            isInt(release)
+        )
         ftpBaseUrl <- pasteURL(
             "ftp.ensembl.org",
             "pub",
@@ -51,16 +84,13 @@
             pattern = snakeCase(paste(organism, "core", release))
         )
         assert(isString(mysqlSubdir))
-        ## FIXME This step is problematic for Mus musculus.
-        ## "ftp://ftp.ensembl.org/pub/release-109/mysql/mus_musculus_core_109_39/gene.txt.gz"
         gene <- import(
             con = .cacheIt(pasteURL(
                 ftpBaseUrl, "mysql", mysqlSubdir,
                 "gene.txt.gz"
             )),
             format = "tsv",
-            colnames = FALSE,
-            engine = "readr"
+            colnames = FALSE
         )
         synonym <- import(
             con = .cacheIt(pasteURL(
@@ -91,9 +121,11 @@
         )
         df1 <- gene
         df1 <- df1[, c(8, 13, 10)]
-        colnames(df1) <- c("mysqlId", geneIdCol, "description")
+        colnames(df1) <- c("mysqlId", "geneId", "description")
+        df1 <- df1[complete.cases(df1), , drop = FALSE]
         df1 <- as(df1, "DataFrame")
         df2 <- synonym
+        assert(all(complete.cases(df2)))
         df2 <- unique(df2)
         df2 <- split(x = df2, f = df2[[1L]])
         df2 <- lapply(X = df2, FUN = `[[`, 2L)
@@ -102,31 +134,21 @@
             "geneSynonyms" = unname(df2)
         ))
         df3 <- entrez
-        df3 <- df3[, c("gene_stable_id", "xref")]
+        df3 <- df3[, c("gene_stable_id", "xref"), drop = FALSE]
         keep <- grepl(pattern = "^[0-9]+$", x = df3[["xref"]])
-        df3 <- df3[keep, ]
+        df3 <- df3[keep, , drop = FALSE]
+        assert(all(complete.cases(df3)))
         df3[["xref"]] <- as.integer(df3[["xref"]])
         df3 <- unique(df3)
         df3 <- split(x = df3, f = df3[[1L]])
         df3 <- lapply(X = df3, FUN = `[[`, 2L)
-        df3lst <- list()
-        df3lst[[geneIdCol]] <- names(df3)
-        df3lst[["ncbiGeneId"]] <- unname(df3)
-        df3 <- as.DataFrame(df3lst)
-        mcols <- leftJoin(x = df1, y = df2, by = "mysqlId")
-        mcols <- leftJoin(x = mcols, y = df3, by = geneIdCol)
-        mcols[["mysqlId"]] <- NULL
-        mcols <- mcols[, sort(colnames(mcols))]
-        if (isSubset("description", colnames(mcols(object)))) {
-            mcols[["description"]] <- NULL
-        }
-        if (isSubset("geneSynonyms", colnames(mcols(object)))) {
-            mcols[["geneSynonyms"]] <- NULL
-        }
-        if (isSubset("ncbiGeneId", colnames(mcols(object)))) {
-            mcols[["ncbiGeneId"]] <- NULL
-        }
-        mcols <- leftJoin(x = mcols(object), y = df, by = geneIdCol)
-        mcols(object) <- mcols
-        object
+        df3 <- as.DataFrame(list(
+            "geneId" = names(df3),
+            "ncbiGeneId" = unname(df3)
+        ))
+        out <- leftJoin(x = df1, y = df2, by = "mysqlId")
+        out <- leftJoin(x = out, y = df3, by = "geneId")
+        out[["mysqlId"]] <- NULL
+        out <- out[, sort(colnames(out))]
+        out
     }
