@@ -323,8 +323,6 @@ setValidity(
 
 
 
-## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
-
 #' GENCODE gene annotations
 #'
 #' @details
@@ -350,8 +348,6 @@ setValidity(
 )
 
 
-
-## FIXME Fail if mcols contain `entrezId` instead of `ncbiGeneId`.
 
 #' GENCODE transcript annotations
 #'
