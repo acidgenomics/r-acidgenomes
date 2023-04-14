@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-14.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -21,6 +21,9 @@
             x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
             y = colnames(mcols(object))
         )) {
+            return(object)
+        }
+        if (isSubset(x = metadata(object), y = "GRCh37")) {
             return(object)
         }
         extraMcols <- .ensemblFtpGeneMetadata(
