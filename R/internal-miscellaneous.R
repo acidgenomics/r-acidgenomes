@@ -1,6 +1,3 @@
-## FIXME Rename this to strict camelCase.
-
-
 #' Download multiple genome files in a single call
 #'
 #' @note Updated 2022-05-24.
