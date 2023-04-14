@@ -110,13 +110,13 @@ currentRefSeqGenomeBuild <-
             isOrganism(organism),
             isString(taxonomicGroup, nullOK = TRUE)
         )
-        baseURL <- .getRefSeqGenomeURL(
+        baseUrl <- .getRefSeqGenomeUrl(
             organism = organism,
             taxonomicGroup = taxonomicGroup,
             quiet = TRUE
         )
         summary <- .getRefSeqAssemblySummary(
-            file = pasteURL(baseURL, "assembly_summary.txt")
+            file = pasteURL(baseUrl, "assembly_summary.txt")
         )
         assert(isSubset("ftp_path", names(summary)))
         out <- basename(summary[["ftp_path"]])
@@ -125,7 +125,7 @@ currentRefSeqGenomeBuild <-
 
 
 
-## Updated 2022-05-24.
+## Updated 2023-04-14.
 #' @rdname currentGenomeBuild
 #' @export
 currentUCSCGenomeBuild <-
@@ -134,7 +134,7 @@ currentUCSCGenomeBuild <-
         json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
         assert(isSubset("ucscGenomes", names(json)))
         json <- json[["ucscGenomes"]]
-        l <- Map(
+        lst <- Map(
             name = names(json),
             x = json,
             f = function(name, x) {
@@ -148,7 +148,7 @@ currentUCSCGenomeBuild <-
             },
             USE.NAMES = FALSE
         )
-        df <- rbindToDataFrame(l)
+        df <- rbindToDataFrame(lst)
         df <- df[df[["active"]] == 1L, , drop = FALSE]
         if (!isSubset(organism, unique(df[["scientificName"]]))) {
             abort(sprintf("Invalid organism: {.val %s}.", organism))

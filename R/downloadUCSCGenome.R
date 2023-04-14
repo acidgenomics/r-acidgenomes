@@ -2,7 +2,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-14.
 #'
 #' @section Genome:
 #'

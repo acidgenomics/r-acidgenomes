@@ -192,15 +192,15 @@
 
 #' Get the RefSeq base genome URL for an organism
 #'
-#' @note Updated 2022-09-22.
+#' @note Updated 2023-04-14.
 #' @noRd
 #'
 #' @examples
-#' .getRefSeqGenomeURL(
+#' .getRefSeqGenomeUrl(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
-.getRefSeqGenomeURL <-
+.getRefSeqGenomeUrl <-
     function(organism,
              taxonomicGroup = NULL,
              quiet = FALSE) {
