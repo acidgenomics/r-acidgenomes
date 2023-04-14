@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -309,27 +309,58 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME Add these files for Ensembl genome download:
-##
-## This contains peptide mapping info:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.ena.tsv
-##
-## This contains Entrez identifier mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.entrez.tsv.gz
-##
-## This contains the seqlengths:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.karyotype.tsv.gz
-##
-## This contains RefSeq mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.refseq.tsv.gz
-##
-## This contains UniProt peptide mappings:
-## https://ftp.ensembl.org/pub/release-108/tsv/homo_sapiens/Homo_sapiens.GRCh38.108.uniprot.tsv.gz
-
-## Updated 2023-04-13.
+## Updated 2023-04-14.
 .downloadEnsemblMetadata <-
-    function(FIXME) {
-        stop("FIXME")
+    function(genomeBuild,
+             organism,
+             outputDir,
+             releaseUrl,
+             cache) {
+        baseUrl <- pasteURL(releaseUrl, "tsv", snakeCase(organism))
+        organism2 <- gsub(pattern = " ", replacement = "_", x = organism)
+        urls <- c(
+            "ena" = pasteURL(
+                baseUrl,
+                paste(
+                    organism2, genomeBuild, release, "ena", "tsv", "gz"
+                    sep = "."
+                )
+            ),
+            "entrez" = pasteURL(
+                baseUrl,
+                paste(
+                    organism2, genomeBuild, release, "entrez", "tsv", "gz"
+                    sep = "."
+                )
+            ),
+            "karyotype" = pasteURL(
+                baseUrl,
+                paste(
+                    organism2, genomeBuild, release, "karyotype", "tsv", "gz"
+                    sep = "."
+                )
+            ),
+            "refseq" = pasteURL(
+                baseUrl,
+                paste(
+                    organism2, genomeBuild, release, "refseq", "tsv", "gz"
+                    sep = "."
+                )
+            ),
+            "uniprot" = pasteURL(
+                baseUrl,
+                paste(
+                    organism2, genomeBuild, release, "uniprot", "tsv", "gz"
+                    sep = "."
+                )
+            )
+        )
+        files <- .downloadUrls(
+            urls = urls,
+            outputDir = file.path(outputDir, "metadata"),
+            cache = cache
+        )
+        invisible(list("files" = files, "urls" = urls))
     }
 
 
