@@ -9,6 +9,14 @@ New functions:
   `mapGeneNamesToHGNC`, `mapGeneNamesToNCBI`. These are covered against
   _Homo sapiens_ and _Mus musculus_.
 
+Major changes:
+
+- Classes that extend `GRanges` (e.g. `EnsemblGenes`, `EnsemblTranscripts`,
+  `GencodeGenes`, `GencodeTranscripts`) now intentionally fail class checks if
+  `entrezId` is defined instead of `ncbiGeneId` in `mcols` metadata. This makes
+  downstream handoff to GSEA functions in AcidGSEA easier to manage. For
+  legacy objects, use `updateObject` to resolve this check.
+
 Minor changes:
 
 - Renamed `EntrezGeneInfo` function to `NcbiGeneInfo`.

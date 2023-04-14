@@ -30,7 +30,8 @@
         )
         if (isFALSE(ignoreVersion)) {
             colnames(extraMcols)[
-                colnames(extraMcols) == "geneId"] <- "geneIdNoVersion"
+                colnames(extraMcols) == "geneId"
+            ] <- "geneIdNoVersion"
         }
         if (isSubset("description", colnames(mcols(object)))) {
             extraMcols[["description"]] <- NULL
