@@ -82,7 +82,7 @@ downloadEnsemblGenome <-
         info[["annotation"]][["gtf"]] <-
             do.call(what = .downloadEnsemblGtf, args = args)
         info[["metadata"]] <-
-            do.call(what = .downloadEncodeMetadata, args = args)
+            do.call(what = .downloadEnsemblMetadata, args = args)
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),

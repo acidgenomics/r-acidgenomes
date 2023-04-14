@@ -2,6 +2,9 @@
 
 ## AcidGenomes 0.5.0 (2023-04-14)
 
+Starting a new release series to denote potential breaking changes with legacy
+objects saved with `entrezId` instead of `ncbiGeneId`.
+
 New functions:
 
 - Added utility functions to easily map gene symbols to stable gene identifiers
@@ -16,6 +19,10 @@ Major changes:
   `entrezId` is defined instead of `ncbiGeneId` in `mcols` metadata. This makes
   downstream handoff to GSEA functions in AcidGSEA easier to manage. For
   legacy objects, use `updateObject` to resolve this check.
+- `makeGRangesFromEnsembl` and `makeGRangesFromGFF` now attempt to fetch
+  additional useful gene metadata, including gene synonyms from the Ensembl FTP
+  server when applicable. This currently applies to gene annotation files from
+  Ensembl and GENCODE.
 
 Minor changes:
 
@@ -24,10 +31,9 @@ Minor changes:
   `HGNC` instead for synonym information.
 - Removed `HGNC2Ensembl` and `MGI2Ensembl`. Just use `HGNC` and `MGI` function
   return instead.
-- `makeGRangesFromEnsembl` and `makeGRangesFromGFF` now attempts to fetch
-  additional useful gene metadata, including gene synonyms from the Ensembl FTP
-  server when applicable. This currently applies to gene annotation files from
-  Ensembl and GENCODE.
+- `downloadEnsemblGenome` now downloads additional useful metadata files.
+- Added `updateObject` support to update legacy objects that may fail new
+  `entrezId` class checks.
 
 ## AcidGenomes 0.4.8 (2023-02-16)
 
