@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-04-14.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -46,7 +46,7 @@ downloadGencodeGenome <-
             "Homo sapiens" = "human",
             "Mus musculus" = "mouse"
         )
-        releaseURL <- pasteURL(
+        releaseUrl <- pasteURL(
             "ftp://ftp.ebi.ac.uk",
             "pub",
             "databases",
@@ -55,7 +55,7 @@ downloadGencodeGenome <-
             paste("release", release, sep = "_")
         )
         if (identical(genomeBuild, "GRCh37")) {
-            releaseURL <- pasteURL(releaseURL, "GRCh37_mapping")
+            releaseUrl <- pasteURL(releaseUrl, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "gencode", release
@@ -67,7 +67,7 @@ downloadGencodeGenome <-
                 "%s %s from {.url %s} to {.path %s}."
             ),
             organism, genomeBuild, as.character(release),
-            releaseURL, outputDir
+            releaseUrl, outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -77,7 +77,7 @@ downloadGencodeGenome <-
         args <- list(
             "genomeBuild" = genomeBuild,
             "outputDir" = outputDir,
-            "releaseURL" = releaseURL,
+            "releaseUrl" = releaseUrl,
             "cache" = cache
         )
         info <- list()
@@ -119,11 +119,11 @@ downloadGencodeGenome <-
              metadataFiles,
              outputDir,
              release,
-             releaseURL,
+             releaseUrl,
              cache) {
         urls <- c(
             "gff" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
@@ -136,7 +136,7 @@ downloadGencodeGenome <-
                 )
             ),
             "gtf" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
@@ -265,11 +265,11 @@ downloadGencodeGenome <-
 .downloadGencodeGenome <-
     function(genomeBuild,
              outputDir,
-             releaseURL,
+             releaseUrl,
              cache) {
         urls <- c(
             "fasta" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
         )
@@ -305,26 +305,26 @@ downloadGencodeGenome <-
     function(genomeBuild,
              outputDir,
              release,
-             releaseURL,
+             releaseUrl,
              cache) {
         urls <- c(
             "readme" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 switch(
                     EXPR = genomeBuild,
                     "GRCh37" = "_README_GRCh37_mapping.txt",
                     "_README.TXT"
                 )
             ),
-            "md5sums" = pasteURL(releaseURL, "MD5SUMS"),
+            "md5sums" = pasteURL(releaseUrl, "MD5SUMS"),
             ## TSV mapping transcripts to NCBI (Entrez) genes.
             "ncbiGene" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0("gencode.v", release, ".metadata.EntrezGene.gz")
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
             "refSeq" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0("gencode.v", release, ".metadata.RefSeq.gz")
             )
         )
@@ -343,11 +343,11 @@ downloadGencodeGenome <-
     function(genomeBuild,
              outputDir,
              release,
-             releaseURL,
+             releaseUrl,
              cache) {
         urls <- c(
             "fasta" = pasteURL(
-                releaseURL,
+                releaseUrl,
                 paste0(
                     "gencode.v", release,
                     switch(
