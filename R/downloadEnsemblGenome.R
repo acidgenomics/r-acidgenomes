@@ -64,8 +64,8 @@ downloadEnsemblGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "genomeBuild" = genomeBuild,
             "organism" = organism,
+            "genomeBuild" = genomeBuild,
             "outputDir" = outputDir,
             "releaseUrl" = releaseUrl,
             "cache" = cache
@@ -99,13 +99,13 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2023-04-13.
+## Updated 2023-04-14.
 .downloadEnsemblGff <-
-    function(genomeBuild,
-             organism,
+    function(organism,
+             genomeBuild,
+             release,
              outputDir,
              releaseUrl,
-             release,
              cache) {
         baseUrl <- pasteURL(releaseUrl, "gff3", snakeCase(organism))
         urls <- c(
@@ -167,12 +167,12 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2023-04-13.
+## Updated 2023-04-14.
 .downloadEnsemblGtf <-
-    function(genomeBuild,
-             organism,
-             outputDir,
+    function(organism,
+             genomeBuild,
              release,
+             outputDir,
              releaseUrl,
              cache) {
         baseUrl <- pasteURL(releaseUrl, "gtf", snakeCase(organism))
@@ -254,10 +254,10 @@ downloadEnsemblGenome <-
 
 
 
-## Updated 2022-05-24.
+## Updated 2023-04-14.
 .downloadEnsemblGenome <-
-    function(genomeBuild,
-             organism,
+    function(organism,
+             genomeBuild,
              outputDir,
              releaseUrl,
              cache) {
@@ -311,8 +311,9 @@ downloadEnsemblGenome <-
 
 ## Updated 2023-04-14.
 .downloadEnsemblMetadata <-
-    function(genomeBuild,
-             organism,
+    function(organism,
+             genomeBuild,
+             release,
              outputDir,
              releaseUrl,
              cache) {
@@ -367,8 +368,8 @@ downloadEnsemblGenome <-
 
 ## Updated 2022-05-24.
 .downloadEnsemblTranscriptome <-
-    function(genomeBuild,
-             organism,
+    function(organism,
+             genomeBuild,
              outputDir,
              releaseUrl,
              cache) {
