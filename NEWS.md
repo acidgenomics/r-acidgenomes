@@ -22,7 +22,8 @@ Major changes:
 - `makeGRangesFromEnsembl` and `makeGRangesFromGFF` now attempt to fetch
   additional useful gene metadata, including gene synonyms from the Ensembl FTP
   server when applicable. This currently applies to gene annotation files from
-  Ensembl and GENCODE.
+  Ensembl and GENCODE. Note that extra metadata is not supported for legacy
+  _Homo sapiens_ GRCh37 genome build.
 
 Minor changes:
 
