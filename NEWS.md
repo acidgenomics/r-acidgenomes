@@ -1,6 +1,6 @@
 # Release notes
 
-## AcidGenomes 0.4.9 (UNRELEASED)
+## AcidGenomes 0.4.9 (2023-04-14)
 
 New functions:
 
@@ -12,6 +12,10 @@ Minor changes:
 
 - Removed `geneSynonyms` from `NAMESPACE`. Consider using `NcbiGeneInfo`
   or `HGNC` instead for synonym information.
+- `makeGRangesFromEnsembl` and `makeGRangesFromGFF` now attempts to fetch
+  additional useful gene metadata, including gene synonyms from the Ensembl FTP
+  server when applicable. This currently applies to gene annotation files from
+  Ensembl and GENCODE.
 
 ## AcidGenomes 0.4.8 (2023-02-16)
 
