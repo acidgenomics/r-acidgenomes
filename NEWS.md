@@ -4,9 +4,10 @@
 
 New functions:
 
-- `mapGeneNamesToEnsembl`.
-- `mapGeneNamesToHGNC`.
-- `mapGeneNamesToNCBI`.
+- Added utility functions to easily map gene symbols to stable gene identifiers
+  at Ensembl, HGNC, and NCBI (Entrez): `mapGeneNamesToEnsembl`,
+  `mapGeneNamesToHGNC`, `mapGeneNamesToNCBI`. These are covered against
+  _Homo sapiens_ and _Mus musculus_.
 
 Minor changes:
 
@@ -51,16 +52,16 @@ Minor changes:
 - Migrated `requireNamespaces` import from AcidBase to goalie.
 - Updated dependency versions.
 - Now allowing Ensembl `Seqinfo` fetch step to fail, to avoid unit test
-  issues with *Mus musulus* Ensembl 90 GTF file (for bcbioRNASeq).
+  issues with _Mus musulus_ Ensembl 90 GTF file (for bcbioRNASeq).
 
 ## AcidGenomes 0.4.5 (2023-01-31)
 
 Minor changes:
 
 - `downloadUCSCGenome`: Added a manual override for defaulting to `"hg38"`
-  for *Homo sapiens*, which has switched over to experimental `"hs1"` T2T
+  for _Homo sapiens_, which has switched over to experimental `"hs1"` T2T
   genome build.
-- `mapGencodeToEnsembl`: Added support for mapping *Mus musculus* releases.
+- `mapGencodeToEnsembl`: Added support for mapping _Mus musculus_ releases.
 - Internal `Seqinfo` generators now default to pulling annotations from Ensembl
   for GENCODE reference, rather than UCSC. Note that UCSC `Seqinfo` function
   is currently broken for hg38, but will be fixed in pending GenomeInfoDb
@@ -172,7 +173,7 @@ Minor changes:
 
 - `Tx2Gene` class check: disabling check that looks for identical transcript
   and gene identifiers. This check is not compatible with the
-  *Saccharomyces cerevisiae* (sacCer3) reference genome. Thanks for pointing
+  _Saccharomyces cerevisiae_ (sacCer3) reference genome. Thanks for pointing
   this out @amizeranschi.
 
 ## AcidGenomes 0.2.19 (2021-09-13)
@@ -235,7 +236,7 @@ Minor changes:
 
 Minor changes:
 
-- Added support for new *Mus musculus* GRCm39 genome build. Updated internal
+- Added support for new _Mus musculus_ GRCm39 genome build. Updated internal
   code for `mapUCSCBuildToEnsembl` and `downloadEnsemblGenome`, in particular.
   Note that `*_chr_patch_hapl_scaff` GFF and GTF files are no longer available
   on the Egnyte FTP server for GRCm39 (only GRCm38 and GRCh38).
