@@ -322,35 +322,35 @@ downloadEnsemblGenome <-
             "ena" = pasteURL(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "ena", "tsv", "gz"
+                    organism2, genomeBuild, release, "ena", "tsv", "gz",
                     sep = "."
                 )
             ),
             "entrez" = pasteURL(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "entrez", "tsv", "gz"
+                    organism2, genomeBuild, release, "entrez", "tsv", "gz",
                     sep = "."
                 )
             ),
             "karyotype" = pasteURL(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "karyotype", "tsv", "gz"
+                    organism2, genomeBuild, release, "karyotype", "tsv", "gz",
                     sep = "."
                 )
             ),
             "refseq" = pasteURL(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "refseq", "tsv", "gz"
+                    organism2, genomeBuild, release, "refseq", "tsv", "gz",
                     sep = "."
                 )
             ),
             "uniprot" = pasteURL(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "uniprot", "tsv", "gz"
+                    organism2, genomeBuild, release, "uniprot", "tsv", "gz",
                     sep = "."
                 )
             )
