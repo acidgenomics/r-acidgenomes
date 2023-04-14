@@ -81,7 +81,7 @@ downloadEnsemblGenome <-
             do.call(what = .downloadEnsemblGff, args = args)
         info[["annotation"]][["gtf"]] <-
             do.call(what = .downloadEnsemblGtf, args = args)
-        if (!identical(genomeBuild, "GRCh37")) {
+        if (!isSubset(genomeBuild, "GRCh37")) {
             info[["metadata"]] <-
                 do.call(what = .downloadEnsemblMetadata, args = args)
         }
