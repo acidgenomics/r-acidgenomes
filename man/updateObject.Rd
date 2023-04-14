@@ -23,6 +23,8 @@ updateObject(object, ..., verbose = FALSE)
 
 \item{verbose}{\code{logical(1)}.
 Run the function with verbose output.}
+
+\item{...}{Additional arguments.}
 }
 \description{
 Update object
