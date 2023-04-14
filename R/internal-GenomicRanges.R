@@ -498,7 +498,7 @@
             object <- .includeTxVersion(object)
         }
         object <- .addBroadClass(object)
-        if(isSubset(
+        if (isSubset(
             x = metadata(object)[["provider"]],
             y = c("Ensembl", "GENCODE")
         )) {

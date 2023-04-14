@@ -27,12 +27,10 @@
 #' )
 #' print(x)
 mapGeneNamesToNCBI <-
-    function(
-        genes,
-        organism,
-        taxonomicGroup = NULL,
-        ncbi = NULL
-    ) {
+    function(genes,
+             organism,
+             taxonomicGroup = NULL,
+             ncbi = NULL) {
         if (is.null(ncbi)) {
             ncbi <- NcbiGeneInfo(
                 organism = organism,
