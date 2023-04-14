@@ -78,9 +78,11 @@ downloadEnsemblGenome <-
             do.call(what = .downloadEnsemblTranscriptome, args = args)
         args <- append(x = args, values = list("release" = release))
         info[["annotation"]][["gff"]] <-
-            do.call(what = .downloadEnsemblGFF, args = args)
+            do.call(what = .downloadEnsemblGff, args = args)
         info[["annotation"]][["gtf"]] <-
-            do.call(what = .downloadEnsemblGTF, args = args)
+            do.call(what = .downloadEnsemblGtf, args = args)
+        info[["metadata"]] <-
+            do.call(what = .downloadEncodeMetadata, args = args)
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -97,10 +99,8 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME Use strict camel case here.
-
-## Updated 2022-05-24.
-.downloadEnsemblGFF <-
+## Updated 2023-04-13.
+.downloadEnsemblGff <-
     function(genomeBuild,
              organism,
              outputDir,
@@ -167,10 +167,8 @@ downloadEnsemblGenome <-
 
 
 
-## FIXME Use strict camel case here.
-
-## Updated 2022-05-24.
-.downloadEnsemblGTF <-
+## Updated 2023-04-13.
+.downloadEnsemblGtf <-
     function(genomeBuild,
              organism,
              outputDir,
