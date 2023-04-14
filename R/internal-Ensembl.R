@@ -23,9 +23,10 @@
         )) {
             return(object)
         }
-        if (isSubset(x = metadata(object), y = "GRCh37")) {
+        if (isSubset(metadata(object)[["genomeBuild"]], "GRCh37")) {
             return(object)
         }
+        alert("Downloading extra gene-level metadata from Ensembl.")
         extraMcols <- .ensemblFtpGeneMetadata(
             organism = metadata(object)[["organism"]],
             genomeBuild = metadata(object)[["genomeBuild"]],
