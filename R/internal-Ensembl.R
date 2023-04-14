@@ -23,7 +23,12 @@
         )) {
             return(object)
         }
-        if (isSubset(metadata(object)[["genomeBuild"]], "GRCh37")) {
+        genomeBuild <- sub(
+            pattern = "\\.p[0-9]+$",
+            replacement = "",
+            x = genomeBuild
+        )
+        if (isSubset(genomeBuild, "GRCh37")) {
             return(object)
         }
         alert("Downloading extra gene-level metadata from Ensembl.")
@@ -77,6 +82,11 @@
             isOrganism(organism),
             isString(genomeBuild),
             isInt(release)
+        )
+        genomeBuild <- sub(
+            pattern = "\\.p[0-9]+$",
+            replacement = "",
+            x = genomeBuild
         )
         ftpBaseUrl <- pasteURL(
             "ftp.ensembl.org",
