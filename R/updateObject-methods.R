@@ -6,6 +6,8 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #'
+#' @param ... Additional arguments.
+#'
 #' @examples
 #' # > object <- makeGRangesFromEnsembl("Homo sapiens")
 #' # > object <- updateObject(object)
