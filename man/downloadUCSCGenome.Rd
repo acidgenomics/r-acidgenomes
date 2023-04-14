@@ -32,7 +32,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2023-01-30.
+Updated 2023-04-14.
 }
 \section{Genome}{
 

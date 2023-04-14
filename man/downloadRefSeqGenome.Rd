@@ -38,7 +38,7 @@ Invisible \code{list}.
 Download RefSeq reference genome
 }
 \note{
-Updated 2022-05-24.
+Updated 2023-04-14.
 }
 \section{Stable release}{
 
