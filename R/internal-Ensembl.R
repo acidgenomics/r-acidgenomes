@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-04-14.
+#' @note Updated 2023-04-15.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -26,7 +26,7 @@
         genomeBuild <- sub(
             pattern = "\\.p[0-9]+$",
             replacement = "",
-            x = genomeBuild
+            x = metadata(object)[["genomeBuild"]]
         )
         if (isSubset(genomeBuild, "GRCh37")) {
             return(object)
