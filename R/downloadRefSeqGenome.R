@@ -226,14 +226,14 @@ downloadRefSeqGenome <-
 
 
 
-## Updated 2021-08-03.
+## Updated 2023-04-15.
 .downloadRefSeqMetadata <-
     function(genomeBuild,
              outputDir,
              releaseUrl,
              cache) {
         urls <- c(
-            "readme" = pasteURL(releaseUrl, "README.txt"),
+            ## > "readme" = pasteURL(releaseUrl, "README.txt"),
             "annotationHashes" = pasteURL(releaseUrl, "annotation_hashes.txt"),
             "assemblyStatus" = pasteURL(releaseUrl, "assembly_status.txt"),
             "md5checksums" = pasteURL(releaseUrl, "md5checksums.txt"),
