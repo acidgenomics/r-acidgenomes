@@ -184,11 +184,12 @@ test_that("downloadRefSeqGenome", {
     tx2gene <- as.data.frame(tx2gene)
     aatfExpected <- data.frame(
         "txId" = c(
+            "NM_001411094.1",
             "NM_012138.4",
-            "XM_011524611.2",
-            "XM_047435748.1"
+            "XM_047435748.1",
+            "XM_054329280.1"
         ),
-        "geneId" = rep("AATF", 3L)
+        "geneId" = rep("AATF", 4L)
     )
     aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
