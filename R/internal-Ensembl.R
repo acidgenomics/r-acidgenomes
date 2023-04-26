@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-04-15.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -23,19 +23,27 @@
         )) {
             return(object)
         }
-        genomeBuild <- sub(
+        genomeBuild <- metadata(object)[["genomeBuild"]]
+        genomeBuild2 <- sub(
             pattern = "\\.p[0-9]+$",
             replacement = "",
-            x = metadata(object)[["genomeBuild"]]
+            x = genomeBuild
         )
-        if (isSubset(genomeBuild, "GRCh37")) {
+        if (isSubset(genomeBuild2, "GRCh37")) {
             return(object)
         }
         alert("Downloading extra gene-level metadata from Ensembl.")
+        organism <- metadata(object)[["organism"]]
+        release <- metadata(object)[["release"]]
+        provider <- metadata(object)[["provider"]]
+        assert(isSubset(provider, c("Ensembl", "GENCODE")))
+        if (identical(provider, "GENCODE")) {
+            release <- mapGencodeToEnsembl(release)
+        }
         extraMcols <- .ensemblFtpGeneMetadata(
-            organism = metadata(object)[["organism"]],
-            genomeBuild = metadata(object)[["genomeBuild"]],
-            release = metadata(object)[["release"]]
+            organism = organism,
+            genomeBuild = genomeBuild,
+            release = release
         )
         if (isFALSE(ignoreVersion)) {
             colnames(extraMcols)[
