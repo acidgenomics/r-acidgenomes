@@ -36,7 +36,7 @@ NULL
 ## Standard functions ==========================================================
 
 #' @importFrom AcidBase download fileExt forceDetach initDir parentDir pasteURL
-#' printString realpath showSlotInfo standardizeCall
+#' printString realpath showHeader showSlotInfo standardizeCall
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #' toInlineString
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl
@@ -53,7 +53,7 @@ NULL
 #' isString isSubset isSystemCommand isWindows requireNamespaces validate
 #' validateClasses
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
-#' setValidity signature validObject
+#' setValidity show signature validObject
 #' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256
 #' @importFrom stringi stri_match_first_regex
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
