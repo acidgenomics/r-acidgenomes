@@ -27,7 +27,7 @@
 #' ## > edb <- makeEnsDbFromGFF(file)
 #' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
-    pkgs <- .packages()
+    ## > pkgs <- .packages()
     .suppressAll({
         requireNamespaces("ensembldb")
     })
@@ -77,6 +77,6 @@ makeEnsDbFromGFF <- function(file) {
     attr(x = edb, which = "args") <- args
     attr(x = edb, which = "gffMetadata") <- meta
     validObject(edb)
-    forceDetach(keep = pkgs)
+    ## > forceDetach(keep = pkgs)
     edb
 }

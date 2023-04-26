@@ -29,7 +29,7 @@
              columns,
              organism,
              strict = TRUE) {
-        pkgs <- .packages()
+        ## > pkgs <- .packages()
         .suppressAll({
             requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
         })
@@ -83,6 +83,6 @@
         colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         df <- as(df, "DFrame")
-        forceDetach(keep = pkgs)
+        ## > forceDetach(keep = pkgs)
         df
     }

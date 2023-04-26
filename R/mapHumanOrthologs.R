@@ -40,7 +40,7 @@ mapHumanOrthologs <-
     function(genes,
              organism = NULL,
              ensemblRelease = NULL) {
-        pkgs <- .packages()
+        ## > pkgs <- .packages()
         .suppressAll({
             requireNamespaces("biomaRt")
         })
@@ -208,6 +208,6 @@ mapHumanOrthologs <-
             !all(is.na(out[["geneName"]])),
             !all(is.na(out[["humanGeneId"]]))
         )
-        forceDetach(keep = pkgs)
+        ## > forceDetach(keep = pkgs)
         out
     }
