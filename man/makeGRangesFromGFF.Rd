@@ -33,7 +33,7 @@ Make GenomicRanges from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2023-04-12.
+Updated 2023-04-26.
 }
 \section{GFF/GTF specification}{
 
