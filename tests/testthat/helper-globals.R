@@ -1,11 +1,10 @@
 data(
-    GenomicRanges,
+    GRanges,
     package = "AcidTest",
     envir = environment()
 )
 
-biocPkgs <- c("AnnotationHub", "ensembldb")
-gr <- GenomicRanges
+gr <- GRanges
 
 ## nolint start
 CompressedIntegerList <- structure(
