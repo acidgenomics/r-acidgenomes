@@ -21,7 +21,7 @@
 
 #' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-04-26.
 #' @noRd
 .getEnsembl2NcbiFromOrgDb <-
     function(keys,
@@ -29,7 +29,9 @@
              columns,
              organism,
              strict = TRUE) {
-        requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
+        .suppressAll({
+            requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
+        })
         pkgs <- .packages()
         assert(
             isCharacter(keys),

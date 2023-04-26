@@ -26,7 +26,9 @@ makeProtein2GeneFromEnsembl <-
              genomeBuild = NULL,
              release = NULL) {
         pkgs <- .packages()
-        requireNamespaces("ensembldb")
+        .suppressAll({
+            requireNamespaces("ensembldb")
+        })
         assert(
             isCharacter(ids),
             hasNoDuplicates(ids)

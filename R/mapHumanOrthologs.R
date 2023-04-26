@@ -41,7 +41,9 @@ mapHumanOrthologs <-
              organism = NULL,
              ensemblRelease = NULL) {
         pkgs <- .packages()
-        requireNamespaces("biomaRt")
+        .suppressAll({
+            requireNamespaces("biomaRt")
+        })
         assert(
             isCharacter(genes),
             isOrganism(organism, nullOK = TRUE),
