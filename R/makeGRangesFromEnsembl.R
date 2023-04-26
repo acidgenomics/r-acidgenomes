@@ -122,10 +122,10 @@ makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts"),
              ignoreVersion = TRUE) {
-        .suppressAll({
-            requireNamespaces("ensembldb")
-        })
-        assert(isFlag(ignoreVersion))
+        assert(
+            requireNamespaces("ensembldb"),
+            isFlag(ignoreVersion)
+        )
         level <- match.arg(level)
         alert(sprintf(
             "Making {.cls %s} from {.cls %s}.",
@@ -133,9 +133,7 @@ makeGRangesFromEnsDb <-
         ))
         if (isString(object)) {
             package <- object
-            .suppressAll({
-                requireNamespaces(package)
-            })
+            assert(requireNamespaces(package))
             object <- get(
                 x = package,
                 envir = asNamespace(package),
@@ -148,11 +146,11 @@ makeGRangesFromEnsDb <-
             "order.type" = "asc",
             "return.type" = "GRanges"
         )
-        .suppressAll({
+        quietly({
             geneCols <- ensembldb::listColumns(object, "gene")
         })
         geneCols <- sort(unique(c(geneCols, "entrezid")))
-        .suppressAll({
+        quietly({
             txCols <- ensembldb::listColumns(object, "tx")
         })
         txCols <- sort(unique(c(txCols, geneCols)))
@@ -179,7 +177,7 @@ makeGRangesFromEnsDb <-
                 )
             }
         )
-        .suppressAll({
+        quietly({
             gr <- do.call(what = fun, args = args)
         })
         assert(is(gr, "GRanges"))

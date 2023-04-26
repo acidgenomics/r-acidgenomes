@@ -1,7 +1,7 @@
 #' Map protein identifiers to genes
 #'
 #' @name makeProtein2Gene
-#' @note Updated 2022-01-12.
+#' @note Updated 2023-04-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ids `character`.
@@ -25,10 +25,8 @@ makeProtein2GeneFromEnsembl <-
              organism = NULL,
              genomeBuild = NULL,
              release = NULL) {
-        .suppressAll({
-            requireNamespaces("ensembldb")
-        })
         assert(
+            requireNamespaces("ensembldb"),
             isCharacter(ids),
             hasNoDuplicates(ids)
         )

@@ -8,9 +8,11 @@
 #' using `capture.output()` here to suppress the console output, since it's not
 #' very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
-    assert(hasInternet())
-    .suppressAll({
+    assert(
         requireNamespaces("AnnotationHub")
+        hasInternet()
+    )
+    quietly({
         ah <- AnnotationHub::AnnotationHub(ask = FALSE)
     })
     assert(is(ah, "AnnotationHub"))
@@ -29,10 +31,8 @@
              columns,
              organism,
              strict = TRUE) {
-        .suppressAll({
-            requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
-        })
         assert(
+            requireNamespaces(c("AnnotationDbi", "AnnotationHub")),
             isCharacter(keys),
             hasNoDuplicates(keys),
             isString(keytype),
@@ -59,7 +59,7 @@
             mcols(ahs)[id, "title"],
             mcols(ahs)[id, "description"]
         ))
-        .suppressAll({
+        quietly({
             df <- AnnotationDbi::select(
                 x = orgdb,
                 keys = keys,

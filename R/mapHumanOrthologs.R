@@ -1,7 +1,7 @@
 #' Map input to human gene orthologs
 #'
 #' @export
-#' @note Updated 2021-08-03.
+#' @note Updated 2023-04-26.
 #'
 #' @details
 #' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
@@ -40,10 +40,8 @@ mapHumanOrthologs <-
     function(genes,
              organism = NULL,
              ensemblRelease = NULL) {
-        .suppressAll({
-            requireNamespaces("biomaRt")
-        })
         assert(
+            requireNamespaces("biomaRt"),
             isCharacter(genes),
             isOrganism(organism, nullOK = TRUE),
             isInt(ensemblRelease, nullOK = TRUE)

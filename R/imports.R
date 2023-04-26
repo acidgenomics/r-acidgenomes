@@ -36,7 +36,7 @@ NULL
 ## Standard functions ==========================================================
 
 #' @importFrom AcidBase download fileExt initDir parentDir pasteURL printString
-#' realpath showHeader showSlotInfo standardizeCall
+#' quietly realpath showHeader showSlotInfo standardizeCall
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #' toInlineString
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl
