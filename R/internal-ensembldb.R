@@ -53,7 +53,7 @@
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @examples
@@ -64,7 +64,6 @@
              release = NULL,
              ah = NULL) {
         assert(
-            requireNamespaces("AnnotationHub"),
             isString(organism),
             isString(genomeBuild, nullOK = TRUE),
             isInt(release, nullOK = TRUE),
@@ -277,10 +276,12 @@
 
 #' Get metadata inside EnsDb object
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-26.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
-    requireNamespaces("ensembldb")
+    .suppressAll({
+        requireNamespaces("ensembldb")
+    })
     assert(
         is(object, "EnsDb"),
         isString(level, nullOK = TRUE)
@@ -338,7 +339,7 @@
 
 #' Suppress all warnings and messages
 #'
-#' @note Updated 2022-06-08.
+#' @note Updated 2023-04-26.
 #' @noRd
 .suppressAll <- function(expr) {
     invisible({
