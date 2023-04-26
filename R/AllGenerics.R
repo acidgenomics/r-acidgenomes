@@ -40,6 +40,12 @@ NULL
 #' @export
 NULL
 
+#' @export
+#' @name show
+#' @rdname show
+#' @usage show(object)
+NULL
+
 #' @rdname stripGeneVersions
 #' @name stripGeneVersions
 #' @usage stripGeneVersions(object, ...)
