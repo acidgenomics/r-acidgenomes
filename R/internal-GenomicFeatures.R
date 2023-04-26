@@ -25,10 +25,10 @@
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
              ignoreVersion = TRUE) {
-        .suppressAll({
-            requireNamespaces("AnnotationDbi")
-        })
-        assert(is(object, "TxDb"))
+        assert(
+            requireNamespaces("AnnotationDbi"),
+            is(object, "TxDb")
+        )
         level <- match.arg(level)
         cols <- AnnotationDbi::columns(object)
         colsList <- list(
@@ -244,9 +244,7 @@ NULL
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
-    .suppressAll({
-        requireNamespaces("GenomicFeatures")
-    })
+    assert(requireNamespaces("GenomicFeatures"))
     if (isAFile(file)) {
         file <- realpath(file)
     }

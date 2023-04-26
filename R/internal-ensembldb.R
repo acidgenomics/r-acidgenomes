@@ -221,7 +221,7 @@
 
 #' Get EnsDb from AnnotationHub identifier
 #'
-#' @note Updated 2022-06-08.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @details
@@ -242,7 +242,7 @@
         ah <- .annotationHub()
     }
     assert(is(ah, "AnnotationHub"))
-    .suppressAll({
+    quietly({
         edb <- ah[[id]]
     })
     assert(is(edb, "EnsDb"))
@@ -253,16 +253,16 @@
 
 #' Get EnsDb from Package
 #'
-#' @note Updated 2022-06-09.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @examples .getEnsDbFromPackage("EnsDb.Hsapiens.v75")
 .getEnsDbFromPackage <- function(package) {
     alert(sprintf("Getting {.cls %s} from {.pkg %s}.", "EnsDb", package))
-    assert(isString(package))
-    .suppressAll({
+    assert(
+        isString(package),
         requireNamespaces(package)
-    })
+    )
     edb <- get(
         x = package,
         envir = asNamespace(package),
@@ -279,10 +279,8 @@
 #' @note Updated 2023-04-26.
 #' @noRd
 .getEnsDbMetadata <- function(object, level = NULL) {
-    .suppressAll({
-        requireNamespaces("ensembldb")
-    })
     assert(
+        requireNamespaces("ensembldb"),
         is(object, "EnsDb"),
         isString(level, nullOK = TRUE)
     )
@@ -331,24 +329,4 @@
     }
     dl(items)
     list
-}
-
-
-
-## NOTE Consider moving this to AcidBase.
-
-#' Suppress all warnings and messages
-#'
-#' @note Updated 2023-04-26.
-#' @noRd
-.suppressAll <- function(expr) {
-    invisible({
-        capture.output({
-            suppressWarnings({
-                suppressMessages({
-                    expr
-                })
-            })
-        })
-    })
 }
