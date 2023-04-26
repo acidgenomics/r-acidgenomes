@@ -30,7 +30,7 @@ HGNC <- # nolint
         suppressWarnings({
             df <- import(con = file, format = "tsv", engine = "readr")
         })
-        df <- as(df, "DataFrame")
+        df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         idCol <- "hgncId"
         assert(

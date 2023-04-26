@@ -2,7 +2,7 @@
 
 #' Apply broad class definitions
 #'
-#' This function is intended to work rowwise on the GenomicRanges mcols.
+#' This function is intended to work rowwise on the GRanges mcols.
 #'
 #' @section Mitochondrial genes:
 #'
@@ -133,11 +133,11 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2023-04-26.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
-        is(object, "GenomicRanges"),
+        is(object, "GRanges"),
         identical(
             x = names(mcols(object)),
             y = camelCase(names(mcols(object)), strict = TRUE)
@@ -150,7 +150,7 @@
     )
     df <- as.data.frame(object)
     ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
-    ## only applies for transcript-level GenomicRanges.
+    ## only applies for transcript-level GRanges.
     if ("geneBiotype" %in% names(df)) {
         biotypeCol <- "geneBiotype"
         biotypeData <- df[[biotypeCol]]
@@ -170,8 +170,7 @@
         geneNameData <- NA_character_
     }
     ## Seqnames. This refers to the chromosome name. Note that data frame
-    ## coercion will define `seqnames` column from the `GenomicRanges` object
-    ## (see above).
+    ## coercion will define `seqnames` column from the GRanges (see above).
     if ("seqnames" %in% names(df)) {
         seqnamesCol <- "seqnames"
         seqnamesData <- df[[seqnamesCol]]
@@ -180,7 +179,7 @@
         seqnamesData <- NA_character_
     }
     ## Apply broad class. Note that this method doesn't seem to work right with
-    ## DataFrame class.
+    ## DFrame class.
     df <- data.frame(
         "biotype" = biotypeData,
         "chromosome" = seqnamesData,
@@ -216,7 +215,7 @@
              idNoVersionCol,
              quiet = TRUE) {
         assert(
-            is(object, "GenomicRanges"),
+            is(object, "GRanges"),
             isString(idCol),
             isString(idVersionCol),
             isString(idNoVersionCol),
@@ -284,7 +283,7 @@
 
 ## Standardization =============================================================
 
-#' Apply run-length encoding and minimize `GenomicRanges` mcols
+#' Apply run-length encoding and minimize `GRanges` mcols
 #'
 #' @note Updated 2023-03-01.
 #' @noRd
@@ -293,10 +292,10 @@
 #' This step sanitizes NA values, applies run-length encoding (to reduce memory
 #' overhead), and trims any invalid ranges.
 #'
-#' This trimming step was added to handle GenomicRanges from Ensembl 102,
-#' which won't return valid otherwise from ensembldb.
+#' This trimming step was added to handle GRanges from Ensembl 102, which won't
+#' return valid otherwise from ensembldb.
 .encodeMcols <- function(object) {
-    assert(is(object, "GenomicRanges"))
+    assert(is(object, "GRanges"))
     length <- length(object)
     object <- trim(object)
     assert(hasLength(object, n = length))
@@ -325,7 +324,7 @@
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
     ## This step is necessary here until we can fix unwanted coercion with join
-    ## operations due to internal DataFrame `merge()` call in AcidPlyr.
+    ## operations due to internal DFrame `merge()` call in AcidPlyr.
     if (is.list(mcols[["geneSynonyms"]])) {
         mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
     }
@@ -335,13 +334,13 @@
 
 
 
-#' Match the identifier column in GenomicRanges to use for names.
+#' Match the identifier column in `GRanges` to use for names.
 #'
-#' @note Updated 2021-01-20.
+#' @note Updated 2023-04-26.
 #' @noRd
 .matchGRangesNamesColumn <- function(object) {
     assert(
-        is(object, "GenomicRanges"),
+        is(object, "GRanges"),
         isString(metadata(object)[["level"]])
     )
     level <- match.arg(
@@ -369,19 +368,19 @@
 
 
 
-#' Standardize the GenomicRanges mcols into desired naming conventions
+#' Standardize the `GRanges` mcols into desired naming conventions
 #'
 #' @details
 #' Always return using camel case, even though GFF/GTF files use snake.
 #'
-#' Note that this step makes GenomicRanges imported via `rtracklayer::import()`
+#' Note that this step makes `GRanges` imported via `rtracklayer::import()`
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-04-26.
 #' @noRd
 .standardizeMcols <- function(object) {
-    assert(is(object, "GenomicRanges"))
+    assert(is(object, "GRanges"))
     mcols <- mcols(object)
     names(mcols) <- camelCase(names(mcols), strict = TRUE)
     ## Ensure "tx" prefix is used consistently instead of "transcript".
@@ -470,9 +469,9 @@
 
 ## Main generator ==============================================================
 
-#' Make GenomicRanges
+#' Make genomic ranges (`GRanges`)
 #'
-#' This is the main GenomicRanges final return generator, used by
+#' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
 #' @note Updated 2023-04-12.
@@ -481,7 +480,7 @@
     function(object,
              ignoreVersion) {
         assert(
-            is(object, "GenomicRanges"),
+            is(object, "GRanges"),
             hasLength(object),
             isFlag(ignoreVersion),
             isString(metadata(object)[["level"]]),
@@ -532,7 +531,7 @@
         if (identical(provider, "RefSeq")) {
             alertInfo(sprintf(
                 "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
-                "GenomicRanges", idCol, "GenomicRangesList"
+                "GRanges", idCol, "GRangesList"
             ))
             ## Metadata gets dropped during `split()` call; stash and reassign.
             meta <- metadata(object)
@@ -546,10 +545,10 @@
                 msg = "Invalid and/or duplicated identifiers detected."
             )
             names(object) <- names
-            ## This check fails for split GenomicRangesList.
+            ## This check fails for split GRangesList.
             assert(
                 isFALSE(is.unsorted(object)),
-                msg = "GenomicRanges are not sorted."
+                msg = "Ranges are not sorted."
             )
         }
         ## Run final assert checks before returning.

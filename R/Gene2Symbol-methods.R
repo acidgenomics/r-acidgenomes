@@ -10,6 +10,7 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
+#'
 #' @param format `character(1)`.
 #' Formatting method to apply:
 #'
@@ -23,14 +24,15 @@
 #' - `"unmodified"`: Return `geneId` and `geneName` columns unmodified, in
 #' long format. Incomplete elements with `NA` gene name will be removed
 #' with an internal `complete.cases` call.
-#' @param ... Arguments pass through to `DataFrame` method.
+#'
+#' @param ... Arguments pass through to `DFrame` method.
 #'
 #' @seealso [makeGene2Symbol()].
 #'
 #' @examples
 #' data(GenomicRanges, package = "AcidTest")
 #'
-#' ## DataFrame ====
+#' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
 #'     "geneId" = c(
 #'         "ENSG00000228572.7",
@@ -44,15 +46,15 @@
 #' x <- Gene2Symbol(df)
 #' print(x)
 #'
-#' ## GenomicRanges ====
+#' ## GRanges ====
 #' object <- GenomicRanges
 #' x <- Gene2Symbol(object)
 NULL
 
 
 
-## Updated 2021-10-13.
-`Gene2Symbol,DataFrame` <- # nolint
+## Updated 2023-04-26.
+`Gene2Symbol,DFrame` <- # nolint
     function(object,
              format = c("makeUnique", "1:1", "unmodified"),
              quiet = FALSE) {
@@ -71,7 +73,7 @@ NULL
             isSubset(cols, colnames(object)),
             hasRows(object)
         )
-        object <- as(object, "DataFrame")
+        object <- as(object, "DFrame")
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
         assert(allAreAtomic(object))
@@ -148,7 +150,7 @@ NULL
                     "gene identifier per symbol."
                 ))
                 x <- split(x = object, f = object[["geneName"]])
-                assert(is(x, "SplitDataFrameList"))
+                assert(is(x, "SplitDFrameList"))
                 x <- SplitDataFrameList(lapply(
                     X = x,
                     FUN = function(x) {
@@ -172,7 +174,7 @@ NULL
             }
         )
         assert(
-            is(object, "DataFrame"),
+            is(object, "DFrame"),
             all(complete.cases(object)),
             hasNoDuplicates(object[["geneId"]]),
             msg = "Failed to generate Gene2Symbol object."
@@ -184,10 +186,10 @@ NULL
 
 
 
-## Updated 2021-08-09.
-`Gene2Symbol,GenomicRanges` <- # nolint
+## Updated 2023-04-26.
+`Gene2Symbol,GRanges` <- # nolint
     function(object, ...) {
-        df <- as(object, "DataFrame")
+        df <- as(object, "DFrame")
         metadata(df) <- metadata(object)
         Gene2Symbol(df, ...)
     }
@@ -198,14 +200,14 @@ NULL
 #' @export
 setMethod(
     f = "Gene2Symbol",
-    signature = signature(object = "DataFrame"),
-    definition = `Gene2Symbol,DataFrame`
+    signature = signature(object = "DFrame"),
+    definition = `Gene2Symbol,DFrame`
 )
 
 #' @rdname Gene2Symbol
 #' @export
 setMethod(
     f = "Gene2Symbol",
-    signature = signature(object = "GenomicRanges"),
-    definition = `Gene2Symbol,GenomicRanges`
+    signature = signature(object = "GRanges"),
+    definition = `Gene2Symbol,GRanges`
 )

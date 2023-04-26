@@ -9,7 +9,7 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `DFrame`.
 #' Data frame containing mapping columns:
 #'
 #' - `geneId`
@@ -109,7 +109,7 @@ mapHumanOrthologs <-
         if (!hasRows(map)) {
             abort("Failed to map any genes.")
         }
-        map <- as(map, "DataFrame")
+        map <- as(map, "DFrame")
         colnames(map) <- c("geneId", "humanGeneId")
         map <- sanitizeNA(map)
         keep <- complete.cases(map)
@@ -186,7 +186,7 @@ mapHumanOrthologs <-
             ignoreVersion = TRUE,
             format = "unmodified"
         )
-        g2s <- as(g2s, "DataFrame")
+        g2s <- as(g2s, "DFrame")
         assert(identical(colnames(g2s), c("geneId", "geneName")))
         alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
         g2sHuman <- makeGene2SymbolFromEnsembl(
@@ -195,7 +195,7 @@ mapHumanOrthologs <-
             ignoreVersion = TRUE,
             format = "unmodified"
         )
-        g2sHuman <- as(g2sHuman, "DataFrame")
+        g2sHuman <- as(g2sHuman, "DFrame")
         colnames(g2sHuman) <- c("humanGeneId", "humanGeneName")
         assert(all(complete.cases(g2sHuman)))
         ## Return.

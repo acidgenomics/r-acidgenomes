@@ -1,4 +1,4 @@
-#' Make GenomicRanges from Ensembl
+#' Make genomic ranges (`GRanges`) from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
 #' [Ensembl](https://www.ensembl.org/) using
@@ -91,7 +91,7 @@ makeGRangesFromEnsembl <-
         pkgs <- .packages()
         assert(isFlag(ignoreVersion))
         level <- match.arg(level)
-        alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
+        alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
         edb <- .getEnsDb(
             organism = organism,
             genomeBuild = genomeBuild,
@@ -131,7 +131,7 @@ makeGRangesFromEnsDb <-
         level <- match.arg(level)
         alert(sprintf(
             "Making {.cls %s} from {.cls %s}.",
-            "GenomicRanges", "EnsDb"
+            "GRanges", "EnsDb"
         ))
         if (isString(object)) {
             package <- object
@@ -184,7 +184,7 @@ makeGRangesFromEnsDb <-
         .suppressAll({
             gr <- do.call(what = fun, args = args)
         })
-        assert(is(gr, "GenomicRanges"))
+        assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
         gr <- .makeGRanges(
             object = gr,

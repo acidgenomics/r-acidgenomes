@@ -1,4 +1,4 @@
-#' Make GenomicRanges from TxDb object
+#' Make genomic ranges (`GRanges`) from TxDb object
 #'
 #' @note Updated 2023-04-26.
 #' @noRd
@@ -6,7 +6,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `GenomicRanges`.
+#' @return `GRanges`.
 #'
 #' @examples
 #' file <- pasteURL(

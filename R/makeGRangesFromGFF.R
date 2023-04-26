@@ -1,5 +1,5 @@
 ## nolint start
-#' Make GenomicRanges from a GFF/GTF file
+#' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
 #' @note Updated 2023-04-26.
@@ -154,7 +154,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `GenomicRanges`.
+#' @return `GRanges`.
 #'
 #' @seealso
 #' - `rtracklayer::import()`.
@@ -252,7 +252,7 @@ makeGRangesFromGFF <-
         }
         alert(sprintf(
             fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-            "GenomicRanges", file
+            "GRanges", file
         ))
         tmpfile <- .cacheIt(file)
         meta <- .getGFFMetadata(tmpfile)

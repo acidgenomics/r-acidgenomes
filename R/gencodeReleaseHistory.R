@@ -1,11 +1,11 @@
 #' GENCODE release history
 #'
 #' @export
-#' @note Updated 2023-02-10.
+#' @note Updated 2023-04-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `DFrame`.
 #'
 #' @examples
 #' object <- gencodeReleaseHistory(organism = "Homo sapiens")
@@ -31,7 +31,7 @@ gencodeReleaseHistory <-
         ## situation of `currentGencodeVersion` returning a newer version.
         html <- rvest::read_html(url)
         table <- rvest::html_table(html)
-        df <- as(table[[1L]], "DataFrame")
+        df <- as(table[[1L]], "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         df
     }

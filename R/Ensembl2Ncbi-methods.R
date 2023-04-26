@@ -48,7 +48,7 @@ NULL
         )
         cols <- c(fromCol, toCol)
         assert(
-            is(object, "DataFrame"),
+            is(object, "DFrame"),
             hasRows(object),
             isSubset(cols, colnames(object))
         )
@@ -92,7 +92,7 @@ NULL
                 df <- df[order(df), ]
             }
         )
-        assert(is(df, "DataFrame"))
+        assert(is(df, "DFrame"))
         df <- df[complete.cases(df), , drop = FALSE]
         metadata(df) <- append(
             x = metadata(object),
