@@ -2,7 +2,7 @@
 #' Make GenomicRanges from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-26.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
