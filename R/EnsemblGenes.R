@@ -32,7 +32,8 @@ EnsemblGenes <- function(object) {
     }
     if (isSubset("entrezId", names(mcols(object)))) {
         names(mcols(object))[
-            names(mcols(object)) == "entrezId"] <- "ncbiGeneId"
+            names(mcols(object)) == "entrezId"
+        ] <- "ncbiGeneId"
     }
     meta <- metadata(object)
     if (is.null(meta[["date"]])) {
