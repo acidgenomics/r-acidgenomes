@@ -12,55 +12,56 @@
 #' ## > object <- as(object, "GRanges")
 #' ## > object <- EnsemblGenes(object)
 #' ## > print(object)
-EnsemblGenes <- function(object) {
-    if (is(object, "EnsemblGenes")) {
-        validObject(object)
-        return(object)
-    }
-    assert(
-        is(object, "GRanges"),
-        hasNames(mcols(object))
-    )
-    names(mcols(object)) <- camelCase(names(mcols(object)), strict = TRUE)
-    assert(isSubset("geneId", names(mcols(object))))
-    if (any(grepl("^transcript", names(mcols(object))))) {
-        names(mcols(object)) <- sub(
-            pattern = "^transcript",
-            replacement = "tx",
-            x = names(mcols(object))
+EnsemblGenes <- # nolint
+    function(object) {
+        if (is(object, "EnsemblGenes")) {
+            validObject(object)
+            return(object)
+        }
+        assert(
+            is(object, "GRanges"),
+            hasNames(mcols(object))
         )
+        names(mcols(object)) <- camelCase(names(mcols(object)), strict = TRUE)
+        assert(isSubset("geneId", names(mcols(object))))
+        if (any(grepl("^transcript", names(mcols(object))))) {
+            names(mcols(object)) <- sub(
+                pattern = "^transcript",
+                replacement = "tx",
+                x = names(mcols(object))
+            )
+        }
+        if (isSubset("entrezId", names(mcols(object)))) {
+            names(mcols(object))[
+                names(mcols(object)) == "entrezId"
+            ] <- "ncbiGeneId"
+        }
+        meta <- metadata(object)
+        if (is.null(meta[["date"]])) {
+            meta[["date"]] <- Sys.Date()
+        }
+        if (is.null(meta[["ignoreVersion"]])) {
+            meta[["ignoreVersion"]] <-
+                !isSubset("geneIdNoVersion", names(mcols(object)))
+        }
+        if (is.null(meta[["level"]])) {
+            meta[["level"]] <- ifelse(
+                test = isTRUE(isSubset("txId", names(mcols(object)))),
+                yes = "transcripts",
+                no = "genes"
+            )
+        }
+        if (is.null(meta[["organism"]])) {
+            meta[["organism"]] <-
+                detectOrganism(as.character(mcols(object)[["geneId"]]))
+        }
+        if (is.null(meta[["packageVersion"]])) {
+            meta[["packageVersion"]] <- .pkgVersion
+        }
+        if (is.null(meta[["provider"]])) {
+            meta[["provider"]] <- "Ensembl"
+        }
+        assert(identical(meta[["provider"]], "Ensembl"))
+        metadata(object) <- meta
+        new(Class = "EnsemblGenes", object)
     }
-    if (isSubset("entrezId", names(mcols(object)))) {
-        names(mcols(object))[
-            names(mcols(object)) == "entrezId"
-        ] <- "ncbiGeneId"
-    }
-    meta <- metadata(object)
-    if (is.null(meta[["date"]])) {
-        meta[["date"]] <- Sys.Date()
-    }
-    if (is.null(meta[["ignoreVersion"]])) {
-        meta[["ignoreVersion"]] <-
-            !isSubset("geneIdNoVersion", names(mcols(object)))
-    }
-    if (is.null(meta[["level"]])) {
-        meta[["level"]] <- ifelse(
-            test = isTRUE(isSubset("txId", names(mcols(object)))),
-            yes = "transcripts",
-            no = "genes"
-        )
-    }
-    if (is.null(meta[["organism"]])) {
-        meta[["organism"]] <-
-            detectOrganism(as.character(mcols(object)[["geneId"]]))
-    }
-    if (is.null(meta[["packageVersion"]])) {
-        meta[["packageVersion"]] <- .pkgVersion
-    }
-    if (is.null(meta[["provider"]])) {
-        meta[["provider"]] <- "Ensembl"
-    }
-    assert(identical(meta[["provider"]], "Ensembl"))
-    metadata(object) <- meta
-    new(Class = "EnsemblGenes", object)
-}

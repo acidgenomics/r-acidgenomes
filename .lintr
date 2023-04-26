@@ -1,5 +1,5 @@
 linters: linters_with_defaults(
-    # Updated 2022-05-23.
+    # Updated 2023-04-26.
     # > help(topic = "linters", package = "lintr")
     absolute_path_linter(),
     any_duplicated_linter(),
@@ -35,7 +35,8 @@ linters: linters_with_defaults(
     literal_coercion_linter(),
     missing_argument_linter(),
     missing_package_linter(),
-    namespace_linter(),
+    # This currently returns warning for AnnotationHub with Bioc 3.17.
+    # > namespace_linter(),
     nested_ifelse_linter(),
     no_tab_linter(),
     # This is currently returning too many false positives.
