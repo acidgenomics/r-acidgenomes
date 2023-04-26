@@ -30,7 +30,7 @@
 #' @seealso [makeGene2Symbol()].
 #'
 #' @examples
-#' data(GenomicRanges, package = "AcidTest")
+#' data(GRanges, package = "AcidTest")
 #'
 #' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
@@ -47,7 +47,7 @@
 #' print(x)
 #'
 #' ## GRanges ====
-#' object <- GenomicRanges
+#' object <- GRanges
 #' x <- Gene2Symbol(object)
 NULL
 

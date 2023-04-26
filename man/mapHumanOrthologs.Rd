@@ -38,7 +38,7 @@ Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
 currently supported.
 }
 \note{
-Updated 2021-08-03.
+Updated 2023-04-26.
 }
 \examples{
 ## Expecting ENSMUSG00000000001, ENSMUSG00000000003 to not match here.

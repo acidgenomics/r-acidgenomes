@@ -1,7 +1,7 @@
 test_that("organism", {
     list <- list()
-    list[["GenomicRanges"]] <- gr
-    list[["DataFrame"]] <- as.DataFrame(gr)
+    list[["GRanges"]] <- gr
+    list[["DFrame"]] <- as.DataFrame(gr)
     for (object in list) {
         expect_identical(
             object = organism(object),

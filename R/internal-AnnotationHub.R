@@ -9,7 +9,7 @@
 #' very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
     assert(
-        requireNamespaces("AnnotationHub")
+        requireNamespaces("AnnotationHub"),
         hasInternet()
     )
     quietly({

@@ -56,7 +56,7 @@ For the \code{format} argument, note that "long" was used instead of
 Updated 2021-10-18.
 }
 \examples{
-data(GenomicRanges, package = "AcidTest")
+data(GRanges, package = "AcidTest")
 
 ## DFrame ====
 df <- S4Vectors::DataFrame(
@@ -73,7 +73,7 @@ x <- Gene2Symbol(df)
 print(x)
 
 ## GRanges ====
-object <- GenomicRanges
+object <- GRanges
 x <- Gene2Symbol(object)
 }
 \seealso{
