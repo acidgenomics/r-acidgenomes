@@ -552,7 +552,7 @@
             )
         }
         ## Run final assert checks before returning.
-        validObject(object)
+        assert(validObject(object))
         if (isSubset(level, c("genes", "transcripts"))) {
             class <- upperCamelCase(
                 object = paste(

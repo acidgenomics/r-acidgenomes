@@ -29,7 +29,7 @@ NULL
             mcols(object)[["ncbiGeneId"]] <- mcols(object)[["entrezId"]]
             mcols(object)[["entrezId"]] <- NULL
         }
-        validObject(object)
+        assert(validObject(object))
         object
     }
 

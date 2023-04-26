@@ -25,7 +25,6 @@
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
              ignoreVersion = TRUE) {
-        ## > pkgs <- .packages()
         .suppressAll({
             requireNamespaces("AnnotationDbi")
         })
@@ -155,7 +154,6 @@
             object = gr,
             ignoreVersion = ignoreVersion
         )
-        ## > forceDetach(keep = pkgs)
         gr
     }
 
@@ -212,7 +210,6 @@ NULL
 ## nolint end
 
 .makeTxDbFromGFF <- function(file, meta) {
-    ## > pkgs <- .packages()
     assert(
         .isSupportedGFF(file),
         is.list(meta)
@@ -275,7 +272,6 @@ NULL
     assert(is(txdb, "TxDb"))
     ## Stash the GFF metadata, so we can access in `makeGRangesFromGFF()`.
     attr(txdb, which = "gffMetadata") <- meta
-    validObject(txdb)
-    ## > forceDetach(keep = pkgs)
+    assert(validObject(txdb))
     txdb
 }
