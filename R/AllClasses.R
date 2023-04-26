@@ -92,9 +92,9 @@
 
 
 
-#' Shared GenomicRanges validity checks
+#' Shared GRanges validity checks
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @details
@@ -214,7 +214,7 @@
 #' Ensembl gene annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with Ensembl gene-level annotations.
+#' Contains `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
 #' @note Updated 2023-04-13.
@@ -244,7 +244,7 @@ setValidity(
 #' Ensembl transcript annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with Ensembl transcript-level annotations.
+#' Contains `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2023-04-13.
@@ -274,7 +274,7 @@ setValidity(
 #' FlyBase gene annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with FlyBase gene-level annotations.
+#' Contains `GRanges` with FlyBase gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -300,7 +300,7 @@ setValidity(
 #' FlyBase transcript annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with FlyBase transcript-level annotations.
+#' Contains `GRanges` with FlyBase transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -326,7 +326,7 @@ setValidity(
 #' GENCODE gene annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with GENCODE gene-level annotations.
+#' Contains `GRanges` with GENCODE gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -352,7 +352,7 @@ setValidity(
 #' GENCODE transcript annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with GENCODE transcript-level annotations.
+#' Contains `GRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -378,10 +378,10 @@ setValidity(
 #' RefSeq gene annotations
 #'
 #' @details
-#' Contains a `GenomicRangesList` with RefSeq gene-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-04-26.
 #'
 #' @return `RefSeqGenes`.
 setClass(
@@ -404,10 +404,10 @@ setValidity(
 #' RefSeq transcript annotations
 #'
 #' @details
-#' Contains a `GenomicRangesList` with RefSeq transcript-level annotations.
+#' Contains a `CompressedGRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-04-26.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
@@ -430,7 +430,7 @@ setValidity(
 #' UCSC gene annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with UCSC gene-level annotations.
+#' Contains `GRanges` with UCSC gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -456,7 +456,7 @@ setValidity(
 #' UCSC transcript annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with UCSC transcript-level annotations.
+#' Contains `GRanges` with UCSC transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -482,7 +482,7 @@ setValidity(
 #' WormBase gene annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with WormBase gene-level annotations.
+#' Contains `GRanges` with WormBase gene-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.
@@ -508,7 +508,7 @@ setValidity(
 #' WormBase transcript annotations
 #'
 #' @details
-#' Contains `GenomicRanges` with WormBase transcript-level annotations.
+#' Contains `GRanges` with WormBase transcript-level annotations.
 #'
 #' @export
 #' @note Updated 2021-10-14.

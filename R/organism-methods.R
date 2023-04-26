@@ -11,7 +11,7 @@
 #' @seealso `detectOrganism()`.
 #'
 #' @examples
-#' ## DataFrame ====
+#' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
 #'     "txId" = c(
 #'         "ENST00000635602.1",
@@ -54,7 +54,7 @@ NULL
 
 
 
-## Note that DataFrame and GenomicRanges inherit from this class.
+## Note that `DFrame` and `GRanges` inherit from this class.
 ## Updated 2019-07-22.
 `organism,Annotated` <- # nolint
     function(object) {
@@ -63,8 +63,8 @@ NULL
 
 
 
-## Updated 2021-10-13.
-`organism,DataFrame` <- # nolint
+## Updated 2023-04-26.
+`organism,DFrame` <- # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -78,7 +78,7 @@ NULL
 
 
 ## Updated 2021-02-02.
-`organism,GenomicRanges` <- # nolint
+`organism,GRanges` <- # nolint
     function(object) {
         ## Attempt to use metadata stash, if defined.
         organism <- `organism,Annotated`(object)
@@ -112,16 +112,16 @@ setMethod(
 #' @export
 setMethod(
     f = "organism",
-    signature = signature(object = "DataFrame"),
-    definition = `organism,DataFrame`
+    signature = signature(object = "DFrame"),
+    definition = `organism,DFrame`
 )
 
 #' @rdname organism
 #' @export
 setMethod(
     f = "organism",
-    signature = signature(object = "GenomicRanges"),
-    definition = `organism,GenomicRanges`
+    signature = signature(object = "GRanges"),
+    definition = `organism,GRanges`
 )
 
 #' @rdname organism

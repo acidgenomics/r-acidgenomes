@@ -21,7 +21,7 @@ available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
 }
 \value{
-\code{DataFrame}.
+\code{DFrame}.
 Data frame containing mapping columns:
 \itemize{
 \item \code{geneId}

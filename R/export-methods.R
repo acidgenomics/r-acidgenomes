@@ -49,7 +49,7 @@ NULL
             "Tx2Gene"
         ))
         export(
-            object = as(object, "DataFrame"),
+            object = as(object, "DFrame"),
             con = con,
             rownames = FALSE,
             colnames = FALSE,

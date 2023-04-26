@@ -4,12 +4,12 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
-#' @param ... Arguments pass through to `DataFrame` method.
+#' @param ... Arguments pass through to `DFrame` method.
 #'
 #' @seealso [makeTx2Gene()].
 #'
 #' @examples
-#' ## DataFrame ====
+#' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
 #'     "txId" = c(
 #'         "ENST00000635602.1",
@@ -26,8 +26,8 @@ NULL
 
 
 
-## Updated 2021-10-13.
-`Tx2Gene,DataFrame` <- # nolint
+## Updated 2023-04-26.
+`Tx2Gene,DFrame` <- # nolint
     function(object,
              quiet = FALSE) {
         assert(
@@ -86,21 +86,21 @@ NULL
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GenomicRanges` <- # nolint
+`Tx2Gene,GRanges` <- # nolint
     function(object, ...) {
-        df <- as(object, "DataFrame")
+        df <- as(object, "DFrame")
         metadata(df) <- metadata(object)
         Tx2Gene(df, ...)
     }
 
 
 
-## Updated 2023-02-16.
-`Tx2Gene,GenomicRangesList` <- # nolint
+## Updated 2023-04-26.
+`Tx2Gene,GRangesList` <- # nolint
     function(object, ...) {
-        grl <- as(object, "GenomicRangesList")
+        grl <- as(object, "GRangesList")
         gr <- unlist(grl, recursive = FALSE, use.names = TRUE)
-        assert(is(gr, "GenomicRanges"))
+        assert(is(gr, "GRanges"))
         Tx2Gene(gr, ...)
     }
 
@@ -111,7 +111,7 @@ NULL
     function(object, ...) {
         assert(identical(ncol(object), 2L))
         colnames(object) <- c("txId", "geneId")
-        object <- as(object, "DataFrame")
+        object <- as(object, "DFrame")
         Tx2Gene(object, ...)
     }
 
@@ -134,24 +134,24 @@ NULL
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "DataFrame"),
-    definition = `Tx2Gene,DataFrame`
+    signature = signature(object = "DFrame"),
+    definition = `Tx2Gene,DFrame`
 )
 
 #' @rdname Tx2Gene
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "GenomicRanges"),
-    definition = `Tx2Gene,GenomicRanges`
+    signature = signature(object = "GRanges"),
+    definition = `Tx2Gene,GRanges`
 )
 
 #' @rdname Tx2Gene
 #' @export
 setMethod(
     f = "Tx2Gene",
-    signature = signature(object = "GenomicRangesList"),
-    definition = `Tx2Gene,GenomicRangesList`
+    signature = signature(object = "GRangesList"),
+    definition = `Tx2Gene,GRangesList`
 )
 
 #' @rdname Tx2Gene

@@ -4,8 +4,8 @@
 \alias{organism}
 \alias{organism<-}
 \alias{organism,Annotated-method}
-\alias{organism,DataFrame-method}
-\alias{organism,GenomicRanges-method}
+\alias{organism,DFrame-method}
+\alias{organism,GRanges-method}
 \alias{organism,Matrix-method}
 \alias{organism,data.frame-method}
 \alias{organism,matrix-method}
@@ -18,9 +18,9 @@ organism(object) <- value
 
 \S4method{organism}{Annotated}(object)
 
-\S4method{organism}{DataFrame}(object)
+\S4method{organism}{DFrame}(object)
 
-\S4method{organism}{GenomicRanges}(object)
+\S4method{organism}{GRanges}(object)
 
 \S4method{organism}{Matrix}(object)
 
@@ -46,7 +46,7 @@ Organism
 Updated 2021-08-03.
 }
 \examples{
-## DataFrame ====
+## DFrame ====
 df <- S4Vectors::DataFrame(
     "txId" = c(
         "ENST00000635602.1",

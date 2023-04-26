@@ -2,20 +2,20 @@
 % Please edit documentation in R/AllGenerics.R, R/Tx2Gene-methods.R
 \name{Tx2Gene}
 \alias{Tx2Gene}
-\alias{Tx2Gene,DataFrame-method}
-\alias{Tx2Gene,GenomicRanges-method}
-\alias{Tx2Gene,GenomicRangesList-method}
+\alias{Tx2Gene,DFrame-method}
+\alias{Tx2Gene,GRanges-method}
+\alias{Tx2Gene,GRangesList-method}
 \alias{Tx2Gene,data.frame-method}
 \alias{Tx2Gene,matrix-method}
 \title{Transcript-to-gene mappings}
 \usage{
 Tx2Gene(object, ...)
 
-\S4method{Tx2Gene}{DataFrame}(object, quiet = FALSE)
+\S4method{Tx2Gene}{DFrame}(object, quiet = FALSE)
 
-\S4method{Tx2Gene}{GenomicRanges}(object, ...)
+\S4method{Tx2Gene}{GRanges}(object, ...)
 
-\S4method{Tx2Gene}{GenomicRangesList}(object, ...)
+\S4method{Tx2Gene}{GRangesList}(object, ...)
 
 \S4method{Tx2Gene}{data.frame}(object, ...)
 
@@ -27,7 +27,7 @@ Tx2Gene(object, ...)
 \item{quiet}{\code{logical(1)}.
 Perform command quietly, suppressing messages.}
 
-\item{...}{Arguments pass through to \code{DataFrame} method.}
+\item{...}{Arguments pass through to \code{DFrame} method.}
 }
 \value{
 \code{Tx2Gene}.
@@ -39,7 +39,7 @@ Transcript-to-gene mappings
 Updated 2021-08-18.
 }
 \examples{
-## DataFrame ====
+## DFrame ====
 df <- S4Vectors::DataFrame(
     "txId" = c(
         "ENST00000635602.1",

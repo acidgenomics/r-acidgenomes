@@ -11,7 +11,7 @@
 UCSC gene annotations
 }
 \details{
-Contains \code{GenomicRanges} with UCSC gene-level annotations.
+Contains \code{GRanges} with UCSC gene-level annotations.
 }
 \note{
 Updated 2021-10-14.

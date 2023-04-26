@@ -51,7 +51,7 @@ makeProtein2GeneFromEnsembl <-
                 columns = c("GENEID", "GENENAME")
             )
         })
-        df <- as(df, "DataFrame")
+        df <- as(df, "DFrame")
         colnames(df) <- tolower(colnames(df))
         colnames(df) <- gsub("id$", "Id", colnames(df))
         colnames(df) <- gsub("name$", "Name", colnames(df))

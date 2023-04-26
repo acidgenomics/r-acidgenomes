@@ -202,7 +202,7 @@ downloadGencodeGenome <-
             colnames = c("txId", "ncbiGeneId")
         )
         ncbiGene <- leftJoin(
-            x = as(ncbiGene, "DataFrame"),
+            x = as(ncbiGene, "DFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
@@ -216,7 +216,7 @@ downloadGencodeGenome <-
             )
         )
         refSeq <- leftJoin(
-            x = as(refSeq, "DataFrame"),
+            x = as(refSeq, "DFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )

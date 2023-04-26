@@ -42,7 +42,7 @@ mapGeneNamesToNCBI <-
             is(ncbi, "NcbiGeneInfo"),
             identical(organism, metadata(ncbi)[["organism"]])
         )
-        table <- as(ncbi, "DataFrame")
+        table <- as(ncbi, "DFrame")
         table <- table[, c("geneName", "geneSynonyms")]
         idx <- matchNested(x = genes, table = table)
         assert(!anyNA(idx), msg = "Failed to map all genes.")

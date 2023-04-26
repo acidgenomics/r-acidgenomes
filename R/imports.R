@@ -1,8 +1,8 @@
 ## Classes =====================================================================
 
-#' @importClassesFrom GenomicRanges GenomicRanges GenomicRangesList
-#' @importClassesFrom IRanges DataFrameList
-#' @importClassesFrom S4Vectors DFrame DataFrame Vector
+#' @importClassesFrom GenomicRanges CompressedGRangesList GRanges GRangesList
+#' @importClassesFrom IRanges DFrameList
+#' @importClassesFrom S4Vectors DFrame Vector
 NULL
 
 
