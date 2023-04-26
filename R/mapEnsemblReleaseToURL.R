@@ -18,7 +18,7 @@
 #'     error = function(e) message(e)
 #' )
 mapEnsemblReleaseToURL <- function(release) {
-    pkgs <- .packages()
+    ## > pkgs <- .packages()
     .suppressAll({
         requireNamespaces("biomaRt")
     })
@@ -56,6 +56,6 @@ mapEnsemblReleaseToURL <- function(release) {
     }
     url <- x[1L, "url"]
     assert(isTRUE(grepl("ensembl\\.org", url)))
-    forceDetach(keep = pkgs)
+    ## > forceDetach(keep = pkgs)
     url
 }
