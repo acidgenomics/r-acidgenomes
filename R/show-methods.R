@@ -15,6 +15,14 @@ NULL
 .showGRanges <- function(object) {
     assert(validObject(object))
     showHeader(object)
+    meta <- metadata(object)
+    showSlotInfo(list(
+        "organism" = meta[["organism"]],
+        "genomeBuild" = meta[["genomeBuild"]],
+        "release" = meta[["release"]],
+        "ignoreVersion" = meta[["ignoreVersion"]],
+        "names" = names(object)
+    ))
 }
 
 
