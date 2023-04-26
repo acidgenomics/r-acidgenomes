@@ -10,21 +10,21 @@
 \usage{
 updateObject(object, ..., verbose = FALSE)
 
-\S4method{updateObject}{EnsemblGenes}(object, verbose = FALSE)
+\S4method{updateObject}{EnsemblGenes}(object, ..., verbose = FALSE)
 
-\S4method{updateObject}{EnsemblTranscripts}(object, verbose = FALSE)
+\S4method{updateObject}{EnsemblTranscripts}(object, ..., verbose = FALSE)
 
-\S4method{updateObject}{GencodeGenes}(object, verbose = FALSE)
+\S4method{updateObject}{GencodeGenes}(object, ..., verbose = FALSE)
 
-\S4method{updateObject}{GencodeTranscripts}(object, verbose = FALSE)
+\S4method{updateObject}{GencodeTranscripts}(object, ..., verbose = FALSE)
 }
 \arguments{
 \item{object}{Object.}
 
+\item{...}{Additional arguments.}
+
 \item{verbose}{\code{logical(1)}.
 Run the function with verbose output.}
-
-\item{...}{Additional arguments.}
 }
 \description{
 Update object

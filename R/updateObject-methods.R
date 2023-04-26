@@ -16,9 +16,9 @@ NULL
 
 
 
-## Updated 2023-04-13.
+## Updated 2023-04-26.
 .updateGRanges <-
-    function(object, verbose = FALSE) {
+    function(object, ..., verbose = FALSE) {
         if (isSubset("entrezId", colnames(mcols(object)))) {
             if (isTRUE(verbose)) {
                 alert(sprintf(
