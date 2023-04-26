@@ -3,7 +3,7 @@
 #' Wrapper for ensembldb importer functions.
 #'
 #' @export
-#' @note Updated 2021-08-06.
+#' @note Updated 2023-04-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -27,10 +27,10 @@
 #' ## > edb <- makeEnsDbFromGFF(file)
 #' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
-    .suppressAll({
-        requireNamespaces("ensembldb")
-    })
-    assert(.isSupportedGFF(file))
+    assert(
+        requireNamespaces("ensembldb"),
+        .isSupportedGFF(file)
+    )
     if (isAFile(file)) {
         file <- realpath(file)
     }
@@ -65,12 +65,10 @@ makeEnsDbFromGFF <- function(file) {
         ))
         ## nocov end
     }
-    suppressWarnings({
-        suppressMessages({
-            sqlite <- do.call(what = what, args = args)
-            edb <- ensembldb::EnsDb(x = sqlite)
-            file.remove(sqlite)
-        })
+    quietly({
+        sqlite <- do.call(what = what, args = args)
+        edb <- ensembldb::EnsDb(x = sqlite)
+        file.remove(sqlite)
     })
     assert(is(edb, "EnsDb"))
     attr(x = edb, which = "args") <- args
