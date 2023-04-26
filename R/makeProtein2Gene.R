@@ -25,7 +25,7 @@ makeProtein2GeneFromEnsembl <-
              organism = NULL,
              genomeBuild = NULL,
              release = NULL) {
-        pkgs <- .packages()
+        ## > pkgs <- .packages()
         .suppressAll({
             requireNamespaces("ensembldb")
         })
@@ -65,6 +65,6 @@ makeProtein2GeneFromEnsembl <-
             ))
         }
         metadata(df) <- .getEnsDbMetadata(edb)
-        forceDetach(keep = pkgs)
+        ## > forceDetach(keep = pkgs)
         new(Class = "Protein2Gene", df)
     }
