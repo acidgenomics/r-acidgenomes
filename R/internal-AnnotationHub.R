@@ -29,10 +29,10 @@
              columns,
              organism,
              strict = TRUE) {
+        pkgs <- .packages()
         .suppressAll({
             requireNamespaces(c("AnnotationDbi", "AnnotationHub"))
         })
-        pkgs <- .packages()
         assert(
             isCharacter(keys),
             hasNoDuplicates(keys),
@@ -60,7 +60,7 @@
             mcols(ahs)[id, "title"],
             mcols(ahs)[id, "description"]
         ))
-        suppressMessages({
+        .suppressAll({
             df <- AnnotationDbi::select(
                 x = orgdb,
                 keys = keys,
@@ -82,7 +82,7 @@
         colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblGeneId"
         colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
-        forceDetach(keep = pkgs)
         df <- as(df, "DataFrame")
+        forceDetach(keep = pkgs)
         df
     }
