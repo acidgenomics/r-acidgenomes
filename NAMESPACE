@@ -3,6 +3,7 @@
 export("organism<-")
 export(AcidGenomesTestsURL)
 export(Ensembl2Ncbi)
+export(EnsemblGenes)
 export(Gene2Symbol)
 export(HGNC)
 export(MGI)
