@@ -19,7 +19,9 @@
 #' )
 mapEnsemblReleaseToURL <- function(release) {
     pkgs <- .packages()
-    requireNamespaces("biomaRt")
+    .suppressAll({
+        requireNamespaces("biomaRt")
+    })
     currentURL <- "http://useast.ensembl.org"
     if (is.null(release)) {
         return(currentURL)

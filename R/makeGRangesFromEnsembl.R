@@ -135,7 +135,9 @@ makeGRangesFromEnsDb <-
         ))
         if (isString(object)) {
             package <- object
-            assert(requireNamespaces(package))
+            .suppressAll({
+                requireNamespaces(package)
+            })
             object <- get(
                 x = package,
                 envir = asNamespace(package),

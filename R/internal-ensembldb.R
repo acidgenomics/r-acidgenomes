@@ -260,7 +260,7 @@
 .getEnsDbFromPackage <- function(package) {
     alert(sprintf("Getting {.cls %s} from {.pkg %s}.", "EnsDb", package))
     assert(isString(package))
-    suppressWarnings({
+    .suppressAll({
         requireNamespaces(package)
     })
     edb <- get(

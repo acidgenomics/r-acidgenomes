@@ -1,6 +1,6 @@
 #' Make GenomicRanges from TxDb object
 #'
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -26,7 +26,9 @@
              level = c("transcripts", "genes", "exons", "cds"),
              ignoreVersion = TRUE) {
         pkgs <- .packages()
-        requireNamespaces("AnnotationDbi")
+        .suppressAll({
+            requireNamespaces("AnnotationDbi")
+        })
         assert(is(object, "TxDb"))
         level <- match.arg(level)
         cols <- AnnotationDbi::columns(object)
@@ -245,7 +247,9 @@ NULL
         "TxDb", file,
         "GenomicFeatures", "makeTxDbFromGFF"
     ))
-    requireNamespaces("GenomicFeatures")
+    .suppressAll({
+        requireNamespaces("GenomicFeatures")
+    })
     if (isAFile(file)) {
         file <- realpath(file)
     }
