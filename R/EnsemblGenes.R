@@ -15,7 +15,7 @@
 EnsemblGenes <- # nolint
     function(object) {
         if (is(object, "EnsemblGenes")) {
-            validObject(object)
+            assert(validObject(object))
             return(object)
         }
         assert(

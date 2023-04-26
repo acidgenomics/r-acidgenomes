@@ -63,8 +63,6 @@
 #' seq <- .getSeqinfo(file)
 #' print(seq)
 .getSeqinfo <- function(x) {
-    ## > pkgs <- .packages()
-    ## Allowing pass-in of either file or GFF metadata list here.
     if (!is.list(x)) {
         x <- .getGFFMetadata(x)
     }
@@ -132,7 +130,6 @@
         )
         seq <- seq[sort(seqnames(seq))]
     }
-    ## > forceDetach(keep = pkgs)
     seq
 }
 

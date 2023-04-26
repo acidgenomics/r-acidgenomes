@@ -88,7 +88,6 @@ makeGRangesFromEnsembl <-
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = TRUE) {
-        ## > pkgs <- .packages()
         assert(isFlag(ignoreVersion))
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
@@ -106,7 +105,6 @@ makeGRangesFromEnsembl <-
             expr = standardizeCall(),
             error = function(e) NULL
         )
-        ## > forceDetach(keep = pkgs)
         gr
     }
 

@@ -369,8 +369,10 @@
         isCircular = NA,
         genome = genomeBuild
     )
-    assert(is(seq, "Seqinfo"))
-    validObject(seq)
+    assert(
+        is(seq, "Seqinfo"),
+        validObject(seq)
+    )
     seq
 }
 
