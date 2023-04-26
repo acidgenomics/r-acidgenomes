@@ -4,6 +4,7 @@ data(
     envir = environment()
 )
 
+biocPkgs <- c("AnnotationHub", "ensembldb")
 gr <- GenomicRanges
 
 ## nolint start
