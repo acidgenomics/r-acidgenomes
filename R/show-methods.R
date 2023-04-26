@@ -55,9 +55,6 @@ NULL
 `show,WormBaseTranscripts` <- # nolint
     .showGRanges
 
-#exportClasses(WormBaseGenes)
-#exportClasses(WormBaseTranscripts)
-
 
 
 #' @rdname show
