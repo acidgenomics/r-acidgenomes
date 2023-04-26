@@ -1,3 +1,9 @@
+## FIXME This isn't detaching Bioconductor packages correctly:
+## AnnotationDbi, AnnotationFilter, Biobase, BiocGenerics, ensembldb,
+## GenomeInfoDb, GenomicFeatures, GenomicRanges, IRanges, S4Vectors, stats4
+
+
+
 #' Make GenomicRanges from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from

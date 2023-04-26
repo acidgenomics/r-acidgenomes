@@ -1,6 +1,6 @@
 #' Connect to AnnotationHub
 #'
-#' @note Updated 2021-09-28.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @details
@@ -9,14 +9,10 @@
 #' very informative and can cluster R Markdown reports.
 .annotationHub <- function() {
     assert(hasInternet())
-    requireNamespaces("AnnotationHub")
-    invisible(
-        capture.output({
-            suppressMessages({
-                ah <- AnnotationHub::AnnotationHub(ask = FALSE)
-            })
-        })
-    )
+    .suppressAll({
+        requireNamespaces("AnnotationHub")
+        ah <- AnnotationHub::AnnotationHub(ask = FALSE)
+    })
     assert(is(ah, "AnnotationHub"))
     ah
 }
