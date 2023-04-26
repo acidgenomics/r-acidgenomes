@@ -1,10 +1,12 @@
 test_that("Genes", {
+    expect_false(any(biocPkgs %in% (.packages())))
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
         release = 108L,
         ignoreVersion = TRUE
     )
+    expect_false(any(biocPkgs %in% (.packages())))
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(
         object = metadata(object)[c(

@@ -48,7 +48,7 @@
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -94,6 +94,7 @@ makeGRangesFromEnsembl <-
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = TRUE) {
+        pkgs <- .packages()
         assert(isFlag(ignoreVersion))
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GenomicRanges"))
@@ -111,6 +112,7 @@ makeGRangesFromEnsembl <-
             expr = standardizeCall(),
             error = function(e) NULL
         )
+        forceDetach(keep = pkgs)
         gr
     }
 
@@ -128,11 +130,10 @@ makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts"),
              ignoreVersion = TRUE) {
-        pkgs <- .packages()
-        assert(
-            requireNamespaces("ensembldb"),
-            isFlag(ignoreVersion)
-        )
+        .suppressAll({
+            requireNamespaces("ensembldb")
+        })
+        assert(isFlag(ignoreVersion))
         level <- match.arg(level)
         alert(sprintf(
             "Making {.cls %s} from {.cls %s}.",
@@ -153,11 +154,11 @@ makeGRangesFromEnsDb <-
             "order.type" = "asc",
             "return.type" = "GRanges"
         )
-        suppressWarnings({
+        .suppressAll({
             geneCols <- ensembldb::listColumns(object, "gene")
         })
         geneCols <- sort(unique(c(geneCols, "entrezid")))
-        suppressWarnings({
+        .suppressAll({
             txCols <- ensembldb::listColumns(object, "tx")
         })
         txCols <- sort(unique(c(txCols, geneCols)))
@@ -184,7 +185,7 @@ makeGRangesFromEnsDb <-
                 )
             }
         )
-        suppressWarnings({
+        .suppressAll({
             gr <- do.call(what = fun, args = args)
         })
         assert(is(gr, "GenomicRanges"))
@@ -197,6 +198,5 @@ makeGRangesFromEnsDb <-
             expr = standardizeCall(),
             error = function(e) NULL
         )
-        forceDetach(keep = pkgs)
         gr
     }
