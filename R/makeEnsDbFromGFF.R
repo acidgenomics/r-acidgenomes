@@ -28,10 +28,10 @@
 #' ## > print(edb)
 makeEnsDbFromGFF <- function(file) {
     pkgs <- .packages()
-    assert(
-        requireNamespaces("ensembldb"),
-        .isSupportedGFF(file)
-    )
+    .suppressAll({
+        requireNamespaces("ensembldb")
+    })
+    assert(.isSupportedGFF(file))
     if (isAFile(file)) {
         file <- realpath(file)
     }
