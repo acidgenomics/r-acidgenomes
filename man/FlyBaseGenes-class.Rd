@@ -11,7 +11,7 @@
 FlyBase gene annotations
 }
 \details{
-Contains \code{GenomicRanges} with FlyBase gene-level annotations.
+Contains \code{GRanges} with FlyBase gene-level annotations.
 }
 \note{
 Updated 2021-10-14.

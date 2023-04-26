@@ -11,7 +11,7 @@
 WormBase gene annotations
 }
 \details{
-Contains \code{GenomicRanges} with WormBase gene-level annotations.
+Contains \code{GRanges} with WormBase gene-level annotations.
 }
 \note{
 Updated 2021-10-14.

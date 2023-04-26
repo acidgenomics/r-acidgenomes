@@ -20,7 +20,7 @@
 #' @seealso
 #' - https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
 #'
-#' @return `DataFrame` or `NULL`.
+#' @return `DFrame` or `NULL`.
 #'
 #' @examples
 #' url <- pasteURL(
@@ -51,7 +51,7 @@
     }
     mat <- stri_match_first_regex(str = lines, pattern = pattern)
     assert(is.matrix(mat), hasRows(mat))
-    df <- as(mat, "DataFrame")
+    df <- as(mat, "DFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
     colnames(df) <- c("key", "value")
     df <- unique(df)
@@ -104,7 +104,7 @@
     l[["sha256"]] <- .sha256(file)
     ## Attempt to get genome build and provider from GFF directives.
     df <- .getGFFDirectives(file)
-    if (is(df, "DataFrame")) {
+    if (is(df, "DFrame")) {
         l[["directives"]] <- df
         ## These are GFF specific (not defined in GTF), but useful:
         l[["gffVersion"]] <-
@@ -322,7 +322,7 @@
 
 ## Updated 2022-05-03.
 .gffGenomeBuild <- function(df) {
-    assert(is(df, "DataFrame"))
+    assert(is(df, "DFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (
         identical(
@@ -379,7 +379,7 @@
 
 ## Updated 2021-01-22.
 .gffProvider <- function(df) {
-    assert(is(df, "DataFrame"))
+    assert(is(df, "DFrame"))
     annoSource <-
         df[df[["key"]] == "annotation-source", "value", drop = TRUE]
     geneBuildVersion <-

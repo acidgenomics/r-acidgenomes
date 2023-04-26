@@ -70,9 +70,9 @@ NULL
 
 
 
-#' GenomicRanges annotation levels
+#' GRanges annotation levels
 #'
-#' @note Updated 2021-01-25.
+#' @note Updated 2023-04-26.
 #' @noRd
 .grangesLevels <- c(
     "cds",

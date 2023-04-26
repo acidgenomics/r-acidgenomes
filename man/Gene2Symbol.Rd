@@ -2,19 +2,19 @@
 % Please edit documentation in R/AllGenerics.R, R/Gene2Symbol-methods.R
 \name{Gene2Symbol}
 \alias{Gene2Symbol}
-\alias{Gene2Symbol,DataFrame-method}
-\alias{Gene2Symbol,GenomicRanges-method}
+\alias{Gene2Symbol,DFrame-method}
+\alias{Gene2Symbol,GRanges-method}
 \title{Gene-to-symbol mappings}
 \usage{
 Gene2Symbol(object, ...)
 
-\S4method{Gene2Symbol}{DataFrame}(
+\S4method{Gene2Symbol}{DFrame}(
   object,
   format = c("makeUnique", "1:1", "unmodified"),
   quiet = FALSE
 )
 
-\S4method{Gene2Symbol}{GenomicRanges}(object, ...)
+\S4method{Gene2Symbol}{GRanges}(object, ...)
 }
 \arguments{
 \item{object}{Object.}
@@ -37,7 +37,7 @@ with an internal \code{complete.cases} call.
 \item{quiet}{\code{logical(1)}.
 Perform command quietly, suppressing messages.}
 
-\item{...}{Arguments pass through to \code{DataFrame} method.}
+\item{...}{Arguments pass through to \code{DFrame} method.}
 }
 \value{
 \code{Gene2Symbol}.
@@ -58,7 +58,7 @@ Updated 2021-10-18.
 \examples{
 data(GenomicRanges, package = "AcidTest")
 
-## DataFrame ====
+## DFrame ====
 df <- S4Vectors::DataFrame(
     "geneId" = c(
         "ENSG00000228572.7",
@@ -72,7 +72,7 @@ df <- S4Vectors::DataFrame(
 x <- Gene2Symbol(df)
 print(x)
 
-## GenomicRanges ====
+## GRanges ====
 object <- GenomicRanges
 x <- Gene2Symbol(object)
 }

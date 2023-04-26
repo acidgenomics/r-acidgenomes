@@ -48,7 +48,7 @@ mapGeneNamesToEnsembl <-
         }
         if (identical(organism, "Homo sapiens")) {
             hgnc <- HGNC()
-            map <- as(hgnc, "DataFrame")
+            map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHGNC(genes = genes, hgnc = hgnc)
         } else {
@@ -101,7 +101,7 @@ mapGeneNamesToEnsembl <-
             protocol = "https"
         )
         df <- import(con = .cacheIt(url))
-        df <- as(df, "DataFrame")
+        df <- as(df, "DFrame")
         rownames(df) <- NULL
         colnames(df) <- camelCase(colnames(df))
         keep <- df[["dbName"]] == "EntrezGene"

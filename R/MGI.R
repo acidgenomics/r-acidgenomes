@@ -29,7 +29,7 @@ MGI <- function() { # nolint
             engine = "readr"
         )
     })
-    df <- as(df, "DataFrame")
+    df <- as(df, "DFrame")
     cn <- colnames(df)
     cn <- sub(pattern = "^X[0-9]+_", replacement = "", x = cn)
     cn <- camelCase(cn, strict = TRUE)

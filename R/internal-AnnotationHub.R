@@ -82,7 +82,7 @@
         colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblGeneId"
         colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
-        df <- as(df, "DataFrame")
+        df <- as(df, "DFrame")
         forceDetach(keep = pkgs)
         df
     }

@@ -11,13 +11,13 @@ gencodeReleaseHistory(organism)
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
-\code{DataFrame}.
+\code{DFrame}.
 }
 \description{
 GENCODE release history
 }
 \note{
-Updated 2023-02-10.
+Updated 2023-04-26.
 }
 \examples{
 object <- gencodeReleaseHistory(organism = "Homo sapiens")

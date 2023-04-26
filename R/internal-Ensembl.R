@@ -9,7 +9,7 @@
 .addEnsemblFtpMcols <-
     function(object, ignoreVersion) {
         assert(
-            is(object, "GenomicRanges"),
+            is(object, "GRanges"),
             isFlag(ignoreVersion)
         )
         geneIdCol <- ifelse(
@@ -71,7 +71,7 @@
 #' @note Updated 2023-04-13.
 #' @noRd
 #'
-#' @return `DataFrame`.
+#' @return `DFrame`.
 #'
 #' @examples
 #' df <- .ensemblFtpGeneMetadata(
@@ -149,7 +149,7 @@
         df1 <- df1[, c(8L, 13L, 10L)]
         colnames(df1) <- c("mysqlId", "geneId", "description")
         df1 <- df1[complete.cases(df1), , drop = FALSE]
-        df1 <- as(df1, "DataFrame")
+        df1 <- as(df1, "DFrame")
         df2 <- synonym
         df2 <- df2[complete.cases(df2), , drop = FALSE]
         df2 <- unique(df2)

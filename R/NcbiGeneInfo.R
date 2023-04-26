@@ -68,7 +68,7 @@ NcbiGeneInfo <- # nolint
             colnames = TRUE,
             engine = "readr"
         )
-        df <- as(df, "DataFrame")
+        df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
             isSubset(

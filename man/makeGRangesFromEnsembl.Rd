@@ -3,7 +3,7 @@
 \name{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsembl}
 \alias{makeGRangesFromEnsDb}
-\title{Make GenomicRanges from Ensembl}
+\title{Make genomic ranges (\code{GRanges}) from Ensembl}
 \usage{
 makeGRangesFromEnsembl(
   organism,
@@ -81,7 +81,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2023-04-12.
+Updated 2023-04-26.
 }
 \section{Broad class definitions}{
 

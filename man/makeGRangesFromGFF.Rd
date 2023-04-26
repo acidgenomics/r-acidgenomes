@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeGRangesFromGFF.R
 \name{makeGRangesFromGFF}
 \alias{makeGRangesFromGFF}
-\title{Make GenomicRanges from a GFF/GTF file}
+\title{Make genomic ranges (\code{GRanges}) from a GFF/GTF file}
 \usage{
 makeGRangesFromGFF(
   file,
@@ -24,10 +24,10 @@ in \code{txIdVersion} and \code{geneIdVersion}, and the variants without version
 will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
 }
 \value{
-\code{GenomicRanges}.
+\code{GRanges}.
 }
 \description{
-Make GenomicRanges from a GFF/GTF file
+Make genomic ranges (\code{GRanges}) from a GFF/GTF file
 }
 \details{
 Remote URLs and compressed files are supported.

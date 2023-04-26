@@ -105,7 +105,7 @@
 #'
 #' Consider migrating this to AcidPlyr in a future update.
 #'
-#' @note Updated 2022-05-03.
+#' @note Updated 2023-04-26.
 #' @noRd
 #'
 #' @param object Object.
@@ -114,7 +114,7 @@
 #' @param exclude `character` or `NULL`.
 #' Column names to exclude.
 #'
-#' @return `DataFrame`.
+#' @return `DFrame`.
 #'
 #' @seealso
 #' - `tidyr::nest`.
