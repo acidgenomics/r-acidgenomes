@@ -210,6 +210,7 @@ test_that("GTF genes", {
         object = lapply(mcols(object), simpleClass),
         expected = list(
             "broadClass" = "Rle",
+            "description" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneIdNoVersion" = "Rle",
@@ -235,6 +236,10 @@ test_that("GTF genes", {
             "width" = "174090",
             "strand" = "-",
             "broadClass" = "coding",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
             "geneBiotype" = "protein_coding",
             "geneId" = "ENSG00000116044.17",
             "geneIdNoVersion" = "ENSG00000116044",
@@ -308,6 +313,7 @@ test_that("GTF transcripts", {
         expected = list(
             "broadClass" = "Rle",
             "ccdsId" = "Rle",
+            "description" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneIdNoVersion" = "Rle",
@@ -342,6 +348,10 @@ test_that("GTF transcripts", {
             "strand" = "-",
             "broadClass" = "coding",
             "ccdsId" = "CCDS42782",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
             "geneBiotype" = "protein_coding",
             "geneId" = "ENSG00000116044.17",
             "geneIdNoVersion" = "ENSG00000116044",
