@@ -948,7 +948,7 @@ test_that("GFF3 genes", {
             "parentGeneId" = c("AATF", "AATF-2"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
+            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq%2CGnomon"),
             "type" = rep("gene", 2L)
         )
     )
@@ -1028,7 +1028,7 @@ test_that("GFF3 transcripts", {
             "dbxref" = paste(
                 "c(\"Ensembl:ENST00000318602.12\",",
                 "\"GeneID:2\",",
-                "\"Genbank:NM_000014.6\",",
+                "\"GenBank:NM_000014.6\",",
                 "\"HGNC:HGNC:7\",",
                 "\"MIM:103950\")"
             ),
