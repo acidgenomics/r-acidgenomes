@@ -1459,14 +1459,13 @@ test_that("GTF transcripts", {
     )
 })
 
-## FIXME This is now failing, need to address.
-
 file <- file.path("cache", "ref-transcripts.gtf")
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(
         file = file,
-        level = "genes"
+        level = "genes",
+        ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, n = 60L)
@@ -1492,29 +1491,29 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]), # nolint
+            X = as.data.frame(object["ENSG00000284332"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
             "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
+            "start" = "30366",
+            "end" = "30503",
+            "width" = "138",
             "strand" = "+",
-            "broadClass" = "pseudo",
+            "broadClass" = "small",
             "description" = paste(
-                "DEAD/H-box helicase 11 like 1 (pseudogene)",
-                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+                "microRNA 1302-2",
+                "[Source:HGNC Symbol;Acc:HGNC:35294]"
             ),
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "geneSource" = "havana",
-            "geneSynonyms" = "character(0)",
-            "ncbiGeneId" = "integer(0)",
-            "source" = "havana",
+            "geneBiotype" = "miRNA",
+            "geneId" = "ENSG00000284332",
+            "geneIdVersion" = "ENSG00000284332.1",
+            "geneName" = "MIR1302-2",
+            "geneSource" = "mirbase",
+            "geneSynonyms" = "c(\"hsa-mir-1302-2\", \"MIRN1302-2\")",
+            "ncbiGeneId" = "100302278",
+            "source" = "mirbase",
             "type" = "gene"
         )
     )
@@ -1527,7 +1526,8 @@ test_that("GTF genes", {
 test_that("GTF transcripts", {
     object <- makeGRangesFromGFF(
         file = file,
-        level = "transcripts"
+        level = "transcripts",
+        ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, n = 167L)
@@ -1540,11 +1540,14 @@ test_that("GTF transcripts", {
         expected = list(
             "broadClass" = "Rle",
             "ccdsId" = "Rle",
+            "description" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneIdVersion" = "Rle",
             "geneName" = "Rle",
             "geneSource" = "Rle",
+            "geneSynonyms" = "CompressedCharacterList",
+            "ncbiGeneId" = "CompressedIntegerList",
             "source" = "Rle",
             "tag" = "Rle",
             "txBiotype" = "Rle",
@@ -1558,31 +1561,37 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]), # nolint
+            X = as.data.frame(object["ENST00000607096"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
             "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
+            "start" = "30366",
+            "end" = "30503",
+            "width" = "138",
             "strand" = "+",
-            "broadClass" = "pseudo",
+            "broadClass" = "small",
             "ccdsId" = NA_character_,
-            "geneBiotype" = "transcribed_unprocessed_pseudogene",
-            "geneId" = "ENSG00000223972",
-            "geneIdVersion" = "ENSG00000223972.5",
-            "geneName" = "DDX11L1",
-            "geneSource" = "havana",
-            "source" = "havana",
+            "description" = paste(
+                "microRNA 1302-2",
+                "[Source:HGNC Symbol;Acc:HGNC:35294]"
+            ),
+            "geneBiotype" = "miRNA",
+            "geneId" = "ENSG00000284332",
+            "geneIdVersion" = "ENSG00000284332.1",
+            "geneName" = "MIR1302-2",
+            "geneSource" = "mirbase",
+            "geneSynonyms" = "c(\"hsa-mir-1302-2\", \"MIRN1302-2\")",
+            "ncbiGeneId" = "100302278",
+            "source" = "mirbase",
             "tag" = "basic",
-            "txBiotype" = "processed_transcript",
-            "txId" = "ENST00000456328",
-            "txIdVersion" = "ENST00000456328.2",
-            "txName" = "DDX11L1-202",
-            "txSource" = "havana",
-            "txSupportLevel" = "1",
+            "txBiotype" = "miRNA",
+            "txId" = "ENST00000607096",
+            "txIdVersion" = "ENST00000607096.1",
+            "txName" = "MIR1302-2-201",
+            "txSource" = "mirbase",
+            "txSupportLevel" = NA_character_,
             "type" = "transcript"
         )
     )
