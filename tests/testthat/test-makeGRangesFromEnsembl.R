@@ -39,6 +39,7 @@ test_that("Genes", {
             "geneId" = "Rle",
             "geneIdVersion" = "Rle",
             "geneName" = "Rle",
+            "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
             "seqCoordSystem" = "Rle"
         )
@@ -65,6 +66,7 @@ test_that("Genes", {
             "geneId" = "ENSG00000116044",
             "geneIdVersion" = "ENSG00000116044.17",
             "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "ncbiGeneId" = "4780",
             "seqCoordSystem" = "chromosome"
         )
@@ -113,6 +115,7 @@ test_that("Transcripts", {
             "geneName" = "Rle",
             "geneSeqEnd" = "Rle",
             "geneSeqStart" = "Rle",
+            "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
             "seqCoordSystem" = "Rle",
             "txBiotype" = "Rle",
@@ -153,6 +156,7 @@ test_that("Transcripts", {
             "geneName" = "NFE2L2",
             "geneSeqEnd" = "177392756",
             "geneSeqStart" = "177218667",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "ncbiGeneId" = "4780",
             "seqCoordSystem" = "chromosome",
             "txBiotype" = "protein_coding",
@@ -170,9 +174,7 @@ test_that("Transcripts", {
 })
 
 test_that("GRCh37", {
-    ## Conditionally test if optional EnsDb.Hsapiens.v75 package is installed.
-    skip_if_not_installed("EnsDb.Hsapiens.v75")
-    ## Genes
+    ## Genes.
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
@@ -182,7 +184,7 @@ test_that("GRCh37", {
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, 64102L)
     expect_identical(head(names(object), 1L), "ENSG00000228572")
-    ## Transcripts
+    ## Transcripts.
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "transcripts",
