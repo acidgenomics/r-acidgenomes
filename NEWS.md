@@ -1,6 +1,6 @@
 # Release notes
 
-## AcidGenomes 0.5.0 (2023-04-14)
+## AcidGenomes 0.5.0 (2023-04-27)
 
 Starting a new release series to denote potential breaking changes with legacy
 objects saved with `entrezId` instead of `ncbiGeneId`.
