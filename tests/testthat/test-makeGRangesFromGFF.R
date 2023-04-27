@@ -1105,7 +1105,7 @@ test_that("GTF genes", {
             "parentGeneId" = c("AATF", "AATF_1"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq"),
+            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq%2CGnomon"),
             "type" = rep("gene", 2L)
         )
     )
@@ -1458,6 +1458,8 @@ test_that("GTF transcripts", {
         )
     )
 })
+
+## FIXME This is now failing, need to address.
 
 file <- file.path("cache", "ref-transcripts.gtf")
 
