@@ -474,7 +474,7 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-04-27.
 #' @noRd
 .makeGRanges <-
     function(object,
