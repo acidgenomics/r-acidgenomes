@@ -51,6 +51,9 @@
             genomeBuild = genomeBuild,
             release = release
         )
+        if (is.null(extraMcols)) {
+            return(object)
+        }
         if (isFALSE(ignoreVersion)) {
             colnames(extraMcols)[
                 colnames(extraMcols) == "geneId"
@@ -113,44 +116,77 @@
             pattern = snakeCase(paste(organism, "core", release))
         )
         assert(isString(mysqlSubdir))
-        gene <- import(
-            con = .cacheIt(pasteURL(
-                ftpBaseUrl, "mysql", mysqlSubdir,
-                "gene.txt.gz"
-            )),
-            format = "tsv",
-            colnames = FALSE,
-            quote = ""
-        )
-        synonym <- import(
-            con = .cacheIt(pasteURL(
-                ftpBaseUrl, "mysql", mysqlSubdir,
-                "external_synonym.txt.gz"
-            )),
-            format = "tsv",
-            colnames = FALSE,
-            quote = ""
-        )
-        entrez <- import(
-            con = .cacheIt(pasteURL(
-                ftpBaseUrl, "tsv", snakeCase(organism),
-                paste(
-                    gsub(
-                        pattern = " ",
-                        replacement = "_",
-                        x = organism
-                    ),
-                    genomeBuild,
-                    release,
-                    "entrez",
-                    "tsv.gz",
-                    sep = "."
+        url <- pasteURL(ftpBaseUrl, "mysql", mysqlSubdir, "gene.txt.gz")
+        gene <- tryCatch(
+            expr = {
+                import(
+                    con = .cacheIt(url),
+                    format = "tsv",
+                    colnames = FALSE,
+                    quote = ""
                 )
-            )),
-            format = "tsv",
-            colnames = TRUE,
-            quote = ""
+            },
+            error = function(e) {
+                alertWarning(sprintf("Failed to import {.url %s}.", url))
+                NULL
+            }
         )
+        if (is.null(gene)) {
+            return(NULL)
+        }
+        url <- pasteURL(
+            ftpBaseUrl, "mysql", mysqlSubdir,
+            "external_synonym.txt.gz"
+        )
+        synonym <- tryCatch(
+            expr = {
+                import(
+                    con = .cacheIt(url),
+                    format = "tsv",
+                    colnames = FALSE,
+                    quote = ""
+                )
+            },
+            error = function(e) {
+                alertWarning(sprintf("Failed to import {.url %s}.", url))
+                NULL
+            }
+        )
+        if (is.null(synonym)) {
+            return(NULL)
+        }
+        url <- pasteURL(
+            ftpBaseUrl, "tsv", snakeCase(organism),
+            paste(
+                gsub(
+                    pattern = " ",
+                    replacement = "_",
+                    x = organism
+                ),
+                genomeBuild,
+                release,
+                "entrez",
+                "tsv.gz",
+                sep = "."
+            )
+        )
+        entrez <- tryCatch(
+            expr = {
+                import(
+                    con = .cacheIt(url),
+                    format = "tsv",
+                    colnames = TRUE,
+                    quote = ""
+                )
+            },
+            error = function(e) {
+                alertWarning(sprintf("Failed to import {.url %s}.", url))
+                NULL
+            }
+        )
+        if (is.null(entrez)) {
+            return(NULL)
+        }
         df1 <- gene
         df1 <- df1[, c(8L, 13L, 10L)]
         colnames(df1) <- c("mysqlId", "geneId", "description")
