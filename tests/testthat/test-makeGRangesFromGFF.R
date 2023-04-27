@@ -1478,11 +1478,14 @@ test_that("GTF genes", {
         object = lapply(mcols(object), simpleClass),
         expected = list(
             "broadClass" = "Rle",
+            "description" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
             "geneIdVersion" = "Rle",
             "geneName" = "Rle",
             "geneSource" = "Rle",
+            "geneSynonyms" = "CompressedCharacterList",
+            "ncbiGeneId" = "CompressedIntegerList",
             "source" = "Rle",
             "type" = "Rle"
         )
@@ -1500,11 +1503,17 @@ test_that("GTF genes", {
             "width" = "2541",
             "strand" = "+",
             "broadClass" = "pseudo",
+            "description" = paste(
+                "DEAD/H-box helicase 11 like 1 (pseudogene)",
+                "[Source:HGNC Symbol;Acc:HGNC:37102]"
+            ),
             "geneBiotype" = "transcribed_unprocessed_pseudogene",
             "geneId" = "ENSG00000223972",
             "geneIdVersion" = "ENSG00000223972.5",
             "geneName" = "DDX11L1",
             "geneSource" = "havana",
+            "geneSynonyms" = "character(0)",
+            "ncbiGeneId" = "integer(0)",
             "source" = "havana",
             "type" = "gene"
         )
