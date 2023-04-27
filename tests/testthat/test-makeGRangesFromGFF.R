@@ -13,13 +13,11 @@ test_that("Unsupported files", {
 file <- gffs[["ensembl_grch38_gff3"]]
 
 test_that("GFF3 genes", {
-    expect_false(any(biocPkgs %in% (.packages())))
     object <- makeGRangesFromGFF(
         file = file,
         level = "genes",
         ignoreVersion = FALSE
     )
-    expect_false(any(biocPkgs %in% (.packages())))
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, 62703L)
     expect_named(

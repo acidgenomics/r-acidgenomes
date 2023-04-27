@@ -1,6 +1,4 @@
-## Conditionally test if optional EnsDb.Hsapiens.v75 package is installed.
 pkg <- "EnsDb.Hsapiens.v75"
-skip_if_not_installed(pkg)
 
 test_that("Genes", {
     x <- makeGRangesFromEnsDb(object = pkg, level = "genes")
