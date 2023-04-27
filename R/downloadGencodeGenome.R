@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-04-14.
+#' @note Updated 2023-04-27.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -113,7 +113,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2022-05-24.
+## Updated 2023-04-27.
 .downloadGencodeAnnotation <-
     function(genomeBuild,
              metadataFiles,
@@ -221,6 +221,13 @@ downloadGencodeGenome <-
             by = "txId"
         )
         ## Add NCBI and RefSeq identifiers to gene metadata.
+        if (isSubset("ncbiGeneId", names(mcols(genes)))) {
+            mcols(genes)[["ncbiGeneId"]] <- NULL
+        }
+        if (isSubset("refSeqRnaId", names(mcols(genes)))) {
+            mcols(genes)[["refSeqProteinId"]] <- NULL
+            mcols(genes)[["refSeqRnaId"]] <- NULL
+        }
         mcols <- mcols(genes)
         mcols <- leftJoin(
             x = mcols,
@@ -235,6 +242,13 @@ downloadGencodeGenome <-
         mcols <- mcols[, sort(colnames(mcols))]
         mcols(genes) <- mcols
         ## Add NCBI and RefSeq identifiers to transcript metadata.
+        if (isSubset("ncbiGeneId", names(mcols(transcripts)))) {
+            mcols(transcripts)[["ncbiGeneId"]] <- NULL
+        }
+        if (isSubset("refSeqRnaId", names(mcols(transcripts)))) {
+            mcols(transcripts)[["refSeqProteinId"]] <- NULL
+            mcols(transcripts)[["refSeqRnaId"]] <- NULL
+        }
         mcols <- mcols(transcripts)
         mcols <- leftJoin(
             x = mcols,
