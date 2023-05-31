@@ -33,20 +33,6 @@ conda activate 'r-acidgenomes@0.4.8'
 R
 ```
 
-### [Docker][] method
-
-```sh
-image='quay.io/biocontainers/r-acidgenomes:0.4.8--r42hdfd78af_1'
-workdir='/mnt/work'
-docker pull "$image"
-docker run -it \
-    --volume="${PWD}:${workdir}" \
-    --workdir="$workdir" \
-    "$image" \
-    R
-```
-
 [bioconda]: https://bioconda.github.io/
 [conda]: https://docs.conda.io/en/latest/
-[docker]: https://www.docker.com/
 [r]: https://www.r-project.org/
