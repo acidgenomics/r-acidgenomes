@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2022-05-24.
+#' @note Updated 2023-07-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -56,7 +56,7 @@ NULL
 
 
 
-## Updated 2021-01-21.
+## Updated 2023-07-27.
 #' @rdname currentGenomeBuild
 #' @export
 currentEnsemblGenomeBuild <-
@@ -67,7 +67,7 @@ currentEnsemblGenomeBuild <-
             "rest.ensembl.org",
             "info",
             "assembly",
-            paste0(organism, "?"),
+            paste0(organism, "?", "content-type=application/json"),
             protocol = "https"
         ))
         assert(isSubset("assembly_name", names(json)))
@@ -98,11 +98,12 @@ currentGencodeGenomeBuild <-
 
 ## Updated 2021-01-14.
 #' @rdname currentGenomeBuild
+#' @export
+#'
 #' @param taxonomicGroup `character(1)`.
 #' *Only applies to RefSeq*.
 #' FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 #' Defining this manually avoids having to query the FTP server.
-#' @export
 currentRefSeqGenomeBuild <-
     function(organism,
              taxonomicGroup = NULL) {
