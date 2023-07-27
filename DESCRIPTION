@@ -1,8 +1,8 @@
 Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
-Version: 0.5.0
-Date: 2023-04-27
+Version: 0.5.1.9000
+Date: 2023-07-27
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -20,33 +20,33 @@ URL:
 BugReports: https://github.com/acidgenomics/r-acidgenomes/issues/
 License: AGPL-3
 Encoding: UTF-8
-Depends: R (>= 4.2)
+Depends: R (>= 4.3)
 Imports:
-    AcidBase (>= 0.6.15),
+    AcidBase (>= 0.6.17),
     AcidCLI (>= 0.2.7),
     AcidGenerics (>= 0.6.7),
-    AcidPlyr (>= 0.3.9),
-    BiocGenerics (>= 0.44.0),
-    GenomeInfoDb (>= 1.34.0),
-    GenomicRanges (>= 1.50.0),
-    IRanges (>= 2.32.0),
-    S4Vectors (>= 0.36.0),
-    goalie (>= 0.6.9),
-    pipette (>= 0.10.9),
+    AcidPlyr (>= 0.3.10),
+    BiocGenerics (>= 0.46.0),
+    GenomeInfoDb (>= 1.36.0),
+    GenomicRanges (>= 1.52.0),
+    IRanges (>= 2.34.0),
+    S4Vectors (>= 0.38.0),
+    goalie (>= 0.6.13),
+    pipette (>= 0.11.1),
     stringi (>= 1.7.12),
-    syntactic (>= 0.6.5),
+    syntactic (>= 0.6.6),
     methods,
     utils
 Suggests:
     AcidTest (>= 0.7.2),
-    AnnotationDbi (>= 1.60.0),
-    AnnotationHub (>= 3.6.0),
-    GenomicFeatures (>= 1.50.0),
+    AnnotationDbi (>= 1.62.0),
+    AnnotationHub (>= 3.8.0),
+    GenomicFeatures (>= 1.52.0),
     RCurl (>= 1.98),
-    biomaRt (>= 2.54.0),
+    biomaRt (>= 2.56.0),
     ensembldb (>= 2.22.0),
     rvest (>= 1.0.3),
-    testthat (>= 3.1.7),
+    testthat (>= 3.1.10),
     withr (>= 2.5.0)
 Additional_repositories: https://r.acidgenomics.com
 Config/testthat/edition: 3
