@@ -41,14 +41,14 @@ Invisible \code{list}.
 Download GENCODE reference genome
 }
 \note{
-Updated 2023-04-14.
+Updated 2023-07-27.
 }
 \examples{
 ## This example is bandwidth intensive.
 ## > downloadGencodeGenome(
 ## >     organism = "Homo sapiens",
 ## >     genomeBuild = "GRCh38",
-## >     release = 36L,
+## >     release = 44L,
 ## >     type = "transcriptome",
 ## >     annotation = "gtf"
 ## > )

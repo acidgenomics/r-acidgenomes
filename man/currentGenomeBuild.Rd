@@ -33,7 +33,7 @@ Genome assembly build version.
 Fetch the current genome build (assembly) version from online resources.
 }
 \note{
-Updated 2022-05-24.
+Updated 2023-07-27.
 }
 \examples{
 ## Ensembl.
