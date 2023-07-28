@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-04-27.
+#' @note Updated 2023-07-28.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -12,7 +12,7 @@
 #' ## > downloadGencodeGenome(
 #' ## >     organism = "Homo sapiens",
 #' ## >     genomeBuild = "GRCh38",
-#' ## >     release = 36L,
+#' ## >     release = 44L,
 #' ## >     type = "transcriptome",
 #' ## >     annotation = "gtf"
 #' ## > )
@@ -275,7 +275,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2022-05-24.
+## Updated 2023-07-28.
 .downloadGencodeGenome <-
     function(genomeBuild,
              outputDir,
@@ -352,7 +352,10 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2022-05-24.
+## Updated 2023-07-28.
+##
+## Regarding pipe delimiter handling:
+## https://github.com/nf-core/rnaseq/issues/864
 .downloadGencodeTranscriptome <-
     function(genomeBuild,
              outputDir,
@@ -379,6 +382,25 @@ downloadGencodeGenome <-
             cache = cache
         )
         fastaFile <- files[["fasta"]]
+        ## Prepare a fixed FASTA file, without "|" in headers.
+        fastaFixedFile <- sub(
+            pattern = ".transcripts.",
+            replacement = ".transcripts_fixed.",
+            x = fastaFile,
+            fixed = TRUE
+        )
+        alert(sprintf(
+            "Preparing fixed FASTA file {.file %s} without pipe delimiter.",
+            basename(fastaFixedFile)
+        ))
+        lines <- import(con = fastaFile, format = "lines")
+        lines <- sub(
+            pattern = "^>([^|]+)\\|.+$",
+            replacement = ">\\1",
+            x = lines
+        )
+        export(object = lines, con = fastaFixedFile)
+        files[["fastaFixed"]] <- fastaFixedFile
         ## Save transcript-to-gene mappings.
         tx2gene <- makeTx2GeneFromFASTA(
             file = fastaFile,
@@ -395,9 +417,9 @@ downloadGencodeGenome <-
             fastaRelativeFile <- sub(
                 pattern = paste0("^", outputDir, "/"),
                 replacement = "",
-                x = fastaFile
+                x = fastaFixedFile
             )
-            fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
+            fastaSymlink <- paste0("transcriptome.", fileExt(fastaFixedFile))
             withr::with_dir(
                 new = outputDir,
                 code = {
