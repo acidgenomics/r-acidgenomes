@@ -52,7 +52,7 @@ File path.}
 Make a Tx2Gene object
 }
 \note{
-Updated 2021-03-10.
+Updated 2023-07-31.
 }
 \section{GFF/GTF file}{
 
