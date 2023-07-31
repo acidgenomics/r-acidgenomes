@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2023-02-10.
+#' @note Updated 2023-07-31.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -30,7 +30,12 @@ NULL
 #' @export
 currentEnsemblVersion <- function() {
     x <- import(
-        con = "ftp://ftp.ensembl.org/pub/README",
+        con = pasteURL(
+            "ftp.ensembl.org",
+            "pub",
+            "current_README",
+            protocol = "ftp"
+        ),
         format = "lines",
         quiet = TRUE
     )
