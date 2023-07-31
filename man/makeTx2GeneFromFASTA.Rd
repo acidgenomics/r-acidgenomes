@@ -4,7 +4,7 @@
 \alias{makeTx2GeneFromFASTA}
 \title{Make a Tx2Gene object from transcriptome FASTA}
 \usage{
-makeTx2GeneFromFASTA(file, ignoreVersion = TRUE)
+makeTx2GeneFromFASTA(file, ignoreVersion = FALSE)
 }
 \arguments{
 \item{file}{\code{character(1)}.
@@ -27,7 +27,7 @@ RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
 doesn't contain gene identifiers, and is not supported.
 }
 \note{
-Updated 2022-05-04.
+Updated 2023-07-31.
 }
 \examples{
 ## Ensembl ====
