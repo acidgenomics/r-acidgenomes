@@ -1,6 +1,6 @@
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-04-12.
+#' @note Updated 2023-07-31.
 #' @noRd
 #'
 #' @details
@@ -9,9 +9,12 @@
     function(file,
              level,
              ignoreVersion,
+             extraMcols,
              meta) {
         assert(
             isString(file),
+            isFlag(ignoreVersion),
+            isFlag(extraMcols),
             is.list(meta),
             isString(meta[["format"]]),
             isString(meta[["provider"]])
@@ -62,7 +65,8 @@
         }
         .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion
+            ignoreVersion = ignoreVersion,
+            extraMcols = extraMcols
         )
     }
 
