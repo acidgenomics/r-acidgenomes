@@ -549,9 +549,8 @@
                 y = names(mcols(object))
             )
         )
-        keep <-
-            !is.na(mcols(object)[["gbkey"]]) &
-                mcols(object)[["gbkey"]] == "Gene"
+        keep <- !is.na(mcols(object)[["gbkey"]]) &
+            mcols(object)[["gbkey"]] == "Gene"
         assert(
             any(keep),
             msg = "Failed to extract any genes."
