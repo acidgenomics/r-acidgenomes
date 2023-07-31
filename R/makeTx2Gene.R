@@ -46,7 +46,7 @@ makeTx2GeneFromEnsembl <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
-             ignoreVersion = TRUE) {
+             ignoreVersion = FALSE) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
             level = "transcripts",
@@ -65,7 +65,7 @@ makeTx2GeneFromEnsembl <-
 ## Updated 2023-07-31.
 makeTx2GeneFromEnsDb <-
     function(object,
-             ignoreVersion = TRUE) {
+             ignoreVersion = FALSE) {
         gr <- makeGRangesFromEnsDb(
             object = object,
             level = "transcripts",
@@ -82,7 +82,7 @@ makeTx2GeneFromEnsDb <-
 ## Updated 2023-07-31.
 makeTx2GeneFromGFF <-
     function(file,
-             ignoreVersion = TRUE) {
+             ignoreVersion = FALSE) {
         gr <- makeGRangesFromGFF(
             file = file,
             level = "transcripts",

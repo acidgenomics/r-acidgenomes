@@ -1,7 +1,7 @@
 #' Make a Tx2Gene object from transcriptome FASTA
 #'
 #' @export
-#' @note Updated 2022-05-04.
+#' @note Updated 2023-07-31.
 #'
 #' @details
 #' RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
@@ -71,7 +71,7 @@
 #' ## > print(t2g)
 makeTx2GeneFromFASTA <-
     function(file,
-             ignoreVersion = TRUE) {
+             ignoreVersion = FALSE) {
         assert(
             isString(file),
             isFlag(ignoreVersion)
