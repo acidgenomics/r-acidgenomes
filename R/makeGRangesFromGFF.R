@@ -1,4 +1,4 @@
-## FIXME Ensure that we can disable hitting the Ensembl FTP server.
+## FIXME Add back support for disabling extraMcols
 
 
 
@@ -6,7 +6,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-07-31.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -181,17 +181,9 @@
 #'     "Homo_sapiens.GRCh38.108.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' genes <- makeGRangesFromGFF(
-#'     file = file,
-#'     level = "genes",
-#'     ignoreVersion = FALSE
-#' )
+#' genes <- makeGRangesFromGFF(file = file, level = "genes")
 #' summary(genes)
-#' ## > transcripts <- makeGRangesFromGFF(
-#' ## >     file = file,
-#' ## >     level = "transcripts",
-#' ## >     ignoreVersion = FALSE
-#' ## > )
+#' ## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 #' ## > summary(transcripts)
 #'
 #' ## GENCODE ====
@@ -245,10 +237,12 @@
 makeGRangesFromGFF <-
     function(file,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE) {
+             ignoreVersion = TRUE,
+             extraMcols = TRUE) {
         assert(
             .isSupportedGFF(file),
-            isFlag(ignoreVersion)
+            isFlag(ignoreVersion),
+            isFlag(extraMcols)
         )
         level <- match.arg(level)
         if (isAFile(file)) {
@@ -275,13 +269,15 @@ makeGRangesFromGFF <-
             gr <- .makeGRangesFromTxDb(
                 object = txdb,
                 level = level,
-                ignoreVersion = ignoreVersion
+                ignoreVersion = ignoreVersion,
+                extraMcols = extraMcols
             )
         } else {
             gr <- .makeGRangesFromRtracklayer(
                 file = tmpfile,
                 level = level,
                 ignoreVersion = ignoreVersion,
+                extraMcols = extraMcols,
                 meta = meta
             )
         }
