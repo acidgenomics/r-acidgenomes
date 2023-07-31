@@ -474,15 +474,17 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGFF()`.
 #'
-#' @note Updated 2023-04-27.
+#' @note Updated 2023-07-31.
 #' @noRd
 .makeGRanges <-
     function(object,
-             ignoreVersion) {
+             ignoreVersion,
+             extraMcols) {
         assert(
             is(object, "GRanges"),
             hasLength(object),
             isFlag(ignoreVersion),
+            isFlag(extraMcols),
             isString(metadata(object)[["level"]]),
             isString(metadata(object)[["provider"]])
         )
@@ -496,15 +498,17 @@
             object <- .includeGeneVersion(object)
             object <- .includeTxVersion(object)
         }
-        object <- .addBroadClass(object)
-        if (isSubset(
-            x = metadata(object)[["provider"]],
-            y = c("Ensembl", "GENCODE")
-        )) {
-            object <- .addEnsemblFtpMcols(
-                object = object,
-                ignoreVersion = ignoreVersion
-            )
+        if (isTRUE(extraMcols)) {
+            object <- .addBroadClass(object)
+            if (isSubset(
+                x = metadata(object)[["provider"]],
+                y = c("Ensembl", "GENCODE")
+            )) {
+                object <- .addEnsemblFtpMcols(
+                    object = object,
+                    ignoreVersion = ignoreVersion
+                )
+            }
         }
         object <- .encodeMcols(object)
         idCol <- .matchGRangesNamesColumn(object)
