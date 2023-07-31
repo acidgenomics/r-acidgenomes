@@ -10,13 +10,15 @@ makeGRangesFromEnsembl(
   level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = TRUE
+  ignoreVersion = TRUE,
+  extraMcols = TRUE
 )
 
 makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts"),
-  ignoreVersion = TRUE
+  ignoreVersion = TRUE,
+  extraMcols = TRUE
 )
 }
 \arguments{
@@ -43,6 +45,9 @@ Ignore identifier (e.g. transcript, gene) versions.
 When applicable, the identifier containing version numbers will be stored
 in \code{txIdVersion} and \code{geneIdVersion}, and the variants without versions
 will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
+
+\item{extraMcols}{\code{logical(1)}.
+Include extra metadata columns (e.g. \code{"broadClass"}).}
 
 \item{object}{\code{EnsDb} or \code{character(1)}.
 \code{EnsDb} object or name of specific annotation package containing a
@@ -81,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2023-04-26.
+Updated 2023-07-31.
 }
 \section{Broad class definitions}{
 
