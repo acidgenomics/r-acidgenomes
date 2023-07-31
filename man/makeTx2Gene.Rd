@@ -81,6 +81,6 @@ file <- AcidBase::pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-x <- makeTx2GeneFromGFF(file = file, ignoreVersion = FALSE)
+x <- makeTx2GeneFromGFF(file = file)
 print(x)
 }
