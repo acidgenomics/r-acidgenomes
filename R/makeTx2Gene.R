@@ -1,8 +1,3 @@
-## FIXME Ensure that makeTx2GeneFromEnsembl doesn't hit the Ensembl FTP server.
-
-
-
-
 #' Make a Tx2Gene object
 #'
 #' @section GFF/GTF file:
@@ -10,7 +5,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeTx2Gene
-#' @note Updated 2021-03-10.
+#' @note Updated 2023-07-31.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -46,7 +41,7 @@ NULL
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-03-10.
+## Updated 2023-07-31.
 makeTx2GeneFromEnsembl <-
     function(organism,
              genomeBuild = NULL,
@@ -54,10 +49,11 @@ makeTx2GeneFromEnsembl <-
              ignoreVersion = TRUE) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
+            level = "transcripts",
             genomeBuild = genomeBuild,
             release = release,
             ignoreVersion = ignoreVersion,
-            level = "transcripts"
+            extraMcols = FALSE
         )
         Tx2Gene(gr)
     }
@@ -66,14 +62,15 @@ makeTx2GeneFromEnsembl <-
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-03-10.
+## Updated 2023-07-31.
 makeTx2GeneFromEnsDb <-
     function(object,
              ignoreVersion = TRUE) {
         gr <- makeGRangesFromEnsDb(
             object = object,
+            level = "transcripts",
             ignoreVersion = ignoreVersion,
-            level = "transcripts"
+            extraMcols = FALSE
         )
         Tx2Gene(gr)
     }
@@ -82,14 +79,15 @@ makeTx2GeneFromEnsDb <-
 
 #' @rdname makeTx2Gene
 #' @export
-## Updated 2021-03-10.
+## Updated 2023-07-31.
 makeTx2GeneFromGFF <-
     function(file,
              ignoreVersion = TRUE) {
         gr <- makeGRangesFromGFF(
             file = file,
+            level = "transcripts",
             ignoreVersion = ignoreVersion,
-            level = "transcripts"
+            extraMcols = FALSE
         )
         Tx2Gene(gr)
     }
