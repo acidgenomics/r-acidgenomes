@@ -1,4 +1,5 @@
 ## nolint start
+
 #' Download RefSeq reference genome
 #'
 #' @section Stable release:
@@ -36,7 +37,9 @@
 #' ## >     taxonomicGroup = "vertebrate_mammalian",
 #' ## >     genomeBuild = "GCF_000001405.39_GRCh38.p12",
 #' ## > )
+
 ## nolint end
+
 downloadRefSeqGenome <-
     function(organism,
              taxonomicGroup = NULL,

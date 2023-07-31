@@ -1,4 +1,5 @@
 ## nolint start
+
 #' Download UCSC reference genome
 #'
 #' @export
@@ -40,7 +41,9 @@
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadUCSCGenome(organism = "Homo sapiens")
+
 ## nolint end
+
 downloadUCSCGenome <-
     function(organism,
              genomeBuild = NULL,
