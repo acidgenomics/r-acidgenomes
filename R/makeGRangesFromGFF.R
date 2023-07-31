@@ -265,7 +265,9 @@ makeGRangesFromGFF <-
         }
         meta[["call"]] <- tryCatch(
             expr = standardizeCall(),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
         if (identical(meta[["provider"]], "UCSC")) {
             alertInfo("UCSC genome annotation file detected.")

@@ -233,7 +233,9 @@ makeTx2GeneFromFASTA <-
         meta <- list(
             "call" = tryCatch(
                 expr = standardizeCall(),
-                error = function(e) NULL
+                error = function(e) {
+                    NULL
+                }
             ),
             "date" = Sys.Date(),
             "file" = file,
