@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-07-28.
+#' @note Updated 2023-07-31.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -351,6 +351,9 @@ downloadGencodeGenome <-
     }
 
 
+
+## FIXME Ensure that the fixed transcriptome is actually gzip compressed.
+## If this isn't correct, we may need to update handling in pipette.
 
 ## Updated 2023-07-28.
 ##
