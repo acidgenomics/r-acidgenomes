@@ -1,3 +1,7 @@
+## FIXME Ensure that we can disable hitting the Ensembl FTP server.
+
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'

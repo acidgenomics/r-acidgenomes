@@ -1,3 +1,8 @@
+## FIXME Ensure that makeTx2GeneFromEnsembl doesn't hit the Ensembl FTP server.
+
+
+
+
 #' Make a Tx2Gene object
 #'
 #' @section GFF/GTF file:
