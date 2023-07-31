@@ -108,7 +108,9 @@ downloadUCSCGenome <-
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
         info[["sessionInfo"]] <- sessionInfo()
         saveRDS(object = info, file = file.path(outputDir, "metadata.rds"))

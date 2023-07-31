@@ -282,7 +282,9 @@
     ) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
     }
     ## Attempt to detect the organism from gene identifiers, if necessary.
@@ -294,7 +296,9 @@
         genes <- unique(na.omit(match[, 3L, drop = TRUE]))
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(genes),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
     }
     ## Genome-specific organism workarounds.
