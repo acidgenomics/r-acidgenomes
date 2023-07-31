@@ -1,5 +1,3 @@
-## FIXME Add support for extraMcols param here.
-
 #' Make genomic ranges (`GRanges`) from TxDb object
 #'
 #' @note Updated 2023-07-31.
