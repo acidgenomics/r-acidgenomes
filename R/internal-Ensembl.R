@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-04-27.
+#' @note Updated 2023-07-31.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -39,18 +39,12 @@
             return(object)
         }
         release <- metadata(object)[["release"]]
-        ## FIXME Consider not fetching extra metadata if we can't tell what
-        ## release for Ensembl...that may make more sense.
         if (is.null(release)) {
-            ## FIXME We're hitting this in our unit tests...may want to rethink.
-            ## test-makeGRangesFromGFF.R:1475:5
-            ## test-makeGRangesFromGFF.R:1537:5
             release <- currentEnsemblVersion()
         }
         if (identical(provider, "GENCODE")) {
             release <- mapGencodeToEnsembl(release)
         }
-        ## FIXME Allow the user to disable this step.
         alert("Downloading extra gene-level metadata from Ensembl.")
         extraMcols <- .ensemblFtpGeneMetadata(
             organism = organism,
