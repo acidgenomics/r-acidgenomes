@@ -7,7 +7,8 @@
 makeGRangesFromGFF(
   file,
   level = c("genes", "transcripts"),
-  ignoreVersion = TRUE
+  ignoreVersion = TRUE,
+  extraMcols = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ Ignore identifier (e.g. transcript, gene) versions.
 When applicable, the identifier containing version numbers will be stored
 in \code{txIdVersion} and \code{geneIdVersion}, and the variants without versions
 will be stored in \code{txId}, \code{txIdNoVersion}, \code{geneId}, and \code{geneIdNoVersion}.}
+
+\item{extraMcols}{\code{logical(1)}.
+Include extra metadata columns (e.g. \code{"broadClass"}).}
 }
 \value{
 \code{GRanges}.
@@ -33,7 +37,7 @@ Make genomic ranges (\code{GRanges}) from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2023-04-26.
+Updated 2023-07-31.
 }
 \section{GFF/GTF specification}{
 
@@ -221,17 +225,9 @@ file <- AcidBase::pasteURL(
     "Homo_sapiens.GRCh38.108.gtf.gz",
     protocol = "ftp"
 )
-genes <- makeGRangesFromGFF(
-    file = file,
-    level = "genes",
-    ignoreVersion = FALSE
-)
+genes <- makeGRangesFromGFF(file = file, level = "genes")
 summary(genes)
-## > transcripts <- makeGRangesFromGFF(
-## >     file = file,
-## >     level = "transcripts",
-## >     ignoreVersion = FALSE
-## > )
+## > transcripts <- makeGRangesFromGFF(file = file, level = "transcripts")
 ## > summary(transcripts)
 
 ## GENCODE ====

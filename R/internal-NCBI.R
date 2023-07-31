@@ -160,9 +160,9 @@
 #' )
 #' x <- .getRefSeqAssemblySummary(file)
 #' names(x)
-#'
+
 ## nolint end
-#'
+
 .getRefSeqAssemblySummary <-
     function(file) {
         pattern <- "assembly_summary.txt"

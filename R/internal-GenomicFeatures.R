@@ -1,6 +1,8 @@
+## FIXME Add support for extraMcols param here.
+
 #' Make genomic ranges (`GRanges`) from TxDb object
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-07-31.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -19,15 +21,18 @@
 #'     protocol = "ftp"
 #' )
 #' txdb <- .makeTxDbFromGFF(file)
-#' gr <- .makeGRangesFromTxDb(object = txdb, ignoreVersion = FALSE)
+#' gr <- .makeGRangesFromTxDb(object = txdb)
 #' print(gr)
 .makeGRangesFromTxDb <-
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
-             ignoreVersion = TRUE) {
+             ignoreVersion = TRUE,
+             extraMcols = TRUE) {
         assert(
             requireNamespaces("AnnotationDbi"),
-            is(object, "TxDb")
+            is(object, "TxDb"),
+            isFlag(ignoreVersion),
+            isFlag(extraMcols)
         )
         level <- match.arg(level)
         cols <- AnnotationDbi::columns(object)
@@ -122,7 +127,6 @@
                 mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
                 mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
             }
-
             ## Drop any transcript identifiers that return NA. This can happen
             ## with RefSeq return.
             keep <- !is.na(mcols(gr)[["tx_id"]])
@@ -152,7 +156,8 @@
         metadata(gr) <- meta
         gr <- .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion
+            ignoreVersion = ignoreVersion,
+            extraMcols = extraMcols
         )
         gr
     }
