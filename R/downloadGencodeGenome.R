@@ -352,9 +352,6 @@ downloadGencodeGenome <-
 
 
 
-## FIXME Ensure that the fixed transcriptome is actually gzip compressed.
-## If this isn't correct, we may need to update handling in pipette.
-
 ## Updated 2023-07-28.
 ##
 ## Regarding pipe delimiter handling:
