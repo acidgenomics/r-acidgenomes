@@ -42,7 +42,7 @@
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-07-31.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -87,8 +87,12 @@ makeGRangesFromEnsembl <-
              level = c("genes", "transcripts"),
              genomeBuild = NULL,
              release = NULL,
-             ignoreVersion = TRUE) {
-        assert(isFlag(ignoreVersion))
+             ignoreVersion = TRUE,
+             extraMcols = TRUE) {
+        assert(
+            isFlag(ignoreVersion),
+            isFlag(extraMcols)
+        )
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
         edb <- .getEnsDb(
@@ -99,11 +103,14 @@ makeGRangesFromEnsembl <-
         gr <- makeGRangesFromEnsDb(
             object = edb,
             level = level,
-            ignoreVersion = ignoreVersion
+            ignoreVersion = ignoreVersion,
+            extraMcols = extraMcols
         )
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
         gr
     }
@@ -121,10 +128,12 @@ makeGRangesFromEnsembl <-
 makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE) {
+             ignoreVersion = TRUE,
+             extraMcols = TRUE) {
         assert(
             requireNamespaces("ensembldb"),
-            isFlag(ignoreVersion)
+            isFlag(ignoreVersion),
+            isFlag(extraMcols)
         )
         level <- match.arg(level)
         alert(sprintf(
@@ -184,11 +193,14 @@ makeGRangesFromEnsDb <-
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
         gr <- .makeGRanges(
             object = gr,
-            ignoreVersion = ignoreVersion
+            ignoreVersion = ignoreVersion,
+            extraMcols = extraMcols
         )
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
-            error = function(e) NULL
+            error = function(e) {
+                NULL
+            }
         )
         gr
     }
