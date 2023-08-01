@@ -122,7 +122,6 @@
 
 
 ## nolint start
-
 #' Get the RefSeq assembly metadata
 #'
 #' @section Stable reference assembly:
@@ -160,9 +159,7 @@
 #' )
 #' x <- .getRefSeqAssemblySummary(file)
 #' names(x)
-
 ## nolint end
-
 .getRefSeqAssemblySummary <-
     function(file) {
         pattern <- "assembly_summary.txt"

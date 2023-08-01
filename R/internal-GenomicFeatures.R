@@ -163,7 +163,6 @@
 
 
 ## nolint start
-
 #' Make TxDb from a GFF/GTF file
 #'
 #' Wrapper for GenomicFeatures `makeTxDbFromGFF` importer.
@@ -208,10 +207,7 @@
 #' ## > )
 #' ## > txdb <- .makeTxDbFromGFF(gffFile)
 #' ## > print(txdb)
-NULL
-
 ## nolint end
-
 .makeTxDbFromGFF <- function(file, meta) {
     assert(
         .isSupportedGFF(file),
