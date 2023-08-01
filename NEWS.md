@@ -1,5 +1,30 @@
 # Release notes
 
+## AcidGenomes 0.5.1 (2023-07-31)
+
+Major changes:
+
+- `downloadGencodeGenome`: This genome download function now sanitizes the
+  transcriptome FASTA to only include transcript identifiers in the header
+  without additional information separated by the `"|"` (pipe) delimeter. This
+  approach is not commonly used in FASTA files, and results in unwanted
+  downstream behavior when quantifying at transcript level using kallisto and
+  minimap2. Note that salmon can currently handle this edge case when setting
+  the `--gencode` flag during the genome index step. This action is
+  non-destructive and returns a "transcriptome_fixed" FASTA file. We are now
+  symlinking this fixed file by default, but the unmodified original is
+  retained in the transcriptome download folder.
+
+Minor changes:
+
+- `currentEnsemblGenomeBuild`: Fixed internal REST API query to Ensembl server.
+  This now requires `"content-type=application/json"` to be defined in the URL,
+  otherwise the Ensembl server returns text instead of JSON.
+- `currentEnsemblVersion`: Now parses `current_README` file on FTP server
+  instead of the top level `README`. We changed this because the `README`
+  symlink can break during Ensembl release updates (e.g. 109 to 110, in
+  progress).
+
 ## AcidGenomes 0.5.0 (2023-04-27)
 
 Starting a new release series to denote potential breaking changes with legacy
