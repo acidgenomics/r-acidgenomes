@@ -1521,7 +1521,7 @@ test_that("GTF genes", {
             "geneIdVersion" = "ENSG00000284332.1",
             "geneName" = "MIR1302-2",
             "geneSource" = "mirbase",
-            "geneSynonyms" = "c(\"hsa-mir-1302-2\", \"MIRN1302-2\")",
+            "geneSynonyms" = "c(\"HSA-MIR-1302-2\", \"MIRN1302-2\")",
             "ncbiGeneId" = "100302278",
             "source" = "mirbase",
             "type" = "gene"
@@ -1592,7 +1592,7 @@ test_that("GTF transcripts", {
             "geneIdVersion" = "ENSG00000284332.1",
             "geneName" = "MIR1302-2",
             "geneSource" = "mirbase",
-            "geneSynonyms" = "c(\"hsa-mir-1302-2\", \"MIRN1302-2\")",
+            "geneSynonyms" = "c(\"HSA-MIR-1302-2\", \"MIRN1302-2\")",
             "ncbiGeneId" = "100302278",
             "source" = "mirbase",
             "tag" = "basic",
