@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' ## Protect against Ensembl timeouts causing build checks to fail.
-#' if (goalie::hasInternet(url = "ftp://ftp.ensembl.org/")) {
+#' if (goalie::isAnExistingURL("ftp://ftp.ensembl.org/")) {
 #'     try({
 #'         currentEnsemblVersion()
 #'     })
