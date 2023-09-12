@@ -1,6 +1,9 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO How to remap retired NCBI gene identifiers?
+    e.g. TIAF1 9220, now 399687.
+    This is seen in the DepMap DEMETER2 dataset, for example.
 ** TODO Consider sanitizing transcript identifiers in GENCODE transcriptome FASTA.
 ** TODO Add support for legacy RefSeq hg38 reference for assembly pipelines.
     This has the advantage of ALT contig removal, which is nice for STAR.
