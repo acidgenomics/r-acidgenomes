@@ -22,6 +22,7 @@ unlink2(exdir)
 df <- as(df, "DFrame")
 df <- df[, c(15L, 3L)]
 colnames(df) <- c("taxonomyId", "organism")
+df <- df[complete.cases(df), ]
 df[["organism"]] <- sub(
     pattern = "image:",
     replacement = "",
