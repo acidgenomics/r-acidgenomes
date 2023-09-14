@@ -4,11 +4,11 @@
 \alias{NcbiGeneHistory}
 \title{NCBI gene history}
 \usage{
-NcbiGeneHistory(taxonomyId)
+NcbiGeneHistory(organism)
 }
 \arguments{
-\item{`integer(1)`.}{NCBI taxonomy identifier.
-For \emph{Homo sapiens}, use \code{9606L}.}
+\item{organism}{\code{character(1)}.
+Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
 \code{DFrame}.
@@ -21,5 +21,5 @@ Updated 2023-09-14.
 }
 \examples{
 ## Homo sapiens.
-df <- NcbiGeneHistory(taxonomyId = 9606L)
+df <- NcbiGeneHistory(organism = "Homo sapiens")
 }
