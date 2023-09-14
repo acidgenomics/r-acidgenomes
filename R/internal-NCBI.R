@@ -1,7 +1,10 @@
 #' Match NCBI taxonomic group for gene info or RefSeq.
 #'
-#' @note Updated 2022-09-22.
+#' @note Updated 2023-09-14.
 #' @noRd
+#'
+#' @seealso
+#' - http://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO
 .matchNcbiTaxonomicGroup <-
     function(organism,
              mode = c("geneInfo", "refseq")) {
@@ -460,4 +463,33 @@
     abort(sprintf(
         "Failed to locate RefSeq assembly report from {.file %s}.", file
     ))
+}
+
+
+
+## FIXME Just save this in the package to internal data.
+
+#' Map organism to NCBI taxonomy identifier
+#'
+#' @note Updated 2023-09-14.
+#' @noRd
+#'
+#' @seealso
+#' - https://www.ncbi.nlm.nih.gov/guide/taxonomy/
+#' - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/
+.mapOrganismToNcbiTaxId <- function(organism) {
+    assert(isOrganism(organism))
+    taxId <- switch(
+        EXPR = organism,
+        "Homo sapiens" = 9606L,
+        ## FIXME Add Mus musculus.
+        NULL
+    )
+    if (isInt(taxId)) {
+        return(taxId)
+    }
+
+    assert(isSubset(organism, df[["organism"]]))
+    idx <- match(x = organism, table = df[["organism"]])
+    taxId <- df[idx, "taxonomyId"]
 }
