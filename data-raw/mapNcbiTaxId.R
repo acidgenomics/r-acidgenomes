@@ -20,14 +20,14 @@ con <- file.path(exdir, "images.dmp")
 df <- import(con = con, format = "tsv", colnames = FALSE)
 unlink2(exdir)
 df <- as(df, "DFrame")
-df <- df[, c(3L, 15L)]
-colnames(df) <- c("organism", "taxonomyId")
+df <- df[, c(15L, 3L)]
+colnames(df) <- c("taxonomyId", "organism")
 df[["organism"]] <- sub(
     pattern = "image:",
     replacement = "",
     x = df[["organism"]],
     fixed = TRUE
 )
-df <- df[order(df[["organism"]]), , drop = FALSE]
+df <- df[order(df[["taxonomyId"]]), , drop = FALSE]
 saveRDS(df, "mapNcbiTaxId.rds")
 export(df, "mapNcbiTaxId.csv")
