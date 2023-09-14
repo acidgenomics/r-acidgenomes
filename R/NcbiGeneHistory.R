@@ -1,3 +1,8 @@
+## FIXME Need to class this.
+## FIXME Consider putting discontinuedGeneId first and assigning as rowname.
+
+
+
 #' NCBI gene history
 #'
 #' @export
