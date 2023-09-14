@@ -3,6 +3,7 @@ suppressPackageStartupMessages({
     library(pipette)
 })
 ## nolint end
-object <- import("detect-organism.csv")
+object <- import("detectOrganism.csv")
 object <- as(object, "DFrame")
-saveRDS(object = object, file = "detect-organism.rds")
+saveRDS(object = object, file = "detectOrganism.rds")
+export(object, "detectOrganism.csv")
