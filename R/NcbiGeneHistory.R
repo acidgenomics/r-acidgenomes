@@ -26,20 +26,24 @@ NcbiGeneHistory <- function(taxonomyId) {
         format = "tsv",
         engine = "readr"
     )
+    colnames(df) <- camelCase(colnames(df))
     assert(identical(
         x = colnames(df),
         y = c(
-            "X_tax_id",
-            "GeneID",
-            "Discontinued_GeneID",
-            "Discontinued_Symbol",
-            "Discontinue_Date"
+            "xTaxId",
+            "geneId",
+            "discontinuedGeneId",
+            "discontinuedSymbol",
+            "discontinueDate"
         )
     ))
-    colnames(df) <- camelCase(colnames(df))
     colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
     keep <- df[["taxonomyId"]] == taxonomyId
     df <- df[keep, , drop = FALSE]
     df <- as(df, "DFrame")
+    df[["geneId"]] <- as.integer(df[["geneId"]])
+    df[["discontinuedGeneId"]] <- as.integer(df[["discontinuedGeneId"]])
+    df[["discontinueDate"]] <-
+        as.Date(x = as.character(xxx), tryFormats = "%Y%m%d")
     df
 }
