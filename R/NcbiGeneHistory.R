@@ -1,3 +1,8 @@
+## FIXME Make this more user-friendly by supporting organism-to-taxonomy.
+## FIXME Use .mapOrganismToNcbiTaxId to map organism here.
+
+
+
 #' NCBI gene history
 #'
 #' @export
@@ -12,8 +17,9 @@
 #' @examples
 #' ## Homo sapiens.
 #' df <- NcbiGeneHistory(taxonomyId = 9606L)
-NcbiGeneHistory <- function(taxonomyId) {
-    assert(isInt(taxonomyId))
+NcbiGeneHistory <- function(organism) {
+    assert(isOrganism(organism))
+    ## FIXME Need to map organism to NCBI taxonomy.
     url <- pasteURL(
         "ftp.ncbi.nih.gov",
         "gene",
@@ -26,6 +32,7 @@ NcbiGeneHistory <- function(taxonomyId) {
         format = "tsv",
         engine = "readr"
     )
+    df <- as(df, "DFrame")
     colnames(df) <- camelCase(colnames(df))
     assert(identical(
         x = colnames(df),
@@ -38,9 +45,7 @@ NcbiGeneHistory <- function(taxonomyId) {
         )
     ))
     colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
-    keep <- df[["taxonomyId"]] == taxonomyId
     df <- df[keep, , drop = FALSE]
-    df <- as(df, "DFrame")
     df[["geneId"]] <- as.integer(df[["geneId"]])
     df[["discontinuedGeneId"]] <- as.integer(df[["discontinuedGeneId"]])
     df[["discontinueDate"]] <-
