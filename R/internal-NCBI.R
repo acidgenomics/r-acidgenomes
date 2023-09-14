@@ -477,19 +477,29 @@
 #' @seealso
 #' - https://www.ncbi.nlm.nih.gov/guide/taxonomy/
 #' - https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/
+#'
+#' @examples
+#' .mapOrganismToNcbiTaxId("Homo sapiens")
+#' .mapOrganismToNcbiTaxId("Mus musculus")
+#' .mapOrganismToNcbiTaxId("Caenorhabditis elegans")
 .mapOrganismToNcbiTaxId <- function(organism) {
     assert(isOrganism(organism))
     taxId <- switch(
         EXPR = organism,
         "Homo sapiens" = 9606L,
-        ## FIXME Add Mus musculus.
+        "Mus musculus" = 10090L,
         NULL
     )
     if (isInt(taxId)) {
         return(taxId)
     }
-
-    assert(isSubset(organism, df[["organism"]]))
+    df <- sysdataMapNcbiTaxId
+    assert(
+        isSubset(c("taxonomyId", "organism"), colnames(df)),
+        isSubset(organism, df[["organism"]])
+    )
     idx <- match(x = organism, table = df[["organism"]])
     taxId <- df[idx, "taxonomyId"]
+    assert(isInt(taxId))
+    taxId
 }
