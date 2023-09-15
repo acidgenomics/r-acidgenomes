@@ -31,7 +31,7 @@
 #'     "gtf",
 #'     "homo_sapiens",
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- makeTx2GeneFromGFF(file = file)
 #' print(x)

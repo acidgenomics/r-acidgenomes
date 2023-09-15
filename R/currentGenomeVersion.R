@@ -126,9 +126,9 @@ currentRefSeqVersion <- function() {
 #' @export
 currentFlyBaseVersion <- function(dmel = FALSE) {
     assert(isFlag(dmel))
-    url <- "ftp://ftp.flybase.net/releases/"
+    url <- pasteURL("ftp.flybase.net", "releases", protocol = "ftp")
     if (isTRUE(dmel)) {
-        x <- getURLDirList(paste0(url, "current/"))
+        x <- getURLDirList(pasteURL(url, "current"))
         x <- grep(pattern = "^dmel_r[.0-9]+$", x = x, value = TRUE)
         x <- strsplit(x = x, split = "_", fixed = TRUE)[[1L]][[2L]]
     } else {
@@ -145,11 +145,8 @@ currentFlyBaseVersion <- function(dmel = FALSE) {
 #' @export
 currentWormBaseVersion <- function() {
     url <- pasteURL(
-        "ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        "current-production-release",
+        "ftp.wormbase.org", "pub", "wormbase",
+        "releases", "current-production-release",
         protocol = "ftp"
     )
     x <- getURLDirList(paste0(url, "/"))

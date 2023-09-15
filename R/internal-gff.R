@@ -30,7 +30,7 @@
 #'     "gtf",
 #'     "homo_sapiens",
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' df <- .getGFFDirectives(url)
 #' print(df)
@@ -88,7 +88,7 @@
 #'     "gtf",
 #'     "homo_sapiens",
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- .getGFFMetadata(url)
 #' print(x)

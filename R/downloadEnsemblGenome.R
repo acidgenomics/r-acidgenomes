@@ -32,7 +32,7 @@ downloadEnsemblGenome <-
             isFlag(cache)
         )
         outputDir <- initDir(outputDir)
-        baseUrl <- "ftp://ftp.ensembl.org/pub"
+        baseUrl <- pasteURL("ftp.ensembl.org", "pub", protocol = "https")
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
