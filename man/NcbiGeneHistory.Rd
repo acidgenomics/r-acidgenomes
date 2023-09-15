@@ -11,15 +11,16 @@ NcbiGeneHistory(organism)
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
-\code{DFrame}.
+\code{NcbiGeneHistory}.
 }
 \description{
 NCBI gene history
 }
 \note{
-Updated 2023-09-14.
+Updated 2023-09-15.
 }
 \examples{
 ## Homo sapiens.
-df <- NcbiGeneHistory(organism = "Homo sapiens")
+object <- NcbiGeneHistory(organism = "Homo sapiens")
+print(object)
 }

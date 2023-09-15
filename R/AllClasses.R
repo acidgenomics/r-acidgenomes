@@ -1,4 +1,4 @@
-## Genome annotation classes ===================================================
+## Internal validity methods ===================================================
 
 #' Shared Ensembl validity checks
 #'
@@ -210,6 +210,8 @@
 }
 
 
+
+## Genome annotation classes ===================================================
 
 #' Ensembl gene annotations
 #'
@@ -553,6 +555,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c("hgncId", "ensemblGeneId", "ncbiGeneId")
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
@@ -591,6 +594,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "mgiAccessionId",
             "markerType",
@@ -622,6 +626,44 @@ setValidity(
 
 
 
+#' NCBI gene history
+#'
+#' @export
+#' @note Updated 2023-09-15.
+#'
+#' @return `NcbiGeneHistory`.
+setClass(
+    Class = "NcbiGeneHistory",
+    contains = "DFrame"
+)
+setValidity(
+    Class = "NcbiGeneHistory",
+    method = function(object) {
+        ok <- validate(
+            hasRownames(object),
+            hasColnames(object)
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "discontinuedGeneId" = "integer",
+                "discontinuedSymbol" = "character",
+                "discontinueDate" = "Date",
+                "geneId" = "integer"
+            )
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' NCBI gene identifier information
 #'
 #' @export
@@ -642,6 +684,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "chromosome",
             "dbXrefs",
@@ -693,6 +736,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "ensembl" = "ensemblGeneId",
             "ncbi" = "ncbiGeneId"
@@ -739,6 +783,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "gene" = "geneId",
             "symbol" = "geneName"
@@ -781,6 +826,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "ncbi" = "ncbiGeneId",
             "ensembl" = "ensemblGeneId"
@@ -830,6 +876,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c("proteinId", "geneId", "geneName")
         if (!identical(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
@@ -879,6 +926,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Use validate classes here instead.
         cols <- c(
             "tx" = "txId",
             "gene" = "geneId"
