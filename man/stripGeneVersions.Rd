@@ -49,6 +49,6 @@ stripGeneVersions("ENSG00000002586.20_PAR_Y")
 }
 \seealso{
 \itemize{
-\item http://www.ensembl.org/info/genome/stable_ids/index.html
+\item https://www.ensembl.org/info/genome/stable_ids/index.html
 }
 }

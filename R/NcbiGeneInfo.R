@@ -15,7 +15,7 @@
 #' @return `NcbiGeneInfo`.
 #'
 #' @seealso
-#' - ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
 #'
 #' @examples
 #' object <- NcbiGeneInfo(

@@ -35,6 +35,6 @@ print(object)
 }
 \seealso{
 \itemize{
-\item ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+\item https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
 }
 }
