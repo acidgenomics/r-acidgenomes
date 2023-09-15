@@ -34,15 +34,41 @@ Release version.
 Obtain the latest release version from various genome annotation sources.
 }
 \note{
-Updated 2023-07-31.
+Updated 2023-09-15.
 }
 \examples{
-## Protect against Ensembl timeouts causing build checks to fail.
-if (goalie::isAnExistingURL("ftp://ftp.ensembl.org/")) {
-    try({
+## Ensembl.
+x <- try(
+    expr = {
         currentEnsemblVersion()
-    })
-}
+    },
+    silent = TRUE
+)
+print(x)
+## GENCODE.
+x <- try(
+    expr = {
+        currentGencodeVersion(organism = "Homo sapiens")
+    },
+    silent = TRUE
+)
+print(x)
+## RefSeq.
+x <- try(
+    expr = {
+        currentRefSeqVersion()
+    },
+    silent = TRUE
+)
+print(x)
+## WormBase.
+x <- try(
+    expr = {
+        currentWormBaseVersion()
+    },
+    silent = TRUE
+)
+print(x)
 }
 \seealso{
 Refer to the koopa package for Bash shell variants.
