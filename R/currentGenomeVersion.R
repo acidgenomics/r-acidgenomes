@@ -16,12 +16,38 @@
 #' Refer to the koopa package for Bash shell variants.
 #'
 #' @examples
-#' ## Protect against Ensembl timeouts causing build checks to fail.
-#' if (goalie::isAnExistingURL("ftp://ftp.ensembl.org/")) {
-#'     try({
+#' ## Ensembl.
+#' x <- try(
+#'     expr = {
 #'         currentEnsemblVersion()
-#'     })
-#' }
+#'     },
+#'     silent = TRUE
+#' )
+#' print(x)
+#' ## GENCODE.
+#' x <- try(
+#'     expr = {
+#'         currentGencodeVersion(organism = "Homo sapiens")
+#'     },
+#'     silent = TRUE
+#' )
+#' print(x)
+#' ## RefSeq.
+#' x <- try(
+#'     expr = {
+#'         currentRefSeqVersion()
+#'     },
+#'     silent = TRUE
+#' )
+#' print(x)
+#' ## WormBase.
+#' x <- try(
+#'     expr = {
+#'         currentWormBaseVersion()
+#'     },
+#'     silent = TRUE
+#' )
+#' print(x)
 NULL
 
 
