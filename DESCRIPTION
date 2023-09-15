@@ -22,7 +22,7 @@ License: AGPL-3
 Encoding: UTF-8
 Depends: R (>= 4.3)
 Imports:
-    AcidBase (>= 0.6.21),
+    AcidBase (>= 0.6.22),
     AcidCLI (>= 0.2.8),
     AcidGenerics (>= 0.6.11),
     AcidPlyr (>= 0.4.2),
@@ -32,7 +32,7 @@ Imports:
     IRanges (>= 2.34.0),
     S4Vectors (>= 0.38.0),
     goalie (>= 0.6.15),
-    pipette (>= 0.12.1),
+    pipette (>= 0.12.3),
     stringi (>= 1.7.12),
     syntactic (>= 0.6.6),
     methods,
@@ -45,6 +45,7 @@ Suggests:
     RCurl (>= 1.98),
     biomaRt (>= 2.56.0),
     ensembldb (>= 2.24.0),
+    readr (>= 2.1.4),
     rvest (>= 1.0.3),
     testthat (>= 3.1.10),
     withr (>= 2.5.0)
