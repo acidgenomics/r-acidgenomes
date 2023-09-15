@@ -16,7 +16,7 @@
 #'     "gtf",
 #'     "homo_sapiens",
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' seq <- .getSeqinfo(file)
 #' print(seq)
@@ -30,7 +30,7 @@
 #'     "Gencode_human",
 #'     "release_36",
 #'     "gencode.v36.annotation.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' seq <- .getSeqinfo(file)
 #' print(seq)
@@ -45,7 +45,7 @@
 #'     "all_assembly_versions",
 #'     "GCF_000001405.38_GRCh38.p12",
 #'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' seq <- .getSeqinfo(file)
 #' print(seq)

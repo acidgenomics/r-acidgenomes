@@ -47,12 +47,13 @@ downloadGencodeGenome <-
             "Mus musculus" = "mouse"
         )
         releaseUrl <- pasteURL(
-            "ftp://ftp.ebi.ac.uk",
+            "ftp.ebi.ac.uk",
             "pub",
             "databases",
             "gencode",
             paste("Gencode", organismShort, sep = "_"),
-            paste("release", release, sep = "_")
+            paste("release", release, sep = "_"),
+            protocol = "https"
         )
         if (identical(genomeBuild, "GRCh37")) {
             releaseUrl <- pasteURL(releaseUrl, "GRCh37_mapping")

@@ -1,6 +1,6 @@
 #' Match NCBI taxonomic group for gene info or RefSeq.
 #'
-#' @note Updated 2023-09-14.
+#' @note Updated 2023-09-15.
 #' @noRd
 #'
 #' @seealso
@@ -158,7 +158,7 @@
 #'     "vertebrate_mammalian",
 #'     "Homo_sapiens",
 #'     "assembly_summary.txt",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- .getRefSeqAssemblySummary(file)
 #' names(x)
@@ -217,7 +217,7 @@
         }
         baseUrl <- pasteURL(
             "ftp.ncbi.nlm.nih.gov", "genomes", "refseq",
-            protocol = "ftp"
+            protocol = "https"
         )
         if (is.null(taxonomicGroup)) {
             taxonomicGroup <- .matchNcbiTaxonomicGroup(
@@ -264,7 +264,7 @@
 #'     "all_assembly_versions",
 #'     "GCF_000001405.38_GRCh38.p12",
 #'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
@@ -281,7 +281,7 @@
 #'     "GCA_000001405.15_GRCh38",
 #'     "seqs_for_alignment_pipelines.ucsc_ids",
 #'     "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' seqinfo <- .getRefSeqSeqinfo(file)
 #' print(seqinfo)
@@ -394,7 +394,7 @@
 #'     "all_assembly_versions",
 #'     "GCF_000001405.38_GRCh38.p12",
 #'     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- .locateRefSeqAssemblyReport(file)
 #' print(x)
@@ -411,7 +411,7 @@
 #'     "GCA_000001405.15_GRCh38",
 #'     "seqs_for_alignment_pipelines.ucsc_ids",
 #'     "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- .locateRefSeqAssemblyReport(file)
 #' print(x)

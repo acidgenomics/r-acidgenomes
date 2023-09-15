@@ -34,9 +34,8 @@ NcbiGeneInfo <- # nolint
             isFlag(cache)
         )
         baseURL <- pasteURL(
-            "ftp.ncbi.nih.gov",
-            "gene", "DATA", "GENE_INFO",
-            protocol = "ftp"
+            "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
+            protocol = "https"
         )
         if (is.null(taxonomicGroup)) {
             taxonomicGroup <- .matchNcbiTaxonomicGroup(
