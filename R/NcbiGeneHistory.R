@@ -17,7 +17,7 @@ NcbiGeneHistory <- function(organism) {
     assert(isInt(taxId))
     url <- pasteURL(
         "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
-        protocol = "ftp"
+        protocol = "https"
     )
     df <- import(con = .cacheIt(url), format = "tsv", engine = "readr")
     df <- as(df, "DFrame")

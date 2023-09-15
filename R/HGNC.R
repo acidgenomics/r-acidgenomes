@@ -24,7 +24,7 @@ HGNC <- # nolint
             "new",
             "tsv",
             "hgnc_complete_set.txt",
-            protocol = "ftp"
+            protocol = "https"
         )
         file <- .cacheIt(url)
         suppressWarnings({

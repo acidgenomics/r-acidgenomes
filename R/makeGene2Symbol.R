@@ -35,7 +35,7 @@
 #'     "gtf",
 #'     "homo_sapiens",
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
-#'     protocol = "ftp"
+#'     protocol = "https"
 #' )
 #' x <- makeGene2SymbolFromGFF(
 #'     file = file,
