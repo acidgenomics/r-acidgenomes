@@ -24,7 +24,7 @@ Cache the gene info file from NCBI FTP server using BiocFileCache.}
 Import NCBI (Entrez) gene identifier information
 }
 \note{
-Updated 2023-03-01.
+Updated 2023-09-15.
 }
 \examples{
 object <- NcbiGeneInfo(
