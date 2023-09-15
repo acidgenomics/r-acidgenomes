@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-09-15.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -34,7 +34,7 @@ currentEnsemblVersion <- function() {
             "ftp.ensembl.org",
             "pub",
             "current_README",
-            protocol = "ftp"
+            protocol = "https"
         ),
         format = "lines",
         quiet = TRUE
@@ -86,7 +86,7 @@ currentGencodeVersion <-
 #' @export
 currentRefSeqVersion <- function() {
     x <- import(
-        con = "ftp://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
+        con = "https://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
         format = "lines",
         quiet = TRUE
     )
