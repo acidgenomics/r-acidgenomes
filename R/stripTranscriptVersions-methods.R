@@ -9,7 +9,7 @@
 #' identifiers beginning with `"ENS.*T"`.
 #'
 #' @seealso
-#' - http://www.ensembl.org/info/genome/stable_ids/index.html
+#' - https://www.ensembl.org/info/genome/stable_ids/index.html
 #'
 #' @examples
 #' ## Ensembl.

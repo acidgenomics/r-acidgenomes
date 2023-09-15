@@ -2,7 +2,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-09-15.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -32,7 +32,6 @@
 #' - [gffutils documentation](https://daler.github.io/gffutils/)
 #' - [GenBank GFF documentation](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
 #' - [stringtie GFF documentation](https://ccb.jhu.edu/software/stringtie/gff.shtml)
-#' - [Brent Lab GTF2 spec notes](http://mblab.wustl.edu/GTF2.html)
 #' - [Sequence Ontology GFF3 spec notes](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)
 #'
 #' @section Supported sources:
@@ -56,26 +55,26 @@
 #'
 #' Example URLs:
 #'
-#' - Ensembl *Homo sapiens* GRCh38.p13, release 108
-#' [GTF](ftp://ftp.ensembl.org/pub/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh38.108.gtf.gz),
-#' [GFF3](ftp://ftp.ensembl.org/pub/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh38.108.gff3.gz)
-#' - Ensembl *Homo sapiens* GRCh37, release 108 (87)
-#' [GTF](ftp://ftp.ensembl.org/pub/grch37/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
-#' [GFF3](ftp://ftp.ensembl.org/pub/grch37/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
+#' - Ensembl *Homo sapiens* GRCh38.p13, release 108:
+#' [GTF](https://ftp.ensembl.org/pub/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh38.108.gtf.gz),
+#' [GFF3](https://ftp.ensembl.org/pub/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh38.108.gff3.gz)
+#' - Ensembl *Homo sapiens* GRCh37, release 108 (87):
+#' [GTF](https://ftp.ensembl.org/pub/grch37/release-108/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz),
+#' [GFF3](https://ftp.ensembl.org/pub/grch37/release-108/gff3/homo_sapiens/Homo_sapiens.GRCh37.87.gff3.gz)
 #'
 #' @section GENCODE:
 #'
 #' Example URLs:
 #'
-#' - GENCODE *Homo sapiens* GRCh38.p13, release 42
-#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gtf.gz),
-#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gff3.gz)
-#' - GENCODE *Homo sapiens* GRCh37, release 42
-#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gtf.gz),
-#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gff3.gz)
-#' - GENCODE *Mus musculus* GRCm39, release M31
-#' [GTF](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gtf.gz),
-#' [GFF3](ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gff3.gz)
+#' - GENCODE *Homo sapiens* GRCh38.p13, release 42:
+#' [GTF](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gtf.gz),
+#' [GFF3](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gff3.gz)
+#' - GENCODE *Homo sapiens* GRCh37, release 42:
+#' [GTF](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gtf.gz),
+#' [GFF3](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/GRCh37_mapping/gencode.v42lift37.annotation.gff3.gz)
+#' - GENCODE *Mus musculus* GRCm39, release M31:
+#' [GTF](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gtf.gz),
+#' [GFF3](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M31/gencode.vM31.annotation.gff3.gz)
 #'
 #' @section GENCODE vs. Ensembl:
 #'
@@ -105,33 +104,32 @@
 #' @section RefSeq:
 #'
 #' Refer to the
-#' [current RefSeq spec](ftp://ftp.ncbi.nlm.nih.gov/genomes/README_GFF3.txt)
+#' [current RefSeq spec](https://ftp.ncbi.nlm.nih.gov/genomes/README_GFF3.txt)
 #' for details.
 #'
 #' Example URLs:
 #'
 #' - RefSeq *Homo sapiens* GRCh38.p14
-#' [GTF](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz),
-#' [GFF3](ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz)
+#' [GTF](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz),
+#' [GFF3](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz)
 #'
 #' See also:
 #'
 #' - [RefSeq FAQ](https://www.ncbi.nlm.nih.gov/books/NBK50679/)
-#' - ftp://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
+#' - https://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
 #'
 #' @section UCSC:
 #'
 #' Example URLs:
 #'
 #' - UCSC *Homo sapiens* hg38 GTF files:
-#' [hg38.ensGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ensGene.gtf.gz),
 #' [hg38.knownGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
 #' [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
 #' [hg38.refGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
 #' Related URLs:
 #'
-#' - [UCSC downloads](http://hgdownload.soe.ucsc.edu/downloads.html)
+#' - [UCSC downloads](https://hgdownload.soe.ucsc.edu/downloads.html)
 #' - [UCSC hg38 bigZips](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/)
 #' - [UCSC hgTables](https://genome.ucsc.edu/cgi-bin/hgTables)
 #'
@@ -140,8 +138,8 @@
 #' Example URLs:
 #'
 #' - FlyBase *Drosophila melanogaster* r6.49
-#' [GTF](ftp://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz),
-#' [GFF3](ftp://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz)
+#' [GTF](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz),
+#' [GFF3](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz)
 #'
 #' @section WormBase:
 #'
@@ -223,7 +221,7 @@
 #' ## >     "bigZips",
 #' ## >     "genes",
 #' ## >     "hg38.ensGene.gtf.gz",
-#' ## >     protocol = "ftp"
+#' ## >     protocol = "https"
 #' ## > )
 #' ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
 #' ## > summary(genes)

@@ -52,7 +52,7 @@ mapHumanOrthologs <-
         ## Don't allow the user to pass in human genes.
         assert(!identical(organism, "Homo sapiens"))
         ## Match the Ensembl release to the archive host name.
-        ## e.g. Ensembl 99: http://jan2020.archive.ensembl.org
+        ## e.g. Ensembl 99: https://jan2020.archive.ensembl.org
         host <- mapEnsemblReleaseToURL(ensemblRelease)
         ## e.g. "mmusculus_gene_ensembl".
         dataset <- paste0(

@@ -65,7 +65,7 @@
 #' ## >     "c_elegans",
 #' ## >     "PRJNA13758",
 #' ## >     "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
-#' ## >     protocol = "https"
+#' ## >     protocol = "ftp"
 #' ## > )
 #' ## > t2g <- makeTx2GeneFromFASTA(file)
 #' ## > print(t2g)

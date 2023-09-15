@@ -66,6 +66,8 @@ downloadUCSCGenome <-
         ## UCSC is updated on a rolling schedule, so use today's date as a
         ## substitution for release number.
         release <- Sys.Date()
+        ## UCSC requests downloads over FTP instead of HTTPS when possible,
+        ## so respecting their wishes here.
         baseUrl <- pasteURL(
             "hgdownload.soe.ucsc.edu",
             "goldenPath",

@@ -53,6 +53,6 @@ stripTranscriptVersions("cTel79B.1")
 }
 \seealso{
 \itemize{
-\item http://www.ensembl.org/info/genome/stable_ids/index.html
+\item https://www.ensembl.org/info/genome/stable_ids/index.html
 }
 }
