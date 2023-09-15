@@ -1,23 +1,20 @@
-## FIXME Need to class this.
-## FIXME Consider putting discontinuedGeneId first and assigning as rowname.
-
-
-
 #' NCBI gene history
 #'
 #' @export
-#' @note Updated 2023-09-14.
+#' @note Updated 2023-09-15.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DFrame`.
+#' @return `NcbiGeneHistory`.
 #'
 #' @examples
 #' ## Homo sapiens.
-#' df <- NcbiGeneHistory(organism = "Homo sapiens")
+#' object <- NcbiGeneHistory(organism = "Homo sapiens")
+#' print(object)
 NcbiGeneHistory <- function(organism) {
     assert(isOrganism(organism))
     taxId <- .mapOrganismToNcbiTaxId(organism)
+    assert(isInt(taxId))
     url <- pasteURL(
         "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
         protocol = "ftp"
@@ -33,7 +30,8 @@ NcbiGeneHistory <- function(organism) {
             "discontinuedGeneId",
             "discontinuedSymbol",
             "discontinueDate"
-        )
+        ),
+        hasNoDuplicates(df[["discontinuedGeneId"]])
     ))
     keep <- df[["xTaxId"]] == taxId
     df[["xTaxId"]] <- NULL
@@ -44,6 +42,20 @@ NcbiGeneHistory <- function(organism) {
         x = as.character(df[["discontinueDate"]]),
         tryFormats = "%Y%m%d"
     )
-    df <- df[order(df), , drop = FALSE]
-    df
+    j <- c(
+        "discontinuedGeneId",
+        "discontinuedSymbol",
+        "discontinueDate",
+        "geneId"
+    )
+    df <- df[, j, drop = FALSE]
+    i <- order(df)
+    df <- df[i, , drop = FALSE]
+    rownames(df) <- df[["discontinuedGeneId"]]
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "organism" = organism,
+        "taxonomyId" = taxId
+    )
+    new(df, Class = "NcbiGeneHistory")
 }
