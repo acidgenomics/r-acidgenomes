@@ -4,7 +4,7 @@
 #' @noRd
 #'
 #' @seealso
-#' - http://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO
+#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
 .matchNcbiTaxonomicGroup <-
     function(organism,
              mode = c("geneInfo", "refseq")) {
@@ -146,7 +146,7 @@
 #' RefSeq assembly summary file or URL.
 #'
 #' @seealso
-#' - [File format details](ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt).
+#' - [File format details](https://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt).
 #'
 #' @return Named `character`.
 #'

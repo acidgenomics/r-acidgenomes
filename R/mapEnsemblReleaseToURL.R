@@ -19,7 +19,7 @@
 #' )
 mapEnsemblReleaseToURL <- function(release) {
     assert(requireNamespaces("biomaRt"))
-    currentURL <- "http://useast.ensembl.org"
+    currentURL <- "https://useast.ensembl.org"
     if (is.null(release)) {
         return(currentURL)
     }
