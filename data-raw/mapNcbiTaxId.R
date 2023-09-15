@@ -2,6 +2,7 @@ suppressPackageStartupMessages({
     library(devtools)
     library(AcidBase)
     library(S4Vectors)
+    library(goalie)
     library(pipette)
     library(utils)
 })
@@ -22,7 +23,12 @@ unlink2(exdir)
 df <- as(df, "DFrame")
 df <- df[, c(15L, 3L)]
 colnames(df) <- c("taxonomyId", "organism")
-df <- df[complete.cases(df), ]
+assert(
+    hasNoDuplicates("taxonomyId"),
+    hasNoDuplicates("organism")
+)
+df <- df[complete.cases(df), , drop = FALSE]
+df[["taxonomyId"]] <- as.integer(df[["taxonomyId"]])
 df[["organism"]] <- sub(
     pattern = "image:",
     replacement = "",
@@ -30,5 +36,6 @@ df[["organism"]] <- sub(
     fixed = TRUE
 )
 df <- df[order(df[["taxonomyId"]]), , drop = FALSE]
+rownames(df) <- df[["taxonomyId"]]
 saveRDS(df, "mapNcbiTaxId.rds")
 export(df, "mapNcbiTaxId.csv")

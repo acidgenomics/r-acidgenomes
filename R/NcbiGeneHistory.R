@@ -52,10 +52,12 @@ NcbiGeneHistory <- function(organism) {
     i <- order(df)
     df <- df[i, , drop = FALSE]
     rownames(df) <- df[["discontinuedGeneId"]]
+    ## FIXME Include package name and package version.
     metadata(df) <- list(
         "date" = Sys.Date(),
         "organism" = organism,
-        "taxonomyId" = taxId
+        "taxonomyId" = taxId,
+        "url" = url
     )
     new(df, Class = "NcbiGeneHistory")
 }
