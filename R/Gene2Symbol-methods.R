@@ -1,12 +1,11 @@
 #' @name Gene2Symbol
 #' @inherit AcidGenerics::Gene2Symbol description return title
+#' @note Updated 2023-09-16.
 #'
-#' @note For some organisms, gene identifiers and gene names do not map 1:1
-#' (e.g. *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
+#' @details
+#' For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
+#' *Homo sapiens* and *Mus musculus*). Refer to the `format` argument
 #' here in the documentation for approaches that deal with this issue.
-#' @note For the `format` argument, note that "long" was used instead of
-#' "unmodified" prior to v0.10.10.
-#' @note Updated 2021-10-18.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -53,7 +52,7 @@ NULL
 
 
 
-## Updated 2023-04-26.
+## Updated 2023-09-16.
 `Gene2Symbol,DFrame` <- # nolint
     function(object,
              format = c("makeUnique", "1:1", "unmodified"),
@@ -180,6 +179,9 @@ NULL
             msg = "Failed to generate Gene2Symbol object."
         )
         object <- object[order(object), , drop = FALSE]
+        meta[["date"]] <- Sys.Date()
+        meta[["packageVersion"]] <- .pkgVersion
+        meta <- meta[sort(names(meta))]
         metadata(object) <- meta
         new(Class = "Gene2Symbol", object)
     }

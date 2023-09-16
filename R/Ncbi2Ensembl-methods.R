@@ -1,6 +1,6 @@
 #' @name Ncbi2Ensembl
 #' @inherit AcidGenerics::Ncbi2Ensembl description return title
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-16.
 #'
 #' @inheritParams Ensembl2Ncbi
 #' @param ... Additional arguments.
