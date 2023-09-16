@@ -1,6 +1,6 @@
 #' @name Ensembl2Ncbi
 #' @inherit AcidGenerics::Ensembl2Ncbi description return title
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -96,7 +96,11 @@ NULL
         df <- df[complete.cases(df), , drop = FALSE]
         metadata(df) <- append(
             x = metadata(object),
-            values = list("format" = format)
+            values = list(
+                "date" = Sys.Date(),
+                "format" = format,
+                "packageVersion" = .pkgVersion
+            )
         )
         new(Class = return, df)
     }
