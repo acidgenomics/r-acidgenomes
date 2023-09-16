@@ -845,11 +845,9 @@ setValidity(
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' @inherit AcidGenerics::Ncbi2Ensembl description return title
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-16.
 #'
 #' @details
 #' Contains a `DFrame` with `ncbiGeneId` and `ensemblGeneId` columns.
@@ -862,23 +860,30 @@ setValidity(
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
-            hasColnames(object),
             hasRows(object),
+            hasColnames(object),
             all(complete.cases(object))
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c(
-            "ncbi" = "ncbiGeneId",
-            "ensembl" = "ensemblGeneId"
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "ncbiGeneId" = "integer",
+                "ensemblGeneId" = "character"
+            )
         )
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- unname(cols)
+        if (!isTRUE(ok)) {
+            return(ok)
         }
-        ok <- validate(
-            is.integer(object[[cols[["ncbi"]]]])
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "date" = "Date",
+                "format" = "character",
+                "packageVersion" = "package_version"
+            )
         )
         if (!isTRUE(ok)) {
             return(ok)
