@@ -213,6 +213,8 @@
 
 ## Genome annotation classes ===================================================
 
+## FIXME Check metadata for date, packageVersion.
+
 #' Ensembl gene annotations
 #'
 #' @details
@@ -242,6 +244,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' Ensembl transcript annotations
 #'
@@ -273,6 +277,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' FlyBase gene annotations
 #'
 #' @details
@@ -298,6 +304,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' FlyBase transcript annotations
 #'
@@ -325,6 +333,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' GENCODE gene annotations
 #'
 #' @details
@@ -350,6 +360,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' GENCODE transcript annotations
 #'
@@ -377,6 +389,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' RefSeq gene annotations
 #'
 #' @details
@@ -402,6 +416,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' RefSeq transcript annotations
 #'
@@ -429,6 +445,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' UCSC gene annotations
 #'
 #' @details
@@ -454,6 +472,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' UCSC transcript annotations
 #'
@@ -481,6 +501,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' WormBase gene annotations
 #'
 #' @details
@@ -506,6 +528,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' WormBase transcript annotations
 #'
@@ -534,6 +558,8 @@ setValidity(
 
 
 ## Identifier classes ==========================================================
+
+## FIXME Check metadata for date, packageVersion.
 
 #' Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 #'
@@ -573,6 +599,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' Mouse Genomic Informatics (MGI) metadata
 #'
@@ -626,6 +654,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' NCBI gene history
 #'
 #' @export
@@ -663,6 +693,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' NCBI gene identifier information
 #'
@@ -714,6 +746,8 @@ setValidity(
 
 ## Identifier mapping classes ==================================================
 
+## FIXME Check metadata for date, packageVersion.
+
 #' @inherit AcidGenerics::Ensembl2Ncbi description return title
 #' @export
 #' @note Updated 2023-03-01.
@@ -755,6 +789,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' @inherit AcidGenerics::Gene2Symbol description return title
 #' @export
@@ -804,6 +840,8 @@ setValidity(
 
 
 
+## FIXME Check metadata for date, packageVersion.
+
 #' @inherit AcidGenerics::Ncbi2Ensembl description return title
 #' @export
 #' @note Updated 2023-03-01.
@@ -845,6 +883,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' Protein-to-gene mappings
 #'
@@ -893,6 +933,8 @@ setValidity(
 )
 
 
+
+## FIXME Check metadata for date, packageVersion.
 
 #' @inherit AcidGenerics::Tx2Gene description return title
 #' @export
