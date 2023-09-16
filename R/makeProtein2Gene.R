@@ -1,7 +1,7 @@
 #' Map protein identifiers to genes
 #'
 #' @name makeProtein2Gene
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ids `character`.
@@ -12,8 +12,8 @@
 #'
 #' @examples
 #' ids <- c("ENSP00000238714", "ENSP00000338157")
-#' p2g <- makeProtein2GeneFromEnsembl(ids)
-#' print(p2g)
+#' object <- makeProtein2GeneFromEnsembl(ids)
+#' print(object)
 NULL
 
 
@@ -61,6 +61,10 @@ makeProtein2GeneFromEnsembl <-
                 )
             ))
         }
-        metadata(df) <- .getEnsDbMetadata(edb)
+        meta <- .getEnsDbMetadata(edb)
+        meta[["date"]] <- Sys.Date()
+        meta[["packageVersion"]] <- .pkgVersion
+        meta <- meta[sort(names(meta))]
+        metadata(df) <- meta
         new(Class = "Protein2Gene", df)
     }

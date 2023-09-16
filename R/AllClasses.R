@@ -912,7 +912,7 @@ setValidity(
 #' `metadata()`.
 #'
 #' @export
-#' @note Updated 2022-04-25.
+#' @note Updated 2023-09-16.
 #'
 #' @return `Protein2Gene`.
 setClass(
@@ -924,21 +924,31 @@ setValidity(
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 3L),
-            hasColnames(object),
             hasRows(object),
+            hasColnames(object),
             all(complete.cases(object))
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c("proteinId", "geneId", "geneName")
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- camelCase(colnames(object), strict = TRUE)
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "proteinId" = "character",
+                "geneId" = "character",
+                "geneName" = "character"
+            )
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
         }
-        ok <- validate(
-            identical(cols, colnames(object)),
-            all(bapply(X = object, FUN = is.character))
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "date" = "Date",
+                "packageVersion" = "package_version"
+            ),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -953,7 +963,7 @@ setValidity(
 
 #' @inherit AcidGenerics::Tx2Gene description return title
 #' @export
-#' @note Updated 2022-04-25.
+#' @note Updated 2023-09-16.
 #'
 #' @details
 #' Contains a `DFrame` with `txId` and `geneId` columns.
@@ -1018,6 +1028,8 @@ setValidity(
         ## >     msg = "Some transcript and gene identifiers are identical."
         ## > )
         ## > if (!isTRUE(ok)) return(ok)
+        ##
+        ## FIXME Add metadata check here.
         TRUE
     }
 )
