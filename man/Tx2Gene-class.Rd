@@ -14,7 +14,7 @@ Transcript-to-gene mappings
 Contains a \code{DFrame} with \code{txId} and \code{geneId} columns.
 }
 \note{
-Updated 2022-04-25.
+Updated 2023-09-16.
 }
 \section{Genome metadata}{
 
