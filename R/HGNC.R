@@ -2,7 +2,7 @@
 #' metadata
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-15.
 #'
 #' @return `HGNC`.
 #'
@@ -61,6 +61,10 @@ HGNC <- # nolint
         }
         colnames(df)[colnames(df) == "entrezId"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
+        metadata(df) <- list(
+            "date" = Sys.Date(),
+            "packageVersion" = .pkgVersion
+        )
         new("HGNC", df)
     }
 
