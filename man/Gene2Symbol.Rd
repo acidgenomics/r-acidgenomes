@@ -45,15 +45,13 @@ Perform command quietly, suppressing messages.}
 \description{
 Gene-to-symbol mappings
 }
-\note{
-For some organisms, gene identifiers and gene names do not map 1:1
-(e.g. \emph{Homo sapiens} and \emph{Mus musculus}). Refer to the \code{format} argument
+\details{
+For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
+\emph{Homo sapiens} and \emph{Mus musculus}). Refer to the \code{format} argument
 here in the documentation for approaches that deal with this issue.
-
-For the \code{format} argument, note that "long" was used instead of
-"unmodified" prior to v0.10.10.
-
-Updated 2021-10-18.
+}
+\note{
+Updated 2023-09-16.
 }
 \examples{
 data(GRanges, package = "AcidTest")

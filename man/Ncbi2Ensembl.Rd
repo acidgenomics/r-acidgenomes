@@ -33,7 +33,7 @@ map to NCBI will contain \code{NA} in \code{ncbiGeneId} column.
 NCBI-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2023-03-01.
+Updated 2023-09-16.
 }
 \examples{
 ## integer ====
