@@ -795,11 +795,9 @@ setValidity(
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' @inherit AcidGenerics::Gene2Symbol description return title
 #' @export
-#' @note Updated 2022-04-25.
+#' @note Updated 2023-09-16.
 #'
 #' @details
 #' Contains a `DFrame` with `geneId` and `geneName` columns.
@@ -817,24 +815,31 @@ setValidity(
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
-            hasColnames(object),
             hasRows(object),
+            hasColnames(object),
             all(complete.cases(object))
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c(
-            "gene" = "geneId",
-            "symbol" = "geneName"
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "geneId" = "character",
+                "geneName" = "character"
+            )
         )
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- unname(cols)
+        if (!isTRUE(ok)) {
+            return(ok)
         }
-        ok <- validate(
-            is.character(object[[cols[["gene"]]]]),
-            isAny(object[[cols[["symbol"]]]], c("character", "factor"))
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "date" = "Date",
+                "format" = "character",
+                "packageVersion" = "package_version"
+            ),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
