@@ -1,6 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Remove `canonicalTranscript` from EnsemblTranscripts return.
 ** TODO We may need to force detach rtracklayer and BiocIO, to make sure that our pipette
     export method doesn't get messed up.
 ** TODO Consider sanitizing transcript identifiers in GENCODE transcriptome FASTA.
