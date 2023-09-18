@@ -1,3 +1,7 @@
+## FIXME Need to improve formatting of dates.
+
+
+
 #' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 #' metadata
 #'
