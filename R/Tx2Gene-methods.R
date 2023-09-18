@@ -1,6 +1,6 @@
 #' @name Tx2Gene
 #' @inherit AcidGenerics::Tx2Gene description return title
-#' @note Updated 2021-08-18.
+#' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -20,8 +20,8 @@
 #'         "ENSG00000283061.1"
 #'     )
 #' )
-#' t2g <- Tx2Gene(df)
-#' print(t2g)
+#' object <- Tx2Gene(df)
+#' print(object)
 NULL
 
 

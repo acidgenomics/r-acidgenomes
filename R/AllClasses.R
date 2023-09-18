@@ -899,8 +899,6 @@ setValidity(
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' Protein-to-gene mappings
 #'
 #' @details
@@ -986,8 +984,8 @@ setValidity(
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
-            hasColnames(object),
             hasRows(object),
+            hasColnames(object),
             all(complete.cases(object))
         )
         if (!isTRUE(ok)) {

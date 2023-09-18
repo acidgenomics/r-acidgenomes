@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-09-16.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -77,7 +77,7 @@
 
 #' Get a data frame of extra gene-level metadata from Ensembl FTP server
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-09-16.
 #' @noRd
 #'
 #' @return `DFrame`.
@@ -105,11 +105,12 @@
             replacement = "",
             x = genomeBuild
         )
+        ## Ensembl is prone to timeouts over FTP, so using HTTPS here instead.
         ftpBaseUrl <- pasteURL(
             "ftp.ensembl.org",
             "pub",
             paste0("release-", release),
-            protocol = "ftp"
+            protocol = "https"
         )
         mysqlSubdir <- getURLDirList(
             url = pasteURL(ftpBaseUrl, "mysql"),
