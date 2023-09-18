@@ -40,7 +40,7 @@ NcbiGeneHistory <- function(organism) {
     df[["discontinuedGeneId"]] <- as.integer(df[["discontinuedGeneId"]])
     df[["discontinueDate"]] <- as.Date(
         x = as.character(df[["discontinueDate"]]),
-        tryFormats = "%Y%m%d"
+        format = "%Y%m%d"
     )
     j <- c(
         "discontinuedGeneId",
