@@ -1,3 +1,7 @@
+## FIXME Ensure modification date is classed as a date.
+
+
+
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
