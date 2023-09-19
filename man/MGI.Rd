@@ -13,7 +13,7 @@ MGI()
 Import Mouse Genome Informatics (MGI) metadata
 }
 \note{
-Updated 2023-03-01.
+Updated 2023-09-19.
 }
 \examples{
 object <- MGI()
