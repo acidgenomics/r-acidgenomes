@@ -30,6 +30,26 @@ MGI <- function() { # nolint
     assert(hasLength(cn, n = 15L))
     cn <- sub(pattern = "^[0-9]+\\.\\s", replacement = "", x = cn)
     cn <- camelCase(cn)
+    assert(identical(
+        x = cn,
+        y = c(
+            "mgiAccessionId",
+            "markerType",
+            "markerSymbol",
+            "markerName",
+            "genomeBuild",
+            "entrezGeneId",
+            "ncbiGeneChromosome",
+            "ncbiGeneStart",
+            "ncbiGeneEnd",
+            "ncbiGeneStrand",
+            "ensemblGeneId",
+            "ensemblGeneChromosome",
+            "ensemblGeneStart",
+            "ensemblGeneEnd",
+            "ensemblGeneStrand"
+        )
+    ))
     cn[cn == "entrezGeneId"] <- "ncbiGeneId"
     cn <- c(cn, "delete")
     lines <- lines[2L:length(lines)]
@@ -38,7 +58,7 @@ MGI <- function() { # nolint
         con = con,
         format = "tsv",
         colnames = cn,
-        naStrings = "NA"
+        naStrings = c("NA", "null")
     )
     close(con)
     assert(allAreMatchingFixed(x = df[[1L]], pattern = "MGI:"))
@@ -46,12 +66,15 @@ MGI <- function() { # nolint
     df[["delete"]] <- NULL
     idCol <- "mgiAccessionId"
     assert(hasNoDuplicates(df[[idCol]]))
-    df[[idCol]] <- as.integer(sub(
+    df[[idCol]] <- sub(
         pattern = "^MGI\\:",
         replacement = "",
         x = df[[idCol]]
-    ))
+    )
+    df[[idCol]] <- as.integer(df[[idCol]])
     rownames(df) <- df[[idCol]]
-    df <- df[order(df[[idCol]]), , drop = FALSE]
+    df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
+    df <- factorize(df)
+    df <- encode(df)
     new(Class = "MGI", df)
 }
