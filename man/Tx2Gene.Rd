@@ -50,8 +50,8 @@ df <- S4Vectors::DataFrame(
         "ENSG00000283061.1"
     )
 )
-t2g <- Tx2Gene(df)
-print(t2g)
+object <- Tx2Gene(df)
+print(object)
 }
 \seealso{
 \code{\link[=makeTx2Gene]{makeTx2Gene()}}.

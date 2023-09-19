@@ -1,7 +1,11 @@
+## FIXME Assert that strand contains "+" and "-" as expected.
+
+
+
 #' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-19.
 #'
 #' @return `MGI`.
 #'
@@ -21,21 +25,27 @@ MGI <- function() { # nolint
         protocol = "https"
     )
     file <- .cacheIt(url)
-    suppressWarnings({
-        df <- import(
-            con = file,
-            format = "tsv",
-            colnames = TRUE,
-            engine = "readr"
-        )
-    })
-    df <- as(df, "DFrame")
-    cn <- colnames(df)
-    cn <- sub(pattern = "^X[0-9]+_", replacement = "", x = cn)
-    cn <- camelCase(cn, strict = TRUE)
+    lines <- import(con = file, format = "lines")
+    cn <- strsplit(lines[[1L]], split = "\t")[[1L]]
+    cn <- sub(pattern = "^[0-9]+\\.\\s", replacement = "", x = cn)
+    cn <- camelCase(cn)
     cn[cn == "entrezGeneId"] <- "ncbiGeneId"
+    cn <- c(cn, "delete")
+    lines <- lines[2L:length(lines)]
+    con <- textConnection(lines)
+    df <- import(
+        con = con,
+        format = "tsv",
+        colnames = cn,
+        naStrings = "NA"
+    )
+    close(con)
+    df[["delete"]] <- NULL
+    assert(allAreMatchingFixed(x = df[[1L]], pattern = "MGI:"))
+    df <- as(df, "DFrame")
     colnames(df) <- cn
     idCol <- "mgiAccessionId"
+    ## FIXME This is now failing if we use the base engine.
     assert(hasNoDuplicates(df[[idCol]]))
     df[[idCol]] <- as.integer(sub(
         pattern = "^MGI\\:",
