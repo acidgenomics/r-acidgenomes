@@ -27,6 +27,7 @@ MGI <- function() { # nolint
     file <- .cacheIt(url)
     lines <- import(con = file, format = "lines")
     cn <- strsplit(lines[[1L]], split = "\t")[[1L]]
+    assert(hasLength(cn, n = 15L))
     cn <- sub(pattern = "^[0-9]+\\.\\s", replacement = "", x = cn)
     cn <- camelCase(cn)
     cn[cn == "entrezGeneId"] <- "ncbiGeneId"
@@ -40,12 +41,10 @@ MGI <- function() { # nolint
         naStrings = "NA"
     )
     close(con)
-    df[["delete"]] <- NULL
     assert(allAreMatchingFixed(x = df[[1L]], pattern = "MGI:"))
     df <- as(df, "DFrame")
-    colnames(df) <- cn
+    df[["delete"]] <- NULL
     idCol <- "mgiAccessionId"
-    ## FIXME This is now failing if we use the base engine.
     assert(hasNoDuplicates(df[[idCol]]))
     df[[idCol]] <- as.integer(sub(
         pattern = "^MGI\\:",
