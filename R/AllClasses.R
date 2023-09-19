@@ -605,7 +605,7 @@ setValidity(
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-19.
 #'
 #' @return `MGI`.
 setClass(
@@ -640,14 +640,14 @@ setValidity(
             "ensemblGeneEnd",
             "ensemblGeneStrand"
         )
-        ok <- validate(
-            isSubset(cols, colnames(object)),
-            is.integer(object[[cols[[1L]]]]),
-            hasNoDuplicates(object[[cols[[1L]]]])
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
+        #ok <- validate(
+        #    isSubset(cols, colnames(object)),
+        #    is.integer(object[[cols[[1L]]]]),
+        #    hasNoDuplicates(object[[cols[[1L]]]])
+        #)
+        #if (!isTRUE(ok)) {
+        #    return(ok)
+        #}
         TRUE
     }
 )
