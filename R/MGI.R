@@ -74,7 +74,6 @@ MGI <- function() { # nolint
     df[[idCol]] <- as.integer(df[[idCol]])
     rownames(df) <- df[[idCol]]
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
-    df <- factorize(df)
     df <- encode(df)
     new(Class = "MGI", df)
 }
