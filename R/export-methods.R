@@ -1,6 +1,6 @@
 #' @name export
 #' @inherit pipette::export description params return title
-#' @note Updated 2022-09-13.
+#' @note Updated 2023-09-20.
 #'
 #' @details
 #' The `Tx2Gene` method automatically disables writing of column names, which
@@ -31,19 +31,10 @@ NULL
 
 
 
-## Updated 2022-09-13.
+## Updated 2023-09-20.
 `export,Tx2Gene` <- # nolint
-    function(object,
-             con,
-             format, # missing
-             ...) {
-        if (missing(format)) {
-            format <- NULL
-        }
-        assert(
-            validObject(object),
-            is.null(format)
-        )
+    function(object, con, ...) {
+        assert(validObject(object))
         alertInfo(sprintf(
             "Exporting {.cls %s} intentionally without dimnames.",
             "Tx2Gene"
@@ -65,8 +56,7 @@ setMethod(
     f = "export",
     signature = signature(
         object = "Tx2Gene",
-        con = "character",
-        format = "missing"
+        con = "character"
     ),
     definition = `export,Tx2Gene`
 )
