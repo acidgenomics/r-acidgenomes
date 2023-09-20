@@ -10,9 +10,9 @@ NULL
 ## S4 generics and methods =====================================================
 
 #' @importFrom AcidGenerics Ensembl2Ncbi Gene2Symbol Ncbi2Ensembl Tx2Gene
-#' as.DataFrame camelCase encode kebabCase leftJoin makeNames matchNested
-#' mutateAt rbindToDataFrame removeNA sanitizeNA snakeCase stripGeneVersions
-#' stripTranscriptVersions upperCamelCase
+#' as.DataFrame camelCase encode export import kebabCase leftJoin makeNames
+#' matchNested mutateAt rbindToDataFrame removeNA sanitizeNA snakeCase
+#' stripGeneVersions stripTranscriptVersions upperCamelCase
 #' @importFrom BiocGenerics %in% append as.data.frame do.call grep grepl
 #' is.unsorted lapply match order organism organism<- rbind setdiff sort unlist
 #' updateObject
@@ -21,7 +21,6 @@ NULL
 #' @importFrom IRanges gsub ranges trim
 #' @importFrom S4Vectors complete.cases decode expand head mcols mcols<-
 #' metadata metadata<- na.omit split summary tail
-#' @importFrom pipette export import
 NULL
 
 #' @importMethodsFrom AcidBase matchNested
