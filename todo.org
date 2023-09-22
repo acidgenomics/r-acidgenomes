@@ -1,6 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Add human-to-mouse symbol mapping, which is very useful for PDX databases.
 ** TODO Remove `canonicalTranscript` from EnsemblTranscripts return.
 ** TODO We may need to force detach rtracklayer and BiocIO, to make sure that our pipette
     export method doesn't get messed up.
