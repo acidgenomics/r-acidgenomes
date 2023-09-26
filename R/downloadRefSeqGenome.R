@@ -181,7 +181,7 @@ downloadRefSeqGenome <-
         saveRDS(object = txToGene, file = file.path(outputDir, "txToGene.rds"))
         txToGeneFile <- export(
             object = txToGene,
-            con = file.path(outputDir, "txToGene.csv.gz")
+            con = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["txToGene"]] <- txToGeneFile
         invisible(list("files" = files, "urls" = urls))

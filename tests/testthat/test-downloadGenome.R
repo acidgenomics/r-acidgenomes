@@ -19,7 +19,7 @@ test_that("downloadEnsemblGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "txToGene.csv.gz",
+            "tx2gene.csv.gz",
             "txToGene.rds"
         )
     ))))
@@ -56,7 +56,7 @@ test_that("downloadEnsemblGenome", {
         )
     )
     txToGene <- import(
-        con = file.path(outputDir, "txToGene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(nrow(txToGene), 272929L)
@@ -91,7 +91,7 @@ test_that("downloadGencodeGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "txToGene.csv.gz",
+            "tx2gene.csv.gz",
             "txToGene.rds"
         )
     ))))
@@ -128,7 +128,7 @@ test_that("downloadGencodeGenome", {
         )
     )
     txToGene <- import(
-        con = file.path(outputDir, "txToGene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(nrow(txToGene), 252416L)
@@ -163,7 +163,7 @@ test_that("downloadRefSeqGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "txToGene.csv.gz",
+            "tx2gene.csv.gz",
             "txToGene.rds"
         )
     ))))
@@ -195,7 +195,7 @@ test_that("downloadRefSeqGenome", {
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
     txToGene <- import(
-        con = file.path(outputDir, "txToGene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     aatfCurrent <- txToGene[txToGene[, 2L] == "AATF", ]
@@ -223,7 +223,7 @@ test_that("downloadUCSCGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "txToGene.csv.gz",
+            "tx2gene.csv.gz",
             "txToGene.rds"
         )
     ))))
@@ -257,7 +257,7 @@ test_that("downloadUCSCGenome", {
         )
     )
     txToGene <- import(
-        con = file.path(outputDir, "txToGene.csv.gz"),
+        con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(
