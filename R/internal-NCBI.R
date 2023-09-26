@@ -467,8 +467,6 @@
 
 
 
-## FIXME Just save this in the package to internal data.
-
 #' Map organism to NCBI taxonomy identifier
 #'
 #' @note Updated 2023-09-14.
