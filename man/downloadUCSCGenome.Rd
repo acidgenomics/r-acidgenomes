@@ -57,10 +57,10 @@ This sequence data is updated regularly via automatic GenBank updates.
 
 \section{Gene annotations}{
 
-:
+
 This directory contains GTF files for the main gene transcript sets where
 available. They are sourced from the following gene model tables:
-ncbiRefSeq, refGene, knownGene.
+\code{knownGene} (GENCODE) and \code{ncbiRefSeq} (NCBI RefSeq).
 }
 
 \examples{

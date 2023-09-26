@@ -179,7 +179,6 @@ Example URLs:
 \item UCSC \emph{Homo sapiens} hg38 GTF files:
 \href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
 \href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
-\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz}{hg38.refGene.gtf.gz}
 }
 
 Related URLs:
