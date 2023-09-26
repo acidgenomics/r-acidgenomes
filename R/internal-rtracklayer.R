@@ -527,8 +527,8 @@
     mcols <- unique(mcols[keep, ])
     assert(hasNoDuplicates(mcols[["gene_id"]]))
     geneIds <- mcols[["gene_id"]]
-    ncbiGeneIds <- stri_match_first_regex(
-        str = mcols[["db_xref"]],
+    ncbiGeneIds <- strMatch(
+        x = mcols[["db_xref"]],
         pattern = "GeneID:([[:digit:]]+)"
     )[, 2L]
     ncbiGeneIds <- as.integer(ncbiGeneIds)

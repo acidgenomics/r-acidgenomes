@@ -49,7 +49,7 @@
     if (!hasLength(lines)) {
         return(NULL)
     }
-    mat <- stri_match_first_regex(str = lines, pattern = pattern)
+    mat <- strMatch(x = lines, pattern = pattern)
     assert(is.matrix(mat), hasRows(mat))
     df <- as(mat, "DFrame")
     df <- df[, c(3L, 5L), drop = FALSE]
@@ -172,8 +172,8 @@
             EXPR = l[["provider"]],
             "Ensembl" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stri_match_first_regex(
-                        str = basename(file),
+                    x <- strMatch(
+                        x = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
                     if (!isOrganism(l[["organism"]])) {
@@ -189,8 +189,8 @@
             },
             "FlyBase" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stri_match_first_regex(
-                        str = basename(file),
+                    x <- strMatch(
+                        x = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
                     if (
@@ -209,8 +209,8 @@
             },
             "GENCODE" = {
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stri_match_first_regex(
-                        str = basename(file),
+                    x <- strMatch(
+                        x = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
                     if (!isScalar(l[["release"]])) {
@@ -228,8 +228,8 @@
             "RefSeq" = {
                 if (!isScalar(l[["release"]])) {
                     ## e.g. "109.20190125".
-                    l[["release"]] <- stri_match_first_regex(
-                        str = df[
+                    l[["release"]] <- strMatch(
+                        x = df[
                             df[["key"]] == "annotation-source",
                             "value",
                             drop = TRUE
@@ -240,8 +240,8 @@
             },
             "UCSC" = {
                 if (!isString(l[["genomeBuild"]])) {
-                    l[["genomeBuild"]] <- stri_match_first_regex(
-                        str = basename(file),
+                    l[["genomeBuild"]] <- strMatch(
+                        x = basename(file),
                         pattern = pattern
                     )[1L, 3L]
                 }
@@ -255,8 +255,8 @@
                     ]
                 }
                 if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- stri_match_first_regex(
-                        str = basename(file),
+                    x <- strMatch(
+                        x = basename(file),
                         pattern = pattern
                     )[1L, , drop = TRUE]
                     if (
@@ -289,8 +289,8 @@
     }
     ## Attempt to detect the organism from gene identifiers, if necessary.
     if (!isOrganism(l[["organism"]])) {
-        match <- stri_match_first_regex(
-            str = lines,
+        match <- strMatch(
+            x = lines,
             pattern = "(\t|\\s)gene_id\\s\"([^\"]+)\""
         )
         genes <- unique(na.omit(match[, 3L, drop = TRUE]))
@@ -336,8 +336,8 @@
             isTRUE("description" %in% df[["key"]])
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
-        x <- stri_match_first_regex(
-            str = string,
+        x <- strMatch(
+            x = string,
             pattern = "genome \\(([^\\)]+)\\)"
         )[1L, 2L]
         if (isString(x)) {
