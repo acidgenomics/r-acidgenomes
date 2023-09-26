@@ -125,7 +125,6 @@
 #' - UCSC *Homo sapiens* hg38 GTF files:
 #' [hg38.knownGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
 #' [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
-#' [hg38.refGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz)
 #'
 #' Related URLs:
 #'

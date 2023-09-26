@@ -20,10 +20,10 @@
 #' This sequence data is updated regularly via automatic GenBank updates.
 #'
 #' @section Gene annotations:
-#' :
+#'
 #' This directory contains GTF files for the main gene transcript sets where
 #' available. They are sourced from the following gene model tables:
-#' ncbiRefSeq, refGene, knownGene.
+#' `knownGene` (GENCODE) and `ncbiRefSeq` (NCBI RefSeq).
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -51,6 +51,10 @@ downloadUCSCGenome <-
             isString(genomeBuild, nullOK = TRUE),
             isString(outputDir),
             isFlag(cache)
+        )
+        organism <- match.arg(
+            arg = organism,
+            choices = c("Homo sapiens", "Mus musculus")
         )
         outputDir <- initDir(outputDir)
         ## Homo sapiens is now defaulting to "hs1", which is the experimental
@@ -141,10 +145,6 @@ downloadUCSCGenome <-
             "ncbiRefSeq" = pasteURL(
                 genesUrl,
                 paste0(genomeBuild, ".ncbiRefSeq.gtf.gz")
-            ),
-            "refGene" = pasteURL(
-                genesUrl,
-                paste0(genomeBuild, ".refGene.gtf.gz")
             )
         )
         files <- .downloadUrls(

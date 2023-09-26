@@ -261,15 +261,6 @@ gffs <- c(
         "hg38.ncbiRefSeq.gtf.gz",
         protocol = "ftp"
     ),
-    "ucsc_hg38_refgene_gtf" = pasteURL(
-        "hgdownload.soe.ucsc.edu",
-        "goldenPath",
-        "hg38",
-        "bigZips",
-        "genes",
-        "hg38.refGene.gtf.gz",
-        protocol = "ftp"
-    ),
     ## NOTE Not supported yet in the package.
     "wormbase_gff3" = pasteURL(
         "ftp.wormbase.org",
