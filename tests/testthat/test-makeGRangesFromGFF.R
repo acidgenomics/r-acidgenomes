@@ -1215,7 +1215,7 @@ test_that("GTF transcripts", {
     )
 })
 
-file <- gffs[["ucsc_hg38_ensgene_gtf"]]
+file <- gffs[["ucsc_hg38_knowngene_gtf"]]
 
 test_that("GTF genes", {
     object <- makeGRangesFromGFF(
