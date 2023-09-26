@@ -14,5 +14,5 @@ UCSC transcript annotations
 Contains \code{GRanges} with UCSC transcript-level annotations.
 }
 \note{
-Updated 2021-10-14.
+Updated 2023-09-26.
 }
