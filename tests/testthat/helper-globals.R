@@ -1,21 +1,7 @@
-data(
-    GRanges,
-    package = "AcidTest",
-    envir = environment()
-)
-
-gr <- GRanges
-
 ## nolint start
-CompressedIntegerList <- structure(
-    .Data = "CompressedIntegerList",
-    package = "IRanges"
-)
-Rle <- structure(
-    .Data = "Rle",
-    package = "S4Vectors"
-)
+
 DataFrame <- S4Vectors::DataFrame
+data <- utils::data
 hasInternet <- goalie::hasInternet
 pasteURL <- AcidBase::pasteURL
 seqinfo <- GenomeInfoDb::seqinfo
@@ -24,6 +10,23 @@ seqnames <- GenomeInfoDb::seqnames
 simpleClass <- AcidBase::simpleClass
 tempdir2 <- AcidBase::tempdir2
 unlink2 <- AcidBase::unlink2
+
+CompressedIntegerList <- structure(
+    .Data = "CompressedIntegerList",
+    package = "IRanges"
+)
+Rle <- structure(
+    .Data = "Rle",
+    package = "S4Vectors"
+)
+
+data(
+    GRanges,
+    package = "AcidTest",
+    envir = environment()
+)
+gr <- GRanges
+
 ## nolint end
 
 ## Updated 2023-09-26.
