@@ -14,5 +14,5 @@ NCBI-to-Ensembl gene identifier mappings
 Contains a \code{DFrame} with \code{"ncbiGeneId"} and \code{"ensemblGeneId"} columns.
 }
 \note{
-Updated 2023-09-16.
+Updated 2023-09-26.
 }
