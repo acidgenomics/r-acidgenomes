@@ -1105,6 +1105,9 @@ setValidity(
                 "geneId" = "character"
             )
         )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validate(
             hasRows(object),
             all(complete.cases(object)),
