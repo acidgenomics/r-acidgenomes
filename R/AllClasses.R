@@ -2,7 +2,7 @@
 
 #' Shared Ensembl validity checks
 #'
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-09-26.
 #' @noRd
 .ensemblValidity <- function(object) {
     ok <- .grangesValidity(object)
@@ -17,10 +17,7 @@
     }
     ok <- validateClasses(
         object = metadata(object),
-        expected = list(
-            ## > "genomeBuild" = "character",
-            "organism" = "character"
-        ),
+        expected = list("organism" = "character"),
         subset = TRUE
     )
     if (!isTRUE(ok)) {
@@ -29,8 +26,10 @@
     ## Can't always get the release version from GFF file, so just check
     ## for ensembldb return.
     if (isSubset("ensembldb", names(metadata(object)))) {
-        ok <- validate(
-            is.integer(metadata(object)[["release"]])
+        ok <- validateClasses(
+            object = metadata(object)
+            expected = list("release" = "integer"),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -94,19 +93,21 @@
 
 #' Shared GRanges validity checks
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-26.
 #' @noRd
 #'
 #' @details
 #' Genome build and organism are not defined in minimal FlyBase GTF example.
 .grangesValidity <- function(object) {
+    ok <- .metadataValidity(object)
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "date" = "Date",
             "ignoreVersion" = "logical",
             "level" = "character",
-            "packageVersion" = "package_version",
             "provider" = "character"
         ),
         subset = TRUE
@@ -120,6 +121,27 @@
             "Object contains {.var %s} instead of {.var %s} in {.var %s}.",
             "entrezId", "ncbiGeneId", "mcols"
         )
+    )
+    if (!isTRUE(ok)) {
+        return(ok)
+    }
+    TRUE
+}
+
+
+
+#' Shared metadata validity checks
+#'
+#' @note Updated 2023-09-26.
+#' @noRd
+.metadataValidity <- function(object) {
+    ok <- validateClasses(
+        object = metadata(object),
+        expected = list(
+            "date" = "Date",
+            "packageVersion" = "package_version"
+        ),
+        subset = TRUE
     )
     if (!isTRUE(ok)) {
         return(ok)
@@ -229,7 +251,6 @@ setClass(
 setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
-
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) {
             return(ok)
@@ -238,7 +259,6 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
@@ -269,7 +289,6 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
@@ -296,7 +315,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -323,7 +345,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -350,7 +375,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -377,7 +405,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -404,7 +435,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -431,7 +465,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -458,7 +495,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -485,7 +525,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -512,7 +555,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "genes"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -539,7 +585,10 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
