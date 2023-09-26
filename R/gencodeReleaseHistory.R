@@ -1,11 +1,10 @@
-## FIXME Make this rvest approach a function in pipette.
-
-
-
 #' GENCODE release history
 #'
 #' @export
 #' @note Updated 2023-09-26.
+#'
+#' @details
+#' Requires the rvest package to be installed.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
