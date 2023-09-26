@@ -410,7 +410,7 @@ downloadGencodeGenome <-
             file = fastaFile,
             ignoreVersion = FALSE
         )
-        saveRDS(object = txToGene, file = file.path(outputDir, "txToGene.rds"))
+        saveRDS(object = txToGene, file = file.path(outputDir, "tx2gene.rds"))
         txToGeneFile <- export(
             object = txToGene,
             con = file.path(outputDir, "tx2gene.csv.gz")
