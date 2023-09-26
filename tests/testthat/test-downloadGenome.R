@@ -5,7 +5,7 @@ test_that("downloadEnsemblGenome", {
         genomeBuild = "GRCh38",
         release = 108L,
         outputDir = testdir,
-        cache = FALSE
+        cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
@@ -77,7 +77,7 @@ test_that("downloadGencodeGenome", {
         genomeBuild = "GRCh38",
         release = 42L,
         outputDir = testdir,
-        cache = FALSE
+        cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
@@ -149,7 +149,7 @@ test_that("downloadRefSeqGenome", {
         taxonomicGroup = "vertebrate_mammalian",
         genomeBuild = "GCF_000001405.40_GRCh38.p14",
         outputDir = testdir,
-        cache = FALSE
+        cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
@@ -210,7 +210,7 @@ test_that("downloadUCSCGenome", {
         organism = "Homo sapiens",
         genomeBuild = "hg38",
         outputDir = testdir,
-        cache = FALSE
+        cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
