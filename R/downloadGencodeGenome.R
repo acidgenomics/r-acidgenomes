@@ -46,6 +46,7 @@ downloadGencodeGenome <-
             "Homo sapiens" = "human",
             "Mus musculus" = "mouse"
         )
+        ## Can switch to HTTPS if FTP server is down.
         releaseUrl <- pasteURL(
             "ftp.ebi.ac.uk",
             "pub",
@@ -53,7 +54,7 @@ downloadGencodeGenome <-
             "gencode",
             paste("Gencode", organismShort, sep = "_"),
             paste("release", release, sep = "_"),
-            protocol = "https"
+            protocol = "ftp"
         )
         if (identical(genomeBuild, "GRCh37")) {
             releaseUrl <- pasteURL(releaseUrl, "GRCh37_mapping")
