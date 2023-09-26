@@ -43,8 +43,10 @@ test_that("format: makeUnique", {
         )
     )
     metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "dupes" = "symbol1",
         "format" = "makeUnique",
-        "dupes" = "symbol1"
+        "packageVersion" = .pkgVersion
     )
     expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
@@ -84,7 +86,11 @@ test_that("format: makeUnique", {
         "geneName" = c("symbol1", "symbol2"),
         row.names = c("A", "B")
     )
-    metadata(expected) <- list("format" = "makeUnique")
+    metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "format" = "makeUnique",
+        "packageVersion" = .pkgVersion
+    )
     expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
 })
@@ -124,8 +130,10 @@ test_that("format: 1:1", {
         row.names = c("B", "D")
     )
     metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "dropped" = c("E" = 5L, "F" = 6L),
         "format" = "1:1",
-        "dropped" = c("E" = 5L, "F" = 6L)
+        "packageVersion" = .pkgVersion
     )
     expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
@@ -166,8 +174,10 @@ test_that("format: unmodified", {
         row.names = LETTERS[seq_len(3L)]
     )
     metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "dropped" = c("D" = 4L, "E" = 5L),
         "format" = "unmodified",
-        "dropped" = c("D" = 4L, "E" = 5L)
+        "packageVersion" = .pkgVersion
     )
     expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
