@@ -49,7 +49,7 @@ NULL
         "(\\.gz)?$"
     ),
     "ucsc" = paste0(
-        ## "hg38.ensGene.gtf.gz"
+        ## "hg38.knownGene.gtf.gz"
         "^([0-9a-z]+_)?", # BiocFileCache
         "([a-z]+[A-Za-z]+[0-9]+)", # "hg38"
         "\\.(ensGene|knownGene|ncbiRefSeq|refGene)", # "ensGene"

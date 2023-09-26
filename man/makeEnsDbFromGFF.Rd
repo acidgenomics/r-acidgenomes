@@ -27,7 +27,7 @@ Updated 2023-04-26.
 ## >     "gtf",
 ## >     "homo_sapiens",
 ## >     "Homo_sapiens.GRCh38.102.gtf.gz",
-## >     protocol = "https"
+## >     protocol = "ftp"
 ## > )
 ## > edb <- makeEnsDbFromGFF(file)
 ## > print(edb)

@@ -243,15 +243,6 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "ucsc_hg38_ensgene_gtf" = pasteURL(
-        "hgdownload.soe.ucsc.edu",
-        "goldenPath",
-        "hg38",
-        "bigZips",
-        "genes",
-        "hg38.ensGene.gtf.gz",
-        protocol = "ftp"
-    ),
     "ucsc_hg38_knowngene_gtf" = pasteURL(
         "hgdownload.soe.ucsc.edu",
         "goldenPath",

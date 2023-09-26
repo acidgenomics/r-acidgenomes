@@ -221,7 +221,7 @@ file <- AcidBase::pasteURL(
     "gtf",
     "homo_sapiens",
     "Homo_sapiens.GRCh38.108.gtf.gz",
-    protocol = "https"
+    protocol = "ftp"
 )
 genes <- makeGRangesFromGFF(file = file, level = "genes")
 summary(genes)
@@ -237,7 +237,7 @@ summary(genes)
 ## >     "Gencode_human",
 ## >     "release_42",
 ## >     "gencode.v42.annotation.gtf.gz",
-## >     protocol = "https"
+## >     protocol = "ftp"
 ## > )
 ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
 ## > summary(genes)
@@ -254,7 +254,7 @@ summary(genes)
 ## >     "all_assembly_versions",
 ## >     "GCF_000001405.40_GRCh38.p14",
 ## >     "GCF_000001405.40_GRCh38.p14_genomic.gff.gz",
-## >     protocol = "https"
+## >     protocol = "ftp"
 ## > )
 ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
 ## > summary(genes)
@@ -268,8 +268,8 @@ summary(genes)
 ## >     "hg38",
 ## >     "bigZips",
 ## >     "genes",
-## >     "hg38.ensGene.gtf.gz",
-## >     protocol = "https"
+## >     "hg38.knownGene.gtf.gz",
+## >     protocol = "ftp"
 ## > )
 ## > genes <- makeGRangesFromGFF(file = file, level = "genes")
 ## > summary(genes)
