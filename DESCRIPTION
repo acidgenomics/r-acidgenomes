@@ -40,6 +40,7 @@ Suggests:
     AcidTest (>= 0.7.2),
     AnnotationDbi (>= 1.62.0),
     AnnotationHub (>= 3.8.0),
+    BiocFileCache (>= 2.8.0),
     GenomicFeatures (>= 1.52.0),
     RCurl (>= 1.98),
     biomaRt (>= 2.56.0),
