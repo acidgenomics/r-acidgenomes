@@ -1,7 +1,11 @@
+## FIXME Make this rvest approach a function in pipette.
+
+
+
 #' GENCODE release history
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -27,8 +31,8 @@ gencodeReleaseHistory <-
             "releases.html",
             protocol = "https"
         )
-        ## NOTE Don't cache the URL here. This helps avoid the edge case
-        ## situation of `currentGencodeVersion` returning a newer version.
+        ## Don't cache the URL here. This helps avoid the edge case situation of
+        ## `currentGencodeVersion` returning a newer version.
         html <- rvest::read_html(url)
         table <- rvest::html_table(html)
         df <- as(table[[1L]], "DFrame")
