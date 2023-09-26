@@ -220,7 +220,7 @@
 #' ## >     "hg38",
 #' ## >     "bigZips",
 #' ## >     "genes",
-#' ## >     "hg38.ensGene.gtf.gz",
+#' ## >     "hg38.knownGene.gtf.gz",
 #' ## >     protocol = "ftp"
 #' ## > )
 #' ## > genes <- makeGRangesFromGFF(file = file, level = "genes")

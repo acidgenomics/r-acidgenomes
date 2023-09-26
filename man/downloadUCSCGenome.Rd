@@ -32,7 +32,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2023-04-14.
+Updated 2023-09-26.
 }
 \section{Genome}{
 
@@ -60,7 +60,7 @@ This sequence data is updated regularly via automatic GenBank updates.
 :
 This directory contains GTF files for the main gene transcript sets where
 available. They are sourced from the following gene model tables:
-ncbiRefSeq, refGene, ensGene, knownGene.
+ncbiRefSeq, refGene, knownGene.
 }
 
 \examples{

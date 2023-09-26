@@ -2,7 +2,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2023-04-14.
+#' @note Updated 2023-09-26.
 #'
 #' @section Genome:
 #'
@@ -23,7 +23,7 @@
 #' :
 #' This directory contains GTF files for the main gene transcript sets where
 #' available. They are sourced from the following gene model tables:
-#' ncbiRefSeq, refGene, ensGene, knownGene.
+#' ncbiRefSeq, refGene, knownGene.
 #'
 #' @inheritParams currentGenomeBuild
 #' @inheritParams downloadEnsemblGenome
@@ -125,7 +125,7 @@ downloadUCSCGenome <-
 
 
 
-## Updated 2023-04-13.
+## Updated 2023-09-26.
 .downloadUcscAnnotation <-
     function(genomeBuild,
              outputDir,
@@ -134,10 +134,6 @@ downloadUCSCGenome <-
         genesUrl <- pasteURL(releaseUrl, "genes")
         urls <- c(
             "readme" = pasteURL(genesUrl, "README.txt"),
-            "ensGene" = pasteURL(
-                genesUrl,
-                paste0(genomeBuild, ".ensGene.gtf.gz")
-            ),
             "knownGene" = pasteURL(
                 genesUrl,
                 paste0(genomeBuild, ".knownGene.gtf.gz")
@@ -156,7 +152,7 @@ downloadUCSCGenome <-
             outputDir = file.path(outputDir, "annotation"),
             cache = cache
         )
-        gtfFile <- files[["ensGene"]]
+        gtfFile <- files[["knownGene"]]
         ## Create relative path symlink.
         if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gtfRelativeFile <- sub(
