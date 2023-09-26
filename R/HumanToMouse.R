@@ -81,6 +81,7 @@ HumanToMouse <- function(unique = TRUE) {
     mm[["ncbiTaxonId"]] <- NULL
     mm[["omimGeneId"]] <- NULL
     mm <- unique(mm)
+    assert(hasNoDuplicates(mm[["dbClassKey"]]))
     colnames(mm)[colnames(mm) == "entrezGeneId"] <- "mouseNcbiGeneId"
     colnames(mm)[colnames(mm) == "symbol"] <- "mouseGeneName"
     meta <- list(
@@ -91,36 +92,13 @@ HumanToMouse <- function(unique = TRUE) {
         "unique" = unique,
         "url" = url
     )
+    df <- leftJoin(x = hs, y = mm, by = "dbClassKey")
+    i <- complete.cases(df[, c("humanGeneName", "mouseGeneName")])
+    df <- df[i, , drop = FALSE]
     if (isTRUE(unique)) {
-        keys <- intersect(x = hs[["dbClassKey"]], y = mm[["dbClassKey"]])
-        hs <- hs[hs[["dbClassKey"]] %in% keys, , drop = FALSE]
-        hs <- hs[!isDuplicate(hs[["humanGeneName"]]), , drop = FALSE]
-        mm <- mm[mm[["dbClassKey"]] %in% keys, , drop = FALSE]
-        mm <- mm[!isDuplicate(mm[["humanGeneName"]]), , drop = FALSE]
-        assert(hasNoDuplicates(mm[["dbClassKey"]]))
-        df <- AcidPlyr::leftJoin(x = hs, y = mm, by = "dbClassKey")
-        assert(all(complete.cases(df[, c("humanGeneName", "mouseGeneName")])))
-    }
-    ## FIXME Switch to using fullJoin here...need to update AcidPlyr.
-    df <- merge(x = hs, y = mm, by = "dbClassKey", all.x = TRUE, all.y = TRUE)
-    assert(is(df, "DFrame"))
-    keep <- complete.cases(df[, c("humanGeneName", "mouseGeneName")])
-    df <- df[keep, sort(colnames(df)), drop = FALSE]
-    idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
-    df <- df[idx, , drop = FALSE]
-    ## FIXME We may be able to move this up and clean up the individual human
-    ## and mouse splits first before joining...then maybe leftJoin will work.
-    if (isTRUE(unique)) {
-        keep <- list(
-            "human" = !isDuplicate(df[["humanGeneName"]]),
-            "mouse" = !isDuplicate(df[["mouseGeneName"]])
-        )
-        meta[["humanDupes"]] <-
-            sort(unique(df[["humanGeneName"]][!keep[["human"]]]))
-        meta[["mouseDupes"]] <-
-            sort(unique(df[["mouseGeneName"]][!keep[["mouse"]]]))
-        keep <- keep[["human"]] & keep[["mouse"]]
-        df <- df[keep, , drop = FALSE]
+        i <- !isDuplicate(df[["humanGeneName"]]) &
+            !isDuplicate(df[["mouseGeneName"]])
+        df <- df[i, , drop = FALSE]
         assert(
             hasNoDuplicates(df[["humanGeneName"]]),
             hasNoDuplicates(df[["humanHgncId"]]),
@@ -131,6 +109,8 @@ HumanToMouse <- function(unique = TRUE) {
             hasNoDuplicates(df[["mouseNcbiGeneId"]])
         )
     }
+    idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
+    df <- df[idx, , drop = FALSE]
     metadata(df) <- meta
     new(Class = "HumanToMouse", df)
 }
