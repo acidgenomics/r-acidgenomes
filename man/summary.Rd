@@ -2,15 +2,15 @@
 % Please edit documentation in R/AllGenerics.R, R/summary-methods.R
 \name{summary}
 \alias{summary}
-\alias{summary,Gene2Symbol-method}
-\alias{summary,Tx2Gene-method}
+\alias{summary,GeneToSymbol-method}
+\alias{summary,TxToGene-method}
 \title{Object summaries}
 \usage{
 summary(object, ...)
 
-\S4method{summary}{Gene2Symbol}(object)
+\S4method{summary}{GeneToSymbol}(object)
 
-\S4method{summary}{Tx2Gene}(object)
+\S4method{summary}{TxToGene}(object)
 }
 \arguments{
 \item{object}{Object.}
@@ -27,7 +27,7 @@ Object summaries
 Updated 2019-11-19.
 }
 \examples{
-## Gene2Symbol ====
+## GeneToSymbol ====
 df <- S4Vectors::DataFrame(
     "geneId" = c(
         "ENSG00000228572.7",
@@ -38,10 +38,10 @@ df <- S4Vectors::DataFrame(
         "PLCXD1"
     )
 )
-g2s <- Gene2Symbol(df)
+g2s <- GeneToSymbol(df)
 summary(g2s)
 
-## Tx2Gene ====
+## TxToGene ====
 df <- S4Vectors::DataFrame(
     "txId" = c(
         "ENST00000635602.1",
@@ -52,7 +52,7 @@ df <- S4Vectors::DataFrame(
         "ENSG00000283061.1"
     )
 )
-t2g <- Tx2Gene(df)
+t2g <- TxToGene(df)
 summary(t2g)
 }
 \keyword{internal}
