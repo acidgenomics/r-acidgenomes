@@ -1,6 +1,6 @@
-formats <- eval(formals(`Ensembl2Ncbi,character`)[["format"]])
+formats <- eval(formals(`EnsemblToNcbi,character`)[["format"]])
 
-test_that("Ensembl2Ncbi : character", {
+test_that("EnsemblToNcbi : character", {
     genes <- c(
         "ENSG00000063587",
         "ENSG00000004866",
@@ -8,7 +8,7 @@ test_that("Ensembl2Ncbi : character", {
         "ENSG00000000003"
     )
     ## 1:1 mapping.
-    object <- Ensembl2Ncbi(genes, format = "1:1")
+    object <- EnsemblToNcbi(genes, format = "1:1")
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
         "ensemblGeneId" = genes,
@@ -20,7 +20,7 @@ test_that("Ensembl2Ncbi : character", {
         expected = as.data.frame(expected)
     )
     ## Long format (non-unique).
-    object <- Ensembl2Ncbi(genes, format = "long")
+    object <- EnsemblToNcbi(genes, format = "long")
     expect_identical(metadata(object)[["format"]], "long")
     expected <- DataFrame(
         "ensemblGeneId" = c(
@@ -46,7 +46,7 @@ test_that("Ensembl2Ncbi : character", {
     )
 })
 
-test_that("Ncbi2Ensembl : character", {
+test_that("NcbiToEnsembl : character", {
     ## These are from the Ensembl return above.
     genes <- c(
         105373378L,
@@ -57,7 +57,7 @@ test_that("Ncbi2Ensembl : character", {
         7105L
     )
     ## 1:1 mapping (of input keys, note the expected Ensembl dupes here).
-    object <- Ncbi2Ensembl(
+    object <- NcbiToEnsembl(
         object = genes,
         organism = "Homo sapiens",
         format = "1:1"
@@ -80,7 +80,7 @@ test_that("Ncbi2Ensembl : character", {
         expected = as.data.frame(expected)
     )
     ## Long format (non-unique).
-    object <- Ncbi2Ensembl(
+    object <- NcbiToEnsembl(
         object = genes,
         organism = "Homo sapiens",
         format = "long"

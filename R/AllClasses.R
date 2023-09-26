@@ -746,18 +746,18 @@ setValidity(
 
 ## Identifier mapping classes ==================================================
 
-#' @inherit AcidGenerics::Ensembl2Ncbi description return title
+#' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @export
 #' @note Updated 2023-09-16.
 #'
 #' @details
 #' Contains a `DFrame` with `ensemblGeneId` and `ncbiGeneId` columns.
 setClass(
-    Class = "Ensembl2Ncbi",
+    Class = "EnsemblToNcbi",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Ensembl2Ncbi",
+    Class = "EnsemblToNcbi",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
@@ -795,7 +795,7 @@ setValidity(
 
 
 
-#' @inherit AcidGenerics::Gene2Symbol description return title
+#' @inherit AcidGenerics::GeneToSymbol description return title
 #' @export
 #' @note Updated 2023-09-16.
 #'
@@ -807,11 +807,11 @@ setValidity(
 #' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
 #' `metadata()`.
 setClass(
-    Class = "Gene2Symbol",
+    Class = "GeneToSymbol",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Gene2Symbol",
+    Class = "GeneToSymbol",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
@@ -850,18 +850,18 @@ setValidity(
 
 
 
-#' @inherit AcidGenerics::Ncbi2Ensembl description return title
+#' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
 #' @note Updated 2023-09-16.
 #'
 #' @details
 #' Contains a `DFrame` with `ncbiGeneId` and `ensemblGeneId` columns.
 setClass(
-    Class = "Ncbi2Ensembl",
+    Class = "NcbiToEnsembl",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Ncbi2Ensembl",
+    Class = "NcbiToEnsembl",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),
@@ -912,13 +912,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-16.
 #'
-#' @return `Protein2Gene`.
+#' @return `ProteinToGene`.
 setClass(
-    Class = "Protein2Gene",
+    Class = "ProteinToGene",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Protein2Gene",
+    Class = "ProteinToGene",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 3L),
@@ -959,7 +959,7 @@ setValidity(
 
 ## FIXME Check metadata for date, packageVersion.
 
-#' @inherit AcidGenerics::Tx2Gene description return title
+#' @inherit AcidGenerics::TxToGene description return title
 #' @export
 #' @note Updated 2023-09-16.
 #'
@@ -976,11 +976,11 @@ setValidity(
 #' - `genomeBuild`: "GRCh38".
 #' - `release`: 100L.
 setClass(
-    Class = "Tx2Gene",
+    Class = "TxToGene",
     contains = "DFrame"
 )
 setValidity(
-    Class = "Tx2Gene",
+    Class = "TxToGene",
     method = function(object) {
         ok <- validate(
             identical(ncol(object), 2L),

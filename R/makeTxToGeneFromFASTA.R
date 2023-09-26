@@ -1,4 +1,4 @@
-#' Make a Tx2Gene object from transcriptome FASTA
+#' Make a TxToGene object from transcriptome FASTA
 #'
 #' @export
 #' @note Updated 2023-07-31.
@@ -10,7 +10,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `Tx2Gene`.
+#' @return `TxToGene`.
 #'
 #' @examples
 #' ## Ensembl ====
@@ -24,7 +24,7 @@
 #'     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
 #'     protocol = "https"
 #' )
-#' t2g <- makeTx2GeneFromFASTA(file)
+#' t2g <- makeTxToGeneFromFASTA(file)
 #' print(t2g)
 #'
 #' ## GENCODE ====
@@ -38,7 +38,7 @@
 #' ## >     "gencode.v32.transcripts.fa.gz",
 #' ## >     protocol = "https"
 #' ## > )
-#' ## > t2g <- makeTx2GeneFromFASTA(file)
+#' ## > t2g <- makeTxToGeneFromFASTA(file)
 #' ## > print(t2g)
 #'
 #' ## FlyBase ====
@@ -51,7 +51,7 @@
 #' ## >     "dmel-all-transcript-r6.30.fasta.gz",
 #' ## >     protocol = "https"
 #' ## > )
-#' ## > t2g <- makeTx2GeneFromFASTA(file)
+#' ## > t2g <- makeTxToGeneFromFASTA(file)
 #' ## > print(t2g)
 #'
 #' ## WormBase ====
@@ -67,9 +67,9 @@
 #' ## >     "c_elegans.PRJNA13758.WS272.mRNA_transcripts.fa.gz",
 #' ## >     protocol = "ftp"
 #' ## > )
-#' ## > t2g <- makeTx2GeneFromFASTA(file)
+#' ## > t2g <- makeTxToGeneFromFASTA(file)
 #' ## > print(t2g)
-makeTx2GeneFromFASTA <-
+makeTxToGeneFromFASTA <-
     function(file,
              ignoreVersion = FALSE) {
         assert(
@@ -81,7 +81,7 @@ makeTx2GeneFromFASTA <-
         }
         alert(sprintf(
             "Making {.cls %s} from FASTA file ({.file %s}).",
-            "Tx2Gene", file
+            "TxToGene", file
         ))
         x <- import(con = .cacheIt(file), format = "lines")
         x <- grep(pattern = "^>", x = x, value = TRUE)
@@ -229,7 +229,7 @@ makeTx2GeneFromFASTA <-
             x[, 1L] <- stripTranscriptVersions(x[, 1L])
             x[, 2L] <- stripGeneVersions(x[, 2L])
         }
-        out <- Tx2Gene(x)
+        out <- TxToGene(x)
         meta <- list(
             "call" = tryCatch(
                 expr = standardizeCall(),

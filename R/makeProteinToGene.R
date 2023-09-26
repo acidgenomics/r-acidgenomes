@@ -1,6 +1,6 @@
 #' Map protein identifiers to genes
 #'
-#' @name makeProtein2Gene
+#' @name makeProteinToGene
 #' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
@@ -8,19 +8,19 @@
 #' Ensembl protein identifiers.
 #' Human proteins are prefixed with "ENSP", for example.
 #'
-#' @return `Protein2Gene`.
+#' @return `ProteinToGene`.
 #'
 #' @examples
 #' ids <- c("ENSP00000238714", "ENSP00000338157")
-#' object <- makeProtein2GeneFromEnsembl(ids)
+#' object <- makeProteinToGeneFromEnsembl(ids)
 #' print(object)
 NULL
 
 
 
-#' @rdname makeProtein2Gene
+#' @rdname makeProteinToGene
 #' @export
-makeProtein2GeneFromEnsembl <-
+makeProteinToGeneFromEnsembl <-
     function(ids,
              organism = NULL,
              genomeBuild = NULL,
@@ -30,7 +30,7 @@ makeProtein2GeneFromEnsembl <-
             isCharacter(ids),
             hasNoDuplicates(ids)
         )
-        alert(sprintf("Making {.cls %s} from Ensembl.", "Protein2Gene"))
+        alert(sprintf("Making {.cls %s} from Ensembl.", "ProteinToGene"))
         if (is.null(organism)) {
             organism <- detectOrganism(ids)
         }
@@ -66,5 +66,5 @@ makeProtein2GeneFromEnsembl <-
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]
         metadata(df) <- meta
-        new(Class = "Protein2Gene", df)
+        new(Class = "ProteinToGene", df)
     }
