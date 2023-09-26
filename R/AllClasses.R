@@ -1,3 +1,5 @@
+## FIXME Rename these functions to verbs... .ensemblValidity to .validateEnsembl.
+
 ## Internal validity methods ===================================================
 
 #' Shared Ensembl validity checks
@@ -27,7 +29,7 @@
     ## for ensembldb return.
     if (isSubset("ensembldb", names(metadata(object)))) {
         ok <- validateClasses(
-            object = metadata(object)
+            object = metadata(object),
             expected = list("release" = "integer"),
             subset = TRUE
         )
@@ -617,20 +619,69 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c("hgncId", "ensemblGeneId", "ncbiGeneId")
-        if (!isSubset(cols, colnames(object))) {
-            colnames(object) <- camelCase(colnames(object), strict = TRUE)
-        }
-        ok <- validate(
-            isSubset(cols, colnames(object)),
-            is.integer(object[[cols[[1L]]]]),
-            hasNoDuplicates(object[[cols[[1L]]]])
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "hgncId" = "integer",
+                "symbol" = "character",
+                "name" = "character",
+                "locusGroup" = "character",
+                "locusType" = "character",
+                "status" = "character",
+                "location" = "character",
+                "locationSortable" = "character",
+                "aliasSymbol" = "CompressedCharacterList",
+                "aliasName" = "CompressedCharacterList",
+                "prevSymbol" = "CompressedCharacterList",
+                "prevName" = "CompressedCharacterList",
+                "geneGroup" = "CompressedCharacterList",
+                "geneGroupId" = "CompressedCharacterList",
+                "dateApprovedReserved" = "Date",
+                "dateSymbolChanged" = "Date",
+                "dateNameChanged" = "Date",
+                "dateModified" = "Date",
+                "ncbiGeneId" = "integer",
+                "ensemblGeneId" = "character",
+                "vegaId" = "character",
+                "ucscId" = "character",
+                "ena" = "CompressedCharacterList",
+                "refseqAccession" = "CompressedCharacterList",
+                "ccdsId" = "CompressedCharacterList",
+                "uniprotIds" = "CompressedCharacterList",
+                "pubmedId" = "CompressedCharacterList",
+                "mgdId" = "CompressedCharacterList",
+                "rgdId" = "CompressedCharacterList",
+                "lsdb" = "CompressedCharacterList",
+                "cosmic" = "character",
+                "omimId" = "CompressedCharacterList",
+                "mirbase" = "character",
+                "homeodb" = "numeric",
+                "snornabase" = "character",
+                "bioparadigmsSlc" = "character",
+                "orphanet" = "numeric",
+                "pseudogeneOrg" = "character",
+                "hordeId" = "character",
+                "merops" = "character",
+                "imgt" = "character",
+                "iuphar" = "character",
+                "kznfGeneCatalog" = "logical",
+                "mamitTrnadb" = "numeric",
+                "cd" = "character",
+                "lncrnadb" = "character",
+                "enzymeId" = "CompressedCharacterList",
+                "intermediateFilamentDb" = "logical",
+                "rnaCentralIds" = "logical",
+                "lncipedia" = "character",
+                "gtrnadb" = "character",
+                "agr" = "character",
+                "maneSelect" = "CompressedCharacterList",
+                "gencc" = "character"
+            )
         )
+        ok <- .metadataValidity(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
