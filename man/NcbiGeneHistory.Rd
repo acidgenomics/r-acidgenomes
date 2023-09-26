@@ -17,7 +17,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 NCBI gene history
 }
 \note{
-Updated 2023-09-15.
+Updated 2023-09-26.
 }
 \examples{
 ## Homo sapiens.
