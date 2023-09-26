@@ -3,6 +3,10 @@
 #' @export
 #' @note Updated 2023-09-26.
 #'
+#' @param unique `logical(1)`.
+#' Only return unique 1:1 mappings between human and mouse.
+#' Recommended by default.
+#'
 #' @return `HumanToMouse`.
 #'
 #' @seealso
@@ -10,9 +14,10 @@
 #' - https://www.biostars.org/p/9567892/
 #'
 #' @examples
-#' h2m <- HumanToMouse()
-#' print(h2m)
-HumanToMouse <- function() {
+#' object <- HumanToMouse()
+#' print(object)
+HumanToMouse <- function(unique = TRUE) {
+    assert(isFlag(unique))
     url <- pasteURL(
         "www.informatics.jax.org",
         "downloads",
@@ -69,5 +74,33 @@ HumanToMouse <- function() {
     df <- df[keep, sort(colnames(df))]
     idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
     df <- df[idx, ]
+    assert(
+        !anyNA(df[["humanGeneName"]]),
+        !anyNA(df[["humanHgncId"]]),
+        !anyNA(df[["humanNcbiGeneId"]]),
+        !anyNA(df[["mouseGeneName"]]),
+        !anyNA(df[["mouseMgiId"]]),
+        !anyNA(df[["mouseNcbiGeneId"]])
+    )
+    if (isTRUE(unique)) {
+        keep <- !isDuplicate(df[["humanGeneName"]])
+        df <- df[keep, ]
+        keep <- !isDuplicate(df[["mouseGeneName"]])
+        df <- df[keep, ]
+        assert(
+            hasNoDuplicates(df[["humanGeneName"]]),
+            hasNoDuplicates(df[["humanHgncId"]]),
+            hasNoDuplicates(df[["humanNcbiGeneId"]]),
+            hasNoDuplicates(na.omit(df[["humanOmimGeneId"]])),
+            hasNoDuplicates(df[["mouseGeneName"]]),
+            hasNoDuplicates(df[["mouseMgiId"]]),
+            hasNoDuplicates(df[["mouseNcbiGeneId"]])
+        )
+    }
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "packageVersion" = .pkgVersion,
+        "unique" = unique
+    )
     df
 }
