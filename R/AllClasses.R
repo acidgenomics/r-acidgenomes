@@ -610,13 +610,6 @@ setClass(
 setValidity(
     Class = "HGNC",
     method = function(object) {
-        ok <- validate(
-            hasColnames(object),
-            hasRows(object)
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -676,6 +669,10 @@ setValidity(
                 "vegaId" = "character"
             )
         )
+        ok <- validate(hasRows(object))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- .validateMetadata(object)
         if (!isTRUE(ok)) {
             return(ok)
@@ -699,32 +696,45 @@ setClass(
 setValidity(
     Class = "MGI",
     method = function(object) {
-        ok <- validate(
-            hasColnames(object),
-            hasRows(object)
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "ensemblGeneChromosome" = "Rle",
+                "ensemblGeneEnd" = "Rle",
+                "ensemblGeneId" = "Rle",
+                "ensemblGeneStart" = "Rle",
+                "ensemblGeneStrand" = "Rle",
+                "genomeBuild" = "Rle",
+                "markerName" = "Rle",
+                "markerSymbol" = "Rle",
+                "markerType" = "Rle",
+                "mgiAccessionId" = "Rle",
+                "ncbiGeneChromosome" = "Rle",
+                "ncbiGeneEnd" = "Rle",
+                "ncbiGeneId" = "Rle",
+                "ncbiGeneStart" = "Rle",
+                "ncbiGeneStrand" = "Rle"
+            )
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c(
-            "mgiAccessionId",
-            "markerType",
-            "markerSymbol",
-            "markerName",
-            "genomeBuild",
-            "ncbiGeneId",
-            "ncbiGeneChromosome",
-            "ncbiGeneStart",
-            "ncbiGeneEnd",
-            "ncbiGeneStrand",
-            "ensemblGeneId",
-            "ensemblGeneChromosome",
-            "ensemblGeneStart",
-            "ensemblGeneEnd",
-            "ensemblGeneStrand"
+        ok <- validate(hasRows(object))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list("url" = "character"),
+            subset = TRUE
         )
-        ## FIXME Check metadata for date, packageVersion.
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -961,7 +971,10 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("unique" = "logical"),
+            expected = list(
+                "unique" = "logical",
+                "url" = "character"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
