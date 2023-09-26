@@ -84,14 +84,6 @@ HumanToMouse <- function(unique = TRUE) {
     assert(hasNoDuplicates(mm[["dbClassKey"]]))
     colnames(mm)[colnames(mm) == "entrezGeneId"] <- "mouseNcbiGeneId"
     colnames(mm)[colnames(mm) == "symbol"] <- "mouseGeneName"
-    meta <- list(
-        "date" = Sys.Date(),
-        "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
-        "mouseDupes" = sort(dupes(mm[["mouseGeneName"]])),
-        "packageVersion" = .pkgVersion,
-        "unique" = unique,
-        "url" = url
-    )
     df <- leftJoin(x = hs, y = mm, by = "dbClassKey")
     i <- complete.cases(df[, c("humanGeneName", "mouseGeneName")])
     df <- df[i, , drop = FALSE]
@@ -111,6 +103,13 @@ HumanToMouse <- function(unique = TRUE) {
     }
     i <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
     df <- df[i, , drop = FALSE]
-    metadata(df) <- meta
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
+        "mouseDupes" = sort(dupes(mm[["mouseGeneName"]])),
+        "packageVersion" = .pkgVersion,
+        "unique" = unique,
+        "url" = url
+    )
     new(Class = "HumanToMouse", df)
 }
