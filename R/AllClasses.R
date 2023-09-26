@@ -744,13 +744,6 @@ setClass(
 setValidity(
     Class = "NcbiGeneHistory",
     method = function(object) {
-        ok <- validate(
-            hasRownames(object),
-            hasColnames(object)
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -763,7 +756,14 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
+        ok <- validate(hasRownames(object))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -783,36 +783,31 @@ setClass(
 setValidity(
     Class = "NcbiGeneInfo",
     method = function(object) {
-        ok <- validate(
-            hasColnames(object),
-            hasRows(object)
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "chromosome" = "Rle",
+                "dbXrefs" = "CompressedCharacterList",
+                "description" = "Rle",
+                "featureType" = "Rle",
+                "geneId" = "Rle",
+                "geneName" = "Rle",
+                "geneSynonyms" = "CompressedCharacterList",
+                "mapLocation" = "Rle",
+                "modificationDate" = "Date",
+                "nomenclatureStatus" = "Rle",
+                "otherDesignations" = "CompressedCharacterList",
+                "taxonomyId" = "Rle",
+                "typeOfGene" = "Rle"
+            )
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c(
-            "chromosome",
-            "dbXrefs",
-            "description",
-            "featureType",
-            "geneId",
-            "geneName",
-            "geneSynonyms",
-            "mapLocation",
-            "modificationDate",
-            "nomenclatureStatus",
-            "otherDesignations",
-            "taxonomyId",
-            "typeOfGene"
-        )
-        ok <- validate(
-            isSubset(cols, colnames(object))
-        )
+        ok <- .validateMetadata(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )

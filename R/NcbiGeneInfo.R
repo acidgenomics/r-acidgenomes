@@ -69,7 +69,14 @@ NcbiGeneInfo <- # nolint
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
             isSubset(
-                x = c("geneId", "locusTag", "symbol", "synonyms"),
+                x = c(
+                    "geneId",
+                    "locusTag",
+                    "modificationDate",
+                    "symbol",
+                    "synonyms",
+                    "xTaxId"
+                ),
                 y = colnames(df)
             ),
             hasNoDuplicates(df[["geneId"]]),
@@ -100,7 +107,12 @@ NcbiGeneInfo <- # nolint
         if (isSubset("otherDesignations", colnames(df))) {
             df[["otherDesignations"]] <- splitToList(df[["otherDesignations"]])
         }
-        ## FIXME Need to convert modificationDate to date.
+        df[["modificationDate"]] <- sub(
+            pattern = "^([0-9]{4})([0-9]{2})([0-9]{2})$",
+            replacement = "\\1-\\2-\\3",
+            x = df[["modificationDate"]]
+        )
+        df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
         df <- encode(df)
         metadata(df) <- list(
             "date" = Sys.Date(),
