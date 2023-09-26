@@ -26,7 +26,7 @@ NULL
 
 
 
-## Updated 2023-04-26.
+## Updated 2023-09-26.
 `TxToGene,DFrame` <- # nolint
     function(object,
              quiet = FALSE) {
@@ -79,6 +79,8 @@ NULL
             msg = "Failed to generate TxToGene object."
         )
         object <- object[order(object), , drop = FALSE]
+        meta[["date"]] <- Sys.Date()
+        meta[["packageVersion"]] <- .pkgVersion
         metadata(object) <- meta
         new(Class = "TxToGene", object)
     }
