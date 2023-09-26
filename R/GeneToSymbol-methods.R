@@ -1,6 +1,6 @@
 #' @name GeneToSymbol
 #' @inherit AcidGenerics::GeneToSymbol description return title
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @details
 #' For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
