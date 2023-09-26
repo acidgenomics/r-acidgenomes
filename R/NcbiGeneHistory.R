@@ -1,7 +1,7 @@
 #' NCBI gene history
 #'
 #' @export
-#' @note Updated 2023-09-15.
+#' @note Updated 2023-09-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -19,7 +19,13 @@ NcbiGeneHistory <- function(organism) {
         "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
         protocol = "https"
     )
-    df <- import(con = .cacheIt(url), format = "tsv", engine = "readr")
+    ## readr is much faster than base engine here.
+    df <- import(
+        con = .cacheIt(url),
+        format = "tsv",
+        engine = "readr",
+        naStrings = "-"
+    )
     df <- as(df, "DFrame")
     colnames(df) <- camelCase(colnames(df))
     assert(identical(
@@ -36,12 +42,14 @@ NcbiGeneHistory <- function(organism) {
     keep <- df[["xTaxId"]] == taxId
     df[["xTaxId"]] <- NULL
     df <- df[keep, , drop = FALSE]
-    df[["geneId"]] <- as.integer(df[["geneId"]])
-    df[["discontinuedGeneId"]] <- as.integer(df[["discontinuedGeneId"]])
-    df[["discontinueDate"]] <- as.Date(
-        x = as.character(df[["discontinueDate"]]),
-        format = "%Y%m%d"
+    df[["discontinueDate"]] <- sub(
+        pattern = "^([0-9]{4})([0-9]{2})([0-9]{2})$",
+        replacement = "\\1-\\2-\\3",
+        x = df[["discontinueDate"]]
     )
+    df[["discontinueDate"]] <- as.Date(df[["discontinueDate"]])
+    df[["discontinuedGeneId"]] <- as.integer(df[["discontinuedGeneId"]])
+    df[["geneId"]] <- as.integer(df[["geneId"]])
     j <- c(
         "discontinuedGeneId",
         "discontinuedSymbol",
@@ -51,11 +59,12 @@ NcbiGeneHistory <- function(organism) {
     df <- df[, j, drop = FALSE]
     i <- order(df)
     df <- df[i, , drop = FALSE]
+    df <- encode(df)
     rownames(df) <- df[["discontinuedGeneId"]]
-    ## FIXME Include package name and package version.
     metadata(df) <- list(
         "date" = Sys.Date(),
         "organism" = organism,
+        "packageVersion" = .pkgVersion,
         "taxonomyId" = taxId,
         "url" = url
     )
