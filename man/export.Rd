@@ -2,12 +2,12 @@
 % Please edit documentation in R/AllGenerics.R, R/export-methods.R
 \name{export}
 \alias{export}
-\alias{export,Tx2Gene,character-method}
+\alias{export,TxToGene,character-method}
 \title{Export data from R}
 \usage{
 export(object, con, ...)
 
-\S4method{export}{Tx2Gene,character}(object, con, ...)
+\S4method{export}{TxToGene,character}(object, con, ...)
 }
 \arguments{
 \item{object}{Object.}
@@ -24,7 +24,7 @@ Invisible \code{character} or \code{list} of file paths.
 Export data from R
 }
 \details{
-The \code{Tx2Gene} method automatically disables writing of column names, which
+The \code{TxToGene} method automatically disables writing of column names, which
 is the intended input format for tximport.
 }
 \note{
@@ -45,8 +45,8 @@ object <- S4Vectors::DataFrame(
         "gene0002"
     )
 )
-object <- Tx2Gene(object)
-con <- file.path(AcidBase::tempdir2(), "tx2gene.csv")
+object <- TxToGene(object)
+con <- file.path(AcidBase::tempdir2(), "txToGene.csv")
 export(object = object, con = con)
 x <- readLines(con, n = 4L)
 print(x)
