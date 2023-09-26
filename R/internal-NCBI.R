@@ -192,7 +192,7 @@
 
 #' Get the RefSeq base genome URL for an organism
 #'
-#' @note Updated 2023-04-14.
+#' @note Updated 2023-09-26.
 #' @noRd
 #'
 #' @examples
@@ -215,9 +215,10 @@
                 organism
             ))
         }
+        ## FTP is faster than HTTPS but more prone to timeouts.
         baseUrl <- pasteURL(
             "ftp.ncbi.nlm.nih.gov", "genomes", "refseq",
-            protocol = "https"
+            protocol = "ftp"
         )
         if (is.null(taxonomicGroup)) {
             taxonomicGroup <- .matchNcbiTaxonomicGroup(
