@@ -15,7 +15,7 @@ Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 metadata
 }
 \note{
-Updated 2023-09-15.
+Updated 2023-09-26.
 }
 \examples{
 object <- HGNC()
