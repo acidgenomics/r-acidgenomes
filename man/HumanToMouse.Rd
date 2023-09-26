@@ -4,7 +4,12 @@
 \alias{HumanToMouse}
 \title{Import human-to-mouse gene mappings}
 \usage{
-HumanToMouse()
+HumanToMouse(unique = TRUE)
+}
+\arguments{
+\item{unique}{\code{logical(1)}.
+Only return unique 1:1 mappings between human and mouse.
+Recommended by default.}
 }
 \value{
 \code{HumanToMouse}.
