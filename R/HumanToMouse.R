@@ -34,7 +34,7 @@ HumanToMouse <- function(unique = TRUE) {
         "omimGeneId", "symbol"
     )
     assert(isSubset(cols, colnames(df)))
-    df <- df[, cols]
+    df <- df[, cols, drop = FALSE]
     df[["hgncId"]] <- sub(
         pattern = "^HGNC:",
         replacement = "",
@@ -71,9 +71,9 @@ HumanToMouse <- function(unique = TRUE) {
     df <- merge(x = hs, y = mm, by = "dbClassKey", all.x = TRUE, all.y = TRUE)
     assert(is(df, "DFrame"))
     keep <- complete.cases(df[, c("humanGeneName", "mouseGeneName")])
-    df <- df[keep, sort(colnames(df))]
+    df <- df[keep, sort(colnames(df)), drop = FALSE]
     idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
-    df <- df[idx, ]
+    df <- df[idx, , drop = FALSE]
     assert(
         !anyNA(df[["humanGeneName"]]),
         !anyNA(df[["humanHgncId"]]),
@@ -96,8 +96,8 @@ HumanToMouse <- function(unique = TRUE) {
             sort(unique(df[["humanGeneName"]][!keep[["human"]]]))
         meta[["mouseDupes"]] <-
             sort(unique(df[["mouseGeneName"]][!keep[["mouse"]]]))
-        ok <- keep[["human"]] & keep[["mouse"]]
-        df <- df[ok, ]
+        keep <- keep[["human"]] & keep[["mouse"]]
+        df <- df[keep, , drop = FALSE]
         assert(
             hasNoDuplicates(df[["humanGeneName"]]),
             hasNoDuplicates(df[["humanHgncId"]]),
