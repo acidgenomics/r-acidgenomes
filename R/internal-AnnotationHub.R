@@ -25,7 +25,7 @@
 #'
 #' @note Updated 2023-04-26.
 #' @noRd
-.getEnsembl2NcbiFromOrgDb <-
+.getEnsemblToNcbiFromOrgDb <-
     function(keys,
              keytype,
              columns,

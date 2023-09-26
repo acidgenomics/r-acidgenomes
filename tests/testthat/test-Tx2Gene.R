@@ -16,8 +16,8 @@ test_that("Complete cases", {
         ),
         row.names = LETTERS[seq_len(5L)]
     )
-    object <- Tx2Gene(df)
-    expect_s4_class(object, "Tx2Gene")
+    object <- TxToGene(df)
+    expect_s4_class(object, "TxToGene")
     expected <- DataFrame(
         "txId" = c(
             "transcript1",
@@ -32,7 +32,7 @@ test_that("Complete cases", {
         row.names = LETTERS[seq_len(3L)]
     )
     metadata(expected) <- list("dropped" = c("D" = 4L, "E" = 5L))
-    expected <- new(Class = "Tx2Gene", expected)
+    expected <- new(Class = "TxToGene", expected)
     expect_identical(object, expected)
     expect_output(
         object = summary(object),
@@ -56,7 +56,7 @@ test_that("Ensure transcripts return sorted", {
         ),
         row.names = LETTERS[seq_len(4L)]
     )
-    object <- Tx2Gene(df)
+    object <- TxToGene(df)
     expected <- DataFrame(
         "txId" = c(
             "transcript1",
@@ -72,6 +72,6 @@ test_that("Ensure transcripts return sorted", {
         ),
         row.names = c("B", "A", "D", "C")
     )
-    expected <- new(Class = "Tx2Gene", expected)
+    expected <- new(Class = "TxToGene", expected)
     expect_identical(object, expected)
 })

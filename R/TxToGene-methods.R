@@ -1,12 +1,12 @@
-#' @name Tx2Gene
-#' @inherit AcidGenerics::Tx2Gene description return title
+#' @name TxToGene
+#' @inherit AcidGenerics::TxToGene description return title
 #' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeTx2Gene()].
+#' @seealso [makeTxToGene()].
 #'
 #' @examples
 #' ## DFrame ====
@@ -20,14 +20,14 @@
 #'         "ENSG00000283061.1"
 #'     )
 #' )
-#' object <- Tx2Gene(df)
+#' object <- TxToGene(df)
 #' print(object)
 NULL
 
 
 
 ## Updated 2023-04-26.
-`Tx2Gene,DFrame` <- # nolint
+`TxToGene,DFrame` <- # nolint
     function(object,
              quiet = FALSE) {
         assert(
@@ -76,96 +76,96 @@ NULL
             hasRows(object),
             all(complete.cases(object)),
             hasNoDuplicates(object[["txId"]]),
-            msg = "Failed to generate Tx2Gene object."
+            msg = "Failed to generate TxToGene object."
         )
         object <- object[order(object), , drop = FALSE]
         metadata(object) <- meta
-        new(Class = "Tx2Gene", object)
+        new(Class = "TxToGene", object)
     }
 
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,GRanges` <- # nolint
+`TxToGene,GRanges` <- # nolint
     function(object, ...) {
         df <- as(object, "DFrame")
         metadata(df) <- metadata(object)
-        Tx2Gene(df, ...)
+        TxToGene(df, ...)
     }
 
 
 
 ## Updated 2023-04-26.
-`Tx2Gene,GRangesList` <- # nolint
+`TxToGene,GRangesList` <- # nolint
     function(object, ...) {
         grl <- as(object, "GRangesList")
         gr <- unlist(grl, recursive = FALSE, use.names = TRUE)
         assert(is(gr, "GRanges"))
-        Tx2Gene(gr, ...)
+        TxToGene(gr, ...)
     }
 
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,data.frame` <- # nolint
+`TxToGene,data.frame` <- # nolint
     function(object, ...) {
         assert(identical(ncol(object), 2L))
         colnames(object) <- c("txId", "geneId")
         object <- as(object, "DFrame")
-        Tx2Gene(object, ...)
+        TxToGene(object, ...)
     }
 
 
 
 ## Updated 2021-08-09.
-`Tx2Gene,matrix` <- # nolint
+`TxToGene,matrix` <- # nolint
     function(object, ...) {
         assert(
             is.character(object),
             identical(ncol(object), 2L)
         )
         object <- as.data.frame(object, stringsAsFactors = FALSE)
-        Tx2Gene(object, ...)
+        TxToGene(object, ...)
     }
 
 
 
-#' @rdname Tx2Gene
+#' @rdname TxToGene
 #' @export
 setMethod(
-    f = "Tx2Gene",
+    f = "TxToGene",
     signature = signature(object = "DFrame"),
-    definition = `Tx2Gene,DFrame`
+    definition = `TxToGene,DFrame`
 )
 
-#' @rdname Tx2Gene
+#' @rdname TxToGene
 #' @export
 setMethod(
-    f = "Tx2Gene",
+    f = "TxToGene",
     signature = signature(object = "GRanges"),
-    definition = `Tx2Gene,GRanges`
+    definition = `TxToGene,GRanges`
 )
 
-#' @rdname Tx2Gene
+#' @rdname TxToGene
 #' @export
 setMethod(
-    f = "Tx2Gene",
+    f = "TxToGene",
     signature = signature(object = "GRangesList"),
-    definition = `Tx2Gene,GRangesList`
+    definition = `TxToGene,GRangesList`
 )
 
-#' @rdname Tx2Gene
+#' @rdname TxToGene
 #' @export
 setMethod(
-    f = "Tx2Gene",
+    f = "TxToGene",
     signature = signature(object = "data.frame"),
-    definition = `Tx2Gene,data.frame`
+    definition = `TxToGene,data.frame`
 )
 
-#' @rdname Tx2Gene
+#' @rdname TxToGene
 #' @export
 setMethod(
-    f = "Tx2Gene",
+    f = "TxToGene",
     signature = signature(object = "matrix"),
-    definition = `Tx2Gene,matrix`
+    definition = `TxToGene,matrix`
 )

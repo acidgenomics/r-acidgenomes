@@ -1,5 +1,5 @@
-#' @name Ensembl2Ncbi
-#' @inherit AcidGenerics::Ensembl2Ncbi description return title
+#' @name EnsemblToNcbi
+#' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @note Updated 2023-09-16.
 #'
 #' @inheritParams AcidRoxygen::params
@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' ## character ====
-#' x <- Ensembl2Ncbi(
+#' x <- EnsemblToNcbi(
 #'     object = c("ENSG00000000003", "ENSG00000000005"),
 #'     organism = "Homo sapiens"
 #' )
@@ -24,24 +24,24 @@ NULL
 
 
 
-#' Make an `Ensembl2Ncbi` (or `Ncbi2Ensembl`) object
+#' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
 #' @note Updated 2023-03-01.
 #' @noRd
-.makeEnsembl2Ncbi <-
+.makeEnsemblToNcbi <-
     function(object,
              format = c("1:1", "long"),
              ## Internal-only args:
-             return = c("Ensembl2Ncbi", "Ncbi2Ensembl")) {
+             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
         format <- match.arg(format)
         return <- match.arg(return)
         switch(
             EXPR = return,
-            "Ensembl2Ncbi" = {
+            "EnsemblToNcbi" = {
                 fromCol <- "ensemblGeneId"
                 toCol <- "ncbiGeneId"
             },
-            "Ncbi2Ensembl" = {
+            "NcbiToEnsembl" = {
                 fromCol <- "ncbiGeneId"
                 toCol <- "ensemblGeneId"
             }
@@ -108,7 +108,7 @@ NULL
 
 
 ## Updated 2022-05-27.
-`Ensembl2Ncbi,character` <- # nolint
+`EnsemblToNcbi,character` <- # nolint
     function(object,
              organism = NULL,
              format) {
@@ -118,16 +118,16 @@ NULL
         if (allAreMatchingFixed(x = object, pattern = ".")) {
             object <- stripGeneVersions(object)
         }
-        df <- .getEnsembl2NcbiFromOrgDb(
+        df <- .getEnsemblToNcbiFromOrgDb(
             keys = object,
             keytype = "ENSEMBL",
             columns = "ENTREZID",
             organism = organism
         )
-        out <- .makeEnsembl2Ncbi(
+        out <- .makeEnsemblToNcbi(
             object = df,
             format = match.arg(format),
-            return = "Ensembl2Ncbi"
+            return = "EnsemblToNcbi"
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
@@ -136,13 +136,13 @@ NULL
         out
     }
 
-formals(`Ensembl2Ncbi,character`)[["format"]] <- # nolint
-    formals(.makeEnsembl2Ncbi)[["format"]]
+formals(`EnsemblToNcbi,character`)[["format"]] <- # nolint
+    formals(.makeEnsemblToNcbi)[["format"]]
 
 
 
 ## Updated 2023-03-01.
-`Ensembl2Ncbi,EnsemblGenes` <- # nolint
+`EnsemblToNcbi,EnsemblGenes` <- # nolint
     function(object, format) {
         assert(hasColnames(mcols(object)))
         colnames(mcols(object)) <-
@@ -159,44 +159,44 @@ formals(`Ensembl2Ncbi,character`)[["format"]] <- # nolint
         df <- mcols(object)
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
-        out <- .makeEnsembl2Ncbi(
+        out <- .makeEnsemblToNcbi(
             object = df,
             format = match.arg(format)
         )
         out
     }
 
-formals(`Ensembl2Ncbi,EnsemblGenes`)[["format"]] <- # nolint
-    formals(.makeEnsembl2Ncbi)[["format"]]
+formals(`EnsemblToNcbi,EnsemblGenes`)[["format"]] <- # nolint
+    formals(.makeEnsemblToNcbi)[["format"]]
 
 
 
 ## Updated 2023-03-01.
-`Ensembl2Ncbi,GencodeGenes` <- # nolint
-    `Ensembl2Ncbi,EnsemblGenes`
+`EnsemblToNcbi,GencodeGenes` <- # nolint
+    `EnsemblToNcbi,EnsemblGenes`
 
 
 
-#' @rdname Ensembl2Ncbi
+#' @rdname EnsemblToNcbi
 #' @export
 setMethod(
-    f = "Ensembl2Ncbi",
+    f = "EnsemblToNcbi",
     signature = signature(object = "EnsemblGenes"),
-    definition = `Ensembl2Ncbi,EnsemblGenes`
+    definition = `EnsemblToNcbi,EnsemblGenes`
 )
 
-#' @rdname Ensembl2Ncbi
+#' @rdname EnsemblToNcbi
 #' @export
 setMethod(
-    f = "Ensembl2Ncbi",
+    f = "EnsemblToNcbi",
     signature = signature(object = "GencodeGenes"),
-    definition = `Ensembl2Ncbi,GencodeGenes`
+    definition = `EnsemblToNcbi,GencodeGenes`
 )
 
-#' @rdname Ensembl2Ncbi
+#' @rdname EnsemblToNcbi
 #' @export
 setMethod(
-    f = "Ensembl2Ncbi",
+    f = "EnsemblToNcbi",
     signature = signature(object = "character"),
-    definition = `Ensembl2Ncbi,character`
+    definition = `EnsemblToNcbi,character`
 )

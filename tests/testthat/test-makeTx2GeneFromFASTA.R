@@ -1,10 +1,10 @@
 test_that("Ensembl", {
     file <- txFastas[["ensembl"]]
-    object <- makeTx2GeneFromFASTA(
+    object <- makeTxToGeneFromFASTA(
         file = file,
         ignoreVersion = FALSE
     )
-    expect_s4_class(object, "Tx2Gene")
+    expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 205131L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
@@ -21,7 +21,7 @@ test_that("Ensembl", {
             )
         )
     )
-    object <- makeTx2GeneFromFASTA(
+    object <- makeTxToGeneFromFASTA(
         file = file,
         ignoreVersion = TRUE
     )
@@ -44,8 +44,8 @@ test_that("Ensembl", {
 
 test_that("FlyBase", {
     file <- txFastas[["flybase"]]
-    object <- makeTx2GeneFromFASTA(file)
-    expect_s4_class(object, "Tx2Gene")
+    object <- makeTxToGeneFromFASTA(file)
+    expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 30799L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
@@ -66,11 +66,11 @@ test_that("FlyBase", {
 
 test_that("GENCODE", {
     file <- txFastas[["gencode"]]
-    object <- makeTx2GeneFromFASTA(
+    object <- makeTxToGeneFromFASTA(
         file = file,
         ignoreVersion = FALSE
     )
-    expect_s4_class(object, "Tx2Gene")
+    expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 252416L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
@@ -87,7 +87,7 @@ test_that("GENCODE", {
             )
         )
     )
-    object <- makeTx2GeneFromFASTA(
+    object <- makeTxToGeneFromFASTA(
         file = file,
         ignoreVersion = TRUE
     )
@@ -110,8 +110,8 @@ test_that("GENCODE", {
 
 test_that("WormBase", {
     file <- txFastas[["wormbase"]]
-    object <- makeTx2GeneFromFASTA(file)
-    expect_s4_class(object, "Tx2Gene")
+    object <- makeTxToGeneFromFASTA(file)
+    expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 31998L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],

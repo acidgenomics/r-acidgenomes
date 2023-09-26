@@ -405,16 +405,16 @@ downloadGencodeGenome <-
         export(object = lines, con = fastaFixedFile)
         files[["fastaFixed"]] <- fastaFixedFile
         ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromFASTA(
+        txToGene <- makeTxToGeneFromFASTA(
             file = fastaFile,
             ignoreVersion = FALSE
         )
-        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
-        tx2geneFile <- export(
-            object = tx2gene,
-            con = file.path(outputDir, "tx2gene.csv.gz")
+        saveRDS(object = txToGene, file = file.path(outputDir, "txToGene.rds"))
+        txToGeneFile <- export(
+            object = txToGene,
+            con = file.path(outputDir, "txToGene.csv.gz")
         )
-        files[["tx2gene"]] <- tx2geneFile
+        files[["txToGene"]] <- txToGeneFile
         ## Create relative path symlink.
         if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             fastaRelativeFile <- sub(

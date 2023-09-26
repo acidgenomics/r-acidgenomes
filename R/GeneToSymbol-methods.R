@@ -1,5 +1,5 @@
-#' @name Gene2Symbol
-#' @inherit AcidGenerics::Gene2Symbol description return title
+#' @name GeneToSymbol
+#' @inherit AcidGenerics::GeneToSymbol description return title
 #' @note Updated 2023-09-16.
 #'
 #' @details
@@ -26,7 +26,7 @@
 #'
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeGene2Symbol()].
+#' @seealso [makeGeneToSymbol()].
 #'
 #' @examples
 #' data(GRanges, package = "AcidTest")
@@ -42,18 +42,18 @@
 #'         "PLCXD1"
 #'     )
 #' )
-#' x <- Gene2Symbol(df)
+#' x <- GeneToSymbol(df)
 #' print(x)
 #'
 #' ## GRanges ====
 #' object <- GRanges
-#' x <- Gene2Symbol(object)
+#' x <- GeneToSymbol(object)
 NULL
 
 
 
 ## Updated 2023-09-16.
-`Gene2Symbol,DFrame` <- # nolint
+`GeneToSymbol,DFrame` <- # nolint
     function(object,
              format = c("makeUnique", "1:1", "unmodified"),
              quiet = FALSE) {
@@ -176,40 +176,40 @@ NULL
             is(object, "DFrame"),
             all(complete.cases(object)),
             hasNoDuplicates(object[["geneId"]]),
-            msg = "Failed to generate Gene2Symbol object."
+            msg = "Failed to generate GeneToSymbol object."
         )
         object <- object[order(object), , drop = FALSE]
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]
         metadata(object) <- meta
-        new(Class = "Gene2Symbol", object)
+        new(Class = "GeneToSymbol", object)
     }
 
 
 
 ## Updated 2023-04-26.
-`Gene2Symbol,GRanges` <- # nolint
+`GeneToSymbol,GRanges` <- # nolint
     function(object, ...) {
         df <- as(object, "DFrame")
         metadata(df) <- metadata(object)
-        Gene2Symbol(df, ...)
+        GeneToSymbol(df, ...)
     }
 
 
 
-#' @rdname Gene2Symbol
+#' @rdname GeneToSymbol
 #' @export
 setMethod(
-    f = "Gene2Symbol",
+    f = "GeneToSymbol",
     signature = signature(object = "DFrame"),
-    definition = `Gene2Symbol,DFrame`
+    definition = `GeneToSymbol,DFrame`
 )
 
-#' @rdname Gene2Symbol
+#' @rdname GeneToSymbol
 #' @export
 setMethod(
-    f = "Gene2Symbol",
+    f = "GeneToSymbol",
     signature = signature(object = "GRanges"),
-    definition = `Gene2Symbol,GRanges`
+    definition = `GeneToSymbol,GRanges`
 )

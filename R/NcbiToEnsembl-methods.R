@@ -1,31 +1,31 @@
-#' @name Ncbi2Ensembl
-#' @inherit AcidGenerics::Ncbi2Ensembl description return title
+#' @name NcbiToEnsembl
+#' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @note Updated 2023-09-16.
 #'
-#' @inheritParams Ensembl2Ncbi
+#' @inheritParams EnsemblToNcbi
 #' @param ... Additional arguments.
 #'
 #' @examples
 #' ## integer ====
-#' x <- Ncbi2Ensembl(object = c(1L, 2L), organism = "Homo sapiens")
+#' x <- NcbiToEnsembl(object = c(1L, 2L), organism = "Homo sapiens")
 #' print(x)
 NULL
 
 
 
 ## Updated 2022-05-27.
-`Ncbi2Ensembl,integer` <- # nolint
+`NcbiToEnsembl,integer` <- # nolint
     function(object, organism, format) {
-        df <- .getEnsembl2NcbiFromOrgDb(
+        df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
             keytype = "ENTREZID",
             columns = "ENSEMBL",
             organism = organism
         )
-        out <- .makeEnsembl2Ncbi(
+        out <- .makeEnsemblToNcbi(
             object = df,
             format = match.arg(format),
-            return = "Ncbi2Ensembl"
+            return = "NcbiToEnsembl"
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
@@ -34,15 +34,15 @@ NULL
         out
     }
 
-formals(`Ncbi2Ensembl,integer`)[["format"]] <- # nolint
-    formals(.makeEnsembl2Ncbi)[["format"]]
+formals(`NcbiToEnsembl,integer`)[["format"]] <- # nolint
+    formals(.makeEnsemblToNcbi)[["format"]]
 
 
 
-#' @rdname Ncbi2Ensembl
+#' @rdname NcbiToEnsembl
 #' @export
 setMethod(
-    f = "Ncbi2Ensembl",
+    f = "NcbiToEnsembl",
     signature = signature(object = "integer"),
-    definition = `Ncbi2Ensembl,integer`
+    definition = `NcbiToEnsembl,integer`
 )
