@@ -15,7 +15,7 @@ test_that("TxToGene", {
     )
     object <- TxToGene(object)
     expect_s4_class(object, "TxToGene")
-    con <- file.path(tempdir2(), "txToGene.csv")
+    con <- file.path(tempdir2(), "tx2gene.csv")
     expect_false(file.exists(con))
     export(object = object, con = con)
     expect_true(file.exists(con))
