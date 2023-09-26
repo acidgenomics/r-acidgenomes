@@ -84,7 +84,7 @@ downloadUCSCGenome <-
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
             paste(
-                "Downloading Ensembl genome for {.emph %s}",
+                "Downloading UCSC genome for {.emph %s}",
                 "%s from {.url %s} to {.path %s}."
             ),
             organism, genomeBuild,
