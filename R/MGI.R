@@ -1,11 +1,7 @@
-## FIXME Assert that strand contains "+" and "-" as expected.
-
-
-
 #' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-09-19.
+#' @note Updated 2023-09-26.
 #'
 #' @return `MGI`.
 #'
@@ -75,5 +71,10 @@ MGI <- function() { # nolint
     rownames(df) <- df[[idCol]]
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
     df <- encode(df)
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "packageVersion" = .pkgVersion,
+        "url" = url
+    )
     new(Class = "MGI", df)
 }
