@@ -59,38 +59,57 @@ HumanToMouse <- function(unique = TRUE) {
     spl <- split(df, f = df[["ncbiTaxonId"]])
     assert(is(spl, "SplitDFrameList"))
     hs <- spl[["9606"]]
+    assert(
+        !anyNA(hs[["humanGeneName"]]),
+        !anyNA(hs[["humanHgncId"]]),
+        !anyNA(hs[["humanNcbiGeneId"]])
+    )
     hs[["ncbiTaxonId"]] <- NULL
     hs[["mouseMgiId"]] <- NULL
+    hs <- unique(hs)
     colnames(hs)[colnames(hs) == "entrezGeneId"] <- "humanNcbiGeneId"
     colnames(hs)[colnames(hs) == "hgncId"] <- "humanHgncId"
     colnames(hs)[colnames(hs) == "omimGeneId"] <- "humanOmimGeneId"
     colnames(hs)[colnames(hs) == "symbol"] <- "humanGeneName"
     mm <- spl[["10090"]]
+    assert(
+        !anyNA(mm[["mouseGeneName"]]),
+        !anyNA(mm[["mouseMgiId"]]),
+        !anyNA(mm[["mouseNcbiGeneId"]])
+    )
     mm[["hgncId"]] <- NULL
     mm[["ncbiTaxonId"]] <- NULL
     mm[["omimGeneId"]] <- NULL
+    mm <- unique(mm)
     colnames(mm)[colnames(mm) == "entrezGeneId"] <- "mouseNcbiGeneId"
     colnames(mm)[colnames(mm) == "symbol"] <- "mouseGeneName"
+    meta <- list(
+        "date" = Sys.Date(),
+        "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
+        "mouseDupes" = sort(dupes(mm[["mouseGeneName"]])),
+        "packageVersion" = .pkgVersion,
+        "unique" = unique,
+        "url" = url
+    )
+    if (isTRUE(unique)) {
+        keys <- intersect(x = hs[["dbClassKey"]], y = mm[["dbClassKey"]])
+        hs <- hs[hs[["dbClassKey"]] %in% keys, , drop = FALSE]
+        hs <- hs[!isDuplicate(hs[["humanGeneName"]]), , drop = FALSE]
+        mm <- mm[mm[["dbClassKey"]] %in% keys, , drop = FALSE]
+        mm <- mm[!isDuplicate(mm[["humanGeneName"]]), , drop = FALSE]
+        assert(hasNoDuplicates(mm[["dbClassKey"]]))
+        df <- AcidPlyr::leftJoin(x = hs, y = mm, by = "dbClassKey")
+        assert(all(complete.cases(df[, c("humanGeneName", "mouseGeneName")])))
+    }
+    ## FIXME Switch to using fullJoin here...need to update AcidPlyr.
     df <- merge(x = hs, y = mm, by = "dbClassKey", all.x = TRUE, all.y = TRUE)
     assert(is(df, "DFrame"))
     keep <- complete.cases(df[, c("humanGeneName", "mouseGeneName")])
     df <- df[keep, sort(colnames(df)), drop = FALSE]
     idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
     df <- df[idx, , drop = FALSE]
-    assert(
-        !anyNA(df[["humanGeneName"]]),
-        !anyNA(df[["humanHgncId"]]),
-        !anyNA(df[["humanNcbiGeneId"]]),
-        !anyNA(df[["mouseGeneName"]]),
-        !anyNA(df[["mouseMgiId"]]),
-        !anyNA(df[["mouseNcbiGeneId"]])
-    )
-    meta <- list(
-        "date" = Sys.Date(),
-        "packageVersion" = .pkgVersion,
-        "unique" = unique,
-        "url" = url
-    )
+    ## FIXME We may be able to move this up and clean up the individual human
+    ## and mouse splits first before joining...then maybe leftJoin will work.
     if (isTRUE(unique)) {
         keep <- list(
             "human" = !isDuplicate(df[["humanGeneName"]]),
@@ -112,7 +131,6 @@ HumanToMouse <- function(unique = TRUE) {
             hasNoDuplicates(df[["mouseNcbiGeneId"]])
         )
     }
-    meta <- meta[sort(names(meta))]
     metadata(df) <- meta
     new(Class = "HumanToMouse", df)
 }
