@@ -1,13 +1,11 @@
-## FIXME Rename these functions to verbs... .ensemblValidity to .validateEnsembl.
-
 ## Internal validity methods ===================================================
 
 #' Shared Ensembl validity checks
 #'
 #' @note Updated 2023-09-26.
 #' @noRd
-.ensemblValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateEnsembl <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -44,10 +42,10 @@
 
 #' Shared FlyBase validity checks
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2023-09-26.
 #' @noRd
-.flybaseValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateFlybase <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -64,10 +62,10 @@
 
 #' Shared GENCODE validity checks
 #'
-#' @note Updated 2021-02-26.
+#' @note Updated 2023-09-26.
 #' @noRd
-.gencodeValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateGencode <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -100,8 +98,8 @@
 #'
 #' @details
 #' Genome build and organism are not defined in minimal FlyBase GTF example.
-.grangesValidity <- function(object) {
-    ok <- .metadataValidity(object)
+.validateGRanges <- function(object) {
+    ok <- .validateMetadata(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -136,7 +134,7 @@
 #'
 #' @note Updated 2023-09-26.
 #' @noRd
-.metadataValidity <- function(object) {
+.validateMetadata <- function(object) {
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
@@ -155,10 +153,10 @@
 
 #' Shared RefSeq validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2023-09-26.
 #' @noRd
-.refseqValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateRefseq <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -186,10 +184,10 @@
 
 #' Shared UCSC validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2023-09-26.
 #' @noRd
-.ucscValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateUcsc <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -217,10 +215,10 @@
 
 #' Shared WormBase validity checks
 #'
-#' @note Updated 2021-02-01.
+#' @note Updated 2023-09-26.
 #' @noRd
-.wormbaseValidity <- function(object) {
-    ok <- .grangesValidity(object)
+.validateWormbase <- function(object) {
+    ok <- .validateGRanges(object)
     if (!isTRUE(ok)) {
         return(ok)
     }
@@ -253,7 +251,7 @@ setClass(
 setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
-        ok <- .ensemblValidity(object)
+        ok <- .validateEnsembl(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -283,7 +281,7 @@ setClass(
 setValidity(
     Class = "EnsemblTranscripts",
     method = function(object) {
-        ok <- .ensemblValidity(object)
+        ok <- .validateEnsembl(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -313,7 +311,7 @@ setClass(
 setValidity(
     Class = "FlyBaseGenes",
     method = function(object) {
-        ok <- .flybaseValidity(object)
+        ok <- .validateFlybase(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -343,7 +341,7 @@ setClass(
 setValidity(
     Class = "FlyBaseTranscripts",
     method = function(object) {
-        ok <- .flybaseValidity(object)
+        ok <- .validateFlybase(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -373,7 +371,7 @@ setClass(
 setValidity(
     Class = "GencodeGenes",
     method = function(object) {
-        ok <- .gencodeValidity(object)
+        ok <- .validateGencode(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -403,7 +401,7 @@ setClass(
 setValidity(
     Class = "GencodeTranscripts",
     method = function(object) {
-        ok <- .gencodeValidity(object)
+        ok <- .validateGencode(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -433,7 +431,7 @@ setClass(
 setValidity(
     Class = "RefSeqGenes",
     method = function(object) {
-        ok <- .refseqValidity(object)
+        ok <- .validateRefseq(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -463,7 +461,7 @@ setClass(
 setValidity(
     Class = "RefSeqTranscripts",
     method = function(object) {
-        ok <- .refseqValidity(object)
+        ok <- .validateRefseq(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -493,7 +491,7 @@ setClass(
 setValidity(
     Class = "UCSCGenes",
     method = function(object) {
-        ok <- .ucscValidity(object)
+        ok <- .validateUcsc(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -523,7 +521,7 @@ setClass(
 setValidity(
     Class = "UCSCTranscripts",
     method = function(object) {
-        ok <- .ucscValidity(object)
+        ok <- .validateUcsc(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -553,7 +551,7 @@ setClass(
 setValidity(
     Class = "WormBaseGenes",
     method = function(object) {
-        ok <- .wormbaseValidity(object)
+        ok <- .validateWormbase(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -583,7 +581,7 @@ setClass(
 setValidity(
     Class = "WormBaseTranscripts",
     method = function(object) {
-        ok <- .wormbaseValidity(object)
+        ok <- .validateWormbase(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -678,7 +676,7 @@ setValidity(
                 "vegaId" = "character"
             )
         )
-        ok <- .metadataValidity(object)
+        ok <- .validateMetadata(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
