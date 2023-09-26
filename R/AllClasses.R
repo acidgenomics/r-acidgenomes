@@ -834,15 +834,6 @@ setClass(
 setValidity(
     Class = "EnsemblToNcbi",
     method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 2L),
-            hasRows(object),
-            hasColnames(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -853,13 +844,21 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validate(
+            hasRows(object),
+            all(complete.cases(object))
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "date" = "Date",
-                "format" = "character",
-                "packageVersion" = "package_version"
-            )
+            expected = list("format" = "character"),
+            isSubset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -888,15 +887,6 @@ setClass(
 setValidity(
     Class = "GeneToSymbol",
     method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 2L),
-            hasRows(object),
-            hasColnames(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -907,13 +897,20 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validate(
+            hasRows(object),
+            all(complete.cases(object))
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "date" = "Date",
-                "format" = "character",
-                "packageVersion" = "package_version"
-            ),
+            expected = list("format" = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -943,13 +940,6 @@ setClass(
 setValidity(
     Class = "HumanToMouse",
     method = function(object) {
-        ok <- validate(
-            hasRows(object),
-            hasColnames(object)
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -966,13 +956,17 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validate(hasRows(object))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "date" = "Date",
-                "packageVersion" = "package_version",
-                "unique" = "logical"
-            ),
+            expected = list("unique" = "logical"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -986,7 +980,7 @@ setValidity(
 
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @details
 #' Contains a `DFrame` with `"ncbiGeneId"` and `"ensemblGeneId"` columns.
@@ -997,15 +991,6 @@ setClass(
 setValidity(
     Class = "NcbiToEnsembl",
     method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 2L),
-            hasRows(object),
-            hasColnames(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -1016,13 +1001,21 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validate(
+            hasRows(object),
+            all(complete.cases(object))
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "date" = "Date",
-                "format" = "character",
-                "packageVersion" = "package_version"
-            )
+            expected = list("format" = "character"),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -1054,15 +1047,6 @@ setClass(
 setValidity(
     Class = "ProteinToGene",
     method = function(object) {
-        ok <- validate(
-            identical(ncol(object), 3L),
-            hasRows(object),
-            hasColnames(object),
-            all(complete.cases(object))
-        )
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
         ok <- validateClasses(
             object = object,
             expected = list(
@@ -1074,14 +1058,14 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ok <- validateClasses(
-            object = metadata(object),
-            expected = list(
-                "date" = "Date",
-                "packageVersion" = "package_version"
-            ),
-            subset = TRUE
+        ok <- validate(
+            hasRows(object),
+            all(complete.cases(object))
         )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- .validateMetadata(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -1114,35 +1098,25 @@ setClass(
 setValidity(
     Class = "TxToGene",
     method = function(object) {
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "txId" = "character",
+                "geneId" = "character"
+            )
+        )
         ok <- validate(
-            identical(ncol(object), 2L),
             hasRows(object),
-            hasColnames(object),
-            all(complete.cases(object))
+            all(complete.cases(object)),
+            hasNoDuplicates(object[["txId"]])
         )
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Use validate classes here instead.
-        cols <- c(
-            "tx" = "txId",
-            "gene" = "geneId"
-        )
-        if (!identical(cols, colnames(object))) {
-            colnames(object) <- unname(cols)
-        }
-        ok <- validate(
-            all(vapply(
-                X = object,
-                FUN = is.character,
-                FUN.VALUE = logical(1L)
-            )),
-            hasNoDuplicates(object[[cols[["tx"]]]])
-        )
+        ok <- .validateMetadata(object)
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
