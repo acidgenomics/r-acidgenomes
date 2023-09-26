@@ -82,11 +82,22 @@ HumanToMouse <- function(unique = TRUE) {
         !anyNA(df[["mouseMgiId"]]),
         !anyNA(df[["mouseNcbiGeneId"]])
     )
+    meta <- list(
+        "date" = Sys.Date(),
+        "packageVersion" = .pkgVersion,
+        "unique" = unique
+    )
     if (isTRUE(unique)) {
-        keep <- !isDuplicate(df[["humanGeneName"]])
-        df <- df[keep, ]
-        keep <- !isDuplicate(df[["mouseGeneName"]])
-        df <- df[keep, ]
+        keep <- list(
+            "human" = !isDuplicate(df[["humanGeneName"]]),
+            "mouse" = !isDuplicate(df[["mouseGeneName"]])
+        )
+        meta[["humanDupes"]] <-
+            sort(unique(df[["humanGeneName"]][!keep[["human"]]]))
+        meta[["mouseDupes"]] <-
+            sort(unique(df[["mouseGeneName"]][!keep[["mouse"]]]))
+        ok <- keep[["human"]] & keep[["mouse"]]
+        df <- df[ok, ]
         assert(
             hasNoDuplicates(df[["humanGeneName"]]),
             hasNoDuplicates(df[["humanHgncId"]]),
@@ -97,10 +108,7 @@ HumanToMouse <- function(unique = TRUE) {
             hasNoDuplicates(df[["mouseNcbiGeneId"]])
         )
     }
-    metadata(df) <- list(
-        "date" = Sys.Date(),
-        "packageVersion" = .pkgVersion,
-        "unique" = unique
-    )
+    meta <- meta[sort(names(meta))]
+    metadata(df) <- meta
     df
 }
