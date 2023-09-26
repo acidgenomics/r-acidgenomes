@@ -992,6 +992,8 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
+                "humanDupes" = "character",
+                "mouseDupes" = "character",
                 "unique" = "logical",
                 "url" = "character"
             ),
