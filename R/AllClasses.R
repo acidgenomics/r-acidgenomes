@@ -213,15 +213,13 @@
 
 ## Genome annotation classes ===================================================
 
-## FIXME Check metadata for date, packageVersion.
-
 #' Ensembl gene annotations
 #'
 #' @details
 #' Contains `GRanges` with Ensembl gene-level annotations.
 #'
 #' @export
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-09-26.
 #'
 #' @return `EnsemblGenes`.
 setClass(
@@ -231,6 +229,7 @@ setClass(
 setValidity(
     Class = "EnsemblGenes",
     method = function(object) {
+
         ok <- .ensemblValidity(object)
         if (!isTRUE(ok)) {
             return(ok)
@@ -239,13 +238,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' Ensembl transcript annotations
 #'
@@ -253,7 +251,7 @@ setValidity(
 #' Contains `GRanges` with Ensembl transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2023-04-13.
+#' @note Updated 2023-09-26.
 #'
 #' @return `EnsemblTranscripts`.
 setClass(
@@ -271,13 +269,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' FlyBase gene annotations
 #'
@@ -285,7 +282,7 @@ setValidity(
 #' Contains `GRanges` with FlyBase gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `FlyBaseGenes`.
 setClass(
@@ -299,13 +296,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' FlyBase transcript annotations
 #'
@@ -313,7 +309,7 @@ setValidity(
 #' Contains `GRanges` with FlyBase transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `FlyBaseTranscripts`.
 setClass(
@@ -327,13 +323,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' GENCODE gene annotations
 #'
@@ -341,7 +336,7 @@ setValidity(
 #' Contains `GRanges` with GENCODE gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `GencodeGenes`.
 setClass(
@@ -355,13 +350,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' GENCODE transcript annotations
 #'
@@ -369,7 +363,7 @@ setValidity(
 #' Contains `GRanges` with GENCODE transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `GencodeTranscripts`.
 setClass(
@@ -383,13 +377,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' RefSeq gene annotations
 #'
@@ -397,7 +390,7 @@ setValidity(
 #' Contains a `CompressedGRangesList` with RefSeq gene-level annotations.
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-26.
 #'
 #' @return `RefSeqGenes`.
 setClass(
@@ -411,13 +404,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' RefSeq transcript annotations
 #'
@@ -425,7 +417,7 @@ setValidity(
 #' Contains a `CompressedGRangesList` with RefSeq transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-26.
 #'
 #' @return `RefSeqTranscripts`.
 setClass(
@@ -439,13 +431,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' UCSC gene annotations
 #'
@@ -453,7 +444,7 @@ setValidity(
 #' Contains `GRanges` with UCSC gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `UCSCGenes`.
 setClass(
@@ -467,13 +458,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' UCSC transcript annotations
 #'
@@ -481,7 +471,7 @@ setValidity(
 #' Contains `GRanges` with UCSC transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `UCSCTranscripts`.
 setClass(
@@ -495,13 +485,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' WormBase gene annotations
 #'
@@ -509,7 +498,7 @@ setValidity(
 #' Contains `GRanges` with WormBase gene-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `WormBaseGenes`.
 setClass(
@@ -523,13 +512,12 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
-
-## FIXME Check metadata for date, packageVersion.
 
 #' WormBase transcript annotations
 #'
@@ -537,7 +525,7 @@ setValidity(
 #' Contains `GRanges` with WormBase transcript-level annotations.
 #'
 #' @export
-#' @note Updated 2021-10-14.
+#' @note Updated 2023-09-26.
 #'
 #' @return `WormBaseTranscripts`.
 setClass(
@@ -551,6 +539,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
@@ -559,12 +548,10 @@ setValidity(
 
 ## Identifier classes ==========================================================
 
-## FIXME Check metadata for date, packageVersion.
-
 #' Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-26.
 #'
 #' @return `HGNC`.
 setClass(
@@ -594,18 +581,17 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-09-19.
+#' @note Updated 2023-09-26.
 #'
 #' @return `MGI`.
 setClass(
@@ -640,26 +626,17 @@ setValidity(
             "ensemblGeneEnd",
             "ensemblGeneStrand"
         )
-        #ok <- validate(
-        #    isSubset(cols, colnames(object)),
-        #    is.integer(object[[cols[[1L]]]]),
-        #    hasNoDuplicates(object[[cols[[1L]]]])
-        #)
-        #if (!isTRUE(ok)) {
-        #    return(ok)
-        #}
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' NCBI gene history
 #'
 #' @export
-#' @note Updated 2023-09-15.
+#' @note Updated 2023-09-26.
 #'
 #' @return `NcbiGeneHistory`.
 setClass(
@@ -688,18 +665,17 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' NCBI gene identifier information
 #'
 #' @export
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-09-26.
 #'
 #' @return `NcbiGeneInfo`.
 setClass(
@@ -738,6 +714,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )
@@ -748,10 +725,10 @@ setValidity(
 
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @export
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @details
-#' Contains a `DFrame` with `ensemblGeneId` and `ncbiGeneId` columns.
+#' Contains a `DFrame` with `"ensemblGeneId"` and `"ncbiGeneId"` columns.
 setClass(
     Class = "EnsemblToNcbi",
     contains = "DFrame"
@@ -800,12 +777,12 @@ setValidity(
 #' @note Updated 2023-09-16.
 #'
 #' @details
-#' Contains a `DFrame` with `geneId` and `geneName` columns.
+#' Contains a `DFrame` with `"geneId"` and `"geneName"` columns.
 #'
 #' @section Genome metadata:
 #'
-#' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
-#' `metadata()`.
+#' We recommend slotting `"organism"`, `"genomeBuild"`, and `"ensemblRelease"`
+#' into `metadata()`.
 setClass(
     Class = "GeneToSymbol",
     contains = "DFrame"
@@ -914,7 +891,7 @@ setValidity(
 #' @note Updated 2023-09-16.
 #'
 #' @details
-#' Contains a `DFrame` with `ncbiGeneId` and `ensemblGeneId` columns.
+#' Contains a `DFrame` with `"ncbiGeneId"` and `"ensemblGeneId"` columns.
 setClass(
     Class = "NcbiToEnsembl",
     contains = "DFrame"
@@ -961,15 +938,15 @@ setValidity(
 #' Protein-to-gene mappings
 #'
 #' @details
-#' Contains a `DFrame` with `proteinId`, `geneId`, and `geneName` columns.
+#' Contains a `DFrame` with `"proteinId"`, `"geneId"`, and `"geneName"` columns.
 #'
 #' @section Genome metadata:
 #'
-#' We recommend slotting `organism`, `genomeBuild`, and `ensemblRelease` into
-#' `metadata()`.
+#' We recommend slotting `"organism"`, `"genomeBuild"`, and `"ensemblRelease"`
+#' into `metadata()`.
 #'
 #' @export
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @return `ProteinToGene`.
 setClass(
@@ -1016,19 +993,17 @@ setValidity(
 
 
 
-## FIXME Check metadata for date, packageVersion.
-
 #' @inherit AcidGenerics::TxToGene description return title
 #' @export
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @details
-#' Contains a `DFrame` with `txId` and `geneId` columns.
+#' Contains a `DFrame` with `"txId"` and `"geneId"` columns.
 #'
 #' @section Genome metadata:
 #'
-#' We recommend slotting `organism`, `genomeBuild`, and `release` into
-#' `metadata`.
+#' We recommend slotting `"organism"`, `"genomeBuild"`, and `"release"` into
+#' `metadata()`.
 #'
 #' Ensembl examples:
 #' - `organism`: "Homo sapiens".
@@ -1069,24 +1044,7 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
-        ## This check for identical transcript and gene identifiers is not
-        ## compatible with the sacCer3 genome, unfortunately. Disabling this
-        ## check until we can come up with an improved approach.
-        ## See related issue:
-        ## https://github.com/bcbio/bcbio-nextgen/issues/3565
-        ## > ok <- validate(
-        ## >     !any(apply(
-        ## >         X = object,
-        ## >         MARGIN = 1L,
-        ## >         FUN = function(x) {
-        ## >             identical(x[[cols[["tx"]]]], x[[cols[["gene"]]]])
-        ## >         }
-        ## >     )),
-        ## >     msg = "Some transcript and gene identifiers are identical."
-        ## > )
-        ## > if (!isTRUE(ok)) return(ok)
-        ##
-        ## FIXME Add metadata check here.
+        ## FIXME Check metadata for date, packageVersion.
         TRUE
     }
 )

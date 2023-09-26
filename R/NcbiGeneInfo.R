@@ -5,7 +5,7 @@
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2023-09-15.
+#' @note Updated 2023-09-26.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -107,10 +107,10 @@ NcbiGeneInfo <- # nolint
             df[["otherDesignations"]] <- splitToList(df[["otherDesignations"]])
         }
         df <- encode(df)
-        ## FIXME Include package name and package version.
         metadata(df) <- list(
             "date" = Sys.Date(),
             "organism" = organism,
+            "packageVersion" = .pkgVersion,
             "taxonomicGroup" = "taxonomicGroup",
             "url" = url
         )
