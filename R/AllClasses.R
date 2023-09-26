@@ -850,6 +850,65 @@ setValidity(
 
 
 
+#' Human-to-mouse gene mappings
+#'
+#' @export
+#' @note Updated 2023-09-26.
+#'
+#' @details
+#' Contains a `DFrame` with `"dbClassKey"`, `"humanGeneName"`, `"humanHgncId"`,
+#' `"humanNcbiGeneId"`, `"humanOmimGeneId"`, `"mouseGeneName"`, `"mouseMgiId"`,
+#' `"mouseNcbiGeneId"` columns.
+#'
+#' @return `HumanToMouse`.
+setClass(
+    Class = "HumanToMouse",
+    contains = "DFrame"
+)
+setValidity(
+    Class = "HumanToMouse",
+    method = function(object) {
+        ok <- validate(
+            hasRows(object),
+            hasColnames(object)
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = object,
+            expected = list(
+                "dbClassKey" = "integer",
+                "humanGeneName" = "character",
+                "humanHgncId" = "integer",
+                "humanNcbiGeneId" = "integer",
+                "humanOmimGeneId" = "integer",
+                "mouseGeneName" = "character",
+                "mouseMgiId" = "integer",
+                "mouseNcbiGeneId" = "integer"
+            )
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "date" = "Date",
+                "packageVersion" = "package_version",
+                "unique" = "logical"
+            ),
+            subset = TRUE
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
 #' @note Updated 2023-09-16.

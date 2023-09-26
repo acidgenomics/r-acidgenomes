@@ -21,8 +21,8 @@ Import human-to-mouse gene mappings
 Updated 2023-09-26.
 }
 \examples{
-h2m <- HumanToMouse()
-print(h2m)
+object <- HumanToMouse()
+print(object)
 }
 \seealso{
 \itemize{

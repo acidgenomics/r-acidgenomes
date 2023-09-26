@@ -110,5 +110,5 @@ HumanToMouse <- function(unique = TRUE) {
     }
     meta <- meta[sort(names(meta))]
     metadata(df) <- meta
-    df
+    new(Class = "HumanToMouse", df)
 }
