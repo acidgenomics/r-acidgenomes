@@ -22,7 +22,7 @@
 #'     "homo_sapiens",
 #'     "cdna",
 #'     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
-#'     protocol = "https"
+#'     protocol = "ftp"
 #' )
 #' t2g <- makeTxToGeneFromFASTA(file)
 #' print(t2g)
@@ -36,7 +36,7 @@
 #' ## >     "Gencode_human",
 #' ## >     "release_32",
 #' ## >     "gencode.v32.transcripts.fa.gz",
-#' ## >     protocol = "https"
+#' ## >     protocol = "ftp"
 #' ## > )
 #' ## > t2g <- makeTxToGeneFromFASTA(file)
 #' ## > print(t2g)
@@ -49,7 +49,7 @@
 #' ## >     "dmel_r6.30",
 #' ## >     "fasta",
 #' ## >     "dmel-all-transcript-r6.30.fasta.gz",
-#' ## >     protocol = "https"
+#' ## >     protocol = "ftp"
 #' ## > )
 #' ## > t2g <- makeTxToGeneFromFASTA(file)
 #' ## > print(t2g)
