@@ -677,6 +677,14 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list("url" = "character"),
+            subset = TRUE
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
