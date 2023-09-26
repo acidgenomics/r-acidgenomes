@@ -883,7 +883,7 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list("format" = "character"),
-            isSubset = TRUE
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
