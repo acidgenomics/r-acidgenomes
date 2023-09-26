@@ -184,8 +184,8 @@
         ## > AH73881 | Ensembl 97 EnsDb for Homo sapiens
         ## > AH73986 | Ensembl 79 EnsDb for Homo sapiens
         ## > AH79689 | Ensembl 100 EnsDb for Homo sapiens
-        match <- stri_match_first_regex(
-            str = mcols[["title"]],
+        match <- strMatch(
+            x = mcols[["title"]],
             pattern = "^Ensembl ([0-9]+) EnsDb.+$"
         )
         idx <- order(as.integer(match[, 2L]))

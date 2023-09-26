@@ -41,8 +41,8 @@ makeEnsDbFromGFF <- function(file) {
     )
     alert(sprintf("Making {.cls %s} from {.file %s}.", "EnsDb", file))
     args <- list()
-    x <- stri_match_first_regex(
-        str = basename(file),
+    x <- strMatch(
+        x = basename(file),
         pattern = pattern
     )[1L, , drop = TRUE]
     args[["genomeBuild"]] <- x[[4L]]
