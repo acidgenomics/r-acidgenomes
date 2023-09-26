@@ -102,7 +102,8 @@ HumanToMouse <- function(unique = TRUE) {
         )
     }
     i <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
-    df <- df[i, , drop = FALSE]
+    j <- sort(colnames(df))
+    df <- df[i, j, drop = FALSE]
     metadata(df) <- list(
         "date" = Sys.Date(),
         "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
