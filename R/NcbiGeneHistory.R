@@ -19,11 +19,15 @@ NcbiGeneHistory <- function(organism) {
         "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
         protocol = "https"
     )
-    ## readr is much faster than base engine here.
+    ## readr is much faster than base engine at parsing this file.
     df <- import(
         con = .cacheIt(url),
         format = "tsv",
-        engine = "readr",
+        engine = ifelse(
+            test = isInstalled("readr"),
+            yes = "readr",
+            no = "base"
+        ),
         naStrings = "-"
     )
     df <- as(df, "DFrame")

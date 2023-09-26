@@ -25,7 +25,7 @@ Imports:
     AcidBase (>= 0.7.0),
     AcidCLI (>= 0.2.8),
     AcidGenerics (>= 0.6.13),
-    AcidPlyr (>= 0.4.2),
+    AcidPlyr (>= 0.4.3),
     BiocGenerics (>= 0.46.0),
     GenomeInfoDb (>= 1.36.0),
     GenomicRanges (>= 1.52.0),
@@ -44,6 +44,7 @@ Suggests:
     RCurl (>= 1.98),
     biomaRt (>= 2.56.0),
     ensembldb (>= 2.24.0),
+    readr (>= 2.1.4),
     rvest (>= 1.0.3),
     testthat (>= 3.1.10),
     withr (>= 2.5.0)
