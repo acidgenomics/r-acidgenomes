@@ -17,7 +17,10 @@
 #' object <- HumanToMouse()
 #' print(object)
 HumanToMouse <- function(unique = TRUE) {
-    assert(isFlag(unique))
+    assert(
+        hasInternet(),
+        isFlag(unique)
+    )
     url <- pasteURL(
         "www.informatics.jax.org",
         "downloads",
