@@ -765,10 +765,10 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "discontinuedGeneId" = "integer",
-                "discontinuedSymbol" = "character",
+                "discontinuedGeneId" = "Rle",
+                "discontinuedSymbol" = "Rle",
                 "discontinueDate" = "Date",
-                "geneId" = "integer"
+                "geneId" = "Rle"
             )
         )
         if (!isTRUE(ok)) {
@@ -779,6 +779,18 @@ setValidity(
             return(ok)
         }
         ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "organism" = "character",
+                "taxonomyId" = "integer",
+                "url" = "character"
+            ),
+            subset = TRUE
+        )
         if (!isTRUE(ok)) {
             return(ok)
         }
