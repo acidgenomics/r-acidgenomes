@@ -1,29 +1,29 @@
-#' Make a Tx2Gene object
+#' Make a TxToGene object
 #'
 #' @section GFF/GTF file:
 #'
 #' Remote URLs and compressed files are supported.
 #'
-#' @name makeTx2Gene
+#' @name makeTxToGene
 #' @note Updated 2023-07-31.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `Tx2Gene`.
+#' @return `TxToGene`.
 #'
 #' @examples
-#' ## makeTx2GeneFromEnsembl ====
-#' x <- makeTx2GeneFromEnsembl(organism = "Homo sapiens")
+#' ## makeTxToGeneFromEnsembl ====
+#' x <- makeTxToGeneFromEnsembl(organism = "Homo sapiens")
 #' print(x)
 #'
-#' ## makeTx2GeneFromEnsDb ====
+#' ## makeTxToGeneFromEnsDb ====
 #' if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
-#'     x <- makeTx2GeneFromEnsDb(object = "EnsDb.Hsapiens.v75")
+#'     x <- makeTxToGeneFromEnsDb(object = "EnsDb.Hsapiens.v75")
 #'     print(x)
 #' }
 #'
-#' ## makeTx2GeneFromGFF ====
+#' ## makeTxToGeneFromGFF ====
 #' file <- AcidBase::pasteURL(
 #'     "ftp.ensembl.org",
 #'     "pub",
@@ -33,16 +33,16 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "https"
 #' )
-#' x <- makeTx2GeneFromGFF(file = file)
+#' x <- makeTxToGeneFromGFF(file = file)
 #' print(x)
 NULL
 
 
 
-#' @rdname makeTx2Gene
+#' @rdname makeTxToGene
 #' @export
 ## Updated 2023-07-31.
-makeTx2GeneFromEnsembl <-
+makeTxToGeneFromEnsembl <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
@@ -55,15 +55,15 @@ makeTx2GeneFromEnsembl <-
             ignoreVersion = ignoreVersion,
             extraMcols = FALSE
         )
-        Tx2Gene(gr)
+        TxToGene(gr)
     }
 
 
 
-#' @rdname makeTx2Gene
+#' @rdname makeTxToGene
 #' @export
 ## Updated 2023-07-31.
-makeTx2GeneFromEnsDb <-
+makeTxToGeneFromEnsDb <-
     function(object,
              ignoreVersion = FALSE) {
         gr <- makeGRangesFromEnsDb(
@@ -72,15 +72,15 @@ makeTx2GeneFromEnsDb <-
             ignoreVersion = ignoreVersion,
             extraMcols = FALSE
         )
-        Tx2Gene(gr)
+        TxToGene(gr)
     }
 
 
 
-#' @rdname makeTx2Gene
+#' @rdname makeTxToGene
 #' @export
 ## Updated 2023-07-31.
-makeTx2GeneFromGFF <-
+makeTxToGeneFromGFF <-
     function(file,
              ignoreVersion = FALSE) {
         gr <- makeGRangesFromGFF(
@@ -89,5 +89,5 @@ makeTx2GeneFromGFF <-
             ignoreVersion = ignoreVersion,
             extraMcols = FALSE
         )
-        Tx2Gene(gr)
+        TxToGene(gr)
     }

@@ -1,6 +1,6 @@
 #' Import transcript-to-gene annotations
 #'
-#' Generates a `Tx2Gene` object containing `txId` and `geneId` columns.
+#' Generates a `TxToGene` object containing `txId` and `geneId` columns.
 #'
 #' @note File should not contain column header names.
 #' @note Updated 2021-02-01.
@@ -11,21 +11,21 @@
 #' @param ignoreVersion `logical(2)`.
 #' Ignore transcript ("tx") and/or gene ("gene") versions.
 #'
-#' @return `Tx2Gene`.
+#' @return `TxToGene`.
 #'
 #' @seealso
 #' - `stripTranscriptVersions`, `stripGeneVersions`
 #'
 #' @examples
-#' file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")
-#' x <- importTx2Gene(
+#' file <- file.path(AcidGenomesTestsURL, "txToGene.csv")
+#' x <- importTxToGene(
 #'     file = file,
 #'     organism = "Homo sapiens",
 #'     genomeBuild = "GRCh38",
 #'     release = 100L
 #' )
 #' print(x)
-importTx2Gene <-
+importTxToGene <-
     function(file,
              organism = NULL,
              genomeBuild = NULL,
@@ -58,5 +58,5 @@ importTx2Gene <-
             "organism" = organism,
             "release" = release
         )
-        Tx2Gene(data)
+        TxToGene(data)
     }

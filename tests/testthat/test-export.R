@@ -1,4 +1,4 @@
-test_that("Tx2Gene", {
+test_that("TxToGene", {
     object <- DataFrame(
         "txId" = c(
             "tx0001",
@@ -13,9 +13,9 @@ test_that("Tx2Gene", {
             "gene0002"
         )
     )
-    object <- Tx2Gene(object)
-    expect_s4_class(object, "Tx2Gene")
-    con <- file.path(tempdir2(), "tx2gene.csv")
+    object <- TxToGene(object)
+    expect_s4_class(object, "TxToGene")
+    con <- file.path(tempdir2(), "txToGene.csv")
     expect_false(file.exists(con))
     export(object = object, con = con)
     expect_true(file.exists(con))

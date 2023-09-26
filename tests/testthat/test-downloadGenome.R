@@ -19,8 +19,8 @@ test_that("downloadEnsemblGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "tx2gene.csv.gz",
-            "tx2gene.rds"
+            "txToGene.csv.gz",
+            "txToGene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -45,23 +45,23 @@ test_that("downloadEnsemblGenome", {
             "ENST00000000442.11"
         )
     )
-    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_s4_class(tx2gene, "Tx2Gene")
-    expect_identical(nrow(tx2gene), 272929L)
+    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    expect_s4_class(txToGene, "TxToGene")
+    expect_identical(nrow(txToGene), 272929L)
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233.10",
             "geneId" = "ENSG00000004059.11"
         )
     )
-    tx2gene <- import(
-        con = file.path(outputDir, "tx2gene.csv.gz"),
+    txToGene <- import(
+        con = file.path(outputDir, "txToGene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 272929L)
+    expect_identical(nrow(txToGene), 272929L)
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233.10",
             "geneId" = "ENSG00000004059.11"
@@ -91,8 +91,8 @@ test_that("downloadGencodeGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "tx2gene.csv.gz",
-            "tx2gene.rds"
+            "txToGene.csv.gz",
+            "txToGene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -117,23 +117,23 @@ test_that("downloadGencodeGenome", {
             "ENST00000000442.11"
         )
     )
-    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_s4_class(tx2gene, "Tx2Gene")
-    expect_identical(nrow(tx2gene), 252416L)
+    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    expect_s4_class(txToGene, "TxToGene")
+    expect_identical(nrow(txToGene), 252416L)
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233.10",
             "geneId" = "ENSG00000004059.11"
         )
     )
-    tx2gene <- import(
-        con = file.path(outputDir, "tx2gene.csv.gz"),
+    txToGene <- import(
+        con = file.path(outputDir, "txToGene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(tx2gene), 252416L)
+    expect_identical(nrow(txToGene), 252416L)
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233.10",
             "geneId" = "ENSG00000004059.11"
@@ -163,8 +163,8 @@ test_that("downloadRefSeqGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "tx2gene.csv.gz",
-            "tx2gene.rds"
+            "txToGene.csv.gz",
+            "txToGene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -179,9 +179,9 @@ test_that("downloadRefSeqGenome", {
         object = head(sort(names(transcripts)), n = 3L),
         expected = c("NM_000014.6", "NM_000015.3", "NM_000016.6")
     )
-    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_s4_class(tx2gene, "Tx2Gene")
-    tx2gene <- as.data.frame(tx2gene)
+    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    expect_s4_class(txToGene, "TxToGene")
+    txToGene <- as.data.frame(txToGene)
     aatfExpected <- data.frame(
         "txId" = c(
             "NM_001411094.1",
@@ -191,14 +191,14 @@ test_that("downloadRefSeqGenome", {
         ),
         "geneId" = rep("AATF", 4L)
     )
-    aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
+    aatfCurrent <- txToGene[txToGene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
-    tx2gene <- import(
-        con = file.path(outputDir, "tx2gene.csv.gz"),
+    txToGene <- import(
+        con = file.path(outputDir, "txToGene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    aatfCurrent <- tx2gene[tx2gene[, 2L] == "AATF", ]
+    aatfCurrent <- txToGene[txToGene[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
     expect_identical(aatfCurrent, aatfExpected)
     unlink2(testdir)
@@ -223,8 +223,8 @@ test_that("downloadUCSCGenome", {
             "metadata.rds",
             "transcriptome.fa.gz",
             "transcripts.rds",
-            "tx2gene.csv.gz",
-            "tx2gene.rds"
+            "txToGene.csv.gz",
+            "txToGene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -247,21 +247,21 @@ test_that("downloadUCSCGenome", {
             "ENST00000000442"
         )
     )
-    tx2gene <- import(file.path(outputDir, "tx2gene.rds"))
-    expect_s4_class(tx2gene, "Tx2Gene")
+    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    expect_s4_class(txToGene, "TxToGene")
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233",
             "geneId" = "ENSG00000004059"
         )
     )
-    tx2gene <- import(
-        con = file.path(outputDir, "tx2gene.csv.gz"),
+    txToGene <- import(
+        con = file.path(outputDir, "txToGene.csv.gz"),
         colnames = c("txId", "geneId")
     )
     expect_identical(
-        object = as.data.frame(tx2gene)[1L, , drop = TRUE],
+        object = as.data.frame(txToGene)[1L, , drop = TRUE],
         expected = list(
             "txId" = "ENST00000000233",
             "geneId" = "ENSG00000004059"

@@ -18,7 +18,7 @@ NULL
 
 ## S4 generics and methods =====================================================
 
-#' @importFrom AcidGenerics Ensembl2Ncbi Gene2Symbol Ncbi2Ensembl Tx2Gene
+#' @importFrom AcidGenerics EnsemblToNcbi GeneToSymbol NcbiToEnsembl TxToGene
 #' as.DataFrame camelCase encode export import kebabCase leftJoin makeNames
 #' matchNested mutateAt rbindToDataFrame removeNA sanitizeNA snakeCase
 #' stripGeneVersions stripTranscriptVersions upperCamelCase

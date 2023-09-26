@@ -177,13 +177,13 @@ downloadRefSeqGenome <-
             file = file.path(outputDir, "transcripts.rds")
         )
         ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromGFF(file = gffFile)
-        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
-        tx2geneFile <- export(
-            object = tx2gene,
-            con = file.path(outputDir, "tx2gene.csv.gz")
+        txToGene <- makeTxToGeneFromGFF(file = gffFile)
+        saveRDS(object = txToGene, file = file.path(outputDir, "txToGene.rds"))
+        txToGeneFile <- export(
+            object = txToGene,
+            con = file.path(outputDir, "txToGene.csv.gz")
         )
-        files[["tx2gene"]] <- tx2geneFile
+        files[["txToGene"]] <- txToGeneFile
         invisible(list("files" = files, "urls" = urls))
     }
 

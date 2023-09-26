@@ -1,33 +1,33 @@
-#' Make a Gene2Symbol object
+#' Make a GeneToSymbol object
 #'
 #' @section GFF/GTF file:
 #'
 #' Remote URLs and compressed files are supported.
 #'
-#' @name makeGene2Symbol
+#' @name makeGeneToSymbol
 #' @note Updated 2021-08-03.
 #'
-#' @inheritParams Gene2Symbol
+#' @inheritParams GeneToSymbol
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
 #'
-#' @return `Gene2Symbol`.
+#' @return `GeneToSymbol`.
 #'
 #' @examples
-#' ## makeGene2SymbolFromEnsembl ====
-#' x <- makeGene2SymbolFromEnsembl(
+#' ## makeGeneToSymbolFromEnsembl ====
+#' x <- makeGeneToSymbolFromEnsembl(
 #'     organism = "Homo sapiens",
 #'     ignoreVersion = FALSE
 #' )
 #' print(x)
 #'
-#' ## makeTx2GeneFromEnsDb ====
+#' ## makeTxToGeneFromEnsDb ====
 #' if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
-#'     x <- makeGene2SymbolFromEnsDb("EnsDb.Hsapiens.v75")
+#'     x <- makeGeneToSymbolFromEnsDb("EnsDb.Hsapiens.v75")
 #'     print(x)
 #' }
 #'
-#' ## makeGene2SymbolFromGFF ====
+#' ## makeGeneToSymbolFromGFF ====
 #' file <- AcidBase::pasteURL(
 #'     "ftp.ensembl.org",
 #'     "pub",
@@ -37,7 +37,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "https"
 #' )
-#' x <- makeGene2SymbolFromGFF(
+#' x <- makeGeneToSymbolFromGFF(
 #'     file = file,
 #'     ignoreVersion = FALSE
 #' )
@@ -46,11 +46,11 @@ NULL
 
 
 
-#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from Ensembl using
+#' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from Ensembl using
 #' an AnnotationHub lookup.
 #' @export
 ## Updated 2021-08-03.
-makeGene2SymbolFromEnsembl <-
+makeGeneToSymbolFromEnsembl <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
@@ -63,16 +63,16 @@ makeGene2SymbolFromEnsembl <-
             ignoreVersion = ignoreVersion,
             level = "genes"
         )
-        Gene2Symbol(object = gr, format = match.arg(format))
+        GeneToSymbol(object = gr, format = match.arg(format))
     }
 
 
 
-#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from an `EnsDb`
+#' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from an `EnsDb`
 #' object or annotation package.
 #' @export
 ## Updated 2021-08-03.
-makeGene2SymbolFromEnsDb <-
+makeGeneToSymbolFromEnsDb <-
     function(object,
              ignoreVersion = TRUE,
              format = c("makeUnique", "1:1", "unmodified")) {
@@ -81,15 +81,15 @@ makeGene2SymbolFromEnsDb <-
             ignoreVersion = ignoreVersion,
             level = "genes"
         )
-        Gene2Symbol(object = gr, format = match.arg(format))
+        GeneToSymbol(object = gr, format = match.arg(format))
     }
 
 
 
-#' @describeIn makeGene2Symbol Make a `Gene2Symbol` object from a GFF file.
+#' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from a GFF file.
 #' @export
 ## Updated 2020-08-03.
-makeGene2SymbolFromGFF <-
+makeGeneToSymbolFromGFF <-
     function(file,
              ignoreVersion = TRUE,
              format = c("makeUnique", "1:1", "unmodified")) {
@@ -98,5 +98,5 @@ makeGene2SymbolFromGFF <-
             ignoreVersion = ignoreVersion,
             level = "genes"
         )
-        Gene2Symbol(object = gr, format = match.arg(format))
+        GeneToSymbol(object = gr, format = match.arg(format))
     }

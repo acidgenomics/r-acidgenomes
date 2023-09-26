@@ -10,7 +10,7 @@
 #' @return Invisible `NULL`.
 #'
 #' @examples
-#' ## Gene2Symbol ====
+#' ## GeneToSymbol ====
 #' df <- S4Vectors::DataFrame(
 #'     "geneId" = c(
 #'         "ENSG00000228572.7",
@@ -21,10 +21,10 @@
 #'         "PLCXD1"
 #'     )
 #' )
-#' g2s <- Gene2Symbol(df)
+#' g2s <- GeneToSymbol(df)
 #' summary(g2s)
 #'
-#' ## Tx2Gene ====
+#' ## TxToGene ====
 #' df <- S4Vectors::DataFrame(
 #'     "txId" = c(
 #'         "ENST00000635602.1",
@@ -35,14 +35,14 @@
 #'         "ENSG00000283061.1"
 #'     )
 #' )
-#' t2g <- Tx2Gene(df)
+#' t2g <- TxToGene(df)
 #' summary(t2g)
 NULL
 
 
 
 ## Updated 2021-03-03.
-`summary,Gene2Symbol` <- # nolint
+`summary,GeneToSymbol` <- # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
@@ -61,7 +61,7 @@ NULL
 
 
 ## Updated 2021-03-03.
-`summary,Tx2Gene` <- # nolint
+`summary,TxToGene` <- # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
@@ -82,14 +82,14 @@ NULL
 #' @export
 setMethod(
     f = "summary",
-    signature = signature(object = "Gene2Symbol"),
-    definition = `summary,Gene2Symbol`
+    signature = signature(object = "GeneToSymbol"),
+    definition = `summary,GeneToSymbol`
 )
 
 #' @rdname summary
 #' @export
 setMethod(
     f = "summary",
-    signature = signature(object = "Tx2Gene"),
-    definition = `summary,Tx2Gene`
+    signature = signature(object = "TxToGene"),
+    definition = `summary,TxToGene`
 )

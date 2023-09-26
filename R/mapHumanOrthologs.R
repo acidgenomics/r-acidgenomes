@@ -177,7 +177,7 @@ mapHumanOrthologs <-
             organism, "Homo sapiens"
         ))
         alert(sprintf("Getting {.emph %s} gene symbols.", organism))
-        g2s <- makeGene2SymbolFromEnsembl(
+        g2s <- makeGeneToSymbolFromEnsembl(
             organism = organism,
             release = ensemblRelease,
             ignoreVersion = TRUE,
@@ -186,7 +186,7 @@ mapHumanOrthologs <-
         g2s <- as(g2s, "DFrame")
         assert(identical(colnames(g2s), c("geneId", "geneName")))
         alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
-        g2sHuman <- makeGene2SymbolFromEnsembl(
+        g2sHuman <- makeGeneToSymbolFromEnsembl(
             organism = "Homo sapiens",
             release = ensemblRelease,
             ignoreVersion = TRUE,

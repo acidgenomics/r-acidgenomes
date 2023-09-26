@@ -3,7 +3,7 @@
 #' @note Updated 2023-09-20.
 #'
 #' @details
-#' The `Tx2Gene` method automatically disables writing of column names, which
+#' The `TxToGene` method automatically disables writing of column names, which
 #' is the intended input format for tximport.
 #'
 #' @examples
@@ -21,8 +21,8 @@
 #'         "gene0002"
 #'     )
 #' )
-#' object <- Tx2Gene(object)
-#' con <- file.path(AcidBase::tempdir2(), "tx2gene.csv")
+#' object <- TxToGene(object)
+#' con <- file.path(AcidBase::tempdir2(), "txToGene.csv")
 #' export(object = object, con = con)
 #' x <- readLines(con, n = 4L)
 #' print(x)
@@ -32,12 +32,12 @@ NULL
 
 
 ## Updated 2023-09-20.
-`export,Tx2Gene` <- # nolint
+`export,TxToGene` <- # nolint
     function(object, con, ...) {
         assert(validObject(object))
         alertInfo(sprintf(
             "Exporting {.cls %s} intentionally without dimnames.",
-            "Tx2Gene"
+            "TxToGene"
         ))
         export(
             object = as(object, "DFrame"),
@@ -55,8 +55,8 @@ NULL
 setMethod(
     f = "export",
     signature = signature(
-        object = "Tx2Gene",
+        object = "TxToGene",
         con = "character"
     ),
-    definition = `export,Tx2Gene`
+    definition = `export,TxToGene`
 )

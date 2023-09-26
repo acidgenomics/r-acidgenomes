@@ -1,9 +1,9 @@
-test_that("Gene2Symbol", {
-    formats <- eval(formals(`Gene2Symbol,DFrame`)[["format"]])
+test_that("GeneToSymbol", {
+    formats <- eval(formals(`GeneToSymbol,DFrame`)[["format"]])
     for (format in formats) {
         object <- gr
-        object <- Gene2Symbol(object, format = format)
-        expect_s4_class(object, "Gene2Symbol")
+        object <- GeneToSymbol(object, format = format)
+        expect_s4_class(object, "GeneToSymbol")
         expect_identical(colnames(object), c("geneId", "geneName"))
     }
 })
@@ -11,7 +11,7 @@ test_that("Gene2Symbol", {
 test_that("format: makeUnique", {
     ## Ensure duplicate gene names (symbols) are sanitized using `make.names`,
     ## and that NA gene names are converted to "unannotated".
-    object <- Gene2Symbol(
+    object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
                 "gene1",
@@ -46,11 +46,11 @@ test_that("format: makeUnique", {
         "format" = "makeUnique",
         "dupes" = "symbol1"
     )
-    expected <- new(Class = "Gene2Symbol", expected)
+    expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
     ## Don't allow "geneId" column to contain NA values.
     expect_error(
-        Gene2Symbol(
+        GeneToSymbol(
             object = DataFrame(
                 "geneId" = c(
                     "gene1",
@@ -65,7 +65,7 @@ test_that("format: makeUnique", {
         )
     )
     ## Ensure gene identifiers return sorted.
-    object <- Gene2Symbol(
+    object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
                 "gene2",
@@ -85,12 +85,12 @@ test_that("format: makeUnique", {
         row.names = c("A", "B")
     )
     metadata(expected) <- list("format" = "makeUnique")
-    expected <- new(Class = "Gene2Symbol", expected)
+    expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
 })
 
 test_that("format: 1:1", {
-    object <- Gene2Symbol(
+    object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
                 "gene2",
@@ -127,12 +127,12 @@ test_that("format: 1:1", {
         "format" = "1:1",
         "dropped" = c("E" = 5L, "F" = 6L)
     )
-    expected <- new(Class = "Gene2Symbol", expected)
+    expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
 })
 
 test_that("format: unmodified", {
-    object <- Gene2Symbol(
+    object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
                 "gene1",
@@ -169,13 +169,13 @@ test_that("format: unmodified", {
         "format" = "unmodified",
         "dropped" = c("D" = 4L, "E" = 5L)
     )
-    expected <- new(Class = "Gene2Symbol", expected)
+    expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
 })
 
 test_that("summary method", {
     object <- gr
-    x <- Gene2Symbol(object)
+    x <- GeneToSymbol(object)
     output <- capture.output(summary(x))
     expect_identical(
         head(output, n = 1L),

@@ -433,14 +433,14 @@ downloadEnsemblGenome <-
             overwrite = TRUE
         )
         ## Save transcript-to-gene mappings.
-        tx2gene <- makeTx2GeneFromFASTA(
+        txToGene <- makeTxToGeneFromFASTA(
             file = mergeFastaFile,
             ignoreVersion = FALSE
         )
-        saveRDS(object = tx2gene, file = file.path(outputDir, "tx2gene.rds"))
-        tx2geneFile <- export(
-            object = tx2gene,
-            con = file.path(outputDir, "tx2gene.csv.gz")
+        saveRDS(object = txToGene, file = file.path(outputDir, "txToGene.rds"))
+        txToGeneFile <- export(
+            object = txToGene,
+            con = file.path(outputDir, "txToGene.csv.gz")
         )
         files <- list(
             "fasta" = list(
@@ -448,7 +448,7 @@ downloadEnsemblGenome <-
                 "ncrna" = ncrnaFiles,
                 "merge" = mergeFastaFile
             ),
-            "tx2gene" = tx2geneFile
+            "txToGene" = txToGeneFile
         )
         ## Create relative path symlink.
         if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {

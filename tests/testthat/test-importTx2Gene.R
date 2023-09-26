@@ -1,5 +1,5 @@
 args <- list(
-    "file" = file.path("cache", "tx2gene.csv"),
+    "file" = file.path("cache", "txToGene.csv"),
     "organism" = "Homo sapiens",
     "genomeBuild" = "GRCh38",
     "release" = 100L
@@ -7,7 +7,7 @@ args <- list(
 
 test_that("No version stripping", {
     object <- do.call(
-        what = importTx2Gene,
+        what = importTxToGene,
         args = append(
             x = args,
             values = list(
@@ -15,7 +15,7 @@ test_that("No version stripping", {
             )
         )
     )
-    expect_s4_class(object, "Tx2Gene")
+    expect_s4_class(object, "TxToGene")
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
@@ -27,7 +27,7 @@ test_that("No version stripping", {
 
 test_that("Strip transcript and gene versions", {
     object <- do.call(
-        what = importTx2Gene,
+        what = importTxToGene,
         args = append(
             x = args,
             values = list(
@@ -35,7 +35,7 @@ test_that("Strip transcript and gene versions", {
             )
         )
     )
-    expect_s4_class(object, "Tx2Gene")
+    expect_s4_class(object, "TxToGene")
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
