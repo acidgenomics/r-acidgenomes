@@ -896,7 +896,7 @@ setValidity(
 
 #' @inherit AcidGenerics::GeneToSymbol description return title
 #' @export
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-26.
 #'
 #' @details
 #' Contains a `DFrame` with `"geneId"` and `"geneName"` columns.
