@@ -11,7 +11,7 @@
 Gene-to-symbol mappings
 }
 \details{
-Contains a \code{DFrame} with \code{geneId} and \code{geneName} columns.
+Contains a \code{DFrame} with \code{"geneId"} and \code{"geneName"} columns.
 }
 \note{
 Updated 2023-09-16.
@@ -19,7 +19,7 @@ Updated 2023-09-16.
 \section{Genome metadata}{
 
 
-We recommend slotting \code{organism}, \code{genomeBuild}, and \code{ensemblRelease} into
-\code{metadata()}.
+We recommend slotting \code{"organism"}, \code{"genomeBuild"}, and \code{"ensemblRelease"}
+into \code{metadata()}.
 }
 

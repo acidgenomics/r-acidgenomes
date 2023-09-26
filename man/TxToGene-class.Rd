@@ -11,16 +11,16 @@
 Transcript-to-gene mappings
 }
 \details{
-Contains a \code{DFrame} with \code{txId} and \code{geneId} columns.
+Contains a \code{DFrame} with \code{"txId"} and \code{"geneId"} columns.
 }
 \note{
-Updated 2023-09-16.
+Updated 2023-09-26.
 }
 \section{Genome metadata}{
 
 
-We recommend slotting \code{organism}, \code{genomeBuild}, and \code{release} into
-\code{metadata}.
+We recommend slotting \code{"organism"}, \code{"genomeBuild"}, and \code{"release"} into
+\code{metadata()}.
 
 Ensembl examples:
 \itemize{
