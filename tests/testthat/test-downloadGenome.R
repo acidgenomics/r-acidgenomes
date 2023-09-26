@@ -20,7 +20,7 @@ test_that("downloadEnsemblGenome", {
             "transcriptome.fa.gz",
             "transcripts.rds",
             "tx2gene.csv.gz",
-            "txToGene.rds"
+            "tx2gene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -45,7 +45,7 @@ test_that("downloadEnsemblGenome", {
             "ENST00000000442.11"
         )
     )
-    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    txToGene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(txToGene, "TxToGene")
     expect_identical(nrow(txToGene), 272929L)
     expect_identical(
@@ -92,7 +92,7 @@ test_that("downloadGencodeGenome", {
             "transcriptome.fa.gz",
             "transcripts.rds",
             "tx2gene.csv.gz",
-            "txToGene.rds"
+            "tx2gene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -117,7 +117,7 @@ test_that("downloadGencodeGenome", {
             "ENST00000000442.11"
         )
     )
-    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    txToGene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(txToGene, "TxToGene")
     expect_identical(nrow(txToGene), 252416L)
     expect_identical(
@@ -164,7 +164,7 @@ test_that("downloadRefSeqGenome", {
             "transcriptome.fa.gz",
             "transcripts.rds",
             "tx2gene.csv.gz",
-            "txToGene.rds"
+            "tx2gene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -179,7 +179,7 @@ test_that("downloadRefSeqGenome", {
         object = head(sort(names(transcripts)), n = 3L),
         expected = c("NM_000014.6", "NM_000015.3", "NM_000016.6")
     )
-    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    txToGene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(txToGene, "TxToGene")
     txToGene <- as.data.frame(txToGene)
     aatfExpected <- data.frame(
@@ -224,7 +224,7 @@ test_that("downloadUCSCGenome", {
             "transcriptome.fa.gz",
             "transcripts.rds",
             "tx2gene.csv.gz",
-            "txToGene.rds"
+            "tx2gene.rds"
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
@@ -247,7 +247,7 @@ test_that("downloadUCSCGenome", {
             "ENST00000000442"
         )
     )
-    txToGene <- import(file.path(outputDir, "txToGene.rds"))
+    txToGene <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(txToGene, "TxToGene")
     expect_identical(
         object = as.data.frame(txToGene)[1L, , drop = TRUE],

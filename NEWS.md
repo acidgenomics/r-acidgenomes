@@ -1,5 +1,31 @@
 # Release notes
 
+## AcidGenomes 0.6.0 (UNRELEASED)
+
+New functions / classes:
+
+- `HumanToMouse`: Downloads human-to-mouse gene mappings from the Jackson
+  Laboratory MGI server. Returns with unique 1:1 mappings by default, which
+  can be disabled with the `unique` argument.
+
+Major changes:
+
+- Renamed some identifier classes to use `"To"` instead of the numeric `"2"` in
+  the class name. Sorry Prince, but this just looks weird for some functions.
+  Applies to `Ensembl2Ncbi`, `Gene2Symbol`, `Ncbi2Ensembl`, `Protein2Gene`,
+  and `Tx2Gene`.
+- Hardened class checks via `validObject` for our custom classes, ensuring
+  that metadata is consistently slotted, including date and package version.
+- Switched to HTTPS downloads internally for some functions, as the Ensembl
+  FTP server has been prone to timeouts lately. This does not affect our
+  primary genome downloading functions, which still use FTP for speed.
+
+Minor changes:
+
+- Migrated internal data from `inst/extdata` to save internally inside the
+  package via `sysdata.rda` file. Applies to `detectOrganism` and
+  `mapNcbiTaxId` currently.
+
 ## AcidGenomes 0.5.1 (2023-08-01)
 
 Major changes:
