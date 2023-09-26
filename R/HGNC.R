@@ -1,12 +1,8 @@
-## FIXME Need to improve formatting of dates.
-
-
-
 #' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 #' metadata
 #'
 #' @export
-#' @note Updated 2023-09-15.
+#' @note Updated 2023-09-26.
 #'
 #' @return `HGNC`.
 #'
@@ -31,22 +27,30 @@ HGNC <- # nolint
             protocol = "https"
         )
         file <- .cacheIt(url)
-        ## FIXME Switch to base engine here.
         df <- import(con = file, format = "tsv")
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
-        idCol <- "hgncId"
         assert(
-            isSubset(idCol, colnames(df)),
-            hasNoDuplicates(df[[idCol]])
+            isSubset(
+                x = c(
+                    "dateApprovedReserved",
+                    "dateModified",
+                    "dateNameChanged",
+                    "dateSymbolChanged",
+                    "entrezId",
+                    "hgncId"
+                ),
+                y = colnames(df)
+            ),
+            hasNoDuplicates(df[["hgncId"]])
         )
-        df[[idCol]] <- as.integer(sub(
+        df[["hgncId"]] <- as.integer(sub(
             pattern = "^HGNC\\:",
             replacement = "",
-            x = df[[idCol]]
+            x = df[["hgncId"]]
         ))
-        df <- df[order(df[[idCol]]), , drop = FALSE]
-        rownames(df) <- df[[idCol]]
+        df <- df[order(df[["hgncId"]]), , drop = FALSE]
+        rownames(df) <- df[["hgncId"]]
         isNested <- bapply(
             X = df,
             FUN = function(x) {
@@ -63,6 +67,10 @@ HGNC <- # nolint
             )
         }
         colnames(df)[colnames(df) == "entrezId"] <- "ncbiGeneId"
+        df[["dateApprovedReserved"]] <- as.Date(df[["dateApprovedReserved"]])
+        df[["dateModified"]] <- as.Date(df[["dateModified"]])
+        df[["dateNameChanged"]] <- as.Date(df[["dateNameChanged"]])
+        df[["dateSymbolChanged"]] <- as.Date(df[["dateSymbolChanged"]])
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         metadata(df) <- list(
             "date" = Sys.Date(),
