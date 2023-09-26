@@ -31,9 +31,8 @@ HGNC <- # nolint
             protocol = "https"
         )
         file <- .cacheIt(url)
-        suppressWarnings({
-            df <- import(con = file, format = "tsv", engine = "readr")
-        })
+        ## FIXME Switch to base engine here.
+        df <- import(con = file, format = "tsv")
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         idCol <- "hgncId"
