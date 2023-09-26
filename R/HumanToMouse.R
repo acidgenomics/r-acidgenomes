@@ -109,8 +109,8 @@ HumanToMouse <- function(unique = TRUE) {
             hasNoDuplicates(df[["mouseNcbiGeneId"]])
         )
     }
-    idx <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
-    df <- df[idx, , drop = FALSE]
+    i <- order(df[["humanGeneName"]], df[["mouseGeneName"]])
+    df <- df[i, , drop = FALSE]
     metadata(df) <- meta
     new(Class = "HumanToMouse", df)
 }
