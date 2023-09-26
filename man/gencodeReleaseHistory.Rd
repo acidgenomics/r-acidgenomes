@@ -16,8 +16,11 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 \description{
 GENCODE release history
 }
+\details{
+Requires the rvest package to be installed.
+}
 \note{
-Updated 2023-04-26.
+Updated 2023-09-26.
 }
 \examples{
 object <- gencodeReleaseHistory(organism = "Homo sapiens")
