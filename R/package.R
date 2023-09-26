@@ -29,7 +29,7 @@ NULL
 #' seqnames<- seqnames
 #' @importFrom IRanges gsub ranges trim
 #' @importFrom S4Vectors complete.cases decode expand head mcols mcols<-
-#' metadata metadata<- na.omit split summary tail
+#' merge metadata metadata<- na.omit split summary tail
 NULL
 
 #' @importMethodsFrom AcidBase matchNested

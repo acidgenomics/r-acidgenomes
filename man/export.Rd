@@ -46,7 +46,7 @@ object <- S4Vectors::DataFrame(
     )
 )
 object <- TxToGene(object)
-con <- file.path(AcidBase::tempdir2(), "txToGene.csv")
+con <- file.path(AcidBase::tempdir2(), "tx2gene.csv")
 export(object = object, con = con)
 x <- readLines(con, n = 4L)
 print(x)
