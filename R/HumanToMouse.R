@@ -88,7 +88,8 @@ HumanToMouse <- function(unique = TRUE) {
     meta <- list(
         "date" = Sys.Date(),
         "packageVersion" = .pkgVersion,
-        "unique" = unique
+        "unique" = unique,
+        "url" = url
     )
     if (isTRUE(unique)) {
         keep <- list(
