@@ -57,8 +57,8 @@
 #'     "hg38",
 #'     "bigZips",
 #'     "genes",
-#'     "hg38.ensGene.gtf.gz",
-#'     protocol = "https"
+#'     "hg38.knownGene.gtf.gz",
+#'     protocol = "ftp"
 #' )
 #' seq <- .getSeqinfo(file)
 #' print(seq)
