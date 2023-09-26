@@ -1,7 +1,3 @@
-## FIXME Ensure modification date is classed as a date.
-
-
-
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
@@ -59,8 +55,6 @@ NcbiGeneInfo <- # nolint
             "Downloading {.emph %s} gene info from NCBI at {.url %s}.",
             organism, url
         ))
-        ## Input TSV is malformed, as of 2022-05-04. Readr handles this more
-        ## gracefully than the base import engine.
         df <- import(
             con = ifelse(
                 test = cache,
@@ -69,7 +63,7 @@ NcbiGeneInfo <- # nolint
             ),
             format = "tsv",
             colnames = TRUE,
-            engine = "readr"
+            naStrings = "-"
         )
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
@@ -106,6 +100,7 @@ NcbiGeneInfo <- # nolint
         if (isSubset("otherDesignations", colnames(df))) {
             df[["otherDesignations"]] <- splitToList(df[["otherDesignations"]])
         }
+        ## FIXME Need to convert modificationDate to date.
         df <- encode(df)
         metadata(df) <- list(
             "date" = Sys.Date(),
