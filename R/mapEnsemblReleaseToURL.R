@@ -1,3 +1,8 @@
+## FIXME Need to rework this to not require biomart.
+## Can we scrape HTML table instead?
+
+
+
 #' Map Ensembl release to archive URL.
 #'
 #' @note Updated 2023-04-26.
