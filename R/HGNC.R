@@ -27,7 +27,28 @@ HGNC <- # nolint
             protocol = "https"
         )
         file <- .cacheIt(url)
-        df <- import(con = file, format = "tsv")
+        lines <- import(file, format = "lines")
+        spl <- strsplit(x = lines, split = "\t", fixed = TRUE)
+        ## Remove problematic lines, e.g. "HGNC:43707".
+        keep <- lengths(spl) >= length(spl[[1L]]) - 1L
+        spl <- spl[keep]
+        fixIdx <- which(lengths(spl) != length(spl[[1L]]))
+        spl[fixIdx] <- lapply(
+            X = spl[fixIdx],
+            FUN = function(x) {
+                append(x = x, values = x[[1L]])
+            }
+        )
+        assert(all(lengths(spl) == length(spl[[1L]])))
+        lines <- vapply(
+            X = spl,
+            FUN = paste0,
+            collapse = "\t",
+            FUN.VALUE = character(1L)
+        )
+        con <- textConnection(lines)
+        df <- import(con = con, format = "tsv")
+        close(con)
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
         assert(
