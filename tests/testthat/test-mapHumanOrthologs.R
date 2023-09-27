@@ -11,9 +11,11 @@ test_that("mapHumanOrthologs", {
         expr = mapHumanOrthologs(
             genes = genes,
             organism = NULL,
-            ensemblRelease = 100L
+            ensemblRelease = 110L
         ),
-        error = function(e) e
+        error = function(e) {
+            e
+        }
     )
     ## Skip if connection timed out.
     if (is(object, "error")) {
