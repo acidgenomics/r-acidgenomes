@@ -12,10 +12,13 @@ Ensembl release (e.g. \code{100}).}
 }
 \value{
 \code{character(1)}.
-URL.
+Ensembl release URL.
 }
 \description{
 Map Ensembl release to archive URL.
+}
+\details{
+Requires the rvest package to be installed.
 }
 \note{
 Updated 2023-09-27.
