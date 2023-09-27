@@ -27,8 +27,8 @@
 #'     print(x)
 #' }
 #'
-#' ## makeGeneToSymbolFromGFF ====
-#' file <- AcidBase::pasteURL(
+#' ## makeGeneToSymbolFromGff ====
+#' file <- AcidBase::pasteUrl(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",
@@ -37,7 +37,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' x <- makeGeneToSymbolFromGFF(
+#' x <- makeGeneToSymbolFromGff(
 #'     file = file,
 #'     ignoreVersion = FALSE
 #' )
@@ -89,11 +89,11 @@ makeGeneToSymbolFromEnsDb <-
 #' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from a GFF file.
 #' @export
 ## Updated 2020-08-03.
-makeGeneToSymbolFromGFF <-
+makeGeneToSymbolFromGff <-
     function(file,
              ignoreVersion = TRUE,
              format = c("makeUnique", "1:1", "unmodified")) {
-        gr <- makeGRangesFromGFF(
+        gr <- makeGRangesFromGff(
             file = file,
             ignoreVersion = ignoreVersion,
             level = "genes"

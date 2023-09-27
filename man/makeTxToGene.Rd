@@ -72,7 +72,7 @@ if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
 }
 
 ## makeTxToGeneFromGFF ====
-file <- AcidBase::pasteURL(
+file <- AcidBase::pasteUrl(
     "ftp.ensembl.org",
     "pub",
     "release-102",

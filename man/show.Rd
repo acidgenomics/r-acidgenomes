@@ -4,16 +4,16 @@
 \alias{show}
 \alias{show,EnsemblGenes-method}
 \alias{show,EnsemblTranscripts-method}
-\alias{show,FlyBaseGenes-method}
-\alias{show,FlyBaseTranscripts-method}
+\alias{show,FlybaseGenes-method}
+\alias{show,FlybaseTranscripts-method}
 \alias{show,GencodeGenes-method}
 \alias{show,GencodeTranscripts-method}
-\alias{show,RefSeqGenes-method}
-\alias{show,RefSeqTranscripts-method}
-\alias{show,UCSCGenes-method}
-\alias{show,UCSCTranscripts-method}
-\alias{show,WormBaseGenes-method}
-\alias{show,WormBaseTranscripts-method}
+\alias{show,RefseqGenes-method}
+\alias{show,RefseqTranscripts-method}
+\alias{show,UcscGenes-method}
+\alias{show,UcscTranscripts-method}
+\alias{show,WormbaseGenes-method}
+\alias{show,WormbaseTranscripts-method}
 \title{Show an object}
 \usage{
 show(object)
@@ -22,25 +22,25 @@ show(object)
 
 \S4method{show}{EnsemblTranscripts}(object)
 
-\S4method{show}{FlyBaseGenes}(object)
+\S4method{show}{FlybaseGenes}(object)
 
-\S4method{show}{FlyBaseTranscripts}(object)
+\S4method{show}{FlybaseTranscripts}(object)
 
 \S4method{show}{GencodeGenes}(object)
 
 \S4method{show}{GencodeTranscripts}(object)
 
-\S4method{show}{RefSeqGenes}(object)
+\S4method{show}{RefseqGenes}(object)
 
-\S4method{show}{RefSeqTranscripts}(object)
+\S4method{show}{RefseqTranscripts}(object)
 
-\S4method{show}{UCSCGenes}(object)
+\S4method{show}{UcscGenes}(object)
 
-\S4method{show}{UCSCTranscripts}(object)
+\S4method{show}{UcscTranscripts}(object)
 
-\S4method{show}{WormBaseGenes}(object)
+\S4method{show}{WormbaseGenes}(object)
 
-\S4method{show}{WormBaseTranscripts}(object)
+\S4method{show}{WormbaseTranscripts}(object)
 }
 \arguments{
 \item{object}{Object.}

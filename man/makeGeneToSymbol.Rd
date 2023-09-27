@@ -4,7 +4,7 @@
 \alias{makeGeneToSymbol}
 \alias{makeGeneToSymbolFromEnsembl}
 \alias{makeGeneToSymbolFromEnsDb}
-\alias{makeGeneToSymbolFromGFF}
+\alias{makeGeneToSymbolFromGff}
 \title{Make a GeneToSymbol object}
 \usage{
 makeGeneToSymbolFromEnsembl(
@@ -21,7 +21,7 @@ makeGeneToSymbolFromEnsDb(
   format = c("makeUnique", "1:1", "unmodified")
 )
 
-makeGeneToSymbolFromGFF(
+makeGeneToSymbolFromGff(
   file,
   ignoreVersion = TRUE,
   format = c("makeUnique", "1:1", "unmodified")
@@ -83,7 +83,7 @@ an AnnotationHub lookup.
 \item \code{makeGeneToSymbolFromEnsDb()}: Make a \code{GeneToSymbol} object from an \code{EnsDb}
 object or annotation package.
 
-\item \code{makeGeneToSymbolFromGFF()}: Make a \code{GeneToSymbol} object from a GFF file.
+\item \code{makeGeneToSymbolFromGff()}: Make a \code{GeneToSymbol} object from a GFF file.
 
 }}
 \note{
@@ -109,8 +109,8 @@ if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
     print(x)
 }
 
-## makeGeneToSymbolFromGFF ====
-file <- AcidBase::pasteURL(
+## makeGeneToSymbolFromGff ====
+file <- AcidBase::pasteUrl(
     "ftp.ensembl.org",
     "pub",
     "release-102",
@@ -119,7 +119,7 @@ file <- AcidBase::pasteURL(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-x <- makeGeneToSymbolFromGFF(
+x <- makeGeneToSymbolFromGff(
     file = file,
     ignoreVersion = FALSE
 )

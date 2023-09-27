@@ -33,10 +33,10 @@ NULL
 `show,EnsemblTranscripts` <- # nolint
     .showGRanges
 
-`show,FlyBaseGenes` <- # nolint
+`show,FlybaseGenes` <- # nolint
     .showGRanges
 
-`show,FlyBaseTranscripts` <- # nolint
+`show,FlybaseTranscripts` <- # nolint
     .showGRanges
 
 `show,GencodeGenes` <- # nolint
@@ -45,22 +45,22 @@ NULL
 `show,GencodeTranscripts` <- # nolint
     .showGRanges
 
-`show,RefSeqGenes` <- # nolint
+`show,RefseqGenes` <- # nolint
     .showGRanges
 
-`show,RefSeqTranscripts` <- # nolint
+`show,RefseqTranscripts` <- # nolint
     .showGRanges
 
-`show,UCSCGenes` <- # nolint
+`show,UcscGenes` <- # nolint
     .showGRanges
 
-`show,UCSCTranscripts` <- # nolint
+`show,UcscTranscripts` <- # nolint
     .showGRanges
 
-`show,WormBaseGenes` <- # nolint
+`show,WormbaseGenes` <- # nolint
     .showGRanges
 
-`show,WormBaseTranscripts` <- # nolint
+`show,WormbaseTranscripts` <- # nolint
     .showGRanges
 
 
@@ -85,16 +85,16 @@ setMethod(
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "FlyBaseGenes"),
-    definition = `show,FlyBaseGenes`
+    signature = signature(object = "FlybaseGenes"),
+    definition = `show,FlybaseGenes`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "FlyBaseTranscripts"),
-    definition = `show,FlyBaseTranscripts`
+    signature = signature(object = "FlybaseTranscripts"),
+    definition = `show,FlybaseTranscripts`
 )
 
 #' @rdname show
@@ -117,46 +117,46 @@ setMethod(
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "RefSeqGenes"),
-    definition = `show,RefSeqGenes`
+    signature = signature(object = "RefseqGenes"),
+    definition = `show,RefseqGenes`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "RefSeqTranscripts"),
-    definition = `show,RefSeqTranscripts`
+    signature = signature(object = "RefseqTranscripts"),
+    definition = `show,RefseqTranscripts`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "UCSCGenes"),
-    definition = `show,UCSCGenes`
+    signature = signature(object = "UcscGenes"),
+    definition = `show,UcscGenes`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "UCSCTranscripts"),
-    definition = `show,UCSCTranscripts`
+    signature = signature(object = "UcscTranscripts"),
+    definition = `show,UcscTranscripts`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "WormBaseGenes"),
-    definition = `show,WormBaseGenes`
+    signature = signature(object = "WormbaseGenes"),
+    definition = `show,WormbaseGenes`
 )
 
 #' @rdname show
 #' @export
 setMethod(
     f = "show",
-    signature = signature(object = "WormBaseTranscripts"),
-    definition = `show,WormBaseTranscripts`
+    signature = signature(object = "WormbaseTranscripts"),
+    definition = `show,WormbaseTranscripts`
 )

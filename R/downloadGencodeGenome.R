@@ -24,7 +24,7 @@ downloadGencodeGenome <-
              cache = FALSE) {
         assert(
             isOrganism(organism),
-            isString(genomeBuild, nullOK = TRUE),
+            isString(genomeBuild, nullOk = TRUE),
             isScalar(release) || is.null(release),
             isString(outputDir),
             isFlag(cache)
@@ -47,7 +47,7 @@ downloadGencodeGenome <-
             "Mus musculus" = "mouse"
         )
         ## Can switch to HTTPS if FTP server is down.
-        releaseUrl <- pasteURL(
+        releaseUrl <- pasteUrl(
             "ftp.ebi.ac.uk",
             "pub",
             "databases",
@@ -57,7 +57,7 @@ downloadGencodeGenome <-
             protocol = "ftp"
         )
         if (identical(genomeBuild, "GRCh37")) {
-            releaseUrl <- pasteURL(releaseUrl, "GRCh37_mapping")
+            releaseUrl <- pasteUrl(releaseUrl, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
             organism, genomeBuild, "gencode", release
@@ -126,7 +126,7 @@ downloadGencodeGenome <-
              releaseUrl,
              cache) {
         urls <- c(
-            "gff" = pasteURL(
+            "gff" = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
@@ -139,7 +139,7 @@ downloadGencodeGenome <-
                     ".annotation.gff3.gz"
                 )
             ),
-            "gtf" = pasteURL(
+            "gtf" = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
@@ -189,12 +189,12 @@ downloadGencodeGenome <-
             files[["gtfSymlink"]] <- gtfSymlink
         }
         ## Save genomic ranges.
-        genes <- makeGRangesFromGFF(
+        genes <- makeGRangesFromGff(
             gtfFile,
             level = "genes",
             ignoreVersion = FALSE
         )
-        transcripts <- makeGRangesFromGFF(
+        transcripts <- makeGRangesFromGff(
             gtfFile,
             level = "transcripts",
             ignoreVersion = FALSE
@@ -286,7 +286,7 @@ downloadGencodeGenome <-
              releaseUrl,
              cache) {
         urls <- c(
-            "fasta" = pasteURL(
+            "fasta" = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
@@ -326,7 +326,7 @@ downloadGencodeGenome <-
              releaseUrl,
              cache) {
         urls <- c(
-            "readme" = pasteURL(
+            "readme" = pasteUrl(
                 releaseUrl,
                 switch(
                     EXPR = genomeBuild,
@@ -334,14 +334,14 @@ downloadGencodeGenome <-
                     "_README.TXT"
                 )
             ),
-            "md5sums" = pasteURL(releaseUrl, "MD5SUMS"),
+            "md5sums" = pasteUrl(releaseUrl, "MD5SUMS"),
             ## TSV mapping transcripts to NCBI (Entrez) genes.
-            "ncbiGene" = pasteURL(
+            "ncbiGene" = pasteUrl(
                 releaseUrl,
                 paste0("gencode.v", release, ".metadata.EntrezGene.gz")
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
-            "refSeq" = pasteURL(
+            "refSeq" = pasteUrl(
                 releaseUrl,
                 paste0("gencode.v", release, ".metadata.RefSeq.gz")
             )
@@ -367,7 +367,7 @@ downloadGencodeGenome <-
              releaseUrl,
              cache) {
         urls <- c(
-            "fasta" = pasteURL(
+            "fasta" = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v", release,
@@ -406,7 +406,7 @@ downloadGencodeGenome <-
         export(object = lines, con = fastaFixedFile)
         files[["fastaFixed"]] <- fastaFixedFile
         ## Save transcript-to-gene mappings.
-        t2g <- makeTxToGeneFromFASTA(
+        t2g <- makeTxToGeneFromFasta(
             file = fastaFile,
             ignoreVersion = FALSE
         )

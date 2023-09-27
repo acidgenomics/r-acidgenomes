@@ -29,7 +29,7 @@ Map(
     },
     file = files,
     MoreArgs = list(
-        "remoteDir" = AcidGenomesTestsURL,
+        "remoteDir" = AcidGenomesTestsUrl,
         "envir" = environment()
     )
 )

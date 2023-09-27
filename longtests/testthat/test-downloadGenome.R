@@ -142,9 +142,9 @@ test_that("downloadGencodeGenome", {
     unlink2(testdir)
 })
 
-test_that("downloadRefSeqGenome", {
+test_that("downloadRefseqGenome", {
     testdir <- tempdir2()
-    info <- downloadRefSeqGenome(
+    info <- downloadRefseqGenome(
         organism = "Homo sapiens",
         taxonomicGroup = "vertebrate_mammalian",
         genomeBuild = "GCF_000001405.40_GRCh38.p14",
@@ -168,13 +168,13 @@ test_that("downloadRefSeqGenome", {
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
-    expect_s4_class(genes, "RefSeqGenes")
+    expect_s4_class(genes, "RefseqGenes")
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c("A1BG", "A1BG-AS1", "A1CF")
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
-    expect_s4_class(transcripts, "RefSeqTranscripts")
+    expect_s4_class(transcripts, "RefseqTranscripts")
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c("NM_000014.6", "NM_000015.3", "NM_000016.6")
@@ -204,9 +204,9 @@ test_that("downloadRefSeqGenome", {
     unlink2(testdir)
 })
 
-test_that("downloadUCSCGenome", {
+test_that("downloadUcscGenome", {
     testdir <- tempdir2()
-    info <- downloadUCSCGenome(
+    info <- downloadUcscGenome(
         organism = "Homo sapiens",
         genomeBuild = "hg38",
         outputDir = testdir,
@@ -228,7 +228,7 @@ test_that("downloadUCSCGenome", {
         )
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
-    expect_s4_class(genes, "UCSCGenes")
+    expect_s4_class(genes, "UcscGenes")
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -238,7 +238,7 @@ test_that("downloadUCSCGenome", {
         )
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
-    expect_s4_class(transcripts, "UCSCTranscripts")
+    expect_s4_class(transcripts, "UcscTranscripts")
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
