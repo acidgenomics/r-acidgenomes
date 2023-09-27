@@ -20,15 +20,13 @@
 #'     mapEnsemblReleaseToURL(release = 100L)
 #' })
 mapEnsemblReleaseToURL <- function(release) {
+    assert(isInt(release, nullOK = TRUE))
     currentUrl <- pasteURL("useast.ensembl.org", protocol = "https")
     if (is.null(release)) {
         return(currentUrl)
     }
     release <- as.character(release)
-    assert(
-        requireNamespaces("rvest"),
-        isString(release)
-    )
+    assert(requireNamespaces("rvest"))
     url <- pasteURL(
         "useast.ensembl.org",
         "info",
@@ -78,7 +76,10 @@ mapEnsemblReleaseToURL <- function(release) {
         USE.NAMES = FALSE
     ))
     df <- df[, c("name", "date", "url", "version", "currentRelease")]
-    assert(isSubset(release, df[["version"]]))
+    assert(
+        isSubset(release, df[["version"]]),
+        msg = "Unsupported release."
+    )
     i <- match(x = release, table = df[["version"]])
     isCurrent <- df[i, "currentRelease"]
     if (isTRUE(isCurrent)) {
