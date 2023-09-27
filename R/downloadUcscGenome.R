@@ -181,7 +181,7 @@ downloadUcscGenome <-
             file = file.path(outputDir, "transcripts.rds")
         )
         ## Save transcript-to-gene mappings.
-        t2g <- makeTxToGeneFromGFF(gtfFile)
+        t2g <- makeTxToGeneFromGff(gtfFile)
         saveRDS(object = t2g, file = file.path(outputDir, "tx2gene.rds"))
         t2gFile <- export(
             object = t2g,

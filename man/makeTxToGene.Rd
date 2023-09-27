@@ -4,7 +4,7 @@
 \alias{makeTxToGene}
 \alias{makeTxToGeneFromEnsembl}
 \alias{makeTxToGeneFromEnsDb}
-\alias{makeTxToGeneFromGFF}
+\alias{makeTxToGeneFromGff}
 \title{Make a TxToGene object}
 \usage{
 makeTxToGeneFromEnsembl(
@@ -16,7 +16,7 @@ makeTxToGeneFromEnsembl(
 
 makeTxToGeneFromEnsDb(object, ignoreVersion = FALSE)
 
-makeTxToGeneFromGFF(file, ignoreVersion = FALSE)
+makeTxToGeneFromGff(file, ignoreVersion = FALSE)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -71,7 +71,7 @@ if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
     print(x)
 }
 
-## makeTxToGeneFromGFF ====
+## makeTxToGeneFromGff ====
 file <- AcidBase::pasteUrl(
     "ftp.ensembl.org",
     "pub",
@@ -81,6 +81,6 @@ file <- AcidBase::pasteUrl(
     "Homo_sapiens.GRCh38.102.gtf.gz",
     protocol = "ftp"
 )
-x <- makeTxToGeneFromGFF(file = file)
+x <- makeTxToGeneFromGff(file = file)
 print(x)
 }

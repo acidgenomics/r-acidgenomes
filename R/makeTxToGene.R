@@ -23,7 +23,7 @@
 #'     print(x)
 #' }
 #'
-#' ## makeTxToGeneFromGFF ====
+#' ## makeTxToGeneFromGff ====
 #' file <- AcidBase::pasteUrl(
 #'     "ftp.ensembl.org",
 #'     "pub",
@@ -33,7 +33,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "ftp"
 #' )
-#' x <- makeTxToGeneFromGFF(file = file)
+#' x <- makeTxToGeneFromGff(file = file)
 #' print(x)
 NULL
 
@@ -80,7 +80,7 @@ makeTxToGeneFromEnsDb <-
 #' @rdname makeTxToGene
 #' @export
 ## Updated 2023-07-31.
-makeTxToGeneFromGFF <-
+makeTxToGeneFromGff <-
     function(file,
              ignoreVersion = FALSE) {
         gr <- makeGRangesFromGff(
