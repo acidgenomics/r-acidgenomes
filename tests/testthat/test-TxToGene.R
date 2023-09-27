@@ -31,7 +31,11 @@ test_that("Complete cases", {
         ),
         row.names = LETTERS[seq_len(3L)]
     )
-    metadata(expected) <- list("dropped" = c("D" = 4L, "E" = 5L))
+    metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "dropped" = c("D" = 4L, "E" = 5L),
+        "packageVersion" = .pkgVersion
+    )
     expected <- new(Class = "TxToGene", expected)
     expect_identical(object, expected)
     expect_output(
@@ -71,6 +75,10 @@ test_that("Ensure transcripts return sorted", {
             "gene1"
         ),
         row.names = c("B", "A", "D", "C")
+    )
+    metadata(expected) <- list(
+        "date" = Sys.Date(),
+        "packageVersion" = .pkgVersion
     )
     expected <- new(Class = "TxToGene", expected)
     expect_identical(object, expected)
