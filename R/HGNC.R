@@ -2,7 +2,7 @@
 #' metadata
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-09-27.
 #'
 #' @return `HGNC`.
 #'
@@ -28,12 +28,13 @@ HGNC <- # nolint
         )
         file <- .cacheIt(url)
         lines <- import(file, format = "lines")
+        ## FIXME Rework this as `fillLines` in pipette and then use here.
         spl <- strsplit(x = lines, split = "\t", fixed = TRUE)
         fixIdx <- which(lengths(spl) != length(spl[[1L]]))
         spl[fixIdx] <- lapply(
             X = spl[fixIdx],
             FUN = function(x) {
-                append(x = x, values = x[[1L]])
+                append(x = x, values = NA)
             }
         )
         assert(all(lengths(spl) == length(spl[[1L]])))
