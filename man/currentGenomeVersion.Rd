@@ -4,20 +4,20 @@
 \alias{currentGenomeVersion}
 \alias{currentEnsemblVersion}
 \alias{currentGencodeVersion}
-\alias{currentRefSeqVersion}
-\alias{currentFlyBaseVersion}
-\alias{currentWormBaseVersion}
+\alias{currentRefseqVersion}
+\alias{currentFlybaseVersion}
+\alias{currentWormbaseVersion}
 \title{Current genome version}
 \usage{
 currentEnsemblVersion()
 
 currentGencodeVersion(organism = c("Homo sapiens", "Mus musculus"))
 
-currentRefSeqVersion()
+currentRefseqVersion()
 
-currentFlyBaseVersion(dmel = FALSE)
+currentFlybaseVersion(dmel = FALSE)
 
-currentWormBaseVersion()
+currentWormbaseVersion()
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -56,7 +56,7 @@ print(x)
 ## RefSeq.
 x <- try(
     expr = {
-        currentRefSeqVersion()
+        currentRefseqVersion()
     },
     silent = TRUE
 )
@@ -64,7 +64,7 @@ print(x)
 ## WormBase.
 x <- try(
     expr = {
-        currentWormBaseVersion()
+        currentWormbaseVersion()
     },
     silent = TRUE
 )

@@ -37,8 +37,8 @@ mapGeneNamesToEnsembl <-
         assert(
             isCharacter(genes),
             isOrganism(organism),
-            isString(genomeBuild, nullOK = TRUE),
-            isInt(release, nullOK = TRUE)
+            isString(genomeBuild, nullOk = TRUE),
+            isInt(release, nullOk = TRUE)
         )
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
@@ -47,17 +47,17 @@ mapGeneNamesToEnsembl <-
             release <- currentEnsemblVersion()
         }
         if (identical(organism, "Homo sapiens")) {
-            hgnc <- HGNC()
+            hgnc <- Hgnc()
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
-            ids <- mapGeneNamesToHGNC(genes = genes, hgnc = hgnc)
+            ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
         } else {
             map <- .importEnsemblNcbiMap(
                 organism = organism,
                 genomeBuild = genomeBuild,
                 release = release
             )
-            ids <- mapGeneNamesToNCBI(genes = genes, organism = organism)
+            ids <- mapGeneNamesToNcbi(genes = genes, organism = organism)
         }
         idx <- match(x = ids, table = map[[1L]])
         assert(!anyNA(idx), msg = "Failed to map all genes.")
@@ -79,7 +79,7 @@ mapGeneNamesToEnsembl <-
             replacement = "",
             x = genomeBuild
         )
-        url <- pasteURL(
+        url <- pasteUrl(
             "ftp.ensembl.org",
             "pub",
             paste0("release-", release),

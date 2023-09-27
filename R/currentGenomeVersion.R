@@ -35,7 +35,7 @@
 #' ## RefSeq.
 #' x <- try(
 #'     expr = {
-#'         currentRefSeqVersion()
+#'         currentRefseqVersion()
 #'     },
 #'     silent = TRUE
 #' )
@@ -43,7 +43,7 @@
 #' ## WormBase.
 #' x <- try(
 #'     expr = {
-#'         currentWormBaseVersion()
+#'         currentWormbaseVersion()
 #'     },
 #'     silent = TRUE
 #' )
@@ -56,7 +56,7 @@ NULL
 #' @export
 currentEnsemblVersion <- function() {
     x <- import(
-        con = pasteURL(
+        con = pasteUrl(
             "ftp.ensembl.org",
             "pub",
             "current_README",
@@ -110,7 +110,7 @@ currentGencodeVersion <-
 
 #' @rdname currentGenomeVersion
 #' @export
-currentRefSeqVersion <- function() {
+currentRefseqVersion <- function() {
     x <- import(
         con = "https://ftp.ncbi.nlm.nih.gov/refseq/release/RELEASE_NUMBER",
         format = "lines",
@@ -124,15 +124,15 @@ currentRefSeqVersion <- function() {
 
 #' @rdname currentGenomeVersion
 #' @export
-currentFlyBaseVersion <- function(dmel = FALSE) {
+currentFlybaseVersion <- function(dmel = FALSE) {
     assert(isFlag(dmel))
-    url <- pasteURL("ftp.flybase.net", "releases", protocol = "ftp")
+    url <- pasteUrl("ftp.flybase.net", "releases", protocol = "ftp")
     if (isTRUE(dmel)) {
-        x <- getURLDirList(pasteURL(url, "current"))
+        x <- getUrlDirList(pasteUrl(url, "current"))
         x <- grep(pattern = "^dmel_r[.0-9]+$", x = x, value = TRUE)
         x <- strsplit(x = x, split = "_", fixed = TRUE)[[1L]][[2L]]
     } else {
-        x <- getURLDirList(url)
+        x <- getUrlDirList(url)
         x <- grep(pattern = "^FB[0-9]{4}_[0-9]{2}$", x = x, value = TRUE)
         x <- tail(sort(x), n = 1L)
     }
@@ -143,13 +143,13 @@ currentFlyBaseVersion <- function(dmel = FALSE) {
 
 #' @rdname currentGenomeVersion
 #' @export
-currentWormBaseVersion <- function() {
-    url <- pasteURL(
+currentWormbaseVersion <- function() {
+    url <- pasteUrl(
         "ftp.wormbase.org", "pub", "wormbase",
         "releases", "current-production-release",
         protocol = "ftp"
     )
-    x <- getURLDirList(paste0(url, "/"))
+    x <- getUrlDirList(paste0(url, "/"))
     x <- grep(pattern = "letter.WS[0-9]+", x = x, value = TRUE)
     x <- strsplit(x = x, split = ".", fixed = TRUE)[[1L]][[2L]]
     x

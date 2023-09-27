@@ -10,7 +10,7 @@
              outputDir,
              cache) {
         assert(
-            allAreURLs(urls),
+            allAreUrls(urls),
             isString(outputDir),
             isFlag(cache)
         )
@@ -121,7 +121,7 @@
 .nest2 <- function(object, by, exclude = NULL) {
     assert(
         isString(by),
-        isCharacter(exclude, nullOK = TRUE)
+        isCharacter(exclude, nullOk = TRUE)
     )
     if (!is.null(exclude)) {
         object <- object[, setdiff(colnames(object), exclude)]

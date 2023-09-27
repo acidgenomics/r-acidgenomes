@@ -3,7 +3,7 @@
 DataFrame <- S4Vectors::DataFrame
 data <- utils::data
 hasInternet <- goalie::hasInternet
-pasteURL <- AcidBase::pasteURL
+pasteUrl <- AcidBase::pasteUrl
 seqinfo <- GenomeInfoDb::seqinfo
 seqlengths <- GenomeInfoDb::seqlengths
 seqnames <- GenomeInfoDb::seqnames
@@ -31,7 +31,7 @@ gr <- GRanges
 
 ## Updated 2023-09-26.
 txFastas <- c(
-    "ensembl" = pasteURL(
+    "ensembl" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "release-108",
@@ -41,7 +41,7 @@ txFastas <- c(
         "Homo_sapiens.GRCh38.cdna.all.fa.gz",
         protocol = "ftp"
     ),
-    "flybase" = pasteURL(
+    "flybase" = pasteUrl(
         "ftp.flybase.net",
         "releases",
         "FB2022_06",
@@ -50,7 +50,7 @@ txFastas <- c(
         "dmel-all-transcript-r6.49.fasta.gz",
         protocol = "ftp"
     ),
-    "gencode" = pasteURL(
+    "gencode" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -60,7 +60,7 @@ txFastas <- c(
         "gencode.v42.transcripts.fa.gz",
         protocol = "ftp"
     ),
-    "wormbase" = pasteURL(
+    "wormbase" = pasteUrl(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
@@ -76,7 +76,7 @@ txFastas <- c(
 
 ## Updated 2023-01-30.
 gffs <- c(
-    "ensembl_grch37_gff3" = pasteURL(
+    "ensembl_grch37_gff3" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "grch37",
@@ -86,7 +86,7 @@ gffs <- c(
         "Homo_sapiens.GRCh37.87.gff3.gz",
         protocol = "ftp"
     ),
-    "ensembl_grch37_gtf" = pasteURL(
+    "ensembl_grch37_gtf" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "grch37",
@@ -96,7 +96,7 @@ gffs <- c(
         "Homo_sapiens.GRCh37.87.gtf.gz",
         protocol = "ftp"
     ),
-    "ensembl_grch38_gff3" = pasteURL(
+    "ensembl_grch38_gff3" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "release-108",
@@ -105,7 +105,7 @@ gffs <- c(
         "Homo_sapiens.GRCh38.108.gff3.gz",
         protocol = "ftp"
     ),
-    "ensembl_grch38_gtf" = pasteURL(
+    "ensembl_grch38_gtf" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "release-108",
@@ -115,7 +115,7 @@ gffs <- c(
         protocol = "ftp"
     ),
     ## NOTE Not supported yet in the package.
-    "flybase_gff3" = pasteURL(
+    "flybase_gff3" = pasteUrl(
         "ftp.flybase.net",
         "releases",
         "FB2022_06",
@@ -124,7 +124,7 @@ gffs <- c(
         "dmel-all-r6.49.gff.gz",
         protocol = "ftp"
     ),
-    "flybase_gtf" = pasteURL(
+    "flybase_gtf" = pasteUrl(
         "ftp.flybase.net",
         "releases",
         "FB2022_06",
@@ -133,7 +133,7 @@ gffs <- c(
         "dmel-all-r6.49.gtf.gz",
         protocol = "ftp"
     ),
-    "gencode_grch37_gff3" = pasteURL(
+    "gencode_grch37_gff3" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -144,7 +144,7 @@ gffs <- c(
         "gencode.v42lift37.annotation.gff3.gz",
         protocol = "ftp"
     ),
-    "gencode_grch37_gtf" = pasteURL(
+    "gencode_grch37_gtf" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -155,7 +155,7 @@ gffs <- c(
         "gencode.v42lift37.annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "gencode_grch38_gff3" = pasteURL(
+    "gencode_grch38_gff3" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -165,7 +165,7 @@ gffs <- c(
         "gencode.v42.annotation.gff3.gz",
         protocol = "ftp"
     ),
-    "gencode_grch38_gtf" = pasteURL(
+    "gencode_grch38_gtf" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -175,7 +175,7 @@ gffs <- c(
         "gencode.v42.annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "gencode_grcm38_gff3" = pasteURL(
+    "gencode_grcm38_gff3" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -185,7 +185,7 @@ gffs <- c(
         "gencode.vM31.annotation.gff3.gz",
         protocol = "ftp"
     ),
-    "gencode_grcm38_gtf" = pasteURL(
+    "gencode_grcm38_gtf" = pasteUrl(
         "ftp.ebi.ac.uk",
         "pub",
         "databases",
@@ -195,7 +195,7 @@ gffs <- c(
         "gencode.vM31.annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "refseq_grch38_gff3" = pasteURL(
+    "refseq_grch38_gff3" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
         "refseq",
@@ -206,7 +206,7 @@ gffs <- c(
         "GCF_000001405.40_GRCh38.p14_genomic.gff.gz",
         protocol = "ftp"
     ),
-    "refseq_grch38_gtf" = pasteURL(
+    "refseq_grch38_gtf" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
         "refseq",
@@ -217,7 +217,7 @@ gffs <- c(
         "GCF_000001405.40_GRCh38.p14_genomic.gtf.gz",
         protocol = "ftp"
     ),
-    "refseq_grch38_pipeline_gff3" = pasteURL(
+    "refseq_grch38_pipeline_gff3" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
         "all",
@@ -230,7 +230,7 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
         protocol = "ftp"
     ),
-    "refseq_grch38_pipeline_gtf" = pasteURL(
+    "refseq_grch38_pipeline_gtf" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
         "all",
@@ -243,7 +243,7 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gtf.gz",
         protocol = "ftp"
     ),
-    "ucsc_hg38_knowngene_gtf" = pasteURL(
+    "ucsc_hg38_knowngene_gtf" = pasteUrl(
         "hgdownload.soe.ucsc.edu",
         "goldenPath",
         "hg38",
@@ -252,7 +252,7 @@ gffs <- c(
         "hg38.knownGene.gtf.gz",
         protocol = "ftp"
     ),
-    "ucsc_hg38_ncbirefseq_gtf" = pasteURL(
+    "ucsc_hg38_ncbirefseq_gtf" = pasteUrl(
         "hgdownload.soe.ucsc.edu",
         "goldenPath",
         "hg38",
@@ -262,7 +262,7 @@ gffs <- c(
         protocol = "ftp"
     ),
     ## NOTE Not supported yet in the package.
-    "wormbase_gff3" = pasteURL(
+    "wormbase_gff3" = pasteUrl(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
@@ -274,7 +274,7 @@ gffs <- c(
         "c_elegans.PRJNA13758.WS287.annotations.gff3.gz",
         protocol = "ftp"
     ),
-    "wormbase_gtf" = pasteURL(
+    "wormbase_gtf" = pasteUrl(
         "ftp.wormbase.org",
         "pub",
         "wormbase",

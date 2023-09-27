@@ -303,13 +303,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `FlyBaseGenes`.
+#' @return `FlybaseGenes`.
 setClass(
-    Class = "FlyBaseGenes",
+    Class = "FlybaseGenes",
     contains = "GRanges"
 )
 setValidity(
-    Class = "FlyBaseGenes",
+    Class = "FlybaseGenes",
     method = function(object) {
         ok <- .validateFlybase(object)
         if (!isTRUE(ok)) {
@@ -333,13 +333,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `FlyBaseTranscripts`.
+#' @return `FlybaseTranscripts`.
 setClass(
-    Class = "FlyBaseTranscripts",
+    Class = "FlybaseTranscripts",
     contains = "GRanges"
 )
 setValidity(
-    Class = "FlyBaseTranscripts",
+    Class = "FlybaseTranscripts",
     method = function(object) {
         ok <- .validateFlybase(object)
         if (!isTRUE(ok)) {
@@ -423,13 +423,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `RefSeqGenes`.
+#' @return `RefseqGenes`.
 setClass(
-    Class = "RefSeqGenes",
+    Class = "RefseqGenes",
     contains = "CompressedGRangesList"
 )
 setValidity(
-    Class = "RefSeqGenes",
+    Class = "RefseqGenes",
     method = function(object) {
         ok <- .validateRefseq(object)
         if (!isTRUE(ok)) {
@@ -453,13 +453,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `RefSeqTranscripts`.
+#' @return `RefseqTranscripts`.
 setClass(
-    Class = "RefSeqTranscripts",
+    Class = "RefseqTranscripts",
     contains = "CompressedGRangesList"
 )
 setValidity(
-    Class = "RefSeqTranscripts",
+    Class = "RefseqTranscripts",
     method = function(object) {
         ok <- .validateRefseq(object)
         if (!isTRUE(ok)) {
@@ -483,13 +483,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `UCSCGenes`.
+#' @return `UcscGenes`.
 setClass(
-    Class = "UCSCGenes",
+    Class = "UcscGenes",
     contains = "GRanges"
 )
 setValidity(
-    Class = "UCSCGenes",
+    Class = "UcscGenes",
     method = function(object) {
         ok <- .validateUcsc(object)
         if (!isTRUE(ok)) {
@@ -513,13 +513,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `UCSCTranscripts`.
+#' @return `UcscTranscripts`.
 setClass(
-    Class = "UCSCTranscripts",
+    Class = "UcscTranscripts",
     contains = "GRanges"
 )
 setValidity(
-    Class = "UCSCTranscripts",
+    Class = "UcscTranscripts",
     method = function(object) {
         ok <- .validateUcsc(object)
         if (!isTRUE(ok)) {
@@ -543,13 +543,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `WormBaseGenes`.
+#' @return `WormbaseGenes`.
 setClass(
-    Class = "WormBaseGenes",
+    Class = "WormbaseGenes",
     contains = "GRanges"
 )
 setValidity(
-    Class = "WormBaseGenes",
+    Class = "WormbaseGenes",
     method = function(object) {
         ok <- .validateWormbase(object)
         if (!isTRUE(ok)) {
@@ -573,13 +573,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `WormBaseTranscripts`.
+#' @return `WormbaseTranscripts`.
 setClass(
-    Class = "WormBaseTranscripts",
+    Class = "WormbaseTranscripts",
     contains = "GRanges"
 )
 setValidity(
-    Class = "WormBaseTranscripts",
+    Class = "WormbaseTranscripts",
     method = function(object) {
         ok <- .validateWormbase(object)
         if (!isTRUE(ok)) {
@@ -602,13 +602,13 @@ setValidity(
 #' @export
 #' @note Updated 2023-09-26.
 #'
-#' @return `HGNC`.
+#' @return `Hgnc`.
 setClass(
-    Class = "HGNC",
+    Class = "Hgnc",
     contains = "DFrame"
 )
 setValidity(
-    Class = "HGNC",
+    Class = "Hgnc",
     method = function(object) {
         ok <- validateClasses(
             object = object,
@@ -692,15 +692,15 @@ setValidity(
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-09-27.
 #'
-#' @return `MGI`.
+#' @return `Mgi`.
 setClass(
-    Class = "MGI",
+    Class = "Mgi",
     contains = "DFrame"
 )
 setValidity(
-    Class = "MGI",
+    Class = "Mgi",
     method = function(object) {
         ok <- validateClasses(
             object = object,

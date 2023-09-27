@@ -22,7 +22,7 @@ HumanToMouse <- # nolint
             hasInternet(),
             isFlag(unique)
         )
-        url <- pasteURL(
+        url <- pasteUrl(
             "www.informatics.jax.org",
             "downloads",
             "reports",

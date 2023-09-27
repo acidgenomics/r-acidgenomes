@@ -24,7 +24,7 @@
 #' }
 #'
 #' ## makeTxToGeneFromGFF ====
-#' file <- AcidBase::pasteURL(
+#' file <- AcidBase::pasteUrl(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",
@@ -83,7 +83,7 @@ makeTxToGeneFromEnsDb <-
 makeTxToGeneFromGFF <-
     function(file,
              ignoreVersion = FALSE) {
-        gr <- makeGRangesFromGFF(
+        gr <- makeGRangesFromGff(
             file = file,
             level = "transcripts",
             ignoreVersion = ignoreVersion,
