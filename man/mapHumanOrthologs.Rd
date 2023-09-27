@@ -48,7 +48,7 @@ genes <- c(
     "ENSMUSG00000000037", "ENSMUSG00000000049"
 )
 ## Protect against Ensembl timeouts causing build checks to fail.
-if (goalie::isAnExistingURL("https://ensembl.org")) {
+if (goalie::isAnExistingUrl("https://ensembl.org")) {
     try({
         x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
         print(x)

@@ -20,8 +20,8 @@
              release = NULL) {
         assert(
             isString(organism),
-            isString(genomeBuild, nullOK = TRUE),
-            isInt(release, nullOK = TRUE)
+            isString(genomeBuild, nullOk = TRUE),
+            isInt(release, nullOk = TRUE)
         )
         organism <- gsub(
             pattern = "_",
@@ -65,8 +65,8 @@
              ah = NULL) {
         assert(
             isString(organism),
-            isString(genomeBuild, nullOK = TRUE),
-            isInt(release, nullOK = TRUE),
+            isString(genomeBuild, nullOk = TRUE),
+            isInt(release, nullOk = TRUE),
             is(ah, "AnnotationHub") || is.null(ah)
         )
         ## Standardize organism name, if necessary.
@@ -282,7 +282,7 @@
     assert(
         requireNamespaces("ensembldb"),
         is(object, "EnsDb"),
-        isString(level, nullOK = TRUE)
+        isString(level, nullOk = TRUE)
     )
     metadata <- metadata(object)
     assert(is.data.frame(metadata))

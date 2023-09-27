@@ -24,7 +24,7 @@ gencodeReleaseHistory <-
             "Homo sapiens" = "human",
             "Mus musculus" = "mouse"
         )
-        url <- pasteURL(
+        url <- pasteUrl(
             "www.gencodegenes.org",
             orgShort,
             "releases.html",

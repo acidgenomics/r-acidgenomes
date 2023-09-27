@@ -30,10 +30,10 @@ NcbiGeneInfo <- # nolint
         assert(
             hasInternet(),
             isOrganism(organism),
-            isString(taxonomicGroup, nullOK = TRUE),
+            isString(taxonomicGroup, nullOk = TRUE),
             isFlag(cache)
         )
-        baseURL <- pasteURL(
+        baseURL <- pasteUrl(
             "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
             protocol = "https"
         )
@@ -43,7 +43,7 @@ NcbiGeneInfo <- # nolint
                 mode = "geneInfo"
             )
         }
-        url <- pasteURL(
+        url <- pasteUrl(
             baseURL,
             taxonomicGroup,
             paste0(
@@ -89,7 +89,7 @@ NcbiGeneInfo <- # nolint
         colnames(df)[colnames(df) == "symbol"] <- "geneName"
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
         colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
-        df <- removeNA(df)
+        df <- removeNa(df)
         df <- df[, sort(colnames(df))]
         rownames(df) <- df[["geneId"]]
         splitToList <- function(x) {

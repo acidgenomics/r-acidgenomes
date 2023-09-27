@@ -25,18 +25,18 @@
 #' currentGencodeGenomeBuild("Mus musculus")
 #'
 #' ## RefSeq.
-#' currentRefSeqGenomeBuild(
+#' currentRefseqGenomeBuild(
 #'     organism = "Homo sapiens",
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
-#' currentRefSeqGenomeBuild(
+#' currentRefseqGenomeBuild(
 #'     organism = "Mus musculus",
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
 #'
 #' ## UCSC.
-#' currentUCSCGenomeBuild("Homo sapiens")
-#' currentUCSCGenomeBuild("Mus musculus")
+#' currentUcscGenomeBuild("Homo sapiens")
+#' currentUcscGenomeBuild("Mus musculus")
 NULL
 
 
@@ -63,7 +63,7 @@ currentEnsemblGenomeBuild <-
     function(organism) {
         assert(isOrganism(organism))
         organism <- snakeCase(organism)
-        json <- getJSON(pasteURL(
+        json <- getJson(pasteUrl(
             "rest.ensembl.org",
             "info",
             "assembly",
@@ -104,12 +104,12 @@ currentGencodeGenomeBuild <-
 #' *Only applies to RefSeq*.
 #' FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 #' Defining this manually avoids having to query the FTP server.
-currentRefSeqGenomeBuild <-
+currentRefseqGenomeBuild <-
     function(organism,
              taxonomicGroup = NULL) {
         assert(
             isOrganism(organism),
-            isString(taxonomicGroup, nullOK = TRUE)
+            isString(taxonomicGroup, nullOk = TRUE)
         )
         baseUrl <- .getRefSeqGenomeUrl(
             organism = organism,
@@ -117,7 +117,7 @@ currentRefSeqGenomeBuild <-
             quiet = TRUE
         )
         summary <- .getRefSeqAssemblySummary(
-            file = pasteURL(baseUrl, "assembly_summary.txt")
+            file = pasteUrl(baseUrl, "assembly_summary.txt")
         )
         assert(isSubset("ftp_path", names(summary)))
         out <- basename(summary[["ftp_path"]])
@@ -129,10 +129,10 @@ currentRefSeqGenomeBuild <-
 ## Updated 2023-04-14.
 #' @rdname currentGenomeBuild
 #' @export
-currentUCSCGenomeBuild <-
+currentUcscGenomeBuild <-
     function(organism) {
         assert(isOrganism(organism))
-        json <- getJSON("https://api.genome.ucsc.edu/list/ucscGenomes")
+        json <- getJson("https://api.genome.ucsc.edu/list/ucscGenomes")
         assert(isSubset("ucscGenomes", names(json)))
         json <- json[["ucscGenomes"]]
         lst <- Map(

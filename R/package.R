@@ -20,7 +20,7 @@ NULL
 
 #' @importFrom AcidGenerics EnsemblToNcbi GeneToSymbol NcbiToEnsembl TxToGene
 #' as.DataFrame camelCase encode export import kebabCase leftJoin makeNames
-#' matchNested mutateAt rbindToDataFrame removeNA sanitizeNA snakeCase
+#' matchNested mutateAt rbindToDataFrame removeNa sanitizeNa snakeCase
 #' stripGeneVersions stripTranscriptVersions upperCamelCase
 #' @importFrom BiocGenerics %in% append as.data.frame do.call grep grepl
 #' is.unsorted lapply match order organism organism<- rbind setdiff sort unlist
@@ -34,7 +34,7 @@ NULL
 
 #' @importMethodsFrom AcidBase matchNested
 #' @importMethodsFrom AcidPlyr leftJoin mutateAt rbindToDataFrame
-#' @importMethodsFrom pipette as.DataFrame export import removeNA sanitizeNA
+#' @importMethodsFrom pipette as.DataFrame export import removeNa sanitizeNa
 #' @importMethodsFrom syntactic camelCase kebabCase makeNames snakeCase
 #' upperCamelCase
 NULL
@@ -43,7 +43,7 @@ NULL
 
 ## Standard functions ==========================================================
 
-#' @importFrom AcidBase download dupes fileExt initDir parentDir pasteURL
+#' @importFrom AcidBase download dupes fileExt initDir parentDir pasteUrl
 #' quietly realpath showHeader showSlotInfo standardizeCall strExtract strMatch
 #' strSplit
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
@@ -54,15 +54,15 @@ NULL
 #' SplitDataFrameList
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
-#' allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
+#' allAreMatchingRegex allAreNotMatchingRegex allAreUrls areDisjointSets
 #' areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
 #' hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows
-#' hasValidNames isADir isAFile isAURL isAnExistingURL isAny isCharacter
+#' hasValidNames isADir isAFile isAUrl isAnExistingUrl isAny isCharacter
 #' isDuplicate isFlag isInstalled isInt isIntegerish isMatchingFixed
 #' isMatchingRegex isOrganism isScalar isString isSubset isSystemCommand
 #' isWindows requireNamespaces validate validateClasses
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity show signature validObject
-#' @importFrom pipette cacheURL fillLines getJSON getURLDirList md5 sha256
+#' @importFrom pipette cacheUrl fillLines getJson getUrlDirList md5 sha256
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
 NULL

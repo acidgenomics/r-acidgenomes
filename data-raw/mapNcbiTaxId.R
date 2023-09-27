@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
 })
 ## nolint end
 load_all(helpers = FALSE)
-url <- pasteURL(
+url <- pasteUrl(
     "ftp.ncbi.nlm.nih.gov",
     "pub",
     "taxonomy",

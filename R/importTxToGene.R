@@ -17,7 +17,7 @@
 #' - `stripTranscriptVersions`, `stripGeneVersions`
 #'
 #' @examples
-#' file <- file.path(AcidGenomesTestsURL, "tx2gene.csv")
+#' file <- file.path(AcidGenomesTestsUrl, "tx2gene.csv")
 #' x <- importTxToGene(
 #'     file = file,
 #'     organism = "Homo sapiens",

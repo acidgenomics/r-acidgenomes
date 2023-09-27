@@ -16,7 +16,7 @@ NcbiGeneHistory <- # nolint
         assert(isOrganism(organism))
         taxId <- .mapOrganismToNcbiTaxId(organism)
         assert(isInt(taxId))
-        url <- pasteURL(
+        url <- pasteUrl(
             "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
             protocol = "https"
         )

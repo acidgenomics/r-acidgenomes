@@ -23,7 +23,7 @@
 #' @return `DFrame` or `NULL`.
 #'
 #' @examples
-#' url <- pasteURL(
+#' url <- pasteUrl(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",
@@ -81,7 +81,7 @@
 #' - `sha256`
 #'
 #' @examples
-#' url <- pasteURL(
+#' url <- pasteUrl(
 #'     "ftp.ensembl.org",
 #'     "pub",
 #'     "release-102",

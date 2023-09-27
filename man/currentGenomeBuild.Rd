@@ -4,17 +4,17 @@
 \alias{currentGenomeBuild}
 \alias{currentEnsemblGenomeBuild}
 \alias{currentGencodeGenomeBuild}
-\alias{currentRefSeqGenomeBuild}
-\alias{currentUCSCGenomeBuild}
+\alias{currentRefseqGenomeBuild}
+\alias{currentUcscGenomeBuild}
 \title{Current genome build}
 \usage{
 currentEnsemblGenomeBuild(organism)
 
 currentGencodeGenomeBuild(organism)
 
-currentRefSeqGenomeBuild(organism, taxonomicGroup = NULL)
+currentRefseqGenomeBuild(organism, taxonomicGroup = NULL)
 
-currentUCSCGenomeBuild(organism)
+currentUcscGenomeBuild(organism)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -45,18 +45,18 @@ currentGencodeGenomeBuild("Homo sapiens")
 currentGencodeGenomeBuild("Mus musculus")
 
 ## RefSeq.
-currentRefSeqGenomeBuild(
+currentRefseqGenomeBuild(
     organism = "Homo sapiens",
     taxonomicGroup = "vertebrate_mammalian"
 )
-currentRefSeqGenomeBuild(
+currentRefseqGenomeBuild(
     organism = "Mus musculus",
     taxonomicGroup = "vertebrate_mammalian"
 )
 
 ## UCSC.
-currentUCSCGenomeBuild("Homo sapiens")
-currentUCSCGenomeBuild("Mus musculus")
+currentUcscGenomeBuild("Homo sapiens")
+currentUcscGenomeBuild("Mus musculus")
 }
 \seealso{
 \itemize{

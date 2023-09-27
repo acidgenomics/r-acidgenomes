@@ -30,7 +30,7 @@
 #'     "ENSMUSG00000000037", "ENSMUSG00000000049"
 #' )
 #' ## Protect against Ensembl timeouts causing build checks to fail.
-#' if (goalie::isAnExistingURL("https://ensembl.org")) {
+#' if (goalie::isAnExistingUrl("https://ensembl.org")) {
 #'     try({
 #'         x <- mapHumanOrthologs(genes = genes, ensemblRelease = 87L)
 #'         print(x)
@@ -43,8 +43,8 @@ mapHumanOrthologs <-
         assert(
             requireNamespaces("biomaRt"),
             isCharacter(genes),
-            isOrganism(organism, nullOK = TRUE),
-            isInt(ensemblRelease, nullOK = TRUE)
+            isOrganism(organism, nullOk = TRUE),
+            isInt(ensemblRelease, nullOk = TRUE)
         )
         if (is.null(organism)) {
             organism <- detectOrganism(genes)
@@ -53,7 +53,7 @@ mapHumanOrthologs <-
         assert(!identical(organism, "Homo sapiens"))
         ## Match the Ensembl release to the archive host name.
         ## e.g. Ensembl 99: https://jan2020.archive.ensembl.org
-        host <- mapEnsemblReleaseToURL(ensemblRelease)
+        host <- mapEnsemblReleaseToUrl(ensemblRelease)
         ## e.g. "mmusculus_gene_ensembl".
         dataset <- paste0(
             tolower(sub(
@@ -108,7 +108,7 @@ mapHumanOrthologs <-
         }
         map <- as(map, "DFrame")
         colnames(map) <- c("geneId", "humanGeneId")
-        map <- sanitizeNA(map)
+        map <- sanitizeNa(map)
         keep <- complete.cases(map)
         if (!all(keep)) {
             n <- sum(!keep)
