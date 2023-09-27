@@ -1,3 +1,4 @@
+## nolint start
 suppressPackageStartupMessages({
     library(devtools)
     library(AcidBase)
@@ -6,6 +7,7 @@ suppressPackageStartupMessages({
     library(pipette)
     library(utils)
 })
+## nolint end
 load_all(helpers = FALSE)
 url <- pasteURL(
     "ftp.ncbi.nlm.nih.gov",
