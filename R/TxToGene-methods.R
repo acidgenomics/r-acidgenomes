@@ -1,6 +1,6 @@
 #' @name TxToGene
 #' @inherit AcidGenerics::TxToGene description return title
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-09-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -81,6 +81,7 @@ NULL
         object <- object[order(object), , drop = FALSE]
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
+        meta <- meta[sort(names(meta))]
         metadata(object) <- meta
         new(Class = "TxToGene", object)
     }

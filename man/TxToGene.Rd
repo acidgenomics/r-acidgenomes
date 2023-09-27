@@ -36,7 +36,7 @@ Perform command quietly, suppressing messages.}
 Transcript-to-gene mappings
 }
 \note{
-Updated 2023-09-16.
+Updated 2023-09-27.
 }
 \examples{
 ## DFrame ====
