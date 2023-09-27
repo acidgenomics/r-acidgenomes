@@ -63,6 +63,6 @@ NULL
 #' isWindows requireNamespaces validate validateClasses
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity show signature validObject
-#' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256
+#' @importFrom pipette cacheURL fillLines getJSON getURLDirList md5 sha256
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
 NULL

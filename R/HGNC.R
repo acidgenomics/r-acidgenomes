@@ -28,22 +28,7 @@ HGNC <- # nolint
         )
         file <- .cacheIt(url)
         lines <- import(file, format = "lines")
-        ## FIXME Rework this as `fillLines` in pipette and then use here.
-        spl <- strsplit(x = lines, split = "\t", fixed = TRUE)
-        fixIdx <- which(lengths(spl) != length(spl[[1L]]))
-        spl[fixIdx] <- lapply(
-            X = spl[fixIdx],
-            FUN = function(x) {
-                append(x = x, values = NA)
-            }
-        )
-        assert(all(lengths(spl) == length(spl[[1L]])))
-        lines <- vapply(
-            X = spl,
-            FUN = paste0,
-            collapse = "\t",
-            FUN.VALUE = character(1L)
-        )
+        lines <- fillLines(lines, format = "tsv")
         con <- textConnection(lines)
         df <- import(con = con, format = "tsv")
         close(con)
