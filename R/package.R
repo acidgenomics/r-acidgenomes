@@ -44,7 +44,8 @@ NULL
 ## Standard functions ==========================================================
 
 #' @importFrom AcidBase download dupes fileExt initDir parentDir pasteURL
-#' quietly realpath showHeader showSlotInfo standardizeCall strMatch
+#' quietly realpath showHeader showSlotInfo standardizeCall strExtract strMatch
+#' strSplit
 #' @importFrom AcidCLI abort alert alertInfo alertSuccess alertWarning dl h1
 #' toInlineString
 #' @importFrom GenomeInfoDb Seqinfo getChromInfoFromEnsembl
@@ -56,10 +57,10 @@ NULL
 #' allAreMatchingRegex allAreNotMatchingRegex allAreURLs areDisjointSets
 #' areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
 #' hasInternet hasLength hasNoDuplicates hasNames hasRownames hasRows
-#' hasValidNames isADir isAFile isAURL isAny isCharacter isDuplicate isFlag
-#' isInstalled isInt isIntegerish isMatchingFixed isMatchingRegex isOrganism
-#' isScalar isString isSubset isSystemCommand isWindows requireNamespaces
-#' validate validateClasses
+#' hasValidNames isADir isAFile isAURL isAnExistingURL isAny isCharacter
+#' isDuplicate isFlag isInstalled isInt isIntegerish isMatchingFixed
+#' isMatchingRegex isOrganism isScalar isString isSubset isSystemCommand
+#' isWindows requireNamespaces validate validateClasses
 #' @importFrom methods as is isClass new setClass setGeneric setMethod
 #' setValidity show signature validObject
 #' @importFrom pipette cacheURL getJSON getURLDirList md5 sha256
