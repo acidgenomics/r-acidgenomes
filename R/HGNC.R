@@ -51,6 +51,8 @@ HGNC <- # nolint
         close(con)
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
+        df[["agr"]] <- NULL
+        df[["gencc"]] <- NULL
         assert(
             isSubset(
                 x = c(
