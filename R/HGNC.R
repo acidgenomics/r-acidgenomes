@@ -29,9 +29,6 @@ HGNC <- # nolint
         file <- .cacheIt(url)
         lines <- import(file, format = "lines")
         spl <- strsplit(x = lines, split = "\t", fixed = TRUE)
-        ## Remove problematic lines, e.g. "HGNC:43707".
-        keep <- lengths(spl) >= length(spl[[1L]]) - 1L
-        spl <- spl[keep]
         fixIdx <- which(lengths(spl) != length(spl[[1L]]))
         spl[fixIdx] <- lapply(
             X = spl[fixIdx],
