@@ -1,12 +1,3 @@
-## FIXME Need to rework this to not require biomart.
-## Can we scrape HTML table instead?
-## FIXME Check that return is identical to biomaRt output.
-
-
-## biomaRt:::.listEnsemblArchive
-## biomaRt:::.getArchiveList
-
-
 #' Map Ensembl release to archive URL.
 #'
 #' @note Updated 2023-09-27.
@@ -19,7 +10,7 @@
 #' Ensembl release (e.g. `100`).
 #'
 #' @return `character(1)`.
-#' URL.
+#' Ensembl release URL.
 #'
 #' @seealso
 #' - `biomaRt::listEnsemblArchives()`.
