@@ -10,6 +10,6 @@ test_that("Ensembl 100", {
 test_that("NULL input", {
     expect_identical(
         object = mapEnsemblReleaseToURL(NULL),
-        expected = "http://useast.ensembl.org"
+        expected = "https://useast.ensembl.org"
     )
 })
