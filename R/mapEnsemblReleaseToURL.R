@@ -1,12 +1,19 @@
 ## FIXME Need to rework this to not require biomart.
 ## Can we scrape HTML table instead?
+## FIXME Check that return is identical to biomaRt output.
 
+
+## biomaRt:::.listEnsemblArchive
+## biomaRt:::.getArchiveList
 
 
 #' Map Ensembl release to archive URL.
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-09-27.
 #' @export
+#'
+#' @details
+#' Requires the rvest package to be installed.
 #'
 #' @param release `integer(1)` or `character(1)`.
 #' Ensembl release (e.g. `100`).
@@ -18,45 +25,75 @@
 #' - `biomaRt::listEnsemblArchives()`.
 #'
 #' @examples
-#' tryCatch(
-#'     expr = mapEnsemblReleaseToURL(release = 100L),
-#'     error = function(e) message(e)
-#' )
+#' try({
+#'     mapEnsemblReleaseToURL(release = 100L)
+#' })
 mapEnsemblReleaseToURL <- function(release) {
-    assert(requireNamespaces("biomaRt"))
-    currentURL <- "https://useast.ensembl.org"
+    currentUrl <- pasteURL("useast.ensembl.org", protocol = "https")
     if (is.null(release)) {
-        return(currentURL)
+        return(currentUrl)
     }
     release <- as.character(release)
-    assert(isString(release))
-    map <- tryCatch(
-        expr = biomaRt::listEnsemblArchives(),
-        error = function(e) {
-            abort(sprintf(
-                "{.pkg %s}::{.fun %s} error.",
-                "biomaRt", "listEnsemblArchives"
-            ))
-        }
-    )
     assert(
-        is.data.frame(map),
-        isSubset(c("url", "version"), colnames(map))
+        requireNamespaces("rvest"),
+        isString(release)
     )
-    if (!release %in% map[["version"]]) {
-        abort(sprintf(
-            "Supported Ensembl releases: %s.",
-            toInlineString(map[["version"]], n = 10L)
-        ))
-    }
-    ## Extract the matching row, so we can check if releast is current.
-    which <- match(x = release, table = map[["version"]])
-    x <- map[which, , drop = FALSE]
-    isCurrent <- identical(x[1L, "current_release"], "*")
+    url <- pasteURL(
+        "useast.ensembl.org",
+        "info",
+        "website",
+        "archives",
+        "index.html",
+        protocol = "https"
+    )
+    assert(isAnExistingURL(url))
+    html <- rvest::read_html(url)
+    ele <- rvest::html_element(html, css = ".archive-box")
+    ele <- rvest::html_element(ele, css = ".spaced")
+    txt <- rvest::html_text2(ele)
+    spl <- strsplit(txt, split = "\n", fixed = TRUE)[[1L]]
+    spl <- strSplit(spl, split = ": ", fixed = TRUE)
+    df <- as(spl, "DFrame")
+    colnames(df) <- c("name", "date")
+    df[["version"]] <- sub(
+        pattern = "^Ensembl ",
+        replacement = "",
+        x = df[["name"]]
+    )
+    df[["currentRelease"]] <- grepl(pattern = "this site", x = df[["date"]])
+    df[["date"]] <- strExtract(df[["date"]], pattern = "[A-Za-z]{3} [0-9]{4}")
+    df[["url"]] <- unlist(Map(
+        version = df[["version"]],
+        date = df[["date"]],
+        f = function(version, date) {
+            switch(
+                EXPR = version,
+                "GRCh37" = {
+                    pasteURL("grch37.ensembl.org", protocol = "https")
+                },
+                pasteURL(
+                    paste0(
+                        sub(
+                            pattern = " ",
+                            replacement = "",
+                            x = tolower(date)
+                        ),
+                        ".archive.ensembl.org"
+                    ),
+                    protocol = "https"
+                )
+            )
+        },
+        USE.NAMES = FALSE
+    ))
+    df <- df[, c("name", "date", "url", "version", "currentRelease")]
+    assert(isSubset(release, df[["version"]]))
+    i <- match(x = release, table = df[["version"]])
+    isCurrent <- df[i, "currentRelease"]
     if (isTRUE(isCurrent)) {
-        return(currentURL)
+        return(currentUrl)
     }
-    url <- x[1L, "url"]
-    assert(isTRUE(grepl("ensembl\\.org", url)))
+    url <- df[i, "url"]
+    assert(isAnExistingURL(url))
     url
 }
