@@ -613,7 +613,6 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "agr" = "character",
                 "aliasName" = "CompressedCharacterList",
                 "aliasSymbol" = "CompressedCharacterList",
                 "bioparadigmsSlc" = "character",
@@ -627,7 +626,6 @@ setValidity(
                 "ena" = "CompressedCharacterList",
                 "ensemblGeneId" = "character",
                 "enzymeId" = "CompressedCharacterList",
-                "gencc" = "character",
                 "geneGroup" = "CompressedCharacterList",
                 "geneGroupId" = "CompressedCharacterList",
                 "gtrnadb" = "character",
