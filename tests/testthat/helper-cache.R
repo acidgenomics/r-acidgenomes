@@ -2,7 +2,11 @@ if (!isTRUE(goalie::hasInternet())) {
     warning("No Internet connection detected.")
     return(invisible(NULL))
 }
-dir.create("cache", showWarnings = FALSE)
+cacheDir <- file.path(
+    tools::R_user_dir(package = .pkgName, which = cacheDir),
+    "testthat"
+)
+dir.create(cacheDir, showWarnings = FALSE, recursive = TRUE)
 files <- c(
     "cellranger-genes.gtf.gz",
     "ensembl.gff3",
@@ -19,7 +23,7 @@ files <- c(
 )
 Map(
     f = function(remoteDir, file, envir) {
-        destfile <- file.path("cache", file)
+        destfile <- file.path(cacheDir, file)
         if (!file.exists(destfile)) {
             utils::download.file(
                 url = paste(remoteDir, file, sep = "/"),
