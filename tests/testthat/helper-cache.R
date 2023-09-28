@@ -3,7 +3,7 @@ if (!isTRUE(goalie::hasInternet())) {
     return(invisible(NULL))
 }
 cacheDir <- file.path(
-    tools::R_user_dir(package = .pkgName, which = cacheDir),
+    tools::R_user_dir(package = .pkgName, which = "cache"),
     "testthat"
 )
 dir.create(cacheDir, showWarnings = FALSE, recursive = TRUE)
