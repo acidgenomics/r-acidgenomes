@@ -1,5 +1,5 @@
 args <- list(
-    "file" = file.path("cache", "tx2gene.csv"),
+    "file" = file.path(cacheDir, "tx2gene.csv"),
     "organism" = "Homo sapiens",
     "genomeBuild" = "GRCh38",
     "release" = 100L
