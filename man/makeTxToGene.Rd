@@ -66,21 +66,21 @@ x <- makeTxToGeneFromEnsembl(organism = "Homo sapiens")
 print(x)
 
 ## makeTxToGeneFromEnsDb ====
-if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
-    x <- makeTxToGeneFromEnsDb(object = "EnsDb.Hsapiens.v75")
-    print(x)
-}
+## > if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
+## >     x <- makeTxToGeneFromEnsDb(object = "EnsDb.Hsapiens.v75")
+## >     print(x)
+## > }
 
 ## makeTxToGeneFromGff ====
-file <- AcidBase::pasteUrl(
-    "ftp.ensembl.org",
-    "pub",
-    "release-102",
-    "gtf",
-    "homo_sapiens",
-    "Homo_sapiens.GRCh38.102.gtf.gz",
-    protocol = "ftp"
-)
-x <- makeTxToGeneFromGff(file = file)
-print(x)
+## > file <- AcidBase::pasteUrl(
+## >     "ftp.ensembl.org",
+## >     "pub",
+## >     "release-102",
+## >     "gtf",
+## >     "homo_sapiens",
+## >     "Homo_sapiens.GRCh38.102.gtf.gz",
+## >     protocol = "ftp"
+## > )
+## > x <- makeTxToGeneFromGff(file = file)
+## > print(x)
 }
