@@ -1,6 +1,6 @@
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-10-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -26,7 +26,7 @@ NULL
 
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-10-04.
 #' @noRd
 .makeEnsemblToNcbi <-
     function(object,
@@ -53,6 +53,7 @@ NULL
             isSubset(cols, colnames(object))
         )
         df <- object[, cols, drop = FALSE]
+        df <- decode(df)
         switch(
             EXPR = format,
             "1:1" = {
@@ -144,18 +145,7 @@ formals(`EnsemblToNcbi,character`)[["format"]] <- # nolint
 ## Updated 2023-03-01.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
     function(object, format) {
-        assert(hasColnames(mcols(object)))
-        colnames(mcols(object)) <-
-            camelCase(
-                object = colnames(mcols(object)),
-                strict = TRUE
-            )
-        assert(
-            isSubset(
-                x = c("geneId", "ncbiGeneId"),
-                y = colnames(mcols(object))
-            )
-        )
+        assert(validObject(object))
         df <- mcols(object)
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
