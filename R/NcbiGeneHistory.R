@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' ## Homo sapiens.
-#' object <- NcbiGeneHistory(organism = "Homo sapiens")
-#' print(object)
+#' ## > object <- NcbiGeneHistory(organism = "Homo sapiens")
+#' ## > print(object)
 NcbiGeneHistory <- # nolint
     function(organism) {
         assert(isOrganism(organism))
@@ -20,15 +20,9 @@ NcbiGeneHistory <- # nolint
             "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
             protocol = "https"
         )
-        ## readr is much faster than base engine at parsing this file.
         df <- import(
             con = .cacheIt(url),
             format = "tsv",
-            engine = ifelse(
-                test = isInstalled("readr"),
-                yes = "readr",
-                no = "base"
-            ),
             naStrings = "-"
         )
         df <- as(df, "DFrame")

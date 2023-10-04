@@ -46,7 +46,6 @@ Suggests:
     RCurl (>= 1.98),
     biomaRt (>= 2.56.0),
     ensembldb (>= 2.24.0),
-    readr (>= 2.1.4),
     rvest (>= 1.0.3),
     testthat (>= 3.1.10),
     withr (>= 2.5.0)
