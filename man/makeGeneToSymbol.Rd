@@ -103,25 +103,25 @@ x <- makeGeneToSymbolFromEnsembl(
 )
 print(x)
 
-## makeTxToGeneFromEnsDb ====
-if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
-    x <- makeGeneToSymbolFromEnsDb("EnsDb.Hsapiens.v75")
-    print(x)
-}
+## makeGeneToSymbolFromEnsDb ====
+## > if (goalie::isInstalled("EnsDb.Hsapiens.v75")) {
+## >     x <- makeGeneToSymbolFromEnsDb("EnsDb.Hsapiens.v75")
+## >     print(x)
+## > }
 
 ## makeGeneToSymbolFromGff ====
-file <- AcidBase::pasteUrl(
-    "ftp.ensembl.org",
-    "pub",
-    "release-102",
-    "gtf",
-    "homo_sapiens",
-    "Homo_sapiens.GRCh38.102.gtf.gz",
-    protocol = "ftp"
-)
-x <- makeGeneToSymbolFromGff(
-    file = file,
-    ignoreVersion = FALSE
-)
-print(x)
+## > file <- AcidBase::pasteUrl(
+## >     "ftp.ensembl.org",
+## >     "pub",
+## >     "release-102",
+## >     "gtf",
+## >     "homo_sapiens",
+## >     "Homo_sapiens.GRCh38.102.gtf.gz",
+## >     protocol = "ftp"
+## > )
+## > x <- makeGeneToSymbolFromGff(
+## >     file = file,
+## >     ignoreVersion = FALSE
+## > )
+## > print(x)
 }
