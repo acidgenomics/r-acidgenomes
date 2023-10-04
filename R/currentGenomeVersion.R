@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2023-09-15.
+#' @note Updated 2023-10-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -17,37 +17,24 @@
 #'
 #' @examples
 #' ## Ensembl.
-#' x <- try(
-#'     expr = {
-#'         currentEnsemblVersion()
-#'     },
-#'     silent = TRUE
-#' )
-#' print(x)
+#' try({
+#'     currentEnsemblVersion()
+#' })
+#'
 #' ## GENCODE.
-#' x <- try(
-#'     expr = {
-#'         currentGencodeVersion(organism = "Homo sapiens")
-#'     },
-#'     silent = TRUE
-#' )
-#' print(x)
+#' try({
+#'     currentGencodeVersion(organism = "Homo sapiens")
+#' })
+#'
 #' ## RefSeq.
-#' x <- try(
-#'     expr = {
-#'         currentRefseqVersion()
-#'     },
-#'     silent = TRUE
-#' )
-#' print(x)
+#' try({
+#'     currentRefseqVersion()
+#' })
+#'
 #' ## WormBase.
-#' x <- try(
-#'     expr = {
-#'         currentWormbaseVersion()
-#'     },
-#'     silent = TRUE
-#' )
-#' print(x)
+#' try({
+#'     currentWormbaseVersion()
+#' })
 NULL
 
 

@@ -33,30 +33,38 @@ Genome assembly build version.
 Fetch the current genome build (assembly) version from online resources.
 }
 \note{
-Updated 2023-07-27.
+Updated 2023-10-04.
 }
 \examples{
 ## Ensembl.
-currentEnsemblGenomeBuild("Homo sapiens")
-currentEnsemblGenomeBuild("Mus musculus")
+try({
+    currentEnsemblGenomeBuild("Homo sapiens")
+    currentEnsemblGenomeBuild("Mus musculus")
+})
 
 ## GENCODE.
-currentGencodeGenomeBuild("Homo sapiens")
-currentGencodeGenomeBuild("Mus musculus")
+try({
+    currentGencodeGenomeBuild("Homo sapiens")
+    currentGencodeGenomeBuild("Mus musculus")
+})
 
 ## RefSeq.
-currentRefseqGenomeBuild(
-    organism = "Homo sapiens",
-    taxonomicGroup = "vertebrate_mammalian"
-)
-currentRefseqGenomeBuild(
-    organism = "Mus musculus",
-    taxonomicGroup = "vertebrate_mammalian"
-)
+try({
+    currentRefseqGenomeBuild(
+        organism = "Homo sapiens",
+        taxonomicGroup = "vertebrate_mammalian"
+    )
+    currentRefseqGenomeBuild(
+        organism = "Mus musculus",
+        taxonomicGroup = "vertebrate_mammalian"
+    )
+})
 
 ## UCSC.
-currentUcscGenomeBuild("Homo sapiens")
-currentUcscGenomeBuild("Mus musculus")
+try({
+    currentUcscGenomeBuild("Homo sapiens")
+    currentUcscGenomeBuild("Mus musculus")
+})
 }
 \seealso{
 \itemize{

@@ -34,41 +34,28 @@ Release version.
 Obtain the latest release version from various genome annotation sources.
 }
 \note{
-Updated 2023-09-15.
+Updated 2023-10-04.
 }
 \examples{
 ## Ensembl.
-x <- try(
-    expr = {
-        currentEnsemblVersion()
-    },
-    silent = TRUE
-)
-print(x)
+try({
+    currentEnsemblVersion()
+})
+
 ## GENCODE.
-x <- try(
-    expr = {
-        currentGencodeVersion(organism = "Homo sapiens")
-    },
-    silent = TRUE
-)
-print(x)
+try({
+    currentGencodeVersion(organism = "Homo sapiens")
+})
+
 ## RefSeq.
-x <- try(
-    expr = {
-        currentRefseqVersion()
-    },
-    silent = TRUE
-)
-print(x)
+try({
+    currentRefseqVersion()
+})
+
 ## WormBase.
-x <- try(
-    expr = {
-        currentWormbaseVersion()
-    },
-    silent = TRUE
-)
-print(x)
+try({
+    currentWormbaseVersion()
+})
 }
 \seealso{
 Refer to the koopa package for Bash shell variants.
