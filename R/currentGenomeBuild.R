@@ -3,7 +3,7 @@
 #' Fetch the current genome build (assembly) version from online resources.
 #'
 #' @name currentGenomeBuild
-#' @note Updated 2023-07-27.
+#' @note Updated 2023-10-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -17,26 +17,34 @@
 #'
 #' @examples
 #' ## Ensembl.
-#' currentEnsemblGenomeBuild("Homo sapiens")
-#' currentEnsemblGenomeBuild("Mus musculus")
+#' try({
+#'     currentEnsemblGenomeBuild("Homo sapiens")
+#'     currentEnsemblGenomeBuild("Mus musculus")
+#' })
 #'
 #' ## GENCODE.
-#' currentGencodeGenomeBuild("Homo sapiens")
-#' currentGencodeGenomeBuild("Mus musculus")
+#' try({
+#'     currentGencodeGenomeBuild("Homo sapiens")
+#'     currentGencodeGenomeBuild("Mus musculus")
+#' })
 #'
 #' ## RefSeq.
-#' currentRefseqGenomeBuild(
-#'     organism = "Homo sapiens",
-#'     taxonomicGroup = "vertebrate_mammalian"
-#' )
-#' currentRefseqGenomeBuild(
-#'     organism = "Mus musculus",
-#'     taxonomicGroup = "vertebrate_mammalian"
-#' )
+#' try({
+#'     currentRefseqGenomeBuild(
+#'         organism = "Homo sapiens",
+#'         taxonomicGroup = "vertebrate_mammalian"
+#'     )
+#'     currentRefseqGenomeBuild(
+#'         organism = "Mus musculus",
+#'         taxonomicGroup = "vertebrate_mammalian"
+#'     )
+#' })
 #'
 #' ## UCSC.
-#' currentUcscGenomeBuild("Homo sapiens")
-#' currentUcscGenomeBuild("Mus musculus")
+#' try({
+#'     currentUcscGenomeBuild("Homo sapiens")
+#'     currentUcscGenomeBuild("Mus musculus")
+#' })
 NULL
 
 
