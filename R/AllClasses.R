@@ -846,7 +846,7 @@ setValidity(
 
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-10-04.
 #'
 #' @details
 #' Contains a `DFrame` with `"ensemblGeneId"` and `"ncbiGeneId"` columns.
