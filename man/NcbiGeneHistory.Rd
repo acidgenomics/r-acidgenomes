@@ -21,6 +21,6 @@ Updated 2023-09-26.
 }
 \examples{
 ## Homo sapiens.
-object <- NcbiGeneHistory(organism = "Homo sapiens")
-print(object)
+## > object <- NcbiGeneHistory(organism = "Homo sapiens")
+## > print(object)
 }
