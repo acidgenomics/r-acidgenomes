@@ -215,14 +215,9 @@ downloadGencodeGenome <-
             format = "tsv",
             colnames = c("txId", "ncbiGeneId")
         )
-        ## FIXME Need to decode at this step. AcidPlyr is now stricter about
-        ## the join set. Alternatively, can add support for this in AcidPlyr
-        ## as well to avoid breaking changes.
-        ## FIXME Let's require that join columns are not a type mismatch...
-        ## keep it strict in AcidPlyr.
         ncbiGene <- leftJoin(
             x = as(ncbiGene, "DFrame"),
-            y = mcols(transcripts)[, c("txId", "geneId")],
+            y = decode(mcols(transcripts)[, c("txId", "geneId")]),
             by = "txId"
         )
         refseq <- import(
