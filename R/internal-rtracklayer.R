@@ -12,7 +12,7 @@
              extraMcols,
              meta) {
         assert(
-            isAFile(file),
+            isString(file),
             isFlag(ignoreVersion),
             isFlag(extraMcols),
             is.list(meta),
@@ -24,7 +24,7 @@
             choices = c("genes", "transcripts")
         )
         meta[["level"]] <- level
-        gr <- import(con = file)
+        gr <- import(con = .cacheIt(file))
         assert(is(gr, "GRanges"))
         format <- ifelse(
             test = grepl(pattern = "GTF", x = meta[["format"]]),
