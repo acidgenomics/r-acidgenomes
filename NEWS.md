@@ -1,6 +1,13 @@
 # Release notes
 
-## AcidGenomes 0.6.0 (UNRELEASED)
+## AcidGenomes 0.6.1 (UNRELEASED)
+
+Minor changes:
+
+- Renamed `HumanToMouse` to `JaxHumanMouse`, which indicates the source
+  (Jackson Laboratory) more clearly.
+
+## AcidGenomes 0.6.0 (2023-10-04)
 
 New functions / classes:
 
