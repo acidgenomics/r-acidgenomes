@@ -77,7 +77,7 @@
 
 #' Get a data frame of extra gene-level metadata from Ensembl FTP server
 #'
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-10-12.
 #' @noRd
 #'
 #' @return `DFrame`.
@@ -199,7 +199,7 @@
         df2 <- split(x = df2, f = df2[[1L]])
         df2 <- lapply(X = df2, FUN = `[[`, 2L)
         df2 <- as.DataFrame(list(
-            "mysqlId" = names(df2),
+            "mysqlId" = as.integer(names(df2)),
             "geneSynonyms" = unname(df2)
         ))
         df3 <- entrez
