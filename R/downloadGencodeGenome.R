@@ -1,3 +1,13 @@
+## FIXME Need to fix issue with entrez metadata download:
+##
+## → Importing /mnt/data01/bioinfo/work/download-genomes/homo-sapiens-grch38-gencode-44/metadata/gencode.v44.metadata.EntrezGene.gz using base::`read.table()`.
+# Error in `stop()`:
+#     ! Assert failure.
+# [10] allAreAtomic(y[, by, drop = FALSE]) is not TRUE.
+# Cause: Not all elements in `DFrame` are atomic.
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
