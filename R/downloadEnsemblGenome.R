@@ -1,7 +1,7 @@
 #' Download Ensembl reference genome
 #'
 #' @export
-#' @note Updated 2023-04-14.
+#' @note Updated 2023-10-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
