@@ -258,7 +258,7 @@ makeGRangesFromGff <-
         )
         if (identical(meta[["provider"]], "UCSC")) {
             alertInfo("UCSC genome annotation file detected.")
-            txdb <- .makeTxDbFromGFF(file = tmpfile, meta = meta)
+            txdb <- .makeTxDbFromGff(file = tmpfile, meta = meta)
             gr <- .makeGRangesFromTxDb(
                 object = txdb,
                 level = level,
