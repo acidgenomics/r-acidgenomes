@@ -6,6 +6,7 @@ Minor changes:
 
 - Renamed `HumanToMouse` to `JaxHumanMouse`, which indicates the source
   (Jackson Laboratory) more clearly.
+- Bug fixes for GENCODE and RefSeq genome downloads.
 
 ## AcidGenomes 0.6.0 (2023-10-04)
 
