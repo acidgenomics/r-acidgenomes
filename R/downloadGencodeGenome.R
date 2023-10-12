@@ -209,27 +209,22 @@ downloadGencodeGenome <-
             level = "transcripts",
             ignoreVersion = FALSE
         )
+        t2g <- decode(mcols(transcripts)[, c("txId", "geneId")])
         ## Get NCBI gene and RefSeq identifier mappings.
         ncbiGene <- import(
             con = metadataFiles[["files"]][["ncbiGene"]],
             format = "tsv",
             colnames = c("txId", "ncbiGeneId")
         )
-        ncbiGene <- leftJoin(
-            x = as(ncbiGene, "DFrame"),
-            y = decode(mcols(transcripts)[, c("txId", "geneId")]),
-            by = "txId"
-        )
+        ncbiGene <- as(ncbiGene, "DFrame")
+        ncbiGene <- leftJoin(x = ncbiGene, y = t2g, by = "txId")
         refseq <- import(
             con = metadataFiles[["files"]][["refseq"]],
             format = "tsv",
             colnames = c("txId", "refseqRnaId", "refseqProteinId")
         )
-        refseq <- leftJoin(
-            x = as(refseq, "DFrame"),
-            y = mcols(transcripts)[, c("txId", "geneId")],
-            by = "txId"
-        )
+        refseq <- as(refseq, "DFrame")
+        refseq <- leftJoin(x = refseq, y = t2g, by = "txId")
         ## Add NCBI and RefSeq identifiers to gene metadata.
         if (isSubset("ncbiGeneId", names(mcols(genes)))) {
             mcols(genes)[["ncbiGeneId"]] <- NULL
