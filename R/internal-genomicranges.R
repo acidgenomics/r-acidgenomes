@@ -474,7 +474,7 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-10-12.
 #' @noRd
 .makeGRanges <-
     function(object,
@@ -559,14 +559,7 @@
         assert(validObject(object))
         if (isSubset(level, c("genes", "transcripts"))) {
             class <- upperCamelCase(
-                object = paste(
-                    switch(
-                        EXPR = provider,
-                        "GENCODE" = "Gencode",
-                        provider
-                    ),
-                    level
-                ),
+                object = tolower(paste(provider, level)),
                 strict = FALSE
             )
             object <- new(Class = class, object)
