@@ -27,7 +27,7 @@ Hgnc <- # nolint
             protocol = "https"
         )
         file <- .cacheIt(url)
-        lines <- import(file, format = "lines")
+        lines <- import(con = file, format = "lines")
         lines <- fillLines(lines, format = "tsv")
         con <- textConnection(lines)
         df <- import(con = con, format = "tsv")
