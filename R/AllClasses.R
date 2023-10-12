@@ -945,23 +945,23 @@ setValidity(
 
 
 
-#' Human-to-mouse gene mappings
+#' Jackson Laboratory (JAX) human-to-mouse gene mappings
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-10-12.
 #'
 #' @details
 #' Contains a `DFrame` with `"dbClassKey"`, `"humanGeneName"`, `"humanHgncId"`,
 #' `"humanNcbiGeneId"`, `"humanOmimGeneId"`, `"mouseGeneName"`, `"mouseMgiId"`,
 #' `"mouseNcbiGeneId"` columns.
 #'
-#' @return `HumanToMouse`.
+#' @return `JaxHumanToMouse`.
 setClass(
-    Class = "HumanToMouse",
+    Class = "JaxHumanToMouse",
     contains = "DFrame"
 )
 setValidity(
-    Class = "HumanToMouse",
+    Class = "JaxHumanToMouse",
     method = function(object) {
         ok <- validateClasses(
             object = object,
