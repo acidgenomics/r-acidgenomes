@@ -11,7 +11,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-10-12.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -200,12 +200,12 @@ downloadGencodeGenome <-
         }
         ## Save genomic ranges.
         genes <- makeGRangesFromGff(
-            gtfFile,
+            file = gtfFile,
             level = "genes",
             ignoreVersion = FALSE
         )
         transcripts <- makeGRangesFromGff(
-            gtfFile,
+            file = gtfFile,
             level = "transcripts",
             ignoreVersion = FALSE
         )
@@ -215,22 +215,23 @@ downloadGencodeGenome <-
             format = "tsv",
             colnames = c("txId", "ncbiGeneId")
         )
+        ## FIXME Need to decode at this step. AcidPlyr is now stricter about
+        ## the join set. Alternatively, can add support for this in AcidPlyr
+        ## as well to avoid breaking changes.
+        ## FIXME Let's require that join columns are not a type mismatch...
+        ## keep it strict in AcidPlyr.
         ncbiGene <- leftJoin(
             x = as(ncbiGene, "DFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
-        refSeq <- import(
-            con = metadataFiles[["files"]][["refSeq"]],
+        refseq <- import(
+            con = metadataFiles[["files"]][["refseq"]],
             format = "tsv",
-            colnames = c(
-                "txId",
-                "refSeqRnaId",
-                "refSeqProteinId"
-            )
+            colnames = c("txId", "refseqRnaId", "refseqProteinId")
         )
-        refSeq <- leftJoin(
-            x = as(refSeq, "DFrame"),
+        refseq <- leftJoin(
+            x = as(refseq, "DFrame"),
             y = mcols(transcripts)[, c("txId", "geneId")],
             by = "txId"
         )
@@ -238,9 +239,9 @@ downloadGencodeGenome <-
         if (isSubset("ncbiGeneId", names(mcols(genes)))) {
             mcols(genes)[["ncbiGeneId"]] <- NULL
         }
-        if (isSubset("refSeqRnaId", names(mcols(genes)))) {
-            mcols(genes)[["refSeqProteinId"]] <- NULL
-            mcols(genes)[["refSeqRnaId"]] <- NULL
+        if (isSubset("refseqRnaId", names(mcols(genes)))) {
+            mcols(genes)[["refseqProteinId"]] <- NULL
+            mcols(genes)[["refseqRnaId"]] <- NULL
         }
         mcols <- mcols(genes)
         mcols <- leftJoin(
@@ -250,7 +251,7 @@ downloadGencodeGenome <-
         )
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(object = refSeq, by = "geneId", exclude = "txId"),
+            y = .nest2(object = refseq, by = "geneId", exclude = "txId"),
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
@@ -259,9 +260,9 @@ downloadGencodeGenome <-
         if (isSubset("ncbiGeneId", names(mcols(transcripts)))) {
             mcols(transcripts)[["ncbiGeneId"]] <- NULL
         }
-        if (isSubset("refSeqRnaId", names(mcols(transcripts)))) {
-            mcols(transcripts)[["refSeqProteinId"]] <- NULL
-            mcols(transcripts)[["refSeqRnaId"]] <- NULL
+        if (isSubset("refseqRnaId", names(mcols(transcripts)))) {
+            mcols(transcripts)[["refseqProteinId"]] <- NULL
+            mcols(transcripts)[["refseqRnaId"]] <- NULL
         }
         mcols <- mcols(transcripts)
         mcols <- leftJoin(
@@ -271,7 +272,7 @@ downloadGencodeGenome <-
         )
         mcols <- leftJoin(
             x = mcols,
-            y = .nest2(object = refSeq, by = "txId", exclude = "geneId"),
+            y = .nest2(object = refseq, by = "txId", exclude = "geneId"),
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
@@ -351,7 +352,7 @@ downloadGencodeGenome <-
                 paste0("gencode.v", release, ".metadata.EntrezGene.gz")
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
-            "refSeq" = pasteUrl(
+            "refseq" = pasteUrl(
                 releaseUrl,
                 paste0("gencode.v", release, ".metadata.RefSeq.gz")
             )
