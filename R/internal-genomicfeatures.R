@@ -18,7 +18,7 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "https"
 #' )
-#' txdb <- .makeTxDbFromGFF(file)
+#' txdb <- .makeTxDbFromGff(file)
 #' gr <- .makeGRangesFromTxDb(object = txdb)
 #' print(gr)
 .makeGRangesFromTxDb <-
@@ -190,7 +190,7 @@
 #' ## >     "gencode.v36.annotation.gtf.gz",
 #' ## >     protocol = "https"
 #' ## > )
-#' ## > txdb <- .makeTxDbFromGFF(gtfFile)
+#' ## > txdb <- .makeTxDbFromGff(gtfFile)
 #' ## > print(txdb)
 #'
 #' ## RefSeq ====
@@ -205,10 +205,10 @@
 #' ## >     "GCF_000001405.38_GRCh38.p12_genomic.gff.gz",
 #' ## >     protocol = "https"
 #' ## > )
-#' ## > txdb <- .makeTxDbFromGFF(gffFile)
+#' ## > txdb <- .makeTxDbFromGff(gffFile)
 #' ## > print(txdb)
 ## nolint end
-.makeTxDbFromGFF <- function(file, meta) {
+.makeTxDbFromGff <- function(file, meta) {
     assert(
         .isSupportedGFF(file),
         is.list(meta)

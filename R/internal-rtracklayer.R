@@ -1,6 +1,6 @@
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-10-12.
 #' @noRd
 #'
 #' @details
@@ -12,7 +12,7 @@
              extraMcols,
              meta) {
         assert(
-            isString(file),
+            isAFile(file),
             isFlag(ignoreVersion),
             isFlag(extraMcols),
             is.list(meta),
@@ -24,7 +24,7 @@
             choices = c("genes", "transcripts")
         )
         meta[["level"]] <- level
-        gr <- import(con = .cacheIt(file))
+        gr <- import(con = file)
         assert(is(gr, "GRanges"))
         format <- ifelse(
             test = grepl(pattern = "GTF", x = meta[["format"]]),
@@ -45,7 +45,7 @@
         funName <- paste0(
             ".",
             camelCase(
-                object = paste("rtracklayer", provider, level, format),
+                object = tolower(paste("rtracklayer", provider, level, format)),
                 strict = TRUE
             )
         )
