@@ -1,22 +1,23 @@
-#' Import human-to-mouse gene mappings
+#' Import human-to-mouse gene mappings from the Jackson Laboratory (JAX) Mouse
+#' Genome Informatics (MGI) website
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-10-12.
 #'
 #' @param unique `logical(1)`.
 #' Only return unique 1:1 mappings between human and mouse.
 #' Recommended by default.
 #'
-#' @return `HumanToMouse`.
+#' @return `JaxHumanToMouse`.
 #'
 #' @seealso
 #' - https://www.informatics.jax.org/
 #' - https://www.biostars.org/p/9567892/
 #'
 #' @examples
-#' object <- HumanToMouse()
+#' object <- JaxHumanToMouse()
 #' print(object)
-HumanToMouse <- # nolint
+JaxHumanToMouse <- # nolint
     function(unique = TRUE) {
         assert(
             hasInternet(),
@@ -113,5 +114,5 @@ HumanToMouse <- # nolint
             "unique" = unique,
             "url" = url
         )
-        new(Class = "HumanToMouse", df)
+        new(Class = "JaxHumanToMouse", df)
     }
