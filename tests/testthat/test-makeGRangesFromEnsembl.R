@@ -174,6 +174,7 @@ test_that("Transcripts", {
 })
 
 test_that("GRCh37", {
+    skip_if_not_installed("EnsDb.Hsapiens.v75")
     ## Genes.
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
