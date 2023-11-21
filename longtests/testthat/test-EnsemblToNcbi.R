@@ -10,7 +10,7 @@ test_that("EnsemblToNcbi : all genes", {
         ),
         regexp = "match failures"
     )
-    ## FIXME This is now returning row names with missing values.
+    ## FIXME This is failing return...
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
