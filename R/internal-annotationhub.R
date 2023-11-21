@@ -21,9 +21,11 @@
 
 
 
+## FIXME Need to improve error message on mismatch here.
+
 #' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-11-21.
 #' @noRd
 .getEnsemblToNcbiFromOrgDb <-
     function(keys,

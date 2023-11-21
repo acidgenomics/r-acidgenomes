@@ -13,7 +13,12 @@ EnsemblToNcbi(object, ...)
 
 \S4method{EnsemblToNcbi}{GencodeGenes}(object, format = c("1:1", "long"))
 
-\S4method{EnsemblToNcbi}{character}(object, organism = NULL, format = c("1:1", "long"))
+\S4method{EnsemblToNcbi}{character}(
+  object,
+  organism = NULL,
+  format = c("1:1", "long"),
+  strict = TRUE
+)
 }
 \arguments{
 \item{object}{Object.}
@@ -22,13 +27,15 @@ EnsemblToNcbi(object, ...)
 Formatting method to apply:
 \itemize{
 \item \code{"1:1"}: \emph{Recommended.} Return with 1:1 mappings. For Ensembl genes that
-don't map 1:1 with NCBI, pick the oldest NCBI identifier. Genes that don't
-map to NCBI will contain \code{NA} in \code{ncbiGeneId} column.
+don't map 1:1 with NCBI, pick the oldest NCBI identifier.
 \item \code{"long"}: Return \code{1:many} in long format.
 }}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
+
+\item{strict}{\code{logical(1)}.
+Error on any mismatches, otherwise return \code{NA}.}
 
 \item{...}{Additional arguments.}
 }
@@ -39,7 +46,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Ensembl-to-NCBI gene identifier mappings
 }
 \note{
-Updated 2023-10-04.
+Updated 2023-11-21.
 }
 \examples{
 ## character ====
