@@ -33,8 +33,8 @@ NULL
 .makeEnsemblToNcbi <-
     function(object,
              format = c("1:1", "long"),
-             return = c("EnsemblToNcbi", "NcbiToEnsembl"),
-             strict = TRUE) {
+             strict = TRUE,
+             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
         assert(isFlag(strict))
         format <- match.arg(format)
         return <- match.arg(return)
