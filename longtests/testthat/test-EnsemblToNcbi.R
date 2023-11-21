@@ -19,20 +19,20 @@ test_that("EnsemblToNcbi : all genes", {
         format = "1:1",
         strict = FALSE
     )
-    ## FIXME This is failing, need to rethink.
-    expect_identical(object, df[["ensemblGeneId"]])
-    ## FIXME This is now messed argh.
+    expect_true(hasNoDuplicates(df[["ensemblGeneId"]]))
+    expect_true(identical(df[["ensemblGeneId"]], sort(object)))
     expect_false(anyNA(df[["ensemblGeneId"]]))
-    ## FIXME This is failing, need to rethink.
     expect_true(anyNA(df[["ncbiGeneId"]]))
-
-    ## FIXME Add coverage for long mode.
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
         format = "long",
         strict = FALSE
     )
+    expect_true(hasDuplicates(df[["ensemblGeneId"]]))
+    expect_true(areSetEqual(object, df[["ensemblGeneId"]]))
+    expect_false(anyNA(df[["ensemblGeneId"]]))
+    expect_true(anyNA(df[["ncbiGeneId"]]))
 })
 
 test_that("NcbiToEnsembl : all genes", {
@@ -54,7 +54,7 @@ test_that("NcbiToEnsembl : all genes", {
         format = "1:1",
         strict = FALSE
     )
-    expect_identical(object, df[["ncbiGeneId"]])
+    expect_true(areSetEqual(object, df[["ncbiGeneId"]]))
     expect_false(anyNA(df[["ncbiGeneId"]]))
     expect_true(anyNA(df[["ensemblGeneId"]]))
 
