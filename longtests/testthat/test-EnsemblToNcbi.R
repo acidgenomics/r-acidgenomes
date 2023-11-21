@@ -20,7 +20,7 @@ test_that("EnsemblToNcbi : all genes", {
         strict = FALSE
     )
     expect_true(hasNoDuplicates(df[["ensemblGeneId"]]))
-    expect_true(identical(df[["ensemblGeneId"]], sort(object)))
+    expect_true(identical(df[["ensemblGeneId"]], object))
     expect_false(anyNA(df[["ensemblGeneId"]]))
     expect_true(anyNA(df[["ncbiGeneId"]]))
     df <- EnsemblToNcbi(
@@ -55,7 +55,7 @@ test_that("NcbiToEnsembl : all genes", {
         strict = FALSE
     )
     expect_true(hasNoDuplicates(df[["ncbiGeneId"]]))
-    expect_true(identical(df[["ncbiGeneId"]], sort(object)))
+    expect_true(identical(df[["ncbiGeneId"]], object))
     expect_false(anyNA(df[["ncbiGeneId"]]))
     expect_true(anyNA(df[["ensemblGeneId"]]))
     df <- NcbiToEnsembl(
