@@ -23,16 +23,14 @@ NULL
             organism = organism,
             strict = strict
         )
+        assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
             object = df,
             format = match.arg(format),
             return = "NcbiToEnsembl",
             strict = strict
         )
-        if (identical(format, "1:1")) {
-            idx <- match(x = object, table = out[[1L]])
-            out <- out[idx, , drop = FALSE]
-        }
+        assert(identical(object, unique(out[[1L]])))
         out
     }
 
