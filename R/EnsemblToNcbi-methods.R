@@ -80,19 +80,15 @@ NULL
                     x <- unlist(x, recursive = FALSE, use.names = FALSE)
                     df[[2L]] <- x
                 } else if (hasDuplicates(df[[1L]])) {
-                    message(nrow(df))
                     i <- order(df, decreasing = FALSE, na.last = TRUE)
                     df <- df[i, , drop = FALSE]
                     i <- !duplicated(df[[1L]])
                     df <- df[i, , drop = FALSE]
-                    message(nrow(df))
                 }
                 if (!hasRownames(object)) {
                     rownames(df) <- df[[1L]]
                 }
                 assert(hasNoDuplicates(df[[1L]]))
-                ## FIXME Need to fill second column with NA here when strict
-                ## is FALSE.
             },
             "long" = {
                 rownames(df) <- NULL
@@ -113,7 +109,6 @@ NULL
                 "strict" = strict
             )
         )
-        message(nrow(df))
         new(Class = return, df)
     }
 
@@ -148,9 +143,9 @@ NULL
             object = df,
             format = format,
             return = "EnsemblToNcbi",
-            strict = TRUE
+            strict = strict
         )
-        assert(identical(object, unique(df[[1L]])))
+        assert(identical(object, unique(out[[1L]])))
         out
     }
 
