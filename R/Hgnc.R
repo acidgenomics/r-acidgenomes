@@ -1,12 +1,8 @@
-## FIXME Consider renaming "symbol" to "geneName" and "name" to "description".
-
-
-
 #' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 #' metadata
 #'
 #' @export
-#' @note Updated 2023-09-27.
+#' @note Updated 2023-11-21.
 #'
 #' @return `Hgnc`.
 #'
@@ -48,7 +44,9 @@ Hgnc <- # nolint
                     "dateNameChanged",
                     "dateSymbolChanged",
                     "entrezId",
-                    "hgncId"
+                    "hgncId",
+                    "name",
+                    "symbol"
                 ),
                 y = colnames(df)
             ),
@@ -77,6 +75,8 @@ Hgnc <- # nolint
             )
         }
         colnames(df)[colnames(df) == "entrezId"] <- "ncbiGeneId"
+        colnames(df)[colnames(df) == "name"] <- "description"
+        colnames(df)[colnames(df) == "symbol"] <- "geneName"
         df[["dateApprovedReserved"]] <- as.Date(df[["dateApprovedReserved"]])
         df[["dateModified"]] <- as.Date(df[["dateModified"]])
         df[["dateNameChanged"]] <- as.Date(df[["dateNameChanged"]])
