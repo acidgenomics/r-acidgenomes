@@ -13,6 +13,7 @@ test_that("EnsemblToNcbi : all genes", {
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
+        format = "1:1",
         strict = FALSE
     )
     ## FIXME This is failing, need to rethink.
@@ -20,6 +21,14 @@ test_that("EnsemblToNcbi : all genes", {
     expect_false(anyNA(df[["ensemblGeneId"]]))
     ## FIXME This is failing, need to rethink.
     expect_true(anyNA(df[["ncbiGeneId"]]))
+
+    ## FIXME Add coverage for long mode.
+    df <- EnsemblToNcbi(
+        object = object,
+        organism = "Homo sapiens",
+        format = "long",
+        strict = FALSE
+    )
 })
 
 test_that("NcbiToEnsembl : all genes", {
@@ -35,10 +44,18 @@ test_that("NcbiToEnsembl : all genes", {
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
+        format = "1:1",
         strict = FALSE
     )
     expect_identical(object, df[["ncbiGeneId"]])
     expect_false(anyNA(df[["ncbiGeneId"]]))
     expect_true(anyNA(df[["ensemblGeneId"]]))
 
+    ## FIXME Add coverage for this.
+    df <- EnsemblToNcbi(
+        object = object,
+        organism = "Homo sapiens",
+        format = "long",
+        strict = FALSE
+    )
 })
