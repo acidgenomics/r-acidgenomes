@@ -10,6 +10,7 @@ test_that("EnsemblToNcbi : all genes", {
         ),
         regexp = "match failures"
     )
+    ## FIXME This is now returning row names with missing values.
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
@@ -18,6 +19,7 @@ test_that("EnsemblToNcbi : all genes", {
     )
     ## FIXME This is failing, need to rethink.
     expect_identical(object, df[["ensemblGeneId"]])
+    ## FIXME This is now messed argh.
     expect_false(anyNA(df[["ensemblGeneId"]]))
     ## FIXME This is failing, need to rethink.
     expect_true(anyNA(df[["ncbiGeneId"]]))

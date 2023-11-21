@@ -846,7 +846,7 @@ setValidity(
 
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @export
-#' @note Updated 2023-10-04.
+#' @note Updated 2023-11-21.
 #'
 #' @details
 #' Contains a `DFrame` with `"ensemblGeneId"` and `"ncbiGeneId"` columns.
@@ -869,7 +869,7 @@ setValidity(
         }
         ok <- validate(
             hasRows(object),
-            all(complete.cases(object))
+            !anyNA(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -880,11 +880,20 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("format" = "character"),
+            expected = list(
+                "format" = "character",
+                "strict" = "logical"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
+        }
+        if (isTRUE(metadata(object)[["strict"]])) {
+            ok <- validate(all(complete.cases(object)))
+            if (!isTRUE(ok)) {
+                return(ok)
+            }
         }
         TRUE
     }
@@ -894,7 +903,7 @@ setValidity(
 
 #' @inherit AcidGenerics::GeneToSymbol description return title
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-21.
 #'
 #' @details
 #' Contains a `DFrame` with `"geneId"` and `"geneName"` columns.
@@ -922,7 +931,8 @@ setValidity(
         }
         ok <- validate(
             hasRows(object),
-            all(complete.cases(object))
+            all(complete.cases(object)),
+            hasNoDuplicates(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -1008,7 +1018,7 @@ setValidity(
 
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-21.
 #'
 #' @details
 #' Contains a `DFrame` with `"ncbiGeneId"` and `"ensemblGeneId"` columns.
@@ -1042,11 +1052,20 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("format" = "character"),
+            expected = list(
+                "format" = "character",
+                "strict" = "logical"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
+        }
+        if (isTRUE(metadata(object)[["strict"]])) {
+            ok <- validate(all(complete.cases(object)))
+            if (!isTRUE(ok)) {
+                return(ok)
+            }
         }
         TRUE
     }
