@@ -66,21 +66,20 @@ NULL
                     x <- mclapply(
                         X = df[, 2L],
                         FUN = function(x) {
-                            sort(
+                            x <- sort(
                                 x = x,
                                 decreasing = FALSE,
                                 na.last = TRUE
-                            )[[1L]]
+                            )
+                            x <- x[[1L]]
+                            x
                         }
                     )
                     x <- unlist(x, recursive = FALSE, use.names = FALSE)
                     df[[2L]] <- x
                 } else if (hasDuplicates(df[[1L]])) {
-                    df <- df[
-                        order(df, decreasing = FALSE, na.last = TRUE),
-                        ,
-                        drop = FALSE
-                    ]
+                    i <- order(df, decreasing = FALSE, na.last = TRUE)
+                    df <- df[i, , drop = FALSE]
                     spl <- split(x = df, f = df[[1L]])
                     spl <- mclapply(
                         X = spl,
