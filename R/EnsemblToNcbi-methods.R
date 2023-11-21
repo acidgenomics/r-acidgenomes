@@ -33,7 +33,6 @@ NULL
 .makeEnsemblToNcbi <-
     function(object,
              format = c("1:1", "long"),
-             ## Internal-only args:
              return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
         format <- match.arg(format)
         return <- match.arg(return)
@@ -59,10 +58,10 @@ NULL
         switch(
             EXPR = format,
             "1:1" = {
-                if (nrow(df) >= 100L) {
-                    alert("Mapping 1:1, which is CPU intensive.")
-                }
                 if (isAny(df[[2L]], c("List", "list"))) {
+                    if (nrow(df) >= 100L) {
+                        alert("Mapping nested values 1:1.")
+                    }
                     x <- mclapply(
                         X = df[, 2L],
                         FUN = function(x) {
@@ -80,14 +79,8 @@ NULL
                 } else if (hasDuplicates(df[[1L]])) {
                     i <- order(df, decreasing = FALSE, na.last = TRUE)
                     df <- df[i, , drop = FALSE]
-                    spl <- split(x = df, f = df[[1L]])
-                    spl <- mclapply(
-                        X = spl,
-                        FUN = function(x) {
-                            x[1L, , drop = FALSE]
-                        }
-                    )
-                    df <- do.call(what = rbind, args = spl)
+                    i <- !duplicated(df[[1L]])
+                    df <- df[i, , drop = FALSE]
                 }
                 if (!hasRownames(object)) {
                     rownames(df) <- df[[1L]]
