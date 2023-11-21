@@ -1,9 +1,3 @@
-## FIXME Consider reworking target directory name from:
-## "homo-sapiens-gcf-000001405-40-grch38-p14-refseq-220" to
-## "homo-sapiens-gcf00000140540-grch38p14-refseq-220"
-
-
-
 ## nolint start
 #' Download RefSeq reference genome
 #'
