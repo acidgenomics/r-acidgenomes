@@ -1,3 +1,7 @@
+## FIXME Consider renaming "symbol" to "geneName" and "name" to "description".
+
+
+
 #' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 #' metadata
 #'
