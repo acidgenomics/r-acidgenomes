@@ -59,8 +59,11 @@ NULL
         switch(
             EXPR = format,
             "1:1" = {
+                if (nrow(df) >= 100L) {
+                    alert("Mapping 1:1, which is CPU intensive.")
+                }
                 if (isAny(df[[2L]], c("List", "list"))) {
-                    x <- lapply(
+                    x <- mclapply(
                         X = df[, 2L],
                         FUN = function(x) {
                             sort(
@@ -79,7 +82,7 @@ NULL
                         drop = FALSE
                     ]
                     spl <- split(x = df, f = df[[1L]])
-                    spl <- lapply(
+                    spl <- mclapply(
                         X = spl,
                         FUN = function(x) {
                             x[1L, , drop = FALSE]
@@ -87,7 +90,6 @@ NULL
                     )
                     df <- do.call(what = rbind, args = spl)
                 }
-                ## This step is useful for character method handling.
                 if (!hasRownames(object)) {
                     rownames(df) <- df[[1L]]
                 }
