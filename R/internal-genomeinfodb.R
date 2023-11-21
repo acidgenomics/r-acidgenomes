@@ -151,7 +151,7 @@
     }
     tryCatch(
         expr = {
-            suppressPackageStartupMessages({
+            quietly({
                 do.call(what = getChromInfoFromEnsembl, args = args)
             })
         },
@@ -197,7 +197,7 @@
 .getUcscSeqinfo <- function(genomeBuild) {
     tryCatch(
         expr = {
-            suppressPackageStartupMessages({
+            quietly({
                 Seqinfo(genome = genomeBuild)
             })
         },
