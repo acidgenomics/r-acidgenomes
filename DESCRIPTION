@@ -35,6 +35,7 @@ Imports:
     pipette (>= 0.15.0),
     syntactic (>= 0.7.1),
     methods,
+    parallel,
     utils
 Suggests:
     AcidDevTools (>= 0.7.3),
