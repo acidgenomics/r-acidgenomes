@@ -21,8 +21,6 @@
 
 
 
-## FIXME Need to improve error message on mismatch here.
-
 #' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
 #' @note Updated 2023-11-21.
@@ -75,7 +73,13 @@
             if (!areSetEqual(keys, unique(df[[keytype]]))) {
                 setdiff <- setdiff(keys, unique(df[[keytype]]))
                 abort(sprintf(
-                    "Match failure: %s.",
+                    "%d match %s: %s.",
+                    length(setdiff),
+                    ngettext(
+                        n = length(setdiff),
+                        msg1 = "failure",
+                        msg2 = "failures"
+                    ),
                     toInlineString(setdiff, n = 10L)
                 ))
             }
