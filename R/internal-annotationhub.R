@@ -47,9 +47,12 @@
             packageVersion("AnnotationHub")
         ))
         ah <- .annotationHub()
-        ahs <- AnnotationHub::query(ah, pattern = c(organism, "NCBI", "OrgDb"))
+        ahs <- AnnotationHub::query(
+            x = ah,
+            pattern = c(organism, "NCBI", "OrgDb")
+        )
         id <- tail(names(ahs), n = 1L)
-        suppressMessages({
+        quietly({
             orgdb <- ah[[id]]
         })
         assert(is(orgdb, "OrgDb"))
@@ -67,7 +70,10 @@
                 columns = columns
             )
         })
-        assert(is.data.frame(df))
+        assert(
+            is.data.frame(df),
+            identical(keys, unique(df[[keytype]]))
+        )
         if (isTRUE(strict)) {
             df <- df[complete.cases(df), , drop = FALSE]
             if (!areSetEqual(keys, unique(df[[keytype]]))) {
