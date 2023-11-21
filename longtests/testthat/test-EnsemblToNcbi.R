@@ -1,7 +1,10 @@
 hgnc <- Hgnc()
 
 test_that("EnsemblToNcbi : all genes", {
-    object <- sort(unique(na.omit(hgnc[["ensemblGeneId"]])))
+    object <- sort(
+        x = unique(na.omit(hgnc[["ensemblGeneId"]])),
+        decreasing = TRUE
+    )
     expect_error(
         object = EnsemblToNcbi(
             object = object,
@@ -10,7 +13,6 @@ test_that("EnsemblToNcbi : all genes", {
         ),
         regexp = "match failures"
     )
-    ## FIXME This is failing return...
     df <- EnsemblToNcbi(
         object = object,
         organism = "Homo sapiens",
@@ -34,7 +36,10 @@ test_that("EnsemblToNcbi : all genes", {
 })
 
 test_that("NcbiToEnsembl : all genes", {
-    object <- sort(unique(na.omit(hgnc[["ncbiGeneId"]])))
+    object <- sort(
+        x = unique(na.omit(hgnc[["ncbiGeneId"]])),
+        decreasing = TRUE
+    )
     expect_error(
         object = NcbiToEnsembl(
             object = object,
