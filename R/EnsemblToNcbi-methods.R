@@ -1,11 +1,6 @@
-## FIXME Improve the error message on mismatch.
-## FIXME Consider adding a mode to allow mismatches, which will return NA.
-
-
-
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
-#' @note Updated 2023-10-04.
+#' @note Updated 2023-11-21.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -14,9 +9,11 @@
 #' Formatting method to apply:
 #'
 #' - `"1:1"`: *Recommended.* Return with 1:1 mappings. For Ensembl genes that
-#' don't map 1:1 with NCBI, pick the oldest NCBI identifier. Genes that don't
-#' map to NCBI will contain `NA` in `ncbiGeneId` column.
+#' don't map 1:1 with NCBI, pick the oldest NCBI identifier.
 #' - `"long"`: Return `1:many` in long format.
+#'
+#' @param strict `logical(1)`.
+#' Error on any mismatches, otherwise return `NA`.
 #'
 #' @examples
 #' ## character ====
@@ -31,7 +28,7 @@ NULL
 
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
-#' @note Updated 2023-10-04.
+#' @note Updated 2023-11-21.
 #' @noRd
 .makeEnsemblToNcbi <-
     function(object,
@@ -76,12 +73,16 @@ NULL
                     x <- unlist(x, recursive = FALSE, use.names = FALSE)
                     df[[2L]] <- x
                 } else if (hasDuplicates(df[[1L]])) {
-                    df <- df[order(df, decreasing = FALSE, na.last = TRUE), ]
+                    df <- df[
+                        order(df, decreasing = FALSE, na.last = TRUE),
+                        ,
+                        drop = FALSE
+                    ]
                     spl <- split(x = df, f = df[[1L]])
                     spl <- lapply(
                         X = spl,
                         FUN = function(x) {
-                            x[1L, ]
+                            x[1L, , drop = FALSE]
                         }
                     )
                     df <- do.call(what = rbind, args = spl)
@@ -95,7 +96,7 @@ NULL
             "long" = {
                 rownames(df) <- NULL
                 df <- expand(df)
-                df <- df[order(df), ]
+                df <- df[order(df), , drop = FALSE]
             }
         )
         assert(is(df, "DFrame"))
@@ -117,7 +118,8 @@ NULL
 `EnsemblToNcbi,character` <- # nolint
     function(object,
              organism = NULL,
-             format) {
+             format,
+             strict = TRUE) {
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
@@ -128,7 +130,8 @@ NULL
             keys = object,
             keytype = "ENSEMBL",
             columns = "ENTREZID",
-            organism = organism
+            organism = organism,
+            strict = strict
         )
         out <- .makeEnsemblToNcbi(
             object = df,
@@ -137,7 +140,7 @@ NULL
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
-            out <- out[idx, ]
+            out <- out[idx, , drop = FALSE]
         }
         out
     }

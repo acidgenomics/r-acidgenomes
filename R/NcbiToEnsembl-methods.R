@@ -1,8 +1,3 @@
-## FIXME Improve the error message on mismatch.
-## FIXME Consider adding a mode to allow mismatches, which will return NA.
-
-
-
 #' @name NcbiToEnsembl
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @note Updated 2023-09-16.
@@ -18,14 +13,15 @@ NULL
 
 
 
-## Updated 2022-05-27.
+## Updated 2023-11-21.
 `NcbiToEnsembl,integer` <- # nolint
-    function(object, organism, format) {
+    function(object, organism, format, strict = TRUE) {
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
             keytype = "ENTREZID",
             columns = "ENSEMBL",
-            organism = organism
+            organism = organism,
+            strict = strict
         )
         out <- .makeEnsemblToNcbi(
             object = df,
@@ -34,7 +30,7 @@ NULL
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
-            out <- out[idx, ]
+            out <- out[idx, , drop = FALSE]
         }
         out
     }
