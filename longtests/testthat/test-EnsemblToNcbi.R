@@ -48,21 +48,24 @@ test_that("NcbiToEnsembl : all genes", {
         ),
         regexp = "match failures"
     )
-    df <- EnsemblToNcbi(
+    df <- NcbiToEnsembl(
         object = object,
         organism = "Homo sapiens",
         format = "1:1",
         strict = FALSE
     )
-    expect_true(areSetEqual(object, df[["ncbiGeneId"]]))
+    expect_true(hasNoDuplicates(df[["ncbiGeneId"]]))
+    expect_true(identical(df[["ncbiGeneId"]], sort(object)))
     expect_false(anyNA(df[["ncbiGeneId"]]))
     expect_true(anyNA(df[["ensemblGeneId"]]))
-
-    ## FIXME Add coverage for this.
-    df <- EnsemblToNcbi(
+    df <- NcbiToEnsembl(
         object = object,
         organism = "Homo sapiens",
         format = "long",
         strict = FALSE
     )
+    expect_true(hasDuplicates(df[["ncbiGeneId"]]))
+    expect_true(areSetEqual(object, df[["ncbiGeneId"]]))
+    expect_false(anyNA(df[["ncbiGeneId"]]))
+    expect_true(anyNA(df[["ensemblGeneId"]]))
 })
