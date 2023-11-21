@@ -301,7 +301,7 @@
         },
         organism
     )
-    suppressWarnings({
+    quietly({
         release <- ensembldb::ensemblVersion(object)
     })
     release <- as.integer(release)

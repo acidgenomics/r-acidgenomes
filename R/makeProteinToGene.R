@@ -40,7 +40,7 @@ makeProteinToGeneFromEnsembl <-
             release = release
         )
         ## The `select()` generic is defined in AnnotationDbi.
-        suppressWarnings({
+        quietly({
             df <- ensembldb::select(
                 x = edb,
                 keys = ids,
