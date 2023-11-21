@@ -30,7 +30,7 @@ NULL
             return = "NcbiToEnsembl",
             strict = strict
         )
-        assert(identical(object, unique(out[[1L]])))
+        assert(areSetEqual(object, unique(out[[1L]])))
         out
     }
 
