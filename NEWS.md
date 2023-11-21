@@ -1,5 +1,19 @@
 # Release notes
 
+## AcidGenomes 0.6.2 (2023-11-21)
+
+Major changes:
+
+- `EnsemblToNcbi` and `NcbiToEnsembl`: Added support for disabling `strict`
+  mode, which is useful for mapping all genes in a reference genome. This is
+  not a breaking change, as strict mode remains enabled by default. Also
+  reworked the internal code to speed up 1:1 mapping return.
+
+Minor changes:
+
+- `Hgnc`: Renamed `"symbol"` column to `"geneName"` and `"name"` to
+  `"description"`, better matching naming conventions in other functions.
+
 ## AcidGenomes 0.6.1 (2023-10-13)
 
 Minor changes:
