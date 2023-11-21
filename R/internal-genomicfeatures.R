@@ -80,7 +80,7 @@
             inherits = FALSE
         )
         assert(is.function(what))
-        suppressMessages({
+        quietly({
             gr <- do.call(what = what, args = args)
         })
         ## Transcript-specific fixes.
@@ -263,7 +263,7 @@
         args <- append(x = args, values = list("chrominfo" = seqinfo))
     }
     what <- GenomicFeatures::makeTxDbFromGFF
-    suppressWarnings({
+    quietly({
         txdb <- do.call(what = what, args = args)
     })
     assert(is(txdb, "TxDb"))
