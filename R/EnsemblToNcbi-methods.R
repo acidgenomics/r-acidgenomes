@@ -1,3 +1,8 @@
+## FIXME Improve the error message on mismatch.
+## FIXME Consider adding a mode to allow mismatches, which will return NA.
+
+
+
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @note Updated 2023-10-04.
