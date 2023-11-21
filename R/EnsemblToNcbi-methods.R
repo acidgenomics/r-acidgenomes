@@ -33,7 +33,9 @@ NULL
 .makeEnsemblToNcbi <-
     function(object,
              format = c("1:1", "long"),
-             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
+             return = c("EnsemblToNcbi", "NcbiToEnsembl"),
+             strict = TRUE) {
+        assert(isFlag(strict))
         format <- match.arg(format)
         return <- match.arg(return)
         switch(
@@ -51,7 +53,8 @@ NULL
         assert(
             is(object, "DFrame"),
             hasRows(object),
-            isSubset(cols, colnames(object))
+            isSubset(cols, colnames(object)),
+            !anyNA(object[[fromCol]])
         )
         df <- object[, cols, drop = FALSE]
         df <- decode(df)
@@ -93,14 +96,19 @@ NULL
                 df <- df[order(df), , drop = FALSE]
             }
         )
-        assert(is(df, "DFrame"))
+        ## > stop("FIXME FUCK YOU R")
+        assert(
+            is(df, "DFrame"),
+            !anyNA(df[[1L]])
+        )
         df <- df[complete.cases(df), , drop = FALSE]
         metadata(df) <- append(
             x = metadata(object),
             values = list(
                 "date" = Sys.Date(),
                 "format" = format,
-                "packageVersion" = .pkgVersion
+                "packageVersion" = .pkgVersion,
+                "strict" = strict
             )
         )
         new(Class = return, df)
@@ -108,12 +116,17 @@ NULL
 
 
 
-## Updated 2022-05-27.
+## Updated 2023-11-21.
 `EnsemblToNcbi,character` <- # nolint
     function(object,
              organism = NULL,
              format,
              strict = TRUE) {
+        assert(
+            isCharacter(object),
+            hasNoDuplicates(object)
+        )
+        format <- match.arg(format)
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
@@ -127,15 +140,13 @@ NULL
             organism = organism,
             strict = strict
         )
+        ## FIXME This is dropping rows, we don't want this.
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = match.arg(format),
+            format = format,
             return = "EnsemblToNcbi"
         )
-        if (identical(format, "1:1")) {
-            idx <- match(x = object, table = out[[1L]])
-            out <- out[idx, , drop = FALSE]
-        }
+        assert(identical(object, unique(out[[1L]])))
         out
     }
 
