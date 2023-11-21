@@ -1041,7 +1041,7 @@ setValidity(
         }
         ok <- validate(
             hasRows(object),
-            all(complete.cases(object))
+            !anyNA(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
