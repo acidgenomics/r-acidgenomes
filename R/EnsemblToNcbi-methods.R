@@ -147,6 +147,10 @@ NULL
             strict = strict
         )
         assert(areSetEqual(object, unique(out[[1L]])))
+        if (identical(format, "1:1")) {
+            i <- match(x = object, table = out[[1L]])
+            out <- out[i, , drop = FALSE]
+        }
         out
     }
 
