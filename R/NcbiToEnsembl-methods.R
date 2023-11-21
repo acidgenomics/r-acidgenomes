@@ -26,7 +26,8 @@ NULL
         out <- .makeEnsemblToNcbi(
             object = df,
             format = match.arg(format),
-            return = "NcbiToEnsembl"
+            return = "NcbiToEnsembl",
+            strict = strict
         )
         if (identical(format, "1:1")) {
             idx <- match(x = object, table = out[[1L]])
