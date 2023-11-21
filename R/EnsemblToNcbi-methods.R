@@ -98,7 +98,8 @@ NULL
             }
         )
         if (isTRUE(strict)) {
-            df <- df[complete.cases(df), , drop = FALSE]
+            i <- complete.cases(df)
+            df <- df[i, , drop = FALSE]
         }
         metadata(df) <- append(
             x = metadata(object),
