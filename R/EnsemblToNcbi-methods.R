@@ -96,12 +96,9 @@ NULL
                 df <- df[order(df), , drop = FALSE]
             }
         )
-        ## > stop("FIXME FUCK YOU R")
-        assert(
-            is(df, "DFrame"),
-            !anyNA(df[[1L]])
-        )
-        df <- df[complete.cases(df), , drop = FALSE]
+        if (isTRUE(strict)) {
+            df <- df[complete.cases(df), , drop = FALSE]
+        }
         metadata(df) <- append(
             x = metadata(object),
             values = list(
@@ -140,6 +137,7 @@ NULL
             organism = organism,
             strict = strict
         )
+        assert(identical(object, unique(df[[1L]])))
         ## FIXME This is dropping rows, we don't want this.
         out <- .makeEnsemblToNcbi(
             object = df,
