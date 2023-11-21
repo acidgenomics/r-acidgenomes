@@ -15,6 +15,12 @@ test_that("EnsemblToNcbi : all genes", {
         organism = "Homo sapiens",
         strict = FALSE
     )
+    ## FIXME This is failing, need to rethink.
+    expect_identical(object, df[[1L]])
+    expect_false(anyNA(df[["ensemblGeneId"]]))
+    ## FIXME This is failing, need to rethink.
+    expect_true(anyNA(df[["ncbiGeneId"]]))
+    ## FIXME Need to ensure the input is identical here.
 })
 
 test_that("NcbiToEnsembl : all genes", {
