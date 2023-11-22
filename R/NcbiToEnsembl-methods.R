@@ -31,7 +31,19 @@ NULL
             strict = strict,
             return = "NcbiToEnsembl"
         )
-        assert(areSetEqual(object, unique(out[[1L]])))
+        if (!areSetEqual(object, unique(out[[1L]]))) {
+            setdiff <- as.character(setdiff(object, unique(out[[1L]])))
+            abort(sprintf(
+                "%d match %s: %s.",
+                length(setdiff),
+                ngettext(
+                    n = length(setdiff),
+                    msg1 = "failure",
+                    msg2 = "failures"
+                ),
+                toInlineString(setdiff, n = 10L)
+            ))
+        }
         if (identical(format, "1:1")) {
             i <- match(x = object, table = out[[1L]])
             out <- out[i, , drop = FALSE]
