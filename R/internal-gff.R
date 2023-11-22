@@ -63,7 +63,7 @@
 
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2022-05-03.
+#' @note Updated 2023-11-22.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -133,7 +133,16 @@
     lines <- head(lines, n = 100L)
     if (!isString(l[["provider"]])) {
         if (any(grepl(
-            pattern = "\t(ensGene|knownGene|ncbiRefSeq|refGene)\t",
+            pattern = paste0(
+                "\t(",
+                "ensGene", "|",
+                "knownGene", "|",
+                "ncbiRefSeq", "|",
+                ## Now seeing this in files as of 2023.
+                "ncbiRefSeq\\.[0-9]{4}-[0-9]{2}-[0-9]{2}", "|",
+                "refGene",
+                ")\t"
+            ),
             x = lines
         ))) {
             l[["provider"]] <- "UCSC"
