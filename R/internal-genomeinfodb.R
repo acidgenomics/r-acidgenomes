@@ -1,28 +1,3 @@
-## FIXME The seqinfo fetching step for GENCODE GRCh38 is fragile and is
-## currently timing out...not awesome.
-##
-## Error in h(simpleError(msg, call)) :
-##     error in evaluating the argument 'x' in selecting a method for function 'genome': unable to find an inherited method for function ‘seqinfo’ for signature ‘"NULL"’
-## Calls: makeGRangesFromGff ... genome -> genome -> genome -> seqinfo -> <Anonymous>
-##     Backtrace:
-##     ▆
-## 1. ├─AcidGenomes::makeGRangesFromGff(...)
-## 2. │ └─AcidGenomes:::.makeGRangesFromRtracklayer(...) at AcidGenomes/R/makeGRangesFromGff.R:269:13
-## 3. │   └─AcidGenomes:::.getSeqinfo(meta) at AcidGenomes/R/internal-rtracklayer.R:62:9
-## 4. │     └─AcidGenomes:::.getGencodeSeqinfo(...) at AcidGenomes/R/internal-genomeinfodb.R:100:13
-## 5. │       ├─base::sub(pattern = "\\.p[0-9]+$", replacement = "", x = genome(seq)) at AcidGenomes/R/internal-genomeinfodb.R:176:5
-## 6. │       │ └─base::is.factor(x)
-## 7. │       ├─GenomeInfoDb::genome(seq)
-## 8. │       └─GenomeInfoDb::genome(seq)
-## 9. │         ├─GenomeInfoDb::genome(seqinfo(x))
-## 10. │         └─GenomeInfoDb::seqinfo(x)
-## 11. │           └─methods (local) `<fn>`(`<list>`, `<stndrdGn>`, `<env>`)
-## 12. │             └─base::stop(...)
-## 13. └─base::.handleSimpleError(...)
-## 14.   └─base (local) h(simpleError(msg, call))
-
-
-
 #' Get Seqinfo
 #'
 #' @note Updated 2023-01-30.

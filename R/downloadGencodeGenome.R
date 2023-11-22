@@ -116,6 +116,9 @@ downloadGencodeGenome <-
 
 
 
+## FIXME Argh GENCODE FTP is failing existing URL check now:
+## ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gff3.gz
+
 ## Updated 2023-11-22.
 .downloadGencodeAnnotation <-
     function(genomeBuild,
