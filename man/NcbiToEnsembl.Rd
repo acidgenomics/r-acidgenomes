@@ -38,7 +38,7 @@ Error on any mismatches, otherwise return \code{NA}.}
 NCBI-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2023-09-16.
+Updated 2023-11-22.
 }
 \examples{
 ## integer ====

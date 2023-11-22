@@ -1,3 +1,6 @@
+## See also:
+## - https://bioinformatics.stackexchange.com/questions/21/
+
 hgnc <- Hgnc()
 ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
 
@@ -71,12 +74,24 @@ test_that("NcbiToEnsembl : all genes", {
     expect_true(anyNA(df[["ensemblGeneId"]]))
 })
 
-test_that("1:1 mapping consistent with HGNC", {
-    ## FIXME Add support for Hgnc class EnsemblToNcbi.
-    ## FIXME Add support for Hgnc class NcbiToEnsembl.
-    ##
-    ## FIXME Check that if we take makeGRangesFromEnsembl, create 1:1 mapping
-    ## for EnsemblToEntrez, that it matches our expectation.
-    ##
-    ## FIXME We also may be able to suport EnsemblToNcbi from Our NcbiGeneInfo object.
+## FIXME 151 mismatches between HGNC and Ensembl currently:
+## - ENSG00000111215
+## - ENSG00000169627
+## - ENSG00000170667
+## ...
+
+test_that("Mapping consistency between Ensembl and HGNC", {
+    x <- EnsemblToNcbi(hgnc)
+    x <- as(x, "DFrame")
+    metadata(x) <- list()
+    rownames(x) <- NULL
+    y <- EnsemblToNcbi(ens)
+    y <- as(y, "DFrame")
+    metadata(y) <- list()
+    rownames(y) <- NULL
+    genes <- sort(intersect(x[[1L]], y[[1L]]))
+    x <- x[match(genes, table = x[[1L]]), ]
+    y <- y[match(genes, table = y[[1L]]), ]
+    expect_identical(x, y)
+    ## > y[which(x[[2]] != y[[2]]), ]
 })
