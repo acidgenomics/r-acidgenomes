@@ -77,8 +77,6 @@ NULL
             i <- complete.cases(df)
             df <- df[i, , drop = FALSE]
         }
-        i <- order(df)
-        df <- df[i, , drop = FALSE]
         metadata(df) <- append(
             x = metadata(object),
             values = list(
