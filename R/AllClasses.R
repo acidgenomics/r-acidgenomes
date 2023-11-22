@@ -600,7 +600,7 @@ setValidity(
 #' Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-22.
 #'
 #' @return `Hgnc`.
 setClass(
@@ -677,7 +677,10 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("url" = "character"),
+            expected = list(
+                "organism" = "character",
+                "url" = "character"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -692,7 +695,7 @@ setValidity(
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-09-27.
+#' @note Updated 2023-11-22.
 #'
 #' @return `Mgi`.
 setClass(
@@ -735,7 +738,10 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("url" = "character"),
+            expected = list(
+                "organism" = "character",
+                "url" = "character"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -801,7 +807,7 @@ setValidity(
 #' NCBI gene identifier information
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-22.
 #'
 #' @return `NcbiGeneInfo`.
 setClass(
@@ -833,6 +839,18 @@ setValidity(
             return(ok)
         }
         ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list(
+                "organism" = "character",
+                "taxonomicGroup" = "character",
+                "url" = "character"
+            ),
+            subset = TRUE
+        )
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -882,6 +900,7 @@ setValidity(
             object = metadata(object),
             expected = list(
                 "format" = "character",
+                "organism" = "character",
                 "strict" = "logical"
             ),
             subset = TRUE
@@ -903,7 +922,7 @@ setValidity(
 
 #' @inherit AcidGenerics::GeneToSymbol description return title
 #' @export
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-22.
 #'
 #' @details
 #' Contains a `DFrame` with `"geneId"` and `"geneName"` columns.
@@ -943,7 +962,10 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("format" = "character"),
+            expected = list(
+                "format" = "character",
+                "organism" = "character"
+            ),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -958,7 +980,7 @@ setValidity(
 #' Jackson Laboratory (JAX) human-to-mouse gene mappings
 #'
 #' @export
-#' @note Updated 2023-10-12.
+#' @note Updated 2023-11-22.
 #'
 #' @details
 #' Contains a `DFrame` with `"dbClassKey"`, `"humanGeneName"`, `"humanHgncId"`,
@@ -1054,6 +1076,7 @@ setValidity(
             object = metadata(object),
             expected = list(
                 "format" = "character",
+                "organism" = "character",
                 "strict" = "logical"
             ),
             subset = TRUE
@@ -1084,7 +1107,7 @@ setValidity(
 #' into `metadata()`.
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-22.
 #'
 #' @return `ProteinToGene`.
 setClass(
@@ -1116,6 +1139,14 @@ setValidity(
         if (!isTRUE(ok)) {
             return(ok)
         }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list("organism" = "character"),
+            subset = TRUE
+        )
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
         TRUE
     }
 )
@@ -1124,7 +1155,7 @@ setValidity(
 
 #' @inherit AcidGenerics::TxToGene description return title
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-22.
 #'
 #' @details
 #' Contains a `DFrame` with `"txId"` and `"geneId"` columns.
@@ -1164,6 +1195,14 @@ setValidity(
             return(ok)
         }
         ok <- .validateMetadata(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validateClasses(
+            object = metadata(object),
+            expected = list("organism" = "character"),
+            subset = TRUE
+        )
         if (!isTRUE(ok)) {
             return(ok)
         }
