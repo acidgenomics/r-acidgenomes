@@ -133,7 +133,7 @@ downloadUcscGenome <-
 
 
 
-## Updated 2023-09-26.
+## Updated 2023-11-22.
 .downloadUcscAnnotation <-
     function(genomeBuild,
              outputDir,
@@ -156,7 +156,7 @@ downloadUcscGenome <-
             outputDir = file.path(outputDir, "annotation"),
             cache = cache
         )
-        gtfFile <- files[["knownGene"]]
+        gtfFile <- files[["ncbiRefSeq"]]
         ## Create relative path symlink.
         if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
             gtfRelativeFile <- sub(
