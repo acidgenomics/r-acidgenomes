@@ -116,9 +116,6 @@ downloadGencodeGenome <-
 
 
 
-## FIXME Argh GENCODE FTP is failing existing URL check now:
-## ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_42/gencode.v42.annotation.gff3.gz
-
 ## Updated 2023-11-22.
 .downloadGencodeAnnotation <-
     function(genomeBuild,
@@ -218,15 +215,14 @@ downloadGencodeGenome <-
         refseq <- as(refseq, "DFrame")
         refseq <- leftJoin(x = refseq, y = t2g, by = "txId")
         ## Add NCBI and RefSeq identifiers to gene metadata.
-        if (isSubset("ncbiGeneId", names(mcols(genes)))) {
-            mcols(genes)[["ncbiGeneId"]] <- NULL
+        mcols <- decode(mcols(genes))
+        if (isSubset("ncbiGeneId", names(mcols))) {
+            mcols[["ncbiGeneId"]] <- NULL
         }
-        if (isSubset("refseqRnaId", names(mcols(genes)))) {
-            mcols(genes)[["refseqProteinId"]] <- NULL
-            mcols(genes)[["refseqRnaId"]] <- NULL
+        if (isSubset("refseqRnaId", names(mcols))) {
+            mcols[["refseqProteinId"]] <- NULL
+            mcols[["refseqRnaId"]] <- NULL
         }
-        mcols <- mcols(genes)
-        ## FIXME This step is now failing due to type mismatch.
         mcols <- leftJoin(
             x = mcols,
             y = .nest2(object = ncbiGene, by = "geneId", exclude = "txId"),
@@ -238,16 +234,16 @@ downloadGencodeGenome <-
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(genes) <- mcols
+        mcols(genes) <- encode(mcols)
         ## Add NCBI and RefSeq identifiers to transcript metadata.
-        if (isSubset("ncbiGeneId", names(mcols(transcripts)))) {
-            mcols(transcripts)[["ncbiGeneId"]] <- NULL
+        mcols <- decode(mcols(transcripts))
+        if (isSubset("ncbiGeneId", names(mcols))) {
+            mcols[["ncbiGeneId"]] <- NULL
         }
-        if (isSubset("refseqRnaId", names(mcols(transcripts)))) {
-            mcols(transcripts)[["refseqProteinId"]] <- NULL
-            mcols(transcripts)[["refseqRnaId"]] <- NULL
+        if (isSubset("refseqRnaId", names(mcols))) {
+            mcols[["refseqProteinId"]] <- NULL
+            mcols[["refseqRnaId"]] <- NULL
         }
-        mcols <- mcols(transcripts)
         mcols <- leftJoin(
             x = mcols,
             y = .nest2(object = ncbiGene, by = "txId", exclude = "geneId"),
@@ -259,7 +255,7 @@ downloadGencodeGenome <-
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(transcripts) <- mcols
+        mcols(transcripts) <- encode(mcols)
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
