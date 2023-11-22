@@ -84,6 +84,7 @@ Hgnc <- # nolint
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         metadata(df) <- list(
             "date" = Sys.Date(),
+            "organism" = "Homo sapiens",
             "packageVersion" = .pkgVersion,
             "url" = url
         )

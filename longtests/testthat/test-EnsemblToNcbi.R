@@ -1,6 +1,3 @@
-## See also:
-## - https://bioinformatics.stackexchange.com/questions/21/
-
 hgnc <- Hgnc()
 ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
 
