@@ -1,4 +1,6 @@
-## FIXME Add support for Hgnc.
+## FIXME Always sort by first identifier.
+## FIXME Consider defaulting to Hgnc for multi-map resolution.
+## FIXME Never set row names here, simpler.
 
 
 
@@ -61,50 +63,22 @@ NULL
             !anyNA(object[[fromCol]])
         )
         df <- object[, cols, drop = FALSE]
+        rownames(df) <- NULL
         df <- decode(df)
-        switch(
-            EXPR = format,
-            "1:1" = {
-                if (isAny(df[[2L]], c("List", "list"))) {
-                    if (nrow(df) >= 100L) {
-                        alert("Mapping nested values 1:1.")
-                    }
-                    x <- mclapply(
-                        X = df[, 2L],
-                        FUN = function(x) {
-                            x <- sort(
-                                x = x,
-                                decreasing = FALSE,
-                                na.last = TRUE
-                            )
-                            x <- x[[1L]]
-                            x
-                        }
-                    )
-                    x <- unlist(x, recursive = FALSE, use.names = FALSE)
-                    df[[2L]] <- x
-                } else if (hasDuplicates(df[[1L]])) {
-                    i <- order(df, decreasing = FALSE, na.last = TRUE)
-                    df <- df[i, , drop = FALSE]
-                    i <- !duplicated(df[[1L]])
-                    df <- df[i, , drop = FALSE]
-                }
-                if (!hasRownames(object)) {
-                    rownames(df) <- df[[1L]]
-                }
-                assert(hasNoDuplicates(df[[1L]]))
-            },
-            "long" = {
-                rownames(df) <- NULL
-                df <- expand(df)
-                i <- order(df, decreasing = FALSE, na.last = TRUE)
-                df <- df[i, , drop = FALSE]
-            }
-        )
+        df <- expand(df)
+        i <- order(df, decreasing = FALSE, na.last = TRUE)
+        df <- df[i, , drop = FALSE]
+        if (identical(format, "1:1")) {
+            i <- !duplicated(df[[1L]])
+            df <- df[i, , drop = FALSE]
+            assert(hasNoDuplicates(df[[1L]]))
+        }
         if (isTRUE(strict)) {
             i <- complete.cases(df)
             df <- df[i, , drop = FALSE]
         }
+        i <- order(df)
+        df <- df[i, , drop = FALSE]
         metadata(df) <- append(
             x = metadata(object),
             values = list(
