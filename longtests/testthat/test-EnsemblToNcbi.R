@@ -69,3 +69,13 @@ test_that("NcbiToEnsembl : all genes", {
     expect_false(anyNA(df[["ncbiGeneId"]]))
     expect_true(anyNA(df[["ensemblGeneId"]]))
 })
+
+test_that("1:1 mapping consistent with HGNC", {
+    ## FIXME Add support for Hgnc class EnsemblToNcbi.
+    ## FIXME Add support for Hgnc class NcbiToEnsembl.
+    ##
+    ## FIXME Check that if we take makeGRangesFromEnsembl, create 1:1 mapping
+    ## for EnsemblToEntrez, that it matches our expectation.
+    ##
+    ## FIXME We also may be able to suport EnsemblToNcbi from Our NcbiGeneInfo object.
+})
