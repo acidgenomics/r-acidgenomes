@@ -41,7 +41,7 @@ Invisible \code{list}.
 Download GENCODE reference genome
 }
 \note{
-Updated 2023-10-12.
+Updated 2023-11-22.
 }
 \examples{
 ## This example is bandwidth intensive.
