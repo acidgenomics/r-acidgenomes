@@ -17,7 +17,7 @@ If \code{NULL}, HGNC annotations will be downloaded automatically.}
 Map gene names (symbols) to HGNC identifiers
 }
 \note{
-Updated 2023-09-27.
+Updated 2023-11-21.
 }
 \examples{
 ## Homo sapiens (only).

@@ -2,7 +2,7 @@
 #' Download UCSC reference genome
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-11-22.
 #'
 #' @section Genome:
 #'
@@ -35,7 +35,11 @@
 #' @return Invisible `list`.
 #'
 #' @seealso
+#' - [hg38 bigZips](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/).
 #' - [hg38 pinned analysis set (for NGS pipelines)](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/).
+#' - [UCSC genome FAQ](https://genome.ucsc.edu/FAQ/FAQformat.html).
+#' - [UCSC download FAQ](https://genome.ucsc.edu/FAQ/FAQdownloads.html).
+#' - [UCSC genes in GTF or GFF format wiki](http://genomewiki.ucsc.edu/index.php/Genes_in_gtf_or_gff_format).
 #'
 #' @examples
 #' ## This example is bandwidth intensive.

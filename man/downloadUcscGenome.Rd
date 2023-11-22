@@ -32,7 +32,7 @@ Invisible \code{list}.
 Download UCSC reference genome
 }
 \note{
-Updated 2023-09-26.
+Updated 2023-11-22.
 }
 \section{Genome}{
 
@@ -69,6 +69,10 @@ available. They are sourced from the following gene model tables:
 }
 \seealso{
 \itemize{
+\item \href{http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/}{hg38 bigZips}.
 \item \href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/}{hg38 pinned analysis set (for NGS pipelines)}.
+\item \href{https://genome.ucsc.edu/FAQ/FAQformat.html}{UCSC genome FAQ}.
+\item \href{https://genome.ucsc.edu/FAQ/FAQdownloads.html}{UCSC download FAQ}.
+\item \href{http://genomewiki.ucsc.edu/index.php/Genes_in_gtf_or_gff_format}{UCSC genes in GTF or GFF format wiki}.
 }
 }
