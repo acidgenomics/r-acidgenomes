@@ -70,14 +70,15 @@ NULL
             if (organism == "Homo sapiens" && anyDuplicated(df[[2L]])) {
                 alert("Resolving ambiguous duplicates with HGNC annotations.")
                 hgnc <- Hgnc()
-                df <- rbind(hgnc, df)
+                df2 <- EnsemblToNcbi(hgnc)
+                df2 <- df2[, cols]
+                i <- df2[[1L]] %in% df[[1L]]
+                df2 <- df2[i, , drop = FALSE]
+                df <- rbind(df2, df)
             }
-            i <- !duplicated(df[[1L]])
+            i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
             df <- df[i, , drop = FALSE]
-            assert(
-                hasNoDuplicates(df[[1L]]),
-                hasNoDuplicates(df[[2L]])
-            )
+            assert(hasNoDuplicates(df[[1L]]), hasNoDuplicates(df[[2L]]))
         }
         if (isTRUE(strict)) {
             i <- complete.cases(df)
@@ -88,6 +89,7 @@ NULL
             values = list(
                 "date" = Sys.Date(),
                 "format" = format,
+                "organism" = organism,
                 "packageVersion" = .pkgVersion,
                 "strict" = strict
             )
@@ -128,7 +130,19 @@ NULL
             strict = strict,
             return = "EnsemblToNcbi"
         )
-        assert(areSetEqual(object, unique(out[[1L]])))
+        if (!areSetEqual(object, unique(out[[1L]]))) {
+            setdiff <- setdiff(object, unique(out[[1L]]))
+            abort(sprintf(
+                "%d match %s: %s.",
+                length(setdiff),
+                ngettext(
+                    n = length(setdiff),
+                    msg1 = "failure",
+                    msg2 = "failures"
+                ),
+                toInlineString(setdiff, n = 10L)
+            ))
+        }
         if (identical(format, "1:1")) {
             i <- match(x = object, table = out[[1L]])
             out <- out[i, , drop = FALSE]
