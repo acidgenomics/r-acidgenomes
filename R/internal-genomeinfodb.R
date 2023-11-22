@@ -1,3 +1,28 @@
+## FIXME The seqinfo fetching step for GENCODE GRCh38 is fragile and is
+## currently timing out...not awesome.
+##
+## Error in h(simpleError(msg, call)) :
+##     error in evaluating the argument 'x' in selecting a method for function 'genome': unable to find an inherited method for function ‘seqinfo’ for signature ‘"NULL"’
+## Calls: makeGRangesFromGff ... genome -> genome -> genome -> seqinfo -> <Anonymous>
+##     Backtrace:
+##     ▆
+## 1. ├─AcidGenomes::makeGRangesFromGff(...)
+## 2. │ └─AcidGenomes:::.makeGRangesFromRtracklayer(...) at AcidGenomes/R/makeGRangesFromGff.R:269:13
+## 3. │   └─AcidGenomes:::.getSeqinfo(meta) at AcidGenomes/R/internal-rtracklayer.R:62:9
+## 4. │     └─AcidGenomes:::.getGencodeSeqinfo(...) at AcidGenomes/R/internal-genomeinfodb.R:100:13
+## 5. │       ├─base::sub(pattern = "\\.p[0-9]+$", replacement = "", x = genome(seq)) at AcidGenomes/R/internal-genomeinfodb.R:176:5
+## 6. │       │ └─base::is.factor(x)
+## 7. │       ├─GenomeInfoDb::genome(seq)
+## 8. │       └─GenomeInfoDb::genome(seq)
+## 9. │         ├─GenomeInfoDb::genome(seqinfo(x))
+## 10. │         └─GenomeInfoDb::seqinfo(x)
+## 11. │           └─methods (local) `<fn>`(`<list>`, `<stndrdGn>`, `<env>`)
+## 12. │             └─base::stop(...)
+## 13. └─base::.handleSimpleError(...)
+## 14.   └─base (local) h(simpleError(msg, call))
+
+
+
 #' Get Seqinfo
 #'
 #' @note Updated 2023-01-30.
@@ -137,7 +162,7 @@
 
 #' Get Ensembl genome assembly seqinfo
 #'
-#' @note Updated 2023-02-08.
+#' @note Updated 2023-11-22.
 #' @noRd
 .getEnsemblSeqinfo <- function(organism, genomeBuild, release) {
     assert(
@@ -149,23 +174,18 @@
     if (grepl(pattern = "GRCh37", x = genomeBuild, fixed = TRUE)) {
         args[["use.grch37"]] <- TRUE
     }
-    tryCatch(
-        expr = {
-            quietly({
-                do.call(what = getChromInfoFromEnsembl, args = args)
-            })
-        },
-        error = function(e) {
-            NULL
-        }
-    )
+    quietly({
+        seq <- do.call(what = getChromInfoFromEnsembl, args = args)
+    })
+    assert(is(seq, "Seqinfo"))
+    seq
 }
 
 
 
 #' Get GENCODE genome assembly seqinfo
 #'
-#' @note Updated 2023-01-30.
+#' @note Updated 2023-11-22.
 #' @noRd
 .getGencodeSeqinfo <- function(organism, genomeBuild, release) {
     seq <- .getEnsemblSeqinfo(
@@ -173,6 +193,7 @@
         genomeBuild = genomeBuild,
         release = mapGencodeToEnsembl(release)
     )
+    assert(is(seq, "Seqinfo"))
     genome(seq) <- sub(
         pattern = "\\.p[0-9]+$",
         replacement = "",
@@ -182,6 +203,7 @@
         x = seqnames(seq),
         y = c(seq(from = 1L, to = 23L), "MT", "X", "Y")
     )
+    assert(hasLength(keep))
     seq <- seq[keep]
     seqnames(seq)[seqnames(seq) == "MT"] <- "M"
     seqnames(seq) <- paste0("chr", seqnames(seq))
