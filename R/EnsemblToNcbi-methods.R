@@ -1,9 +1,3 @@
-## FIXME Always sort by first identifier.
-## FIXME Consider defaulting to Hgnc for multi-map resolution.
-## FIXME Never set row names here, simpler.
-
-
-
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @note Updated 2023-11-22.
@@ -32,11 +26,9 @@ NULL
 
 
 
-## FIXME Require that organism is set in metadata.
-
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-22.
 #' @noRd
 .makeEnsemblToNcbi <-
     function(object,
@@ -75,15 +67,10 @@ NULL
         i <- order(df, decreasing = FALSE, na.last = TRUE)
         df <- df[i, , drop = FALSE]
         if (identical(format, "1:1")) {
-            ## FIXME Resolve ambiguous matches for Homo sapiens using Hgnc.
-            ## FIXME Only do this if 2nd column is duplicated.
-            ## FIXME Need to ensure the reverse is not duplicated too...
-            ## argh what a pain.
-            if (
-                identical(organism, "Homo sapiens") &&
-                anyDuplicated(df[[2L]])
-            ) {
-                stop("FIXME Need to resolve ambiguous with HGNC.")
+            if (organism == "Homo sapiens" && anyDuplicated(df[[2L]])) {
+                alert("Resolving ambiguous duplicates with HGNC annotations.")
+                hgnc <- Hgnc()
+                df <- rbind(hgnc, df)
             }
             i <- !duplicated(df[[1L]])
             df <- df[i, , drop = FALSE]
