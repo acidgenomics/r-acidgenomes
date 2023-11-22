@@ -1,6 +1,6 @@
 # Release notes
 
-## AcidGenomes 0.6.2 (2023-11-21)
+## AcidGenomes 0.7.0 (UNRELEASED)
 
 Major changes:
 
