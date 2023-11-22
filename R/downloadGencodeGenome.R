@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-10-12.
+#' @note Updated 2023-11-22.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -116,7 +116,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2023-04-27.
+## Updated 2023-11-22.
 .downloadGencodeAnnotation <-
     function(genomeBuild,
              metadataFiles,
@@ -223,6 +223,7 @@ downloadGencodeGenome <-
             mcols(genes)[["refseqRnaId"]] <- NULL
         }
         mcols <- mcols(genes)
+        ## FIXME This step is now failing due to type mismatch.
         mcols <- leftJoin(
             x = mcols,
             y = .nest2(object = ncbiGene, by = "geneId", exclude = "txId"),
