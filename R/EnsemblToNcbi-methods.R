@@ -1,6 +1,10 @@
+## FIXME Add support for Hgnc.
+
+
+
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-22.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -159,23 +163,38 @@ formals(`EnsemblToNcbi,character`)[["format"]] <- # nolint
 
 
 
-## Updated 2023-11-21.
+## Updated 2023-11-22.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
     function(object, format) {
         assert(validObject(object))
+        format <- match.arg(format)
         df <- mcols(object)
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
-        out <- .makeEnsemblToNcbi(
-            object = df,
-            format = match.arg(format),
-            strict = TRUE
-        )
+        out <- .makeEnsemblToNcbi(df, format = format, strict = TRUE)
         out
     }
 
 formals(`EnsemblToNcbi,EnsemblGenes`)[["format"]] <- # nolint
     formals(.makeEnsemblToNcbi)[["format"]]
+
+
+
+## Updated 2023-11-22.
+`EnsemblToNcbi,Hgnc` <- # nolint
+    function(object) {
+        j <- c("ensemblGeneId", "ncbiGeneId")
+        assert(
+            validObject(object),
+            isSubset(j, colnames(object))
+        )
+        df <- as(object, "DFrame")
+        df <- df[, j, drop = FALSE]
+        i <- complete.cases(df)
+        df <- df[i, , drop = FALSE]
+        out <- .makeEnsemblToNcbi(df, format = "1:1", strict = TRUE)
+        out
+    }
 
 
 
