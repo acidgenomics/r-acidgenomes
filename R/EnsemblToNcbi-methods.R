@@ -147,8 +147,8 @@ NULL
         out <- .makeEnsemblToNcbi(
             object = df,
             format = format,
-            return = "EnsemblToNcbi",
-            strict = strict
+            strict = strict,
+            return = "EnsemblToNcbi"
         )
         assert(areSetEqual(object, unique(out[[1L]])))
         if (identical(format, "1:1")) {
@@ -168,10 +168,15 @@ formals(`EnsemblToNcbi,character`)[["format"]] <- # nolint
     function(object, format) {
         assert(validObject(object))
         format <- match.arg(format)
-        df <- mcols(object)
+        df <- decode(mcols(object))
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
-        out <- .makeEnsemblToNcbi(df, format = format, strict = TRUE)
+        out <- .makeEnsemblToNcbi(
+            object = df,
+            format = format,
+            strict = TRUE,
+            return = "EnsemblToNcbi"
+        )
         out
     }
 
@@ -192,7 +197,12 @@ formals(`EnsemblToNcbi,EnsemblGenes`)[["format"]] <- # nolint
         df <- df[, j, drop = FALSE]
         i <- complete.cases(df)
         df <- df[i, , drop = FALSE]
-        out <- .makeEnsemblToNcbi(df, format = "1:1", strict = TRUE)
+        out <- .makeEnsemblToNcbi(
+            object = df,
+            format = "1:1",
+            strict = TRUE,
+            return = "EnsemblToNcbi"
+        )
         out
     }
 
