@@ -118,7 +118,7 @@ NcbiGeneInfo <- # nolint
             "date" = Sys.Date(),
             "organism" = organism,
             "packageVersion" = .pkgVersion,
-            "taxonomicGroup" = "taxonomicGroup",
+            "taxonomicGroup" = taxonomicGroup,
             "url" = url
         )
         new(Class = "NcbiGeneInfo", df)

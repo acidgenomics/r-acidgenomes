@@ -32,6 +32,8 @@ NULL
 
 
 
+## FIXME Require that organism is set in metadata.
+
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
 #' @note Updated 2023-11-21.
@@ -41,9 +43,13 @@ NULL
              format = c("1:1", "long"),
              strict = TRUE,
              return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
-        assert(isFlag(strict))
+        assert(
+            isFlag(strict),
+            isOrganism(metadata(object)[["organism"]])
+        )
         format <- match.arg(format)
         return <- match.arg(return)
+        organism <- metadata(object)[["organism"]]
         switch(
             EXPR = return,
             "EnsemblToNcbi" = {
@@ -69,9 +75,22 @@ NULL
         i <- order(df, decreasing = FALSE, na.last = TRUE)
         df <- df[i, , drop = FALSE]
         if (identical(format, "1:1")) {
+            ## FIXME Resolve ambiguous matches for Homo sapiens using Hgnc.
+            ## FIXME Only do this if 2nd column is duplicated.
+            ## FIXME Need to ensure the reverse is not duplicated too...
+            ## argh what a pain.
+            if (
+                identical(organism, "Homo sapiens") &&
+                anyDuplicated(df[[2L]])
+            ) {
+                stop("FIXME Need to resolve ambiguous with HGNC.")
+            }
             i <- !duplicated(df[[1L]])
             df <- df[i, , drop = FALSE]
-            assert(hasNoDuplicates(df[[1L]]))
+            assert(
+                hasNoDuplicates(df[[1L]]),
+                hasNoDuplicates(df[[2L]])
+            )
         }
         if (isTRUE(strict)) {
             i <- complete.cases(df)

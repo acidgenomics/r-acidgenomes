@@ -1,7 +1,7 @@
 #' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-09-27.
+#' @note Updated 2023-11-22.
 #'
 #' @return `Mgi`.
 #'
@@ -73,6 +73,7 @@ Mgi <- function() { # nolint
     df <- encode(df)
     metadata(df) <- list(
         "date" = Sys.Date(),
+        "organism" = "Mus musculus",
         "packageVersion" = .pkgVersion,
         "url" = url
     )
