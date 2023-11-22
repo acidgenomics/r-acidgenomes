@@ -1,4 +1,5 @@
 hgnc <- Hgnc()
+ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
 
 test_that("EnsemblToNcbi : all genes", {
     object <- sort(
