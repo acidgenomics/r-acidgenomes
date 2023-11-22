@@ -2,10 +2,13 @@
 % Please edit documentation in R/AllGenerics.R, R/NcbiToEnsembl-methods.R
 \name{NcbiToEnsembl}
 \alias{NcbiToEnsembl}
+\alias{NcbiToEnsembl,Hgnc-method}
 \alias{NcbiToEnsembl,integer-method}
 \title{NCBI-to-Ensembl gene identifier mappings}
 \usage{
 NcbiToEnsembl(object, ...)
+
+\S4method{NcbiToEnsembl}{Hgnc}(object)
 
 \S4method{NcbiToEnsembl}{integer}(object, organism, format = c("1:1", "long"), strict = TRUE)
 }

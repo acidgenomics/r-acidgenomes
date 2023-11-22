@@ -1,6 +1,6 @@
 #' @name NcbiToEnsembl
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-11-22.
 #'
 #' @inheritParams EnsemblToNcbi
 #' @param ... Additional arguments.
@@ -16,6 +16,7 @@ NULL
 ## Updated 2023-11-21.
 `NcbiToEnsembl,integer` <- # nolint
     function(object, organism, format, strict = TRUE) {
+        format <- match.arg(format)
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
             keytype = "ENTREZID",
@@ -26,9 +27,9 @@ NULL
         assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = match.arg(format),
-            return = "NcbiToEnsembl",
-            strict = strict
+            format = format,
+            strict = strict,
+            return = "NcbiToEnsembl"
         )
         assert(areSetEqual(object, unique(out[[1L]])))
         if (identical(format, "1:1")) {
@@ -42,6 +43,37 @@ formals(`NcbiToEnsembl,integer`)[["format"]] <- # nolint
     formals(.makeEnsemblToNcbi)[["format"]]
 
 
+
+## Updated 2023-11-22.
+`NcbiToEnsembl,Hgnc` <- # nolint
+    function(object) {
+        j <- c("ncbiGeneId", "ensemblGeneId")
+        assert(
+            validObject(object),
+            isSubset(j, colnames(object))
+        )
+        df <- as(object, "DFrame")
+        df <- df[, j, drop = FALSE]
+        i <- complete.cases(df)
+        df <- df[i, , drop = FALSE]
+        out <- .makeEnsemblToNcbi(
+            object = df,
+            format = "1:1",
+            strict = TRUE,
+            return = "NcbiToEnsembl"
+        )
+        out
+    }
+
+
+
+#' @rdname NcbiToEnsembl
+#' @export
+setMethod(
+    f = "NcbiToEnsembl",
+    signature = signature(object = "Hgnc"),
+    definition = `NcbiToEnsembl,Hgnc`
+)
 
 #' @rdname NcbiToEnsembl
 #' @export
