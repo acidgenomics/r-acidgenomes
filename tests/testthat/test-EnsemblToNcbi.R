@@ -12,8 +12,7 @@ test_that("EnsemblToNcbi : character", {
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
         "ensemblGeneId" = genes,
-        "ncbiGeneId" = c(10838L, 7982L, 64102L, 7105L),
-        row.names = genes
+        "ncbiGeneId" = c(10838L, 7982L, 64102L, 7105L)
     )
     expect_identical(
         object = as.data.frame(object),
@@ -57,6 +56,8 @@ test_that("NcbiToEnsembl : character", {
         7105L
     )
     ## 1:1 mapping (of input keys, note the expected Ensembl dupes here).
+    ## FIXME Improve coverage here to ensure we're matching ambiguous dupes
+    ## correctly from HGNC.
     object <- NcbiToEnsembl(
         object = genes,
         organism = "Homo sapiens",
@@ -72,8 +73,7 @@ test_that("NcbiToEnsembl : character", {
             "ENSG00000063587",
             "ENSG00000004866",
             "ENSG00000000003"
-        ),
-        row.names = genes
+        )
     )
     expect_identical(
         object = as.data.frame(object),
