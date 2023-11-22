@@ -224,6 +224,14 @@ setMethod(
 #' @export
 setMethod(
     f = "EnsemblToNcbi",
+    signature = signature(object = "Hgnc"),
+    definition = `EnsemblToNcbi,Hgnc`
+)
+
+#' @rdname EnsemblToNcbi
+#' @export
+setMethod(
+    f = "EnsemblToNcbi",
     signature = signature(object = "character"),
     definition = `EnsemblToNcbi,character`
 )

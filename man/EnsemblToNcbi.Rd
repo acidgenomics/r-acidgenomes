@@ -4,6 +4,7 @@
 \alias{EnsemblToNcbi}
 \alias{EnsemblToNcbi,EnsemblGenes-method}
 \alias{EnsemblToNcbi,GencodeGenes-method}
+\alias{EnsemblToNcbi,Hgnc-method}
 \alias{EnsemblToNcbi,character-method}
 \title{Ensembl-to-NCBI gene identifier mappings}
 \usage{
@@ -12,6 +13,8 @@ EnsemblToNcbi(object, ...)
 \S4method{EnsemblToNcbi}{EnsemblGenes}(object, format = c("1:1", "long"))
 
 \S4method{EnsemblToNcbi}{GencodeGenes}(object, format = c("1:1", "long"))
+
+\S4method{EnsemblToNcbi}{Hgnc}(object)
 
 \S4method{EnsemblToNcbi}{character}(
   object,
@@ -46,7 +49,7 @@ Error on any mismatches, otherwise return \code{NA}.}
 Ensembl-to-NCBI gene identifier mappings
 }
 \note{
-Updated 2023-11-21.
+Updated 2023-11-22.
 }
 \examples{
 ## character ====
