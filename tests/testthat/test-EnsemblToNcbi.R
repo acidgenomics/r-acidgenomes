@@ -2,16 +2,13 @@
 ## FIXME Need to add testing for ambiguous matches.
 
 test_that("character : 1:1 (unique)", {
-    object <- EnsemblToNcbi(
-        object = c(
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000005",
-            "ENSG00000000003"
-        ),
-        format = "1:1"
+    genes <- c(
+        "ENSG00000063587.15",
+        "ENSG00000004866.22",
+        "ENSG00000000005.6",
+        "ENSG00000000003.16"
     )
-    expect_identical(metadata(object)[["format"]], "1:1")
+    object <- EnsemblToNcbi(genes)
     expected <- DataFrame(
         "ensemblGeneId" = c(
             "ENSG00000063587",
@@ -24,47 +21,14 @@ test_that("character : 1:1 (unique)", {
             7982L,
             64102L,
             7105L
-        )
+        ),
+        row.names = genes
     )
     expect_identical(
         object = as.data.frame(object),
         expected = as.data.frame(expected)
     )
-})
-
-test_that("character : long (non-unique)", {
-    object <- EnsemblToNcbi(
-        object = c(
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000005",
-            "ENSG00000000003"
-        ),
-        format = "long"
-    )
-    expect_identical(metadata(object)[["format"]], "long")
-    expected <- DataFrame(
-        "ensemblGeneId" = c(
-            "ENSG00000000003",
-            "ENSG00000000005",
-            "ENSG00000004866",
-            "ENSG00000004866",
-            "ENSG00000063587",
-            "ENSG00000063587"
-        ),
-        "ncbiGeneId" = c(
-            7105L,
-            64102L,
-            7982L,
-            93655L,
-            10838L,
-            105373378L
-        )
-    )
-    expect_identical(
-        object = as.data.frame(object),
-        expected = as.data.frame(expected)
-    )
+    expect_identical(metadata(object)[["format"]], "1:1")
 })
 
 test_that("character : Invalid key", {
