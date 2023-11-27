@@ -888,8 +888,9 @@ setValidity(
         ok <- validate(
             hasRows(object),
             hasRownames(object),
-            !anyNA(object[[1L]]),
-            hasNoDuplicates(object[[1L]])
+            all(complete.cases(object)),
+            hasNoDuplicates(object[[1L]]),
+            hasNoDuplicates(object[[2L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -900,24 +901,11 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "format" = "character",
-                "organism" = "character",
-                "strict" = "logical"
-            ),
+            expected = list("organism" = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
-        }
-        if (isTRUE(metadata(object)[["strict"]])) {
-            ok <- validate(
-                all(complete.cases(object)),
-                hasNoDuplicates(object[[2L]])
-            )
-            if (!isTRUE(ok)) {
-                return(ok)
-            }
         }
         TRUE
     }
@@ -1069,8 +1057,9 @@ setValidity(
         ok <- validate(
             hasRows(object),
             hasRownames(object),
-            !anyNA(object[[1L]]),
-            hasNoDuplicates(object[[1L]])
+            all(complete.cases(object)),
+            hasNoDuplicates(object[[1L]]),
+            hasNoDuplicates(object[[2L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -1081,24 +1070,11 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "format" = "character",
-                "organism" = "character",
-                "strict" = "logical"
-            ),
+            expected = list("organism" = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
-        }
-        if (isTRUE(metadata(object)[["strict"]])) {
-            ok <- validate(
-                all(complete.cases(object)),
-                hasNoDuplicates(object[[2L]])
-            )
-            if (!isTRUE(ok)) {
-                return(ok)
-            }
         }
         TRUE
     }
