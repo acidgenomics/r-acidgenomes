@@ -26,16 +26,17 @@
 #' @note Updated 2023-11-27.
 #' @noRd
 .getEnsemblToNcbiFromOrgDb <-
-    function(keys,
-             organism,
-             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
+    function(keys, organism, return) {
         assert(
             requireNamespaces(c("AnnotationDbi", "AnnotationHub")),
             isCharacter(keys),
             hasNoDuplicates(keys),
             isOrganism(organism)
         )
-        return <- match.arg(return)
+        return <- match.arg(
+            arg = return,
+            choices = c("EnsemblToNcbi", "NcbiToEnsembl")
+        )
         switch(
             EXPR = return,
             "EnsemblToNcbi" = {
