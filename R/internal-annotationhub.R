@@ -48,9 +48,14 @@
             }
         )
         alert(sprintf(
-            "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
-            "OrgDb",
-            "AnnotationHub",
+            "Matching %d %s using NCBI {.cls %s} via {.pkg %s} %s.",
+            length(keys),
+            ngettext(
+                n = length(keys),
+                msg1 = "identifier",
+                msg2 = "identifiers"
+            ),
+            "OrgDb", "AnnotationHub",
             packageVersion("AnnotationHub")
         ))
         ah <- .annotationHub()
