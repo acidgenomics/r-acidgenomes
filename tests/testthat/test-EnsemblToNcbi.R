@@ -27,6 +27,8 @@ test_that("character", {
     )
 })
 
+## FIXME Need to update this test if we change Hgnc and Mgi approach.
+
 test_that("character : Invalid key", {
     expect_error(
         object = EnsemblToNcbi(
@@ -169,6 +171,10 @@ test_that("EnsemblGenes and Hgnc mapping consistency", {
 })
 
 test_that("EnsemblGenes and OrgDb consistency", {
+    stop("FIXME")
+})
+
+test_that("Hgnc and OrgDb consistency", {
     stop("FIXME")
 })
 
