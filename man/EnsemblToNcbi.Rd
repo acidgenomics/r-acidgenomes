@@ -5,6 +5,7 @@
 \alias{EnsemblToNcbi,EnsemblGenes-method}
 \alias{EnsemblToNcbi,GencodeGenes-method}
 \alias{EnsemblToNcbi,Hgnc-method}
+\alias{EnsemblToNcbi,Mgi-method}
 \alias{EnsemblToNcbi,character-method}
 \title{Ensembl-to-NCBI gene identifier mappings}
 \usage{
@@ -15,6 +16,8 @@ EnsemblToNcbi(object, ...)
 \S4method{EnsemblToNcbi}{GencodeGenes}(object)
 
 \S4method{EnsemblToNcbi}{Hgnc}(object)
+
+\S4method{EnsemblToNcbi}{Mgi}(object)
 
 \S4method{EnsemblToNcbi}{character}(object, organism = NULL)
 }
