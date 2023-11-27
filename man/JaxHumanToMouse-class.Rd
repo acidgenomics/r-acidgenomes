@@ -16,5 +16,5 @@ Contains a \code{DFrame} with \code{"dbClassKey"}, \code{"humanGeneName"}, \code
 \code{"mouseNcbiGeneId"} columns.
 }
 \note{
-Updated 2023-10-12.
+Updated 2023-11-22.
 }

@@ -10,29 +10,16 @@
 \usage{
 EnsemblToNcbi(object, ...)
 
-\S4method{EnsemblToNcbi}{EnsemblGenes}(object, format = c("1:1", "long"))
+\S4method{EnsemblToNcbi}{EnsemblGenes}(object)
 
-\S4method{EnsemblToNcbi}{GencodeGenes}(object, format = c("1:1", "long"))
+\S4method{EnsemblToNcbi}{GencodeGenes}(object)
 
 \S4method{EnsemblToNcbi}{Hgnc}(object)
 
-\S4method{EnsemblToNcbi}{character}(
-  object,
-  organism = NULL,
-  format = c("1:1", "long"),
-  strict = TRUE
-)
+\S4method{EnsemblToNcbi}{character}(object, organism = NULL, strict = TRUE)
 }
 \arguments{
 \item{object}{Object.}
-
-\item{format}{\code{character(1)}.
-Formatting method to apply:
-\itemize{
-\item \code{"1:1"}: \emph{Recommended.} Return with 1:1 mappings. For Ensembl genes that
-don't map 1:1 with NCBI, pick the oldest NCBI identifier.
-\item \code{"long"}: Return \code{1:many} in long format.
-}}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
@@ -49,12 +36,12 @@ Error on any mismatches, otherwise return \code{NA}.}
 Ensembl-to-NCBI gene identifier mappings
 }
 \note{
-Updated 2023-11-22.
+Updated 2023-11-27.
 }
 \examples{
 ## character ====
 x <- EnsemblToNcbi(
-    object = c("ENSG00000000003", "ENSG00000000005"),
+    object = c("ENSG00000000003.16", "ENSG00000000005.6"),
     organism = "Homo sapiens"
 )
 print(x)
