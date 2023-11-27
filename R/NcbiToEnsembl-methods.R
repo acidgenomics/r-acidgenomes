@@ -1,6 +1,6 @@
 #' @name NcbiToEnsembl
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-27.
 #'
 #' @inheritParams EnsemblToNcbi
 #' @param ... Additional arguments.
@@ -13,7 +13,7 @@ NULL
 
 
 
-## Updated 2023-11-21.
+## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
     function(object, organism, format, strict = TRUE) {
         format <- match.arg(format)
@@ -21,8 +21,7 @@ NULL
             keys = as.character(object),
             keytype = "ENTREZID",
             columns = "ENSEMBL",
-            organism = organism,
-            strict = strict
+            organism = organism
         )
         assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
