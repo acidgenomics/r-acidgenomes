@@ -16,16 +16,13 @@ EnsemblToNcbi(object, ...)
 
 \S4method{EnsemblToNcbi}{Hgnc}(object)
 
-\S4method{EnsemblToNcbi}{character}(object, organism = NULL, strict = TRUE)
+\S4method{EnsemblToNcbi}{character}(object, organism = NULL)
 }
 \arguments{
 \item{object}{Object.}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
-
-\item{strict}{\code{logical(1)}.
-Error on any mismatches, otherwise return \code{NA}.}
 
 \item{...}{Additional arguments.}
 }
@@ -41,7 +38,7 @@ Updated 2023-11-27.
 \examples{
 ## character ====
 x <- EnsemblToNcbi(
-    object = c("ENSG00000000003.16", "ENSG00000000005.6"),
+    object = c("ENSG00000000005.6", "ENSG00000000003.16"),
     organism = "Homo sapiens"
 )
 print(x)

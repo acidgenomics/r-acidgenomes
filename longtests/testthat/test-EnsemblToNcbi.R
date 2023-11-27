@@ -1,74 +1,27 @@
-hgnc <- Hgnc()
-ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
+## FIXME Add coverage for versioned ensembl identifiers.
 
-test_that("EnsemblToNcbi : all genes", {
-    object <- sort(
-        x = unique(na.omit(hgnc[["ensemblGeneId"]])),
-        decreasing = TRUE
-    )
+## FIXME Move this to main tests when finished.
+
+## FIXME Need to figure out ensembl genes that have tricky multi-mapping
+## that doesn't match Hgnc.
+##
+## FIXME Need to figure out ncbi genes that have tricky multi-mapping that
+## doesn't match Hgnc.
+
+## Ensembl identifiers that multi-map:
+## [1] "ENSG00000004866" "ENSG00000063587" "ENSG00000065615"
+## [4] "ENSG00000076554" "ENSG00000088298" "ENSG00000090857"
+
+test_that("character : all HGNC genes", {
+    hgnc <- Hgnc()
+    object <- sort(unique(na.omit(hgnc[["ensemblGeneId"]])))
     expect_error(
         object = EnsemblToNcbi(
             object = object,
-            organism = "Homo sapiens",
-            strict = TRUE
+            organism = "Homo sapiens"
         ),
         regexp = "match failures"
     )
-    df <- EnsemblToNcbi(
-        object = object,
-        organism = "Homo sapiens",
-        format = "1:1",
-        strict = FALSE
-    )
-    expect_true(hasNoDuplicates(df[["ensemblGeneId"]]))
-    expect_true(identical(df[["ensemblGeneId"]], object))
-    expect_false(anyNA(df[["ensemblGeneId"]]))
-    expect_true(anyNA(df[["ncbiGeneId"]]))
-    df <- EnsemblToNcbi(
-        object = object,
-        organism = "Homo sapiens",
-        format = "long",
-        strict = FALSE
-    )
-    expect_true(hasDuplicates(df[["ensemblGeneId"]]))
-    expect_true(areSetEqual(object, df[["ensemblGeneId"]]))
-    expect_false(anyNA(df[["ensemblGeneId"]]))
-    expect_true(anyNA(df[["ncbiGeneId"]]))
-})
-
-test_that("NcbiToEnsembl : all genes", {
-    object <- sort(
-        x = unique(na.omit(hgnc[["ncbiGeneId"]])),
-        decreasing = TRUE
-    )
-    expect_error(
-        object = NcbiToEnsembl(
-            object = object,
-            organism = "Homo sapiens",
-            strict = TRUE
-        ),
-        regexp = "match failures"
-    )
-    df <- NcbiToEnsembl(
-        object = object,
-        organism = "Homo sapiens",
-        format = "1:1",
-        strict = FALSE
-    )
-    expect_true(hasNoDuplicates(df[["ncbiGeneId"]]))
-    expect_true(identical(df[["ncbiGeneId"]], object))
-    expect_false(anyNA(df[["ncbiGeneId"]]))
-    expect_true(anyNA(df[["ensemblGeneId"]]))
-    df <- NcbiToEnsembl(
-        object = object,
-        organism = "Homo sapiens",
-        format = "long",
-        strict = FALSE
-    )
-    expect_true(hasDuplicates(df[["ncbiGeneId"]]))
-    expect_true(areSetEqual(object, df[["ncbiGeneId"]]))
-    expect_false(anyNA(df[["ncbiGeneId"]]))
-    expect_true(anyNA(df[["ensemblGeneId"]]))
 })
 
 ## FIXME 151 mismatches between HGNC and Ensembl currently:
@@ -78,6 +31,8 @@ test_that("NcbiToEnsembl : all genes", {
 ## ...
 
 test_that("Mapping consistency between Ensembl and HGNC", {
+    hgnc <- Hgnc()
+    ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
     x <- EnsemblToNcbi(hgnc)
     x <- as(x, "DFrame")
     metadata(x) <- list()

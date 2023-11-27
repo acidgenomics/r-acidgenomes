@@ -18,7 +18,6 @@ test_that("character : 1:1 (unique)", {
         object = as.data.frame(object),
         expected = as.data.frame(expected)
     )
-    expect_identical(metadata(object)[["format"]], "1:1")
 })
 
 test_that("Invalid key", {
