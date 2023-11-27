@@ -23,22 +23,20 @@
 
 #' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-27.
 #' @noRd
 .getEnsemblToNcbiFromOrgDb <-
     function(keys,
              keytype,
              columns,
-             organism,
-             strict = TRUE) {
+             organism) {
         assert(
             requireNamespaces(c("AnnotationDbi", "AnnotationHub")),
             isCharacter(keys),
             hasNoDuplicates(keys),
             isString(keytype),
             isCharacter(columns),
-            isOrganism(organism),
-            isFlag(strict)
+            isOrganism(organism)
         )
         alert(sprintf(
             "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
@@ -74,22 +72,6 @@
             is.data.frame(df),
             identical(keys, unique(df[[keytype]]))
         )
-        if (isTRUE(strict)) {
-            df <- df[complete.cases(df), , drop = FALSE]
-            if (!areSetEqual(keys, unique(df[[keytype]]))) {
-                setdiff <- setdiff(keys, unique(df[[keytype]]))
-                abort(sprintf(
-                    "%d match %s: %s.",
-                    length(setdiff),
-                    ngettext(
-                        n = length(setdiff),
-                        msg1 = "failure",
-                        msg2 = "failures"
-                    ),
-                    toInlineString(setdiff, n = 10L)
-                ))
-            }
-        }
         colnames(df)[colnames(df) == "ENSEMBL"] <- "ensemblGeneId"
         colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
