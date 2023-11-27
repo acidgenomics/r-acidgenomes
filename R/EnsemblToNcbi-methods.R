@@ -1,6 +1,6 @@
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-27.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -28,7 +28,7 @@ NULL
 
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-27.
 #' @noRd
 .makeEnsemblToNcbi <-
     function(object,
@@ -99,7 +99,7 @@ NULL
 
 
 
-## Updated 2023-11-21.
+## Updated 2023-11-27.
 `EnsemblToNcbi,character` <- # nolint
     function(object,
              organism = NULL,
@@ -120,8 +120,7 @@ NULL
             keys = object,
             keytype = "ENSEMBL",
             columns = "ENTREZID",
-            organism = organism,
-            strict = strict
+            organism = organism
         )
         assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
