@@ -1,14 +1,4 @@
-test_that("character : Invalid key", {
-    expect_error(
-        object = EnsemblToNcbi(
-            object = "ENSG00000000000",
-            organism = "Homo sapiens"
-        ),
-        regexp = "ENSEMBL"
-    )
-})
-
-test_that("character : 1:1 (unique)", {
+test_that("character", {
     genes <- c(
         "ENSG00000063587.15",
         "ENSG00000004866.22",
@@ -34,6 +24,16 @@ test_that("character : 1:1 (unique)", {
     expect_identical(
         object = as.data.frame(object),
         expected = as.data.frame(expected)
+    )
+})
+
+test_that("character : Invalid key", {
+    expect_error(
+        object = EnsemblToNcbi(
+            object = "ENSG00000000000",
+            organism = "Homo sapiens"
+        ),
+        regexp = "ENSEMBL"
     )
 })
 
@@ -166,4 +166,26 @@ test_that("EnsemblGenes and Hgnc mapping consistency", {
     x <- x[match(genes, table = x[[1L]]), ]
     y <- y[match(genes, table = y[[1L]]), ]
     expect_identical(x, y)
+})
+
+test_that("EnsemblGenes and OrgDb consistency", {
+    stop("FIXME")
+})
+
+## FIXME This works, but shouldn't...hmmm.
+
+## FIXME Need to test ensdb and NCBI OrgDb consistency...annoying.
+## e.g. inconsistent: ENSG00000002079.
+
+test_that("character : match failure", {
+    expect_error(
+        EnsemblToNcbi(
+            object = c(
+                "ENSG00000000003",
+                "ENSG00000002079"
+            ),
+            organism = "Homo sapiens"
+        ),
+        regexp = "ENSG00000002079"
+    )
 })
