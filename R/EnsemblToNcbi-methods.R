@@ -53,18 +53,19 @@ NULL
         map <- map[i, , drop = FALSE]
         i <- order(map)
         map <- map[i, , drop = FALSE]
-        if (organism == "Homo sapiens" && hasDuplicates(map[[2L]])) {
-            stop("FIXME DRAFT UPDATE")
-            alert("Resolving ambiguous duplicates with HGNC annotations.")
-            hgnc <- Hgnc()
-            hgncMap <- EnsemblToNcbi(hgnc)
-            ## FIXME Need to rework this mapping approach...hmmmm.
-            ## FIXME How to use match here to remap into our main map?
-            ## xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
-            ## map[[2L]]
-            ## FIXME This messes up our rownames...need to use a match approach
-            ## instead of rbinding...hmmm.
-        }
+        ## FIXME Also consider only doing this if all NCBI identifiers are defined?
+        ##if (organism == "Homo sapiens" && hasDuplicates(map[[2L]])) {
+        ##    stop("FIXME DRAFT UPDATE")
+        ##    alert("Resolving ambiguous duplicates with HGNC annotations.")
+        ##    hgnc <- Hgnc()
+        ##    hgncMap <- EnsemblToNcbi(hgnc)
+        ##    ## FIXME Need to rework this mapping approach...hmmmm.
+        ##    ## FIXME How to use match here to remap into our main map?
+        ##    ## xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
+        ##    ## map[[2L]]
+        ##    ## FIXME This messes up our rownames...need to use a match approach
+        ##    ## instead of rbinding...hmmm.
+        ##}
         i <- !duplicated(map[[1L]]) & !duplicated(map[[2L]])
         map <- map[i, , drop = FALSE]
         i <- order(map)
