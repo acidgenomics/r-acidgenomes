@@ -16,19 +16,63 @@ NULL
 ## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
     function(object, organism) {
-        ## FIXME Use Hgnc or Mgi methods instead for Homo sapiens and Mus musculus.
-        df <- .getEnsemblToNcbiFromOrgDb(
-            keys = as.character(object),
-            organism = organism,
-            return = "NcbiToEnsembl"
+        assert(isOrganism(organism))
+        switch(
+            EXPR = organism,
+            "Homo sapiens" = {
+                alert(sprintf(
+                    "Matching %d %s against HGNC database.",
+                    length(object),
+                    ngettext(
+                        n = length(object),
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
+                hgnc <- Hgnc()
+                df <- NcbiToEnsembl(hgnc)
+            },
+            "Mus musculus" = {
+                alert(sprintf(
+                    "Matching %d %s against MGI database.",
+                    length(object),
+                    ngettext(
+                        n = length(object),
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
+                mgi <- Mgi()
+                df <- NcbiToEnsembl(mgi)
+            },
+            {
+                df <- .getEnsemblToNcbiFromOrgDb(
+                    keys = as.character(object),
+                    organism = organism,
+                    return = "NcbiToEnsembl"
+                )
+                df <- .makeEnsemblToNcbi(
+                    object = df,
+                    return = "NcbiToEnsembl"
+                )
+            }
         )
-        out <- .makeEnsemblToNcbi(
-            object = df,
-            return = "NcbiToEnsembl"
-        )
-        i <- match(x = object, table = out[[1L]])
-        assert(!anyNA(i))
-        out <- out[i, , drop = FALSE]
+        i <- match(x = object, table = df[[1L]])
+        if (anyNA(i)) {
+            fail <- object[is.na(i)]
+            abort(sprintf(
+                "%d match %s: %s.",
+                length(fail),
+                ngettext(
+                    n = length(fail),
+                    msg1 = "failure",
+                    msg2 = "failures"
+                ),
+                toInlineString(as.character(fail), n = 10L)
+            ))
+        }
+        out <- df[i, , drop = FALSE]
+        rownames(out) <- unname(object)
         out
     }
 

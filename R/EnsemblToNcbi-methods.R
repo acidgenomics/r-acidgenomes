@@ -81,6 +81,7 @@ NULL
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
+        assert(isOrganism(organism))
         keys <- unname(object)
         if (allAreMatchingFixed(x = keys, pattern = ".")) {
             keys <- stripGeneVersions(keys)
@@ -88,10 +89,28 @@ NULL
         switch(
             EXPR = organism,
             "Homo sapiens" = {
+                alert(sprintf(
+                    "Matching %d %s against HGNC database.",
+                    length(object),
+                    ngettext(
+                        n = length(object),
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
                 hgnc <- Hgnc()
                 df <- EnsemblToNcbi(hgnc)
             },
             "Mus musculus" = {
+                alert(sprintf(
+                    "Matching %d %s against MGI database.",
+                    length(object),
+                    ngettext(
+                        n = length(object),
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
                 mgi <- Mgi()
                 df <- EnsemblToNcbi(mgi)
             },
@@ -107,9 +126,20 @@ NULL
                 )
             }
         )
-        ## FIXME Use Hgnc or Mgi methods instead for Homo sapiens and Mus musculus.
         i <- match(x = keys, table = df[[1L]])
-        assert(!anyNA(i))
+        if (anyNA(i)) {
+            fail <- object[is.na(i)]
+            abort(sprintf(
+                "%d match %s: %s.",
+                length(fail),
+                ngettext(
+                    n = length(fail),
+                    msg1 = "failure",
+                    msg2 = "failures"
+                ),
+                toInlineString(fail, n = 10L)
+            ))
+        }
         out <- df[i, , drop = FALSE]
         rownames(out) <- unname(object)
         out
