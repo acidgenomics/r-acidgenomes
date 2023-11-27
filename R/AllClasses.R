@@ -889,7 +889,7 @@ setValidity(
             hasRows(object),
             hasRownames(object),
             !anyNA(object[[1L]]),
-            !anyDuplicated(object[[1L]])
+            hasNoDuplicates(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -913,7 +913,7 @@ setValidity(
         if (isTRUE(metadata(object)[["strict"]])) {
             ok <- validate(
                 all(complete.cases(object)),
-                !anyDuplicated(object[[2L]])
+                hasNoDuplicates(object[[2L]])
             )
             if (!isTRUE(ok)) {
                 return(ok)
@@ -1070,7 +1070,7 @@ setValidity(
             hasRows(object),
             hasRownames(object),
             !anyNA(object[[1L]]),
-            !anyDuplicated(object[[1L]])
+            hasNoDuplicates(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -1094,7 +1094,7 @@ setValidity(
         if (isTRUE(metadata(object)[["strict"]])) {
             ok <- validate(
                 all(complete.cases(object)),
-                !anyDuplicated(object[[2L]])
+                hasNoDuplicates(object[[2L]])
             )
             if (!isTRUE(ok)) {
                 return(ok)
