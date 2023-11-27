@@ -53,19 +53,6 @@ NULL
         map <- map[i, , drop = FALSE]
         i <- order(map)
         map <- map[i, , drop = FALSE]
-        ## FIXME Also consider only doing this if all NCBI identifiers are defined?
-        ##if (organism == "Homo sapiens" && hasDuplicates(map[[2L]])) {
-        ##    stop("FIXME DRAFT UPDATE")
-        ##    alert("Resolving ambiguous duplicates with HGNC annotations.")
-        ##    hgnc <- Hgnc()
-        ##    hgncMap <- EnsemblToNcbi(hgnc)
-        ##    ## FIXME Need to rework this mapping approach...hmmmm.
-        ##    ## FIXME How to use match here to remap into our main map?
-        ##    ## xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
-        ##    ## map[[2L]]
-        ##    ## FIXME This messes up our rownames...need to use a match approach
-        ##    ## instead of rbinding...hmmm.
-        ##}
         i <- !duplicated(map[[1L]]) & !duplicated(map[[2L]])
         map <- map[i, , drop = FALSE]
         i <- order(map)
@@ -98,24 +85,40 @@ NULL
         if (allAreMatchingFixed(x = keys, pattern = ".")) {
             keys <- stripGeneVersions(keys)
         }
+        switch(
+            EXPR = organism,
+            "Homo sapiens" = {
+                hgnc <- Hgnc()
+                df <- EnsemblToNcbi(hgnc)
+            },
+            "Mus musculus" = {
+                mgi <- Mgi()
+                df <- EnsemblToNcbi(mgi)
+            },
+            {
+                df <- .getEnsemblToNcbiFromOrgDb(
+                    keys = keys,
+                    organism = organism,
+                    return = "EnsemblToNcbi"
+                )
+                df <- .makeEnsemblToNcbi(
+                    object = df,
+                    return = "EnsemblToNcbi"
+                )
+            }
+        )
         ## FIXME Use Hgnc or Mgi methods instead for Homo sapiens and Mus musculus.
-        df <- .getEnsemblToNcbiFromOrgDb(
-            keys = keys,
-            organism = organism,
-            return = "EnsemblToNcbi"
-        )
-        out <- .makeEnsemblToNcbi(
-            object = df,
-            return = "EnsemblToNcbi"
-        )
-        i <- match(x = keys, table = out[[1L]])
+        i <- match(x = keys, table = df[[1L]])
         assert(!anyNA(i))
-        out <- out[i, , drop = FALSE]
+        out <- df[i, , drop = FALSE]
         rownames(out) <- unname(object)
         out
     }
 
 
+
+## FIXME Use Hgnc to pick curated matches for Homo sapiens.
+## FIXME Use Mgi to pick curated matches for Mus musculus.
 
 ## Updated 2023-11-27.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
