@@ -27,16 +27,25 @@
 #' @noRd
 .getEnsemblToNcbiFromOrgDb <-
     function(keys,
-             keytype,
-             columns,
-             organism) {
+             organism,
+             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
         assert(
             requireNamespaces(c("AnnotationDbi", "AnnotationHub")),
             isCharacter(keys),
             hasNoDuplicates(keys),
-            isString(keytype),
-            isCharacter(columns),
             isOrganism(organism)
+        )
+        return <- match.arg(return)
+        switch(
+            EXPR = return,
+            "EnsemblToNcbi" = {
+                keytype <- "ENSEMBL"
+                columns <- "ENTREZID"
+            },
+            "NcbiToEnsembl" = {
+                keytype <- "ENTREZID"
+                columns <- "ENSEMBL"
+            }
         )
         alert(sprintf(
             "Matching identifiers using NCBI {.cls %s} via {.pkg %s} %s.",
