@@ -98,6 +98,7 @@ NULL
         if (allAreMatchingFixed(x = keys, pattern = ".")) {
             keys <- stripGeneVersions(keys)
         }
+        ## FIXME Use Hgnc or Mgi methods instead for Homo sapiens and Mus musculus.
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = keys,
             organism = organism,
@@ -154,6 +155,10 @@ NULL
         )
         out
     }
+
+
+
+## FIXME Add Mgi support here.
 
 
 
