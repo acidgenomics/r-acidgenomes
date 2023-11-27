@@ -15,7 +15,7 @@ NULL
 
 ## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
-    function(object, organism, strict = TRUE) {
+    function(object, organism) {
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
             organism = organism,
@@ -23,7 +23,6 @@ NULL
         )
         out <- .makeEnsemblToNcbi(
             object = df,
-            strict = strict,
             return = "NcbiToEnsembl"
         )
         i <- match(x = object, table = out[[1L]])
@@ -52,7 +51,6 @@ NULL
         df <- df[i, , drop = FALSE]
         out <- .makeEnsemblToNcbi(
             object = df,
-            strict = TRUE,
             return = "NcbiToEnsembl"
         )
         out
