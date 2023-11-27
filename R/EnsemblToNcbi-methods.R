@@ -5,9 +5,6 @@
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
 #'
-#' @param strict `logical(1)`.
-#' Error on any mismatches, otherwise return `NA`.
-#'
 #' @examples
 #' ## character ====
 #' x <- EnsemblToNcbi(
@@ -24,7 +21,7 @@ NULL
 #' @note Updated 2023-11-27.
 #' @noRd
 .makeEnsemblToNcbi <-
-    function(object, strict, return) {
+    function(object, return) {
         return <- match.arg(
             arg = return,
             choices = c("EnsemblToNcbi", "NcbiToEnsembl")
@@ -45,60 +42,59 @@ NULL
         assert(
             is(object, "DFrame"),
             hasRows(object),
-            isFlag(strict),
             isOrganism(organism),
             isSubset(cols, colnames(object)),
             !anyNA(object[[fromCol]])
         )
-        df <- object[, cols, drop = FALSE]
-        df <- decode(df)
-        df <- expand(df)
-        i <- order(df, decreasing = FALSE, na.last = TRUE)
-        df <- df[i, , drop = FALSE]
-        if (organism == "Homo sapiens" && anyDuplicated(df[[2L]])) {
+        map <- object[, cols, drop = FALSE]
+        map <- decode(map)
+        map <- expand(map)
+        i <- complete.cases(map)
+        map <- map[i, , drop = FALSE]
+        i <- order(map)
+        map <- map[i, , drop = FALSE]
+        if (organism == "Homo sapiens" && hasDuplicates(map[[2L]])) {
             alert("Resolving ambiguous duplicates with HGNC annotations.")
             hgnc <- Hgnc()
-            df2 <- EnsemblToNcbi(hgnc)
-            df2 <- df2[, cols, drop = FALSE]
-            i <- df2[[1L]] %in% df[[1L]]
-            df2 <- df2[i, , drop = FALSE]
-            i <- order(df2, decreasing = FALSE, na.last = TRUE)
-            df2 <- df2[i, , drop = FALSE]
-            df <- rbind(df2, df)
+            hgncMap <- EnsemblToNcbi(hgnc)
+
+            ## FIXME Need to rework this mapping approach...hmmmm.
+            ## FIXME How to use match here to remap into our main map?
+            xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
+            map[[2L]]
+            map <- rbind(hgncMap, map)
+
+            ## FIXME This messes up our rownames...need to use a match approach
+            ## instead of rbinding...hmmm.
         }
-        i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
-        df <- df[i, , drop = FALSE]
-        i <- order(df, decreasing = FALSE, na.last = TRUE)
-        df <- df[i, , drop = FALSE]
+        i <- !duplicated(map[[1L]]) & !duplicated(map[[2L]])
+        map <- map[i, , drop = FALSE]
+        i <- order(map)
+        map <- map[i, , drop = FALSE]
         assert(
-            hasNoDuplicates(df[[1L]]),
-            hasNoDuplicates(df[[2L]])
+            !anyNA(map[[1L]]),
+            !anyNA(map[[2L]]),
+            hasNoDuplicates(map[[1L]]),
+            hasNoDuplicates(map[[2L]])
         )
-        ## FIXME Rework NA filling in strict mode.
-        if (isTRUE(strict)) {
-            i <- complete.cases(df)
-            df <- df[i, , drop = FALSE]
-        }
-        metadata(df) <- append(
+        ## FIXME Always error on match failure.
+        metadata(map) <- append(
             x = metadata(object),
             values = list(
                 "date" = Sys.Date(),
                 "format" = "1:1",
                 "organism" = organism,
-                "packageVersion" = .pkgVersion,
-                "strict" = strict
+                "packageVersion" = .pkgVersion
             )
         )
-        new(Class = return, df)
+        new(Class = return, map)
     }
 
 
 
 ## Updated 2023-11-27.
 `EnsemblToNcbi,character` <- # nolint
-    function(object,
-             organism = NULL,
-             strict = TRUE) {
+    function(object, organism = NULL) {
         assert(
             isCharacter(object),
             hasNoDuplicates(object)
@@ -117,7 +113,6 @@ NULL
         )
         out <- .makeEnsemblToNcbi(
             object = df,
-            strict = strict,
             return = "EnsemblToNcbi"
         )
         i <- match(x = keys, table = out[[1L]])
@@ -138,7 +133,6 @@ NULL
         metadata(df) <- metadata(object)
         out <- .makeEnsemblToNcbi(
             object = df,
-            strict = TRUE,
             return = "EnsemblToNcbi"
         )
         out
@@ -164,7 +158,6 @@ NULL
         df <- df[i, , drop = FALSE]
         out <- .makeEnsemblToNcbi(
             object = df,
-            strict = TRUE,
             return = "EnsemblToNcbi"
         )
         out
