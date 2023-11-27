@@ -91,6 +91,7 @@
         colnames(df)[colnames(df) == "ENTREZID"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         df <- as(df, "DFrame")
+        rownames(df) <- as.character(df[[1L]])
         metadata(df)[["organism"]] <- organism
         df
     }
