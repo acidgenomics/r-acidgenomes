@@ -27,8 +27,8 @@ NULL
             return = "NcbiToEnsembl"
         )
         i <- match(x = object, table = out[[1L]])
+        assert(!anyNA(i))
         out <- out[i, , drop = FALSE]
-        rownames(out) <- unname(object)
         out
     }
 
@@ -55,7 +55,6 @@ NULL
             strict = TRUE,
             return = "NcbiToEnsembl"
         )
-        assert(hasRownames(out))
         out
     }
 
