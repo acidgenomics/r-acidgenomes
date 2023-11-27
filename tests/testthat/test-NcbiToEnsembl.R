@@ -27,8 +27,12 @@ test_that("character : Invalid key", {
     )
 })
 
+hgnc <- Hgnc()
+ncbi <- NcbiGeneInfo("Homo sapiens")
+
 test_that("Hgnc and NcbiGeneInfo consistency", {
     stop("FIXME Need to add support")
+
 })
 
 test_that("Hgnc and OrgDb consistency", {

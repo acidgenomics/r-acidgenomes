@@ -16,6 +16,7 @@ NULL
 ## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
     function(object, organism) {
+        ## FIXME Use Hgnc or Mgi methods instead for Homo sapiens and Mus musculus.
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
             organism = organism,
@@ -55,6 +56,10 @@ NULL
         )
         out
     }
+
+
+
+## FIXME Add Mgi support here.
 
 
 
