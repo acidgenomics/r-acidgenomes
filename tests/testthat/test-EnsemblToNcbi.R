@@ -1,11 +1,13 @@
-test_that("character", {
+## FIXME Need to cover Homo sapiens, Mus musculus, C. elegans, and Dmel.
+
+test_that("character : Homo sapiens", {
     genes <- c(
         "ENSG00000063587.15",
         "ENSG00000004866.22",
         "ENSG00000000005.6",
         "ENSG00000000003.16"
     )
-    object <- EnsemblToNcbi(genes)
+    object <- EnsemblToNcbi(genes, organism = NULL)
     expected <- DataFrame(
         "ensemblGeneId" = c(
             "ENSG00000063587",
@@ -25,15 +27,38 @@ test_that("character", {
         object = as.data.frame(object),
         expected = as.data.frame(expected)
     )
-})
-
-## FIXME Need to update this test if we change Hgnc and Mgi approach.
-
-test_that("character : Invalid key", {
     expect_error(
         object = EnsemblToNcbi(
             object = "ENSG00000000000",
             organism = "Homo sapiens"
+        ),
+        regexp = "match failure"
+    )
+})
+
+test_that("character : Mus musculus", {
+    genes <- c("FIXME")
+})
+
+test_that("character : Caenorhabditis elegans", {
+    genes <- c("WBGene00000898", "WBGene00004804")
+    object <- EnsemblToNcbi(
+        object = genes,
+        organism = "Caenorhabditis elegans"
+    )
+    expected <- DataFrame(
+        "ensemblGeneId" = genes,
+        "ncbiGeneId" = c(175410L, 177343L),
+        row.names = genes
+    )
+    expect_identical(
+        object = as.data.frame(object),
+        expected = as.data.frame(expected)
+    )
+    expect_error(
+        object = EnsemblToNcbi(
+            object = "WBGene00000000",
+            organism = "Caenorhabditis elegans"
         ),
         regexp = "ENSEMBL"
     )
