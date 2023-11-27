@@ -864,7 +864,7 @@ setValidity(
 
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
 #' @export
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-27.
 #'
 #' @details
 #' Contains a `DFrame` with `"ensemblGeneId"` and `"ncbiGeneId"` columns.
@@ -887,7 +887,9 @@ setValidity(
         }
         ok <- validate(
             hasRows(object),
-            !anyNA(object[[1L]])
+            hasRownames(object),
+            !anyNA(object[[1L]]),
+            !anyDuplicated(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -909,7 +911,10 @@ setValidity(
             return(ok)
         }
         if (isTRUE(metadata(object)[["strict"]])) {
-            ok <- validate(all(complete.cases(object)))
+            ok <- validate(
+                all(complete.cases(object)),
+                !anyDuplicated(object[[2L]])
+            )
             if (!isTRUE(ok)) {
                 return(ok)
             }
@@ -1040,7 +1045,7 @@ setValidity(
 
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
-#' @note Updated 2023-11-21.
+#' @note Updated 2023-11-27.
 #'
 #' @details
 #' Contains a `DFrame` with `"ncbiGeneId"` and `"ensemblGeneId"` columns.
@@ -1063,7 +1068,9 @@ setValidity(
         }
         ok <- validate(
             hasRows(object),
-            !anyNA(object[[1L]])
+            hasRownames(object),
+            !anyNA(object[[1L]]),
+            !anyDuplicated(object[[1L]])
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -1085,7 +1092,10 @@ setValidity(
             return(ok)
         }
         if (isTRUE(metadata(object)[["strict"]])) {
-            ok <- validate(all(complete.cases(object)))
+            ok <- validate(
+                all(complete.cases(object)),
+                !anyDuplicated(object[[2L]])
+            )
             if (!isTRUE(ok)) {
                 return(ok)
             }
