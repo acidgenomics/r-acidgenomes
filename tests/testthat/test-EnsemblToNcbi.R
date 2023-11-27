@@ -92,3 +92,20 @@ test_that("NcbiToEnsembl : character", {
         expected = as.data.frame(expected)
     )
 })
+
+test_that("Invalid keys", {
+    expect_error(
+        object = EnsemblToNcbi(
+            object = "ENSG00000000000",
+            organism = "Homo sapiens"
+        ),
+        regexp = "ENSEMBL"
+    )
+    expect_error(
+        object = NcbiToEnsembl(
+            object = 0L,
+            organism = "Homo sapiens"
+        ),
+        regexp = "ENTREZID"
+    )
+})
