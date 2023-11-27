@@ -14,7 +14,7 @@ Protein-to-gene mappings
 Contains a \code{DFrame} with \code{"proteinId"}, \code{"geneId"}, and \code{"geneName"} columns.
 }
 \note{
-Updated 2023-09-26.
+Updated 2023-11-22.
 }
 \section{Genome metadata}{
 
