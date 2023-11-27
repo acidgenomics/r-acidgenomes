@@ -7,7 +7,7 @@
 #'
 #' @examples
 #' ## integer ====
-#' x <- NcbiToEnsembl(object = c(1L, 2L), organism = "Homo sapiens")
+#' x <- NcbiToEnsembl(object = c(2L, 1L), organism = "Homo sapiens")
 #' print(x)
 NULL
 
@@ -15,47 +15,26 @@ NULL
 
 ## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
-    function(object, organism, format, strict = TRUE) {
-        format <- match.arg(format)
+    function(object, organism, strict = TRUE) {
         df <- .getEnsemblToNcbiFromOrgDb(
             keys = as.character(object),
-            keytype = "ENTREZID",
-            columns = "ENSEMBL",
-            organism = organism
+            organism = organism,
+            return = "NcbiToEnsembl"
         )
-        assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = format,
             strict = strict,
             return = "NcbiToEnsembl"
         )
-        if (!areSetEqual(object, unique(out[[1L]]))) {
-            setdiff <- as.character(setdiff(object, unique(out[[1L]])))
-            abort(sprintf(
-                "%d match %s: %s.",
-                length(setdiff),
-                ngettext(
-                    n = length(setdiff),
-                    msg1 = "failure",
-                    msg2 = "failures"
-                ),
-                toInlineString(setdiff, n = 10L)
-            ))
-        }
-        if (identical(format, "1:1")) {
-            i <- match(x = object, table = out[[1L]])
-            out <- out[i, , drop = FALSE]
-        }
+        i <- match(x = object, table = out[[1L]])
+        out <- out[i, , drop = FALSE]
+        rownames(out) <- unname(object)
         out
     }
 
-formals(`NcbiToEnsembl,integer`)[["format"]] <- # nolint
-    formals(.makeEnsemblToNcbi)[["format"]]
 
 
-
-## Updated 2023-11-22.
+## Updated 2023-11-27.
 `NcbiToEnsembl,Hgnc` <- # nolint
     function(object) {
         j <- c("ncbiGeneId", "ensemblGeneId")
@@ -67,12 +46,16 @@ formals(`NcbiToEnsembl,integer`)[["format"]] <- # nolint
         df <- df[, j, drop = FALSE]
         i <- complete.cases(df)
         df <- df[i, , drop = FALSE]
+        i <- order(df)
+        df <- df[i, , drop = FALSE]
+        i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
+        df <- df[i, , drop = FALSE]
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = "1:1",
             strict = TRUE,
             return = "NcbiToEnsembl"
         )
+        assert(hasRownames(out))
         out
     }
 
