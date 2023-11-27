@@ -24,13 +24,22 @@ test_that("character : all HGNC genes", {
     )
 })
 
-## FIXME 151 mismatches between HGNC and Ensembl currently:
-## - ENSG00000111215
-## - ENSG00000169627
-## - ENSG00000170667
-## ...
+## DataFrame with 111 rows and 2 columns
+##       ensemblGeneId ncbiGeneId
+##         <character>  <integer>
+## 1   ENSG00000111215       5554
+## 2   ENSG00000169627     552900
+## 3   ENSG00000176797      55894
+## 4   ENSG00000177693  124906935
+## 5   ENSG00000178934       3963
+## ...             ...        ...
+## 107 ENSG00000280263     440888
+## 108 ENSG00000280623  124900476
+## 109 ENSG00000281880     440034
+## 110 ENSG00000285219  100506207
+## 111 ENSG00000285551  124902436
 
-test_that("Mapping consistency between Ensembl and HGNC", {
+test_that("Mapping consistency between HGNC and Ensembl", {
     hgnc <- Hgnc()
     ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
     x <- EnsemblToNcbi(hgnc)
