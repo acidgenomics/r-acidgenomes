@@ -44,6 +44,7 @@ NULL
         )
         df <- as(object, "DFrame")
         df <- df[, j, drop = FALSE]
+        df <- decode(df)
         i <- complete.cases(df)
         df <- df[i, , drop = FALSE]
         i <- order(df)
@@ -59,7 +60,9 @@ NULL
 
 
 
-## FIXME Add Mgi support here.
+## Updated 2023-11-27.
+`NcbiToEnsembl,Mgi` <- # nolint
+    `NcbiToEnsembl,Hgnc`
 
 
 
@@ -69,6 +72,14 @@ setMethod(
     f = "NcbiToEnsembl",
     signature = signature(object = "Hgnc"),
     definition = `NcbiToEnsembl,Hgnc`
+)
+
+#' @rdname NcbiToEnsembl
+#' @export
+setMethod(
+    f = "NcbiToEnsembl",
+    signature = signature(object = "Mgi"),
+    definition = `NcbiToEnsembl,Mgi`
 )
 
 #' @rdname NcbiToEnsembl
