@@ -1,4 +1,6 @@
-test_that("character", {
+## FIXME Need to cover Homo sapiens, Mus musculus, C. elegans, and Dmel.
+
+test_that("character : Homo sapiens", {
     genes <- c(64102L, 10838L, 7982L, 7105L)
     object <- NcbiToEnsembl(genes, organism = "Homo sapiens")
     expected <- DataFrame(
@@ -15,13 +17,31 @@ test_that("character", {
         object = as.data.frame(object),
         expected = as.data.frame(expected)
     )
-})
-
-test_that("character : Invalid key", {
     expect_error(
         object = NcbiToEnsembl(
             object = 0L,
             organism = "Homo sapiens"
+        ),
+        regexp = "match failure"
+    )
+})
+
+test_that("character : Mus musculus", {
+    stop("FIXME")
+})
+
+test_that("character : Caenorhabditis elegans", {
+    expect_error(
+        object = NcbiToEnsembl(
+            object = c(175410L, 177343L),
+            organism = "Caenorhabditis elegans"
+        ),
+        regexp = "ENTREZID"
+    )
+    expect_error(
+        object = NcbiToEnsembl(
+            object = 0L,
+            organism = "Caenorhabditis elegans"
         ),
         regexp = "ENTREZID"
     )
