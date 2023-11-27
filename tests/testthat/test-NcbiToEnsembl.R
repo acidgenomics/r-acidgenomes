@@ -2,28 +2,29 @@
 ## FIXME Need to add testing for ambiguous matches.
 
 test_that("character : 1:1 (unique)", {
-    object <- EnsemblToNcbi(
+    object <- NcbiToEnsembl(
         object = c(
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000005",
-            "ENSG00000000003"
+            64102L,
+            10838L,
+            7982L,
+            7105L
         ),
+        organism = "Homo sapiens",
         format = "1:1"
     )
     expect_identical(metadata(object)[["format"]], "1:1")
     expected <- DataFrame(
-        "ensemblGeneId" = c(
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000005",
-            "ENSG00000000003"
-        ),
         "ncbiGeneId" = c(
+            64102L,
             10838L,
             7982L,
-            64102L,
             7105L
+        ),
+        "ensemblGeneId" = c(
+            "ENSG00000000005",
+            "ENSG00000063587",
+            "ENSG00000004866",
+            "ENSG00000000003"
         )
     )
     expect_identical(
@@ -32,33 +33,32 @@ test_that("character : 1:1 (unique)", {
     )
 })
 
+## FIXME Need to use a gene that multi-maps here.
+
 test_that("character : long (non-unique)", {
-    object <- EnsemblToNcbi(
+    object <- NcbiToEnsembl(
         object = c(
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000005",
-            "ENSG00000000003"
+            64102L,
+            10838L,
+            7982L,
+            7105L
         ),
+        organism = "Homo sapiens",
         format = "long"
     )
     expect_identical(metadata(object)[["format"]], "long")
     expected <- DataFrame(
-        "ensemblGeneId" = c(
-            "ENSG00000000003",
-            "ENSG00000000005",
-            "ENSG00000004866",
-            "ENSG00000004866",
-            "ENSG00000063587",
-            "ENSG00000063587"
-        ),
         "ncbiGeneId" = c(
             7105L,
-            64102L,
             7982L,
-            93655L,
             10838L,
-            105373378L
+            64102L
+        ),
+        "ensemblGeneId" = c(
+            "ENSG00000000003",
+            "ENSG00000004866",
+            "ENSG00000063587",
+            "ENSG00000000005"
         )
     )
     expect_identical(
@@ -67,12 +67,12 @@ test_that("character : long (non-unique)", {
     )
 })
 
-test_that("character : Invalid key", {
+test_that("Invalid key", {
     expect_error(
-        object = EnsemblToNcbi(
-            object = "ENSG00000000000",
+        object = NcbiToEnsembl(
+            object = 0L,
             organism = "Homo sapiens"
         ),
-        regexp = "ENSEMBL"
+        regexp = "ENTREZID"
     )
 })
