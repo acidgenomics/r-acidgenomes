@@ -71,14 +71,21 @@ NULL
                 alert("Resolving ambiguous duplicates with HGNC annotations.")
                 hgnc <- Hgnc()
                 df2 <- EnsemblToNcbi(hgnc)
-                df2 <- df2[, cols]
+                df2 <- df2[, cols, drop = FALSE]
                 i <- df2[[1L]] %in% df[[1L]]
+                df2 <- df2[i, , drop = FALSE]
+                i <- order(df2, decreasing = FALSE, na.last = TRUE)
                 df2 <- df2[i, , drop = FALSE]
                 df <- rbind(df2, df)
             }
             i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
             df <- df[i, , drop = FALSE]
-            assert(hasNoDuplicates(df[[1L]]), hasNoDuplicates(df[[2L]]))
+            i <- order(df, decreasing = FALSE, na.last = TRUE)
+            df <- df[i, , drop = FALSE]
+            assert(
+                hasNoDuplicates(df[[1L]]),
+                hasNoDuplicates(df[[2L]])
+            )
         }
         if (isTRUE(strict)) {
             i <- complete.cases(df)
