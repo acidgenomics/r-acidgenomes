@@ -54,16 +54,14 @@ NULL
         i <- order(map)
         map <- map[i, , drop = FALSE]
         if (organism == "Homo sapiens" && hasDuplicates(map[[2L]])) {
+            stop("FIXME DRAFT UPDATE")
             alert("Resolving ambiguous duplicates with HGNC annotations.")
             hgnc <- Hgnc()
             hgncMap <- EnsemblToNcbi(hgnc)
-
             ## FIXME Need to rework this mapping approach...hmmmm.
             ## FIXME How to use match here to remap into our main map?
-            xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
-            map[[2L]]
-            map <- rbind(hgncMap, map)
-
+            ## xxx <- match(x = map[[1L]], table = hgncMap[[1L]])
+            ## map[[2L]]
             ## FIXME This messes up our rownames...need to use a match approach
             ## instead of rbinding...hmmm.
         }
@@ -72,17 +70,14 @@ NULL
         i <- order(map)
         map <- map[i, , drop = FALSE]
         assert(
-            !anyNA(map[[1L]]),
-            !anyNA(map[[2L]]),
+            all(complete.cases(map)),
             hasNoDuplicates(map[[1L]]),
             hasNoDuplicates(map[[2L]])
         )
-        ## FIXME Always error on match failure.
         metadata(map) <- append(
             x = metadata(object),
             values = list(
                 "date" = Sys.Date(),
-                "format" = "1:1",
                 "organism" = organism,
                 "packageVersion" = .pkgVersion
             )
@@ -95,14 +90,10 @@ NULL
 ## Updated 2023-11-27.
 `EnsemblToNcbi,character` <- # nolint
     function(object, organism = NULL) {
-        assert(
-            isCharacter(object),
-            hasNoDuplicates(object)
-        )
-        keys <- unname(object)
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
+        keys <- unname(object)
         if (allAreMatchingFixed(x = keys, pattern = ".")) {
             keys <- stripGeneVersions(keys)
         }
