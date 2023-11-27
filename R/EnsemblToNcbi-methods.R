@@ -5,20 +5,13 @@
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
 #'
-#' @param format `character(1)`.
-#' Formatting method to apply:
-#'
-#' - `"1:1"`: *Recommended.* Return with 1:1 mappings. For Ensembl genes that
-#' don't map 1:1 with NCBI, pick the oldest NCBI identifier.
-#' - `"long"`: Return `1:many` in long format.
-#'
 #' @param strict `logical(1)`.
 #' Error on any mismatches, otherwise return `NA`.
 #'
 #' @examples
 #' ## character ====
 #' x <- EnsemblToNcbi(
-#'     object = c("ENSG00000000003", "ENSG00000000005"),
+#'     object = c("ENSG00000000005.6", "ENSG00000000003.16"),
 #'     organism = "Homo sapiens"
 #' )
 #' print(x)
@@ -31,17 +24,11 @@ NULL
 #' @note Updated 2023-11-27.
 #' @noRd
 .makeEnsemblToNcbi <-
-    function(object,
-             format = c("1:1", "long"),
-             strict = TRUE,
-             return = c("EnsemblToNcbi", "NcbiToEnsembl")) {
-        assert(
-            isFlag(strict),
-            isOrganism(metadata(object)[["organism"]])
+    function(object, strict, return) {
+        return <- match.arg(
+            arg = return,
+            choices = c("EnsemblToNcbi", "NcbiToEnsembl")
         )
-        format <- match.arg(format)
-        return <- match.arg(return)
-        organism <- metadata(object)[["organism"]]
         switch(
             EXPR = return,
             "EnsemblToNcbi" = {
@@ -54,39 +41,40 @@ NULL
             }
         )
         cols <- c(fromCol, toCol)
+        organism <- metadata(object)[["organism"]]
         assert(
             is(object, "DFrame"),
             hasRows(object),
+            isFlag(strict),
+            isOrganism(organism),
             isSubset(cols, colnames(object)),
             !anyNA(object[[fromCol]])
         )
         df <- object[, cols, drop = FALSE]
-        rownames(df) <- NULL
         df <- decode(df)
         df <- expand(df)
         i <- order(df, decreasing = FALSE, na.last = TRUE)
         df <- df[i, , drop = FALSE]
-        if (identical(format, "1:1")) {
-            if (organism == "Homo sapiens" && anyDuplicated(df[[2L]])) {
-                alert("Resolving ambiguous duplicates with HGNC annotations.")
-                hgnc <- Hgnc()
-                df2 <- EnsemblToNcbi(hgnc)
-                df2 <- df2[, cols, drop = FALSE]
-                i <- df2[[1L]] %in% df[[1L]]
-                df2 <- df2[i, , drop = FALSE]
-                i <- order(df2, decreasing = FALSE, na.last = TRUE)
-                df2 <- df2[i, , drop = FALSE]
-                df <- rbind(df2, df)
-            }
-            i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
-            df <- df[i, , drop = FALSE]
-            i <- order(df, decreasing = FALSE, na.last = TRUE)
-            df <- df[i, , drop = FALSE]
-            assert(
-                hasNoDuplicates(df[[1L]]),
-                hasNoDuplicates(df[[2L]])
-            )
+        if (organism == "Homo sapiens" && anyDuplicated(df[[2L]])) {
+            alert("Resolving ambiguous duplicates with HGNC annotations.")
+            hgnc <- Hgnc()
+            df2 <- EnsemblToNcbi(hgnc)
+            df2 <- df2[, cols, drop = FALSE]
+            i <- df2[[1L]] %in% df[[1L]]
+            df2 <- df2[i, , drop = FALSE]
+            i <- order(df2, decreasing = FALSE, na.last = TRUE)
+            df2 <- df2[i, , drop = FALSE]
+            df <- rbind(df2, df)
         }
+        i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
+        df <- df[i, , drop = FALSE]
+        i <- order(df, decreasing = FALSE, na.last = TRUE)
+        df <- df[i, , drop = FALSE]
+        assert(
+            hasNoDuplicates(df[[1L]]),
+            hasNoDuplicates(df[[2L]])
+        )
+        ## FIXME Rework NA filling in strict mode.
         if (isTRUE(strict)) {
             i <- complete.cases(df)
             df <- df[i, , drop = FALSE]
@@ -95,7 +83,7 @@ NULL
             x = metadata(object),
             values = list(
                 "date" = Sys.Date(),
-                "format" = format,
+                "format" = "1:1",
                 "organism" = organism,
                 "packageVersion" = .pkgVersion,
                 "strict" = strict
@@ -110,80 +98,55 @@ NULL
 `EnsemblToNcbi,character` <- # nolint
     function(object,
              organism = NULL,
-             format,
              strict = TRUE) {
         assert(
             isCharacter(object),
             hasNoDuplicates(object)
         )
-        format <- match.arg(format)
+        keys <- unname(object)
         if (is.null(organism)) {
             organism <- detectOrganism(object)
         }
-        if (allAreMatchingFixed(x = object, pattern = ".")) {
-            object <- stripGeneVersions(object)
+        if (allAreMatchingFixed(x = keys, pattern = ".")) {
+            keys <- stripGeneVersions(keys)
         }
         df <- .getEnsemblToNcbiFromOrgDb(
-            keys = object,
-            keytype = "ENSEMBL",
-            columns = "ENTREZID",
-            organism = organism
+            keys = keys,
+            organism = organism,
+            return = "EnsemblToNcbi"
         )
-        assert(identical(object, unique(df[[1L]])))
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = format,
             strict = strict,
             return = "EnsemblToNcbi"
         )
-        if (!areSetEqual(object, unique(out[[1L]]))) {
-            setdiff <- setdiff(object, unique(out[[1L]]))
-            abort(sprintf(
-                "%d match %s: %s.",
-                length(setdiff),
-                ngettext(
-                    n = length(setdiff),
-                    msg1 = "failure",
-                    msg2 = "failures"
-                ),
-                toInlineString(setdiff, n = 10L)
-            ))
-        }
-        if (identical(format, "1:1")) {
-            i <- match(x = object, table = out[[1L]])
-            out <- out[i, , drop = FALSE]
-        }
+        i <- match(x = keys, table = out[[1L]])
+        assert(!anyNA(i))
+        out <- out[i, , drop = FALSE]
+        rownames(out) <- unname(object)
         out
     }
 
-formals(`EnsemblToNcbi,character`)[["format"]] <- # nolint
-    formals(.makeEnsemblToNcbi)[["format"]]
 
 
-
-## Updated 2023-11-22.
+## Updated 2023-11-27.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
-    function(object, format) {
+    function(object) {
         assert(validObject(object))
-        format <- match.arg(format)
-        df <- decode(mcols(object))
+        df <- mcols(object)
         colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
         metadata(df) <- metadata(object)
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = format,
             strict = TRUE,
             return = "EnsemblToNcbi"
         )
         out
     }
 
-formals(`EnsemblToNcbi,EnsemblGenes`)[["format"]] <- # nolint
-    formals(.makeEnsemblToNcbi)[["format"]]
 
 
-
-## Updated 2023-11-22.
+## Updated 2023-11-27.
 `EnsemblToNcbi,Hgnc` <- # nolint
     function(object) {
         j <- c("ensemblGeneId", "ncbiGeneId")
@@ -195,9 +158,12 @@ formals(`EnsemblToNcbi,EnsemblGenes`)[["format"]] <- # nolint
         df <- df[, j, drop = FALSE]
         i <- complete.cases(df)
         df <- df[i, , drop = FALSE]
+        i <- order(df)
+        df <- df[i, , drop = FALSE]
+        i <- !duplicated(df[[1L]]) & !duplicated(df[[2L]])
+        df <- df[i, , drop = FALSE]
         out <- .makeEnsemblToNcbi(
             object = df,
-            format = "1:1",
             strict = TRUE,
             return = "EnsemblToNcbi"
         )
