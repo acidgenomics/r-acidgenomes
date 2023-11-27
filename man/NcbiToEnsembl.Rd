@@ -10,16 +10,13 @@ NcbiToEnsembl(object, ...)
 
 \S4method{NcbiToEnsembl}{Hgnc}(object)
 
-\S4method{NcbiToEnsembl}{integer}(object, organism, strict = TRUE)
+\S4method{NcbiToEnsembl}{integer}(object, organism)
 }
 \arguments{
 \item{object}{Object.}
 
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
-
-\item{strict}{\code{logical(1)}.
-Error on any mismatches, otherwise return \code{NA}.}
 
 \item{...}{Additional arguments.}
 }
@@ -34,6 +31,6 @@ Updated 2023-11-27.
 }
 \examples{
 ## integer ====
-x <- NcbiToEnsembl(object = c(1L, 2L), organism = "Homo sapiens")
+x <- NcbiToEnsembl(object = c(2L, 1L), organism = "Homo sapiens")
 print(x)
 }
