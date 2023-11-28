@@ -1,6 +1,6 @@
 #' @name stripTranscriptVersions
 #' @inherit AcidGenerics::stripTranscriptVersions
-#' @note Updated 2021-08-03.
+#' @note Updated 2023-11-28.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -16,6 +16,7 @@
 #' stripTranscriptVersions("ENST00000431238.7")
 #'
 #' ## GENCODE.
+#' stripTranscriptVersions("ENST00000493373.5_7")
 #' stripTranscriptVersions("ENST00000431238.7_PAR_Y")
 #'
 #' ## WormBase (no modification).
@@ -24,18 +25,18 @@ NULL
 
 
 
-## Updated 2021-01-27.
+## Updated 2023-11-28.
 `stripTranscriptVersions,character` <- # nolint
     function(object) {
         assert(isCharacter(object))
-        pattern <- "^(ENS.*T[0-9]{11})(\\.[0-9]+)(_.+)?$"
+        pattern <- "^(ENS.*T[0-9]{11})(\\.[0-9]+)(_[0-9]+)?(_PAR_Y)?$"
         if (!any(grepl(pattern = pattern, x = object))) {
             alertWarning("No transcript versions to modify.")
             return(object)
         }
         out <- gsub(
             pattern = pattern,
-            replacement = "\\1\\3",
+            replacement = "\\1\\4",
             x = object
         )
         out

@@ -16,23 +16,24 @@
 #' stripGeneVersions("ENSG00000002586.20")
 #'
 #' ## GENCODE.
+#' stripGeneVersions("ENSG00000116288.13_10")
 #' stripGeneVersions("ENSG00000002586.20_PAR_Y")
 NULL
 
 
 
-## Updated 2021-01-27.
+## Updated 2023-11-28.
 `stripGeneVersions,character` <- # nolint
     function(object) {
         assert(isCharacter(object))
-        pattern <- "^(ENS.*G[0-9]{11})(\\.[0-9]+)(_.+)?$"
+        pattern <- "^(ENS.*G[0-9]{11})(\\.[0-9]+)(_[0-9]+)?(_PAR_Y)?$"
         if (!any(grepl(pattern = pattern, x = object))) {
             alertWarning("No gene versions to modify.")
             return(object)
         }
         out <- gsub(
             pattern = pattern,
-            replacement = "\\1\\3",
+            replacement = "\\1\\4",
             x = object
         )
         out

@@ -1,7 +1,7 @@
 #' Make a TxToGene object from transcriptome FASTA
 #'
 #' @export
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-11-28.
 #'
 #' @details
 #' RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
@@ -28,6 +28,7 @@
 #' print(t2g)
 #'
 #' ## GENCODE ====
+#' ## GRCh38:
 #' ## > file <- AcidBase::pasteUrl(
 #' ## >     "ftp.ebi.ac.uk",
 #' ## >     "pub",
@@ -36,6 +37,21 @@
 #' ## >     "Gencode_human",
 #' ## >     "release_32",
 #' ## >     "gencode.v32.transcripts.fa.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > t2g <- makeTxToGeneFromFasta(file)
+#' ## > print(t2g)
+#' ##
+#' ## GRCh37:
+#' ## > file <- AcidBase::pasteUrl(
+#' ## >     "ftp.ebi.ac.uk",
+#' ## >     "pub",
+#' ## >     "databases",
+#' ## >     "gencode",
+#' ## >     "Gencode_human",
+#' ## >     "release_44",
+#' ## >     "GRCh37_mapping",
+#' ## >     "gencode.v44lift37.transcripts.fa.gz",
 #' ## >     protocol = "ftp"
 #' ## > )
 #' ## > t2g <- makeTxToGeneFromFasta(file)
@@ -106,13 +122,15 @@ makeTxToGeneFromFasta <-
             provider <- "FlyBase"
         } else if (any(grepl(
             pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9]+)(_PAR_Y)?\\|",
-                "(ENS.*G[0-9]{11}\\.[0-9]+)(_PAR_Y)?\\|"
+                "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
+                "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
             ),
             x = head
         ))) {
-            ## Note that GENCODE uses pipes to separate.
+            ## GENCODE uses pipes to separate.
             ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
+            ## Note that GRCh37 identifiers also contain "_".
+            ## e.g. "ENST00000456328.2_1".
             provider <- "GENCODE"
         } else if (any(grepl(
             pattern = "\\sgene=(WBGene[0-9]{8})$",
@@ -190,13 +208,25 @@ makeTxToGeneFromFasta <-
                 assert(
                     allAreMatchingRegex(
                         x = x[, 1L],
-                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+(_PAR_Y)?$"
+                        pattern = "^ENS.*T[0-9]{11}\\.[0-9_]+(_PAR_Y)?$"
                     ),
                     allAreMatchingRegex(
                         x = x[, 2L],
-                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+(_PAR_Y)?$"
+                        pattern = "^ENS.*G[0-9]{11}\\.[0-9_]+(_PAR_Y)?$"
                     )
                 )
+                ## Ensure we sanitize versions for GRCh37.
+                ## "ENST00000469289.1_1" to "ENST00000469289.1".
+                ## > x[, 1L] <- sub(
+                ## >     pattern = "^(ENS.*T[0-9]{11}\\.[0-9]+)_[0-9]+$",
+                ## >     replacement = "\\1",
+                ## >     x = x[, 1L]
+                ## > )
+                ## > x[, 2L] <- sub(
+                ## >     pattern = "^(ENS.*G[0-9]{11}\\.[0-9_]+)_[0-9]+$",
+                ## >     replacement = "\\1",
+                ## >     x = x[, 2L]
+                ## > )
             },
             "WormBase" = {
                 x <- strsplit(x = x, split = " ", fixed = TRUE)
