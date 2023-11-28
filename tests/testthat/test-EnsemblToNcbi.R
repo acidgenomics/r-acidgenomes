@@ -29,11 +29,11 @@ test_that("character : Homo sapiens", {
         EnsemblToNcbi(
             object = c(
                 "ENSG00000000003",
-                "ENSG00000002079"
+                "ENSG00000000004"
             ),
             organism = "Homo sapiens"
         ),
-        regexp = "ENSG00000002079"
+        regexp = "ENSG00000000004"
     )
     expect_error(
         object = EnsemblToNcbi(
