@@ -231,29 +231,21 @@ test_that("downloadUcscGenome", {
     expect_s4_class(genes, "UcscGenes")
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
-        expected = c(
-            "A0A024QYX8",
-            "A0A024QZ33",
-            "A0A024QZ42"
-        )
+        expected = c("A1BG", "A1BG-AS1", "A1CF")
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "UcscTranscripts")
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
-        expected = c(
-            "ENST00000000233.10",
-            "ENST00000000412.8",
-            "ENST00000000442.11"
-        )
+        expected = c("ABCA3P1_2", "ABCB10P1_2", "ABCB10P1_3")
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
-            "txId" = "ENST00000000233.10",
-            "geneId" = "P84085"
+            "txId" = "ABCA3P1_2",
+            "geneId" = "ABCA3P1"
         )
     )
     t2g <- import(
@@ -263,8 +255,8 @@ test_that("downloadUcscGenome", {
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
-            "txId" = "ENST00000000233.10",
-            "geneId" = "P84085"
+            "txId" = "ABCA3P1_2",
+            "geneId" = "ABCA3P1"
         )
     )
     unlink2(testdir)
