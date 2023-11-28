@@ -1,3 +1,5 @@
+## NOTE Add coverage for GRCh37 download.
+
 test_that("downloadEnsemblGenome", {
     testdir <- tempdir2()
     info <- downloadEnsemblGenome(
@@ -69,6 +71,8 @@ test_that("downloadEnsemblGenome", {
     )
     unlink2(testdir)
 })
+
+## NOTE Add coverage for GRCh37 download.
 
 test_that("downloadGencodeGenome", {
     testdir <- tempdir2()
