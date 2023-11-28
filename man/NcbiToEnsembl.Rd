@@ -30,7 +30,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 NCBI-to-Ensembl gene identifier mappings
 }
 \note{
-Updated 2023-11-27.
+Updated 2023-11-28.
 }
 \examples{
 ## integer ====
