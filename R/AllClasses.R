@@ -955,10 +955,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list(
-                "format" = "character",
-                "organism" = "character"
-            ),
+            expected = list("format" = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
