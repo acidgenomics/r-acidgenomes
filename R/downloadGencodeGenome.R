@@ -1,7 +1,20 @@
+## FIXME Need to deal with Entrez mappings for GRCh37....
+#trying URL 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/GRCh37_mapping/gencode.v44.metadata.EntrezGene.gz'
+#Error:
+#! cannot open URL
+#'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/GRCh37_mapping/gencode.v44.metadata.EntrezGene.gz':
+#FTP status was '550 Requested action not taken; file unavailable'
+#>
+# FIXME Correct file name is: gencode.v44lift37.metadata.EntrezGene.gz
+
+# FIXME Ensure we're using: gencode.v44lift37.annotation.gtf.gz
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-28.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -308,7 +321,7 @@ downloadGencodeGenome <-
 
 
 
-## Updated 2022-05-03.
+## Updated 2023-11-28.
 .downloadGencodeMetadata <-
     function(genomeBuild,
              outputDir,
@@ -328,12 +341,30 @@ downloadGencodeGenome <-
             ## TSV mapping transcripts to NCBI (Entrez) genes.
             "ncbiGene" = pasteUrl(
                 releaseUrl,
-                paste0("gencode.v", release, ".metadata.EntrezGene.gz")
+                paste0(
+                    "gencode.v",
+                    release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".metadata.EntrezGene.gz"
+                )
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
             "refseq" = pasteUrl(
                 releaseUrl,
-                paste0("gencode.v", release, ".metadata.RefSeq.gz")
+                paste0(
+                    "gencode.v",
+                    release,
+                    switch(
+                        EXPR = genomeBuild,
+                        "GRCh37" = "lift37",
+                        ""
+                    ),
+                    ".metadata.RefSeq.gz"
+                )
             )
         )
         files <- .downloadUrls(
