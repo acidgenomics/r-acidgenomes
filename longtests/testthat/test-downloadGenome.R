@@ -142,6 +142,10 @@ test_that("downloadGencodeGenome", {
     unlink2(testdir)
 })
 
+## NOTE Add coverage for GRCh37/hg19 in a future update:
+## https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/
+## Homo_sapiens/all_assembly_versions/GCF_000001405.25_GRCh37.p13/
+
 test_that("downloadRefseqGenome", {
     testdir <- tempdir2()
     info <- downloadRefseqGenome(
