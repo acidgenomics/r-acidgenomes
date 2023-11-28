@@ -5,6 +5,10 @@
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
 #'
+#' @param `logical(1)`.
+#' Applies to *Homo sapiens* and *Mus musculus* only currently.
+#' Use current curated mappings from HGNC (human) or MGI (mouse).
+#'
 #' @examples
 #' ## character ====
 #' x <- EnsemblToNcbi(
@@ -149,8 +153,11 @@ NULL
 
 ## Updated 2023-11-27.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
-    function(object) {
-        assert(validObject(object))
+    function(object, useCurated = TRUE) {
+        assert(
+            validObject(object),
+            isFlag(useCurated)
+        )
         organism <- organism(object)
         cols <- c("geneId", "ncbiGeneId")
         map <- mcols(object)
@@ -166,7 +173,10 @@ NULL
         map <- map[i, , drop = FALSE]
         i <- order(map)
         map <- map[i, , drop = FALSE]
-        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+        if (
+            isTRUE(useCurated) &&
+            isSubset(organism, c("Homo sapiens", "Mus musculus"))
+        ) {
             switch(
                 EXPR = organism,
                 "Homo sapiens" = {
@@ -184,6 +194,15 @@ NULL
             map <- leftJoin(map, map2, by = "ensemblGeneId")
             idx <- which(map[["ncbiGeneId"]] != map[["ncbiGeneId2"]])
             if (hasLength(idx)) {
+                alert(sprintf(
+                    "Correcting %d %s with curated metadata.",
+                    length(idx),
+                    ngettext(
+                        n = length(idx),
+                        msg1 = "mapping",
+                        msg2 = "mappings"
+                    )
+                ))
                 map[["ncbiGeneId"]][idx] <- map[["ncbiGeneId2"]][idx]
             }
             map[["ncbiGeneId2"]] <- NULL

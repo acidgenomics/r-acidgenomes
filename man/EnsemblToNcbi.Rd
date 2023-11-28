@@ -11,9 +11,9 @@
 \usage{
 EnsemblToNcbi(object, ...)
 
-\S4method{EnsemblToNcbi}{EnsemblGenes}(object)
+\S4method{EnsemblToNcbi}{EnsemblGenes}(object, useCurated = TRUE)
 
-\S4method{EnsemblToNcbi}{GencodeGenes}(object)
+\S4method{EnsemblToNcbi}{GencodeGenes}(object, useCurated = TRUE)
 
 \S4method{EnsemblToNcbi}{Hgnc}(object)
 
@@ -28,6 +28,9 @@ EnsemblToNcbi(object, ...)
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{...}{Additional arguments.}
+
+\item{`logical(1)`.}{Applies to \emph{Homo sapiens} and \emph{Mus musculus} only currently.
+Use current curated mappings from HGNC (human) or MGI (mouse).}
 }
 \value{
 \code{EnsemblToNcbi}.
@@ -36,7 +39,7 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 Ensembl-to-NCBI gene identifier mappings
 }
 \note{
-Updated 2023-11-27.
+Updated 2023-11-28.
 }
 \examples{
 ## character ====
