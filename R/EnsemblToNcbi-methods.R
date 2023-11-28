@@ -1,6 +1,6 @@
 #' @name EnsemblToNcbi
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
-#' @note Updated 2023-11-27.
+#' @note Updated 2023-11-28.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
@@ -147,18 +147,50 @@ NULL
 
 
 
-## FIXME Use Hgnc to pick curated matches for Homo sapiens.
-## FIXME Use Mgi to pick curated matches for Mus musculus.
-
 ## Updated 2023-11-27.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
     function(object) {
         assert(validObject(object))
-        df <- mcols(object)
-        colnames(df)[colnames(df) == "geneId"] <- "ensemblGeneId"
-        metadata(df) <- metadata(object)
+        organism <- organism(object)
+        cols <- c("geneId", "ncbiGeneId")
+        map <- mcols(object)
+        map <- map[, cols, drop = FALSE]
+        colnames(map)[colnames(map) == "geneId"] <- "ensemblGeneId"
+        map <- decode(map)
+        map <- expand(map)
+        i <- complete.cases(map)
+        map <- map[i, , drop = FALSE]
+        i <- order(map)
+        map <- map[i, , drop = FALSE]
+        i <- !duplicated(map[[1L]]) & !duplicated(map[[2L]])
+        map <- map[i, , drop = FALSE]
+        i <- order(map)
+        map <- map[i, , drop = FALSE]
+        if (isSubset(organism, c("Homo sapiens", "Mus musculus"))) {
+            switch(
+                EXPR = organism,
+                "Homo sapiens" = {
+                    alert("Checking mappings against curated HGNC metadata.")
+                    map2 <- Hgnc()
+                },
+                "Mus musculus" = {
+                    alert("Checking mappings against curated MGI metadata.")
+                    map2 <- Mgi()
+                }
+            )
+            map2 <- EnsemblToNcbi(map2)
+            map2 <- as(map2, "DFrame")
+            colnames(map2)[colnames(map2) == "ncbiGeneId"] <- "ncbiGeneId2"
+            map <- leftJoin(map, map2, by = "ensemblGeneId")
+            idx <- which(map[["ncbiGeneId"]] != map[["ncbiGeneId2"]])
+            if (hasLength(idx)) {
+                map[["ncbiGeneId"]][idx] <- map[["ncbiGeneId2"]][idx]
+            }
+            map[["ncbiGeneId2"]] <- NULL
+        }
+        metadata(map) <- metadata(object)
         out <- .makeEnsemblToNcbi(
-            object = df,
+            object = map,
             return = "EnsemblToNcbi"
         )
         out
