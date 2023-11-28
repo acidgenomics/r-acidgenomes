@@ -1215,7 +1215,7 @@ test_that("GTF transcripts", {
     )
 })
 
-file <- gffs[["ucsc_hg38_knowngene_gtf"]]
+file <- gffs[["ucsc_hg38_ncbirefseq_gtf"]]
 
 test_that("GTF genes", {
     object <- makeGRangesFromGff(
@@ -1233,18 +1233,18 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000223972"]), # nolint
+            X = as.data.frame(object["A1BG"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
-            "strand" = "+",
-            "geneId" = "ENSG00000223972",
-            "geneName" = "ENSG00000223972"
+            "seqnames" = "chr19",
+            "start" = "58345183",
+            "end" = "58353492",
+            "width" = "8310",
+            "strand" = "-",
+            "geneId" = "A1BG",
+            "geneName" = "A1BG"
         )
     )
     ## UCSC has changed some things related to hg38 that is currently causing
@@ -1299,25 +1299,25 @@ test_that("GTF transcripts", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000456328"]), # nolint
+            X = as.data.frame(object["ABCA3P1_2"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "chr1",
-            "start" = "11869",
-            "end" = "14409",
-            "width" = "2541",
+            "seqnames" = "chr16",
+            "start" = "21938865",
+            "end" = "21940466",
+            "width" = "1602",
             "strand" = "+",
-            "geneId" = "ENSG00000223972",
-            "geneName" = "ENSG00000223972",
+            "geneId" = "ABCA3P1",
+            "geneName" = "ABCA3P1",
             "txBiotype" = "transcript",
-            "txChrom" = "chr1",
-            "txEnd" = "14409",
-            "txId" = "ENST00000456328",
-            "txName" = "ENST00000456328",
-            "txNumber" = "1",
-            "txStart" = "11869",
+            "txChrom" = "chr16",
+            "txEnd" = "21940466",
+            "txId" = "ABCA3P1_2",
+            "txName" = "ABCA3P1_2",
+            "txNumber" = "144018",
+            "txStart" = "21938865",
             "txStrand" = "+"
         )
     )
@@ -1469,7 +1469,7 @@ test_that("GTF transcripts", {
     )
 })
 
-file <- file.path("cache", "ref-transcripts.gtf")
+file <- file.path(cacheDir, "ref-transcripts.gtf")
 
 test_that("GTF genes", {
     object <- makeGRangesFromGff(
