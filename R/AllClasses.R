@@ -1138,7 +1138,7 @@ setValidity(
 
 #' @inherit AcidGenerics::TxToGene description return title
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-28.
 #'
 #' @details
 #' Contains a `DFrame` with `"txId"` and `"geneId"` columns.
@@ -1178,14 +1178,6 @@ setValidity(
             return(ok)
         }
         ok <- .validateMetadata(object)
-        if (!isTRUE(ok)) {
-            return(ok)
-        }
-        ok <- validateClasses(
-            object = metadata(object),
-            expected = list("organism" = "character"),
-            subset = TRUE
-        )
         if (!isTRUE(ok)) {
             return(ok)
         }
