@@ -1,7 +1,7 @@
 #' Map input to human gene orthologs
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-11-28.
 #'
 #' @details
 #' Genes with identifier versions (e.g. "ENSMUSG00000000001.5") are not
@@ -81,8 +81,8 @@ mapHumanOrthologs <-
             ),
             error = function(e) {
                 abort(sprintf(
-                    "{.pkg %s}::{.fun %s} failure.",
-                    "biomaRt", "useMart"
+                    "{.pkg %s}::{.fun %s} failure: %s.",
+                    "biomaRt", "useMart", as.character(e)
                 ))
             }
         )
@@ -98,8 +98,8 @@ mapHumanOrthologs <-
             ),
             error = function(e) {
                 abort(sprintf(
-                    "{.pkg %s}::{.fun %s} failure.",
-                    "biomaRt", "select"
+                    "{.pkg %s}::{.fun %s} failure: %s.",
+                    "biomaRt", "select", as.character(e)
                 ))
             }
         )
