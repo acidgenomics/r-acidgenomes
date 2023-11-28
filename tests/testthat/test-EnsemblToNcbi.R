@@ -26,6 +26,16 @@ test_that("character : Homo sapiens", {
         expected = as.data.frame(expected)
     )
     expect_error(
+        EnsemblToNcbi(
+            object = c(
+                "ENSG00000000003",
+                "ENSG00000002079"
+            ),
+            organism = "Homo sapiens"
+        ),
+        regexp = "ENSG00000002079"
+    )
+    expect_error(
         object = EnsemblToNcbi(
             object = "ENSG00000000000",
             organism = "Homo sapiens"
@@ -208,41 +218,428 @@ test_that("character : Caenorhabditis elegans", {
 ## 110 ENSG00000285219  100506207
 ## 111 ENSG00000285551  124902436
 
-test_that("EnsemblGenes and Hgnc mapping consistency", {
-    hgnc <- Hgnc()
-    ens <- makeGRangesFromEnsembl(organism = "Homo sapiens")
-    x <- EnsemblToNcbi(hgnc)
-    x <- as(x, "DFrame")
-    metadata(x) <- list()
-    rownames(x) <- NULL
-    y <- EnsemblToNcbi(ens)
-    y <- as(y, "DFrame")
-    metadata(y) <- list()
-    rownames(y) <- NULL
-    genes <- sort(intersect(x[[1L]], y[[1L]]))
-    x <- x[match(genes, table = x[[1L]]), ]
-    y <- y[match(genes, table = y[[1L]]), ]
-    expect_identical(x, y)
-})
-
-test_that("EnsemblGenes and OrgDb consistency", {
-    stop("FIXME")
-})
-
-## FIXME This works, but shouldn't...hmmm.
-
-## FIXME Need to test ensdb and NCBI OrgDb consistency...annoying.
-## e.g. inconsistent: ENSG00000002079.
-
-test_that("character : match failure", {
-    expect_error(
-        EnsemblToNcbi(
-            object = c(
-                "ENSG00000000003",
-                "ENSG00000002079"
-            ),
-            organism = "Homo sapiens"
+test_that("EnsemblGenes", {
+    hs <- makeGRangesFromEnsembl("Homo sapiens", release = 110L)
+    x <- EnsemblToNcbi(hs, useCurated = TRUE)
+    y <- EnsemblToNcbi(hs, useCurated = FALSE)
+    expect_true(metadata(x)[["useCurated"]])
+    expect_null(metadata(y)[["useCurated"]])
+    expect_identical(nrow(x), 26606L)
+    expect_identical(nrow(y),26608L)
+    expect_identical(
+        object = setdiff(y[[1L]], x[[1L]]),
+        expected = c("ENSG00000290723", "ENSG00000291109")
+    )
+    y <- y[rownames(x), ]
+    idx <- which(x[[2L]] != y[[2L]])
+    expect_identical(
+        object = data.frame(
+            "ensemblGeneId" = x[["ensemblGeneId"]][idx],
+            "ncbiGeneId1" = x[["ncbiGeneId"]][idx],
+            "ncbiGeneId2" = y[["ncbiGeneId"]][idx]
         ),
-        regexp = "ENSG00000002079"
+        expected = data.frame(
+            "ensemblGeneId" = c(
+                "ENSG00000111215",
+                "ENSG00000169627",
+                "ENSG00000176797",
+                "ENSG00000177693",
+                "ENSG00000178934",
+                "ENSG00000180525",
+                "ENSG00000183305",
+                "ENSG00000187621",
+                "ENSG00000188660",
+                "ENSG00000189064",
+                "ENSG00000199226",
+                "ENSG00000200434",
+                "ENSG00000200790",
+                "ENSG00000201806",
+                "ENSG00000204054",
+                "ENSG00000204929",
+                "ENSG00000205611",
+                "ENSG00000206588",
+                "ENSG00000206828",
+                "ENSG00000206906",
+                "ENSG00000207289",
+                "ENSG00000210151",
+                "ENSG00000211689",
+                "ENSG00000213999",
+                "ENSG00000214049",
+                "ENSG00000214783",
+                "ENSG00000214900",
+                "ENSG00000215269",
+                "ENSG00000215483",
+                "ENSG00000222225",
+                "ENSG00000223403",
+                "ENSG00000223646",
+                "ENSG00000223734",
+                "ENSG00000224609",
+                "ENSG00000225177",
+                "ENSG00000226023",
+                "ENSG00000227110",
+                "ENSG00000228262",
+                "ENSG00000228636",
+                "ENSG00000228695",
+                "ENSG00000228999",
+                "ENSG00000230373",
+                "ENSG00000231187",
+                "ENSG00000231527",
+                "ENSG00000232624",
+                "ENSG00000233008",
+                "ENSG00000233098",
+                "ENSG00000233132",
+                "ENSG00000233491",
+                "ENSG00000233780",
+                "ENSG00000234807",
+                "ENSG00000235438",
+                "ENSG00000235885",
+                "ENSG00000236125",
+                "ENSG00000236172",
+                "ENSG00000236362",
+                "ENSG00000237850",
+                "ENSG00000238653",
+                "ENSG00000238782",
+                "ENSG00000238884",
+                "ENSG00000239149",
+                "ENSG00000241104",
+                "ENSG00000241956",
+                "ENSG00000242147",
+                "ENSG00000242296",
+                "ENSG00000245146",
+                "ENSG00000245552",
+                "ENSG00000245694",
+                "ENSG00000247081",
+                "ENSG00000248278",
+                "ENSG00000248489",
+                "ENSG00000248538",
+                "ENSG00000248690",
+                "ENSG00000249740",
+                "ENSG00000250748",
+                "ENSG00000251705",
+                "ENSG00000251970",
+                "ENSG00000252429",
+                "ENSG00000253054",
+                "ENSG00000253948",
+                "ENSG00000254166",
+                "ENSG00000254451",
+                "ENSG00000255595",
+                "ENSG00000255760",
+                "ENSG00000256282",
+                "ENSG00000258537",
+                "ENSG00000258636",
+                "ENSG00000260081",
+                "ENSG00000260128",
+                "ENSG00000260788",
+                "ENSG00000261241",
+                "ENSG00000261971",
+                "ENSG00000266256",
+                "ENSG00000267308",
+                "ENSG00000267452",
+                "ENSG00000269136",
+                "ENSG00000270722",
+                "ENSG00000271171",
+                "ENSG00000274210",
+                "ENSG00000274428",
+                "ENSG00000274512",
+                "ENSG00000274659",
+                "ENSG00000275113",
+                "ENSG00000275239",
+                "ENSG00000276085",
+                "ENSG00000277422",
+                "ENSG00000280263",
+                "ENSG00000280623",
+                "ENSG00000281880",
+                "ENSG00000285219",
+                "ENSG00000285551"
+            ),
+            "ncbiGeneId1" = c(
+                11272L,
+                654483L,
+                414325L,
+                26682L,
+                653499L,
+                414235L,
+                266740L,
+                27004L,
+                284836L,
+                729447L,
+                26825L,
+                100873571L,
+                106479845L,
+                6070L,
+                100506190L,
+                105369168L,
+                400841L,
+                26866L,
+                115409984L,
+                106481324L,
+                106480701L,
+                4574L,
+                6966L,
+                100271849L,
+                652995L,
+                131554431L,
+                283551L,
+                645073L,
+                646982L,
+                106481320L,
+                100507257L,
+                100996249L,
+                105373463L,
+                105378756L,
+                441172L,
+                728062L,
+                100288428L,
+                104355288L,
+                105376402L,
+                51716L,
+                105374322L,
+                374650L,
+                101927699L,
+                100132948L,
+                101929218L,
+                101927587L,
+                440416L,
+                389611L,
+                127566420L,
+                440125L,
+                100131060L,
+                144832L,
+                102800447L,
+                645402L,
+                102800314L,
+                100008586L,
+                645202L,
+                100151657L,
+                100147757L,
+                100151682L,
+                677885L,
+                1098L,
+                105377703L,
+                105376382L,
+                245912L,
+                100505636L,
+                101929295L,
+                643911L,
+                100499183L,
+                100128010L,
+                102724810L,
+                102724880L,
+                594842L,
+                101929768L,
+                100507065L,
+                100873336L,
+                107105262L,
+                100147816L,
+                100151674L,
+                105375666L,
+                103021165L,
+                107983975L,
+                105370059L,
+                105369723L,
+                100129966L,
+                100874185L,
+                105370469L,
+                105373384L,
+                100288380L,
+                124903732L,
+                102724940L,
+                100507419L,
+                400660L,
+                105372290L,
+                105371828L,
+                100129976L,
+                115482718L,
+                100652909L,
+                115409988L,
+                115409981L,
+                101060376L,
+                107984539L,
+                26749L,
+                105376064L,
+                414062L,
+                441362L,
+                644773L,
+                101978785L,
+                103157000L,
+                728655L,
+                122152367L
+            ),
+            "ncbiGeneId2" = c(
+                5554L,
+                552900L,
+                55894L,
+                124906935L,
+                3963L,
+                124900286L,
+                4101L,
+                124903372L,
+                102724398L,
+                26749L,
+                124900488L,
+                124907486L,
+                124900632L,
+                124900516L,
+                124900275L,
+                124906016L,
+                101928906L,
+                124904613L,
+                124904627L,
+                124905168L,
+                124905522L,
+                113219467L,
+                445347L,
+                4207L,
+                124900418L,
+                84820L,
+                196913L,
+                2576L,
+                400123L,
+                124906683L,
+                378881L,
+                101928012L,
+                124900607L,
+                729467L,
+                124900217L,
+                255313L,
+                101927394L,
+                104355287L,
+                124902542L,
+                107987423L,
+                124908056L,
+                642402L,
+                102724593L,
+                105379444L,
+                283080L,
+                101927560L,
+                339260L,
+                124906723L,
+                100128317L,
+                101930748L,
+                101926907L,
+                105370105L,
+                101927661L,
+                392188L,
+                102800315L,
+                2574L,
+                440243L,
+                124904732L,
+                124906135L,
+                124902076L,
+                677882L,
+                284344L,
+                102546299L,
+                102723629L,
+                124905442L,
+                124900193L,
+                100129203L,
+                101927480L,
+                105369147L,
+                105371814L,
+                100289230L,
+                157273L,
+                124906789L,
+                101926904L,
+                105369187L,
+                124907582L,
+                124905307L,
+                124904769L,
+                124901190L,
+                124900254L,
+                103164619L,
+                100130268L,
+                101927531L,
+                105369725L,
+                112268073L,
+                145438L,
+                124907392L,
+                105373383L,
+                89838L,
+                105371366L,
+                112267895L,
+                124900372L,
+                284276L,
+                124908074L,
+                440446L,
+                641367L,
+                124904619L,
+                105372377L,
+                124904621L,
+                124904634L,
+                729873L,
+                124906976L,
+                729428L,
+                105379447L,
+                6349L,
+                100288527L,
+                440888L,
+                124900476L,
+                440034L,
+                100506207L,
+                124902436L
+            )
+        )
+    )
+})
+
+test_that("Hgnc", {
+    hgnc <- Hgnc()
+    object <- EnsemblToNcbi(hgnc)
+    expect_identical(
+        object = as.data.frame(object[1L:5L, ]),
+        expected = data.frame(
+            "ensemblGeneId" = c(
+                "ENSG00000000003",
+                "ENSG00000000005",
+                "ENSG00000000419",
+                "ENSG00000000457",
+                "ENSG00000000460"
+            ),
+            "ncbiGeneId" = c(
+                7105L,
+                64102L,
+                8813L,
+                57147L,
+                55732L
+            ),
+            row.names = as.character(c(
+                11858L,
+                17757L,
+                3005L,
+                19285L,
+                25565L
+            ))
+        )
+    )
+})
+
+test_that("Mgi", {
+    mgi <- Mgi()
+    object <- EnsemblToNcbi(mgi)
+    expect_identical(
+        object = as.data.frame(object[1L:5L, ]),
+        expected = data.frame(
+            "ensemblGeneId" = c(
+                "ENSMUSG00000000001",
+                "ENSMUSG00000000003",
+                "ENSMUSG00000000028",
+                "ENSMUSG00000000031",
+                "ENSMUSG00000000037"
+            ),
+            "ncbiGeneId" = c(
+                14679L,
+                54192L,
+                12544L,
+                14955L,
+                107815L
+            ),
+            row.names = as.character(c(
+                95773L,
+                1860484L,
+                1338073L,
+                95891L,
+                1340042L
+            ))
+        )
     )
 })
