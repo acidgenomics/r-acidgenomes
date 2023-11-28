@@ -111,7 +111,7 @@ test_that("EnsemblGenes", {
     expect_true(metadata(x)[["useCurated"]])
     expect_null(metadata(y)[["useCurated"]])
     expect_identical(nrow(x), 26606L)
-    expect_identical(nrow(y),26608L)
+    expect_identical(nrow(y), 26608L)
     expect_identical(
         object = setdiff(y[[1L]], x[[1L]]),
         expected = c("ENSG00000290723", "ENSG00000291109")
