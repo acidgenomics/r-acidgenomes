@@ -161,6 +161,7 @@ NULL
         organism <- organism(object)
         cols <- c("geneId", "ncbiGeneId")
         map <- mcols(object)
+        metadata(map) <- metadata(object)
         map <- map[, cols, drop = FALSE]
         colnames(map)[colnames(map) == "geneId"] <- "ensemblGeneId"
         map <- decode(map)
@@ -204,10 +205,10 @@ NULL
                     )
                 ))
                 map[["ncbiGeneId"]][idx] <- map[["ncbiGeneId2"]][idx]
+                metadata(map)[["useCurated"]] <- TRUE
             }
             map[["ncbiGeneId2"]] <- NULL
         }
-        metadata(map) <- metadata(object)
         out <- .makeEnsemblToNcbi(
             object = map,
             return = "EnsemblToNcbi"
