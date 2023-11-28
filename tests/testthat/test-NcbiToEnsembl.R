@@ -1,21 +1,18 @@
-## FIXME Need to cover Homo sapiens, Mus musculus, C. elegans, and Dmel.
-
 test_that("character : Homo sapiens", {
     genes <- c(64102L, 10838L, 7982L, 7105L)
     object <- NcbiToEnsembl(genes, organism = "Homo sapiens")
-    expected <- DataFrame(
-        "ncbiGeneId" = genes,
-        "ensemblGeneId" = c(
-            "ENSG00000000005",
-            "ENSG00000063587",
-            "ENSG00000004866",
-            "ENSG00000000003"
-        ),
-        row.names = genes
-    )
     expect_identical(
         object = as.data.frame(object),
-        expected = as.data.frame(expected)
+        expected = data.frame(
+            "ncbiGeneId" = genes,
+            "ensemblGeneId" = c(
+                "ENSG00000000005",
+                "ENSG00000063587",
+                "ENSG00000004866",
+                "ENSG00000000003"
+            ),
+            row.names = as.character(genes)
+        )
     )
     expect_error(
         object = NcbiToEnsembl(
@@ -27,16 +24,43 @@ test_that("character : Homo sapiens", {
 })
 
 test_that("character : Mus musculus", {
-    stop("FIXME")
+    genes <- c(14679L, 54192L, 12544L, 14955L)
+    object <- NcbiToEnsembl(genes, organism = "Mus musculus")
+    expect_identical(
+        object = as.data.frame(object),
+        expected = data.frame(
+            "ncbiGeneId" = genes,
+            "ensemblGeneId" = c(
+                "ENSMUSG00000000001",
+                "ENSMUSG00000000003",
+                "ENSMUSG00000000028",
+                "ENSMUSG00000000031"
+            ),
+            row.names = as.character(genes)
+        )
+    )
+    expect_error(
+        object = NcbiToEnsembl(
+            object = 0L,
+            organism = "Mus musculus"
+        ),
+        regexp = "match failure"
+    )
 })
 
 test_that("character : Caenorhabditis elegans", {
-    expect_error(
-        object = NcbiToEnsembl(
-            object = c(175410L, 177343L),
-            organism = "Caenorhabditis elegans"
-        ),
-        regexp = "ENTREZID"
+    genes <- c(175410L, 177343L)
+    object <- NcbiToEnsembl(genes, organism = "Caenorhabditis elegans")
+    expect_identical(
+        object = as.data.frame(object),
+        expected = data.frame(
+            "ncbiGeneId" = genes,
+            "ensemblGeneId" = c(
+                "WBGene00000898",
+                "WBGene00004804"
+            ),
+            row.names = as.character(genes)
+        )
     )
     expect_error(
         object = NcbiToEnsembl(
@@ -47,18 +71,52 @@ test_that("character : Caenorhabditis elegans", {
     )
 })
 
-hgnc <- Hgnc()
-ncbi <- NcbiGeneInfo("Homo sapiens")
-
-test_that("Hgnc and NcbiGeneInfo consistency", {
-    stop("FIXME Need to add support")
-
+test_that("Hgnc", {
+    hgnc <- Hgnc()
+    object <- NcbiToEnsembl(hgnc)
+    expect_identical(
+        object = as.data.frame(object[1L:5L, ]),
+        expected = data.frame(
+            "ncbiGeneId" = c(1L, 2L, 3L, 9L, 10L),
+            "ensemblGeneId" = c(
+                "ENSG00000121410",
+                "ENSG00000175899",
+                "ENSG00000256069",
+                "ENSG00000171428",
+                "ENSG00000156006"
+            ),
+            row.names = as.character(c(5L, 7L, 8L, 7645L, 7646L))
+        )
+    )
 })
 
-test_that("Hgnc and OrgDb consistency", {
-    stop("FIXME Need to add support")
-})
-
-test_that("NcbiGeneInfo and OrgDb consistency", {
-    stop("FIXME Need to add support")
+test_that("Mgi", {
+    mgi <- Mgi()
+    object <- NcbiToEnsembl(mgi)
+    expect_identical(
+        object = as.data.frame(object[1L:5L, ]),
+        expected = data.frame(
+            "ncbiGeneId" = c(
+                11287L,
+                11298L,
+                11302L,
+                11303L,
+                11304L
+            ),
+            "ensemblGeneId" = c(
+                "ENSMUSG00000030359",
+                "ENSMUSG00000020804",
+                "ENSMUSG00000025375",
+                "ENSMUSG00000015243",
+                "ENSMUSG00000028125"
+            ),
+            row.names = as.character(c(
+                87854L,
+                1328365L,
+                1197518L,
+                99607L,
+                109424L
+            ))
+        )
+    )
 })
