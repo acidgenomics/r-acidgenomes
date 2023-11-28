@@ -1,16 +1,3 @@
-## FIXME Need to deal with Entrez mappings for GRCh37....
-#trying URL 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/GRCh37_mapping/gencode.v44.metadata.EntrezGene.gz'
-#Error:
-#! cannot open URL
-#'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/GRCh37_mapping/gencode.v44.metadata.EntrezGene.gz':
-#FTP status was '550 Requested action not taken; file unavailable'
-#>
-# FIXME Correct file name is: gencode.v44lift37.metadata.EntrezGene.gz
-
-# FIXME Ensure we're using: gencode.v44lift37.annotation.gtf.gz
-
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
