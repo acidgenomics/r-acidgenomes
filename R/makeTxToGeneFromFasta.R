@@ -215,18 +215,6 @@ makeTxToGeneFromFasta <-
                         pattern = "^ENS.*G[0-9]{11}\\.[0-9_]+(_PAR_Y)?$"
                     )
                 )
-                ## Ensure we sanitize versions for GRCh37.
-                ## "ENST00000469289.1_1" to "ENST00000469289.1".
-                ## > x[, 1L] <- sub(
-                ## >     pattern = "^(ENS.*T[0-9]{11}\\.[0-9]+)_[0-9]+$",
-                ## >     replacement = "\\1",
-                ## >     x = x[, 1L]
-                ## > )
-                ## > x[, 2L] <- sub(
-                ## >     pattern = "^(ENS.*G[0-9]{11}\\.[0-9_]+)_[0-9]+$",
-                ## >     replacement = "\\1",
-                ## >     x = x[, 2L]
-                ## > )
             },
             "WormBase" = {
                 x <- strsplit(x = x, split = " ", fixed = TRUE)
