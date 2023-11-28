@@ -176,7 +176,7 @@ NULL
         map <- map[i, , drop = FALSE]
         if (
             isTRUE(useCurated) &&
-            isSubset(organism, c("Homo sapiens", "Mus musculus"))
+                isSubset(organism, c("Homo sapiens", "Mus musculus"))
         ) {
             switch(
                 EXPR = organism,
