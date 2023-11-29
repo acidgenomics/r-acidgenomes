@@ -212,6 +212,8 @@ test_that("downloadRefseqGenome", {
     unlink2(testdir)
 })
 
+## NOTE Add coverage for hg19.
+
 test_that("downloadUcscGenome", {
     testdir <- tempdir2()
     info <- downloadUcscGenome(
