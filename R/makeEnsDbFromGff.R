@@ -29,7 +29,7 @@
 makeEnsDbFromGff <- function(file) {
     assert(
         requireNamespaces("ensembldb"),
-        .isSupportedGFF(file)
+        .isSupportedGff(file)
     )
     if (isAFile(file)) {
         file <- realpath(file)

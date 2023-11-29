@@ -233,7 +233,7 @@ makeGRangesFromGff <-
              ignoreVersion = TRUE,
              extraMcols = TRUE) {
         assert(
-            .isSupportedGFF(file),
+            .isSupportedGff(file),
             isFlag(ignoreVersion),
             isFlag(extraMcols)
         )

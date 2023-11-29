@@ -32,10 +32,10 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "https"
 #' )
-#' df <- .getGFFDirectives(url)
+#' df <- .getGffDirectives(url)
 #' print(df)
-.getGFFDirectives <- function(file, nMax = Inf) {
-    assert(.isSupportedGFF(file))
+.getGffDirectives <- function(file, nMax = Inf) {
+    assert(.isSupportedGff(file))
     file <- .cacheIt(file)
     lines <- import(
         con = file,
@@ -93,7 +93,7 @@
 #' x <- .getGffMetadata(url)
 #' print(x)
 .getGffMetadata <- function(file) {
-    assert(.isSupportedGFF(file))
+    assert(.isSupportedGff(file))
     file <- .cacheIt(file)
     l <- list()
     if (isAFile(file)) {
@@ -103,7 +103,7 @@
     l[["md5"]] <- .md5(file)
     l[["sha256"]] <- .sha256(file)
     ## Attempt to get genome build and provider from GFF directives.
-    df <- .getGFFDirectives(file)
+    df <- .getGffDirectives(file)
     if (is(df, "DFrame")) {
         l[["directives"]] <- df
         ## These are GFF specific (not defined in GTF), but useful:
@@ -426,9 +426,9 @@
 #'
 ## See `.gffPatterns` for pattern matching details.
 #'
-#' @note Updated 2021-08-06.
+#' @note Updated 2023-11-29.
 #' @noRd
-.isSupportedGFF <- function(file) {
+.isSupportedGff <- function(file) {
     ok <- isString(file)
     if (!ok) {
         return(FALSE)
