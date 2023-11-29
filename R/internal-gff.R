@@ -67,10 +67,6 @@
             pattern = "GRCh37"
         )
     ) {
-        alert(sprintf(
-            "Fixing incorrect {.val %s} format as {.val %s}.",
-            "gff3", "gtf"
-        ))
         df[["value"]][which(df[["key"]] == "format")] <- "gtf"
     }
     df
