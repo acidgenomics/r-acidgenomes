@@ -128,6 +128,7 @@
             df[df[["key"]] == "gff-version", "value", drop = TRUE]
         l[["format"]] <-
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
+        ## FIXME This is returning GRCh38 for GENCODE GRCh37.
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
     }
@@ -350,23 +351,24 @@
 
 
 
-## Updated 2022-05-03.
+## Updated 2023-11-29.
 .gffGenomeBuild <- function(df) {
     assert(is(df, "DFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (
-        identical(
-            x = df[which(df[["key"]] == "provider"), "value"],
-            y = "GENCODE"
-        ) &&
+        df[which(df[["key"]] == "provider"), "value"] == "GENCODE" &&
             isTRUE("description" %in% df[["key"]])
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
-        x <- strMatch(
-            x = string,
-            pattern = "genome \\(([^\\)]+)\\)"
-        )[1L, 2L]
+        match <- strMatch(x = string, pattern = "mapped to ([^ ]+)")
+        if (identical(dim(match), c(1L, 2L))) {
+            x <- match[1L, 2L]
+            return(x)
+        }
+        match <- strMatch(x = string, pattern = "genome \\(([^\\)]+)\\)")
+        assert(identical(dim(match), c(1L, 2L)))
         if (isString(x)) {
+            x <- match[1L, 2L]
             return(x)
         }
     }
