@@ -3,7 +3,7 @@
 #' @note Updated 2023-11-29.
 #' @noRd
 #'
-#' @param x GFF file or `getGFFMetadata()` return list.
+#' @param x GFF file or `.getGffMetadata()` return list.
 #'
 #' @return `Seqinfo` or `NULL` (on failure).
 #'
