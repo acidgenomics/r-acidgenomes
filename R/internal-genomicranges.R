@@ -546,7 +546,10 @@
             assert(
                 hasNoDuplicates(names),
                 !anyNA(names),
-                msg = "Invalid and/or duplicated identifiers detected."
+                msg = paste(
+                    "Invalid and/or duplicated identifiers detected.",
+                    "Setting 'ignoreVersion = FALSE' may resolve this."
+                )
             )
             names(object) <- names
             ## This check fails for split GRangesList.
