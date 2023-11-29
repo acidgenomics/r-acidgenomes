@@ -1,4 +1,5 @@
-## NOTE Add coverage for GRCh37 download.
+## FIXME Split these out into separate test files.
+## FIXME Add coverage for GRCh37 download.
 
 test_that("downloadEnsemblGenome", {
     testdir <- tempdir2()
