@@ -1,6 +1,6 @@
 #' @name TxToGene
 #' @inherit AcidGenerics::TxToGene description return title
-#' @note Updated 2023-09-27.
+#' @note Updated 2023-11-29.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -26,7 +26,7 @@ NULL
 
 
 
-## Updated 2023-09-26.
+## Updated 2023-11-29.
 `TxToGene,DFrame` <- # nolint
     function(object,
              quiet = FALSE) {
@@ -75,8 +75,7 @@ NULL
         assert(
             hasRows(object),
             all(complete.cases(object)),
-            hasNoDuplicates(object[["txId"]]),
-            msg = "Failed to generate TxToGene object."
+            hasNoDuplicates(object[["txId"]])
         )
         object <- object[order(object), , drop = FALSE]
         meta[["date"]] <- Sys.Date()
