@@ -432,14 +432,8 @@
     }
 
 
-
-## FIXME GENCODE GRCh37 contains duplicate transcripts, which aren't a problem
-## in the FASTA file...weird.
+## GENCODE GRCh37 contains duplicate unversioned transcript identifiers.
 ##
-## duplicates at positions 60912, 89034, 114911, 114913, 202386.
-##
-## Consider making these unique?
-
 ## Updated 2023-11-29.
 .rtracklayerGencodeTranscriptsGtf <-
     function(object) {
@@ -471,16 +465,12 @@
         object <- object[keep]
         mcols(object)[["transcript_id_version"]] <-
             mcols(object)[["transcript_id"]]
-        mcols(object)[["transcript_id"]] <-
-            stripTranscriptVersions(mcols(object)[["transcript_id"]])
-        ## FIXME This step is failing for GRCh37:
-        ## duplicates at positions 60912, 89034, 114911, 114913, 202386.
-        ## - ENST00000516014
-        ## But transcript id_version is OK! Need to rework our assert check.
         assert(hasNoDuplicates(mcols(object)[["transcript_id_version"]]))
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
-            stripGeneVersions(mcols(object)[["gene_id"]])
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ont"]] <- NULL
         object
     }
