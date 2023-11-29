@@ -1,7 +1,3 @@
-## FIXME GENCODE GRCh37 is currently setting GRCh38 as seqinfo...need to resolve.
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'

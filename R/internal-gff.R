@@ -124,7 +124,6 @@
             df[df[["key"]] == "gff-version", "value", drop = TRUE]
         l[["format"]] <-
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
-        ## FIXME This is returning GRCh38 for GENCODE GRCh37.
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
     }
