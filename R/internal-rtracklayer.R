@@ -325,7 +325,7 @@
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
 
-## Updated 2022-05-04.
+## Updated 2023-11-29.
 .rtracklayerGencodeGenesGff <-
     function(object) {
         assert(
@@ -349,10 +349,10 @@
         )
         object <- object[keep]
         mcols(object)[["gene_id_version"]] <- mcols(object)[["ID"]]
-        mcols(object)[["ID"]] <- NULL
+        assert(hasNoDuplicates(mcols(object)[["gene_id_version"]]))
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
         mcols(object)[["ont"]] <- NULL
         object
@@ -380,20 +380,17 @@
             msg = "Failed to extract any genes."
         )
         object <- object[keep]
-        assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        mcols(object)[["gene_id_version"]] <-
-            mcols(object)[["gene_id"]]
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        assert(hasNoDuplicates(mcols(object)[["gene_id_version"]]))
         mcols(object)[["gene_id"]] <-
-            stripGeneVersions(mcols(object)[["gene_id"]])
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ont"]] <- NULL
         object
     }
 
 
 
-## FIXME Can we process GRCh37 or does this contain dupes too?
-
-## Updated 2022-05-04.
+## Updated 2023-11-29.
 .rtracklayerGencodeTranscriptsGff <-
     function(object) {
         assert(
@@ -421,14 +418,14 @@
         )
         object <- object[keep]
         mcols(object)[["transcript_id_version"]] <- mcols(object)[["ID"]]
-        mcols(object)[["ID"]] <- NULL
+        assert(hasNoDuplicates(mcols(object)[["transcript_id_version"]]))
         mcols(object)[["transcript_id"]] <-
             stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
-        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         mcols(object)[["gene_id_version"]] <-
             as.character(mcols(object)[["Parent"]])
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
+        mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
         mcols(object)[["ont"]] <- NULL
         object
