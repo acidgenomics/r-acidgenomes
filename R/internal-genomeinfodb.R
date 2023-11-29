@@ -1,6 +1,6 @@
 #' Get Seqinfo
 #'
-#' @note Updated 2023-01-30.
+#' @note Updated 2023-11-29.
 #' @noRd
 #'
 #' @param x GFF file or `getGFFMetadata()` return list.
@@ -64,7 +64,7 @@
 #' print(seq)
 .getSeqinfo <- function(x) {
     if (!is.list(x)) {
-        x <- .getGFFMetadata(x)
+        x <- .getGffMetadata(x)
     }
     if (
         !isSubset(
