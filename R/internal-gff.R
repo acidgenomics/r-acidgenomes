@@ -1,6 +1,6 @@
 #' Get the directives from a GFF file
 #'
-#' @note Updated 2022-01-12.
+#' @note Updated 2023-11-29.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -56,6 +56,23 @@
     colnames(df) <- c("key", "value")
     df <- unique(df)
     df <- df[order(df[["key"]]), , drop = FALSE]
+    ## GENCODE GRCh37 GTF file incorrectly returns format as "gff3" currently.
+    ## Filing issue with gencode-help@ebi.ac.uk.
+    if (
+        df[["value"]][which(df[["key"]] == "format")] == "gff3" &&
+        df[["value"]][which(df[["key"]] == "provider")] == "GENCODE" &&
+        isMatchingFixed(x = fileExt(file), pattern = "gtf") &&
+        isMatchingFixed(
+            x = df[["value"]][which(df[["key"]] == "description")],
+            pattern = "GRCh37"
+        )
+    ) {
+        alert(sprintf(
+            "Fixing incorrect {.val %s} format as {.val %s}.",
+            "gff3", "gtf"
+        ))
+        df[["value"]][which(df[["key"]] == "format")] <- "gtf"
+    }
     df
 }
 

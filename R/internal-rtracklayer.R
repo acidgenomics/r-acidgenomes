@@ -1,7 +1,3 @@
-## FIXME GENCODE GRCh37 GTF is returning GFF3 in directives.
-
-
-
 #' Make GRanges from rtracklayer
 #'
 #' @note Updated 2023-10-12.
@@ -325,8 +321,6 @@
 
 ## GENCODE =====================================================================
 
-## FIXME GRCh37 has different column names.
-
 ## Uses `gene_type` instead of `gene_biotype`.
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
@@ -365,8 +359,6 @@
     }
 
 
-
-## FIXME GRCh37 has different column names.
 
 ## Updated 2022-05-04.
 .rtracklayerGencodeGenesGtf <-
