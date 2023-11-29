@@ -101,9 +101,10 @@ makeTxToGeneFromFasta <-
         ))
         x <- import(con = .cacheIt(file), format = "lines")
         x <- grep(pattern = "^>", x = x, value = TRUE)
-        if (!hasLength(x)) {
-            abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))
-        }
+        assert(
+            hasLength(x),
+            msg = sprintf("Unsupported FASTA: {.file %s}.", basename(file))
+        )
         x <- substr(x, start = 2L, stop = nchar(x))
         ## Detect the provider of the FASTA.
         head <- head(x, n = 10L)
