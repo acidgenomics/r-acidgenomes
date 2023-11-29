@@ -210,7 +210,7 @@
 ## nolint end
 .makeTxDbFromGff <- function(file, meta) {
     assert(
-        .isSupportedGFF(file),
+        .isSupportedGff(file),
         is.list(meta)
     )
     ## Check for input of unsupported files.
