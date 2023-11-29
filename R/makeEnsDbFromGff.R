@@ -3,7 +3,7 @@
 #' Wrapper for ensembldb importer functions.
 #'
 #' @export
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-11-29.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -51,7 +51,7 @@ makeEnsDbFromGff <- function(file) {
     args[["outfile"]] <- tempfile()
     ext <- fileExt(file)
     tmpfile <- .cacheIt(file)
-    meta <- .getGFFMetadata(file)
+    meta <- .getGffMetadata(file)
     if (grepl(pattern = "gff", x = ext, ignore.case = TRUE)) {
         what <- ensembldb::ensDbFromGff
         args <- append(x = args, values = list("gff" = tmpfile))

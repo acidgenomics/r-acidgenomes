@@ -2,7 +2,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-10-12.
+#' @note Updated 2023-11-29.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -246,7 +246,7 @@ makeGRangesFromGff <-
             "GRanges", file
         ))
         tmpfile <- .cacheIt(file)
-        meta <- .getGFFMetadata(tmpfile)
+        meta <- .getGffMetadata(tmpfile)
         if (isAUrl(file)) {
             meta[["url"]] <- file
         }

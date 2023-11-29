@@ -63,7 +63,7 @@
 
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-11-29.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -90,9 +90,9 @@
 #'     "Homo_sapiens.GRCh38.102.gtf.gz",
 #'     protocol = "https"
 #' )
-#' x <- .getGFFMetadata(url)
+#' x <- .getGffMetadata(url)
 #' print(x)
-.getGFFMetadata <- function(file) {
+.getGffMetadata <- function(file) {
     assert(.isSupportedGFF(file))
     file <- .cacheIt(file)
     l <- list()
