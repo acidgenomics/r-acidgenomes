@@ -1,3 +1,5 @@
+## FIXME Need to add coverage for GENCODE GRCh37.
+
 test_that("Ensembl", {
     file <- txFastas[["ensembl"]]
     object <- makeTxToGeneFromFasta(
