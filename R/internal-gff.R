@@ -359,10 +359,10 @@
     ## GENCODE files have a description key that contains the genome build.
     if (
         isSubset(c("description", "provider"), df[["key"]]) &&
-        identical(
-            x = df[which(df[["key"]] == "provider"), "value"],
-            y = "GENCODE"
-        )
+            identical(
+                x = df[which(df[["key"]] == "provider"), "value"],
+                y = "GENCODE"
+            )
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
         ## This edge case applies to GRCh37, lifted over from GRCh38.
