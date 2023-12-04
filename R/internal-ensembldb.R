@@ -53,52 +53,23 @@
 
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-12-04.
 #' @noRd
 #'
 #' @examples
-#' .getAnnotationHubId("Homo sapiens")
+#' .getEnsDbAnnotationHubId("Homo sapiens")
+#' .getEnsDbAnnotationHubId("Canis lupus familiaris")
 .getEnsDbAnnotationHubId <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
              ah = NULL) {
         assert(
-            isString(organism),
+            isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
             isInt(release, nullOk = TRUE),
             is(ah, "AnnotationHub") || is.null(ah)
         )
-        ## Standardize organism name, if necessary.
-        organism <- gsub(
-            pattern = "_",
-            replacement = " ",
-            x = makeNames(organism)
-        )
-        ## The ensembldb package always uses two words for organisms, instead of
-        ## matching the Ensembl name exactly. This can mismatch with some
-        ## organisms. For example, the dog genome is named "Canis lupus
-        ## familiaris" on Ensembl but matches against "Canis familiaris" only
-        ## with ensembldb. Check for this rare edge case and inform the user.
-        pattern <- "^([a-z]+)\\s[a-z]+\\s([a-z]+)$"
-        if (isTRUE(grepl(
-            pattern = pattern,
-            x = organism,
-            ignore.case = TRUE
-        ))) {
-            fullOrganism <- organism
-            organism <- sub(
-                pattern = pattern,
-                replacement = "\\1 \\2",
-                x = fullOrganism,
-                ignore.case = TRUE
-            )
-            alert(sprintf(
-                "Matching {.val %s} using {.val %s}.",
-                fullOrganism, organism
-            ))
-        }
-        assert(isOrganism(organism))
         ## Coerce integerish value (e.g. "90") to integer (e.g. "90L").
         if (isInt(release)) {
             release <- as.integer(release)
@@ -108,11 +79,11 @@
             ah <- .annotationHub()
         }
         ## Matching EnsDb objects from ensembldb by default.
-        preparerclass <- "AHEnsDbs"
-        rdataclass <- "EnsDb"
+        preparerClass <- "AHEnsDbs"
+        rdataClass <- "EnsDb"
         alert(sprintf(
             "Getting {.cls %s} from {.pkg %s} %s (%s).",
-            rdataclass,
+            rdataClass,
             "AnnotationHub",
             packageVersion("AnnotationHub"),
             AnnotationHub::snapshotDate(ah)
@@ -124,8 +95,8 @@
                 "Ensembl",
                 organism,
                 genomeBuild,
-                preparerclass,
-                rdataclass,
+                preparerClass,
+                rdataClass,
                 release
             ),
             ignore.case = TRUE
@@ -173,8 +144,8 @@
         assert(
             hasRows(mcols),
             all(mcols[["dataprovider"]] == "Ensembl"),
-            all(mcols[["preparerclass"]] == preparerclass),
-            all(mcols[["rdataclass"]] == rdataclass),
+            all(mcols[["preparerclass"]] == preparerClass),
+            all(mcols[["rdataclass"]] == rdataClass),
             all(mcols[["sourcetype"]] == "ensembl"),
             msg = "No entry matched on AnnotationHub."
         )
