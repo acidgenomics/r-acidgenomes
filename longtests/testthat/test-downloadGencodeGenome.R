@@ -1,5 +1,3 @@
-## FIXME This is currently failing due to error in GTF metadata handling.
-
 test_that("Homo sapiens GRCh38", {
     testdir <- tempdir2()
     info <- downloadGencodeGenome(
