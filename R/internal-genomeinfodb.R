@@ -156,6 +156,15 @@
         seq <- do.call(what = getChromInfoFromEnsembl, args = args)
     })
     assert(is(seq, "Seqinfo"))
+    if (grepl(pattern = "GRCh37.", x = genomeBuild, fixed = TRUE)) {
+        seqGenome <- genome(seq)
+        seqGenome <- sub(
+            pattern = "^GRCh37",
+            replacement = genomeBuild,
+            x = seqGenome
+        )
+        genome(seq) <- seqGenome
+    }
     seq
 }
 
