@@ -197,10 +197,15 @@ test_that("GRCh37", {
     expect_identical(head(names(object), 1L), "ENST00000478759")
 })
 
+## FIXME This is failing when ignoreVersion = FALSE.
+## But it works when ignoreVersion = TRUE.
+## Hmmmm this is weird.
+
 test_that("Organism with 3 words", {
     x <- makeGRangesFromEnsembl(
         organism = "Canis lupus familiaris",
-        level = "genes"
+        level = "genes",
+        ignoreVersion = FALSE
     )
     expect_s4_class(x, "EnsemblGenes")
 })
