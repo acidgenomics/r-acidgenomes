@@ -59,8 +59,6 @@
         )
         gr <- do.call(what = what, args = list("object" = gr))
         metadata(gr) <- meta
-        ## FIXME This is currently erroring for Ensembl GRCh37 due to genome
-        ## build mismatch in the seqinfo return.
         seqinfo <- .getSeqinfo(meta)
         if (is(seqinfo, "Seqinfo")) {
             seqinfo(gr) <- seqinfo[seqlevels(gr)]
