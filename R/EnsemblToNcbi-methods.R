@@ -5,7 +5,7 @@
 #' @inheritParams AcidRoxygen::params
 #' @param ... Additional arguments.
 #'
-#' @param `logical(1)`.
+#' @param useCurated `logical(1)`.
 #' Applies to *Homo sapiens* and *Mus musculus* only currently.
 #' Use current curated mappings from HGNC (human) or MGI (mouse).
 #'
