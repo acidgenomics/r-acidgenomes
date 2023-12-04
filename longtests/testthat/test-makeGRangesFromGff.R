@@ -1,5 +1,3 @@
-## FIXME Need to add coverage for GENCODE GRCh37.
-
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",

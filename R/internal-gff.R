@@ -81,8 +81,6 @@
 
 
 
-## FIXME This isn't getting GENCODE GRCh38 genome build correctly any more.
-
 #' Get metadata about a GFF file
 #'
 #' @note Updated 2023-12-04.
@@ -133,7 +131,6 @@
             df[df[["key"]] == "gff-version", "value", drop = TRUE]
         l[["format"]] <-
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
-        ## FIXME This isn't working correctly for GENCODE GRCh38 now.
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
     }
