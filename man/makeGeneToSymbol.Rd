@@ -11,19 +11,19 @@ makeGeneToSymbolFromEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  ignoreVersion = TRUE,
+  ignoreVersion = FALSE,
   format = c("makeUnique", "1:1", "unmodified")
 )
 
 makeGeneToSymbolFromEnsDb(
   object,
-  ignoreVersion = TRUE,
+  ignoreVersion = FALSE,
   format = c("makeUnique", "1:1", "unmodified")
 )
 
 makeGeneToSymbolFromGff(
   file,
-  ignoreVersion = TRUE,
+  ignoreVersion = FALSE,
   format = c("makeUnique", "1:1", "unmodified")
 )
 }
