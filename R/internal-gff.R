@@ -59,8 +59,15 @@
     ## GENCODE GRCh37 GTF file incorrectly returns format as "gff3" currently.
     ## Filing issue with gencode-help@ebi.ac.uk.
     if (
-        df[["value"]][which(df[["key"]] == "format")] == "gff3" &&
-            df[["value"]][which(df[["key"]] == "provider")] == "GENCODE" &&
+        isSubset(c("format", "provider"), df[["key"]]) &&
+            identical(
+                x = df[["value"]][which(df[["key"]] == "format")],
+                y = "gff3"
+            ) &&
+            identical(
+                x = df[["value"]][which(df[["key"]] == "provider")],
+                y = "GENCODE"
+            ) &&
             isMatchingFixed(x = fileExt(file), pattern = "gtf") &&
             isMatchingFixed(
                 x = df[["value"]][which(df[["key"]] == "description")],
