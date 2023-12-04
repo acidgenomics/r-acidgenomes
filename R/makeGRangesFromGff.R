@@ -246,6 +246,7 @@ makeGRangesFromGff <-
             "GRanges", file
         ))
         tmpfile <- .cacheIt(file)
+        ## FIXME This isn't getting the GENCODE genome build correctly.
         meta <- .getGffMetadata(tmpfile)
         if (isAUrl(file)) {
             meta[["url"]] <- file

@@ -81,9 +81,11 @@
 
 
 
+## FIXME This isn't getting GENCODE GRCh38 genome build correctly any more.
+
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2023-11-29.
+#' @note Updated 2023-12-04.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -131,6 +133,7 @@
             df[df[["key"]] == "gff-version", "value", drop = TRUE]
         l[["format"]] <-
             toupper(df[df[["key"]] == "format", "value", drop = TRUE])
+        ## FIXME This isn't working correctly for GENCODE GRCh38 now.
         l[["genomeBuild"]] <- .gffGenomeBuild(df)
         l[["provider"]] <- .gffProvider(df)
     }
@@ -353,26 +356,31 @@
 
 
 
-## Updated 2023-11-29.
+## Updated 2023-12-04.
 .gffGenomeBuild <- function(df) {
     assert(is(df, "DFrame"))
     ## GENCODE files have a description key that contains the genome build.
     if (
-        df[which(df[["key"]] == "provider"), "value"] == "GENCODE" &&
-            isTRUE("description" %in% df[["key"]])
+        isSubset(c("description", "provider"), df[["key"]]) &&
+        identical(
+            x = df[which(df[["key"]] == "provider"), "value"],
+            y = "GENCODE"
+        )
     ) {
         string <- df[df[["key"]] == "description", "value", drop = TRUE]
+        ## This edge case applies to GRCh37, lifted over from GRCh38.
         match <- strMatch(x = string, pattern = "mapped to ([^ ]+)")
-        if (identical(dim(match), c(1L, 2L))) {
+        if (identical(dim(match), c(1L, 2L)) && isString(match[1L, 2L])) {
             x <- match[1L, 2L]
             return(x)
         }
         match <- strMatch(x = string, pattern = "genome \\(([^\\)]+)\\)")
-        assert(identical(dim(match), c(1L, 2L)))
-        if (isString(x)) {
-            x <- match[1L, 2L]
-            return(x)
-        }
+        assert(
+            identical(dim(match), c(1L, 2L)),
+            isString(match[1L, 2L])
+        )
+        x <- match[1L, 2L]
+        return(x)
     }
     ## Otherwise we can parse for standard "genome-build" key, which is
     ## supported by Ensembl and RefSeq.
