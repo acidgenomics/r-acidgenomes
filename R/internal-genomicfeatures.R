@@ -24,7 +24,7 @@
 .makeGRangesFromTxDb <-
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
             requireNamespaces("AnnotationDbi"),

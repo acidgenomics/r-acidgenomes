@@ -49,12 +49,12 @@ NULL
 #' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from Ensembl using
 #' an AnnotationHub lookup.
 #' @export
-## Updated 2021-08-03.
+## Updated 2023-12-04.
 makeGeneToSymbolFromEnsembl <-
     function(organism,
              genomeBuild = NULL,
              release = NULL,
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromEnsembl(
             organism = organism,
@@ -71,10 +71,10 @@ makeGeneToSymbolFromEnsembl <-
 #' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from an `EnsDb`
 #' object or annotation package.
 #' @export
-## Updated 2021-08-03.
+## Updated 2023-12-04.
 makeGeneToSymbolFromEnsDb <-
     function(object,
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromEnsDb(
             object = object,
@@ -88,10 +88,10 @@ makeGeneToSymbolFromEnsDb <-
 
 #' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from a GFF file.
 #' @export
-## Updated 2020-08-03.
+## Updated 2023-12-04.
 makeGeneToSymbolFromGff <-
     function(file,
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              format = c("makeUnique", "1:1", "unmodified")) {
         gr <- makeGRangesFromGff(
             file = file,

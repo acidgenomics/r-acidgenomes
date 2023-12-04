@@ -2,7 +2,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-11-29.
+#' @note Updated 2023-12-04.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -230,7 +230,7 @@
 makeGRangesFromGff <-
     function(file,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
             .isSupportedGff(file),
