@@ -169,19 +169,30 @@ test_that("Mus musculus", {
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
     t2g <- as.data.frame(t2g)
-    nfe2l2Expected <- data.frame(
-        "txId" = c("NM_001399226.1", "NM_010902.5"),
-        "geneId" = rep("Nfe2l2", 2L)
+    aatfExpected <- data.frame(
+        "txId" = c(
+            "NM_019816.1",
+            "XM_006533789.4",
+            "XM_036156864.1",
+            "XR_003949482.1",
+            "XR_004936998.1",
+            "XR_004936999.1",
+            "XR_004937000.1",
+            "XR_004937001.1",
+            "XR_388498.5",
+            "XR_388499.5"
+        ),
+        "geneId" = rep("Aatf", 10L)
     )
-    nfe2l2Current <- t2g[t2g[, 2L] == "Nfe2l2", ]
-    rownames(nfe2l2Current) <- NULL
-    expect_identical(nfe2l2Current, nfe2l2Expected)
+    aatfCurrent <- t2g[t2g[, 2L] == "Aatf", ]
+    rownames(aatfCurrent) <- NULL
+    expect_identical(aatfCurrent, aatfExpected)
     t2g <- import(
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    nfe2l2Current <- t2g[t2g[, 2L] == "Nfe2l2", ]
-    rownames(nfe2l2Current) <- NULL
-    expect_identical(nfe2l2Current, nfe2l2Expected)
+    aatfCurrent <- t2g[t2g[, 2L] == "Aatf", ]
+    rownames(aatfCurrent) <- NULL
+    expect_identical(aatfCurrent, aatfExpected)
     unlink2(testdir)
 })
