@@ -7,7 +7,7 @@
 makeGRangesFromGff(
   file,
   level = c("genes", "transcripts"),
-  ignoreVersion = TRUE,
+  ignoreVersion = FALSE,
   extraMcols = TRUE
 )
 }
@@ -37,7 +37,7 @@ Make genomic ranges (\code{GRanges}) from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2023-11-29.
+Updated 2023-12-04.
 }
 \section{GFF/GTF specification}{
 

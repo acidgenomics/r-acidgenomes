@@ -42,7 +42,7 @@
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2023-07-31.
+#' @note Updated 2023-12-04.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -87,7 +87,7 @@ makeGRangesFromEnsembl <-
              level = c("genes", "transcripts"),
              genomeBuild = NULL,
              release = NULL,
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
             isFlag(ignoreVersion),
@@ -128,7 +128,7 @@ makeGRangesFromEnsembl <-
 makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts"),
-             ignoreVersion = TRUE,
+             ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
             requireNamespaces("ensembldb"),
