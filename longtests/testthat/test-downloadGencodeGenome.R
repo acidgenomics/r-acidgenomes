@@ -74,7 +74,6 @@ test_that("Homo sapiens GRCh38", {
     unlink2(testdir)
 })
 
-## FIXME Need to cover this.
 test_that("Homo sapiens GRCh37", {
     testdir <- tempdir2()
     info <- downloadGencodeGenome(
