@@ -60,12 +60,12 @@
     ## Filing issue with gencode-help@ebi.ac.uk.
     if (
         df[["value"]][which(df[["key"]] == "format")] == "gff3" &&
-        df[["value"]][which(df[["key"]] == "provider")] == "GENCODE" &&
-        isMatchingFixed(x = fileExt(file), pattern = "gtf") &&
-        isMatchingFixed(
-            x = df[["value"]][which(df[["key"]] == "description")],
-            pattern = "GRCh37"
-        )
+            df[["value"]][which(df[["key"]] == "provider")] == "GENCODE" &&
+            isMatchingFixed(x = fileExt(file), pattern = "gtf") &&
+            isMatchingFixed(
+                x = df[["value"]][which(df[["key"]] == "description")],
+                pattern = "GRCh37"
+            )
     ) {
         df[["value"]][which(df[["key"]] == "format")] <- "gtf"
     }
