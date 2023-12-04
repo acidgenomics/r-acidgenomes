@@ -59,11 +59,9 @@ makeEnsDbFromGff <- function(file) {
         what <- ensembldb::ensDbFromGtf
         args <- append(x = args, values = list("gtf" = tmpfile))
     } else {
-        ## nocov start
         abort(sprintf(
             "Unsupported file: {.file %s}.", basename(file)
         ))
-        ## nocov end
     }
     quietly({
         sqlite <- do.call(what = what, args = args)
