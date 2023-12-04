@@ -31,7 +31,7 @@ Imports:
     GenomicRanges (>= 1.52.0),
     IRanges (>= 2.34.0),
     S4Vectors (>= 0.38.0),
-    goalie (>= 0.7.5),
+    goalie (>= 0.7.7),
     pipette (>= 0.15.0),
     syntactic (>= 0.7.1),
     methods,
