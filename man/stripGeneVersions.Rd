@@ -45,6 +45,7 @@ beginning with \code{"ENS.*G"}.
 stripGeneVersions("ENSG00000002586.20")
 
 ## GENCODE.
+stripGeneVersions("ENSG00000116288.13_10")
 stripGeneVersions("ENSG00000002586.20_PAR_Y")
 }
 \seealso{

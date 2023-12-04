@@ -36,7 +36,7 @@ Intentionally does not strip gene versions, if defined in the object.
 To perform that action in parallel, use \code{stripGeneVersions} instead.
 }
 \note{
-Updated 2021-08-03.
+Updated 2023-11-28.
 
 This method is strict, and will only strip Ensembl transcript
 identifiers beginning with \code{"ENS.*T"}.
@@ -46,6 +46,7 @@ identifiers beginning with \code{"ENS.*T"}.
 stripTranscriptVersions("ENST00000431238.7")
 
 ## GENCODE.
+stripTranscriptVersions("ENST00000493373.5_7")
 stripTranscriptVersions("ENST00000431238.7_PAR_Y")
 
 ## WormBase (no modification).

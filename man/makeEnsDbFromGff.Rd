@@ -17,7 +17,7 @@ File path.}
 Wrapper for ensembldb importer functions.
 }
 \note{
-Updated 2023-04-26.
+Updated 2023-11-29.
 }
 \examples{
 ## > file <- AcidBase::pasteUrl(

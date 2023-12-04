@@ -24,13 +24,14 @@ EnsemblToNcbi(object, ...)
 \arguments{
 \item{object}{Object.}
 
+\item{useCurated}{\code{logical(1)}.
+Applies to \emph{Homo sapiens} and \emph{Mus musculus} only currently.
+Use current curated mappings from HGNC (human) or MGI (mouse).}
+
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{...}{Additional arguments.}
-
-\item{`logical(1)`.}{Applies to \emph{Homo sapiens} and \emph{Mus musculus} only currently.
-Use current curated mappings from HGNC (human) or MGI (mouse).}
 }
 \value{
 \code{EnsemblToNcbi}.
