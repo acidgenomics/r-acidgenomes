@@ -151,19 +151,27 @@ NULL
 
 
 
-## Updated 2023-11-27.
+## Updated 2023-12-04.
 `EnsemblToNcbi,EnsemblGenes` <- # nolint
     function(object, useCurated = TRUE) {
+        ignoreVersion <- metadata(object)[["ignoreVersion"]]
+        organism <- organism(object)
         assert(
             validObject(object),
-            isFlag(useCurated)
+            isFlag(useCurated),
+            isFlag(ignoreVersion),
+            isOrganism(organism)
         )
-        organism <- organism(object)
-        cols <- c("geneId", "ncbiGeneId")
+        if (isTRUE(ignoreVersion)) {
+            cols <- c("geneId", "ncbiGeneId")
+        } else {
+            cols <- c("geneIdNoVersion", "ncbiGeneId", "geneId")
+        }
         map <- mcols(object)
+        assert(isSubset(cols, colnames(map)))
         metadata(map) <- metadata(object)
         map <- map[, cols, drop = FALSE]
-        colnames(map)[colnames(map) == "geneId"] <- "ensemblGeneId"
+        colnames(map)[colnames(map) == cols[[1L]]] <- "ensemblGeneId"
         map <- decode(map)
         map <- expand(map)
         i <- complete.cases(map)
@@ -208,6 +216,10 @@ NULL
                 metadata(map)[["useCurated"]] <- TRUE
             }
             map[["ncbiGeneId2"]] <- NULL
+        }
+        if (isFALSE(ignoreVersion)) {
+            map[["ensemblGeneId"]] <- map[["geneId"]]
+            map[["geneId"]] <- NULL
         }
         out <- .makeEnsemblToNcbi(
             object = map,
