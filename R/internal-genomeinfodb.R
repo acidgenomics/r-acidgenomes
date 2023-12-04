@@ -137,7 +137,7 @@
 
 #' Get Ensembl genome assembly seqinfo
 #'
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-04.
 #' @noRd
 .getEnsemblSeqinfo <- function(organism, genomeBuild, release) {
     assert(
@@ -147,6 +147,9 @@
     )
     args <- list("species" = organism, "release" = release, "as.Seqinfo" = TRUE)
     if (grepl(pattern = "GRCh37", x = genomeBuild, fixed = TRUE)) {
+        ## Specifying release 87 currently errors.
+        ## https://github.com/Bioconductor/GenomeInfoDb/issues/97
+        args[["release"]] <- NA
         args[["use.grch37"]] <- TRUE
     }
     quietly({
