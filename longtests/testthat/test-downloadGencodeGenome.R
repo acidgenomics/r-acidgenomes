@@ -1,17 +1,20 @@
-## FIXME Add coverage for GRCh37.
-## FIXME Add coverage for mouse genome.
+## FIXME This is currently failing due to error in GTF metadata handling.
 
-test_that("downloadGencodeGenome", {
+test_that("Homo sapiens GRCh38", {
     testdir <- tempdir2()
     info <- downloadGencodeGenome(
         organism = "Homo sapiens",
         genomeBuild = "GRCh38",
-        release = 42L,
+        release = 44L,
         outputDir = testdir,
         cache = TRUE
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
+    expect_identical(
+        object = basename(outputDir),
+        expected = "homo-sapiens-grch38-gencode-44"
+    )
     expect_true(all(file.exists(file.path(
         outputDir,
         c(
@@ -72,3 +75,7 @@ test_that("downloadGencodeGenome", {
     )
     unlink2(testdir)
 })
+
+## FIXME Add coverage for GRCh37.
+
+## FIXME Add coverage for mouse genome.
