@@ -105,7 +105,12 @@ test_that("character : Caenorhabditis elegans", {
 })
 
 test_that("EnsemblGenes", {
-    hs <- makeGRangesFromEnsembl("Homo sapiens", release = 110L)
+    hs <- makeGRangesFromEnsembl(
+        organism = "Homo sapiens",
+        genomeBuild = "GRCh38",
+        release = 110L,
+        ignoreVersion = FALSE
+    )
     x <- EnsemblToNcbi(hs, useCurated = TRUE)
     y <- EnsemblToNcbi(hs, useCurated = FALSE)
     expect_true(metadata(x)[["useCurated"]])
@@ -114,7 +119,7 @@ test_that("EnsemblGenes", {
     expect_identical(nrow(y), 26608L)
     expect_identical(
         object = setdiff(y[[1L]], x[[1L]]),
-        expected = c("ENSG00000290723", "ENSG00000291109")
+        expected = c("ENSG00000290723.1", "ENSG00000291109.1")
     )
     y <- y[rownames(x), ]
     idx <- which(x[[2L]] != y[[2L]])
@@ -127,12 +132,12 @@ test_that("EnsemblGenes", {
         )),
         expected = data.frame(
             "ensemblGeneId" = c(
-                "ENSG00000111215",
-                "ENSG00000169627",
-                "ENSG00000176797",
-                "ENSG00000177693",
-                "ENSG00000178934",
-                "ENSG00000180525"
+                "ENSG00000111215.12",
+                "ENSG00000169627.9",
+                "ENSG00000176797.4",
+                "ENSG00000177693.5",
+                "ENSG00000178934.5",
+                "ENSG00000180525.14"
             ),
             "ncbiGeneId1" = c(
                 11272L,
