@@ -207,6 +207,18 @@ test_that("Organism with 3 words", {
     expect_s4_class(x, "EnsemblGenes")
 })
 
+test_that("Legacy GRCh38 87 release without gene version", {
+    object <- makeGRangesFromEnsembl(
+        organism = "Homo sapiens",
+        level = "genes",
+        genomeBuild = "GRCh38",
+        release = 87L,
+        ignoreVersion = FALSE,
+        extraMcols = TRUE
+    )
+    expect_s4_class(object, "EnsemblGenes")
+})
+
 test_that("Invalid parameters", {
     ## Currently only supports releases back to Ensembl 87.
     expect_error(
