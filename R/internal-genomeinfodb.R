@@ -135,10 +135,18 @@
 
 
 
+## NOTE We may want to make our own variant of `getChromInfoFromEnsembl` to
+## avoid parsing issues currently seen with GenomeInfoDb.
+
 #' Get Ensembl genome assembly seqinfo
 #'
-#' @note Updated 2023-12-04.
+#' @note Updated 2023-12-05.
 #' @noRd
+#'
+#' @seealso
+#' Some legacy releases aren't supported:
+#' - https://github.com/Bioconductor/GenomeInfoDb/issues/97
+#' - https://github.com/Bioconductor/GenomeInfoDb/issues/98
 .getEnsemblSeqinfo <- function(organism, genomeBuild, release) {
     assert(
         isString(organism),
