@@ -188,9 +188,23 @@
         if (is.null(entrez)) {
             return(NULL)
         }
+        colMap <- c(
+            "mysqlId" = 8L,
+            "geneId" = 13L,
+            "description" = 10L
+        )
+        if (identical(genomeBuild, "GRCh38") && identical(release, 87L)) {
+            colMap[["geneId"]] <- 14L
+            colMap[["description"]] <- 11L
+        }
         df1 <- gene
-        df1 <- df1[, c(8L, 13L, 10L)]
-        colnames(df1) <- c("mysqlId", "geneId", "description")
+        df1 <- df1[, colMap]
+        colnames(df1) <- names(colMap)
+        assert(
+            is.integer(df1[["mysqlId"]]),
+            is.character(df1[["geneId"]]),
+            is.character(df1[["description"]])
+        )
         df1 <- df1[complete.cases(df1), , drop = FALSE]
         df1 <- as(df1, "DFrame")
         df2 <- synonym
@@ -216,6 +230,7 @@
             "ncbiGeneId" = unname(df3)
         ))
         out <- leftJoin(x = df1, y = df2, by = "mysqlId")
+        ## FIXME This is failing with GRCh38 87, due to type mismatch.
         out <- leftJoin(x = out, y = df3, by = "geneId")
         out[["mysqlId"]] <- NULL
         out <- out[, sort(colnames(out))]
