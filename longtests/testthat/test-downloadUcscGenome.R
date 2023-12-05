@@ -124,11 +124,17 @@ test_that("Homo sapiens hg19", {
 
 test_that("Mus musculus mm39", {
     testdir <- tempdir2()
-    info <- downloadUcscGenome(
-        organism = "Mus musculus",
-        genomeBuild = "mm39",
-        outputDir = testdir,
-        cache = TRUE
+    ## Adding the collate step here to avoid different sorting of identifiers.
+    with_collate(
+        new = "C",
+        code = {
+            info <- downloadUcscGenome(
+                organism = "Mus musculus",
+                genomeBuild = "mm39",
+                outputDir = testdir,
+                cache = TRUE
+            )
+        }
     )
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
@@ -152,14 +158,14 @@ test_that("Mus musculus mm39", {
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "UcscGenes")
     expect_identical(
-        object = head(sort(names(genes)), n = 3L),
-        expected = c("0610005C13Rik", "0610006L08Rik", "0610009B22Rik")
+        object = head(names(genes), n = 3L),
+        expected = c("Gm26206", "Gm18956", "LOC118567655")
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "UcscTranscripts")
     expect_identical(
-        object = head(sort(names(transcripts)), n = 3L),
-        expected = c("NM_001001130.3", "NM_001001144.3", "NM_001001152.2")
+        object = head(names(transcripts), n = 3L),
+        expected = c("XR_004936710.1", "XR_004935518.1", "XR_004935517.1")
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
