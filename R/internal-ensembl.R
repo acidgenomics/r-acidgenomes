@@ -16,7 +16,7 @@
         assert(isSubset(provider, c("Ensembl", "GENCODE")))
         if (
             isFALSE(ignoreVersion) &&
-            isSubset("geneIdNoVersion", colnames(mcols(object)))
+                isSubset("geneIdNoVersion", colnames(mcols(object)))
         ) {
             geneIdCol <- "geneIdNoVersion"
         } else {
@@ -59,7 +59,7 @@
         }
         if (
             isFALSE(ignoreVersion) &&
-            identical(geneIdCol, "geneIdNoVersion")
+                identical(geneIdCol, "geneIdNoVersion")
         ) {
             colnames(extraMcols)[
                 colnames(extraMcols) == "geneId"
