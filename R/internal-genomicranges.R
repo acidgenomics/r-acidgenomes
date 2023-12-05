@@ -469,12 +469,14 @@
 
 ## Main generator ==============================================================
 
+## FIXME Disable ignoreVersion if not defined.
+
 #' Make genomic ranges (`GRanges`)
 #'
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-10-12.
+#' @note Updated 2023-12-05.
 #' @noRd
 .makeGRanges <-
     function(object,
@@ -494,6 +496,7 @@
         )
         provider <- metadata(object)[["provider"]]
         object <- .standardizeMcols(object)
+        ## FIXME Need to override ignoreVersion if not defined.
         if (isFALSE(ignoreVersion)) {
             object <- .includeGeneVersion(object)
             object <- .includeTxVersion(object)
