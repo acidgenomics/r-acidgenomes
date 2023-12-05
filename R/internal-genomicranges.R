@@ -496,7 +496,6 @@
         )
         provider <- metadata(object)[["provider"]]
         object <- .standardizeMcols(object)
-        ## FIXME Need to override ignoreVersion if not defined.
         if (isFALSE(ignoreVersion)) {
             object <- .includeGeneVersion(object)
             object <- .includeTxVersion(object)
@@ -507,6 +506,7 @@
                 x = metadata(object)[["provider"]],
                 y = c("Ensembl", "GENCODE")
             )) {
+                ## FIXME This step fails if geneIdNoVersion isn't defined.
                 object <- .addEnsemblFtpMcols(
                     object = object,
                     ignoreVersion = ignoreVersion
