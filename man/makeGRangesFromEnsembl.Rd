@@ -86,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2023-12-04.
+Updated 2023-12-05.
 }
 \section{Broad class definitions}{
 
