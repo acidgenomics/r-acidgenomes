@@ -141,6 +141,25 @@
         if (is.null(gene)) {
             return(NULL)
         }
+        switch(
+            EXPR = as.character(ncol(gene)),
+            "16" = {
+                geneColMap <- c(
+                    "mysqlId" = 8L,
+                    "geneId" = 13L,
+                    "description" = 10L
+                )
+            },
+            "17" = {
+                ## e.g. GRCh38 and GRCm38 release 87.
+                geneColMap <- c(
+                    "mysqlId" = 8L,
+                    "geneId" = 14L,
+                    "description" = 11L
+                )
+            },
+            abort(sprintf("Unsupported file: {.file %s}.", url))
+        )
         url <- pasteUrl(
             ftpBaseUrl, "mysql", mysqlSubdir,
             "external_synonym.txt.gz"
@@ -194,24 +213,9 @@
         if (is.null(entrez)) {
             return(NULL)
         }
-        colMap <- c(
-            "mysqlId" = 8L,
-            "geneId" = 13L,
-            "description" = 10L
-        )
-        if ({
-            identical(genomeBuild, "GRCh38") &&
-                identical(release, 87L)
-        } || {
-            identical(genomeBuild, "GRCm38") &&
-                identical(release, 87L)
-        }) {
-            colMap[["geneId"]] <- 14L
-            colMap[["description"]] <- 11L
-        }
         df1 <- gene
-        df1 <- df1[, colMap]
-        colnames(df1) <- names(colMap)
+        df1 <- df1[, geneColMap]
+        colnames(df1) <- names(geneColMap)
         assert(
             is.integer(df1[["mysqlId"]]),
             is.character(df1[["geneId"]]),
