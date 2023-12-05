@@ -199,7 +199,13 @@
             "geneId" = 13L,
             "description" = 10L
         )
-        if (identical(genomeBuild, "GRCh38") && identical(release, 87L)) {
+        if ({
+            identical(genomeBuild, "GRCh38") &&
+                identical(release, 87L)
+        } || {
+            identical(genomeBuild, "GRCm38") &&
+                identical(release, 87L)
+        }) {
             colMap[["geneId"]] <- 14L
             colMap[["description"]] <- 11L
         }
