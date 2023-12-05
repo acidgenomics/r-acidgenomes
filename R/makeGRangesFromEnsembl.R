@@ -1,7 +1,3 @@
-## FIXME This is failing for GRCh38 release 87.
-
-
-
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
