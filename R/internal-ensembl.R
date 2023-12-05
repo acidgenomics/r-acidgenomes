@@ -1,6 +1,6 @@
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-12-05.
 #' @noRd
 #'
 #' @param object `GRanges`.
@@ -14,11 +14,14 @@
         )
         provider <- metadata(object)[["provider"]]
         assert(isSubset(provider, c("Ensembl", "GENCODE")))
-        geneIdCol <- ifelse(
-            test = ignoreVersion,
-            yes = "geneId",
-            no = "geneIdNoVersion"
-        )
+        if (
+            isFALSE(ignoreVersion) &&
+            isSubset("geneIdNoVersion", colnames(mcols(object)))
+        ) {
+            geneIdCol <- "geneIdNoVersion"
+        } else {
+            geneIdCol <- "geneId"
+        }
         if (isSubset(
             x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
             y = colnames(mcols(object))
@@ -54,7 +57,10 @@
         if (is.null(extraMcols)) {
             return(object)
         }
-        if (isFALSE(ignoreVersion)) {
+        if (
+            isFALSE(ignoreVersion) &&
+            identical(geneIdCol, "geneIdNoVersion")
+        ) {
             colnames(extraMcols)[
                 colnames(extraMcols) == "geneId"
             ] <- "geneIdNoVersion"
