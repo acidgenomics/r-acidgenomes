@@ -159,15 +159,15 @@ test_that("Mus musculus mm39", {
     expect_s4_class(transcripts, "UcscTranscripts")
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
-        expected = c("id-Gm7003", "id-Igha", "id-Ighd")
+        expected = c("NM_001001130.3", "NM_001001144.3", "NM_001001152.2")
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
-            "txId" = "id-Gm7003",
-            "geneId" = "Gm7003"
+            "txId" = "NM_001001130.3",
+            "geneId" = "Zfp85"
         )
     )
     t2g <- import(
@@ -177,8 +177,8 @@ test_that("Mus musculus mm39", {
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
-            "txId" = "id-Gm7003",
-            "geneId" = "Gm7003"
+            "txId" = "NM_001001130.3",
+            "geneId" = "Zfp85"
         )
     )
     unlink2(testdir)
