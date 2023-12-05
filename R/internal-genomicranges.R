@@ -469,8 +469,6 @@
 
 ## Main generator ==============================================================
 
-## FIXME Disable ignoreVersion if not defined.
-
 #' Make genomic ranges (`GRanges`)
 #'
 #' This is the main `GRanges` final return generator, used by
@@ -506,7 +504,6 @@
                 x = metadata(object)[["provider"]],
                 y = c("Ensembl", "GENCODE")
             )) {
-                ## FIXME This step fails if geneIdNoVersion isn't defined.
                 object <- .addEnsemblFtpMcols(
                     object = object,
                     ignoreVersion = ignoreVersion

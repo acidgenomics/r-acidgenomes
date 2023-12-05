@@ -236,7 +236,6 @@
             "ncbiGeneId" = unname(df3)
         ))
         out <- leftJoin(x = df1, y = df2, by = "mysqlId")
-        ## FIXME This is failing with GRCh38 87, due to type mismatch.
         out <- leftJoin(x = out, y = df3, by = "geneId")
         out[["mysqlId"]] <- NULL
         out <- out[, sort(colnames(out))]
