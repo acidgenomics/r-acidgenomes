@@ -1,5 +1,13 @@
 # Release notes
 
+## AcidGenomes 0.7.1 (2023-12-05)
+
+Minor changes:
+
+- `makeGRangesFromEnsembl`: Fixed support for legacy GRCh38 release 87 dataset,
+  which doesn't have gene versions defined, and would otherwise error if
+  `ignoreVersion = FALSE` is set.
+
 ## AcidGenomes 0.7.0 (2023-12-04)
 
 Major changes:
