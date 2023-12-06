@@ -1606,3 +1606,21 @@ test_that("GTF transcripts", {
         )
     )
 })
+
+## See related issues:
+## - https://github.com/Bioconductor/GenomeInfoDb/issues/97
+## - https://github.com/Bioconductor/GenomeInfoDb/issues/98
+
+test_that("getChromInfoFromEnsembl Seqinfo failure", {
+    file <- pasteUrl(
+        "ftp.ensembl.org",
+        "pub",
+        "release-90",
+        "gtf",
+        "mus_musculus",
+        "Mus_musculus.GRCm38.90.gtf.gz",
+        protocol = "ftp"
+    )
+    object <- makeGRangesFromGff(file, level = "genes")
+    expect_s4_class(object, "EnsemblGenes")
+})
