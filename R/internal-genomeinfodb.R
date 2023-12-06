@@ -140,7 +140,7 @@
 
 #' Get Ensembl genome assembly seqinfo
 #'
-#' @note Updated 2023-12-05.
+#' @note Updated 2023-12-06.
 #' @noRd
 #'
 #' @seealso
@@ -160,9 +160,23 @@
         args[["release"]] <- NA
         args[["use.grch37"]] <- TRUE
     }
-    quietly({
-        seq <- do.call(what = getChromInfoFromEnsembl, args = args)
-    })
+    seq <- tryCatch(
+        expr = {
+            do.call(what = getChromInfoFromEnsembl, args = args)
+        },
+        warning = function(w) {
+            message(w)
+            NULL
+        },
+        error = function(e) {
+            message(e)
+            NULL
+        }
+    )
+    if (is.null(seq)) {
+        alertWarning("Failed to download Seqinfo from Ensembl.")
+        return(seq)
+    }
     assert(is(seq, "Seqinfo"))
     if (grepl(pattern = "GRCh37.", x = genomeBuild, fixed = TRUE)) {
         seqGenome <- genome(seq)
