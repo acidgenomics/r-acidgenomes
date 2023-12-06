@@ -1,5 +1,16 @@
 # Release notes
 
+## AcidGenoems 0.7.2 (2023-12-06)
+
+Minor changes:
+
+- `makeGRangesFromGff`: Don't error on `Seqinfo` download failure from Ensembl
+  via `getChromInfoFromEnsembl`. This is fragile for old GFF files currently,
+  such as `"Mus_musculus.GRCm38.90.gtf.gz"`. We have filed a bug report with
+  Bioconductor for GenomeInfoDb, but we may need to write our own variant of
+  this function that provides better support for old Ensembl releases. Consider
+  referring to ensembldb code for an alternate approach.
+
 ## AcidGenomes 0.7.1 (2023-12-05)
 
 Minor changes:
