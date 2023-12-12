@@ -12,6 +12,10 @@
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 #' Defining this manually avoids having to query the FTP server.
 #'
+#' @param geneSummary `logical(1)`.
+#' Include RefSeq gene summary in `"geneSummary"` column.
+#' Requires Bioconductor GeneSummary package to be installed.
+#'
 #' @return `NcbiGeneInfo`.
 #'
 #' @seealso
@@ -26,11 +30,13 @@
 NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
+             geneSummary = TRUE,
              cache = TRUE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
+            isFlag(geneSummary),
             isFlag(cache)
         )
         baseURL <- pasteUrl(
@@ -113,7 +119,7 @@ NcbiGeneInfo <- # nolint
             x = df[["modificationDate"]]
         )
         df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
-        if (isInstalled("GeneSummary")) {
+        if (isTRUE(geneSummary)) {
             gs <- .refseqGeneSummary(organism)
             df <- leftJoin(df, gs, by = "geneId")
             metadata(df)[["refseqGeneSummary"]] <- TRUE
@@ -138,7 +144,10 @@ NcbiGeneInfo <- # nolint
 #' - https://www.ncbi.nlm.nih.gov/refseq/about/
 #' - https://ftp.ncbi.nih.gov/refseq/release/complete/
 .refseqGeneSummary <- function(organism) {
-    assert(requireNamespaces("GeneSummary"))
+    assert(
+        requireNamespaces("GeneSummary"),
+        isOrganism(organism)
+    )
     taxId <- .mapOrganismToNcbiTaxId(organism)
     df <- GeneSummary::loadGeneSummary(organism = taxId)
     assert(is.data.frame(df))
