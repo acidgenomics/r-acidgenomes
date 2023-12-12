@@ -807,7 +807,7 @@ setValidity(
 #' NCBI gene identifier information
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-12.
 #'
 #' @return `NcbiGeneInfo`.
 setClass(
@@ -833,7 +833,8 @@ setValidity(
                 "otherDesignations" = "CompressedCharacterList",
                 "taxonomyId" = "Rle",
                 "typeOfGene" = "Rle"
-            )
+            ),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
