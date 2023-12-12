@@ -12,7 +12,7 @@
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 #' Defining this manually avoids having to query the FTP server.
 #'
-#' @param geneSummary `logical(1)`.
+#' @param refseqGeneSummary `logical(1)`.
 #' Include RefSeq gene summary in `"geneSummary"` column.
 #' Requires Bioconductor GeneSummary package to be installed.
 #'
@@ -30,13 +30,13 @@
 NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
-             geneSummary = TRUE,
+             refseqGeneSummary = TRUE,
              cache = TRUE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
-            isFlag(geneSummary),
+            isFlag(refseqGeneSummary),
             isFlag(cache)
         )
         baseURL <- pasteUrl(
@@ -119,17 +119,19 @@ NcbiGeneInfo <- # nolint
             x = df[["modificationDate"]]
         )
         df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
-        if (isTRUE(geneSummary)) {
+        if (isTRUE(refseqGeneSummary)) {
             gs <- .refseqGeneSummary(organism)
             df <- leftJoin(df, gs, by = "geneId")
-            metadata(df)[["refseqGeneSummary"]] <- TRUE
         }
         df <- encode(df)
-        metadata(df)[["date"]] <- Sys.Date()
-        metadata(df)[["organism"]] <- organism
-        metadata(df)[["packageVersion"]] <- .pkgVersion
-        metadata(df)[["taxonomicGroup"]] <- taxonomicGroup
-        metadata(df)[["url"]] <- url
+        metadata(df) <- list(
+            "date" = Sys.Date(),
+            "organism" = organism,
+            "packageVersion" = .pkgVersion,
+            "refseqGeneSummary" = refseqGeneSummary,
+            "taxonomicGroup" = taxonomicGroup,
+            "url" = url
+        )
         new(Class = "NcbiGeneInfo", df)
     }
 
@@ -178,6 +180,7 @@ NcbiGeneInfo <- # nolint
     df <- df[order(df), , drop = FALSE]
     df <- df[!duplicated(df[["geneId"]]), , drop = FALSE]
     assert(hasNoDuplicates(df[["geneId"]]))
+    colnames(df)[colnames(df) == "geneSummary"] <- "refseqGeneSummary"
     df[["reviewStatus"]] <- NULL
     df
 }
