@@ -1,3 +1,11 @@
+## FIXME See if we can improve this by getting the summary metadata from the
+## NCBI website. Where is this saved on the FTP server?
+## i.e. ZRSR2 isn't annotated as a splicing factor in the main gene info
+## file, but it is labeled that on the website.
+## https://www.ncbi.nlm.nih.gov/gene/8233
+
+
+
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
