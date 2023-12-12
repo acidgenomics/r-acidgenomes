@@ -8,9 +8,16 @@
 ## by GOA in this table?
 
 ## FIXME Use GeneSummary package as reference here.
+## This package uses cached files, which isn't desirable. How does it fetch
+## it from the FTP server?
 ## x <- GeneSummary::loadGeneSummary(organism = 9606)
 ##
 ## This has what we want. Nice.
+##
+## https://github.com/jokergoo/GeneSummary
+##
+## The gene summaries are extracted from RefSeq database (https://ftp.ncbi.nih.gov/refseq/release/complete/*.rna.gbff.gz).
+## Gene summaries are available in the "COMMENT" section of the ``*rna.gbff.gz`` files.
 
 
 
@@ -129,6 +136,9 @@ NcbiGeneInfo <- # nolint
             x = df[["modificationDate"]]
         )
         df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
+        ## Optionally add RefSeq gene summary metadata.
+        ## https://ftp.ncbi.nih.gov/refseq/release/complete/
+
         df <- encode(df)
         metadata(df) <- list(
             "date" = Sys.Date(),
