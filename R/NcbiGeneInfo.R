@@ -7,6 +7,11 @@
 ## FIXME Alternatively, can we get the gene ontology information provided
 ## by GOA in this table?
 
+## FIXME Use GeneSummary package as reference here.
+## x <- GeneSummary::loadGeneSummary(organism = 9606)
+##
+## This has what we want. Nice.
+
 
 
 #' Import NCBI (Entrez) gene identifier information
