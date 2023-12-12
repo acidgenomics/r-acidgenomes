@@ -3,6 +3,9 @@
 ## i.e. ZRSR2 isn't annotated as a splicing factor in the main gene info
 ## file, but it is labeled that on the website.
 ## https://www.ncbi.nlm.nih.gov/gene/8233
+##
+## FIXME Alternatively, can we get the gene ontology information provided
+## by GOA in this table?
 
 
 
