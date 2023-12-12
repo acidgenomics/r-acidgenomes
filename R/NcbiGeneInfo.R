@@ -96,7 +96,6 @@ NcbiGeneInfo <- # nolint
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
         colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
         df <- removeNa(df)
-        df <- df[, sort(colnames(df))]
         rownames(df) <- df[["geneId"]]
         splitToList <- function(x) {
             x <- strsplit(x = x, split = "|", fixed = TRUE)
@@ -124,6 +123,7 @@ NcbiGeneInfo <- # nolint
             df <- leftJoin(df, gs, by = "geneId")
         }
         df <- encode(df)
+        df <- df[, sort(colnames(df))]
         metadata(df) <- list(
             "date" = Sys.Date(),
             "organism" = organism,
