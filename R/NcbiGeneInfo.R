@@ -1,30 +1,7 @@
-## FIXME See if we can improve this by getting the summary metadata from the
-## NCBI website. Where is this saved on the FTP server?
-## i.e. ZRSR2 isn't annotated as a splicing factor in the main gene info
-## file, but it is labeled that on the website.
-## https://www.ncbi.nlm.nih.gov/gene/8233
-##
-## FIXME Alternatively, can we get the gene ontology information provided
-## by GOA in this table?
-
-## FIXME Use GeneSummary package as reference here.
-## This package uses cached files, which isn't desirable. How does it fetch
-## it from the FTP server?
-## x <- GeneSummary::loadGeneSummary(organism = 9606)
-##
-## This has what we want. Nice.
-##
-## https://github.com/jokergoo/GeneSummary
-##
-## The gene summaries are extracted from RefSeq database (https://ftp.ncbi.nih.gov/refseq/release/complete/*.rna.gbff.gz).
-## Gene summaries are available in the "COMMENT" section of the ``*rna.gbff.gz`` files.
-
-
-
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -136,16 +113,62 @@ NcbiGeneInfo <- # nolint
             x = df[["modificationDate"]]
         )
         df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
-        ## Optionally add RefSeq gene summary metadata.
-        ## https://ftp.ncbi.nih.gov/refseq/release/complete/
-
+        if (isInstalled("GeneSummary")) {
+            gs <- .refseqGeneSummary(organism)
+            df <- leftJoin(df, gs, by = "geneId")
+            metadata(df)[["refseqGeneSummary"]] <- TRUE
+        }
         df <- encode(df)
-        metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = organism,
-            "packageVersion" = .pkgVersion,
-            "taxonomicGroup" = taxonomicGroup,
-            "url" = url
-        )
+        metadata(df)[["date"]] <- Sys.Date()
+        metadata(df)[["organism"]] <- organism
+        metadata(df)[["packageVersion"]] <- .pkgVersion
+        metadata(df)[["taxonomicGroup"]] <- taxonomicGroup
+        metadata(df)[["url"]] <- url
         new(Class = "NcbiGeneInfo", df)
     }
+
+
+
+#' Get RefSeq gene summary
+#'
+#' @note Updated 2023-12-12.
+#' @noRd
+#'
+#' @seealso
+#' - https://www.ncbi.nlm.nih.gov/refseq/about/
+#' - https://ftp.ncbi.nih.gov/refseq/release/complete/
+.refseqGeneSummary <- function(organism) {
+    assert(requireNamespaces("GeneSummary"))
+    taxId <- .mapOrganismToNcbiTaxId(organism)
+    df <- GeneSummary::loadGeneSummary(organism = taxId)
+    assert(is.data.frame(df))
+    df <- as(df, "DFrame")
+    colnames(df) <- camelCase(colnames(df))
+    cols <- c(
+        ## > "refSeqAccession",
+        ## > "organism",
+        ## > "taxonId",
+        "geneId",
+        "reviewStatus",
+        "geneSummary"
+    )
+    assert(isSubset(cols, colnames(df)))
+    df <- df[, cols, drop = FALSE]
+    df <- df[complete.cases(df), , drop = FALSE]
+    df <- unique(df)
+    df[["reviewStatus"]] <- factor(
+        x = df[["reviewStatus"]],
+        levels = c(
+            "REVIEWED REFSEQ",
+            "VALIDATED REFSEQ",
+            "PROVISIONAL REFSEQ",
+            "INFERRED REFSEQ",
+            "PREDICTED REFSEQ"
+        )
+    )
+    df <- df[order(df), , drop = FALSE]
+    df <- df[!duplicated(df[["geneId"]]), , drop = FALSE]
+    assert(hasNoDuplicates(df[["geneId"]]))
+    df[["reviewStatus"]] <- NULL
+    df
+}
