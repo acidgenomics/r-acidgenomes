@@ -16,6 +16,23 @@ Map gene ontology (GO) identifiers to term names
 \note{
 Updated 2023-12-13.
 }
+\section{Alternative approach using GO.db package}{
+
+
+This supports lookup of specific keys.
+
+\preformatted{
+library(GO.db)
+keys <- c("GO:0000001", "GO:0000002")
+object <- select(
+    x = GO.db,
+    keys = keys,
+    columns = c("GOID", "TERM"),
+    keytype = "GOID"
+)
+}
+}
+
 \examples{
 object <- mapGoTerms()
 print(object)
