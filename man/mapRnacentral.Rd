@@ -11,9 +11,9 @@ mapRnacentral(organism, database)
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{database}{\code{character(1)}.
-Database name. Currently supported: \code{"ensembl"}, \code{"ensembl_gencode"},
-\code{"hgnc"}, \code{"mgi"}, and \code{"refseq"}. HGNC database is \emph{Homo sapiens} specific,
-and MGI is \emph{Mus musculus} specific.}
+Database name. Currently supported: \code{"Ensembl"}, \code{"GENCODE"}, \code{"HGNC"},
+\code{"MGI"}, and \code{"RefSeq"}. HGNC database is \emph{Homo sapiens} specific, and MGI is
+\emph{Mus musculus} specific.}
 }
 \value{
 \code{DFrame}.
@@ -29,7 +29,8 @@ Updated 2023-12-13.
 }
 \examples{
 ## Get RNAcentral to RefSeq identifier mappings.
-df <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+print(object)
 }
 \seealso{
 \itemize{
