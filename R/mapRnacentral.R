@@ -6,9 +6,9 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @param database `character(1)`.
-#' Database name. Currently supported: `"ensembl"`, `"ensembl_gencode"`,
-#' `"hgnc"`, `"mgi"`, and `"refseq"`. HGNC database is *Homo sapiens* specific,
-#' and MGI is *Mus musculus* specific.
+#' Database name. Currently supported: `"Ensembl"`, `"GENCODE"`, `"HGNC"`,
+#' `"MGI"`, and `"RefSeq"`. HGNC database is *Homo sapiens* specific, and MGI is
+#' *Mus musculus* specific.
 #'
 #' @return `DFrame`.
 #' Contains RNAcentral to specified database RNA transcript identifier mappings.
@@ -21,18 +21,27 @@
 #'
 #' @examples
 #' ## Get RNAcentral to RefSeq identifier mappings.
-#' df <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+#' object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+#' print(object)
 mapRnacentral <- function(organism, database) {
     assert(isOrganism(organism))
     database <- match.arg(
         arg = database,
         choices = c(
-            "ensembl",
-            "ensembl_gencode",
-            "hgnc",
-            "mgi",
-            "refseq"
+            "Ensembl",
+            "GENCODE",
+            "HGNC",
+            "MGI",
+            "RefSeq"
         )
+    )
+    database <- switch(
+        EXPR = database,
+        "Ensembl" = "ensembl",
+        "GENCODE" = "ensembl_gencode",
+        "HGNC" = "hgnc",
+        "MGI" = "mgi",
+        "RefSeq" = "refseq"
     )
     taxId <- .mapOrganismToNcbiTaxId(organism)
     url <- pasteUrl(
