@@ -1,13 +1,20 @@
 #' Map gene ontology (GO) identifiers to term names
 #'
+#' @export
 #' @note Updated 2023-12-13.
-#' @noRd
+#'
+#' @return `DFrame`.
+#' Contains `"id"` and `"name"` columns.
 #'
 #' @seealso
+#' - Bioconductor GO.db package.
 #' - https://geneontology.org/docs/download-ontology/
-#' - Bioconductor GO.db package
 #' - https://www.biostars.org/p/9552810/
-.mapGoTerms <- function() {
+#'
+#' @examples
+#' object <- mapGoTerms()
+#' print(object)
+mapGoTerms <- function() {
     url <- pasteUrl(
         "purl.obolibrary.org",
         "obo",
