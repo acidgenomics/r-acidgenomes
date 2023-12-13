@@ -28,8 +28,8 @@ mapGoTerms <- function() {
     i <- !df[["obsolete"]]
     j <- c("id", "name")
     df <- df[i, j, drop = FALSE]
-    df <- as(df, "DFrame")
     assert(hasNoDuplicates(df[["id"]]))
+    df <- as(df, "DFrame")
     df <- sort(df)
     rownames(df) <- NULL
     metadata(df) <- list(
