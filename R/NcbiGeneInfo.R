@@ -7,12 +7,9 @@
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2023-12-12.
+#' @note Updated 2023-12-13.
 #'
 #' @inheritParams AcidRoxygen::params
-#'
-#' @param cache `logical(1)`.
-#' Cache the gene info file from NCBI FTP server using BiocFileCache.
 #'
 #' @param taxonomicGroup `character(1)`.
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
@@ -21,6 +18,12 @@
 #' @param refseqGeneSummary `logical(1)`.
 #' Include RefSeq gene summary in `"refseqGeneSummary"` column.
 #' Requires Bioconductor GeneSummary package to be installed.
+#'
+#' @param goTerms `logical(1)`.
+#' Return nested gene ontology (GO) terms in `"goBp"` (BP: biological process),
+#' `"goCc"` (CC: cellular component), and `"goMf"` (MF: molecular function)
+#' columns. This is computationally intensive, and not supported for all
+#' genomes. Intended primarily for *Homo sapiens*.
 #'
 #' @return `NcbiGeneInfo`.
 #'
@@ -37,15 +40,13 @@ NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
              refseqGeneSummary = FALSE,
-             goTerms = FALSE,
-             cache = TRUE) {
+             goTerms = FALSE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
             isFlag(refseqGeneSummary),
-            isFlag(goTerms),
-            isFlag(cache)
+            isFlag(goTerms)
         )
         baseURL <- pasteUrl(
             "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
@@ -70,11 +71,7 @@ NcbiGeneInfo <- # nolint
             organism, url
         ))
         df <- import(
-            con = ifelse(
-                test = cache,
-                yes = .cacheIt(url),
-                no = url
-            ),
+            con = .cacheIt(url),
             format = "tsv",
             colnames = TRUE,
             naStrings = "-"
@@ -131,7 +128,10 @@ NcbiGeneInfo <- # nolint
             df <- leftJoin(df, gs, by = "geneId")
         }
         if (isTRUE(goTerms)) {
-            go <- .goTermsPerGene(geneNames = df[["geneName"]])
+            go <- .goTermsPerGeneName(
+                organism = organism,
+                geneNames = unique(df[["geneName"]])
+            )
             df <- leftJoin(df, go, by = "geneName")
         }
         df <- encode(df)
@@ -149,37 +149,41 @@ NcbiGeneInfo <- # nolint
 
 
 
-#' Get a nested DFrame of GO terms per gene
+#' Import nested GO terms per gene name
 #'
 #' @note Updated 2023-12-13.
 #' @noRd
 #'
 #' @seealso
 #' - http://current.geneontology.org/products/pages/downloads.html
-.goTermsPerGene <- function(organism, geneNames) {
+#' - https://www.ebi.ac.uk/GOA/
+#' - https://www.ncbi.nlm.nih.gov/gene/
+.goTermsPerGeneName <- function(organism, geneNames) {
     assert(
         isOrganism(organism),
-        isCharacter(geneNames)
+        isCharacter(geneNames),
+        hasNoDuplicates(geneNames)
     )
     gafFile <- switch(
         EXPR = organism,
         "Homo sapiens" = "goa_human.gaf.gz",
         "Mus musculus" = "mgi.gaf.gz",
         abort(sprintf(
-            "GO term lookup for {.var %s} is not currently supported.",
+            "GO term lookup for {.var %s} not currently supported.",
             organism
         ))
     )
     goMap <- mapGoTerms()
     assert(identical(c("id", "name"), colnames(goMap)))
     colnames(goMap) <- c("goId", "goName")
+    url <- pasteUrl(
+        "geneontology.org",
+        "gene-associations",
+        gafFile,
+        protocol = "https"
+    )
     gaf <- import(
-        con = .cacheIt(pasteUrl(
-            "geneontology.org",
-            "gene-associations",
-            gafFile,
-            protocol = "https"
-        )),
+        con = .cacheIt(url),
         format = "gaf"
     )
     df <- as.data.frame(gaf)
@@ -188,13 +192,16 @@ NcbiGeneInfo <- # nolint
     df <- df[, c("elements", "sets", "aspect")]
     colnames(df) <- c("geneName", "goId", "goCategory")
     df <- df[complete.cases(df), ]
-    df <- df[df[["geneName"]] %in% ncbi[["geneName"]], ]
+    i <- df[["geneName"]] %in% geneNames
+    assert(any(i), msg = "Failed to match against any gene names.")
+    df <- df[i, ]
     df <- unique(df)
     df <- df[, c("geneName", "goCategory", "goId")]
     df <- sort(df)
     df <- leftJoin(df, goMap, by = "goId")
     spl <- split(x = df, f = df[["geneName"]])
-    lst <- parallel::mclapply(
+    alert("Nesting GO terms per gene.")
+    lst <- mclapply(
         X = spl,
         FUN = function(x) {
             idx <- list(
@@ -202,22 +209,6 @@ NcbiGeneInfo <- # nolint
                 "cc" = which(x[["goCategory"]] == "CC"),
                 "mf" = which(x[["goCategory"]] == "MF")
             )
-            # out <- as.DataFrame(list(
-            #     "geneName" = x[["geneName"]][[1L]],
-            #     "goBp" = list(paste(
-            #         x[["goId"]][idx[["bp"]]],
-            #         x[["goName"]][idx[["bp"]]]
-            #     )),
-            #     "goCc" = list(paste(
-            #         x[["goId"]][idx[["cc"]]],
-            #         x[["goName"]][idx[["cc"]]]
-            #     )),
-            #     "goMf" = list(paste(
-            #         x[["goId"]][idx[["mf"]]],
-            #         x[["goName"]][idx[["mf"]]]
-            #     ))
-            # ))
-            # FIXME Is this faster if we use regular data.frame?
             out <- DataFrame(
                 "geneName" = x[["geneName"]][[1L]],
                 "goBp" = I(list(paste(
@@ -236,16 +227,24 @@ NcbiGeneInfo <- # nolint
             out
         }
     )
-    yyy <- DataFrameList(xxx)
-    zzz <- unlist(yyy)
-    zzz[["goBp"]] <- CharacterList(zzz[["goBp"]])
-    zzz[["goCc"]] <- CharacterList(zzz[["goCc"]])
-    zzz[["goMf"]] <- CharacterList(zzz[["goMf"]])
+    dfl <- DataFrameList(lst)
+    df <- unlist(dfl)
+    assert(is(df, "DFrame"))
+    df[["goBp"]] <- CharacterList(df[["goBp"]])
+    df[["goCc"]] <- CharacterList(df[["goCc"]])
+    df[["goMf"]] <- CharacterList(df[["goMf"]])
+    metadata(df) <- list(
+        "date" = Sys.Date(),
+        "geneNames" = geneNames,
+        "organism" = organism,
+        "url" = url
+    )
+    df
 }
 
 
 
-#' Get RefSeq gene summary
+#' Import RefSeq gene summary
 #'
 #' @note Updated 2023-12-12.
 #' @noRd
