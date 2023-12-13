@@ -20,7 +20,7 @@ NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 Defining this manually avoids having to query the FTP server.}
 
 \item{refseqGeneSummary}{\code{logical(1)}.
-Include RefSeq gene summary in \code{"geneSummary"} column.
+Include RefSeq gene summary in \code{"refseqGeneSummary"} column.
 Requires Bioconductor GeneSummary package to be installed.}
 
 \item{cache}{\code{logical(1)}.
