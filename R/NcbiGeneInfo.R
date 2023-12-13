@@ -36,13 +36,15 @@
 NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
-             refseqGeneSummary = TRUE,
+             refseqGeneSummary = FALSE,
+             goTerms = FALSE,
              cache = TRUE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
             isFlag(refseqGeneSummary),
+            isFlag(goTerms),
             isFlag(cache)
         )
         baseURL <- pasteUrl(
@@ -128,6 +130,10 @@ NcbiGeneInfo <- # nolint
             gs <- .refseqGeneSummary(organism)
             df <- leftJoin(df, gs, by = "geneId")
         }
+        if (isTRUE(goTerms)) {
+            go <- .goTermsPerGene(geneNames = df[["geneName"]])
+            df <- leftJoin(df, go, by = "geneName")
+        }
         df <- encode(df)
         df <- df[, sort(colnames(df))]
         metadata(df) <- list(
@@ -140,6 +146,102 @@ NcbiGeneInfo <- # nolint
         )
         new(Class = "NcbiGeneInfo", df)
     }
+
+
+
+#' Get a nested DFrame of GO terms per gene
+#'
+#' @note Updated 2023-12-13.
+#' @noRd
+#'
+#' @seealso
+#' - http://current.geneontology.org/products/pages/downloads.html
+.goTermsPerGene <- function(organism, geneNames) {
+    assert(
+        isOrganism(organism),
+        isCharacter(geneNames)
+    )
+    gafFile <- switch(
+        EXPR = organism,
+        "Homo sapiens" = "goa_human.gaf.gz",
+        "Mus musculus" = "mgi.gaf.gz",
+        abort(sprintf(
+            "GO term lookup for {.var %s} is not currently supported.",
+            organism
+        ))
+    )
+    goMap <- mapGoTerms()
+    assert(identical(c("id", "name"), colnames(goMap)))
+    colnames(goMap) <- c("goId", "goName")
+    gaf <- import(
+        con = .cacheIt(pasteUrl(
+            "geneontology.org",
+            "gene-associations",
+            gafFile,
+            protocol = "https"
+        )),
+        format = "gaf"
+    )
+    df <- as.data.frame(gaf)
+    df <- as(df, "DFrame")
+    colnames(df) <- camelCase(colnames(df))
+    df <- df[, c("elements", "sets", "aspect")]
+    colnames(df) <- c("geneName", "goId", "goCategory")
+    df <- df[complete.cases(df), ]
+    df <- df[df[["geneName"]] %in% ncbi[["geneName"]], ]
+    df <- unique(df)
+    df <- df[, c("geneName", "goCategory", "goId")]
+    df <- sort(df)
+    df <- leftJoin(df, goMap, by = "goId")
+    spl <- split(x = df, f = df[["geneName"]])
+    lst <- parallel::mclapply(
+        X = spl,
+        FUN = function(x) {
+            idx <- list(
+                "bp" = which(x[["goCategory"]] == "BP"),
+                "cc" = which(x[["goCategory"]] == "CC"),
+                "mf" = which(x[["goCategory"]] == "MF")
+            )
+            # out <- as.DataFrame(list(
+            #     "geneName" = x[["geneName"]][[1L]],
+            #     "goBp" = list(paste(
+            #         x[["goId"]][idx[["bp"]]],
+            #         x[["goName"]][idx[["bp"]]]
+            #     )),
+            #     "goCc" = list(paste(
+            #         x[["goId"]][idx[["cc"]]],
+            #         x[["goName"]][idx[["cc"]]]
+            #     )),
+            #     "goMf" = list(paste(
+            #         x[["goId"]][idx[["mf"]]],
+            #         x[["goName"]][idx[["mf"]]]
+            #     ))
+            # ))
+            # FIXME Is this faster if we use regular data.frame?
+            out <- DataFrame(
+                "geneName" = x[["geneName"]][[1L]],
+                "goBp" = I(list(paste(
+                    x[["goId"]][idx[["bp"]]],
+                    x[["goName"]][idx[["bp"]]]
+                ))),
+                "goCc" = I(list(paste(
+                    x[["goId"]][idx[["cc"]]],
+                    x[["goName"]][idx[["cc"]]]
+                ))),
+                "goMf" = I(list(paste(
+                    x[["goId"]][idx[["mf"]]],
+                    x[["goName"]][idx[["mf"]]]
+                )))
+            )
+            out
+        }
+    )
+    yyy <- DataFrameList(xxx)
+    zzz <- unlist(yyy)
+    zzz[["goBp"]] <- CharacterList(zzz[["goBp"]])
+    zzz[["goCc"]] <- CharacterList(zzz[["goCc"]])
+    zzz[["goMf"]] <- CharacterList(zzz[["goMf"]])
+}
 
 
 
