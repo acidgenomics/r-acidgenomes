@@ -7,8 +7,8 @@
 NcbiGeneInfo(
   organism,
   taxonomicGroup = NULL,
-  refseqGeneSummary = TRUE,
-  cache = TRUE
+  refseqGeneSummary = FALSE,
+  goTerms = FALSE
 )
 }
 \arguments{
@@ -23,8 +23,11 @@ Defining this manually avoids having to query the FTP server.}
 Include RefSeq gene summary in \code{"refseqGeneSummary"} column.
 Requires Bioconductor GeneSummary package to be installed.}
 
-\item{cache}{\code{logical(1)}.
-Cache the gene info file from NCBI FTP server using BiocFileCache.}
+\item{goTerms}{\code{logical(1)}.
+Return nested gene ontology (GO) terms in \code{"goBp"} (BP: biological process),
+\code{"goCc"} (CC: cellular component), and \code{"goMf"} (MF: molecular function)
+columns. This is computationally intensive, and not supported for all
+genomes. Intended primarily for \emph{Homo sapiens}.}
 }
 \value{
 \code{NcbiGeneInfo}.
@@ -33,7 +36,7 @@ Cache the gene info file from NCBI FTP server using BiocFileCache.}
 Import NCBI (Entrez) gene identifier information
 }
 \note{
-Updated 2023-12-12.
+Updated 2023-12-13.
 }
 \examples{
 object <- NcbiGeneInfo(
