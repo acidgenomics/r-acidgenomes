@@ -19,7 +19,7 @@
 #' Defining this manually avoids having to query the FTP server.
 #'
 #' @param refseqGeneSummary `logical(1)`.
-#' Include RefSeq gene summary in `"geneSummary"` column.
+#' Include RefSeq gene summary in `"refseqGeneSummary"` column.
 #' Requires Bioconductor GeneSummary package to be installed.
 #'
 #' @return `NcbiGeneInfo`.
