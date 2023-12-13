@@ -1,3 +1,12 @@
+#' Map gene ontology (GO) identifiers to term names
+#'
+#' @note Updated 2023-12-13.
+#' @noRd
+#'
+#' @seealso
+#' - https://geneontology.org/docs/download-ontology/
+#' - Bioconductor GO.db package
+#' - https://www.biostars.org/p/9552810/
 .mapGoTerms <- function() {
     url <- pasteUrl(
         "purl.obolibrary.org",
