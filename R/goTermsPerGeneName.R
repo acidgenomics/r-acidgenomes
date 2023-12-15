@@ -139,11 +139,14 @@ goTermsPerGeneName <-
                 }
             )
             dfl <- DataFrameList(lst)
-            df <- unlist(dfl)
+            df <- unlist(dfl, recursive = FALSE, use.names = FALSE)
             assert(is(df, "DFrame"))
+            rownames(df) <- NULL
             df[["goBp"]] <- CharacterList(df[["goBp"]])
             df[["goCc"]] <- CharacterList(df[["goCc"]])
             df[["goMf"]] <- CharacterList(df[["goMf"]])
+        } else if (identical(format, "split")) {
+            df <- spl
         }
         metadata(df) <- list(
             "date" = Sys.Date(),
