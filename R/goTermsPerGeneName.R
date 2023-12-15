@@ -95,12 +95,16 @@ goTermsPerGeneName <-
             fixed = TRUE
         )
         if (!is.null(geneNames)) {
-            i <- df[["geneName"]] %in% geneNames
-            assert(any(i), msg = "Failed to match against any gene names.")
-            df <- df[i, ]
+            ## FIXME Need to set this as an ordered factor for the split...
+            ## otherwise it doesn't return in order.
+            i <- match(x = geneNames, table = df[["geneName"]])
+            assert(!anyNA(i), msg = "Failed to match gene names.")
+            df <- df[i, , drop = FALSE]
         }
         df <- unique(df)
         df <- df[, c("geneName", "goCategory", "goId")]
+        ## FIXME This step messes up our desired input order of geneId...
+        ## need to rethink this.
         df <- sort(df)
         goMap <- mapGoTerms()
         assert(identical(c("id", "name"), colnames(goMap)))
