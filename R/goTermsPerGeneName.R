@@ -67,11 +67,12 @@ goTermsPerGeneName <-
         df <- import(con = .cacheIt(url), format = "gaf")
         assert(is.data.frame(df))
         df <- as(df, "DFrame")
-        cols <- c("dbObjectSymbol", "goId", "aspect")
+        cols <- c("dbObjectSymbol", "aspect", "goId")
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols]
-        colnames(df) <- c("geneName", "goId", "goCategory")
+        colnames(df) <- c("geneName", "goCategory", "goId")
         df <- df[complete.cases(df), ]
+        df <- unique(df)
         assert(identical(
             x = sort(unique(df[["goCategory"]])),
             y = c("C", "F", "P")
@@ -94,25 +95,35 @@ goTermsPerGeneName <-
             x = df[["goCategory"]],
             fixed = TRUE
         )
-        if (!is.null(geneNames)) {
-            ## FIXME Need to set this as an ordered factor for the split...
-            ## otherwise it doesn't return in order.
-            i <- match(x = geneNames, table = df[["geneName"]])
-            assert(!anyNA(i), msg = "Failed to match gene names.")
-            df <- df[i, , drop = FALSE]
-        }
-        df <- unique(df)
-        df <- df[, c("geneName", "goCategory", "goId")]
-        ## FIXME This step messes up our desired input order of geneId...
-        ## need to rethink this.
         df <- sort(df)
+        if (!is.null(geneNames)) {
+            i <- unlist(lapply(
+                X = geneNames,
+                FUN = function(x, table) {
+                    lgl <- table %in% x
+                    assert(
+                        any(lgl),
+                        msg = sprintf("Failed to match {.var %s}.", x)
+                    )
+                    which(lgl)
+                },
+                table = df[["geneName"]]
+            ))
+            df <- df[i, ]
+        }
         goMap <- mapGoTerms()
         assert(identical(c("id", "name"), colnames(goMap)))
         colnames(goMap) <- c("goId", "goName")
         df <- leftJoin(df, goMap, by = "goId")
         if (isSubset(format, c("nested", "split"))) {
             alert("Splitting GO terms by gene.")
-            spl <- split(x = df, f = df[["geneName"]])
+            spl <- split(
+                x = df,
+                f = factor(
+                    x = df[["geneName"]],
+                    levels = unique(df[["geneName"]])
+                )
+            )
         }
         if (identical(format, "nested")) {
             alert("Nesting GO terms per gene.")
