@@ -1,3 +1,8 @@
+## FIXME Can't process Mus musculus currently.
+## mgi.gaf.gz can't import into a TidySet.
+
+
+
 #' Import gene ontology (GO) terms per gene name
 #'
 #' @export
@@ -26,6 +31,8 @@
 #' - http://current.geneontology.org/products/pages/downloads.html
 #' - https://www.ebi.ac.uk/GOA/
 #' - https://www.ncbi.nlm.nih.gov/gene/
+## - https://geneontology.org/docs/go-annotation-file-gaf-format-2.2/
+## - `BaseSet::getGAF()`.
 #'
 #' @examples
 #' object <- goTermsPerGeneName(organism = "Homo sapiens", format = "long")
@@ -39,32 +46,79 @@ goTermsPerGeneName <-
             isCharacter(geneNames, nullOk = TRUE),
             isOrganism(organism)
         )
-        organism <- match.arg(
-            arg = organism,
-            choices = c("Homo sapiens", "Mus musculus")
-        )
         format <- match.arg(format)
         gafFile <- switch(
             EXPR = organism,
+            "Arabidopsis thaliana" = "tair.gaf.gz",
+            "Bos taurus" = "goa_cow.gaf.gz",
+            "Caenorhabditis elegans" = "wb.gaf.gz",
+            "Canis lupus familiaris" = "goa_dog.gaf.gz",
+            "Danio rerio" = "zfin.gaf",
+            "Drosophila melanogaster" = "fb.gaf.gz",
+            "Gallus gallus" = "goa_chicken.gaf.gz",
             "Homo sapiens" = "goa_human.gaf.gz",
-            "Mus musculus" = "mgi.gaf.gz"
+            "Mus musculus" = "mgi.gaf.gz",
+            "Rattus norvegicus" = "rgd.gaf.gz",
+            "Saccharomyces cerevisiae" = "sgd.gaf.gz",
+            "Sus scrofa" = "goa_pig.gaf.gz",
+            abort(sprintf("Unsupported organism: {.var %s}.", organism))
         )
-        goMap <- mapGoTerms()
-        assert(identical(c("id", "name"), colnames(goMap)))
-        colnames(goMap) <- c("goId", "goName")
         url <- pasteUrl(
             "geneontology.org",
             "gene-associations",
             gafFile,
             protocol = "https"
         )
-        gaf <- import(con = .cacheIt(url), format = "gaf")
-        df <- as.data.frame(gaf)
+        ## FIXME Move this method to pipette instead.
+        ## The BaseSet getGAF function doesn't work for all of these files.
+        df <- import(
+            con = .cacheIt(url),
+            format = "tsv",
+            colnames = c(
+                gaf_columns <- c(
+                    "db",
+                    "dbObjectId",
+                    "dbObjectSymbol",
+                    "qualifier",
+                    "goId",
+                    "dbReference",
+                    "evidenceCode",
+                    "withFrom",
+                    "aspect",
+                    "dbObjectName",
+                    "dbObjectSynonym",
+                    "dbObjectType",
+                    "taxon",
+                    "date",
+                    "assignedBy",
+                    "annotationExtension",
+                    "geneProductFormId"
+                )
+            ),
+            comment = "!"
+        )
         df <- as(df, "DFrame")
-        colnames(df) <- camelCase(colnames(df))
-        df <- df[, c("elements", "sets", "aspect")]
+        df[["aspect"]] <- sub(
+            pattern = "C",
+            replacement = "CC",
+            x = df[["aspect"]],
+            fixed = TRUE
+        )
+        df[["aspect"]] <- sub(
+            pattern = "F",
+            replacement = "MF",
+            x = df[["aspect"]],
+            fixed = TRUE
+        )
+        df[["aspect"]] <- sub(
+            pattern = "P",
+            replacement = "BP",
+            x = df[["aspect"]],
+            fixed = TRUE
+        )
+        df <- df[, c("dbObjectSymbol", "goId", "aspect")]
         colnames(df) <- c("geneName", "goId", "goCategory")
-        df <- df[complete.cases(df), , drop = FALSE]
+        df <- df[complete.cases(df), ]
         if (!is.null(geneNames)) {
             i <- df[["geneName"]] %in% geneNames
             assert(any(i), msg = "Failed to match against any gene names.")
@@ -73,6 +127,9 @@ goTermsPerGeneName <-
         df <- unique(df)
         df <- df[, c("geneName", "goCategory", "goId")]
         df <- sort(df)
+        goMap <- mapGoTerms()
+        assert(identical(c("id", "name"), colnames(goMap)))
+        colnames(goMap) <- c("goId", "goName")
         df <- leftJoin(df, goMap, by = "goId")
         if (isSubset(format, c("nested", "split"))) {
             alert("Splitting GO terms by gene.")
