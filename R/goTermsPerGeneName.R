@@ -1,8 +1,3 @@
-## FIXME Can't process Mus musculus currently.
-## mgi.gaf.gz can't import into a TidySet.
-
-
-
 #' Import gene ontology (GO) terms per gene name
 #'
 #' @export
