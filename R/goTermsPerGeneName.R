@@ -97,6 +97,7 @@ goTermsPerGeneName <-
         )
         df <- sort(df)
         if (!is.null(geneNames)) {
+            ## FIXME Make this a function in AcidBase. Generally useful.
             i <- unlist(lapply(
                 X = geneNames,
                 FUN = function(x, table) {
