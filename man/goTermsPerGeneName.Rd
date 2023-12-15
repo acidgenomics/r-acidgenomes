@@ -47,6 +47,8 @@ print(object)
 \itemize{
 \item http://current.geneontology.org/products/pages/downloads.html
 \item https://www.ebi.ac.uk/GOA/
-\item https://www.ncbi.nlm.nih.gov/gene/
+\item https://geneontology.org/docs/go-annotation-file-gaf-format-2.2/
+\item https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
+\item Python goatools package.
 }
 }
