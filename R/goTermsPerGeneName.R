@@ -44,11 +44,11 @@ goTermsPerGeneName <-
         format <- match.arg(format)
         gafFile <- switch(
             EXPR = organism,
-            "Arabidopsis thaliana" = "tair.gaf.gz",
+            ## > "Arabidopsis thaliana" = "tair.gaf.gz",
             "Bos taurus" = "goa_cow.gaf.gz",
             "Caenorhabditis elegans" = "wb.gaf.gz",
             "Canis lupus familiaris" = "goa_dog.gaf.gz",
-            "Danio rerio" = "zfin.gaf",
+            "Danio rerio" = "zfin.gaf.gz",
             "Drosophila melanogaster" = "fb.gaf.gz",
             "Gallus gallus" = "goa_chicken.gaf.gz",
             "Homo sapiens" = "goa_human.gaf.gz",
