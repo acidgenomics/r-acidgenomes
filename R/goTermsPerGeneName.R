@@ -70,6 +70,7 @@ goTermsPerGeneName <-
             protocol = "https"
         )
         df <- import(con = .cacheIt(url), format = "gaf")
+        assert(is.data.frame(df))
         df <- as(df, "DFrame")
         cols <- c("dbObjectSymbol", "goId", "aspect")
         assert(isSubset(cols, colnames(df)))
