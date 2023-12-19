@@ -115,6 +115,24 @@ Alternatively, the corresponding GTF/GFF file can be loaded directly from
 GENCODE or Ensembl.
 }
 
+\section{Ensembl canonical transcript}{
+
+
+Fetching the canonical transcripts currently requires connecting to the
+\href{http://useast.ensembl.org/info/docs/api/index.html}{Ensembl Perl API}. This information is currently processed by the
+ensembldb package using the \code{fetchTablesFromEnsembl} function.
+
+See also:
+\itemize{
+\item http://useast.ensembl.org/info/genome/genebuild/canonical.html
+\item https://www.ensembl.info/2021/04/16/update-to-the-ensembl-canonical-transcript-set/
+\item https://github.com/jorainer/ensembldb/blob/devel/inst/perl/get_gene_transcript_exon_tables.pl
+\item https://github.com/jorainer/ensembldb/issues/123
+\item https://github.com/jorainer/ensembldb/blob/devel/R/functions-create-EnsDb.R#L36
+\item \code{ensembldb::fetchTablesFromEnsembl()}.
+}
+}
+
 \examples{
 ## Get annotations from Ensembl via AnnotationHub query.
 genes <- makeGRangesFromEnsembl(
