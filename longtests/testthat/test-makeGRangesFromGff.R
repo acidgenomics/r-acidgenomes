@@ -507,6 +507,9 @@ file <- gffs[["gencode_grch38_gff3"]]
 ## artifactual_duplication
 ## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
 
+## FIXME Sanitize "hgncId" column:
+## "HGNC:14822" to just "14822" (integer).
+
 test_that("GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
@@ -522,7 +525,7 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "artifDupl" = "character",
+            "artifactualDuplication" = "character",
             "broadClass" = "factor",
             "description" = "character",
             "geneBiotype" = "factor",
@@ -532,7 +535,7 @@ test_that("GFF3 genes", {
             "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
             "havanaGene" = "character",
-            "hgncId" = "character", # integer?
+            "hgncId" = "integer",
             "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
             "source" = "factor",
@@ -552,7 +555,7 @@ test_that("GFF3 genes", {
             "end" = "177392756",
             "width" = "174090",
             "strand" = "-",
-            "artifDupl" = NA_character_,
+            "artifactualDuplication" = NA_character_,
             "broadClass" = "coding",
             "description" = paste(
                 "NFE2 like bZIP transcription factor 2",
@@ -565,7 +568,7 @@ test_that("GFF3 genes", {
             "geneName" = "NFE2L2",
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "1",
             "ncbiGeneId" = "4780",
             "source" = "HAVANA",
