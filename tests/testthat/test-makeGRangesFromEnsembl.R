@@ -35,13 +35,13 @@ test_that("Genes", {
             "broadClass" = "factor",
             "canonicalTranscript" = "character",
             "description" = "character",
-            "geneBiotype" = "character", # FIXME factor
+            "geneBiotype" = "factor",
             "geneId" = "character",
             "geneIdVersion" = "character",
             "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "character" # FIXME factor
+            "seqCoordSystem" = "factor"
         )
     )
     expect_identical(
