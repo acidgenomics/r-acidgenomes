@@ -24,6 +24,7 @@
             choices = c("genes", "transcripts")
         )
         meta[["level"]] <- level
+        ## This automatically sets "source" and "type" columns as factor.
         gr <- import(con = .cacheIt(file))
         assert(is(gr, "GRanges"))
         format <- ifelse(
@@ -325,7 +326,7 @@
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
 
-## Updated 2023-11-29.
+## Updated 2023-12-19.
 .rtracklayerGencodeGenesGff <-
     function(object) {
         assert(
@@ -335,10 +336,7 @@
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c(
-                    "gene_id_no_version",
-                    "gene_version"
-                ),
+                x = c("gene_id_no_version", "gene_version"),
                 y = names(mcols(object))
             )
         )
@@ -390,24 +388,16 @@
 
 
 
-## Updated 2023-11-29.
+## Updated 2023-12-19.
 .rtracklayerGencodeTranscriptsGff <-
     function(object) {
         assert(
             isSubset(
-                x = c(
-                    "ID",
-                    "gene_id",
-                    "transcript_id",
-                    "type"
-                ),
+                x = c("ID", "gene_id", "transcript_id", "type"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c(
-                    "transcript_id_no_version",
-                    "transcript_version"
-                ),
+                x = c("transcript_id_no_version", "transcript_version"),
                 y = names(mcols(object))
             )
         )
@@ -432,6 +422,7 @@
     }
 
 
+
 ## GENCODE GRCh37 contains duplicate unversioned transcript identifiers.
 ##
 ## Updated 2023-11-29.
@@ -440,11 +431,7 @@
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c(
-                    "gene_id",
-                    "transcript_id",
-                    "type"
-                ),
+                x = c("gene_id", "transcript_id", "type"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
