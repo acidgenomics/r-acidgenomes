@@ -11,5 +11,5 @@
 Mouse Genomic Informatics (MGI) metadata
 }
 \note{
-Updated 2023-11-22.
+Updated 2023-12-19.
 }
