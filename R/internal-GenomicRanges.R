@@ -348,7 +348,7 @@
             x = na.omit(mcols[["level"]]),
             pattern = "^[0-9]+$"
         ))
-        mcols[["level"]] <- as.integer(level)
+        mcols[["level"]] <- as.integer(mcols[["level"]])
     }
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
