@@ -4,12 +4,7 @@
 \alias{NcbiGeneInfo}
 \title{Import NCBI (Entrez) gene identifier information}
 \usage{
-NcbiGeneInfo(
-  organism,
-  taxonomicGroup = NULL,
-  refseqGeneSummary = FALSE,
-  goTerms = FALSE
-)
+NcbiGeneInfo(organism, taxonomicGroup = NULL, refseqGeneSummary = FALSE)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -22,12 +17,6 @@ Defining this manually avoids having to query the FTP server.}
 \item{refseqGeneSummary}{\code{logical(1)}.
 Include RefSeq gene summary in \code{"refseqGeneSummary"} column.
 Requires Bioconductor GeneSummary package to be installed.}
-
-\item{goTerms}{\code{logical(1)}.
-Return nested gene ontology (GO) terms in \code{"goBp"} (BP: biological process),
-\code{"goCc"} (CC: cellular component), and \code{"goMf"} (MF: molecular function)
-columns. This is computationally intensive, and not supported for all
-genomes. Intended primarily for \emph{Homo sapiens}.}
 }
 \value{
 \code{NcbiGeneInfo}.

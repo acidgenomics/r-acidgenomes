@@ -13,12 +13,6 @@
 #' Include RefSeq gene summary in `"refseqGeneSummary"` column.
 #' Requires Bioconductor GeneSummary package to be installed.
 #'
-#' @param goTerms `logical(1)`.
-#' Return nested gene ontology (GO) terms in `"goBp"` (BP: biological process),
-#' `"goCc"` (CC: cellular component), and `"goMf"` (MF: molecular function)
-#' columns. This is computationally intensive, and not supported for all
-#' genomes. Intended primarily for *Homo sapiens*.
-#'
 #' @return `NcbiGeneInfo`.
 #'
 #' @seealso
@@ -33,14 +27,12 @@
 NcbiGeneInfo <- # nolint
     function(organism,
              taxonomicGroup = NULL,
-             refseqGeneSummary = FALSE,
-             goTerms = FALSE) {
+             refseqGeneSummary = FALSE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
-            isFlag(refseqGeneSummary),
-            isFlag(goTerms)
+            isFlag(refseqGeneSummary)
         )
         baseURL <- pasteUrl(
             "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
@@ -120,14 +112,6 @@ NcbiGeneInfo <- # nolint
         if (isTRUE(refseqGeneSummary)) {
             gs <- .refseqGeneSummary(organism)
             df <- leftJoin(df, gs, by = "geneId")
-        }
-        if (isTRUE(goTerms)) {
-            go <- goTermsPerGeneName(
-                organism = organism,
-                geneNames = unique(df[["geneName"]]),
-                format = "nested"
-            )
-            df <- leftJoin(df, go, by = "geneName")
         }
         ## Disabled Rle encoding in 0.7.3 update.
         ## > df <- encode(df)
