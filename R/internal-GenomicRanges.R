@@ -334,6 +334,9 @@
             x = mcols[["artifactualDuplication"]]
         )
     }
+    if (is.character(mcols[["dbXref"]])) {
+        mcols[["dbXref"]] <- CharacterList(as.list(mcols[["dbXref"]]))
+    }
     if (is.list(mcols[["geneSynonyms"]])) {
         mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
     }
@@ -450,8 +453,6 @@
 
 
 
-## FIXME Need to improve consistency of "dbxref" vs. "dbXref".
-
 #' Standardize the `GRanges` mcols naming conventions
 #'
 #' @details
@@ -547,6 +548,7 @@
     }
     ## e.g. GENCODE GFF.
     names(mcols)[names(mcols) == "artifDupl"] <- "artifactualDuplication"
+    names(mcols)[names(mcols) == "dbxref"] <- "dbXref"
     mcols(object) <- mcols
     object
 }

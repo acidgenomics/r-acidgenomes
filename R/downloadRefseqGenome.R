@@ -24,6 +24,8 @@
 #' - [Human Genome Resources at NCBI](https://www.ncbi.nlm.nih.gov/projects/genome/guide/human/)
 #' - [RefSeq Genomes FTP server](https://ftp.ncbi.nlm.nih.gov/genomes/refseq/)
 #' - [Genomes Download (FTP) FAQ](https://www.ncbi.nlm.nih.gov/genome/doc/ftpfaq/)
+#' - [GenBank annotating genomes with GFF3 or GTF files](https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/)
+#' - [db_xrefs](https://www.ncbi.nlm.nih.gov/genbank/collab/db_xref/)
 #' - [bcbio hg38 reference genome](https://steinbaugh.com/posts/bcbio-hg38.html)
 #' - [Heng Li: Which human reference genome to use?](https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use)
 #' - [GRCh38 assembly for alignment pipelines](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/)

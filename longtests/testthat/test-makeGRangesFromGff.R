@@ -912,8 +912,7 @@ test_that("GFF3 genes", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "factor",
-            ## FIXME Need to fix the name here.
-            "dbxref" = "CompressedCharacterList",
+            "dbXref" = "CompressedCharacterList",
             "description" = "character",
             "exception" = "character",
             "geneBiotype" = "factor",
@@ -940,8 +939,7 @@ test_that("GFF3 genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
-            ## FIXME Need to fix the name here.
-            "dbxref" = c(
+            "dbXref" = c(
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")",
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")"
             ),
@@ -1000,8 +998,7 @@ test_that("GFF3 transcripts", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "factor",
-            ## FIXME Need to fix the name here.
-            "dbxref" = "CompressedCharacterList",
+            "dbXref" = "CompressedCharacterList",
             "description" = "character",
             "exception" = "factor",
             "geneBiotype" = "factor",
@@ -1035,8 +1032,7 @@ test_that("GFF3 transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
-            ## FIXME Need to fix the name here.
-            "dbxref" = paste(
+            "dbXref" = paste(
                 "c(\"Ensembl:ENST00000318602.12\",",
                 "\"GeneID:2\",",
                 "\"GenBank:NM_000014.6\",",
