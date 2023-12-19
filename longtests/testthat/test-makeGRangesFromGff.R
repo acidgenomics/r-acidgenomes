@@ -467,13 +467,13 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "source" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "source" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -501,6 +501,12 @@ test_that("GTF transcripts", {
 
 file <- gffs[["gencode_grch38_gff3"]]
 
+## FIXME Need to improve "artifactualDuplication" column.
+## artifactual_duplication / artif_dupl
+## https://www.gencodegenes.org/pages/tags.html
+## artifactual_duplication
+## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
+
 test_that("GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
@@ -516,22 +522,22 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "artifDupl" = "Rle",
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "artifDupl" = "character",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "hgncId" = "character", # integer?
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
-            "type" = "Rle"
+            "type" = "factor"
         )
     )
     expect_identical(
