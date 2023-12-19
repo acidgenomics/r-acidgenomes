@@ -62,6 +62,7 @@ a genome build one version behind as a stable release
 \item \href{https://www.ncbi.nlm.nih.gov/projects/genome/guide/human/}{Human Genome Resources at NCBI}
 \item \href{https://ftp.ncbi.nlm.nih.gov/genomes/refseq/}{RefSeq Genomes FTP server}
 \item \href{https://www.ncbi.nlm.nih.gov/genome/doc/ftpfaq/}{Genomes Download (FTP) FAQ}
+\item \href{https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/}{GenBank annotating genomes with GFF3 or GTF files}
 \item \href{https://steinbaugh.com/posts/bcbio-hg38.html}{bcbio hg38 reference genome}
 \item \href{https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use}{Heng Li: Which human reference genome to use?}
 \item \href{https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/}{GRCh38 assembly for alignment pipelines}
