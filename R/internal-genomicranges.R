@@ -2,6 +2,10 @@
 ## when defined -- this may be ensembldb specific.
 
 ## FIXME Need to return geneBiotype and txBiotype as factors.
+## FIXME Another factor col: logicName.
+##
+## FIXME Need to sanitize txSupportLevel NAs:
+## "NA (assigned to previous version 9)" to NA.
 
 
 
@@ -19,8 +23,8 @@
 #' - *H. sapiens*: "MT-" gene name.
 #' - *M. musculus*: "mt-" gene name.
 #' - *D. melanogaster*: "mt:" gene name.
-#' - *C. elegans*: Can't match by gene name. Match by "MtDNA" chromosome.
-#' Alternatively, can match using "MTCE" sequence name (parent clone).
+#' - *C. elegans*: Can't match by gene name. Match by `"MtDNA"` chromosome.
+#' Alternatively, can match using `"MTCE"` sequence name (parent clone).
 #' https://www.wormbase.org/species/c_elegans/clone/MTCE
 #'
 #' Note that this might not be perfect for other genomes, so consider
@@ -41,15 +45,18 @@
 #'
 #' [biotypes guide]: https://m.ensembl.org/info/genome/genebuild/biotypes.html
 #'
-#' @seealso Can use `dplyr::case_when()` instead, which allows for a rowwise
-#' vectorized if/else call stack.
+#' @section `"other"` return:
 #'
-#' @note Can return `NA_character_` here instead. Keeping this as "other", to
+#' Can return `NA_character_` here instead. Keeping this as `"other"`, to
 #' main consistency with previous data sets. Also note that `NA` can behave
 #' inconsistently in plotting engines.
-#' @note Updated 2021-05-18.
+#'
+#' @seealso
+#' - Can use `dplyr::case_when()` instead, which allows for a rowwise vectorized
+#' if/else call stack.
 #'
 #' @author Rory Kirchner, Michael Steinbaugh
+#' @note Updated 2023-12-19.
 #' @noRd
 #'
 #' @param x `list`.

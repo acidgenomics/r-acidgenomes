@@ -32,13 +32,13 @@ test_that("GFF3 genes", {
         expected = list(
             "broadClass" = "factor",
             "description" = "character",
-            "geneBiotype" = "character", # FIXME factor
+            "geneBiotype" = "factor",
             "geneId" = "character",
             "geneIdNoVersion" = "character",
             "geneIdVersion" = "character",
             "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "logicName" = "character", # FIXME factor
+            "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
             "source" = "factor",
             "tag" = "CompressedCharacterList",
@@ -134,11 +134,11 @@ test_that("GFF3 transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "character", # FIXME factor
+            "geneId" = "character",
             "geneIdNoVersion" = "Rle",
             "geneIdVersion" = "Rle",
             "geneName" = "Rle",
@@ -147,13 +147,13 @@ test_that("GFF3 transcripts", {
             "ncbiGeneId" = "CompressedIntegerList",
             "source" = "Rle",
             "tag" = "CompressedCharacterList",
-            "txBiotype" = "Rle",
+            "txBiotype" = "factor",
             "txId" = "Rle",
             "txIdNoVersion" = "Rle",
             "txIdVersion" = "Rle",
             "txName" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
