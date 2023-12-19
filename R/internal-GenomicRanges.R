@@ -353,8 +353,9 @@
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
-    if (is.character(mcols[["source"]])) {
-        mcols[["source"]] <- sub(
+    if (isSubset("source", colnames(mcols))) {
+        ## e.g. Standardize "BestRefSeq%2CGnomon" to "BestRefSeq/Gnomon".
+        mcols[["source"]] <- gsub(
             pattern = "%2C",
             replacement = "/",
             x = mcols[["source"]],
