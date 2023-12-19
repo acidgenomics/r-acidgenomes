@@ -15,10 +15,11 @@ CompressedIntegerList <- structure(
     .Data = "CompressedIntegerList",
     package = "IRanges"
 )
-Rle <- structure(
-    .Data = "Rle",
-    package = "S4Vectors"
-)
+## Rle encoding disabled in 0.7.3 update.
+## > Rle <- structure(
+## >     .Data = "Rle",
+## >     package = "S4Vectors"
+## > )
 
 data(
     GRanges,
