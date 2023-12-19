@@ -7,9 +7,15 @@
 ## - logicName
 ## - txBiotype
 ## - txSupportLevel
-##
+
 ## FIXME Need to sanitize txSupportLevel NAs:
 ## "NA (assigned to previous version 9)" to NA.
+
+## FIXME Need to improve "artifactualDuplication" column.
+## artifactual_duplication / artif_dupl
+## https://www.gencodegenes.org/pages/tags.html
+## artifactual_duplication
+## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
 
 
 
