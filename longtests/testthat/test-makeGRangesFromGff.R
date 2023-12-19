@@ -1073,9 +1073,7 @@ test_that("GTF genes", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "factor",
-            ## FIXME Need to fix the name here.
-            ## FIXME This should be CompressedCharacterList.
-            "dbXref" = "character",
+            "dbXref" = "CompressedCharacterList",
             "description" = "character",
             "exception" = "Rle",
             "geneBiotype" = "Rle",
@@ -1102,7 +1100,6 @@ test_that("GTF genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
-            ## FIXME Fix the name here.
             "dbXref" = rep("MIM:608463", 2L),
             "description" =
                 rep("apoptosis antagonizing transcription factor", 2L),
@@ -1158,9 +1155,7 @@ test_that("GTF transcripts", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "Rle",
-            ## FIXME Fix the name here.
-            ## FIXME This should be CompressedCharacterList.
-            "dbXref" = "Rle",
+            "dbXref" = "CompressedCharacterList",
             "description" = "Rle",
             "exception" = "Rle",
             "geneBiotype" = "Rle",
@@ -1170,9 +1165,9 @@ test_that("GTF transcripts", {
             "modelEvidence" = "Rle",
             "ncbiGeneId" = "Rle",
             "parentGeneId" = "Rle",
-            "partial" = "Rle",
+            "partial" = "logical",
             "product" = "Rle",
-            "pseudo" = "Rle",
+            "pseudo" = "logical",
             "source" = "Rle",
             "tag" = "Rle",
             "txBiotype" = "Rle",
@@ -1194,7 +1189,6 @@ test_that("GTF transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
-            ## FIXME Fix the name here.
             "dbXref" = "GeneID:2",
             "description" = "alpha-2-macroglobulin",
             "exception" = NA_character_,
@@ -1205,9 +1199,9 @@ test_that("GTF transcripts", {
             "modelEvidence" = NA_character_,
             "ncbiGeneId" = "2",
             "parentGeneId" = "A2M",
-            "partial" = NA_character_,
+            "partial" = FALSE,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
-            "pseudo" = NA_character_,
+            "pseudo" = FALSE,
             "source" = "BestRefSeq",
             "tag" = "MANE Select",
             "txBiotype" = "mRNA",
