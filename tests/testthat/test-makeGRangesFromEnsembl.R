@@ -102,6 +102,7 @@ test_that("Transcripts", {
         expected = c("ENST00000635602.1", "ENST00000635506.1")
     )
     ## FIXME Convert txIsCanonical to boolean TRUE/FALSE rather than 1/0.
+    ## FIXME Is this ensembldb specific or do we need to do this for GTF files too?
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(

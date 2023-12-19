@@ -1,3 +1,8 @@
+## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
+## when defined -- this may be ensembldb specific.
+
+
+
 ## Metadata modification =======================================================
 
 #' Apply broad class definitions
