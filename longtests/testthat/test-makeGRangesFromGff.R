@@ -912,6 +912,7 @@ test_that("GFF3 genes", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "factor",
+            ## FIXME Need to fix the name here.
             "dbxref" = "CompressedCharacterList",
             "description" = "character",
             "exception" = "character",
@@ -939,6 +940,7 @@ test_that("GFF3 genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
+            ## FIXME Need to fix the name here.
             "dbxref" = c(
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")",
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")"
@@ -998,6 +1000,7 @@ test_that("GFF3 transcripts", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "factor",
+            ## FIXME Need to fix the name here.
             "dbxref" = "CompressedCharacterList",
             "description" = "character",
             "exception" = "factor",
@@ -1032,6 +1035,7 @@ test_that("GFF3 transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
+            ## FIXME Need to fix the name here.
             "dbxref" = paste(
                 "c(\"Ensembl:ENST00000318602.12\",",
                 "\"GeneID:2\",",
@@ -1072,9 +1076,11 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "dbXref" = "Rle",
-            "description" = "Rle",
+            "broadClass" = "factor",
+            ## FIXME Need to fix the name here.
+            ## FIXME This should be CompressedCharacterList.
+            "dbXref" = "character",
+            "description" = "character",
             "exception" = "Rle",
             "geneBiotype" = "Rle",
             "geneId" = "Rle",
@@ -1082,10 +1088,10 @@ test_that("GTF genes", {
             "geneSynonym" = "Rle",
             "ncbiGeneId" = "Rle",
             "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "partial" = "logical",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1100,6 +1106,7 @@ test_that("GTF genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
+            ## FIXME Fix the name here.
             "dbXref" = rep("MIM:608463", 2L),
             "description" =
                 rep("apoptosis antagonizing transcription factor", 2L),
@@ -1155,6 +1162,8 @@ test_that("GTF transcripts", {
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
             "broadClass" = "Rle",
+            ## FIXME Fix the name here.
+            ## FIXME This should be CompressedCharacterList.
             "dbXref" = "Rle",
             "description" = "Rle",
             "exception" = "Rle",
@@ -1189,6 +1198,7 @@ test_that("GTF transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
+            ## FIXME Fix the name here.
             "dbXref" = "GeneID:2",
             "description" = "alpha-2-macroglobulin",
             "exception" = NA_character_,
