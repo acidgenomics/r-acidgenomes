@@ -1,6 +1,3 @@
-## FIXME How to get txIsCanonical metadata for Ensembl GFFs?
-## This is defined in ensembldb package, but we're missing it here.
-
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",
@@ -137,21 +134,21 @@ test_that("GFF3 transcripts", {
             "broadClass" = "factor",
             "ccdsId" = "character",
             "description" = "character",
-            "geneBiotype" = "character", # FIXME factor
+            "geneBiotype" = "factor",
             "geneId" = "character",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "logicName" = "Rle",
+            "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
             "txBiotype" = "factor",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
             "txSupportLevel" = "factor",
             "type" = "factor"
         )
