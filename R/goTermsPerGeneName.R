@@ -98,6 +98,8 @@ goTermsPerGeneName <-
         df <- sort(df)
         if (!is.null(geneNames)) {
             ## FIXME Make this a function in AcidBase. Generally useful.
+            ## FIXME This is now available as `matchAll` in AcidBase. Rework
+            ## here.
             i <- unlist(lapply(
                 X = geneNames,
                 FUN = function(x, table) {
