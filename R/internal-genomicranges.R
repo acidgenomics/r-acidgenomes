@@ -133,7 +133,7 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-12-19.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -196,7 +196,9 @@
         ))
         return(object)
     }
-    mcols(object)[["broadClass"]] <- Rle(x)
+    ## Disabling Rle encoding in 0.7.3. update.
+    ## > x <- Rle(x)
+    mcols(object)[["broadClass"]] <- x
     object
 }
 
@@ -313,7 +315,8 @@
             if (is.factor(x)) {
                 x <- droplevels(x)
             }
-            x <- Rle(x)
+            ## Disabling Rle encoding in 0.7.3. update.
+            ## > x <- Rle(x)
             x
         }
     )
