@@ -1,3 +1,5 @@
+## nolint start
+
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
@@ -41,6 +43,22 @@
 #'
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
+#' @section Ensembl canonical transcript:
+#'
+#' Fetching the canonical transcripts currently requires connecting to the
+#' [Ensembl Perl API][]. This information is currently processed by the
+#' ensembldb package using the `fetchTablesFromEnsembl` function.
+#'
+#' See also:
+#' - http://useast.ensembl.org/info/genome/genebuild/canonical.html
+#' - https://www.ensembl.info/2021/04/16/update-to-the-ensembl-canonical-transcript-set/
+#' - https://github.com/jorainer/ensembldb/blob/devel/inst/perl/get_gene_transcript_exon_tables.pl
+#' - https://github.com/jorainer/ensembldb/issues/123
+#' - https://github.com/jorainer/ensembldb/blob/devel/R/functions-create-EnsDb.R#L36
+#' - `ensembldb::fetchTablesFromEnsembl()`.
+#'
+#' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
+#'
 #' @name makeGRangesFromEnsembl
 #' @note Updated 2023-12-05.
 #'
@@ -76,6 +94,8 @@
 #' ## >     summary(genes)
 #' ## > }
 NULL
+
+## nolint end
 
 
 
