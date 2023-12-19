@@ -730,22 +730,24 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "artifDupl" = "Rle",
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "artifactualDuplication" = "character",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            ## FIXME Consider returning tag as CompressedCharacterList, to
+            ## better match the GFF3 return.
+            "tag" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -760,7 +762,7 @@ test_that("GTF genes", {
             "end" = "177392756",
             "width" = "174090",
             "strand" = "-",
-            "artifDupl" = NA_character_,
+            "artifactualDuplication" = NA_character_,
             "broadClass" = "coding",
             "description" = paste(
                 "NFE2 like bZIP transcription factor 2",
@@ -773,7 +775,7 @@ test_that("GTF genes", {
             "geneName" = "NFE2L2",
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "1",
             "ncbiGeneId" = "4780",
             "source" = "HAVANA",
@@ -854,12 +856,14 @@ test_that("GTF transcripts", {
             "geneSynonyms" = "CompressedCharacterList",
             "havanaGene" = "Rle",
             "havanaTranscript" = "Rle",
-            "hgncId" = "Rle",
+            "hgncId" = "integer",
             "level" = "Rle",
             "ncbiGeneId" = "CompressedIntegerList",
             "proteinId" = "Rle",
             "source" = "Rle",
-            "tag" = "Rle",
+            ## FIXME Consider returning tag as CompressedCharacterList, to
+            ## better match the GFF3 return.
+            "tag" = "character",
             "txBiotype" = "Rle",
             "txId" = "Rle",
             "txIdNoVersion" = "Rle",
@@ -895,7 +899,7 @@ test_that("GTF transcripts", {
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
             "havanaTranscript" = "OTTHUMT00000257752.5",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "2",
             "ncbiGeneId" = "4780",
             "proteinId" = "ENSP00000380252.3",

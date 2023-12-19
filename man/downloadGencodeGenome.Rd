@@ -53,3 +53,8 @@ Updated 2023-12-19.
 ## >     annotation = "gtf"
 ## > )
 }
+\seealso{
+\itemize{
+\item https://www.gencodegenes.org/pages/tags.html
+}
+}

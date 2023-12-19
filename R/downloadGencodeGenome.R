@@ -7,6 +7,9 @@
 #'
 #' @return Invisible `list`.
 #'
+#' @seealso
+#' - https://www.gencodegenes.org/pages/tags.html
+#'
 #' @examples
 #' ## This example is bandwidth intensive.
 #' ## > downloadGencodeGenome(
