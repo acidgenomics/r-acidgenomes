@@ -1,3 +1,8 @@
+## FIXME How to get txIsCanonical metadata for Ensembl GFFs?
+## This is defined in ensembldb package, but we're missing it here.
+
+
+
 test_that("Unsupported files", {
     for (file in gffs[c(
         "flybase_gff3",
