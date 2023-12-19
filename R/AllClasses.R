@@ -708,21 +708,21 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ensemblGeneChromosome" = "Rle",
-                "ensemblGeneEnd" = "Rle",
-                "ensemblGeneId" = "Rle",
-                "ensemblGeneStart" = "Rle",
-                "ensemblGeneStrand" = "Rle",
-                "genomeBuild" = "Rle",
-                "markerName" = "Rle",
-                "markerSymbol" = "Rle",
-                "markerType" = "Rle",
-                "mgiAccessionId" = "Rle",
-                "ncbiGeneChromosome" = "Rle",
-                "ncbiGeneEnd" = "Rle",
-                "ncbiGeneId" = "Rle",
-                "ncbiGeneStart" = "Rle",
-                "ncbiGeneStrand" = "Rle"
+                "ensemblGeneChromosome" = "character",
+                "ensemblGeneEnd" = "integer",
+                "ensemblGeneId" = "character",
+                "ensemblGeneStart" = "integer",
+                "ensemblGeneStrand" = "factor",
+                "genomeBuild" = "character",
+                "markerName" = "character",
+                "markerSymbol" = "character",
+                "markerType" = "character",
+                "mgiAccessionId" = "integer",
+                "ncbiGeneChromosome" = "character",
+                "ncbiGeneEnd" = "integer",
+                "ncbiGeneId" = "integer",
+                "ncbiGeneStart" = "integer",
+                "ncbiGeneStrand" = "factor"
             )
         )
         if (!isTRUE(ok)) {
