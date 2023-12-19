@@ -108,7 +108,7 @@ test_that("Transcripts", {
             "canonicalTranscript" = "character",
             "description" = "character",
             "gcContent" = "numeric",
-            "geneBiotype" = "character", # FIXME factor
+            "geneBiotype" = "factor",
             "geneId" = "character",
             "geneIdNoVersion" = "character",
             "geneIdVersion" = "character",
@@ -117,8 +117,8 @@ test_that("Transcripts", {
             "geneSeqStart" = "integer",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "character", # FIXME factor
-            "txBiotype" = "character", # FIXME factor
+            "seqCoordSystem" = "factor",
+            "txBiotype" = "factor",
             "txCdsSeqEnd" = "integer",
             "txCdsSeqStart" = "integer",
             "txExternalName" = "character",
@@ -127,7 +127,7 @@ test_that("Transcripts", {
             "txIdVersion" = "character",
             "txIsCanonical" = "logical",
             "txName" = "character",
-            "txSupportLevel" = "integer" # FIXME factor?
+            "txSupportLevel" = "factor"
         )
     )
     expect_identical(

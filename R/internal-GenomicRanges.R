@@ -355,6 +355,9 @@
     if (is.character(mcols[["tag"]])) {
         mcols[["tag"]] <- CharacteList(mcols[["tag"]])
     }
+    if (is.integer(mcols[["txIsCanonical"]])) {
+        mcols[["txIsCanonical"]] <- as.logical(mcols[["txIsCanonical"]])
+    }
     if (isSubset("txSupportLevel", colnames(mcols))) {
         ## Sanitize "NA (assigned to previous version 9)" to "NA".
         mcols[["txSupportLevel"]] <- sub(
@@ -372,7 +375,6 @@
         "txBiotype",
         "txSupportLevel",
         "source",
-        "txIsCanonical",
         "type"
     )
     for (factorCol in factorCols) {
