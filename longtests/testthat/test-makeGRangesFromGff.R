@@ -1154,26 +1154,26 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
+            "broadClass" = "factor",
             "dbXref" = "CompressedCharacterList",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "inference" = "Rle",
-            "modelEvidence" = "Rle",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
+            "description" = "character",
+            "exception" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
             "partial" = "logical",
-            "product" = "Rle",
+            "product" = "character",
             "pseudo" = "logical",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1224,8 +1224,8 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = "Rle",
-            "geneName" = "Rle"
+            "geneId" = "character",
+            "geneName" = "character"
         )
     )
     expect_identical(
@@ -1282,16 +1282,16 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "txBiotype" = "Rle",
-            "txChrom" = "Rle",
-            "txEnd" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "txNumber" = "Rle",
-            "txStart" = "Rle",
-            "txStrand" = "Rle"
+            "geneId" = "character",
+            "geneName" = "character",
+            "txBiotype" = "factor",
+            "txChrom" = "factor",
+            "txEnd" = "integer",
+            "txId" = "character",
+            "txName" = "character",
+            "txNumber" = "integer",
+            "txStart" = "integer",
+            "txStrand" = "factor"
         )
     )
     expect_identical(
@@ -1336,14 +1336,14 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "geneVersion" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1424,18 +1424,18 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "geneVersion" = "Rle",
-            "source" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "source" = "factor",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1483,17 +1483,17 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1545,25 +1545,25 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
+            "broadClass" = "factor",
             "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
