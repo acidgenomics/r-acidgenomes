@@ -22,6 +22,8 @@
 ## FIXME Need to ensure that GENCODE "tag" column consistently returns as
 ## CompressedCharacterList, to prevent type switching between GFF3 and GTF.
 
+## FIXME Need to split RefSeq "source" tag by "%2C", which is a comma.
+
 
 
 ## Metadata modification =======================================================
