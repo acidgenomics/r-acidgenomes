@@ -353,6 +353,22 @@
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
+    if (is.character(mcols[["partial"]])) {
+        mcols[["partial"]][is.na(mcols[["partial"]])] <- "false"
+        assert(isSubset(
+            x = unique(mcols[["partial"]]),
+            y = c("false", "true")
+        ))
+        mcols[["partial"]] <- as.logical(mcols[["partial"]])
+    }
+    if (is.character(mcols[["pseudo"]])) {
+        mcols[["pseudo"]][is.na(mcols[["pseudo"]])] <- "false"
+        assert(isSubset(
+            x = unique(mcols[["pseudo"]]),
+            y = c("false", "true")
+        ))
+        mcols[["pseudo"]] <- as.logical(mcols[["pseudo"]])
+    }
     if (isSubset("source", colnames(mcols))) {
         ## e.g. Standardize "BestRefSeq%2CGnomon" to "BestRefSeq/Gnomon".
         mcols[["source"]] <- gsub(
@@ -384,6 +400,7 @@
         )
     }
     factorCols <- c(
+        "exception",
         "geneBiotype",
         "geneSource",
         "level",
