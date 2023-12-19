@@ -1,31 +1,3 @@
-## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
-## when defined -- this may be ensembldb specific.
-
-## FIXME Need to set these columns as factor:
-## - geneBiotype
-## - geneSource
-## - logicName
-## - txBiotype
-## - txSupportLevel
-
-## FIXME Need to sanitize txSupportLevel NAs:
-## "NA (assigned to previous version 9)" to NA.
-
-## FIXME Need to improve "artifactualDuplication" column.
-## artifactual_duplication / artif_dupl
-## https://www.gencodegenes.org/pages/tags.html
-## artifactual_duplication
-## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
-
-## FIXME Convert level to integer first, and then factor.
-
-## FIXME Need to ensure that GENCODE "tag" column consistently returns as
-## CompressedCharacterList, to prevent type switching between GFF3 and GTF.
-
-## FIXME Need to split RefSeq "source" tag by "%2C", which is a comma.
-
-
-
 ## Metadata modification =======================================================
 
 #' Apply broad class definitions
@@ -316,23 +288,53 @@
 
 ## Standardization =============================================================
 
-#' Minimize `GRanges` mcols
+#' Finalize `GRanges` mcols return
 #'
 #' @note Updated 2023-12-19.
 #' @noRd
 #'
 #' @details
-#' This step sanitizes NA values, applies run-length encoding (to reduce memory
-#' overhead), and trims any invalid ranges.
-#'
-#' This trimming step was added to handle GRanges from Ensembl 102, which won't
-#' return valid otherwise from ensembldb.
-.minimizeMcols <- function(object) {
+#' This step sanitizes NA values, relevels factors, and trims invalid ranges.
+.finalizeMcols <- function(object) {
     assert(is(object, "GRanges"))
     length <- length(object)
     object <- trim(object)
     assert(hasLength(object, n = length))
     mcols <- mcols(object)
+    if (is.list(mcols[["geneSynonyms"]])) {
+        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
+    }
+    if (is.list(mcols[["ncbiGeneId"]])) {
+        mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
+    }
+    ## FIXME Set factor on specific columns.
+    ##
+    ## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
+    ## when defined -- this may be ensembldb specific.
+    ##
+    ## FIXME Need to set these columns as factor:
+    ## - geneBiotype
+    ## - geneSource
+    ## - logicName
+    ## - txBiotype
+    ## - txSupportLevel
+    ##
+    ## FIXME Need to sanitize txSupportLevel NAs:
+    ## "NA (assigned to previous version 9)" to NA.
+    ##
+    ## FIXME Need to improve "artifactualDuplication" column.
+    ## artifactual_duplication / artif_dupl
+    ## https://www.gencodegenes.org/pages/tags.html
+    ## artifactual_duplication
+    ## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
+    ##
+    ## FIXME Convert level to integer first, and then factor.
+    ##
+    ## FIXME Need to ensure that GENCODE "tag" column consistently returns as
+    ## CompressedCharacterList, to prevent type switching between GFF3 and GTF.
+    ##
+    ## FIXME Need to split RefSeq "source" tag by "%2C", which is a comma.
+    ##
     mcolsList <- lapply(
         X = mcols,
         FUN = function(x) {
@@ -353,15 +355,7 @@
     )
     mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
     mcols <- as.DataFrame(mcolsList)
-    ## Ensure nested list columns return classed when possible.
-    if (is.list(mcols[["ncbiGeneId"]])) {
-        mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
-    }
-    ## This step is necessary here until we can fix unwanted coercion with join
-    ## operations due to internal DFrame `merge()` call in AcidPlyr.
-    if (is.list(mcols[["geneSynonyms"]])) {
-        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
-    }
+    mcols <- mcols[, sort(names(mcols)), drop = FALSE]
     mcols(object) <- mcols
     object
 }
@@ -542,7 +536,7 @@
             }
         }
         ## FIXME Rework / rename this step.
-        object <- .minimizeMcols(object)
+        object <- .finalizeMcols(object)
         idCol <- .matchGRangesNamesColumn(object)
         assert(isSubset(idCol, names(mcols(object))))
         alert(sprintf(
@@ -551,9 +545,6 @@
         ))
         ## Sort the ranges by genomic location.
         object <- sort(object)
-        ## Sort the mcols alphabetically.
-        mcols(object) <-
-            mcols(object)[, sort(names(mcols(object))), drop = FALSE]
         ## Sort the metadata elements alphabetically.
         metadata(object) <- append(
             x = metadata(object),
