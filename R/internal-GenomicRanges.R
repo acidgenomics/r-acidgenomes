@@ -344,8 +344,10 @@
         mcols[["hgncId"]] <- as.integer(mcols[["hgncId"]])
     }
     if (is.character(mcols[["level"]])) {
-        ## FIXME Is this safe? Need to double check...seems like there may
-        ## be weird values causing this to be set to character?
+        assert(allAreMatchingRegex(
+            x = na.omit(mcols[["level"]]),
+            pattern = "^[0-9]+$"
+        ))
         mcols[["level"]] <- as.integer(level)
     }
     if (is.list(mcols[["ncbiGeneId"]])) {
@@ -356,6 +358,10 @@
         mcols[["tag"]] <- CharacteList(mcols[["tag"]])
     }
     if (is.integer(mcols[["txIsCanonical"]])) {
+        assert(isSubset(
+            x = unique(na.omit(mcols[["txIsCanonical"]])),
+            y = c(0L, 1L)
+        ))
         mcols[["txIsCanonical"]] <- as.logical(mcols[["txIsCanonical"]])
     }
     if (isSubset("txSupportLevel", colnames(mcols))) {
