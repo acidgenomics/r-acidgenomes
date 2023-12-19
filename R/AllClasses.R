@@ -695,7 +695,7 @@ setValidity(
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-19.
 #'
 #' @return `Mgi`.
 setClass(
@@ -756,7 +756,7 @@ setValidity(
 #' NCBI gene history
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-19.
 #'
 #' @return `NcbiGeneHistory`.
 setClass(
@@ -769,10 +769,10 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "discontinuedGeneId" = "Rle",
-                "discontinuedSymbol" = "Rle",
+                "discontinuedGeneId" = "integer",
+                "discontinuedSymbol" = "character",
                 "discontinueDate" = "Date",
-                "geneId" = "Rle"
+                "geneId" = "integer"
             )
         )
         if (!isTRUE(ok)) {
