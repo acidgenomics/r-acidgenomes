@@ -807,7 +807,7 @@ setValidity(
 #' NCBI gene identifier information
 #'
 #' @export
-#' @note Updated 2023-12-12.
+#' @note Updated 2023-12-19.
 #'
 #' @return `NcbiGeneInfo`.
 setClass(
@@ -820,19 +820,19 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "chromosome" = "Rle",
+                "chromosome" = "character",
                 "dbXrefs" = "CompressedCharacterList",
-                "description" = "Rle",
-                "featureType" = "Rle",
-                "geneId" = "Rle",
-                "geneName" = "Rle",
+                "description" = "character",
+                "featureType" = "character",
+                "geneId" = "integer",
+                "geneName" = "character",
                 "geneSynonyms" = "CompressedCharacterList",
-                "mapLocation" = "Rle",
+                "mapLocation" = "character",
                 "modificationDate" = "Date",
-                "nomenclatureStatus" = "Rle",
+                "nomenclatureStatus" = "character",
                 "otherDesignations" = "CompressedCharacterList",
-                "taxonomyId" = "Rle",
-                "typeOfGene" = "Rle"
+                "taxonomyId" = "integer",
+                "typeOfGene" = "character"
             ),
             subset = TRUE
         )
