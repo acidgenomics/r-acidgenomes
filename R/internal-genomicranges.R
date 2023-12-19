@@ -295,7 +295,7 @@
 #'
 #' @details
 #' This step sanitizes NA values, relevels factors, and trims invalid ranges.
-.finalizeMcols <- function(object) {
+.returnMcols <- function(object) {
     assert(is(object, "GRanges"))
     length <- length(object)
     object <- trim(object)
@@ -307,20 +307,19 @@
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
-    ## FIXME Set factor on specific columns.
-    ##
-    ## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
-    ## when defined -- this may be ensembldb specific.
-    ##
-    ## FIXME Need to set these columns as factor:
-    ## - geneBiotype
-    ## - geneSource
-    ## - logicName
-    ## - txBiotype
-    ## - txSupportLevel
-    ##
-    ## FIXME Need to sanitize txSupportLevel NAs:
+    ## FIXME Need to sanitize txSupportLevel.
     ## "NA (assigned to previous version 9)" to NA.
+    ## FIXME Need to set factor on these columns.
+    factorCols <- c(
+        "geneBiotype",
+        "geneSource",
+        "logicName",
+        "txBiotype",
+        "txSupportLevel",
+        "source",
+        "txIsCanonical",
+        "type"
+    )
     ##
     ## FIXME Need to improve "artifactualDuplication" column.
     ## artifactual_duplication / artif_dupl
@@ -391,7 +390,7 @@
 
 
 
-#' Standardize the `GRanges` mcols into desired naming conventions
+#' Standardize the `GRanges` mcols naming conventions
 #'
 #' @details
 #' Always return using camel case, even though GFF/GTF files use snake.
@@ -402,7 +401,7 @@
 #'
 #' @note Updated 2023-12-19.
 #' @noRd
-.standardizeMcols <- function(object) {
+.standardizeMcolsNames <- function(object) {
     assert(is(object, "GRanges"))
     mcols <- mcols(object)
     names(mcols) <- camelCase(names(mcols), strict = TRUE)
@@ -518,7 +517,7 @@
             choices = .grangesLevels
         )
         provider <- metadata(object)[["provider"]]
-        object <- .standardizeMcols(object)
+        object <- .standardizeMcolsNames(object)
         if (isFALSE(ignoreVersion)) {
             object <- .includeGeneVersion(object)
             object <- .includeTxVersion(object)
@@ -535,8 +534,7 @@
                 )
             }
         }
-        ## FIXME Rework / rename this step.
-        object <- .finalizeMcols(object)
+        object <- .returnMcols(object)
         idCol <- .matchGRangesNamesColumn(object)
         assert(isSubset(idCol, names(mcols(object))))
         alert(sprintf(
