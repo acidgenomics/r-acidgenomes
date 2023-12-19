@@ -390,11 +390,11 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
