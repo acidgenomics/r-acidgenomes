@@ -1,7 +1,7 @@
 #' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-19.
 #'
 #' @return `Mgi`.
 #'
@@ -70,7 +70,8 @@ Mgi <- function() { # nolint
     df[[idCol]] <- as.integer(df[[idCol]])
     rownames(df) <- df[[idCol]]
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
-    df <- encode(df)
+    ## Disabled Rle encoding in 0.7.3 update.
+    ## > df <- encode(df)
     metadata(df) <- list(
         "date" = Sys.Date(),
         "organism" = "Mus musculus",

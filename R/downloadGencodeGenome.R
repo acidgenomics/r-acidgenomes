@@ -1,7 +1,7 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-11-28.
+#' @note Updated 2023-12-19.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
@@ -234,7 +234,8 @@ downloadGencodeGenome <-
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(genes) <- encode(mcols)
+        ## Disabled Rle encoding in 0.7.3 update.
+        ## > mcols(genes) <- encode(mcols)
         ## Add NCBI and RefSeq identifiers to transcript metadata.
         mcols <- decode(mcols(transcripts))
         if (isSubset("ncbiGeneId", names(mcols))) {
@@ -255,7 +256,8 @@ downloadGencodeGenome <-
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(transcripts) <- encode(mcols)
+        ## Disabled Rle encoding in 0.7.3 update.
+        ## > mcols(transcripts) <- encode(mcols)
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
