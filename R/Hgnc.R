@@ -1,3 +1,7 @@
+## FIXME Consider adding support for goTerms here, disabled by default.
+
+
+
 #' Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 #' metadata
 #'
