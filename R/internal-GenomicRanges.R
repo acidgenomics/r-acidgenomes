@@ -1,4 +1,75 @@
-## Metadata modification =======================================================
+#' Add broad class annotations
+#'
+#' @note Updated 2023-12-19.
+#' @noRd
+.addBroadClass <- function(object) {
+    assert(
+        is(object, "GRanges"),
+        identical(
+            x = names(mcols(object)),
+            y = camelCase(names(mcols(object)), strict = TRUE)
+        ),
+        !isSubset("broadClass", names(mcols(object))),
+        allAreNotMatchingRegex(
+            x = names(mcols(object)),
+            pattern = "^transcript"
+        )
+    )
+    df <- as.data.frame(object)
+    ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
+    ## only applies for transcript-level GRanges.
+    if ("geneBiotype" %in% names(df)) {
+        biotypeCol <- "geneBiotype"
+        biotypeData <- df[[biotypeCol]]
+    } else if ("txBiotype" %in% names(df)) {
+        biotypeCol <- "txBiotype"
+        biotypeData <- df[[biotypeCol]]
+    } else {
+        biotypeCol <- NULL
+        biotypeData <- NA_character_
+    }
+    ## Gene names.
+    if ("geneName" %in% names(df)) {
+        geneNameCol <- "geneName"
+        geneNameData <- df[[geneNameCol]]
+    } else {
+        geneNameCol <- NULL
+        geneNameData <- NA_character_
+    }
+    ## Seqnames. This refers to the chromosome name. Note that data frame
+    ## coercion will define `seqnames` column from the GRanges (see above).
+    if ("seqnames" %in% names(df)) {
+        seqnamesCol <- "seqnames"
+        seqnamesData <- df[[seqnamesCol]]
+    } else {
+        seqnamesCol <- NULL
+        seqnamesData <- NA_character_
+    }
+    ## Apply broad class. Note that this method doesn't seem to work right with
+    ## DFrame class.
+    df <- data.frame(
+        "biotype" = biotypeData,
+        "chromosome" = seqnamesData,
+        "geneName" = geneNameData,
+        row.names = names(object),
+        stringsAsFactors = TRUE
+    )
+    x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
+    x <- as.factor(x)
+    if (all(x == "other")) {
+        alertWarning(sprintf(
+            "Returning without {.var %s} in {.var %s}.",
+            "broadClass", "mcols"
+        ))
+        return(object)
+    }
+    ## Disabling Rle encoding in 0.7.3. update.
+    ## > x <- Rle(x)
+    mcols(object)[["broadClass"]] <- x
+    object
+}
+
+
 
 #' Apply broad class definitions
 #'
@@ -134,80 +205,39 @@
 
 
 
-#' Add broad class annotations
+#' Include the gene identifier version
 #'
-#' @note Updated 2023-12-19.
+#' Append the gene version to the identifier (e.g. ENSG00000000003.15).
+#'
+#' @note Updated 2021-01-27.
 #' @noRd
-.addBroadClass <- function(object) {
-    assert(
-        is(object, "GRanges"),
-        identical(
-            x = names(mcols(object)),
-            y = camelCase(names(mcols(object)), strict = TRUE)
-        ),
-        !isSubset("broadClass", names(mcols(object))),
-        allAreNotMatchingRegex(
-            x = names(mcols(object)),
-            pattern = "^transcript"
-        )
+.includeGeneVersion <- function(object) {
+    .includeVersion(
+        object = object,
+        idCol = "geneId",
+        idVersionCol = "geneIdVersion",
+        idNoVersionCol = "geneIdNoVersion"
     )
-    df <- as.data.frame(object)
-    ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
-    ## only applies for transcript-level GRanges.
-    if ("geneBiotype" %in% names(df)) {
-        biotypeCol <- "geneBiotype"
-        biotypeData <- df[[biotypeCol]]
-    } else if ("txBiotype" %in% names(df)) {
-        biotypeCol <- "txBiotype"
-        biotypeData <- df[[biotypeCol]]
-    } else {
-        biotypeCol <- NULL
-        biotypeData <- NA_character_
-    }
-    ## Gene names.
-    if ("geneName" %in% names(df)) {
-        geneNameCol <- "geneName"
-        geneNameData <- df[[geneNameCol]]
-    } else {
-        geneNameCol <- NULL
-        geneNameData <- NA_character_
-    }
-    ## Seqnames. This refers to the chromosome name. Note that data frame
-    ## coercion will define `seqnames` column from the GRanges (see above).
-    if ("seqnames" %in% names(df)) {
-        seqnamesCol <- "seqnames"
-        seqnamesData <- df[[seqnamesCol]]
-    } else {
-        seqnamesCol <- NULL
-        seqnamesData <- NA_character_
-    }
-    ## Apply broad class. Note that this method doesn't seem to work right with
-    ## DFrame class.
-    df <- data.frame(
-        "biotype" = biotypeData,
-        "chromosome" = seqnamesData,
-        "geneName" = geneNameData,
-        row.names = names(object),
-        stringsAsFactors = TRUE
-    )
-    x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
-    x <- as.factor(x)
-    if (all(x == "other")) {
-        alertWarning(sprintf(
-            "Returning without {.var %s} in {.var %s}.",
-            "broadClass", "mcols"
-        ))
-        return(object)
-    }
-    ## Disabling Rle encoding in 0.7.3. update.
-    ## > x <- Rle(x)
-    mcols(object)[["broadClass"]] <- x
-    object
 }
 
 
 
-## Identifier versions =========================================================
+#' Include the transcript identifier version
+#'
+#' Append the transcript version to the identifier (e.g. ENST00000000233.10).
+#'
+#' @note Updated 2021-01-27.
+#' @noRd
+.includeTxVersion <- function(object) {
+    .includeVersion(
+        object = object,
+        idCol = "txId",
+        idVersionCol = "txIdVersion",
+        idNoVersionCol = "txIdNoVersion"
+    )
+}
+
+
 
 #' Include identifier version in primary identifier
 #'
@@ -252,115 +282,6 @@
 
 
 
-#' Include the gene identifier version
-#'
-#' Append the gene version to the identifier (e.g. ENSG00000000003.15).
-#'
-#' @note Updated 2021-01-27.
-#' @noRd
-.includeGeneVersion <- function(object) {
-    .includeVersion(
-        object = object,
-        idCol = "geneId",
-        idVersionCol = "geneIdVersion",
-        idNoVersionCol = "geneIdNoVersion"
-    )
-}
-
-
-
-#' Include the transcript identifier version
-#'
-#' Append the transcript version to the identifier (e.g. ENST00000000233.10).
-#'
-#' @note Updated 2021-01-27.
-#' @noRd
-.includeTxVersion <- function(object) {
-    .includeVersion(
-        object = object,
-        idCol = "txId",
-        idVersionCol = "txIdVersion",
-        idNoVersionCol = "txIdNoVersion"
-    )
-}
-
-
-
-## Standardization =============================================================
-
-#' Finalize `GRanges` mcols return
-#'
-#' @note Updated 2023-12-19.
-#' @noRd
-#'
-#' @details
-#' This step sanitizes NA values, relevels factors, and trims invalid ranges.
-.returnMcols <- function(object) {
-    assert(is(object, "GRanges"))
-    length <- length(object)
-    object <- trim(object)
-    assert(hasLength(object, n = length))
-    mcols <- mcols(object)
-    if (is.list(mcols[["geneSynonyms"]])) {
-        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
-    }
-    if (is.list(mcols[["ncbiGeneId"]])) {
-        mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
-    }
-    ## FIXME Need to sanitize txSupportLevel.
-    ## "NA (assigned to previous version 9)" to NA.
-    ## FIXME Need to set factor on these columns.
-    factorCols <- c(
-        "geneBiotype",
-        "geneSource",
-        "logicName",
-        "txBiotype",
-        "txSupportLevel",
-        "source",
-        "txIsCanonical",
-        "type"
-    )
-    ##
-    ## FIXME Need to improve "artifactualDuplication" column.
-    ## artifactual_duplication / artif_dupl
-    ## https://www.gencodegenes.org/pages/tags.html
-    ## artifactual_duplication
-    ## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
-    ##
-    ## FIXME Convert level to integer first, and then factor.
-    ##
-    ## FIXME Need to ensure that GENCODE "tag" column consistently returns as
-    ## CompressedCharacterList, to prevent type switching between GFF3 and GTF.
-    ##
-    ## FIXME Need to split RefSeq "source" tag by "%2C", which is a comma.
-    ##
-    mcolsList <- lapply(
-        X = mcols,
-        FUN = function(x) {
-            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
-                return(x)
-            }
-            x <- sanitizeNa(x)
-            if (all(is.na(x))) {
-                return(NULL)
-            }
-            if (is.factor(x)) {
-                x <- droplevels(x)
-            }
-            ## Disabling Rle encoding in 0.7.3. update.
-            ## > x <- Rle(x)
-            x
-        }
-    )
-    mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
-    mcols <- as.DataFrame(mcolsList)
-    mcols <- mcols[, sort(names(mcols)), drop = FALSE]
-    mcols(object) <- mcols
-    object
-}
-
-
-
 #' Match the identifier column in `GRanges` to use for names.
 #'
 #' @note Updated 2023-04-26.
@@ -386,6 +307,90 @@
     x <- names(mcols(object))[idx]
     assert(isString(x))
     x
+}
+
+
+
+#' Finalize `GRanges` mcols return
+#'
+#' @note Updated 2023-12-19.
+#' @noRd
+#'
+#' @details
+#' This step sanitizes NA values, relevels factors, and trims invalid ranges.
+.returnMcols <- function(object) {
+    assert(is(object, "GRanges"))
+    length <- length(object)
+    object <- trim(object)
+    assert(hasLength(object, n = length))
+    mcols <- mcols(object)
+    if (isSubset("artifactualDuplication", colnames(mcols))) {
+        ## e.g. GENCODE GFF.
+        mcols[["artifactualDuplication"]] <- sub(
+            pattern = "^real_copy_is_",
+            replacement = "",
+            x = mcols[["artifactualDuplication"]]
+        )
+    }
+    if (is.list(mcols[["geneSynonyms"]])) {
+        mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
+    }
+    if (isSubset("hgncId", colnames(mcols))) {
+        mcols[["hgncId"]] <- sub(
+            pattern = "^HGNC\\:",
+            replacement = "",
+            x = mcols[["hgncId"]]
+        )
+        mcols[["hgncId"]] <- as.integer(mcols[["hgncId"]])
+    }
+    if (is.list(mcols[["ncbiGeneId"]])) {
+        mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
+    }
+    ## FIXME "level": Convert to integer first, and then factor.
+    ##
+    ## FIXME "source": (RefSeq) Need to split by "%2C", which is a comma.
+    ##
+    ## FIXME "tag": Need to ensure that GENCODE "tag" column consistently
+    ## returns as CompressedCharacterList, to prevent type switching between
+    ## GFF3 and GTF.
+    ##
+    ## FIXME "txSupportLevel": Need to sanitize:
+    ## "NA (assigned to previous version 9)" to NA.
+    ##
+    ## FIXME Need to ensure specific columns are always factor.
+    factorCols <- c(
+        "geneBiotype",
+        "geneSource",
+        "logicName",
+        "txBiotype",
+        "txSupportLevel",
+        "source",
+        "txIsCanonical",
+        "type"
+    )
+    mcolsList <- lapply(
+        X = mcols,
+        FUN = function(x) {
+            if (isS4(x) || is(x, "AsIs") || !is.atomic(x)) {
+                return(x)
+            }
+            x <- sanitizeNa(x)
+            if (all(is.na(x))) {
+                return(NULL)
+            }
+            if (is.factor(x)) {
+                x <- droplevels(x)
+            }
+            ## Disabling Rle encoding in 0.7.3. update.
+            ## > x <- Rle(x)
+            x
+        }
+    )
+    mcolsList <- Filter(f = Negate(is.null), x = mcolsList)
+    mcols <- as.DataFrame(mcolsList)
+    mcols <- mcols[, sort(names(mcols)), drop = FALSE]
+    mcols(object) <- mcols
+    object
 }
 
 
@@ -491,14 +496,12 @@
 
 
 
-## Main generator ==============================================================
-
 #' Make genomic ranges (`GRanges`)
 #'
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-12-05.
+#' @note Updated 2023-12-19.
 #' @noRd
 .makeGRanges <-
     function(object,
