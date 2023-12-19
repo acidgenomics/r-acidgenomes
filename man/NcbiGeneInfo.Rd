@@ -36,7 +36,7 @@ genomes. Intended primarily for \emph{Homo sapiens}.}
 Import NCBI (Entrez) gene identifier information
 }
 \note{
-Updated 2023-12-13.
+Updated 2023-12-19.
 }
 \examples{
 object <- NcbiGeneInfo(
