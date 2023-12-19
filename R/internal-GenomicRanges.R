@@ -343,24 +343,30 @@
         )
         mcols[["hgncId"]] <- as.integer(mcols[["hgncId"]])
     }
+    if (is.character(mcols[["level"]])) {
+        ## FIXME Is this safe? Need to double check...seems like there may
+        ## be weird values causing this to be set to character?
+        mcols[["level"]] <- as.integer(level)
+    }
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
-    ## FIXME "level": Convert to integer first, and then factor.
-    ##
     ## FIXME "source": (RefSeq) Need to split by "%2C", which is a comma.
-    ##
-    ## FIXME "tag": Need to ensure that GENCODE "tag" column consistently
-    ## returns as CompressedCharacterList, to prevent type switching between
-    ## GFF3 and GTF.
-    ##
-    ## FIXME "txSupportLevel": Need to sanitize:
-    ## "NA (assigned to previous version 9)" to NA.
-    ##
-    ## FIXME Need to ensure specific columns are always factor.
+    if (is.character(mcols[["tag"]])) {
+        mcols[["tag"]] <- CharacteList(mcols[["tag"]])
+    }
+    if (isSubset("txSupportLevel", colnames(mcols))) {
+        ## Sanitize "NA (assigned to previous version 9)".
+        mcols[["txSupportLevel"]] <- sub(
+            pattern = "^NA\\s.+$",
+            replacement = "NA",
+            x = mcols[["txSupportLevel"]]
+        )
+    }
     factorCols <- c(
         "geneBiotype",
         "geneSource",
+        "level",
         "logicName",
         "txBiotype",
         "txSupportLevel",
@@ -368,6 +374,11 @@
         "txIsCanonical",
         "type"
     )
+    for (factorCol in factorCols) {
+        if (!is.factor(mcols[[factorCol]])) {
+            mcols[[factorCol]] <- as.factor(mcols[[factorCol]])
+        }
+    }
     mcolsList <- lapply(
         X = mcols,
         FUN = function(x) {
