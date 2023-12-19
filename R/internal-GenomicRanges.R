@@ -356,7 +356,7 @@
         mcols[["tag"]] <- CharacteList(mcols[["tag"]])
     }
     if (isSubset("txSupportLevel", colnames(mcols))) {
-        ## Sanitize "NA (assigned to previous version 9)".
+        ## Sanitize "NA (assigned to previous version 9)" to "NA".
         mcols[["txSupportLevel"]] <- sub(
             pattern = "^NA\\s.+$",
             replacement = "NA",
@@ -368,6 +368,7 @@
         "geneSource",
         "level",
         "logicName",
+        "seqCoordSystem",
         "txBiotype",
         "txSupportLevel",
         "source",
@@ -375,7 +376,11 @@
         "type"
     )
     for (factorCol in factorCols) {
-        if (!is.factor(mcols[[factorCol]])) {
+        if (
+            isSubset(factorCol, colnames(mcols)) &&
+            !is.factor(mcols[[factorCol]])
+        ) {
+            assert(is.atomic(mcols[[factorCol]]))
             mcols[[factorCol]] <- as.factor(mcols[[factorCol]])
         }
     }
