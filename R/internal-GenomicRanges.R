@@ -311,6 +311,8 @@
 
 
 
+## FIXME dbxref needs to return as CompressedCharacterList.
+
 #' Finalize `GRanges` mcols return
 #'
 #' @note Updated 2023-12-19.
@@ -447,6 +449,8 @@
 }
 
 
+
+## FIXME Need to improve consistency of "dbxref" vs. "dbXref".
 
 #' Standardize the `GRanges` mcols naming conventions
 #'
