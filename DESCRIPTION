@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.7.3.9000
-Date: 2023-12-15
+Date: 2023-12-19
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -22,9 +22,9 @@ License: AGPL-3
 Encoding: UTF-8
 Depends: R (>= 4.3)
 Imports:
-    AcidBase (>= 0.7.2),
+    AcidBase (>= 0.7.3),
     AcidCLI (>= 0.3.0),
-    AcidGenerics (>= 0.7.5),
+    AcidGenerics (>= 0.7.6),
     AcidPlyr (>= 0.5.3),
     BiocGenerics (>= 0.48.0),
     GenomeInfoDb (>= 1.38.0),
@@ -32,13 +32,13 @@ Imports:
     IRanges (>= 2.36.0),
     S4Vectors (>= 0.40.0),
     goalie (>= 0.7.7),
-    pipette (>= 0.15.1),
+    pipette (>= 0.15.2),
     syntactic (>= 0.7.1),
     methods,
     parallel,
     utils
 Suggests:
-    AcidDevTools (>= 0.7.3),
+    AcidDevTools (>= 0.7.4),
     AcidTest (>= 0.9.0),
     AnnotationDbi (>= 1.64.0),
     AnnotationHub (>= 3.10.0),

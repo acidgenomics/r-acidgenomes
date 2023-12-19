@@ -7,7 +7,7 @@
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2023-12-13.
+#' @note Updated 2023-12-19.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -135,7 +135,8 @@ NcbiGeneInfo <- # nolint
             )
             df <- leftJoin(df, go, by = "geneName")
         }
-        df <- encode(df)
+        ## Disabled Rle encoding in 0.7.3 update.
+        ## > df <- encode(df)
         df <- df[, sort(colnames(df))]
         metadata(df) <- list(
             "date" = Sys.Date(),
