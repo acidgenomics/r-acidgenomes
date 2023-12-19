@@ -316,9 +316,9 @@
 
 ## Standardization =============================================================
 
-#' Apply run-length encoding and minimize `GRanges` mcols
+#' Minimize `GRanges` mcols
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2023-12-19.
 #' @noRd
 #'
 #' @details
@@ -327,7 +327,7 @@
 #'
 #' This trimming step was added to handle GRanges from Ensembl 102, which won't
 #' return valid otherwise from ensembldb.
-.encodeMcols <- function(object) {
+.minimizeMcols <- function(object) {
     assert(is(object, "GRanges"))
     length <- length(object)
     object <- trim(object)
@@ -379,12 +379,7 @@
     )
     level <- match.arg(
         arg = metadata(object)[["level"]],
-        choices = c(
-            "cds",
-            "exons",
-            "genes",
-            "transcripts"
-        )
+        choices = c("cds", "exons", "genes", "transcripts")
     )
     x <- camelCase(names(mcols(object)), strict = TRUE)
     table <- switch(
@@ -411,7 +406,7 @@
 #' incompatible with `GenomicFeatures::makeTxDbFromGRanges()` parser, so be
 #' sure to call that function prior to attempting to run this step.
 #'
-#' @note Updated 2023-04-26.
+#' @note Updated 2023-12-19.
 #' @noRd
 .standardizeMcols <- function(object) {
     assert(is(object, "GRanges"))
@@ -495,6 +490,8 @@
         ## e.g. GENCODE GFF.
         names(mcols)[names(mcols) == "txType"] <- "txBiotype"
     }
+    ## e.g. GENCODE GFF.
+    names(mcols)[names(mcols) == "artifDupl"] <- "artifactualDuplication"
     mcols(object) <- mcols
     object
 }
@@ -544,7 +541,8 @@
                 )
             }
         }
-        object <- .encodeMcols(object)
+        ## FIXME Rework / rename this step.
+        object <- .minimizeMcols(object)
         idCol <- .matchGRangesNamesColumn(object)
         assert(isSubset(idCol, names(mcols(object))))
         alert(sprintf(
