@@ -355,7 +355,7 @@
     }
     ## FIXME "source": (RefSeq) Need to split by "%2C", which is a comma.
     if (is.character(mcols[["tag"]])) {
-        mcols[["tag"]] <- CharacteList(mcols[["tag"]])
+        mcols[["tag"]] <- CharacterList(mcols[["tag"]])
     }
     if (is.integer(mcols[["txIsCanonical"]])) {
         assert(isSubset(
