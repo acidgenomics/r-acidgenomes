@@ -923,20 +923,20 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
+            "broadClass" = "factor",
             "dbxref" = "CompressedCharacterList",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
+            "description" = "character",
+            "exception" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
             "geneSynonym" = "CompressedCharacterList",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "character",
+            "pseudo" = "character",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -967,7 +967,13 @@ test_that("GFF3 genes", {
             "parentGeneId" = c("AATF", "AATF-2"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq%2CGnomon"),
+            ## FIXME Should we sanitize the "%2C" here?
+            ## FIXME This is a comma -- "%2C".
+            ## This should be reworked as a CharacterList, split by comma.
+            "source" = c(
+                "BestRefSeq%2CGnomon",
+                "BestRefSeq%2CGnomon"
+            ),
             "type" = rep("gene", 2L)
         )
     )
