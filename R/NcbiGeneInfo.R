@@ -1,9 +1,3 @@
-## FIXME Can we add gene ontology information?
-## http://current.geneontology.org/products/pages/downloads.html
-## http://geneontology.org/gene-associations/goa_human_rna.gaf.gz
-
-
-
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
