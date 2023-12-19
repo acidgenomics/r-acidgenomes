@@ -921,8 +921,8 @@ test_that("GFF3 genes", {
             "geneSynonym" = "CompressedCharacterList",
             "ncbiGeneId" = "integer",
             "parentGeneId" = "character",
-            "partial" = "character",
-            "pseudo" = "character",
+            "partial" = "logical",
+            "pseudo" = "logical",
             "source" = "factor",
             "type" = "factor"
         )
@@ -953,8 +953,8 @@ test_that("GFF3 genes", {
                 rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),
             "ncbiGeneId" = rep("26574", 2L),
             "parentGeneId" = c("AATF", "AATF-2"),
-            "partial" = rep(NA_character_, 2L),
-            "pseudo" = rep(NA_character_, 2L),
+            "partial" = rep(FALSE, 2L),
+            "pseudo" = rep(FALSE, 2L),
             "source" = rep("BestRefSeq/Gnomon", 2L),
             "type" = rep("gene", 2L)
         )
@@ -997,26 +997,26 @@ test_that("GFF3 transcripts", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
+            "broadClass" = "factor",
             "dbxref" = "CompressedCharacterList",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
+            "description" = "character",
+            "exception" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
             "geneSynonym" = "CompressedCharacterList",
-            "inference" = "Rle",
-            "modelEvidence" = "Rle",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "product" = "Rle",
-            "pseudo" = "Rle",
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "logical",
+            "product" = "character",
+            "pseudo" = "logical",
             "source" = "factor",
-            "tag" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "tag" = "CompressedCharacterList",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1049,9 +1049,9 @@ test_that("GFF3 transcripts", {
             "modelEvidence" = NA_character_,
             "ncbiGeneId" = "2",
             "parentGeneId" = "A2M",
-            "partial" = NA_character_,
+            "partial" = FALSE,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
-            "pseudo" = NA_character_,
+            "pseudo" = FALSE,
             "source" = "BestRefSeq",
             "tag" = "MANE Select",
             "txId" = "NM_000014.6",
