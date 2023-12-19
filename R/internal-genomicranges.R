@@ -1,6 +1,8 @@
 ## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
 ## when defined -- this may be ensembldb specific.
 
+## FIXME Need to return geneBiotype and txBiotype as factors.
+
 
 
 ## Metadata modification =======================================================
