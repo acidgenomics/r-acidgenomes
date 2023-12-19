@@ -1,8 +1,12 @@
 ## FIXME Need to ensure "txIsCanonical" returns logical instead of integer
 ## when defined -- this may be ensembldb specific.
 
-## FIXME Need to return geneBiotype and txBiotype as factors.
-## FIXME Another factor col: logicName.
+## FIXME Need to set these columns as factor:
+## - geneBiotype
+## - geneSource
+## - logicName
+## - txBiotype
+## - txSupportLevel
 ##
 ## FIXME Need to sanitize txSupportLevel NAs:
 ## "NA (assigned to previous version 9)" to NA.
