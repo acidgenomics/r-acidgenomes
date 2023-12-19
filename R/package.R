@@ -52,7 +52,7 @@ NULL
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges CharacterList DataFrameList IntegerList IRanges
 #' SplitDataFrameList
-#' @importFrom S4Vectors DataFrame Rle
+#' @importFrom S4Vectors DataFrame
 #' @importFrom goalie allAreAtomic allAreFiles allAreMatchingFixed
 #' allAreMatchingRegex allAreNotMatchingRegex allAreUrls areDisjointSets
 #' areIntersectingSets areSetEqual assert bapply hasColnames hasDuplicates
