@@ -413,7 +413,9 @@
         "seqCoordSystem",
         "source",
         "txBiotype",
+        "txChrom",
         "txSource",
+        "txStrand",
         "txSupportLevel",
         "type"
     )
