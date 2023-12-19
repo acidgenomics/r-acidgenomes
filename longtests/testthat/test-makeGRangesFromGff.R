@@ -955,13 +955,7 @@ test_that("GFF3 genes", {
             "parentGeneId" = c("AATF", "AATF-2"),
             "partial" = rep(NA_character_, 2L),
             "pseudo" = rep(NA_character_, 2L),
-            ## FIXME Should we sanitize the "%2C" here?
-            ## FIXME This is a comma -- "%2C".
-            ## This should be reworked as a CharacterList, split by comma.
-            "source" = c(
-                "BestRefSeq%2CGnomon",
-                "BestRefSeq%2CGnomon"
-            ),
+            "source" = rep("BestRefSeq/Gnomon", 2L),
             "type" = rep("gene", 2L)
         )
     )
@@ -1018,7 +1012,7 @@ test_that("GFF3 transcripts", {
             "partial" = "Rle",
             "product" = "Rle",
             "pseudo" = "Rle",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "Rle",
             "txId" = "Rle",
             "txName" = "Rle",

@@ -353,7 +353,14 @@
     if (is.list(mcols[["ncbiGeneId"]])) {
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
-    ## FIXME "source": (RefSeq) Need to split by "%2C", which is a comma.
+    if (is.character(mcols[["source"]])) {
+        mcols[["source"]] <- sub(
+            pattern = "%2C",
+            replacement = "/",
+            x = mcols[["source"]],
+            fixed = TRUE
+        )
+    }
     if (
         is.character(mcols[["tag"]]) &&
         !all(is.na(mcols[["tag"]]))
