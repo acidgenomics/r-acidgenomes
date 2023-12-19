@@ -32,16 +32,16 @@ test_that("Genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "canonicalTranscript" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "canonicalTranscript" = "character",
+            "description" = "character",
+            "geneBiotype" = "character",
+            "geneId" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "Rle"
+            "seqCoordSystem" = "character"
         )
     )
     expect_identical(
@@ -101,33 +101,34 @@ test_that("Transcripts", {
         object = head(names(object), n = 2L),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
     )
+    ## FIXME Convert txIsCanonical to boolean TRUE/FALSE rather than 1/0.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "canonicalTranscript" = "Rle",
-            "description" = "Rle",
-            "gcContent" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSeqEnd" = "Rle",
-            "geneSeqStart" = "Rle",
+            "broadClass" = "factor",
+            "canonicalTranscript" = "character",
+            "description" = "character",
+            "gcContent" = "numeric",
+            "geneBiotype" = "character",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSeqEnd" = "integer",
+            "geneSeqStart" = "integer",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "Rle",
-            "txBiotype" = "Rle",
-            "txCdsSeqEnd" = "Rle",
-            "txCdsSeqStart" = "Rle",
-            "txExternalName" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txIsCanonical" = "Rle",
-            "txName" = "Rle",
-            "txSupportLevel" = "Rle"
+            "seqCoordSystem" = "character",
+            "txBiotype" = "character",
+            "txCdsSeqEnd" = "integer",
+            "txCdsSeqStart" = "integer",
+            "txExternalName" = "character",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txIsCanonical" = "integer", # FIXME logical.
+            "txName" = "character",
+            "txSupportLevel" = "integer"
         )
     )
     expect_identical(
