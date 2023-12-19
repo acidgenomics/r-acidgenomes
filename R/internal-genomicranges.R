@@ -17,6 +17,8 @@
 ## artifactual_duplication
 ## sanitize "real_copy_is_ENSG00000180509" to "ENSG00000180509"
 
+## FIXME Convert level to integer first, and then factor.
+
 
 
 ## Metadata modification =======================================================
