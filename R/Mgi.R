@@ -70,6 +70,8 @@ Mgi <- function() { # nolint
     df[[idCol]] <- as.integer(df[[idCol]])
     rownames(df) <- df[[idCol]]
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
+    df[["ensemblGeneStrand"]] <- as.factor(df[["ensemblGeneStrand"]])
+    df[["ncbiGeneStrand"]] <- as.factor(df[["ncbiGeneStrand"]])
     ## Disabled Rle encoding in 0.7.3 update.
     ## > df <- encode(df)
     metadata(df) <- list(
