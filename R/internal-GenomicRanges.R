@@ -354,8 +354,11 @@
         mcols[["ncbiGeneId"]] <- IntegerList(mcols[["ncbiGeneId"]])
     }
     ## FIXME "source": (RefSeq) Need to split by "%2C", which is a comma.
-    if (is.character(mcols[["tag"]])) {
-        mcols[["tag"]] <- CharacterList(mcols[["tag"]])
+    if (
+        is.character(mcols[["tag"]]) &&
+        !all(is.na(mcols[["tag"]]))
+    ) {
+        mcols[["tag"]] <- CharacterList(as.list(mcols[["tag"]]))
     }
     if (is.integer(mcols[["txIsCanonical"]])) {
         assert(isSubset(
@@ -378,9 +381,10 @@
         "level",
         "logicName",
         "seqCoordSystem",
-        "txBiotype",
-        "txSupportLevel",
         "source",
+        "txBiotype",
+        "txSource",
+        "txSupportLevel",
         "type"
     )
     for (factorCol in factorCols) {

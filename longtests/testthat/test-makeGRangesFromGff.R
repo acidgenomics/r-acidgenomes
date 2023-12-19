@@ -320,7 +320,7 @@ test_that("GTF transcripts", {
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
             "source" = "factor",
-            "tag" = "factor",
+            "tag" = "CompressedCharacterList",
             "txBiotype" = "factor",
             "txId" = "character",
             "txIdNoVersion" = "character",
