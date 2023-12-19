@@ -19,6 +19,9 @@
 
 ## FIXME Convert level to integer first, and then factor.
 
+## FIXME Need to ensure that GENCODE "tag" column consistently returns as
+## CompressedCharacterList, to prevent type switching between GFF3 and GTF.
+
 
 
 ## Metadata modification =======================================================

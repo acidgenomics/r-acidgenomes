@@ -744,9 +744,7 @@ test_that("GTF genes", {
             "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
             "source" = "factor",
-            ## FIXME Consider returning tag as CompressedCharacterList, to
-            ## better match the GFF3 return.
-            "tag" = "character",
+            "tag" = "CompressedCharacterList",
             "type" = "factor"
         )
     )
@@ -779,7 +777,7 @@ test_that("GTF genes", {
             "level" = "1",
             "ncbiGeneId" = "4780",
             "source" = "HAVANA",
-            "tag" = "overlapping_locus",
+            "tag" = "c(\"overlapping_locus\")",
             "type" = "gene"
         )
     )
@@ -845,32 +843,30 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "havanaTranscript" = "Rle",
+            "havanaGene" = "character",
+            "havanaTranscript" = "character",
             "hgncId" = "integer",
-            "level" = "Rle",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "proteinId" = "Rle",
-            "source" = "Rle",
-            ## FIXME Consider returning tag as CompressedCharacterList, to
-            ## better match the GFF3 return.
-            "tag" = "character",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "proteinId" = "character",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -904,7 +900,7 @@ test_that("GTF transcripts", {
             "ncbiGeneId" = "4780",
             "proteinId" = "ENSP00000380252.3",
             "source" = "HAVANA",
-            "tag" = "CCDS",
+            "tag" = "c(\"CCDS\")",
             "txBiotype" = "protein_coding",
             "txId" = "ENST00000397062.8",
             "txIdNoVersion" = "ENST00000397062",
