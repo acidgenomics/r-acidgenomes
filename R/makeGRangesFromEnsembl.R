@@ -207,6 +207,8 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
+        ## FIXME Handle duplicate exon IDs here, rather than downstream in
+        ## the final .makeGRanges call...simpler.
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
