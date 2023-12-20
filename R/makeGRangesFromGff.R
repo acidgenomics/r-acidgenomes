@@ -267,7 +267,7 @@ makeGRangesFromGff <-
                 extraMcols = extraMcols
             )
         } else {
-            ## FIXME Need to add support for exons.
+            ## FIXME Need to ensure we cover exons here.
             gr <- .makeGRangesFromRtracklayer(
                 file = tmpfile,
                 level = level,

@@ -2,41 +2,59 @@
 % Please edit documentation in R/AllGenerics.R, R/show-methods.R
 \name{show}
 \alias{show}
+\alias{show,EnsemblExons-method}
 \alias{show,EnsemblGenes-method}
 \alias{show,EnsemblTranscripts-method}
+\alias{show,FlybaseExons-method}
 \alias{show,FlybaseGenes-method}
 \alias{show,FlybaseTranscripts-method}
+\alias{show,GencodeExons-method}
 \alias{show,GencodeGenes-method}
 \alias{show,GencodeTranscripts-method}
+\alias{show,RefseqExons-method}
 \alias{show,RefseqGenes-method}
 \alias{show,RefseqTranscripts-method}
+\alias{show,UcscExons-method}
 \alias{show,UcscGenes-method}
 \alias{show,UcscTranscripts-method}
+\alias{show,WormbaseExons-method}
 \alias{show,WormbaseGenes-method}
 \alias{show,WormbaseTranscripts-method}
 \title{Show an object}
 \usage{
 show(object)
 
+\S4method{show}{EnsemblExons}(object)
+
 \S4method{show}{EnsemblGenes}(object)
 
 \S4method{show}{EnsemblTranscripts}(object)
+
+\S4method{show}{FlybaseExons}(object)
 
 \S4method{show}{FlybaseGenes}(object)
 
 \S4method{show}{FlybaseTranscripts}(object)
 
+\S4method{show}{GencodeExons}(object)
+
 \S4method{show}{GencodeGenes}(object)
 
 \S4method{show}{GencodeTranscripts}(object)
+
+\S4method{show}{RefseqExons}(object)
 
 \S4method{show}{RefseqGenes}(object)
 
 \S4method{show}{RefseqTranscripts}(object)
 
+\S4method{show}{UcscExons}(object)
+
 \S4method{show}{UcscGenes}(object)
 
 \S4method{show}{UcscTranscripts}(object)
+
+\S4method{show}{WormbaseExons}(object)
 
 \S4method{show}{WormbaseGenes}(object)
 
