@@ -629,32 +629,6 @@
             object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
             metadata(object) <- meta
         } else {
-            ## FIXME Consider only doing this here for makeGRangesFromEnsembl...
-            ## FIXME Need to rethink this unique exon handling approach?
-            if (
-                identical(level, "exons") &&
-                hasDuplicates(mcols(object)[[idCol]])
-            ) {
-                dupes <- dupes(mcols(object)[[idCol]])
-                alert(sprintf(
-                    "Resolving %d duplicate exon-to-gene %s: %s.",
-                    length(dupes),
-                    ngettext(
-                        n = length(dupes),
-                        msg1 = "mapping",
-                        msg2 = "mappings"
-                    ),
-                    toInlineString(dupes)
-                ))
-                ## e.g. Homo sapiens exon "ENSE00001132905".
-                ## Keep: "ENSG00000291317" (TMEM276).
-                ## Drop: "ENSG00000291316" (no gene name; novel protein).
-                keep <- !{
-                    mcols(object)[[idCol]] %in% dupes &
-                        is.na(mcols(object)[["geneName"]])
-                }
-                object <- object[keep]
-            }
             names <- as.character(mcols(object)[[idCol]])
             assert(
                 hasNoDuplicates(names),
