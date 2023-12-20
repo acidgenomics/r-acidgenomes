@@ -92,8 +92,6 @@ test_that("Homo sapiens : genes", {
     )
 })
 
-## FIXME Assert that all transcript identifiers match our expected pattern.
-
 test_that("Homo sapiens : transcripts", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
@@ -102,13 +100,15 @@ test_that("Homo sapiens : transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 275721L)
-    ## FIXME Rework to use expect_named.
-    expect_identical(
-        object = head(names(object), n = 2L),
-        expected = c("ENST00000635602.1", "ENST00000635506.1")
+    expect_length(object, 274081L)
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
+    expect_named(
+        object = object,
+        expected = as.character(mcols(object)[["txId"]])
     )
-    ## FIXME Ensure all names match expected pattern.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
