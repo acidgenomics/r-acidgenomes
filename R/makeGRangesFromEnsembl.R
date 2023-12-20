@@ -177,7 +177,7 @@ makeGRangesFromEnsDb <-
             EXPR = level,
             "exons" = {
                 fun <- ensembldb::exons
-                colKeys <- c("exon", "gene")
+                colKeys <- c("exon", "gene", "tx")
                 idCol <- "exon_id"
             },
             "genes" = {
@@ -221,32 +221,8 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        if (
-            identical(level, "exons") &&
-            hasDuplicates(mcols(gr)[["exon_id"]])
-        ) {
-            ## e.g. Homo sapiens exon "ENSE00001132905".
-            ## Keep: "ENSG00000291317" (TMEM276).
-            ## Drop: "ENSG00000291316" (no gene name; novel protein).
-            dupes <- dupes(mcols(gr)[["exon_id"]])
-            alert(sprintf(
-                "Resolving %d duplicate exon-to-gene %s: %s.",
-                length(dupes),
-                ngettext(
-                    n = length(dupes),
-                    msg1 = "mapping",
-                    msg2 = "mappings"
-                ),
-                toInlineString(dupes)
-            ))
-            ## ensembldb currently returns empty columns instead of setting NA.
-            keep <- !{
-                mcols(gr)[["exon_id"]] %in% dupes &
-                    nzchar(mcols(gr)[["gene_name"]])
-            }
-            gr <- gr[keep]
-            assert(hasNoDuplicates(mcols(gr)[["exon_id"]]))
-        }
+        gr <- unique(gr)
+        assert(hasNoDuplicates(mcols(gr)[[idCol]]))
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
