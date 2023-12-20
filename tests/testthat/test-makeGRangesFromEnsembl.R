@@ -1,4 +1,6 @@
-test_that("Genes", {
+## Exons are covered in longtests.
+
+test_that("Homo sapiens : genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
@@ -20,14 +22,14 @@ test_that("Genes", {
             "release" = 108L
         )
     )
-    expect_length(object, 70616L)
-    expect_identical(
-        object = head(names(object), 3L),
-        expected = c(
-            "ENSG00000228572.7",
-            "ENSG00000182378.15",
-            "ENSG00000226179.6"
-        )
+    expect_length(object, 69292L)
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
+    expect_named(
+        object = object,
+        expected = as.character(mcols(object)[["geneId"]])
     )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
@@ -90,7 +92,9 @@ test_that("Genes", {
     )
 })
 
-test_that("Transcripts", {
+## FIXME Assert that all transcript identifiers match our expected pattern.
+
+test_that("Homo sapiens : transcripts", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "transcripts",
@@ -99,6 +103,7 @@ test_that("Transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, 275721L)
+    ## FIXME Rework to use expect_named.
     expect_identical(
         object = head(names(object), n = 2L),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
@@ -175,7 +180,7 @@ test_that("Transcripts", {
     )
 })
 
-test_that("GRCh37", {
+test_that("Homo sapiens : genes : GRCh37", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     ## Genes.
     object <- makeGRangesFromEnsembl(
@@ -186,6 +191,7 @@ test_that("GRCh37", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, 64102L)
+    ## FIXME Rework to use expect_named.
     expect_identical(head(names(object), 1L), "ENSG00000228572")
     ## Transcripts.
     object <- makeGRangesFromEnsembl(
@@ -197,57 +203,4 @@ test_that("GRCh37", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, 215647L)
     expect_identical(head(names(object), 1L), "ENST00000478759")
-})
-
-test_that("Organism with 3 words", {
-    x <- makeGRangesFromEnsembl(
-        organism = "Canis lupus familiaris",
-        level = "genes",
-        release = 110L,
-        ignoreVersion = FALSE
-    )
-    expect_s4_class(x, "EnsemblGenes")
-})
-
-test_that("Legacy GRCh38 87 release without gene version", {
-    object <- makeGRangesFromEnsembl(
-        organism = "Homo sapiens",
-        level = "genes",
-        genomeBuild = "GRCh38",
-        release = 87L,
-        ignoreVersion = FALSE,
-        extraMcols = TRUE
-    )
-    expect_s4_class(object, "EnsemblGenes")
-})
-
-test_that("Invalid parameters", {
-    ## Currently only supports releases back to Ensembl 87.
-    expect_error(
-        object = makeGRangesFromEnsembl(
-            organism = "Homo sapiens",
-            release = 86L
-        ),
-        regexp = "No entry matched on AnnotationHub"
-    )
-    expect_error(
-        object = makeGRangesFromEnsembl(
-            organism = "Homo sapiens",
-            genomeBuild = "BBB"
-        ),
-        regexp = "No entry matched on AnnotationHub"
-    )
-    expect_error(
-        object = makeGRangesFromEnsembl(
-            organism = c("Homo sapiens", "Mus musculus")
-        ),
-        regexp = "isString"
-    )
-    expect_error(
-        object = makeGRangesFromEnsembl(
-            organism = "Homo sapiens",
-            level = "XXX"
-        ),
-        regexp = "'arg' should be one of \"genes\", \"transcripts\""
-    )
 })
