@@ -175,6 +175,9 @@ makeGRangesFromEnsDb <-
         switch(
             EXPR = level,
             "exons" = {
+                ## This currently doesn't support "exon_id_version".
+                ## Consider filing bug report at:
+                ## https://github.com/jorainer/ensembldb
                 fun <- ensembldb::exons
                 colKeys <- c("exon", "gene")
                 orderBy <- "exon_id"
@@ -207,8 +210,30 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        ## FIXME Handle duplicate exon IDs here, rather than downstream in
-        ## the final .makeGRanges call...simpler.
+        if (
+            identical(level, "exons") &&
+            hasDuplicates(mcols(gr)[["exon_id"]])
+        ) {
+            ## e.g. Homo sapiens exon "ENSE00001132905".
+            ## Keep: "ENSG00000291317" (TMEM276).
+            ## Drop: "ENSG00000291316" (no gene name; novel protein).
+            dupes <- dupes(mcols(gr)[["exon_id"]])
+            alert(sprintf(
+                "Resolving %d duplicate exon-to-gene %s: %s.",
+                length(dupes),
+                ngettext(
+                    n = length(dupes),
+                    msg1 = "mapping",
+                    msg2 = "mappings"
+                ),
+                toInlineString(dupes)
+            ))
+            keep <- !{
+                mcols(gr)[["exon_id"]] %in% dupes &
+                    is.na(mcols(gr)[["gene_name"]])
+            }
+            gr <- gr[keep]
+        }
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
