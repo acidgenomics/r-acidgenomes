@@ -263,7 +263,6 @@ makeGRangesFromGff <-
         if (identical(meta[["provider"]], "UCSC")) {
             alertInfo("UCSC genome annotation file detected.")
             txdb <- .makeTxDbFromGff(file = tmpfile, meta = meta)
-            ## FIXME Need to check exon support here.
             gr <- .makeGRangesFromTxDb(
                 object = txdb,
                 level = level,
@@ -271,7 +270,6 @@ makeGRangesFromGff <-
                 extraMcols = extraMcols
             )
         } else {
-            ## FIXME Need to ensure we cover exons here.
             gr <- .makeGRangesFromRtracklayer(
                 file = tmpfile,
                 level = level,
