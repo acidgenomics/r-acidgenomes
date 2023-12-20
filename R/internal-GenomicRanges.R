@@ -634,6 +634,16 @@
                 hasDuplicates(mcols(object)[[idCol]])
             ) {
                 dupes <- dupes(mcols(object)[[idCol]])
+                alert(sprintf(
+                    "Resolving %d duplicate exon-to-gene %s: %s.",
+                    length(dupes),
+                    ngettext(
+                        n = length(dupes),
+                        msg1 = "mapping",
+                        msg2 = "mappings"
+                    ),
+                    toInlineString(dupes)
+                ))
                 keep <- !{
                     mcols(object)[[idCol]] %in% dupes &
                         is.na(mcols(object)[["geneName"]])
