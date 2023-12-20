@@ -23,14 +23,14 @@ test_that("Homo sapiens : genes", {
         )
     )
     expect_length(object, 69292L)
-    expect_true(allAreMatchingRegex(
-        x = names(object),
-        pattern = "^ENSG[0-9]{11}.[0-9]+$"
-    ))
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -101,14 +101,14 @@ test_that("Homo sapiens : transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, 274081L)
-    expect_true(allAreMatchingRegex(
-        x = names(object),
-        pattern = "^ENST[0-9]{11}.[0-9]+$"
-    ))
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
