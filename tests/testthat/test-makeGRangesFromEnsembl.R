@@ -3,7 +3,7 @@ test_that("Genes", {
         organism = "Homo sapiens",
         level = "genes",
         release = 108L,
-        ignoreVersion = TRUE
+        ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(
@@ -24,9 +24,9 @@ test_that("Genes", {
     expect_identical(
         object = head(names(object), 3L),
         expected = c(
-            "ENSG00000228572",
-            "ENSG00000182378",
-            "ENSG00000226179"
+            "ENSG00000228572.7",
+            "ENSG00000182378.15",
+            "ENSG00000226179.6"
         )
     )
     expect_identical(
@@ -37,6 +37,7 @@ test_that("Genes", {
             "description" = "character",
             "geneBiotype" = "factor",
             "geneId" = "character",
+            "geneIdNoVersion" = "character",
             "geneIdVersion" = "character",
             "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
@@ -46,7 +47,7 @@ test_that("Genes", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSG00000116044"]), # nolint
+            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
@@ -63,7 +64,8 @@ test_that("Genes", {
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
             "geneBiotype" = "protein_coding",
-            "geneId" = "ENSG00000116044",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
             "geneIdVersion" = "ENSG00000116044.17",
             "geneName" = "NFE2L2",
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
