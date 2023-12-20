@@ -1,3 +1,7 @@
+## FIXME This doesn't appear to keep track of exon version currently.
+
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
