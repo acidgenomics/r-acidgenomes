@@ -1,3 +1,5 @@
+## FIXME Need to ensure that number of transcripts matches the FASTA file.
+
 test_that("Unsupported files", {
     for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
@@ -125,6 +127,8 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     ## FIXME ensembldb returns 274081.
+    ## Parsing the GFF3 file is also returning expected 274081.
+    ## Need to debug the issue we're seeing with GTF parser.
     ## Some missing transcripts:
     ## head(setdiff(names(ensdb), names(gff)))
     ## > [1] "ENST00000680009.1" "ENST00000630627.1" "ENST00000630624.1"
@@ -288,11 +292,15 @@ test_that("Ensembl GRCh38 GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 62703L)
+    expect_length(object, 69292L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -339,13 +347,13 @@ test_that("Ensembl GRCh38 GTF genes", {
             "type" = "gene"
         )
     )
-    expect_identical(
-        object = levels(seqnames(object))[seq_len(25L)],
-        expected = c(
+    expect_true(isSubset(
+        x = c(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
             "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
-        )
-    )
+        ),
+        y = levels(seqnames(object))
+    ))
     expect_identical(
         object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
         expected = list(
@@ -367,7 +375,7 @@ test_that("Ensembl GRCh38 GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "27864327a647f9fdae2cafff5f3ea45e"
+        expected = "3a63d52eaa07f89d5017a818a01e6345"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -379,7 +387,7 @@ test_that("Ensembl GRCh38 GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "1ae26267acf522d8d9a94736e2c00b5ff1008d43623fc73644092016ae0c57e8" # nolint
+        expected = "c73eba059fb78ffc23d089d125723e72d5d1578e94fa0bb17a486d1d2af33baa" # nolint
     )
 })
 
@@ -390,11 +398,15 @@ test_that("Ensembl GRCh38 GTF transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 252301L)
+    expect_length(object, 274081L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -455,7 +467,7 @@ test_that("Ensembl GRCh38 GTF transcripts", {
             "txIdVersion" = "ENST00000397062.8",
             "txName" = "NFE2L2-201",
             "txSource" = "ensembl_havana",
-            "txSupportLevel" = "1 (assigned to previous version 7)",
+            "txSupportLevel" = "1",
             "type" = "transcript"
         )
     )
