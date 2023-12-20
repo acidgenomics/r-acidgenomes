@@ -83,14 +83,118 @@
 .rtracklayerEnsemblExonsGff <-
     function(object) {
         stop("FIXME WORK IN PROGRESS")
+        genes <- .rtracklayerEnsemblGenesGff(object)
+        mcols(genes) <- removeNa(mcols(genes))
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Name", "Parent", "biotype"),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c("transcript_biotype", "transcript_name"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- !is.na(mcols(object)[["transcript_id"]])
+        assert(
+            any(keep),
+            msg = "Failed to extract any transcripts."
+        )
+        object <- object[keep]
+        assert(
+            hasNoDuplicates(mcols(object)[["transcript_id"]]),
+            allAreMatchingRegex(
+                x = as.character(mcols(object)[["Parent"]]),
+                pattern = "^gene:"
+            )
+        )
+        mcols(object) <- removeNa(mcols(object))
+        names(mcols(object))[
+            names(mcols(object)) == "biotype"
+        ] <- "transcript_biotype"
+        names(mcols(object))[
+            names(mcols(object)) == "Name"
+        ] <- "transcript_name"
+        mcols(object)[["gene_id"]] <- gsub(
+            pattern = "^gene:",
+            replacement = "",
+            x = as.character(mcols(object)[["Parent"]])
+        )
+        mcols(object)[["transcript_id_version"]] <-
+            paste(
+                mcols(object)[["transcript_id"]],
+                mcols(object)[["version"]],
+                sep = "."
+            )
+        mcols(object)[["Alias"]] <- NULL
+        mcols(object)[["ID"]] <- NULL
+        mcols(object)[["Parent"]] <- NULL
+        mcols(object)[["version"]] <- NULL
+        geneCols <- c(
+            "gene_id",
+            setdiff(
+                x = names(mcols(genes)),
+                y = names(mcols(object))
+            )
+        )
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = mcols(genes)[geneCols],
+            by = "gene_id"
+        )
+        object
     }
 
 
 
+## FIXME This fails due to duplicate exon mappings...argh.
+## This also doesn't appear to be handling exon version correctly downstream.
+
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGtf <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c(
+                    "exon_id",
+                    "exon_version",
+                    "gene_id",
+                    "gene_version",
+                    "type"
+                ),
+                y = names(mcols(object))
+            ),
+            areDisjointSets(
+                x = c(
+                    "exon_id_version",
+                    "gene_id_version"
+                ),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        mcols(object)[["exon_id_version"]] <-
+            paste(
+                mcols(object)[["exon_id"]],
+                mcols(object)[["exon_version"]],
+                sep = "."
+            )
+        mcols(object)[["gene_id_version"]] <-
+            paste(
+                mcols(object)[["gene_id"]],
+                mcols(object)[["gene_version"]],
+                sep = "."
+            )
+        mcols(object)[["exon_version"]] <- NULL
+        mcols(object)[["gene_version"]] <- NULL
+        object
     }
 
 
