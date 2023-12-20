@@ -1,3 +1,17 @@
+## FIXME Work on adding support for exons.
+## Here's a problematic overlapping exon: ENSE00001132905.
+##
+## > AcidBase::dupes(mcols(object)[["exonId"]])
+## [1] "ENSE00001132905"
+## FIXME Exons must map to a gene with a gene name.
+##
+## ENSE00001132905 multi-maps to:
+## - ENSG00000291316 (no name, novel protein)
+## - ENSG00000291317 (TMEM276)
+
+
+
+
 #' Add broad class annotations
 #'
 #' @note Updated 2023-12-19.
@@ -15,7 +29,10 @@
             pattern = "^transcript"
         )
     )
-    df <- as.data.frame(object)
+    ## This step will fail if object contains duplicate names, unless we
+    ## call `unname()` first. This is an edge case that has been observed with
+    ## Ensembl exons (e.g. "ENSE00001132905").
+    df <- as.data.frame(unname(object))
     ## Biotypes. Prioritizing gene over transcript biotype, if defined. This
     ## only applies for transcript-level GRanges.
     if ("geneBiotype" %in% names(df)) {
@@ -51,7 +68,6 @@
         "biotype" = biotypeData,
         "chromosome" = seqnamesData,
         "geneName" = geneNameData,
-        row.names = names(object),
         stringsAsFactors = TRUE
     )
     x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
