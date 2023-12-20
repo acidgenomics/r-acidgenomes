@@ -1,3 +1,7 @@
+## FIXME Can we add support for "exons"?
+
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
