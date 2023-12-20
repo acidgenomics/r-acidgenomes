@@ -104,7 +104,7 @@
                 pattern = "^transcript:"
             )
         )
-        ## > FIXME mcols(object) <- removeNa(mcols(object))
+        mcols(object) <- removeNa(mcols(object))
         mcols(object)[["transcript_id"]] <- gsub(
             pattern = "^transcript:",
             replacement = "",
@@ -136,8 +136,6 @@
     }
 
 
-
-## FIXME This needs to support keeping track of transcripts.
 
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGtf <-
@@ -213,6 +211,7 @@
         )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
+        mcols(object) <- removeNa(mcols(object))
         names(mcols(object))[
             names(mcols(object)) == "Name"
         ] <- "gene_name"
@@ -295,7 +294,7 @@
                 pattern = "^gene:"
             )
         )
-        ## > FIXME mcols(object) <- removeNa(mcols(object))
+        mcols(object) <- removeNa(mcols(object))
         names(mcols(object))[
             names(mcols(object)) == "biotype"
         ] <- "transcript_biotype"
@@ -334,7 +333,7 @@
 
 
 
-## Updated 2022-05-04.
+## Updated 2023-12-20.
 .rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
@@ -364,20 +363,19 @@
         )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["transcript_id_version"]] <-
-            paste(
-                mcols(object)[["transcript_id"]],
-                mcols(object)[["transcript_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
-        mcols(object)[["transcript_version"]] <- NULL
+        keys <- c("gene", "transcript")
+        for (key in keys) {
+            idCol <- paste(key, "id", sep = "_")
+            idVerCol <- paste(idCol, "version", sep = "_")
+            verCol <- paste(key, "version", sep = "_")
+            mcols(object)[[idVerCol]] <-
+                paste(
+                    mcols(object)[[idCol]],
+                    mcols(object)[[verCol]],
+                    sep = "."
+                )
+            mcols(object)[[verCol]] <- NULL
+        }
         object
     }
 
