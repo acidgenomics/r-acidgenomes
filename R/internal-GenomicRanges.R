@@ -1,17 +1,3 @@
-## FIXME Work on adding support for exons.
-## Here's a problematic overlapping exon: ENSE00001132905.
-##
-## > AcidBase::dupes(mcols(object)[["exonId"]])
-## [1] "ENSE00001132905"
-## FIXME Exons must map to a gene with a gene name.
-##
-## ENSE00001132905 multi-maps to:
-## - ENSG00000291316 (no name, novel protein)
-## - ENSG00000291317 (TMEM276)
-
-
-
-
 #' Add broad class annotations
 #'
 #' @note Updated 2023-12-20.
@@ -29,6 +15,7 @@
             pattern = "^transcript"
         )
     )
+    alert("Adding broad class annotations.")
     ## This step will fail if object contains duplicate names, unless we
     ## call `unname()` first. This is an edge case that has been observed with
     ## Ensembl exons (e.g. "ENSE00001132905").
@@ -577,7 +564,7 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-12-19.
+#' @note Updated 2023-12-20.
 #' @noRd
 .makeGRanges <-
     function(object,
@@ -642,6 +629,17 @@
             object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
             metadata(object) <- meta
         } else {
+            if (
+                identical(level, "exons") &&
+                hasDuplicates(mcols(object)[[idCol]])
+            ) {
+                dupes <- dupes(mcols(object)[[idCol]])
+                keep <- !{
+                    mcols(object)[[idCol]] %in% dupes &
+                        is.na(mcols(object)[["geneName"]])
+                }
+                object <- object[keep]
+            }
             names <- as.character(mcols(object)[[idCol]])
             assert(
                 hasNoDuplicates(names),
@@ -660,11 +658,8 @@
         }
         ## Run final assert checks before returning.
         assert(validObject(object))
-        if (isSubset(level, c("genes", "transcripts"))) {
-            class <- upperCamelCase(
-                object = tolower(paste(provider, level)),
-                strict = FALSE
-            )
+        if (isSubset(level, c("exons", "genes", "transcripts"))) {
+            class <- upperCamelCase(tolower(paste(provider, level)))
             object <- new(Class = class, object)
         }
         object
