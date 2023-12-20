@@ -1,3 +1,7 @@
+## FIXME Add EnsemblExons, etc.
+
+
+
 ## Internal validity methods ===================================================
 
 #' Shared Ensembl validity checks
