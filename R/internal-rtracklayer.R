@@ -82,48 +82,38 @@
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGff <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
-        genes <- .rtracklayerEnsemblGenesGff(object)
-        mcols(genes) <- removeNa(mcols(genes))
+        tx <- .rtracklayerEnsemblTranscriptsGff(object)
+        mcols(tx) <- removeNa(mcols(tx))
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "Parent", "biotype"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("transcript_biotype", "transcript_name"),
+                x = c("Name", "Parent", "exon_id", "transcript_id"),
                 y = names(mcols(object))
             )
         )
-        keep <- !is.na(mcols(object)[["transcript_id"]])
+        keep <- !is.na(mcols(object)[["exon_id"]])
         assert(
             any(keep),
-            msg = "Failed to extract any transcripts."
+            msg = "Failed to extract any exons."
         )
         object <- object[keep]
+        object <- unique(object)
         assert(
-            hasNoDuplicates(mcols(object)[["transcript_id"]]),
+            hasNoDuplicates(mcols(object)[["exon_id"]]),
             allAreMatchingRegex(
                 x = as.character(mcols(object)[["Parent"]]),
-                pattern = "^gene:"
+                pattern = "^transcript:"
             )
         )
         mcols(object) <- removeNa(mcols(object))
-        names(mcols(object))[
-            names(mcols(object)) == "biotype"
-        ] <- "transcript_biotype"
-        names(mcols(object))[
-            names(mcols(object)) == "Name"
-        ] <- "transcript_name"
-        mcols(object)[["gene_id"]] <- gsub(
-            pattern = "^gene:",
+        mcols(object)[["transcript_id"]] <- gsub(
+            pattern = "^transcript:",
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-        mcols(object)[["transcript_id_version"]] <-
+        mcols(object)[["exon_id_version"]] <-
             paste(
-                mcols(object)[["transcript_id"]],
+                mcols(object)[["exon_id"]],
                 mcols(object)[["version"]],
                 sep = "."
             )
@@ -131,26 +121,24 @@
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
         mcols(object)[["version"]] <- NULL
-        geneCols <- c(
-            "gene_id",
+        txCols <- c(
+            "transcript_id",
             setdiff(
-                x = names(mcols(genes)),
+                x = names(mcols(tx)),
                 y = names(mcols(object))
             )
         )
         mcols(object) <- leftJoin(
             x = mcols(object),
-            y = mcols(genes)[geneCols],
-            by = "gene_id"
+            y = mcols(tx)[txCols],
+            by = "transcript_id"
         )
         object
     }
 
 
 
-## FIXME This fails due to duplicate exon mappings...argh.
-## This also doesn't appear to be handling exon version correctly downstream.
-## FIXME Need to remove transcript information here and make unique.
+## FIXME Is there a way to keep track of transcripts mapped to genes here?
 
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGtf <-
@@ -253,17 +241,13 @@
 
 
 
-## Updated 2022-05-04.
+## Updated 2023-12-20.
 .rtracklayerEnsemblGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "type"
-                ),
+                x = c("gene_id", "gene_version", "type"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
@@ -290,7 +274,7 @@
 
 
 
-## Updated 2022-05-04.
+## Updated 2023-12-20.
 .rtracklayerEnsemblTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerEnsemblGenesGff(object)
@@ -298,7 +282,7 @@
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "Parent", "biotype"),
+                x = c("Name", "Parent", "biotype", "transcript_id", "version"),
                 y = names(mcols(object))
             ),
             areDisjointSets(
