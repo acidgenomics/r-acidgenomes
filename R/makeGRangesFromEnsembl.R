@@ -177,36 +177,41 @@ makeGRangesFromEnsDb <-
             "exons" = {
                 fun <- ensembldb::exons
                 colKeys <- c("exon", "gene")
-                orderBy <- "exon_id"
-                if (isTRUE(ignoreVersion)) {
-                    ## Consider filing bug report at:
-                    ## https://github.com/jorainer/ensembldb
-                    alertNote(paste(
-                        "ensembldb doesn't currently support",
-                        "exon identifier versions."
-                    ))
-                }
+                idCol <- "exon_id"
             },
             "genes" = {
                 fun <- ensembldb::genes
                 colKeys <- "gene"
-                orderBy <- "gene_id"
+                idCol <- "gene_id"
             },
             "transcripts" = {
                 fun <- ensembldb::transcripts
                 colKeys <- c("gene", "tx")
-                orderBy <- "tx_id"
+                idCol <- "tx_id"
             }
         )
+        if (isFALSE(ignoreVersion)) {
+            idCol <- paste(idCol, "version", sep = "_")
+        }
         quietly({
             cols <- ensembldb::listColumns(object, colKeys)
         })
         cols <- c(cols, "entrezid")
         cols <- sort(unique(cols))
+        assert(
+            isSubset(idCol, cols),
+            msg = sprintf(
+                paste(
+                    "Unsupported {.pkg %s} key: {.var %s}.",
+                    "Likely need to set {.val %s}."
+                ),
+                "ensembldb", idCol, "ignoreVersion = TRUE"
+            )
+        )
         args <- list(
             "x" = object,
             "columns" = cols,
-            "order.by" = orderBy,
+            "order.by" = idCol,
             "order.type" = "asc",
             "return.type" = "GRanges"
         )
