@@ -1,3 +1,7 @@
+## FIXME Add support for downloading exons.
+
+
+
 #' Download GENCODE reference genome
 #'
 #' @export
