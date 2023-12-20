@@ -16,7 +16,7 @@ makeGRangesFromEnsembl(
 
 makeGRangesFromEnsDb(
   object,
-  level = c("genes", "transcripts"),
+  level = c("genes", "transcripts", "exons"),
   ignoreVersion = FALSE,
   extraMcols = TRUE
 )

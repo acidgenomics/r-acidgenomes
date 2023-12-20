@@ -239,6 +239,36 @@
 
 ## Genome annotation classes ===================================================
 
+#' Ensembl exon annotations
+#'
+#' @details
+#' Contains `GRanges` with Ensembl exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-12-20.
+#'
+#' @return `EnsemblExons`.
+setClass(
+    Class = "EnsemblExons",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "EnsemblExons",
+    method = function(object) {
+        ok <- .validateEnsembl(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' Ensembl gene annotations
 #'
 #' @details
@@ -290,6 +320,36 @@ setValidity(
             return(ok)
         }
         ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
+#' FlyBase exon annotations
+#'
+#' @details
+#' Contains `GRanges` with FlyBase exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-12-20.
+#'
+#' @return `FlybaseExons`.
+setClass(
+    Class = "FlybaseExons",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "FlybaseExons",
+    method = function(object) {
+        ok <- .validateFlybase(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -359,6 +419,36 @@ setValidity(
 
 
 
+#' GENCODE exon annotations
+#'
+#' @details
+#' Contains `GRanges` with GENCODE exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-12-20.
+#'
+#' @return `GencodeExons`.
+setClass(
+    Class = "GencodeExons",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "GencodeExons",
+    method = function(object) {
+        ok <- .validateGencode(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' GENCODE gene annotations
 #'
 #' @details
@@ -410,6 +500,36 @@ setValidity(
             return(ok)
         }
         ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
+#' RefSeq exon annotations
+#'
+#' @details
+#' Contains a `CompressedGRangesList` with RefSeq exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-09-26.
+#'
+#' @return `RefseqExons`.
+setClass(
+    Class = "RefseqExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "RefseqExons",
+    method = function(object) {
+        ok <- .validateRefseq(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
         if (!isTRUE(ok)) {
             return(ok)
         }
@@ -479,6 +599,36 @@ setValidity(
 
 
 
+#' UCSC exon annotations
+#'
+#' @details
+#' Contains `GRanges` with UCSC exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-12-20.
+#'
+#' @return `UcscExons`.
+setClass(
+    Class = "UcscExons",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "UcscExons",
+    method = function(object) {
+        ok <- .validateUcsc(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
 #' UCSC gene annotations
 #'
 #' @details
@@ -530,6 +680,36 @@ setValidity(
             return(ok)
         }
         ok <- validate(identical(metadata(object)[["level"]], "transcripts"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+
+#' WormBase exon annotations
+#'
+#' @details
+#' Contains `GRanges` with WormBase exon-level annotations.
+#'
+#' @export
+#' @note Updated 2023-12-20.
+#'
+#' @return `WormbaseExons`.
+setClass(
+    Class = "WormbaseExons",
+    contains = "GRanges"
+)
+setValidity(
+    Class = "WormbaseExons",
+    method = function(object) {
+        ok <- .validateWormbase(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
         if (!isTRUE(ok)) {
             return(ok)
         }
