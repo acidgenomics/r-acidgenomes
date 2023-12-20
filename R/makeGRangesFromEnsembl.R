@@ -63,7 +63,7 @@
 #' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2023-12-05.
+#' @note Updated 2023-12-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -106,7 +106,7 @@ NULL
 #' @export
 makeGRangesFromEnsembl <-
     function(organism,
-             level = c("genes", "transcripts"),
+             level = c("genes", "transcripts", "exons"),
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = FALSE,
@@ -139,6 +139,8 @@ makeGRangesFromEnsembl <-
 
 
 
+## FIXME Add support for exons.
+
 #' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
 #' annotation source. Alternatively, can pass in an EnsDb package name as
 #' a `character(1)`.
@@ -149,7 +151,7 @@ makeGRangesFromEnsembl <-
 #' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
 makeGRangesFromEnsDb <-
     function(object,
-             level = c("genes", "transcripts"),
+             level = c("genes", "transcripts", "exons"),
              ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
@@ -177,14 +179,16 @@ makeGRangesFromEnsDb <-
             "order.type" = "asc",
             "return.type" = "GRanges"
         )
+        colKeys <- switch(
+            EXPR = level,
+            "genes" = "gene",
+            "transcripts" = c("tx", "gene")
+        )
         quietly({
-            geneCols <- ensembldb::listColumns(object, "gene")
+            cols <- ensembldb::listColumns(object, colKeys)
         })
-        geneCols <- sort(unique(c(geneCols, "entrezid")))
-        quietly({
-            txCols <- ensembldb::listColumns(object, "tx")
-        })
-        txCols <- sort(unique(c(txCols, geneCols)))
+        cols <- c(cols, "entrezid")
+        cols <- sort(unique(cols))
         switch(
             EXPR = level,
             "genes" = {
@@ -192,7 +196,7 @@ makeGRangesFromEnsDb <-
                 args <- append(
                     x = args,
                     values = list(
-                        "columns" = geneCols,
+                        "columns" = cols,
                         "order.by" = "gene_id"
                     )
                 )
@@ -202,7 +206,7 @@ makeGRangesFromEnsDb <-
                 args <- append(
                     x = args,
                     values = list(
-                        "columns" = txCols,
+                        "columns" = cols,
                         "order.by" = "tx_id"
                     )
                 )

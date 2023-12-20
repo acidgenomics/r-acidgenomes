@@ -7,7 +7,7 @@
 \usage{
 makeGRangesFromEnsembl(
   organism,
-  level = c("genes", "transcripts"),
+  level = c("genes", "transcripts", "exons"),
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = FALSE,
@@ -86,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2023-12-05.
+Updated 2023-12-20.
 }
 \section{Broad class definitions}{
 
