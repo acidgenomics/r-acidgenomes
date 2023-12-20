@@ -175,12 +175,17 @@ makeGRangesFromEnsDb <-
         switch(
             EXPR = level,
             "exons" = {
-                ## This currently doesn't support "exon_id_version".
-                ## Consider filing bug report at:
-                ## https://github.com/jorainer/ensembldb
                 fun <- ensembldb::exons
                 colKeys <- c("exon", "gene")
                 orderBy <- "exon_id"
+                if (isTRUE(ignoreVersion)) {
+                    ## Consider filing bug report at:
+                    ## https://github.com/jorainer/ensembldb
+                    alertNote(paste(
+                        "ensembldb doesn't currently support",
+                        "exon identifier versions."
+                    ))
+                }
             },
             "genes" = {
                 fun <- ensembldb::genes
@@ -228,11 +233,13 @@ makeGRangesFromEnsDb <-
                 ),
                 toInlineString(dupes)
             ))
+            ## ensembldb currently returns empty columns instead of setting NA.
             keep <- !{
                 mcols(gr)[["exon_id"]] %in% dupes &
-                    is.na(mcols(gr)[["gene_name"]])
+                    nzchar(mcols(gr)[["gene_name"]])
             }
             gr <- gr[keep]
+            assert(hasNoDuplicates(mcols(gr)[["exon_id"]]))
         }
         gr <- .makeGRanges(
             object = gr,
