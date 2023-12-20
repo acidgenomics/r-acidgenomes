@@ -644,7 +644,9 @@
                     ),
                     toInlineString(dupes)
                 ))
-                ## FIXME Maybe use of geneName isn't the right approach here.
+                ## e.g. Homo sapiens exon "ENSE00001132905".
+                ## Keep: "ENSG00000291317" (TMEM276).
+                ## Drop: "ENSG00000291316" (no gene name; novel protein).
                 keep <- !{
                     mcols(object)[[idCol]] %in% dupes &
                         is.na(mcols(object)[["geneName"]])
