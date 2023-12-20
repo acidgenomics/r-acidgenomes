@@ -14,7 +14,7 @@
 
 #' Add broad class annotations
 #'
-#' @note Updated 2023-12-19.
+#' @note Updated 2023-12-20.
 #' @noRd
 .addBroadClass <- function(object) {
     assert(
@@ -70,6 +70,7 @@
         "geneName" = geneNameData,
         stringsAsFactors = TRUE
     )
+    ## We may be able to speed up this step slightly by running in parallel.
     x <- apply(X = df, MARGIN = 1L, FUN = .applyBroadClass)
     x <- as.factor(x)
     if (all(x == "other")) {
@@ -79,8 +80,6 @@
         ))
         return(object)
     }
-    ## Disabling Rle encoding in 0.7.3. update.
-    ## > x <- Rle(x)
     mcols(object)[["broadClass"]] <- x
     object
 }
