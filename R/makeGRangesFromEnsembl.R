@@ -203,7 +203,6 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        ## FIXME This needs to return support for exons.
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
