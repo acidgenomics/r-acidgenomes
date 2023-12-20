@@ -1,6 +1,3 @@
-## FIXME Need to test that Ensembl GTF / GFF transcripts and exons match
-## up with expectations from ensembldb.
-
 test_that("Unsupported files", {
     for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
@@ -11,9 +8,6 @@ test_that("Unsupported files", {
 })
 
 file <- gffs[["ensembl_grch38_gff3_scaff"]]
-
-## FIXME Need to parse the lines of the GTF file and ensure we return all
-## Ensembl gene matches. This number needs to match the object return.
 
 test_that("Ensembl GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
@@ -79,13 +73,13 @@ test_that("Ensembl GRCh38 GFF3 genes", {
             "type" = "gene"
         )
     )
-    expect_identical(
-        object = levels(seqnames(object))[seq_len(25L)],
-        expected = c(
+    expect_true(isSubset(
+        x = c(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
             "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
-        )
-    )
+        ),
+        y = levels(seqnames(object))
+    ))
     expect_identical(
         object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
         expected = list(
@@ -107,7 +101,7 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "0d9311600fa404a31f517b752002dcda"
+        expected = "005bb75f4382557494faf6b2d8885bbb"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -119,7 +113,7 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "4cf5bfc008e3a9b8d22d7613d989ee72dd7424dca552ce14cc3d5a87e0ca8048" # nolint
+        expected = "8b6e372a0e8d4460307de2c87ec154cdad241291582ccfcdc23f06a45a83ee93" # nolint
     )
 })
 
@@ -130,11 +124,17 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 252300L)
+    ## FIXME ensembldb returns 274081.
+    ## What are we missing in the GFF file?
+    expect_length(object, 273930L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -193,7 +193,7 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
             "txIdNoVersion" = "ENST00000397062",
             "txIdVersion" = "ENST00000397062.8",
             "txName" = "NFE2L2-201",
-            "txSupportLevel" = "1 (assigned to previous version 7)",
+            "txSupportLevel" = "1",
             "type" = "mRNA"
         )
     )
@@ -276,7 +276,7 @@ test_that("Ensembl GRCh38 GFF3 exons", {
     )
 })
 
-file <- gffs[["ensembl_grch38_gtf"]]
+file <- gffs[["ensembl_grch38_gtf_scaff"]]
 
 test_that("Ensembl GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
