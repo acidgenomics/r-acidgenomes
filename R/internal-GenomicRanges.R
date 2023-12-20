@@ -377,12 +377,15 @@
         mcols[["txIsCanonical"]] <- as.logical(mcols[["txIsCanonical"]])
     }
     if (isSubset("txSupportLevel", colnames(mcols))) {
-        ## Sanitize "NA (assigned to previous version 9)" to "NA".
+        ## Sanitize these:
+        ## - "1 (assigned to previous version 9)" to "1".
+        ## - "NA (assigned to previous version 9)" to "NA".
         mcols[["txSupportLevel"]] <- sub(
-            pattern = "^NA\\s.+$",
-            replacement = "NA",
+            pattern = "^([^ ]+)\\s.+$",
+            replacement = "\\1",
             x = mcols[["txSupportLevel"]]
         )
+        mcols[["txSupportLevel"]] <- as.integer(mcols[["txSupportLevel"]])
     }
     factorCols <- c(
         "exception",
