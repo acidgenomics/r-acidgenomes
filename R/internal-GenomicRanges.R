@@ -644,6 +644,7 @@
                     ),
                     toInlineString(dupes)
                 ))
+                ## FIXME Maybe use of geneName isn't the right approach here.
                 keep <- !{
                     mcols(object)[[idCol]] %in% dupes &
                         is.na(mcols(object)[["geneName"]])
