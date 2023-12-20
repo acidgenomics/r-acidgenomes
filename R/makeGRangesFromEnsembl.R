@@ -221,6 +221,7 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
+        gr <- sort(gr)
         gr <- unique(gr)
         assert(hasNoDuplicates(mcols(gr)[[idCol]]))
         gr <- .makeGRanges(
