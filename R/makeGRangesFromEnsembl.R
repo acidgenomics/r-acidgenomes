@@ -1,4 +1,5 @@
-## FIXME This doesn't appear to keep track of exon version currently.
+## FIXME Can we support keeping track of transcripts at exon level?
+## This appears to work correctly for our GFF3 file parsing.
 
 
 

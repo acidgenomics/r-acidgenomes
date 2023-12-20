@@ -104,7 +104,7 @@
                 pattern = "^transcript:"
             )
         )
-        mcols(object) <- removeNa(mcols(object))
+        ## > FIXME mcols(object) <- removeNa(mcols(object))
         mcols(object)[["transcript_id"]] <- gsub(
             pattern = "^transcript:",
             replacement = "",
@@ -137,7 +137,7 @@
 
 
 
-## FIXME Is there a way to keep track of transcripts mapped to genes here?
+## FIXME This needs to support keeping track of transcripts.
 
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGtf <-
@@ -157,7 +157,11 @@
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c("exon_id_version", "gene_id_version"),
+                x = c(
+                    "exon_id_version",
+                    "gene_id_version",
+                    "transcript_id_version"
+                ),
                 y = names(mcols(object))
             )
         )
@@ -167,32 +171,22 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        ## FIXME Remove transcript columns.
-        cols <- setdiff(
-            x = colnames(mcols(object)),
-            y = grep(
-                pattern = "^transcript_",
-                x = colnames(mcols(object)),
-                value = TRUE
-            )
-        )
-        mcols(object) <- mcols(object)[, cols]
         object <- unique(object)
         assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
-        mcols(object)[["exon_id_version"]] <-
-            paste(
-                mcols(object)[["exon_id"]],
-                mcols(object)[["exon_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["exon_version"]] <- NULL
-        mcols(object)[["gene_version"]] <- NULL
+        ## > FIXME mcols(object) <- removeNa(mcols(object))
+        keys <- c("exon", "gene", "transcript")
+        for (key in keys) {
+            idCol <- paste(key, "id", sep = "_")
+            idVerCol <- paste(idCol, "version", sep = "_")
+            verCol <- paste(key, "version", sep = "_")
+            mcols(object)[[idVerCol]] <-
+                paste(
+                    mcols(object)[[idCol]],
+                    mcols(object)[[verCol]],
+                    sep = "."
+                )
+            mcols(object)[[verCol]] <- NULL
+        }
         object
     }
 
@@ -301,7 +295,7 @@
                 pattern = "^gene:"
             )
         )
-        mcols(object) <- removeNa(mcols(object))
+        ## > FIXME mcols(object) <- removeNa(mcols(object))
         names(mcols(object))[
             names(mcols(object)) == "biotype"
         ] <- "transcript_biotype"
