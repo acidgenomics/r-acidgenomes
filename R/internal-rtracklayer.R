@@ -83,7 +83,6 @@
 .rtracklayerEnsemblExonsGff <-
     function(object) {
         tx <- .rtracklayerEnsemblTranscriptsGff(object)
-        mcols(tx) <- removeNa(mcols(tx))
         assert(
             is(object, "GRanges"),
             isSubset(
@@ -278,7 +277,6 @@
 .rtracklayerEnsemblTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerEnsemblGenesGff(object)
-        mcols(genes) <- removeNa(mcols(genes))
         assert(
             is(object, "GRanges"),
             isSubset(
