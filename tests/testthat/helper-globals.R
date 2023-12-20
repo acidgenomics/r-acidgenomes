@@ -75,8 +75,6 @@ txFastas <- c(
     )
 )
 
-## FIXME Need to include Ensembl scaffold GFF/GTFs here.
-
 ## Updated 2023-12-20.
 gffs <- c(
     "ensembl_grch37_gff3" = pasteUrl(
@@ -89,6 +87,16 @@ gffs <- c(
         "Homo_sapiens.GRCh37.87.gff3.gz",
         protocol = "ftp"
     ),
+    "ensembl_grch37_gff3_scaff" = pasteUrl(
+        "ftp.ensembl.org",
+        "pub",
+        "grch37",
+        "release-108",
+        "gff3",
+        "homo_sapiens",
+        "Homo_sapiens.GRCh37.87.chr_patch_hapl_scaff.gff3.gz",
+        protocol = "ftp"
+    ),
     "ensembl_grch37_gtf" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
@@ -97,6 +105,16 @@ gffs <- c(
         "gtf",
         "homo_sapiens",
         "Homo_sapiens.GRCh37.87.gtf.gz",
+        protocol = "ftp"
+    ),
+    "ensembl_grch37_gtf_scaff" = pasteUrl(
+        "ftp.ensembl.org",
+        "pub",
+        "grch37",
+        "release-108",
+        "gtf",
+        "homo_sapiens",
+        "Homo_sapiens.GRCh37.87.chr_patch_hapl_scaff.gtf.gz",
         protocol = "ftp"
     ),
     "ensembl_grch38_gff3" = pasteUrl(
