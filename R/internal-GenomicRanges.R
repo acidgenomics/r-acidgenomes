@@ -1,3 +1,8 @@
+## FIXME Ensure we sanitize "txSupportLevel" to just integer.
+## Need to remove stuff like "1 (assigned to previous version 4)".
+
+
+
 #' Add broad class annotations
 #'
 #' @note Updated 2023-12-20.
