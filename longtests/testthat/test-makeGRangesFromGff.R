@@ -22,12 +22,15 @@ test_that("Ensembl GRCh38 GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    ## FIXME The number of genes differs here from ensembldb...need to debug.
     expect_length(object, 69292L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(

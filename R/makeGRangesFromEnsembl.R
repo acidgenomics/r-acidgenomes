@@ -1,5 +1,8 @@
 ## FIXME Can we support keeping track of transcripts at exon level?
 ## This appears to work correctly for our GFF3 file parsing.
+##
+## FIXME Ensure we filter "LRG_" genes, as this doesn't match up with the GFF
+## file conventions.
 
 
 
@@ -230,6 +233,23 @@ makeGRangesFromEnsDb <-
             ignoreVersion = ignoreVersion,
             extraMcols = extraMcols
         )
+        ## Ensure we always remove LRG gene annotations, which are defined in
+        ## ensembldb output but not in primary GFF3/GTF files.
+        isLrg <- mcols(gr)[["geneBiotype"]] == "LRG_gene"
+        ## Alternate method:
+        ## > isLrg <- grepl(pattern = "^LRG_", x = names(gr))
+        if (any(isLrg)) {
+            alertInfo(sprintf(
+                "Removing %d LRG %s.",
+                sum(isLrg),
+                ngettext(
+                    n = sum(isLrg),
+                    msg1 = "gene",
+                    msg2 = "genes"
+                )
+            ))
+            gr <- gr[!isLrg]
+        }
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
             error = function(e) {
