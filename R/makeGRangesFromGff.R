@@ -1,3 +1,7 @@
+## FIXME This isn't setting exonIdNoVersion correctly.
+
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'

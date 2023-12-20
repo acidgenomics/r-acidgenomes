@@ -207,44 +207,17 @@
 
 
 
-#' Include the gene identifier version
-#'
-#' Append the gene version to the identifier (e.g. ENSG00000000003.15).
-#'
-#' @note Updated 2021-01-27.
-#' @noRd
-.includeGeneVersion <- function(object) {
-    .includeVersion(
-        object = object,
-        idCol = "geneId",
-        idVersionCol = "geneIdVersion",
-        idNoVersionCol = "geneIdNoVersion"
-    )
-}
-
-
-
-#' Include the transcript identifier version
-#'
-#' Append the transcript version to the identifier (e.g. ENST00000000233.10).
-#'
-#' @note Updated 2021-01-27.
-#' @noRd
-.includeTxVersion <- function(object) {
-    .includeVersion(
-        object = object,
-        idCol = "txId",
-        idVersionCol = "txIdVersion",
-        idNoVersionCol = "txIdNoVersion"
-    )
-}
-
-
-
 #' Include identifier version in primary identifier
 #'
-#' @note Updated 2021-01-30.
+#' @note Updated 2023-12-20.
 #' @noRd
+#'
+#' @details
+#' Will move a versioned identifier column (e.g. "geneIdVersion") into our
+#' primary identifier column (e.g. "geneId") and keep the unversioned variant
+#' in "geneIdNoVersion".
+#'
+#' Intentionally skips when identifier column is not defined.
 .includeVersion <-
     function(object,
              idCol,
@@ -443,8 +416,6 @@
             if (is.factor(x)) {
                 x <- droplevels(x)
             }
-            ## Disabling Rle encoding in 0.7.3. update.
-            ## > x <- Rle(x)
             x
         }
     )
@@ -585,8 +556,15 @@
         provider <- metadata(object)[["provider"]]
         object <- .standardizeMcolsNames(object)
         if (isFALSE(ignoreVersion)) {
-            object <- .includeGeneVersion(object)
-            object <- .includeTxVersion(object)
+            ## Consider adding "protein" here in a future update.
+            for (key in c("exon", "gene", "tx")) {
+                object <- .includeVersion(
+                    object = object,
+                    idCol = paste0(key, "Id"),
+                    idVersionCol = paste0(key, "IdVersion"),
+                    idNoVersionCol = paste0(key, "IdNoVersion")
+                )
+            }
         }
         if (isTRUE(extraMcols)) {
             object <- .addBroadClass(object)
