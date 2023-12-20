@@ -1,3 +1,6 @@
+## FIXME Need to test that Ensembl GTF / GFF transcripts and exons match
+## up with expectations from ensembldb.
+
 test_that("Unsupported files", {
     for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
