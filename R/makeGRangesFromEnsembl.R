@@ -1,7 +1,3 @@
-## FIXME Can we add support for "exons"?
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
@@ -139,8 +135,6 @@ makeGRangesFromEnsembl <-
 
 
 
-## FIXME Add support for exons.
-
 #' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
 #' annotation source. Alternatively, can pass in an EnsDb package name as
 #' a `character(1)`.
@@ -174,49 +168,42 @@ makeGRangesFromEnsDb <-
             )
         }
         assert(is(object, "EnsDb"))
-        args <- list(
-            "x" = object,
-            "order.type" = "asc",
-            "return.type" = "GRanges"
-        )
-        colKeys <- switch(
+        switch(
             EXPR = level,
-            "genes" = "gene",
-            "transcripts" = c("tx", "gene")
+            "exons" = {
+                fun <- ensembldb::exons
+                colKeys <- c("exon", "gene")
+                orderBy <- "exon_id"
+            },
+            "genes" = {
+                fun <- ensembldb::genes
+                colKeys <- "gene"
+                orderBy <- "gene_id"
+            },
+            "transcripts" = {
+                fun <- ensembldb::transcripts
+                colKeys <- c("gene", "tx")
+                orderBy <- "tx_id"
+            }
         )
         quietly({
             cols <- ensembldb::listColumns(object, colKeys)
         })
         cols <- c(cols, "entrezid")
         cols <- sort(unique(cols))
-        switch(
-            EXPR = level,
-            "genes" = {
-                fun <- ensembldb::genes
-                args <- append(
-                    x = args,
-                    values = list(
-                        "columns" = cols,
-                        "order.by" = "gene_id"
-                    )
-                )
-            },
-            "transcripts" = {
-                fun <- ensembldb::transcripts
-                args <- append(
-                    x = args,
-                    values = list(
-                        "columns" = cols,
-                        "order.by" = "tx_id"
-                    )
-                )
-            }
+        args <- list(
+            "x" = object,
+            "columns" = cols,
+            "order.by" = orderBy,
+            "order.type" = "asc",
+            "return.type" = "GRanges"
         )
         quietly({
             gr <- do.call(what = fun, args = args)
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
+        ## FIXME This needs to return support for exons.
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
