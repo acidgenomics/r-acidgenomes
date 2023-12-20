@@ -1,12 +1,8 @@
-## FIXME Can we add support for "exons"?
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-12-19.
+#' @note Updated 2023-12-20.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -233,7 +229,7 @@
 ## nolint end
 makeGRangesFromGff <-
     function(file,
-             level = c("genes", "transcripts"),
+             level = c("genes", "transcripts", "exons"),
              ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
@@ -263,6 +259,7 @@ makeGRangesFromGff <-
         if (identical(meta[["provider"]], "UCSC")) {
             alertInfo("UCSC genome annotation file detected.")
             txdb <- .makeTxDbFromGff(file = tmpfile, meta = meta)
+            ## FIXME Need to check exon support here.
             gr <- .makeGRangesFromTxDb(
                 object = txdb,
                 level = level,
@@ -270,6 +267,7 @@ makeGRangesFromGff <-
                 extraMcols = extraMcols
             )
         } else {
+            ## FIXME Need to add support for exons.
             gr <- .makeGRangesFromRtracklayer(
                 file = tmpfile,
                 level = level,

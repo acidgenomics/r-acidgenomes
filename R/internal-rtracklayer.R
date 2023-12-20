@@ -1,6 +1,10 @@
+## FIXME Need to add support for exons here.
+
+
+
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-10-12.
+#' @note Updated 2023-12-20.
 #' @noRd
 #'
 #' @details
@@ -21,7 +25,7 @@
         )
         level <- match.arg(
             arg = level,
-            choices = c("genes", "transcripts")
+            choices = c("genes", "transcripts", "exons")
         )
         meta[["level"]] <- level
         ## This automatically sets "source" and "type" columns as factor.
@@ -74,6 +78,22 @@
 
 
 ## Ensembl =====================================================================
+
+## Updated 2023-12-20.
+.rtracklayerEnsemblExonsGff <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
+
+## Updated 2023-12-20.
+.rtracklayerEnsemblExonsGtf <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
 
 ## Updated 2022-05-04.
 .rtracklayerEnsemblGenesGff <-
@@ -272,6 +292,14 @@
 
 ## FlyBase =====================================================================
 
+## Updated 2023-12-20.
+.rtracklayerFlybaseExonsGtf <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
+
 ## Updated 2021-01-27.
 .rtracklayerFlybaseGenesGtf <-
     function(object) {
@@ -325,6 +353,22 @@
 ## Uses `gene_type` instead of `gene_biotype`.
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
+
+## Updated 2023-12-20.
+.rtracklayerGencodeExonsGff <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
+
+## Updated 2023-12-20.
+.rtracklayerGencodeExonsGtf <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
 
 ## Updated 2023-12-19.
 .rtracklayerGencodeGenesGff <-
@@ -523,6 +567,22 @@
     df <- df[complete.cases(df), ]
     df
 }
+
+
+
+## Updated 2023-12-20.
+.rtracklayerRefseqExonsGff <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
+
+## Updated 2023-12-20.
+.rtracklayerRefseqExonsGtf <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
 
 
 
@@ -777,6 +837,22 @@
 
 
 ## WormBase ====================================================================
+
+## Updated 2023-12-20.
+.rtracklayerWormbaseExonsGff <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
+
+## Updated 2023-12-20.
+.rtracklayerWormbaseExonsGtf <-
+    function(object) {
+        stop("FIXME WORK IN PROGRESS")
+    }
+
+
 
 ## Updated 2021-08-05.
 .rtracklayerWormbaseGenesGtf <-
