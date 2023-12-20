@@ -1,5 +1,3 @@
-## FIXME Ensure we cover scaffold GTF files.
-
 test_that("Unsupported files", {
     for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
@@ -11,7 +9,7 @@ test_that("Unsupported files", {
 
 file <- gffs[["ensembl_grch38_gff3"]]
 
-test_that("GFF3 genes", {
+test_that("Ensembl GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -115,7 +113,7 @@ test_that("GFF3 genes", {
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("Ensembl GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -191,7 +189,8 @@ test_that("GFF3 transcripts", {
     )
 })
 
-test_that("GFF3 exons", {
+test_that("Ensembl GRCh38 GFF3 exons", {
+    ## FIXME Need to cover this.
     object <- makeGRangesFromGff(
         file = file,
         level = "exons",
@@ -269,7 +268,7 @@ test_that("GFF3 exons", {
 
 file <- gffs[["ensembl_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("Ensembl GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -371,7 +370,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("Ensembl GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -449,9 +448,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["flybase_gtf"]]
 
-test_that("GTF genes", {
+test_that("FlyBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -528,7 +529,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -574,9 +575,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["gencode_grch38_gff3"]]
 
-test_that("GFF3 genes", {
+test_that("GENCODE GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -689,7 +692,7 @@ test_that("GFF3 genes", {
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("GENCODE GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -779,9 +782,11 @@ test_that("GFF3 transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["gencode_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("GENCODE GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -894,7 +899,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("GENCODE GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -978,9 +983,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["refseq_grch38_gff3"]]
 
-test_that("GFF3 genes", {
+test_that("RefSeq GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -1062,7 +1069,7 @@ test_that("GFF3 genes", {
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("RefSeq GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1139,9 +1146,11 @@ test_that("GFF3 transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["refseq_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("RefSeq GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -1219,7 +1228,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("RefSeq GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1290,9 +1299,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["ucsc_hg38_ncbirefseq_gtf"]]
 
-test_that("GTF genes", {
+test_that("UCSC hg38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -1350,7 +1361,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("UCSC hg38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -1398,9 +1409,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- gffs[["wormbase_gtf"]]
 
-test_that("GTF genes", {
+test_that("WormBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -1488,7 +1501,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("WormBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1544,9 +1557,11 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 file <- file.path(cacheDir, "ref-transcripts.gtf")
 
-test_that("GTF genes", {
+test_that("WormBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -1608,7 +1623,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("WormBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -1682,11 +1697,13 @@ test_that("GTF transcripts", {
     )
 })
 
+## FIXME Need to cover exons here.
+
 ## See related issues:
 ## - https://github.com/Bioconductor/GenomeInfoDb/issues/97
 ## - https://github.com/Bioconductor/GenomeInfoDb/issues/98
 
-test_that("getChromInfoFromEnsembl Seqinfo failure", {
+test_that("Ensembl Mus musculus getChromInfoFromEnsembl issue", {
     file <- pasteUrl(
         "ftp.ensembl.org",
         "pub",
