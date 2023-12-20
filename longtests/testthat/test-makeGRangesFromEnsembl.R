@@ -1,3 +1,5 @@
+## FIXME Add coverage of Mus musculus here too.
+
 ## FIXME Assert that all exon identifiers match our expected pattern.
 
 test_that("Homo sapiens : exons", {
