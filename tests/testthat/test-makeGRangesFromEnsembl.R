@@ -108,6 +108,7 @@ test_that("Homo sapiens : transcripts", {
         object = head(names(object), n = 2L),
         expected = c("ENST00000635602.1", "ENST00000635506.1")
     )
+    ## FIXME Ensure all names match expected pattern.
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
@@ -178,29 +179,4 @@ test_that("Homo sapiens : transcripts", {
             "txSupportLevel" = "1"
         )
     )
-})
-
-test_that("Homo sapiens : genes : GRCh37", {
-    skip_if_not_installed("EnsDb.Hsapiens.v75")
-    ## Genes.
-    object <- makeGRangesFromEnsembl(
-        organism = "Homo sapiens",
-        level = "genes",
-        genomeBuild = "GRCh37",
-        ignoreVersion = TRUE
-    )
-    expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 64102L)
-    ## FIXME Rework to use expect_named.
-    expect_identical(head(names(object), 1L), "ENSG00000228572")
-    ## Transcripts.
-    object <- makeGRangesFromEnsembl(
-        organism = "Homo sapiens",
-        level = "transcripts",
-        genomeBuild = "GRCh37",
-        ignoreVersion = TRUE
-    )
-    expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 215647L)
-    expect_identical(head(names(object), 1L), "ENST00000478759")
 })

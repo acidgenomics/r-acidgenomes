@@ -43,7 +43,41 @@ test_that("Organism with 3 words", {
     expect_s4_class(x, "EnsemblGenes")
 })
 
+test_that("Homo sapiens : genes : GRCh37", {
+    skip_if_not_installed("EnsDb.Hsapiens.v75")
+    object <- makeGRangesFromEnsembl(
+        organism = "Homo sapiens",
+        level = "genes",
+        genomeBuild = "GRCh37",
+        ignoreVersion = TRUE
+    )
+    expect_s4_class(object, "EnsemblGenes")
+    expect_length(object, 64102L)
+    ## FIXME Rework to use expect_named.
+    expect_identical(head(names(object), 1L), "ENSG00000228572")
+    ## FIXME Ensure all names match expected pattern.
+})
+
+test_that("Homo sapiens : transcripts : GRCh37", {
+    skip_if_not_installed("EnsDb.Hsapiens.v75")
+
+    object <- makeGRangesFromEnsembl(
+        organism = "Homo sapiens",
+        level = "transcripts",
+        genomeBuild = "GRCh37",
+        ignoreVersion = TRUE
+    )
+    expect_s4_class(object, "EnsemblTranscripts")
+    expect_length(object, 215647L)
+    ## FIXME Rework to use expect_named.
+    expect_identical(head(names(object), 1L), "ENST00000478759")
+    ## FIXME Ensure all names match expected pattern.
+})
+
+## FIXME Ensure we cover exons of GRCh37 as well.
+
 test_that("Legacy GRCh38 87 release without gene version", {
+    ## FIXME Check that this errors if user sets ignoreVersion = TRUE.
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
