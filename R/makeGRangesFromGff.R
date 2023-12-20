@@ -1,4 +1,7 @@
-## FIXME This isn't setting exonIdNoVersion correctly.
+## FIXME Need to debug transcript parsing mismatch with ensembldb:
+## > head(setdiff(names(ensdb), names(gff)))
+## [1] "ENST00000680009.1" "ENST00000630627.1" "ENST00000630624.1"
+## [4] "ENST00000628275.2" "ENST00000628424.1" "ENST00000630311.1"
 
 
 
