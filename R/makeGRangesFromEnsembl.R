@@ -113,8 +113,7 @@ makeGRangesFromEnsembl <-
         )
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
-        ## FIXME Export this function.
-        edb <- .getEnsDb(
+        edb <- getEnsDb(
             organism = organism,
             genomeBuild = genomeBuild,
             release = release
