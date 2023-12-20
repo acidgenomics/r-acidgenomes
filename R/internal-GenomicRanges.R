@@ -632,11 +632,7 @@
             names <- as.character(mcols(object)[[idCol]])
             assert(
                 hasNoDuplicates(names),
-                !anyNA(names),
-                msg = paste(
-                    "Invalid and/or duplicated identifiers detected.",
-                    "Setting 'ignoreVersion = FALSE' may resolve this."
-                )
+                !anyNA(names)
             )
             names(object) <- names
             ## This check fails for split GRangesList.
