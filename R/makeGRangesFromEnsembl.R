@@ -1,5 +1,8 @@
-## nolint start
+## FIXME Can we add support for "exons"?
 
+
+
+## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
@@ -94,7 +97,6 @@
 #' ## >     summary(genes)
 #' ## > }
 NULL
-
 ## nolint end
 
 
