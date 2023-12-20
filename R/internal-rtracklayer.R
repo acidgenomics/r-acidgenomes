@@ -150,6 +150,7 @@
 
 ## FIXME This fails due to duplicate exon mappings...argh.
 ## This also doesn't appear to be handling exon version correctly downstream.
+## FIXME Need to remove transcript information here and make unique.
 
 ## Updated 2023-12-20.
 .rtracklayerEnsemblExonsGtf <-
@@ -162,15 +163,14 @@
                     "exon_version",
                     "gene_id",
                     "gene_version",
+                    "transcript_id",
+                    "transcript_version",
                     "type"
                 ),
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c(
-                    "exon_id_version",
-                    "gene_id_version"
-                ),
+                x = c("exon_id_version", "gene_id_version"),
                 y = names(mcols(object))
             )
         )
@@ -180,6 +180,18 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
+        ## FIXME Remove transcript columns.
+        cols <- setdiff(
+            x = colnames(mcols(object)),
+            y = grep(
+                pattern = "^transcript_",
+                x = colnames(mcols(object)),
+                value = TRUE
+            )
+        )
+        mcols(object) <- mcols(object)[, cols]
+        object <- unique(object)
+        assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
         mcols(object)[["exon_id_version"]] <-
             paste(
                 mcols(object)[["exon_id"]],
@@ -375,6 +387,7 @@
             msg = "Failed to extract any transcripts."
         )
         object <- object[keep]
+        assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],

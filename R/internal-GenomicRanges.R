@@ -629,6 +629,8 @@
             object <- split(x = object, f = as.factor(mcols(object)[[idCol]]))
             metadata(object) <- meta
         } else {
+            ## FIXME Consider only doing this here for makeGRangesFromEnsembl...
+            ## FIXME Need to rethink this unique exon handling approach?
             if (
                 identical(level, "exons") &&
                 hasDuplicates(mcols(object)[[idCol]])
