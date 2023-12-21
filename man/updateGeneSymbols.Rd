@@ -2,12 +2,9 @@
 % Please edit documentation in R/updateGeneSymbols.R
 \name{updateGeneSymbols}
 \alias{updateGeneSymbols}
-\alias{updateMgiSymbols}
 \title{Update gene symbols}
 \usage{
 updateGeneSymbols(geneNames, organism)
-
-updateMgiSymbols(x)
 }
 \arguments{
 \item{geneNames}{\code{character}.
@@ -17,8 +14,6 @@ Gene names (symbols).}
 Full Latin organism name.
 Human genes are checked against HGNC.
 Other organisms are checked against NCBI.}
-
-\item{x}{Object.}
 }
 \value{
 \code{character}.

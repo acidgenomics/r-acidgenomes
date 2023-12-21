@@ -25,3 +25,13 @@ test_that("Mus musculus", {
         )
     )
 })
+
+test_that("Match failure", {
+    expect_error(
+        object = updateGeneSymbols(
+            geneNames = c("XXX", "YYY"),
+            organism = "Homo sapiens"
+        ),
+        regexp = "Failed to match"
+    )
+})
