@@ -1,13 +1,21 @@
 test_that("Ensembl", {
-    file <- txFastas[["ensembl"]]
-    object <- makeTxToGeneFromFasta(
-        file = file,
+    cdna <- makeTxToGeneFromFasta(
+        file = txFastas[["ensembl_cdna"]],
         ignoreVersion = FALSE
     )
+    ncrna <- makeTxToGeneFromFasta(
+        file = txFastas[["ensembl_ncrna"]],
+        ignoreVersion = FALSE
+    )
+    object <- do.call(
+        what = rbind,
+        args = list(cdna, ncrna)
+    )
     expect_s4_class(object, "TxToGene")
-    ## This only contains cdna (coding) transcripts. Note that ensembldb
-    ## returns both coding and noncoding transcripts by default.
-    expect_identical(nrow(object), 207249L)
+    expect_identical(
+        object = nrow(object),
+        expected = n[["hsapiens"]][["ensembl"]][["tx"]]
+    )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
@@ -22,29 +30,6 @@ test_that("Ensembl", {
                 "ENSG00000173153.17"
             )
         )
-    )
-    object <- makeTxToGeneFromFasta(
-        file = file,
-        ignoreVersion = TRUE
-    )
-    expect_identical(
-        object = as.data.frame(object)[seq_len(3L), ],
-        expected = data.frame(
-            "txId" = c(
-                "ENST00000000233",
-                "ENST00000000412",
-                "ENST00000000442"
-            ),
-            "geneId" = c(
-                "ENSG00000004059",
-                "ENSG00000003056",
-                "ENSG00000173153"
-            )
-        )
-    )
-    expect_identical(
-        object = nrow(object),
-        expected = expected[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
 })
 

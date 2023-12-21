@@ -25,9 +25,19 @@ gr <- GRanges
 
 ## nolint end
 
+n <- list(
+    "hsapiens" = list(
+        "ensembl" = c(
+            ## GRCh38 release 110.
+            "gene" = 70116L,
+            "tx" = 275741L
+        )
+    )
+)
+
 ## Updated 2023-12-21.
 txFastas <- c(
-    "ensembl" = pasteUrl(
+    "ensembl_cdna" = pasteUrl(
         "ftp.ensembl.org",
         "pub",
         "release-110",
@@ -35,6 +45,16 @@ txFastas <- c(
         "homo_sapiens",
         "cdna",
         "Homo_sapiens.GRCh38.cdna.all.fa.gz",
+        protocol = "ftp"
+    ),
+    "ensembl_ncrna" = pasteUrl(
+        "ftp.ensembl.org",
+        "pub",
+        "release-110",
+        "fasta",
+        "homo_sapiens",
+        "ncrna",
+        "Homo_sapiens.GRCh38.ncrna.fa.gz",
         protocol = "ftp"
     ),
     "flybase" = pasteUrl(
