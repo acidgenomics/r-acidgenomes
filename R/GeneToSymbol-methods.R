@@ -71,8 +71,7 @@ NULL
         }
         assert(
             isSubset(cols, colnames(object)),
-            hasRows(object),
-            hasNoDuplicates(object[[cols[[1L]]]])
+            hasRows(object)
         )
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
@@ -95,58 +94,42 @@ NULL
             }
             object <- object[keep, , drop = FALSE]
         }
-        assert(hasRows(object))
+        assert(
+            hasRows(object),
+            hasNoDuplicates(object[["geneId"]])
+        )
+        i <- order(object)
+        object <- object[i, , drop = FALSE]
         switch(
             EXPR = format,
             "makeUnique" = {
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
-                ## FIXME Calculate order here by column positions 2 then 1.
-                ## Much faster than splitting approach.
-                ## FIXME Rework this by sorting the data frame rather than
-                ## splitting. We can be more clever about this.
-                ## FIXME Can order by gene symbol and then geneID column,
-                ## no split necessary here -- much faster.
-                assert(all(complete.cases(object)))
-                alert(paste(
-                    "Returning 1:1 mappings using oldest",
-                    "gene identifier per symbol."
-                ))
-                x <- split(x = object, f = object[["geneName"]])
-                assert(is(x, "SplitDFrameList"))
-                x <- SplitDataFrameList(lapply(
-                    X = x,
-                    FUN = function(x) {
-                        idx <- order(
-                            x = x[["geneId"]],
-                            decreasing = FALSE,
-                            na.last = TRUE
-                        )
-                        head(x[idx, , drop = FALSE], n = 1L)
-                    }
-                ))
-                object <- do.call(what = rbind, args = x)
+                i <- order(object[["geneName"]], object[["geneId"]])
+                object <- object[i, , drop = FALSE]
+                i <- !duplicated(object[["geneName"]])
+                object <- object[i, , drop = FALSE]
             },
             "unmodified" = {
-                if (isFALSE(quiet)) {
-                    ## FIXME Inform the user about how many duplicates
-                    ## detected.
-                    alertInfo(paste(
-                        "Returning with unmodified gene symbols",
-                        "{.emph (may contain duplicates)}."
+                dupes <- dupes(object[["geneName"]])
+                meta[["dupes"]] <- dupes
+                if (isFALSE(quiet) && hasLength(dupes)) {
+                    alertInfo(sprintf(
+                        "Returning unmodified with %d duplicate gene %s: %s.",
+                        length(dupes),
+                        ngettext(
+                            n = length(dupes),
+                            msg1 = "symbol",
+                            msg2 = "symbols"
+                        ),
+                        toInlineString(dupes)
                     ))
                 }
             }
         )
-        assert(
-            is(object, "DFrame"),
-            all(complete.cases(object)),
-            hasRows(object),
-            hasNoDuplicates(object[[cols[[1L]]]]),
-            msg = "Failed to generate GeneToSymbol object."
-        )
-        object <- object[order(object), , drop = FALSE]
+        i <- order(object)
+        object <- object[i, , drop = FALSE]
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]
