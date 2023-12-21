@@ -64,15 +64,16 @@ NULL
         format <- match.arg(format)
         meta <- metadata(object)
         meta[["format"]] <- format
+        object <- as(object, "DFrame")
         cols <- c("geneId", "geneName")
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
         }
         assert(
             isSubset(cols, colnames(object)),
-            hasRows(object)
+            hasRows(object),
+            hasNoDuplicates(object[[cols[[1L]]]])
         )
-        object <- as(object, "DFrame")
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
         object <- unique(object)
@@ -141,7 +142,8 @@ NULL
         assert(
             is(object, "DFrame"),
             all(complete.cases(object)),
-            hasNoDuplicates(object[["geneId"]]),
+            hasRows(object),
+            hasNoDuplicates(object[[cols[[1L]]]]),
             msg = "Failed to generate GeneToSymbol object."
         )
         object <- object[order(object), , drop = FALSE]
