@@ -5,7 +5,9 @@ test_that("Ensembl", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "TxToGene")
-    expect_identical(nrow(object), 205131L)
+    ## This only contains cdna (coding) transcripts. Note that ensembldb
+    ## returns both coding and noncoding transcripts by default.
+    expect_identical(nrow(object), 207249L)
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
@@ -39,6 +41,10 @@ test_that("Ensembl", {
                 "ENSG00000173153"
             )
         )
+    )
+    expect_identical(
+        object = nrow(object),
+        expected = expected[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
 })
 
