@@ -11,9 +11,7 @@ updateGeneSymbols(geneNames, organism)
 Gene names (symbols).}
 
 \item{organism}{\code{character(1)}.
-Full Latin organism name.
-Human genes are checked against HGNC.
-Other organisms are checked against NCBI.}
+Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 }
 \value{
 \code{character}.
@@ -21,6 +19,12 @@ Named character, with original input defined in the names.
 }
 \description{
 Update gene symbols
+}
+\details{
+Human genes are checked against HGNC.
+Other organisms are checked against NCBI.
+
+Intentionally errors on match failure.
 }
 \note{
 Updated 2023-12-21.

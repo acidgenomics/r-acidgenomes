@@ -3,13 +3,16 @@
 #' @export
 #' @note Updated 2023-12-21.
 #'
-#' @param geneNames `character`.
-#' Gene names (symbols).
-#'
-#' @param organism `character(1)`.
-#' Full Latin organism name.
+#' @details
 #' Human genes are checked against HGNC.
 #' Other organisms are checked against NCBI.
+#'
+#' Intentionally errors on match failure.
+#'
+#' @inheritParams AcidRoxygen::params
+#'
+#' @param geneNames `character`.
+#' Gene names (symbols).
 #'
 #' @return `character`.
 #' Named character, with original input defined in the names.
