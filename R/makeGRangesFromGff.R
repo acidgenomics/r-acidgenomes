@@ -9,7 +9,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2023-12-21.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
