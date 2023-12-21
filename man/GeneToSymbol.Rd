@@ -4,6 +4,7 @@
 \alias{GeneToSymbol}
 \alias{GeneToSymbol,DFrame-method}
 \alias{GeneToSymbol,GRanges-method}
+\alias{GeneToSymbol,GRangesList-method}
 \title{Gene-to-symbol mappings}
 \usage{
 GeneToSymbol(object, ...)
@@ -15,6 +16,8 @@ GeneToSymbol(object, ...)
 )
 
 \S4method{GeneToSymbol}{GRanges}(object, ...)
+
+\S4method{GeneToSymbol}{GRangesList}(object, ...)
 }
 \arguments{
 \item{object}{Object.}
