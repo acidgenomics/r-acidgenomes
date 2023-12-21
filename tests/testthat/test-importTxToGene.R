@@ -16,6 +16,7 @@ test_that("No version stripping", {
         )
     )
     expect_s4_class(object, "TxToGene")
+    expect_identical(nrow(object), 10L)
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
@@ -36,6 +37,7 @@ test_that("Strip transcript and gene versions", {
         )
     )
     expect_s4_class(object, "TxToGene")
+    expect_identical(nrow(object), 10L)
     expect_identical(
         object = as.data.frame(object[1L, ]),
         expected = data.frame(
