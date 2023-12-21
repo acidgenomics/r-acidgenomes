@@ -29,7 +29,7 @@ test_that("Homo sapiens GRCh38", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 62754L)
+    expect_length(genes, 62754L) # FIXME
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -40,7 +40,7 @@ test_that("Homo sapiens GRCh38", {
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "EnsemblTranscripts")
-    expect_length(transcripts, 252894L)
+    expect_length(transcripts, 252894L) # FIXME
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
@@ -51,7 +51,7 @@ test_that("Homo sapiens GRCh38", {
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
-    expect_identical(nrow(t2g), 275741L)
+    expect_identical(nrow(t2g), 275741L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
@@ -63,7 +63,7 @@ test_that("Homo sapiens GRCh38", {
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(t2g), 275741L)
+    expect_identical(nrow(t2g), 275741L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
@@ -103,7 +103,7 @@ test_that("Homo sapiens GRCh37", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 57905L)
+    expect_length(genes, 57905L) # FIXME
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -114,7 +114,7 @@ test_that("Homo sapiens GRCh37", {
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "EnsemblTranscripts")
-    expect_length(transcripts, 196501L)
+    expect_length(transcripts, 196501L) # FIXME
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
@@ -125,7 +125,7 @@ test_that("Homo sapiens GRCh37", {
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
-    expect_identical(nrow(t2g), 215170L)
+    expect_identical(nrow(t2g), 215170L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
@@ -137,7 +137,7 @@ test_that("Homo sapiens GRCh37", {
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(t2g), 215170L)
+    expect_identical(nrow(t2g), 215170L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
@@ -179,7 +179,7 @@ test_that("Mus musculus GRCm39", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 56941L)
+    expect_length(genes, 56941L) # FIXME
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -190,7 +190,7 @@ test_that("Mus musculus GRCm39", {
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "EnsemblTranscripts")
-    expect_length(transcripts, 149547L)
+    expect_length(transcripts, 149547L) # FIXME
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
@@ -201,7 +201,7 @@ test_that("Mus musculus GRCm39", {
     )
     t2g <- import(file.path(outputDir, "tx2gene.rds"))
     expect_s4_class(t2g, "TxToGene")
-    expect_identical(nrow(t2g), 146263L)
+    expect_identical(nrow(t2g), 146263L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
@@ -213,7 +213,7 @@ test_that("Mus musculus GRCm39", {
         con = file.path(outputDir, "tx2gene.csv.gz"),
         colnames = c("txId", "geneId")
     )
-    expect_identical(nrow(t2g), 146263L)
+    expect_identical(nrow(t2g), 146263L) # FIXME
     expect_identical(
         object = as.data.frame(t2g)[1L, , drop = TRUE],
         expected = list(
