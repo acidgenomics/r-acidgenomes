@@ -133,7 +133,7 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
     ## head(setdiff(names(ensdb), names(gff)))
     ## > [1] "ENST00000680009.1" "ENST00000630627.1" "ENST00000630624.1"
     ## > [4] "ENST00000628275.2" "ENST00000628424.1" "ENST00000630311.1"
-    expect_length(object, 273930L)
+    expect_length(object, 274081L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
