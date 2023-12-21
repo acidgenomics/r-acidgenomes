@@ -22,10 +22,7 @@ test_that("Homo sapiens : genes", {
             "release" = 110L
         )
     )
-    expect_length(
-        object = object,
-        n = expected[["homoSapiens"]][["ensembl"]][["genes"]]
-    )
+    expect_length(object, 70116L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -103,10 +100,8 @@ test_that("Homo sapiens : transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(
-        object = object,
-        n = expected[["homoSapiens"]][["ensembl"]][["transcripts"]]
-    )
+    ## This contains both cdna (coding) and noncoding transcripts.
+    expect_length(object, 276905L)
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
