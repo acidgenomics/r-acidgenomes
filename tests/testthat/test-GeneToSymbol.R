@@ -8,9 +8,7 @@ test_that("GeneToSymbol", {
     }
 })
 
-test_that("format: makeUnique", {
-    ## Ensure duplicate gene names (symbols) are sanitized using `make.names`,
-    ## and that NA gene names are converted to "unannotated".
+test_that("format : makeUnique", {
     object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
@@ -32,27 +30,25 @@ test_that("format: makeUnique", {
         "geneId" = c(
             "gene1",
             "gene2",
-            "gene3",
-            "gene4"
+            "gene3"
         ),
         "geneName" = c(
             "symbol1",
             "symbol1.1",
-            "symbol2",
-            "unannotated"
+            "symbol2"
         )
     )
     metadata(expected) <- list(
         "date" = Sys.Date(),
+        "dropped" = "gene4",
         "dupes" = "symbol1",
         "format" = "makeUnique",
         "packageVersion" = .pkgVersion
     )
     expected <- new(Class = "GeneToSymbol", expected)
     expect_identical(object, expected)
-    ## Don't allow "geneId" column to contain NA values.
     expect_error(
-        GeneToSymbol(
+        object = GeneToSymbol(
             object = DataFrame(
                 "geneId" = c(
                     "gene1",
@@ -64,7 +60,8 @@ test_that("format: makeUnique", {
                 )
             ),
             format = "makeUnique"
-        )
+        ),
+        regexp = "anyNA"
     )
     ## Ensure gene identifiers return sorted.
     object <- GeneToSymbol(
@@ -95,7 +92,7 @@ test_that("format: makeUnique", {
     expect_identical(object, expected)
 })
 
-test_that("format: 1:1", {
+test_that("format : 1:1", {
     object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
@@ -104,7 +101,7 @@ test_that("format: 1:1", {
                 "gene4",
                 "gene3",
                 "gene5",
-                NA_character_
+                "gene6"
             ),
             "geneName" = c(
                 "symbol1",
@@ -121,17 +118,20 @@ test_that("format: 1:1", {
     expected <- DataFrame(
         "geneId" = c(
             "gene1",
-            "gene3"
+            "gene3",
+            "gene6"
         ),
         "geneName" = c(
             "symbol1",
-            "symbol2"
+            "symbol2",
+            "symbol3"
         ),
-        row.names = c("B", "D")
+        row.names = c("B", "D", "F")
     )
     metadata(expected) <- list(
         "date" = Sys.Date(),
-        "dropped" = c("E" = 5L, "F" = 6L),
+        "dropped" = "gene5",
+        "dupes" = c("symbol1", "symbol2"),
         "format" = "1:1",
         "packageVersion" = .pkgVersion
     )
@@ -139,7 +139,7 @@ test_that("format: 1:1", {
     expect_identical(object, expected)
 })
 
-test_that("format: unmodified", {
+test_that("format : unmodified", {
     object <- GeneToSymbol(
         object = DataFrame(
             "geneId" = c(
@@ -147,7 +147,7 @@ test_that("format: unmodified", {
                 "gene2",
                 "gene3",
                 "gene4",
-                NA_character_
+                "gene5"
             ),
             "geneName" = c(
                 "symbol1",
@@ -164,18 +164,21 @@ test_that("format: unmodified", {
         "geneId" = c(
             "gene1",
             "gene2",
-            "gene3"
+            "gene3",
+            "gene5"
         ),
         "geneName" = c(
             "symbol1",
             "symbol1",
-            "symbol2"
+            "symbol2",
+            "symbol3"
         ),
-        row.names = LETTERS[seq_len(3L)]
+        row.names = c("A", "B", "C", "E")
     )
     metadata(expected) <- list(
         "date" = Sys.Date(),
-        "dropped" = c("D" = 4L, "E" = 5L),
+        "dropped" = "gene4",
+        "dupes" = "symbol1",
         "format" = "unmodified",
         "packageVersion" = .pkgVersion
     )

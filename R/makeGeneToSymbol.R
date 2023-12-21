@@ -1,3 +1,7 @@
+## FIXME Ensure we add code coverage of NCBI RefSeq (longtests is OK).
+
+
+
 #' Make a GeneToSymbol object
 #'
 #' @section GFF/GTF file:
@@ -5,7 +9,7 @@
 #' Remote URLs and compressed files are supported.
 #'
 #' @name makeGeneToSymbol
-#' @note Updated 2021-08-03.
+#' @note Updated 2023-12-21.
 #'
 #' @inheritParams GeneToSymbol
 #' @inheritParams AcidRoxygen::params
@@ -71,7 +75,7 @@ makeGeneToSymbolFromEnsembl <-
 #' @describeIn makeGeneToSymbol Make a `GeneToSymbol` object from an `EnsDb`
 #' object or annotation package.
 #' @export
-## Updated 2023-12-04.
+## Updated 2023-12-21.
 makeGeneToSymbolFromEnsDb <-
     function(object,
              ignoreVersion = FALSE,
@@ -79,7 +83,8 @@ makeGeneToSymbolFromEnsDb <-
         gr <- makeGRangesFromEnsDb(
             object = object,
             ignoreVersion = ignoreVersion,
-            level = "genes"
+            level = "genes",
+            extraMcols = FALSE
         )
         GeneToSymbol(object = gr, format = match.arg(format))
     }
