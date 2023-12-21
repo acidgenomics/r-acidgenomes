@@ -162,10 +162,7 @@ makeGRangesFromEnsDb <-
             isFlag(extraMcols)
         )
         level <- match.arg(level)
-        alert(sprintf(
-            "Making {.cls %s} from {.cls %s}.",
-            "GRanges", "EnsDb"
-        ))
+        alert(sprintf("Making {.cls %s} from {.cls %s}.", "GRanges", "EnsDb"))
         if (isString(object)) {
             package <- object
             assert(requireNamespaces(package))
@@ -224,32 +221,62 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        ## FIXME Don't call these here, can change expected output:
-        ## > gr <- sort(gr)
-        ## > gr <- unique(gr)
-        assert(hasNoDuplicates(mcols(gr)[[idCol]]))
-        gr <- .makeGRanges(
-            object = gr,
-            ignoreVersion = ignoreVersion,
-            extraMcols = extraMcols
-        )
         ## Ensure we always remove LRG gene annotations, which are defined in
         ## ensembldb output but not in primary GFF3/GTF files.
-        isLrg <- mcols(gr)[["geneBiotype"]] == "LRG_gene"
-        ## Alternate method:
-        ## > isLrg <- grepl(pattern = "^LRG_", x = names(gr))
+        isLrg <- mcols(gr)[["gene_biotype"]] == "LRG_gene"
         if (any(isLrg)) {
             alertInfo(sprintf(
                 "Removing %d LRG %s.",
                 sum(isLrg),
                 ngettext(
                     n = sum(isLrg),
-                    msg1 = "gene",
-                    msg2 = "genes"
+                    msg1 = substr(
+                        x = level,
+                        start = 1L,
+                        stop = nchar(level) - 1L
+                    ),
+                    msg2 = level
                 )
             ))
             gr <- gr[!isLrg]
         }
+
+
+        ## FIXME This currently fails for ensembldb return with transcripts
+        ## included.
+        if (
+            identical(level, "exons") &&
+            hasDuplicates(mcols(gr)[["exon_id"]])
+        ) {
+            ## e.g. Homo sapiens exon "ENSE00001132905".
+            ## Keep: "ENSG00000291317" (TMEM276).
+            ## Drop: "ENSG00000291316" (no gene name; novel protein).
+            dupes <- dupes(mcols(gr)[["exon_id"]])
+            assert(length(dupes) <= 10L)
+            alert(sprintf(
+                "Resolving %d duplicate exon-to-gene %s: %s.",
+                length(dupes),
+                ngettext(
+                    n = length(dupes),
+                    msg1 = "mapping",
+                    msg2 = "mappings"
+                ),
+                toInlineString(dupes)
+            ))
+            ## ensembldb currently returns empty columns instead of setting NA.
+            keep <- !{
+                mcols(gr)[["exon_id"]] %in% dupes &
+                    nzchar(mcols(gr)[["gene_name"]])
+            }
+            gr <- gr[keep]
+            assert(hasNoDuplicates(mcols(gr)[["exon_id"]]))
+        }
+        assert(hasNoDuplicates(mcols(gr)[[idCol]]))
+        gr <- .makeGRanges(
+            object = gr,
+            ignoreVersion = ignoreVersion,
+            extraMcols = extraMcols
+        )
         metadata(gr)[["call"]] <- tryCatch(
             expr = standardizeCall(),
             error = function(e) {
