@@ -25,16 +25,6 @@ gr <- GRanges
 
 ## nolint end
 
-expected <- list(
-    "homoSapiens"= list(
-        "ensembl" = c(
-            ## GRCh38 build / 110 release.
-            "genes" = 70116L,
-            "transcripts" = 276905L
-        )
-    )
-)
-
 ## Updated 2023-12-21.
 txFastas <- c(
     "ensembl" = pasteUrl(
