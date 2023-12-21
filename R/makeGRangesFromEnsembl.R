@@ -78,7 +78,9 @@
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #' - `ensembldb::ensDbFromGff()`, `ensembldb::ensDbFromGtf()`.
-#' - [Gene/transcript biotypes in GENCODE and Ensembl](https://www.gencodegenes.org/pages/biotypes.html)
+#' - [Ensembl biotypes](https://useast.ensembl.org/info/genome/genebuild/biotypes.html).
+#' - [Gene/transcript biotypes in GENCODE and Ensembl](https://www.gencodegenes.org/pages/biotypes.html).
+#' - [Locus reference genomic](http://www.lrg-sequence.org/).
 #'
 #' @examples
 #' ## Get annotations from Ensembl via AnnotationHub query.
