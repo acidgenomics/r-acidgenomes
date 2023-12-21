@@ -119,6 +119,8 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
 })
 
+## FIXME This is missing some transcripts that are defined in the GTF ugh.
+
 test_that("Ensembl GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
