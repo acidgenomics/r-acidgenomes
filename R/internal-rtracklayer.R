@@ -68,11 +68,13 @@
         if (is(seqinfo, "Seqinfo")) {
             seqinfo(gr) <- seqinfo[seqlevels(gr)]
         }
-        .makeGRanges(
+        out <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
             extraMcols = extraMcols
         )
+        assert(identical(length(gr), length(out)))
+        out
     }
 
 
@@ -333,7 +335,7 @@
 
 
 
-## Updated 2023-12-20.
+## Updated 2023-12-21.
 .rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
@@ -349,10 +351,7 @@
                 y = names(mcols(object))
             ),
             areDisjointSets(
-                x = c(
-                    "gene_id_version",
-                    "transcript_id_version"
-                ),
+                x = c("gene_id_version", "transcript_id_version"),
                 y = names(mcols(object))
             )
         )
