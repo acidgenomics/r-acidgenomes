@@ -1,6 +1,6 @@
 #' @name GeneToSymbol
 #' @inherit AcidGenerics::GeneToSymbol description return title
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-21.
 #'
 #' @details
 #' For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
@@ -52,7 +52,7 @@ NULL
 
 
 
-## Updated 2023-09-16.
+## Updated 2023-12-21.
 `GeneToSymbol,DFrame` <- # nolint
     function(object,
              format = c("makeUnique", "1:1", "unmodified"),
@@ -75,74 +75,38 @@ NULL
         object <- as(object, "DFrame")
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
-        assert(allAreAtomic(object))
         object <- unique(object)
-        ## Remove incomplete elements, except for "makeUnique" mode.
-        if (!identical(format, "makeUnique")) {
-            keep <- complete.cases(object)
-            if (!all(keep)) {
-                ## e.g. applies to Ensembl Mus musculus GRCm39 104.
-                meta[["dropped"]] <- which(!keep)
-                if (isFALSE(quiet)) {
-                    n <- sum(!keep)
-                    alertWarning(sprintf(
-                        "Dropping %d %s without defined gene symbol.",
-                        n,
-                        ngettext(
-                            n = n,
-                            msg1 = "identifier",
-                            msg2 = "identifiers"
-                        )
-                    ))
-                }
-                object <- object[keep, , drop = FALSE]
+        keep <- complete.cases(object)
+        if (!all(keep)) {
+            ## e.g. applies to Ensembl Mus musculus GRCm39 104.
+            meta[["dropped"]] <- which(!keep)
+            if (isFALSE(quiet)) {
+                n <- sum(!keep)
+                alertWarning(sprintf(
+                    "Dropping %d %s without defined gene symbol.",
+                    n,
+                    ngettext(
+                        n = n,
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
             }
+            object <- object[keep, , drop = FALSE]
         }
         assert(hasRows(object))
-        ## Enforce coercion of integer gene identifiers (e.g. NCBI).
-        if (is.integer(object[["geneId"]])) {
-            object[["geneId"]] <- as.character(object[["geneId"]])
-        }
         switch(
             EXPR = format,
             "makeUnique" = {
-                ## Ensure we arrange by gene identifier prior to sanization.
-                object <- object[order(object), , drop = FALSE]
-                ## Replace any "NA" gene names with "unannotated".
-                if (anyNA(object[["geneName"]])) {
-                    object[["geneName"]][
-                        which(is.na(object[["geneName"]]))
-                    ] <- "unannotated"
-                }
-                ## Inform the user about how many symbols multi-map.
-                ## Don't count "unannotated" genes as true duplicates here.
-                ## Note that `duplicated()` doesn't work on Rle.
-                dupes <- duplicated(object[["geneName"]])
-                if (any(dupes)) {
-                    dupes <- setdiff(
-                        x = sort(unique(object[["geneName"]][dupes])),
-                        y = "unannotated"
-                    )
-                    if (hasLength(dupes)) {
-                        meta[["dupes"]] <- dupes
-                        if (isFALSE(quiet)) {
-                            n <- length(dupes)
-                            alertInfo(sprintf(
-                                "%d non-unique gene %s detected: %s.",
-                                n,
-                                ngettext(
-                                    n = n,
-                                    msg1 = "symbol",
-                                    msg2 = "symbols"
-                                ),
-                                toInlineString(dupes, n = 10L, class = "val")
-                            ))
-                        }
-                    }
-                }
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
+                ## FIXME Calculate order here by column positions 2 then 1.
+                ## Much faster than splitting approach.
+                ## FIXME Rework this by sorting the data frame rather than
+                ## splitting. We can be more clever about this.
+                ## FIXME Can order by gene symbol and then geneID column,
+                ## no split necessary here -- much faster.
                 assert(all(complete.cases(object)))
                 alert(paste(
                     "Returning 1:1 mappings using oldest",
@@ -165,6 +129,8 @@ NULL
             },
             "unmodified" = {
                 if (isFALSE(quiet)) {
+                    ## FIXME Inform the user about how many duplicates
+                    ## detected.
                     alertInfo(paste(
                         "Returning with unmodified gene symbols",
                         "{.emph (may contain duplicates)}."
