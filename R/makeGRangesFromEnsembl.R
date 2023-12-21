@@ -78,6 +78,7 @@
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #' - `ensembldb::ensDbFromGff()`, `ensembldb::ensDbFromGtf()`.
+#' - [Gene/transcript biotypes in GENCODE and Ensembl](https://www.gencodegenes.org/pages/biotypes.html)
 #'
 #' @examples
 #' ## Get annotations from Ensembl via AnnotationHub query.
@@ -221,24 +222,28 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        ## Ensure we always remove LRG gene annotations, which are defined in
-        ## ensembldb output but not in primary GFF3/GTF files.
-        isLrg <- mcols(gr)[["gene_biotype"]] == "LRG_gene"
-        if (any(isLrg)) {
-            alertInfo(sprintf(
-                "Removing %d LRG %s.",
-                sum(isLrg),
-                ngettext(
-                    n = sum(isLrg),
-                    msg1 = substr(
-                        x = level,
-                        start = 1L,
-                        stop = nchar(level) - 1L
-                    ),
-                    msg2 = level
-                )
-            ))
-            gr <- gr[!isLrg]
+        ## Remove unwanted experimental biotypes:
+        ## - LRG: locus reference genomic
+        ## - TEC: to be experimentally confirmed
+        for (biotype in c("LRG_gene", "TEC", "artifact")) {
+            drop <- mcols(gr)[["gene_biotype"]] == biotype
+            if (any(drop)) {
+                alertInfo(sprintf(
+                    "Removing %d {.var %s} %s.",
+                    sum(drop),
+                    biotype,
+                    ngettext(
+                        n = sum(drop),
+                        msg1 = substr(
+                            x = level,
+                            start = 1L,
+                            stop = nchar(level) - 1L
+                        ),
+                        msg2 = level
+                    )
+                ))
+                gr <- gr[!drop]
+            }
         }
         if (
             identical(level, "exons") &&
