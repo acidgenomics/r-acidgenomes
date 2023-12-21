@@ -160,5 +160,8 @@ summary(transcripts)
 \item \href{https://bioconductor.org/packages/AnnotationHub/}{AnnotationHub}.
 \item \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
 \item \code{ensembldb::ensDbFromGff()}, \code{ensembldb::ensDbFromGtf()}.
+\item \href{https://useast.ensembl.org/info/genome/genebuild/biotypes.html}{Ensembl biotypes}.
+\item \href{https://www.gencodegenes.org/pages/biotypes.html}{Gene/transcript biotypes in GENCODE and Ensembl}.
+\item \href{http://www.lrg-sequence.org/}{Locus reference genomic}.
 }
 }
