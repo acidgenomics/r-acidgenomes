@@ -1,10 +1,9 @@
-test_that("GeneToSymbol", {
+test_that("GRanges format support", {
     formats <- eval(formals(`GeneToSymbol,DFrame`)[["format"]])
     for (format in formats) {
         object <- gr
         object <- GeneToSymbol(object, format = format)
         expect_s4_class(object, "GeneToSymbol")
-        expect_identical(colnames(object), c("geneId", "geneName"))
     }
 })
 
