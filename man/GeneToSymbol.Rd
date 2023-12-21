@@ -51,7 +51,7 @@ For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
 here in the documentation for approaches that deal with this issue.
 }
 \note{
-Updated 2023-09-26.
+Updated 2023-12-21.
 }
 \examples{
 data(GRanges, package = "AcidTest")
