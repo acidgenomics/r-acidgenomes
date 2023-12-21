@@ -240,14 +240,12 @@ makeGRangesFromEnsDb <-
             ))
             gr <- gr[!isLrg]
         }
-
-
-        ## FIXME This currently fails for ensembldb return with transcripts
-        ## included.
         if (
             identical(level, "exons") &&
             hasDuplicates(mcols(gr)[["exon_id"]])
         ) {
+            ## e.g. "ENSE00000000021" multimaps to multiple transcripts here
+            ## but not in the GFF file definition...need to resolve.
             ## e.g. Homo sapiens exon "ENSE00001132905".
             ## Keep: "ENSG00000291317" (TMEM276).
             ## Drop: "ENSG00000291316" (no gene name; novel protein).
