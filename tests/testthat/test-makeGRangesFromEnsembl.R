@@ -4,7 +4,7 @@ test_that("Homo sapiens : genes", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "genes",
-        release = 108L,
+        release = 110L,
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
@@ -16,13 +16,16 @@ test_that("Homo sapiens : genes", {
             "release"
         )],
         expected = list(
-            "annotationHubId" = "AH109336",
+            "annotationHubId" = "AH113665",
             "genomeBuild" = "GRCh38",
             "organism" = "Homo sapiens",
-            "release" = 108L
+            "release" = 110L
         )
     )
-    expect_length(object, 69292L)
+    expect_length(
+        object = object,
+        n = expected[["homoSapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -96,11 +99,14 @@ test_that("Homo sapiens : transcripts", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "transcripts",
-        release = 108L,
+        release = 110L,
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 274081L)
+    expect_length(
+        object = object,
+        n = expected[["homoSapiens"]][["ensembl"]][["transcripts"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
