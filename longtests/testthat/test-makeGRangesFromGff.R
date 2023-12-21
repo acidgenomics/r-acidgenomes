@@ -18,7 +18,10 @@ test_that("Ensembl GRCh38 GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 69292L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -128,16 +131,9 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    ## FIXME ensembldb returns 274081.
-    ## Parsing the GFF3 file is also returning expected 274081.
-    ## Need to debug the issue we're seeing with GTF parser.
-    ## Some missing transcripts:
-    ## head(setdiff(names(ensdb), names(gff)))
-    ## > [1] "ENST00000680009.1" "ENST00000630627.1" "ENST00000630624.1"
-    ## > [4] "ENST00000628275.2" "ENST00000628424.1" "ENST00000630311.1"
     expect_length(
         object = object,
-        n = expected[["ensembl"]][["transcripts"]]
+        n = n[["hsapiens"]][["ensembl"]][["tx"]]
     )
     expect_named(
         object = object,
@@ -219,7 +215,10 @@ test_that("Ensembl GRCh38 GFF3 exons", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblExons")
-    expect_length(object, 252300L)
+    expect_length(
+        object = object,
+        n = 252300L # FIXME
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -297,7 +296,10 @@ test_that("Ensembl GRCh38 GTF genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 69292L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -405,7 +407,7 @@ test_that("Ensembl GRCh38 GTF transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(
         object = object,
-        n = expected[["ensembl"]][["transcripts"]]
+        n = n[["hsapiens"]][["ensembl"]][["tx"]]
     )
     expect_named(
         object = object,
@@ -491,7 +493,10 @@ test_that("FlyBase GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "FlybaseGenes")
-    expect_length(object, 17896L)
+    expect_length(
+        object = object,
+        n = 17896L
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
