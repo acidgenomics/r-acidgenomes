@@ -152,6 +152,19 @@ NULL
 
 
 
+## Updated 2023-12-21.
+`GeneToSymbol,GRangesList` <- # nolint
+    function(object, ...) {
+        gr <- unlist(
+            x = object,
+            recursive = FALSE,
+            use.names = TRUE
+        )
+        GeneToSymbol(gr, ...)
+    }
+
+
+
 #' @rdname GeneToSymbol
 #' @export
 setMethod(
@@ -166,4 +179,12 @@ setMethod(
     f = "GeneToSymbol",
     signature = signature(object = "GRanges"),
     definition = `GeneToSymbol,GRanges`
+)
+
+#' @rdname GeneToSymbol
+#' @export
+setMethod(
+    f = "GeneToSymbol",
+    signature = signature(object = "GRangesList"),
+    definition = `GeneToSymbol,GRangesList`
 )
