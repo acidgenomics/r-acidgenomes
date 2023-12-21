@@ -71,7 +71,8 @@ NULL
         }
         assert(
             isSubset(cols, colnames(object)),
-            hasRows(object)
+            hasRows(object),
+            !anyNA(object[["geneId"]])
         )
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
@@ -79,7 +80,7 @@ NULL
         keep <- complete.cases(object)
         if (!all(keep)) {
             ## e.g. applies to Ensembl Mus musculus GRCm39 104.
-            meta[["dropped"]] <- which(!keep)
+            meta[["dropped"]] <- object[["geneId"]][!keep]
             if (isFALSE(quiet)) {
                 n <- sum(!keep)
                 alertWarning(sprintf(
@@ -100,6 +101,10 @@ NULL
         )
         i <- order(object)
         object <- object[i, , drop = FALSE]
+        dupes <- sort(dupes(object[["geneName"]]))
+        if (hasLength(dupes)) {
+            meta[["dupes"]] <- dupes
+        }
         switch(
             EXPR = format,
             "makeUnique" = {
@@ -112,8 +117,6 @@ NULL
                 object <- object[i, , drop = FALSE]
             },
             "unmodified" = {
-                dupes <- dupes(object[["geneName"]])
-                meta[["dupes"]] <- dupes
                 if (isFALSE(quiet) && hasLength(dupes)) {
                     alertInfo(sprintf(
                         "Returning unmodified with %d duplicate gene %s: %s.",
