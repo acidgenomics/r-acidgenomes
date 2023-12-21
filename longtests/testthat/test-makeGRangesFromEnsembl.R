@@ -10,7 +10,7 @@ test_that("Homo sapiens : exons", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblExons")
-    expect_length(object, 735689L)
+    expect_length(object, 735689L) # FIXME
     ## ensembldb doesn't currently support versioned exon identifiers.
     expect_error(
         object = makeGRangesFromEnsembl(
@@ -32,7 +32,7 @@ test_that("Mus musculus : exons", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblExons")
-    expect_length(object, 458023L)
+    expect_length(object, 458023L) # FIXME
 })
 
 test_that("Organism with 3 words", {
@@ -54,7 +54,7 @@ test_that("Homo sapiens : genes : GRCh37", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 64102L)
+    expect_length(object, 64102L) # FIXME
     ## FIXME Rework to use expect_named.
     expect_identical(head(names(object), 1L), "ENSG00000228572")
     ## FIXME Ensure all names match expected pattern.
@@ -70,7 +70,7 @@ test_that("Homo sapiens : transcripts : GRCh37", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 215647L)
+    expect_length(object, 215647L) # FIXME
     ## FIXME Rework to use expect_named.
     expect_identical(head(names(object), 1L), "ENST00000478759")
     ## FIXME Ensure all names match expected pattern.
