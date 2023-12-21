@@ -3,8 +3,6 @@
 #' @export
 #' @note Updated 2023-12-21.
 #'
-#' @inheritParams AcidRoxygen::params
-#'
 #' @param geneNames `character`.
 #' Gene names (symbols).
 #'
@@ -56,15 +54,20 @@ updateGeneSymbols <- function(geneNames, organism) {
     assert(isSubset(cols, colnames(df)))
     df <- df[, cols]
     idx <- matchNested(geneNames, df)
+    if (anyNA(idx)) {
+        fail <- geneNames[which(is.na(idx))]
+        abort(sprintf(
+            "Failed to match %s gene %s: %s.",
+            length(fail),
+            ngettext(
+                n = length(fail),
+                msg1 = "symbol",
+                msg2 = "symbols"
+            ),
+            toInlineString(fail)
+        ))
+    }
     out <- df[["geneName"]][idx]
     names(out) <- geneNames
     out
-}
-
-
-
-#' @export
-#' @rdname updateGeneSymbols
-updateMgiSymbols <- function(x) {
-    mgi <- Mgi()
 }
