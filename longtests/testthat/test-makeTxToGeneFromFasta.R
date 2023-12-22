@@ -7,14 +7,15 @@ test_that("Ensembl", {
         file = txFastas[["ensembl_ncrna"]],
         ignoreVersion = FALSE
     )
-    object <- do.call(
-        what = rbind,
-        args = list(cdna, ncrna)
-    )
+    object <- do.call(what = rbind, args = list(cdna, ncrna))
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),
         expected = n[["hsapiens"]][["ensembl"]][["tx"]]
+    )
+    expect_length(
+        object = unique(object[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["tx"]]
     )
     expect_length(
         object = unique(object[["geneId"]]),
