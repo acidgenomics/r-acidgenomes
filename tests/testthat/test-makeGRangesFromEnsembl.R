@@ -24,7 +24,7 @@ test_that("Homo sapiens : genes", {
     )
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
     expect_named(
         object = object,
@@ -105,7 +105,7 @@ test_that("Homo sapiens : transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["tx"]]
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
     expect_named(
         object = object,
