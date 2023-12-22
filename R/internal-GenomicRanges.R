@@ -304,11 +304,11 @@
 #'
 #' @return Modified object.
 .removeBiotypes <- function(object) {
+    assert(is(object, "GRanges"))
     biotypeCol <- "geneBiotype"
-    assert(
-        is(object, "GRanges"),
-        isSubset(biotypeCol, colnames(mcols(object)))
-    )
+    if (!isSubset(biotypeCol, colnames(mcols(object)))) {
+        return(object)
+    }
     biotypes <- c(
         ## Defined in Ensembl Perl API.
         "LRG_gene",

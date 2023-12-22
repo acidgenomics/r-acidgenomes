@@ -11,15 +11,15 @@ test_that("Ensembl", {
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),
-        expected = n[["hsapiens"]][["ensembl"]][["tx"]]
+        expected = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
     expect_length(
         object = unique(object[["txId"]]),
-        n = n[["hsapiens"]][["ensembl"]][["tx"]]
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
     expect_length(
         object = unique(object[["geneId"]]),
-        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],

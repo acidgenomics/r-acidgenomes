@@ -29,8 +29,9 @@ n <- list(
     "hsapiens" = list(
         "ensembl" = c(
             ## GRCh38 release 110.
-            "gene" = 68974L,
-            "tx" = 275741L
+            "exons" = 733353L,
+            "genes" = 68974L,
+            "transcripts" = 275741L
         )
     )
 )
