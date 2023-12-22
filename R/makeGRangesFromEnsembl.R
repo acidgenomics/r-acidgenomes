@@ -224,29 +224,6 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        ## Remove unwanted experimental biotypes:
-        ## - LRG: locus reference genomic
-        ## - TEC: to be experimentally confirmed
-        for (biotype in c("LRG_gene", "TEC", "artifact")) {
-            drop <- mcols(gr)[["gene_biotype"]] == biotype
-            if (any(drop)) {
-                alertInfo(sprintf(
-                    "Removing %d {.var %s} %s.",
-                    sum(drop),
-                    biotype,
-                    ngettext(
-                        n = sum(drop),
-                        msg1 = substr(
-                            x = level,
-                            start = 1L,
-                            stop = nchar(level) - 1L
-                        ),
-                        msg2 = level
-                    )
-                ))
-                gr <- gr[!drop]
-            }
-        }
         if (
             identical(level, "exons") &&
             hasDuplicates(mcols(gr)[["exon_id"]])
