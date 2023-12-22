@@ -435,19 +435,9 @@
         mcols[["txSupportLevel"]] <- as.integer(mcols[["txSupportLevel"]])
     }
     factorCols <- c(
-        "exception",
-        "geneBiotype",
-        "geneSource",
-        "level",
-        "logicName",
-        "seqCoordSystem",
-        "source",
-        "txBiotype",
-        "txChrom",
-        "txSource",
-        "txStrand",
-        "txSupportLevel",
-        "type"
+        "ensemblEndPhase", "ensemblPhase", "exception", "geneBiotype",
+        "geneSource", "level", "logicName", "seqCoordSystem", "source",
+        "txBiotype", "txChrom", "txSource", "txStrand", "txSupportLevel", "type"
     )
     for (factorCol in factorCols) {
         if (

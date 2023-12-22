@@ -214,18 +214,25 @@ test_that("Ensembl GRCh38 GFF3 exons", {
     expect_s4_class(object, "EnsemblExons")
     expect_length(
         object = object,
-        n = 733353L
+        n = n[["hsapiens"]][["ensembl"]][["exons"]]
     )
     expect_named(
         object = object,
-        expected = as.character(mcols(object)[["txId"]])
+        expected = as.character(mcols(object)[["exonId"]])
     )
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
             "broadClass" = "factor",
             "ccdsId" = "character",
+            "constitutive" = "character",
             "description" = "character",
+            "ensemblEndPhase" = "character", # FIXME factor
+            "ensemblPhase" = "character", # FIXME factor
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonName" = "character",
             "geneBiotype" = "factor",
             "geneId" = "character",
             "geneIdNoVersion" = "character",
@@ -234,6 +241,7 @@ test_that("Ensembl GRCh38 GFF3 exons", {
             "geneSynonyms" = "CompressedCharacterList",
             "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
+            "rank" = "character",
             "source" = "factor",
             "tag" = "CompressedCharacterList",
             "txBiotype" = "factor",
