@@ -102,6 +102,9 @@
             )
         )
         mcols(object) <- removeNa(mcols(object))
+        names(mcols(object))[
+            names(mcols(object)) == "Name"
+        ] <- "exon_name"
         mcols(object)[["transcript_id"]] <- gsub(
             pattern = "^transcript:",
             replacement = "",
