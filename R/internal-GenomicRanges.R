@@ -291,11 +291,57 @@
 
 
 
+#' Remove unwanted experimental biotypes from GRanges
+#'
+#' @note Updated 2023-12-22.
+#' @noRd
+#'
+#' @details
+#' Remove extra experimental biotypes (primarily intended for Ensembl) that are
+#' defined in GFF3/GTF files but not FASTA files.
+#'
+#' @param object GRanges.
+#'
+#' @return Modified object.
+.removeBiotypes <- function(object) {
+    biotypeCol <- "geneBiotype"
+    assert(
+        is(object, "GRanges"),
+        isSubset(biotypeCol, colnames(mcols(object)))
+    )
+    biotypes <- c(
+        ## Defined in Ensembl Perl API.
+        "LRG_gene",
+        ## Defined in GFF3/GTF files.
+        "TEC",
+        "artifact"
+    )
+    for (biotype in biotypes) {
+        drop <- mcols(object)[[biotypeCol]] == biotype
+        if (any(drop)) {
+            alertInfo(sprintf(
+                "Removing %d {.var %s} %s.",
+                sum(drop),
+                biotype,
+                ngettext(
+                    n = sum(drop),
+                    msg1 = "identifier",
+                    msg2 = "identifiers"
+                )
+            ))
+            object <- object[!drop]
+        }
+    }
+    object
+}
+
+
+
 ## FIXME dbxref needs to return as CompressedCharacterList.
 
 #' Finalize `GRanges` mcols return
 #'
-#' @note Updated 2023-12-19.
+#' @note Updated 2023-12-22.
 #' @noRd
 #'
 #' @details
@@ -544,7 +590,7 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-12-20.
+#' @note Updated 2023-12-22.
 #' @noRd
 .makeGRanges <-
     function(object,
@@ -588,6 +634,7 @@
             }
         }
         object <- .returnMcols(object)
+        object <- .removeBiotypes(object)
         idCol <- .matchGRangesNamesColumn(object)
         assert(isSubset(idCol, names(mcols(object))))
         alert(sprintf(
