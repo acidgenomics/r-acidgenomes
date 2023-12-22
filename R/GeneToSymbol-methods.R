@@ -155,11 +155,7 @@ NULL
 ## Updated 2023-12-21.
 `GeneToSymbol,GRangesList` <- # nolint
     function(object, ...) {
-        gr <- unlist(
-            x = object,
-            recursive = FALSE,
-            use.names = TRUE
-        )
+        gr <- unlist(x = object, recursive = FALSE, use.names = TRUE)
         GeneToSymbol(gr, ...)
     }
 
