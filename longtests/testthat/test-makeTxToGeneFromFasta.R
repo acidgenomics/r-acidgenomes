@@ -38,6 +38,8 @@ test_that("Ensembl", {
     )
 })
 
+## FIXME Rework this unit test.
+
 test_that("FlyBase", {
     file <- txFastas[["flybase"]]
     object <- makeTxToGeneFromFasta(file)
@@ -59,6 +61,8 @@ test_that("FlyBase", {
         )
     )
 })
+
+## FIXME Rework this unit test.
 
 test_that("GENCODE", {
     file <- txFastas[["gencode"]]
@@ -103,6 +107,8 @@ test_that("GENCODE", {
         )
     )
 })
+
+## FIXME Rework this unit test.
 
 test_that("WormBase", {
     file <- txFastas[["wormbase"]]
