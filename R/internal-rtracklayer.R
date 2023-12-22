@@ -1,10 +1,6 @@
-## FIXME Need to add support for exons here.
-
-
-
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-12-20.
+#' @note Updated 2023-12-22.
 #' @noRd
 #'
 #' @details
@@ -73,7 +69,6 @@
             ignoreVersion = ignoreVersion,
             extraMcols = extraMcols
         )
-        assert(identical(length(gr), length(out)))
         out
     }
 
@@ -81,7 +76,7 @@
 
 ## Ensembl =====================================================================
 
-## Updated 2023-12-20.
+## Updated 2023-12-22.
 .rtracklayerEnsemblExonsGff <-
     function(object) {
         tx <- .rtracklayerEnsemblTranscriptsGff(object)
@@ -139,7 +134,7 @@
 
 
 
-## Updated 2023-12-20.
+## Updated 2023-12-22.
 .rtracklayerEnsemblExonsGtf <-
     function(object) {
         assert(
@@ -268,7 +263,7 @@
 
 
 
-## Updated 2023-12-21.
+## Updated 2023-12-22.
 .rtracklayerEnsemblTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerEnsemblGenesGff(object)
