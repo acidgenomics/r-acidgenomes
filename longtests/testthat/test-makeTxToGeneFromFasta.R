@@ -16,6 +16,10 @@ test_that("Ensembl", {
         object = nrow(object),
         expected = n[["hsapiens"]][["ensembl"]][["tx"]]
     )
+    expect_length(
+        object = unique(object[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+    )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
         expected = data.frame(
