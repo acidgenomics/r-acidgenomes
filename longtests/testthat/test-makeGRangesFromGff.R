@@ -20,7 +20,7 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     expect_s4_class(object, "EnsemblGenes")
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
     expect_named(
         object = object,
@@ -131,7 +131,7 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["tx"]]
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
     expect_named(
         object = object,
@@ -206,7 +206,6 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
 })
 
 test_that("Ensembl GRCh38 GFF3 exons", {
-    ## FIXME Need to cover this.
     object <- makeGRangesFromGff(
         file = file,
         level = "exons",
@@ -215,7 +214,7 @@ test_that("Ensembl GRCh38 GFF3 exons", {
     expect_s4_class(object, "EnsemblExons")
     expect_length(
         object = object,
-        n = 252300L # FIXME
+        n = 733353L
     )
     expect_named(
         object = object,
@@ -296,7 +295,7 @@ test_that("Ensembl GRCh38 GTF genes", {
     expect_s4_class(object, "EnsemblGenes")
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["gene"]]
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
     expect_named(
         object = object,
@@ -405,7 +404,7 @@ test_that("Ensembl GRCh38 GTF transcripts", {
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(
         object = object,
-        n = n[["hsapiens"]][["ensembl"]][["tx"]]
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
     expect_named(
         object = object,
