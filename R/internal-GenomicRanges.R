@@ -300,6 +300,12 @@
 #' Remove extra experimental biotypes (primarily intended for Ensembl) that are
 #' defined in GFF3/GTF files but not FASTA files.
 #'
+#' "LRG_gene" identifiers are defined in Ensembl Perl API return but not in
+#' GFF files or FASTA files.
+#'
+#' "TEC" and "artifact" biotypes are defined in GFF files but not FASTA files,
+#' so we also want to remove these from return.
+#'
 #' @param object GRanges.
 #'
 #' @return Modified object.
@@ -309,13 +315,7 @@
     if (!isSubset(biotypeCol, colnames(mcols(object)))) {
         return(object)
     }
-    biotypes <- c(
-        ## Defined in Ensembl Perl API.
-        "LRG_gene",
-        ## Defined in GFF3/GTF files.
-        "TEC",
-        "artifact"
-    )
+    biotypes <- c("LRG_gene", "TEC", "artifact")
     for (biotype in biotypes) {
         drop <- mcols(object)[[biotypeCol]] == biotype
         if (any(drop)) {
@@ -336,8 +336,6 @@
 }
 
 
-
-## FIXME dbxref needs to return as CompressedCharacterList.
 
 #' Finalize `GRanges` mcols return
 #'
