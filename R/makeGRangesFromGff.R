@@ -1,15 +1,8 @@
-## FIXME Need to debug transcript parsing mismatch with ensembldb:
-## > head(setdiff(names(ensdb), names(gff)))
-## [1] "ENST00000680009.1" "ENST00000630627.1" "ENST00000630624.1"
-## [4] "ENST00000628275.2" "ENST00000628424.1" "ENST00000630311.1"
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2023-12-21.
+#' @note Updated 2023-12-22.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -43,14 +36,8 @@
 #'
 #' @section Supported sources:
 #'
-#' Currently [makeGRangesFromGff()] supports genomes from these sources:
-#'
-#' - Ensembl
-#' - GENCODE
-#' - RefSeq
-#' - UCSC
-#' - FlyBase
-#' - WormBase
+#' Currently [makeGRangesFromGff()] supports genomes: Ensembl, GENCODE, RefSeq,
+#' UCSC, FlyBase, and WormBase.
 #'
 #' @section Ensembl:
 #'
