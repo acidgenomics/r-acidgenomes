@@ -665,6 +665,11 @@ test_that("FlyBase GTF genes", {
     )
 })
 
+## FIXME We need to filter out some garbage transcripts from return:
+## [1] "FBtr0475186" "FBtr0309810" "FBtr0347585"
+## [4] "FBtr0345732" "FBtr0345733" "FBtr0344032"
+## These are defined in the GTF files, but not the FASTAs.
+
 test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
