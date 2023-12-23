@@ -690,7 +690,11 @@ test_that("FlyBase GTF genes", {
 ##
 ## 35703 - 30802 = 4901
 ##
-## Seems like weird genes/transcripts have "CR" prefix.
+## Ugh like Ensembl, FlyBase splits transcripts across multiple files:
+##
+## ❯ rg -l FBtr0475186 *.fasta | sort
+## dmel-all-intron-r6.55.fasta
+## dmel-all-pseudogene-r6.55.fasta
 
 test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
