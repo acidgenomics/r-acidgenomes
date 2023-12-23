@@ -35,12 +35,9 @@ n <- list(
     ),
     "dmelanogaster" = list(
         "flybase" = c(
-            ## FIXME We're seeing differences between FASTA and GFF files,
-            ## need to figure this out and filter. Maybe we need to include
-            ## another FASTA file for non-coding transcripts?
             "exons" = NA, # FIXME
-            "genes" = 13986L,
-            "transcripts" = 30802L
+            "genes" = 17873L,
+            "transcripts" = 35703L
         )
     ),
     "hsapiens" = list(

@@ -39,6 +39,8 @@ test_that("Ensembl : Homo sapiens : GRCh38", {
 })
 
 test_that("FlyBase", {
+    ## FIXME Like Ensembl, need to combine multiple FASTAs to get the expected
+    ## count of all transcripts defined in the GFF files.
     file <- txFastas[["flybase"]]
     object <- makeTxToGeneFromFasta(file)
     expect_s4_class(object, "TxToGene")
