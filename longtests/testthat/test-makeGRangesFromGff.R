@@ -594,6 +594,12 @@ test_that("Ensembl GRCh38 GTF exons", {
 
 file <- gffs[["flybase_gtf"]]
 
+## There are genes defined in GTF file that are missing in the transcripts
+## FASTA file. Need to sort this out:
+##
+## [1] "FBgn0031208" "FBgn0263584" "FBgn0267987"
+## [4] "FBgn0266878" "FBgn0266879" "FBgn0266304"
+
 test_that("FlyBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
