@@ -358,6 +358,14 @@
             x = mcols[["artifactualDuplication"]]
         )
     }
+    if (is.character(mcols[["constitutive"]])) {
+        assert(isSubset(
+            x = unique(mcols[["constitutive"]]),
+            y = c("0", "1")
+        ))
+        mcols[["constitutive"]] <-
+            as.logical(as.integer(mcols[["constitutive"]]))
+    }
     if (is.character(mcols[["dbXref"]])) {
         mcols[["dbXref"]] <- CharacterList(as.list(mcols[["dbXref"]]))
     }
@@ -398,6 +406,9 @@
         ))
         mcols[["pseudo"]] <- as.logical(mcols[["pseudo"]])
     }
+    if (is.character(mcols[["rank"]])) {
+        mcols[["rank"]] <- as.factor(as.integer(mcols[["rank"]]))
+    }
     if (isSubset("source", colnames(mcols))) {
         ## e.g. Standardize "BestRefSeq%2CGnomon" to "BestRefSeq/Gnomon".
         mcols[["source"]] <- gsub(
@@ -407,10 +418,7 @@
             fixed = TRUE
         )
     }
-    if (
-        is.character(mcols[["tag"]]) &&
-        !all(is.na(mcols[["tag"]]))
-    ) {
+    if (is.character(mcols[["tag"]]) && !all(is.na(mcols[["tag"]]))) {
         mcols[["tag"]] <- CharacterList(as.list(mcols[["tag"]]))
     }
     if (is.integer(mcols[["txIsCanonical"]])) {
