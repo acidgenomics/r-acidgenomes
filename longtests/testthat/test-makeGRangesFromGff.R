@@ -600,11 +600,12 @@ test_that("FlyBase GTF genes", {
         level = "genes"
     )
     expect_s4_class(object, "FlybaseGenes")
+    ## FIXME Length difference: 17873 - 13986 = 3887.
+    ## Are these defined in a different FASTA file?
     expect_length(
         object = object,
         n = n[["dmelanogaster"]][["flybase"]][["genes"]]
     )
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -691,8 +692,7 @@ test_that("FlyBase GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "FlybaseTranscripts")
-    ## FIXME We're seeing a length difference here: 35703 vs. 30802.
-    ## What's missing here?
+    ## FIXME Length difference: 35703 - 30802 = 4901.
     expect_length(
         object = object,
         n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
