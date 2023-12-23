@@ -44,7 +44,15 @@ test_that("FlyBase", {
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),
-        expected = n[["dmelanogaster"]][["flybase"]][["genes"]]
+        expected = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["txId"]]),
+        n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["geneId"]]),
+        n = n[["dmelanogaster"]][["flybase"]][["genes"]]
     )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
@@ -73,6 +81,14 @@ test_that("GENCODE : Homo sapiens : GRCh38", {
     expect_identical(
         object = nrow(object),
         expected = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["txId"]]),
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
     )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
@@ -117,6 +133,14 @@ test_that("WormBase", {
     expect_identical(
         object = nrow(object),
         expected = n[["celegans"]][["wormbase"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["txId"]]),
+        n = n[["celegans"]][["wormbase"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(object[["geneId"]]),
+        n = n[["celegans"]][["wormbase"]][["genes"]]
     )
     expect_identical(
         object = as.data.frame(object)[seq_len(3L), ],
