@@ -1,5 +1,3 @@
-## FIXME Need to ensure that number of transcripts matches the FASTA file.
-
 test_that("Unsupported files", {
     for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
@@ -496,7 +494,94 @@ test_that("Ensembl GRCh38 GTF transcripts", {
     )
 })
 
-## FIXME Need to cover exons here.
+test_that("Ensembl GRCh38 GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblExons")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["exons"]]
+    )
+    expect_named(
+        object = object,
+        expected = as.character(mcols(object)[["exonId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneSynonyms" = "CompressedCharacterList",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSE00001598988.1"]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "2",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS46457",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonNumber" = "1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSource" = "ensembl_havana",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "ncbiGeneId" = "4780",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSource" = "havana",
+            "txSupportLevel" = "1",
+            "type" = "exon"
+        )
+    )
+})
 
 file <- gffs[["flybase_gtf"]]
 
