@@ -26,12 +26,36 @@ gr <- GRanges
 ## nolint end
 
 n <- list(
+    "celegans" = list(
+        "wormbase" = c(
+            "exons" = NA, # FIXME
+            "genes" = NA, # FIXME
+            "transcripts" = 32004L
+        )
+    ),
+    "dmelanogaster" = list(
+        "flybase" = c(
+            "exons" = NA, # FIXME
+            "genes" = 30802L,
+            "transcripts" = NA # FIXME
+        )
+    ),
     "hsapiens" = list(
         "ensembl" = c(
             ## GRCh38 release 110.
+            ## Ensembl preserves "TEC" and "artifact" biotypes in FASTA and
+            ## GFF files, which differs from GENCODE.
             "exons" = 733353L,
             "genes" = 68974L,
             "transcripts" = 275741L
+        ),
+        "gencode" = c(
+            ## GRCh38 release 44.
+            ## GENCODE removes "TEC" and "artifact" biotypes in FASTA and GFF
+            ## files, which differs from Ensembl.
+            "exons" = NA, # FIXME
+            "genes" = NA, # FIXME
+            "transcripts" = 252835L
         )
     )
 )
