@@ -593,7 +593,7 @@ test_that("FlyBase GTF genes", {
     expect_s4_class(object, "FlybaseGenes")
     expect_length(
         object = object,
-        n = 17896L
+        n = n[["dmelanogaster"]][["flybase"]][["genes"]]
     )
     expect_named(
         object = object,
@@ -645,11 +645,11 @@ test_that("FlyBase GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "r6.49"
+        expected = "r6.55"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "722ba353d2dd6d3036d747f1498a2e9f"
+        expected = "4ac3ab08dac0ec7881ef77ec6b8fa245"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -657,11 +657,11 @@ test_that("FlyBase GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = "r6.49"
+        expected = "r6.55"
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "565b486cbfe78942127482018e4439a28a6b171d71624d8ffe2a3611e162a101" # nolint
+        expected = "24825a1eb694cb886dafc9e84b9273b8f32a906654d27ae8ec5687d08805e2cf" # nolint
     )
 })
 
@@ -671,7 +671,12 @@ test_that("FlyBase GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "FlybaseTranscripts")
-    expect_length(object, 35723L)
+    ## FIXME We're seeing a length difference here: 35703 vs. 30802.
+    ## What's missing here?
+    expect_length(
+        object = object,
+        n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])

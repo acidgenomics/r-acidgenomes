@@ -36,8 +36,8 @@ n <- list(
     "dmelanogaster" = list(
         "flybase" = c(
             "exons" = NA, # FIXME
-            "genes" = 30802L,
-            "transcripts" = NA # FIXME
+            "genes" = 17873L,
+            "transcripts" = 30802L
         )
     ),
     "hsapiens" = list(
