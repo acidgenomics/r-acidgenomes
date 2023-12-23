@@ -369,6 +369,9 @@
     if (is.character(mcols[["dbXref"]])) {
         mcols[["dbXref"]] <- CharacterList(as.list(mcols[["dbXref"]]))
     }
+    if (is.character(mcols[["exonNumber"]])) {
+        mcols[["exonNumber"]] <- as.integer(mcols[["exonNumber"]])
+    }
     if (is.list(mcols[["geneSynonyms"]])) {
         mcols[["geneSynonyms"]] <- CharacterList(mcols[["geneSynonyms"]])
     }
