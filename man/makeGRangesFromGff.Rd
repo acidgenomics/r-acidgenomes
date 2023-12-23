@@ -37,7 +37,7 @@ Make genomic ranges (\code{GRanges}) from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2023-12-21.
+Updated 2023-12-22.
 }
 \section{GFF/GTF specification}{
 
@@ -75,15 +75,8 @@ See also:
 \section{Supported sources}{
 
 
-Currently \code{\link[=makeGRangesFromGff]{makeGRangesFromGff()}} supports genomes from these sources:
-\itemize{
-\item Ensembl
-\item GENCODE
-\item RefSeq
-\item UCSC
-\item FlyBase
-\item WormBase
-}
+Currently \code{\link[=makeGRangesFromGff]{makeGRangesFromGff()}} supports genomes: Ensembl, GENCODE, RefSeq,
+UCSC, FlyBase, and WormBase.
 }
 
 \section{Ensembl}{
@@ -197,6 +190,11 @@ Example URLs:
 \item FlyBase \emph{Drosophila melanogaster} r6.49
 \href{https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz}{GTF},
 \href{https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz}{GFF3}
+}
+
+See also:
+\itemize{
+\item \href{https://wiki.flybase.org/wiki/FlyBase:Nomenclature}{FlyBase nomenclature}
 }
 }
 

@@ -20,6 +20,7 @@ test_that("Ensembl GRCh38 GFF3 genes", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -131,6 +132,8 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -214,6 +217,8 @@ test_that("Ensembl GRCh38 GFF3 exons", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["exons"]]
     )
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["exonId"]])
@@ -311,6 +316,7 @@ test_that("Ensembl GRCh38 GTF genes", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -505,6 +511,9 @@ test_that("Ensembl GRCh38 GTF exons", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["exons"]]
     )
+    ## FIXME Check expected exon count.
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["exonId"]])
@@ -595,6 +604,7 @@ test_that("FlyBase GTF genes", {
         object = object,
         n = n[["dmelanogaster"]][["flybase"]][["genes"]]
     )
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -668,7 +678,12 @@ test_that("FlyBase GTF genes", {
 ## FIXME We need to filter out some garbage transcripts from return:
 ## [1] "FBtr0475186" "FBtr0309810" "FBtr0347585"
 ## [4] "FBtr0345732" "FBtr0345733" "FBtr0344032"
+##
 ## These are defined in the GTF files, but not the FASTAs.
+##
+## 35703 - 30802 = 4901
+##
+## Seems like weird genes/transcripts have "CR" prefix.
 
 test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
@@ -682,6 +697,8 @@ test_that("FlyBase GTF transcripts", {
         object = object,
         n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
     )
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -733,6 +750,7 @@ test_that("GENCODE GRCh38 GFF3 genes", {
     )
     expect_s4_class(object, "GencodeGenes")
     expect_length(object, 62696L)
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -846,6 +864,8 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
     )
     expect_s4_class(object, "GencodeTranscripts")
     expect_length(object, 252416L)
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -940,6 +960,7 @@ test_that("GENCODE GRCh38 GTF genes", {
     )
     expect_s4_class(object, "GencodeGenes")
     expect_length(object, 62696L)
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1053,6 +1074,8 @@ test_that("GENCODE GRCh38 GTF transcripts", {
     )
     expect_s4_class(object, "GencodeTranscripts")
     expect_length(object, 252416L)
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -1566,6 +1589,7 @@ test_that("WormBase GTF genes", {
     )
     expect_s4_class(object, "WormbaseGenes")
     expect_length(object, 46928L)
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1607,15 +1631,7 @@ test_that("WormBase GTF genes", {
     )
     expect_identical(
         object = levels(seqnames(object)),
-        expected = c(
-            "I",
-            "II",
-            "III",
-            "IV",
-            "V",
-            "X",
-            "MtDNA"
-        )
+        expected = c("I", "II", "III", "IV", "V", "X", "MtDNA")
     )
     expect_true(all(is.na(seqlengths(object))))
     expect_identical(
@@ -1654,6 +1670,8 @@ test_that("WormBase GTF transcripts", {
     )
     expect_s4_class(object, "WormbaseTranscripts")
     expect_length(object, 60136L)
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -1715,6 +1733,7 @@ test_that("WormBase GTF genes", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, n = 60L)
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1777,6 +1796,8 @@ test_that("WormBase GTF transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, n = 167L)
+    ## FIXME Check expected transcript count.
+    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])

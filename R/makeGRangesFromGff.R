@@ -134,6 +134,10 @@
 #' [GTF](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz),
 #' [GFF3](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz)
 #'
+#' See also:
+#'
+#' - [FlyBase nomenclature](https://wiki.flybase.org/wiki/FlyBase:Nomenclature)
+#'
 #' @section WormBase:
 #'
 #' Example URLs:
