@@ -225,10 +225,10 @@ test_that("Ensembl GRCh38 GFF3 exons", {
         expected = list(
             "broadClass" = "factor",
             "ccdsId" = "character",
-            "constitutive" = "character",
+            "constitutive" = "logical",
             "description" = "character",
-            "ensemblEndPhase" = "character", # FIXME factor
-            "ensemblPhase" = "character", # FIXME factor
+            "ensemblEndPhase" = "factor",
+            "ensemblPhase" = "factor",
             "exonId" = "character",
             "exonIdNoVersion" = "character",
             "exonIdVersion" = "character",
@@ -241,7 +241,7 @@ test_that("Ensembl GRCh38 GFF3 exons", {
             "geneSynonyms" = "CompressedCharacterList",
             "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "rank" = "character",
+            "rank" = "factor",
             "source" = "factor",
             "tag" = "CompressedCharacterList",
             "txBiotype" = "factor",
@@ -255,22 +255,29 @@ test_that("Ensembl GRCh38 GFF3 exons", {
     )
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENST00000397062.8"]), # nolint
+            X = as.data.frame(object["ENSE00001598988.1"]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
         expected = c(
             "seqnames" = "2",
-            "start" = "177230308",
-            "end" = "177264727",
-            "width" = "34420",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
             "strand" = "-",
             "broadClass" = "coding",
-            "ccdsId" = "CCDS42782.1",
+            "ccdsId" = "CCDS46457.1",
+            "constitutive" = "FALSE",
             "description" = paste(
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
+            "ensemblEndPhase" = "-1",
+            "ensemblPhase" = "-1",
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonName" = "ENSE00001598988",
             "geneBiotype" = "protein_coding",
             "geneId" = "ENSG00000116044.17",
             "geneIdNoVersion" = "ENSG00000116044",
@@ -279,15 +286,16 @@ test_that("Ensembl GRCh38 GFF3 exons", {
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "logicName" = "ensembl_havana_gene_homo_sapiens",
             "ncbiGeneId" = "4780",
-            "source" = "ensembl_havana",
-            "tag" = "c(\"basic\", \"Ensembl_canonical\", \"MANE_Select\")",
+            "rank" = "1",
+            "source" = "havana",
+            "tag" = "character(0)",
             "txBiotype" = "protein_coding",
-            "txId" = "ENST00000397062.8",
-            "txIdNoVersion" = "ENST00000397062",
-            "txIdVersion" = "ENST00000397062.8",
-            "txName" = "NFE2L2-201",
-            "txSupportLevel" = "1 (assigned to previous version 7)",
-            "type" = "mRNA"
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSupportLevel" = "1",
+            "type" = "exon"
         )
     )
 })
