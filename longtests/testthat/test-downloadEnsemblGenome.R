@@ -1,3 +1,5 @@
+## FIXME Cover fly and worm genome downloads here too.
+
 test_that("Homo sapiens GRCh38", {
     testdir <- tempdir2()
     info <- downloadEnsemblGenome(
