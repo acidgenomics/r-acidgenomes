@@ -1,11 +1,3 @@
-## FIXME Can we support keeping track of transcripts at exon level?
-## This appears to work correctly for our GFF3 file parsing.
-##
-## FIXME Ensure we filter "LRG_" genes, as this doesn't match up with the GFF
-## file conventions.
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
@@ -67,7 +59,7 @@
 #' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -113,7 +105,7 @@ NULL
 #' @export
 makeGRangesFromEnsembl <-
     function(organism,
-             level = c("genes", "transcripts", "exons"),
+             level = c("genes", "transcripts"),
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = FALSE,
@@ -156,7 +148,7 @@ makeGRangesFromEnsembl <-
 #' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
 makeGRangesFromEnsDb <-
     function(object,
-             level = c("genes", "transcripts", "exons"),
+             level = c("genes", "transcripts"),
              ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
@@ -178,11 +170,13 @@ makeGRangesFromEnsDb <-
         assert(is(object, "EnsDb"))
         switch(
             EXPR = level,
-            "exons" = {
-                fun <- ensembldb::exons
-                colKeys <- c("exon", "gene", "tx")
-                idCol <- "exon_id"
-            },
+            ## Not sure how to map exons uniquely currently, whereas we can
+            ## do this from the GFF files.
+            ## > "exons" = {
+            ## >     fun <- ensembldb::exons
+            ## >     colKeys <- c("exon", "gene", "tx")
+            ## >     idCol <- "exon_id"
+            ## > },
             "genes" = {
                 fun <- ensembldb::genes
                 colKeys <- "gene"
@@ -224,33 +218,6 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        if (
-            identical(level, "exons") &&
-            hasDuplicates(mcols(gr)[["exon_id"]])
-        ) {
-            ## Good exons to unit test:
-            ## - "ENSE00000000021"
-            ## - "ENSE00001132905" (want this to map to "ENSG00000291317").
-            dupes <- dupes(mcols(gr)[["exon_id"]])
-            assert(length(dupes) <= 10L)
-            alert(sprintf(
-                "Resolving %d duplicate exon-to-gene %s: %s.",
-                length(dupes),
-                ngettext(
-                    n = length(dupes),
-                    msg1 = "mapping",
-                    msg2 = "mappings"
-                ),
-                toInlineString(dupes)
-            ))
-            ## ensembldb currently returns empty columns instead of setting NA.
-            keep <- !{
-                mcols(gr)[["exon_id"]] %in% dupes &
-                    nzchar(mcols(gr)[["gene_name"]])
-            }
-            gr <- gr[keep]
-            assert(hasNoDuplicates(mcols(gr)[["exon_id"]]))
-        }
         assert(hasNoDuplicates(mcols(gr)[[idCol]]))
         gr <- .makeGRanges(
             object = gr,
