@@ -159,12 +159,7 @@
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c(
-                    "exon_id",
-                    "gene_id",
-                    "transcript_id",
-                    "type"
-                ),
+                x = c("exon_id", "gene_id", "transcript_id", "type"),
                 y = names(mcols(object))
             )
         )
@@ -199,20 +194,13 @@
 
 
 
-## FIXME Check that this works for C. elegans, which doesn't contain
-## versioned identifiers.
-
 ## Updated 2024-01-02.
 .rtracklayerEnsemblGenesGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "biotype", "gene_id", "version"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("gene_biotype", "gene_id_version", "gene_name"),
+                x = c("Name", "biotype", "gene_id"),
                 y = names(mcols(object))
             )
         )
@@ -230,17 +218,22 @@
         names(mcols(object))[
             names(mcols(object)) == "biotype"
         ] <- "gene_biotype"
-        ## FIXME Rework this for C. elegans.
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["version"]],
-                sep = "."
-            )
+
+        if (isSubset("version", colnames(mcols(object)))) {
+            mcols(object)[["gene_id_version"]] <-
+                paste(
+                    mcols(object)[["gene_id"]],
+                    mcols(object)[["version"]],
+                    sep = "."
+                )
+            mcols(object)[["version"]] <- NULL
+        } else {
+            ## e.g. Caenorhabditis elegans.
+            mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        }
         mcols(object)[["Alias"]] <- NULL
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
-        mcols(object)[["version"]] <- NULL
         object
     }
 
@@ -283,18 +276,14 @@
 ## FIXME Check that this works for C. elegans, which doesn't contain
 ## versioned identifiers.
 
-## Updated 2023-12-22.
+## Updated 2024-01-02.
 .rtracklayerEnsemblTranscriptsGff <-
     function(object) {
         genes <- .rtracklayerEnsemblGenesGff(object)
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("Name", "Parent", "biotype", "transcript_id", "version"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("transcript_biotype", "transcript_name"),
+                x = c("Name", "Parent", "biotype", "transcript_id"),
                 y = names(mcols(object))
             )
         )
@@ -323,17 +312,22 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-        ## FIXME Rework this for C. elegans.
-        mcols(object)[["transcript_id_version"]] <-
-            paste(
-                mcols(object)[["transcript_id"]],
-                mcols(object)[["version"]],
-                sep = "."
-            )
+        if (isSubset("version", colnames(mcols(object)))) {
+            mcols(object)[["transcript_id_version"]] <-
+                paste(
+                    mcols(object)[["transcript_id"]],
+                    mcols(object)[["version"]],
+                    sep = "."
+                )
+            mcols(object)[["version"]] <- NULL
+        } else {
+            ## e.g. Caenorhabditis elegans.
+            mcols(object)[["transcript_id_version"]] <-
+                mcols(object)[["transcript_id"]]
+        }
         mcols(object)[["Alias"]] <- NULL
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
-        mcols(object)[["version"]] <- NULL
         geneCols <- c(
             "gene_id",
             setdiff(
