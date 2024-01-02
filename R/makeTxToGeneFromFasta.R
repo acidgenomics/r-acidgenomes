@@ -106,44 +106,49 @@ makeTxToGeneFromFasta <-
             msg = sprintf("Unsupported FASTA: {.file %s}.", basename(file))
         )
         x <- substr(x, start = 2L, stop = nchar(x))
-        ## Detect the provider of the FASTA.
-        head <- head(x, n = 10L)
-        if (any(grepl(
-            pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9]+)\\s",
-                ".+",
-                "gene:(ENS.*G[0-9]{11}\\.[0-9]+)"
-            ),
-            x = head
-        ))) {
-            ## FIXME Can we support other genomes that don't use "ENS"
-            ## identifiers, such as fly and worm?
-            ##
-            ## Note that Ensembl includes "gene:" key.
-            ## e.g. "ENST00000632684.1 cdna chromosome.*"
-            provider <- "Ensembl"
-        } else if (
-            any(grepl(pattern = "FlyBase", x = head)) ||
-            any(grepl(pattern = "release=r[.0-9]+; species=Dmel", x = head))
-        ) {
-            provider <- "FlyBase"
-        } else if (any(grepl(
+        first <- strsplit(x = x[[1L]], split = " ", fixed = TRUE)[[1L]]
+        if (grepl(
             pattern = paste0(
                 "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
                 "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
             ),
-            x = head
-        ))) {
+            x = first[[1L]]
+        )) {
             ## GENCODE uses pipes to separate.
             ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
             ## Note that GRCh37 identifiers also contain "_".
             ## e.g. "ENST00000456328.2_1".
             provider <- "GENCODE"
+        } else if (
+            any(grepl(pattern = "FlyBase", x = head)) ||
+            any(grepl(pattern = "release=r[.0-9]+; species=Dmel", x = head))
+        ) {
+            ## FIXME Rework this check with FlyBase files.
+            provider <- "FlyBase"
         } else if (any(grepl(
             pattern = "\\sgene=(WBGene[0-9]{8})$",
             x = head
         ))) {
             provider <- "WormBase"
+        } else if (any(grepl(
+            pattern = paste0(
+                "^(ENS.*T[0-9]{11}\\.[0-9]+)\\s",
+                ".+",
+                "gene:(ENS.*G[0-9]{11}\\.[0-9]+)"
+            ),
+            x = first[[1L]]
+        ))) {
+            ## FIXME Rework this to use identifier column checks instead:
+            ## [1] "FBtr0343930"
+            ## [2] "cdna"
+            ## [3] "primary_assembly:BDGP6.46:X:6091205:6103971:1"
+            ## [4] "gene:FBgn0029843"
+            ## [5] "gene_biotype:protein_coding"
+            ## [6] "transcript_biotype:protein_coding"
+            ## [7] "gene_symbol:Nep1"
+            ## [8] "description:Neprilysin"
+            ## [9] "1"
+            provider <- "Ensembl"
         } else {
             abort(sprintf(
                 "Unsupported FASTA: {.file %s}.",
@@ -154,6 +159,9 @@ makeTxToGeneFromFasta <-
         switch(
             EXPR = provider,
             "Ensembl" = {
+                ## FIXME Alternatively, we can import as a text connection
+                ## delimited by space. This is likely faster, and then we can
+                ## just pick columns 1 and 4.
                 x <- strsplit(x = x, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
@@ -167,6 +175,8 @@ makeTxToGeneFromFasta <-
                     replacement = "",
                     x = x[, 2L]
                 )
+                ## FIXME Relax this check, so we can support other genomes,
+                ## such as fly and worm.
                 assert(
                     allAreMatchingRegex(
                         x = x[, 1L],
