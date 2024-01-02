@@ -46,6 +46,12 @@ NULL
 #' @usage show(object)
 NULL
 
+#' @rdname stripExonVersions
+#' @name stripExonVersions
+#' @usage stripExonVersions(object, ...)
+#' @export
+NULL
+
 #' @rdname stripGeneVersions
 #' @name stripGeneVersions
 #' @usage stripGeneVersions(object, ...)
