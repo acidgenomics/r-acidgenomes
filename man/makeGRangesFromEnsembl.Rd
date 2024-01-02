@@ -7,7 +7,7 @@
 \usage{
 makeGRangesFromEnsembl(
   organism,
-  level = c("genes", "transcripts", "exons"),
+  level = c("genes", "transcripts"),
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = FALSE,
@@ -16,7 +16,7 @@ makeGRangesFromEnsembl(
 
 makeGRangesFromEnsDb(
   object,
-  level = c("genes", "transcripts", "exons"),
+  level = c("genes", "transcripts"),
   ignoreVersion = FALSE,
   extraMcols = TRUE
 )
@@ -86,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2023-12-20.
+Updated 2024-01-02.
 }
 \section{Broad class definitions}{
 
