@@ -82,6 +82,33 @@ txFastas <- c(
         "Homo_sapiens.GRCh38.ncrna.fa.gz",
         protocol = "ftp"
     ),
+    "flybase_mirna" = pasteUrl(
+        "ftp.flybase.net",
+        "releases",
+        "FB2023_06",
+        "dmel_r6.55",
+        "fasta",
+        "dmel-all-miRNA-r6.55.fasta.gz",
+        protocol = "ftp"
+    ),
+    "flybase_miscrna" = pasteUrl(
+        "ftp.flybase.net",
+        "releases",
+        "FB2023_06",
+        "dmel_r6.55",
+        "fasta",
+        "dmel-all-miscRNA-r6.55.fasta.gz",
+        protocol = "ftp"
+    ),
+    "flybase_ncrna" = pasteUrl(
+        "ftp.flybase.net",
+        "releases",
+        "FB2023_06",
+        "dmel_r6.55",
+        "fasta",
+        "dmel-all-ncRNA-r6.55.fasta.gz",
+        protocol = "ftp"
+    ),
     "flybase_pseudogene" = pasteUrl(
         "ftp.flybase.net",
         "releases",
@@ -98,6 +125,15 @@ txFastas <- c(
         "dmel_r6.55",
         "fasta",
         "dmel-all-transcript-r6.55.fasta.gz",
+        protocol = "ftp"
+    ),
+    "flybase_trna" = pasteUrl(
+        "ftp.flybase.net",
+        "releases",
+        "FB2023_06",
+        "dmel_r6.55",
+        "fasta",
+        "dmel-all-tRNA-r6.55.fasta.gz",
         protocol = "ftp"
     ),
     "gencode" = pasteUrl(

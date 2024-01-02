@@ -1,7 +1,7 @@
 #' Make a TxToGene object from transcriptome FASTA
 #'
 #' @export
-#' @note Updated 2023-11-28.
+#' @note Updated 2024-01-02.
 #'
 #' @details
 #' RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
@@ -116,10 +116,17 @@ makeTxToGeneFromFasta <-
             ),
             x = head
         ))) {
+            ## FIXME Can we look for Ensembl pattern here without requiring
+            ## the canonical "ENS" identifiers? e.g. this should work for
+            ## FlyBase identifiers in an Ensembl FASTA: FBgn0031081.
+            ##
             ## Note that Ensembl includes "gene:" key.
             ## e.g. "ENST00000632684.1 cdna chromosome.*"
             provider <- "Ensembl"
-        } else if (any(grepl(pattern = "FlyBase", x = head))) {
+        } else if (
+            any(grepl(pattern = "FlyBase", x = head)) ||
+            any(grepl(pattern = "release=r[.0-9]+; species=Dmel", x = head))
+        ) {
             provider <- "FlyBase"
         } else if (any(grepl(
             pattern = paste0(
@@ -173,6 +180,7 @@ makeTxToGeneFromFasta <-
                 )
             },
             "FlyBase" = {
+                ## FIXME This isn't working for the intron FASTA.
                 x <- strsplit(x = x, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
