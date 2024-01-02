@@ -82,7 +82,16 @@ txFastas <- c(
         "Homo_sapiens.GRCh38.ncrna.fa.gz",
         protocol = "ftp"
     ),
-    "flybase" = pasteUrl(
+    "flybase_pseudogene" = pasteUrl(
+        "ftp.flybase.net",
+        "releases",
+        "FB2023_06",
+        "dmel_r6.55",
+        "fasta",
+        "dmel-all-pseudogene-r6.55.fasta.gz",
+        protocol = "ftp"
+    ),
+    "flybase_transcript" = pasteUrl(
         "ftp.flybase.net",
         "releases",
         "FB2023_06",
