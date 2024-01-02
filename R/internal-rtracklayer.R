@@ -105,7 +105,8 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        ## FIXME Is this approach problematic for multi-mapping exons?
+        ## FIXME Only call this for exon-to-transcript mappings, otherwise
+        ## we'll drop stuff.
         object <- unique(object)
         assert(
             hasNoDuplicates(mcols(object)[["exon_id"]]),
@@ -171,7 +172,8 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        ## FIXME Is this approach problematic for multi-mapping exons?
+        ## FIXME Only call this on exon-to-transcript mappings, otherwise we'll
+        ## drop stuff.
         object <- unique(object)
         assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
         keys <- c("exon", "gene", "transcript")
@@ -608,7 +610,7 @@
 #'
 #' Note that these are RefSeq status: MODEL.
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2024-01-02.
 #' @noRd
 .getNcbiGeneIdsFromRefSeqGff <- function(object) {
     mcols <- mcols(object)[, c("ID", "Dbxref")]
@@ -627,7 +629,8 @@
     )[, 2L]
     ncbiGeneIds <- as.integer(ncbiGeneIds)
     df <- DataFrame("ID" = geneIds, "ncbi_gene_id" = ncbiGeneIds)
-    df <- unique(df[complete.cases(df), ])
+    df <- df[complete.cases(df), , drop = FALSE]
+    df <- unique(df)
     assert(hasNoDuplicates(df[["ID"]]))
     df
 }
@@ -636,12 +639,13 @@
 
 #' Extract NCBI gene identifiers from RefSeq GTF file.
 #'
-#' @note Updated 2023-03-01.
+#' @note Updated 2024-01-02.
 #' @noRd
 .getNcbiGeneIdsFromRefSeqGtf <- function(object) {
     mcols <- mcols(object)[, c("gene_id", "db_xref")]
     keep <- grepl(pattern = "GeneID:", x = mcols[["db_xref"]], fixed = TRUE)
-    mcols <- unique(mcols[keep, ])
+    mcols <- mcols[keep, , drop = FALSE]
+    mcols <- unique(mcols)
     assert(hasNoDuplicates(mcols[["gene_id"]]))
     geneIds <- mcols[["gene_id"]]
     ncbiGeneIds <- strMatch(
