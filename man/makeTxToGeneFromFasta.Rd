@@ -27,7 +27,7 @@ RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
 doesn't contain gene identifiers, and is not supported.
 }
 \note{
-Updated 2023-11-28.
+Updated 2024-01-02.
 }
 \examples{
 ## Ensembl ====
