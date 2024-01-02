@@ -116,10 +116,6 @@ makeTxToGeneFromFasta <-
             ),
             x = head
         ))) {
-            ## FIXME Can we look for Ensembl pattern here without requiring
-            ## the canonical "ENS" identifiers? e.g. this should work for
-            ## FlyBase identifiers in an Ensembl FASTA: FBgn0031081.
-            ##
             ## Note that Ensembl includes "gene:" key.
             ## e.g. "ENST00000632684.1 cdna chromosome.*"
             provider <- "Ensembl"
@@ -180,7 +176,6 @@ makeTxToGeneFromFasta <-
                 )
             },
             "FlyBase" = {
-                ## FIXME This isn't working for the intron FASTA.
                 x <- strsplit(x = x, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
