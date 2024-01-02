@@ -81,12 +81,6 @@
 
 
 
-## FIXME This is incorrectly returning FlyBase for Ensembl file:
-## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
-
-## FIXME Need to test detection support of:
-## https://ftp.ensembl.org/pub/release-110/gtf/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.110.gtf.gz
-
 #' Get metadata about a GFF file
 #'
 #' @note Updated 2024-01-02.
