@@ -362,26 +362,13 @@
 
 
 
-## FIXME Check that this works for C. elegans, which doesn't contain
-## versioned identifiers.
-
 ## Updated 2024-01-02.
 .rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c(
-                    "gene_id",
-                    "gene_version",
-                    "transcript_id",
-                    "transcript_version",
-                    "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("gene_id_version", "transcript_id_version"),
+                x = c("gene_id", "transcript_id", "type"),
                 y = names(mcols(object))
             )
         )
@@ -393,18 +380,22 @@
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         keys <- c("gene", "transcript")
-        ## FIXME Rework this for C. elegans.
         for (key in keys) {
             idCol <- paste(key, "id", sep = "_")
             idVerCol <- paste(idCol, "version", sep = "_")
             verCol <- paste(key, "version", sep = "_")
-            mcols(object)[[idVerCol]] <-
-                paste(
-                    mcols(object)[[idCol]],
-                    mcols(object)[[verCol]],
-                    sep = "."
-                )
-            mcols(object)[[verCol]] <- NULL
+            if (isSubset(verCol, colnames(mcols(object)))) {
+                mcols(object)[[idVerCol]] <-
+                    paste(
+                        mcols(object)[[idCol]],
+                        mcols(object)[[verCol]],
+                        sep = "."
+                    )
+                mcols(object)[[verCol]] <- NULL
+            } else {
+                ## e.g. Caenorhabditis elegans.
+                mcols(object)[[idVerCol]] <- mcols(object)[[idCol]]
+            }
         }
         object
     }
