@@ -24,7 +24,7 @@ Depends: R (>= 4.3)
 Imports:
     AcidBase (>= 0.7.3),
     AcidCLI (>= 0.3.0),
-    AcidGenerics (>= 0.7.6),
+    AcidGenerics (>= 0.7.7),
     AcidPlyr (>= 0.5.3),
     BiocGenerics (>= 0.48.0),
     GenomeInfoDb (>= 1.38.0),
