@@ -38,11 +38,19 @@ test_that("Ensembl : Homo sapiens : GRCh38", {
     )
 })
 
+## FIXME Like Ensembl, need to combine multiple FASTAs to get the expected
+## count of all transcripts defined in the GFF files.
+
+## FIXME Still missing stuff:
+## `actual`: 31167
+## `expected`: 35703
+
 test_that("FlyBase", {
-    ## FIXME Like Ensembl, need to combine multiple FASTAs to get the expected
-    ## count of all transcripts defined in the GFF files.
-    file <- txFastas[["flybase"]]
-    object <- makeTxToGeneFromFasta(file)
+    transcript <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_transcript"]])
+    pseudogene <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_pseudogene"]])
+    object <- do.call(what = rbind, args = list(transcript, pseudogene))
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),
