@@ -1,6 +1,12 @@
 ## FIXME Need to detect this file as Ensembl:
 ## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
 
+## FIXME This file currently fails to import:
+## Doesn't contain "gene_version".
+## "https://ftp.ensembl.org/pub/release-110/gtf/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.110.gtf.gz"
+
+## FIXME Need to check support for GFF3 file too ugh:
+## https://ftp.ensembl.org/pub/release-110/gff3/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.110.gff3.gz
 
 
 
@@ -82,6 +88,9 @@
 
 ## Ensembl =====================================================================
 
+## FIXME Check that this works for C. elegans, which doesn't contain
+## versioned identifiers.
+
 ## Updated 2023-12-22.
 .rtracklayerEnsemblExonsGff <-
     function(object) {
@@ -143,6 +152,9 @@
 
 
 
+## FIXME Check that this works for C. elegans, which doesn't contain
+## versioned identifiers.
+
 ## Updated 2023-12-22.
 .rtracklayerEnsemblExonsGtf <-
     function(object) {
@@ -196,6 +208,9 @@
 
 
 
+## FIXME Check that this works for C. elegans, which doesn't contain
+## versioned identifiers.
+
 ## Updated 2022-05-04.
 .rtracklayerEnsemblGenesGff <-
     function(object) {
@@ -239,17 +254,13 @@
 
 
 
-## Updated 2023-12-20.
+## Updated 2024-01-02.
 .rtracklayerEnsemblGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
-                x = c("gene_id", "gene_version", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = "gene_id_version",
+                x = c("gene_id", "type"),
                 y = names(mcols(object))
             )
         )
@@ -260,17 +271,25 @@
         )
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["gene_id"]]))
-        mcols(object)[["gene_id_version"]] <-
-            paste(
-                mcols(object)[["gene_id"]],
-                mcols(object)[["gene_version"]],
-                sep = "."
-            )
-        mcols(object)[["gene_version"]] <- NULL
+        if (isSubset("gene_version", names(mcols(object)))) {
+            mcols(object)[["gene_id_version"]] <-
+                paste(
+                    mcols(object)[["gene_id"]],
+                    mcols(object)[["gene_version"]],
+                    sep = "."
+                )
+            mcols(object)[["gene_version"]] <- NULL
+        } else {
+            ## e.g. Caenorhabditis elegans.
+            mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        }
         object
     }
 
 
+
+## FIXME Check that this works for C. elegans, which doesn't contain
+## versioned identifiers.
 
 ## Updated 2023-12-22.
 .rtracklayerEnsemblTranscriptsGff <-
@@ -338,6 +357,9 @@
     }
 
 
+
+## FIXME Check that this works for C. elegans, which doesn't contain
+## versioned identifiers.
 
 ## Updated 2023-12-21.
 .rtracklayerEnsemblTranscriptsGtf <-
