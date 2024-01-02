@@ -126,6 +126,8 @@ makeTxToGeneFromFasta <-
         )) {
             provider <- "WormBase"
         } else if (
+            ## Homo sapiens uses "chromosome" whereas Drosophila melanogaster
+            ## uses "primary_assembly" in 3rd position.
             grepl(
                 pattern = " (chromosome|primary_assembly):",
                 x = lines[[1L]],
