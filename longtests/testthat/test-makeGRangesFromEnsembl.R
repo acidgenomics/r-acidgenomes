@@ -1,8 +1,4 @@
-## FIXME Add coverage of Mus musculus here too.
-
-## FIXME Assert that all exon identifiers match our expected pattern.
-
-test_that("Homo sapiens : exons", {
+test_that("Homo sapiens : GRCh38 : exons", {
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
         level = "exons",
@@ -10,42 +6,22 @@ test_that("Homo sapiens : exons", {
         ignoreVersion = TRUE
     )
     expect_s4_class(object, "EnsemblExons")
-    expect_length(object, 735689L) # FIXME
-    ## ensembldb doesn't currently support versioned exon identifiers.
-    expect_error(
-        object = makeGRangesFromEnsembl(
-            organism = "Homo sapiens",
-            level = "exons",
-            ignoreVersion = FALSE
-        ),
-        regexp = "ignoreVersion"
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["exons"]]
+    )
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_length(
+        object = unique(mcols(gr)[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(gr)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
 })
 
-## FIXME Assert that all exon identifiers match our expected pattern.
-
-test_that("Mus musculus : exons", {
-    object <- makeGRangesFromEnsembl(
-        organism = "Mus musculus",
-        level = "exons",
-        release = 110L,
-        ignoreVersion = TRUE
-    )
-    expect_s4_class(object, "EnsemblExons")
-    expect_length(object, 458023L) # FIXME
-})
-
-test_that("Organism with 3 words", {
-    x <- makeGRangesFromEnsembl(
-        organism = "Canis lupus familiaris",
-        level = "genes",
-        release = 110L,
-        ignoreVersion = FALSE
-    )
-    expect_s4_class(x, "EnsemblGenes")
-})
-
-test_that("Homo sapiens : genes : GRCh37", {
+test_that("Homo sapiens : GRCh37 : genes", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
@@ -60,7 +36,7 @@ test_that("Homo sapiens : genes : GRCh37", {
     ## FIXME Ensure all names match expected pattern.
 })
 
-test_that("Homo sapiens : transcripts : GRCh37", {
+test_that("Homo sapiens : GRCh37 : transcripts", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     object <- makeGRangesFromEnsembl(
         organism = "Homo sapiens",
@@ -77,6 +53,20 @@ test_that("Homo sapiens : transcripts : GRCh37", {
 
 ## FIXME Ensure we cover exons of GRCh37 as well.
 
+test_that("Mus musculus : GRCm39 : exons", {
+    object <- makeGRangesFromEnsembl(
+        organism = "Mus musculus",
+        level = "exons",
+        release = 110L,
+        ignoreVersion = TRUE
+    )
+    expect_s4_class(object, "EnsemblExons")
+    expect_length(
+        object = object,
+        n = n[["mmusculus"]][["ensembl"]][["exons"]]
+    )
+})
+
 test_that("Legacy GRCh38 87 release without gene version", {
     ## FIXME Check that this errors if user sets ignoreVersion = TRUE.
     object <- makeGRangesFromEnsembl(
@@ -88,6 +78,16 @@ test_that("Legacy GRCh38 87 release without gene version", {
         extraMcols = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
+})
+
+test_that("Organism with 3 words", {
+    x <- makeGRangesFromEnsembl(
+        organism = "Canis lupus familiaris",
+        level = "genes",
+        release = 110L,
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(x, "EnsemblGenes")
 })
 
 test_that("Invalid parameters", {
