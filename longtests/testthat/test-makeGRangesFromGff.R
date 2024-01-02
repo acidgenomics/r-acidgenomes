@@ -746,8 +746,16 @@ test_that("GENCODE GRCh38 GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 62696L)
-    ## FIXME Check expected gene count.
+    ## FIXME This is now filtering out genes defined in the FASTA:
+    ## Looks like these are artifact genes. Don't filter these out for GENCODE.
+    ##
+    ## [1] "ENSG00000274276.6" "ENSG00000231004.2"
+    ## [3] "ENSG00000225931.3" "ENSG00000274559.3"
+    ## [5] "ENSG00000250733.6" "ENSG00000249852.1"
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -837,7 +845,7 @@ test_that("GENCODE GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "b0199f8b1522f61093896e8d48750a0c"
+        expected = "0d066b7f1a814422bbbd3d1d5f881445"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -845,11 +853,11 @@ test_that("GENCODE GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 42L
+        expected = 44L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "10d01b26b75d0142677d0bddf369af375c2e24f6b4c99ce04f408032c51ca432" # nolint
+        expected = "55f4330d54e0e35704b41486078352567ea9f17129f5badbd8ff705177814d76" # nolint
     )
 })
 
@@ -860,9 +868,15 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 252416L)
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
+    ## FIXME This differs from FASTA, need to resolve.
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -892,7 +906,7 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
             "txIdNoVersion" = "character",
             "txIdVersion" = "character",
             "txName" = "character",
-            "txSupportLevel" = "character",
+            "txSupportLevel" = "factor",
             "type" = "factor"
         )
     )

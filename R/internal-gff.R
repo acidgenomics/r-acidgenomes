@@ -81,6 +81,8 @@
 
 
 
+## FIXME Harden this function against any random input, such as a txFasta.
+
 #' Get metadata about a GFF file
 #'
 #' @note Updated 2024-01-02.
