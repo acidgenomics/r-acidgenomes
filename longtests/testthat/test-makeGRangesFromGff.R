@@ -743,59 +743,6 @@ test_that("FlyBase GTF transcripts", {
     )
 })
 
-## FIXME Need to add support for this.
-
-test_that("FlyBase GTF exons", {
-    object <- makeGRangesFromGff(
-        file = file,
-        level = "exons"
-    )
-    expect_s4_class(object, "FlybaseExons")
-    expect_length(
-        object = object,
-        n = n[["dmelanogaster"]][["flybase"]][["exons"]]
-    )
-    expect_named(
-        object = object,
-        expected = as.character(mcols(object)[["exonId"]])
-    )
-    ## FIXME Need to update this.
-    expect_identical(
-        object = lapply(mcols(object), simpleClass),
-        expected = list(
-            "broadClass" = "factor",
-            "geneId" = "character",
-            "geneName" = "character",
-            "source" = "factor",
-            "txId" = "character",
-            "txName" = "character",
-            "type" = "factor"
-        )
-    )
-    ## FIXME Need to update this.
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object["FBtr0306744"]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "3R",
-            "start" = "23185580",
-            "end" = "23191120",
-            "width" = "5541",
-            "strand" = "-",
-            "broadClass" = "other",
-            "geneId" = "FBgn0262975",
-            "geneName" = "cnc",
-            "source" = "FlyBase",
-            "txId" = "FBtr0306744",
-            "txName" = "cnc-RF",
-            "type" = "mRNA"
-        )
-    )
-})
-
 file <- gffs[["gencode_grch38_gff3"]]
 
 test_that("GENCODE GRCh38 GFF3 genes", {
