@@ -1,6 +1,6 @@
 #' Make GRanges from rtracklayer
 #'
-#' @note Updated 2023-12-22.
+#' @note Updated 2024-01-02.
 #' @noRd
 #'
 #' @details
@@ -379,14 +379,6 @@
 
 
 ## FlyBase =====================================================================
-
-## Updated 2023-12-20.
-.rtracklayerFlybaseExonsGtf <-
-    function(object) {
-        stop("FIXME WORK IN PROGRESS")
-    }
-
-
 
 ## Updated 2021-01-27.
 .rtracklayerFlybaseGenesGtf <-
