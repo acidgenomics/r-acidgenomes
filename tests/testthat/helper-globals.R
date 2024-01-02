@@ -44,16 +44,12 @@ n <- list(
     "hsapiens" = list(
         "ensembl" = c(
             ## GRCh38 release 110.
-            ## Ensembl preserves "TEC" and "artifact" biotypes in FASTA and
-            ## GFF files, which differs from GENCODE.
             "exons" = 875428L,
             "genes" = 68974L,
             "transcripts" = 275741L
         ),
         "gencode" = c(
             ## GRCh38 release 44.
-            ## GENCODE removes "TEC" and "artifact" biotypes in FASTA and GFF
-            ## files, which differs from Ensembl.
             "exons" = NA, # FIXME
             "genes" = 62700L,
             "transcripts" = 252835L
