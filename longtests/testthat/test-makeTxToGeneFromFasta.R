@@ -1,13 +1,14 @@
 test_that("Ensembl : Homo sapiens : GRCh38", {
-    cdna <- makeTxToGeneFromFasta(
+    args <- list()
+    args[["cdna"]] <- makeTxToGeneFromFasta(
         file = txFastas[["ensembl_cdna"]],
         ignoreVersion = FALSE
     )
-    ncrna <- makeTxToGeneFromFasta(
+    args[["ncrna"]] <- makeTxToGeneFromFasta(
         file = txFastas[["ensembl_ncrna"]],
         ignoreVersion = FALSE
     )
-    object <- do.call(what = rbind, args = list(cdna, ncrna))
+    object <- do.call(what = rbind, args = args)
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),
@@ -38,19 +39,21 @@ test_that("Ensembl : Homo sapiens : GRCh38", {
     )
 })
 
-## FIXME Like Ensembl, need to combine multiple FASTAs to get the expected
-## count of all transcripts defined in the GFF files.
-
-## FIXME Still missing stuff:
-## `actual`: 31167
-## `expected`: 35703
-
 test_that("FlyBase", {
-    transcript <-
-        makeTxToGeneFromFasta(file = txFastas[["flybase_transcript"]])
-    pseudogene <-
+    args <- list()
+    args[["mirna"]] <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_mirna"]])
+    args[["miscrna"]] <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_miscrna"]])
+    args[["ncrna"]] <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_ncrna"]])
+    args[["pseudogene"]] <-
         makeTxToGeneFromFasta(file = txFastas[["flybase_pseudogene"]])
-    object <- do.call(what = rbind, args = list(transcript, pseudogene))
+    args[["transcript"]] <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_transcript"]])
+    args[["trna"]] <-
+        makeTxToGeneFromFasta(file = txFastas[["flybase_trna"]])
+    object <- do.call(what = rbind, args = args)
     expect_s4_class(object, "TxToGene")
     expect_identical(
         object = nrow(object),

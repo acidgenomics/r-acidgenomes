@@ -702,7 +702,6 @@ test_that("FlyBase GTF transcripts", {
         level = "transcripts"
     )
     expect_s4_class(object, "FlybaseTranscripts")
-    ## FIXME Length difference: 35703 - 30802 = 4901.
     expect_length(
         object = object,
         n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
