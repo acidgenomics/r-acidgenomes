@@ -14,5 +14,5 @@ RefSeq exon annotations
 Contains a \code{CompressedGRangesList} with RefSeq exon-level annotations.
 }
 \note{
-Updated 2023-09-26.
+Updated 2024-01-02.
 }

@@ -14,5 +14,5 @@ FlyBase exon annotations
 Contains \code{GRanges} with FlyBase exon-level annotations.
 }
 \note{
-Updated 2023-12-20.
+Updated 2024-01-02.
 }
