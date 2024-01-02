@@ -589,7 +589,7 @@
 #' This is the main `GRanges` final return generator, used by
 #' `makeGRangesFromEnsembl()` and `makeGRangesFromGff()`.
 #'
-#' @note Updated 2023-12-22.
+#' @note Updated 2024-01-02.
 #' @noRd
 .makeGRanges <-
     function(object,
@@ -652,7 +652,10 @@
             )
         )
         metadata(object) <- metadata(object)[sort(names(metadata(object)))]
-        if (identical(provider, "RefSeq")) {
+        if (
+            identical(level, "exons") ||
+            identical(provider, "RefSeq")
+        ) {
             alertInfo(sprintf(
                 "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
                 "GRanges", idCol, "GRangesList"
