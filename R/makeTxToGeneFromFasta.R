@@ -99,14 +99,20 @@ makeTxToGeneFromFasta <-
             "Making {.cls %s} from FASTA file ({.file %s}).",
             "TxToGene", file
         ))
-        x <- import(con = .cacheIt(file), format = "lines")
-        x <- grep(pattern = "^>", x = x, value = TRUE)
+        lines <- import(con = .cacheIt(file), format = "lines")
+        lines <- grep(pattern = "^>", x = lines, value = TRUE)
         assert(
-            hasLength(x),
+            hasLength(lines),
             msg = sprintf("Unsupported FASTA: {.file %s}.", basename(file))
         )
-        x <- substr(x, start = 2L, stop = nchar(x))
-        first <- strsplit(x = x[[1L]], split = " ", fixed = TRUE)[[1L]]
+        lines <- substr(x = lines, start = 2L, stop = nchar(lines))
+        ## FIXME This likely doesn't work for all files but does work for Ensembl.
+        first <- strSplit(
+            x = lines[[1L]],
+            split = " ",
+            fixed = TRUE,
+            n = 8L
+        )[1L, ]
         if (grepl(
             pattern = paste0(
                 "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
@@ -130,24 +136,53 @@ makeTxToGeneFromFasta <-
             x = head
         ))) {
             provider <- "WormBase"
-        } else if (any(grepl(
-            pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9]+)\\s",
-                ".+",
-                "gene:(ENS.*G[0-9]{11}\\.[0-9]+)"
-            ),
-            x = first[[1L]]
-        ))) {
-            ## FIXME Rework this to use identifier column checks instead:
-            ## [1] "FBtr0343930"
+        } else if (
+            grepl(
+                pattern = " chromosome:",
+                x = lines[[1L]],
+                fixed = TRUE
+            ) &&
+            grepl(
+                pattern = " gene:",
+                x = lines[[1L]],
+                fixed = TRUE
+            ) &&
+            grepl(
+                pattern = " gene_biotype:",
+                x = lines[[1L]],
+                fixed = TRUE
+            ) &&
+            grepl(
+                pattern = " transcript_biotype:",
+                x = lines[[1L]],
+                fixed = TRUE
+            ) &&
+            grepl(
+                pattern = " gene_symbol:",
+                x = lines[[1L]],
+                fixed = TRUE
+            ) &&
+            grepl(
+                pattern = " description:",
+                x = lines[[1L]],
+                fixed = TRUE
+            )
+        ) {
+            ## Alternatively can check for these keys:
+            ## - "chromosome:"
+            ## - "gene:"
+            ## - "gene_biotype:"
+            ## - "transcript_biotype:"
+            ## - "gene_symbol:"
+            ## - "description:"
+            ## [1] "ENST00000415118.1"
             ## [2] "cdna"
-            ## [3] "primary_assembly:BDGP6.46:X:6091205:6103971:1"
-            ## [4] "gene:FBgn0029843"
-            ## [5] "gene_biotype:protein_coding"
-            ## [6] "transcript_biotype:protein_coding"
-            ## [7] "gene_symbol:Nep1"
-            ## [8] "description:Neprilysin"
-            ## [9] "1"
+            ## [3] "chromosome:GRCh38:14:22438547:22438554:1"
+            ## [4] "gene:ENSG00000223997.1"
+            ## [5] "gene_biotype:TR_D_gene"
+            ## [6] "transcript_biotype:TR_D_gene"
+            ## [7] "gene_symbol:TRDD1"
+            ## [8] "description:T cell receptor delta diversity 1 [Source:HGNC Symbol;Acc:HGNC:12254]"
             provider <- "Ensembl"
         } else {
             abort(sprintf(
