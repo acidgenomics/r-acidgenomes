@@ -207,8 +207,6 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
     )
 })
 
-## FIXME Rework this after GRangesList class change.
-
 test_that("Ensembl GRCh38 GFF3 exons", {
     object <- makeGRangesFromGff(
         file = file,
@@ -220,22 +218,17 @@ test_that("Ensembl GRCh38 GFF3 exons", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["exons"]]
     )
-    ## FIXME Rework this.
-    expect_true(
-        length(unique(mcols(object)[["txId"]])) <
-            n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_length(
+        object = unique(mcols(gr)[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
-    ## FIXME Rework this.
-    expect_true(
-        length(unique(mcols(object)[["geneId"]])) <
-            n[["hsapiens"]][["ensembl"]][["genes"]]
-    )
-    expect_named(
-        object = object,
-        expected = as.character(mcols(object)[["exonId"]])
+    expect_length(
+        object = unique(mcols(gr)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
     expect_identical(
-        object = lapply(mcols(object), simpleClass),
+        object = lapply(mcols(gr), simpleClass),
         expected = list(
             "broadClass" = "factor",
             "ccdsId" = "character",
@@ -267,10 +260,9 @@ test_that("Ensembl GRCh38 GFF3 exons", {
             "type" = "factor"
         )
     )
-    ## FIXME Rework this.
     expect_identical(
         object = vapply(
-            X = as.data.frame(object["ENSE00001598988.1"]), # nolint
+            X = as.data.frame(object["ENSE00001598988.1"][[1L]]), # nolint
             FUN = as.character,
             FUN.VALUE = character(1L)
         ),
