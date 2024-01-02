@@ -20,7 +20,6 @@ test_that("Ensembl GRCh38 GFF3 genes", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["genes"]]
     )
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -89,7 +88,7 @@ test_that("Ensembl GRCh38 GFF3 genes", {
         expected = list(
             "seqlengths" = 248956422L,
             "isCircular" = NA,
-            "genome" = "GRCh38.p13"
+            "genome" = "GRCh38.p14"
         )
     )
     expect_identical(
@@ -101,11 +100,11 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
+        expected = "GRCh38.p14"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "005bb75f4382557494faf6b2d8885bbb"
+        expected = "2c414ba2cd6e6f8a7a036f0f277cc8a7"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -113,11 +112,11 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 108L
+        expected = 110L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "8b6e372a0e8d4460307de2c87ec154cdad241291582ccfcdc23f06a45a83ee93" # nolint
+        expected = "c8ab2cca61d7f4ca94a8f7396f8123f5291efaaf17d32508c6db07418ba875bf" # nolint
     )
 })
 
@@ -132,8 +131,10 @@ test_that("Ensembl GRCh38 GFF3 transcripts", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -217,8 +218,27 @@ test_that("Ensembl GRCh38 GFF3 exons", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["exons"]]
     )
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
+    ## FIXME length 267135, not length 275741.
+    ## Not detecting these here:
+    ## [1] "ENST00000657896.1" "ENST00000587530.5" "ENST00000609009.6"
+    ## [4] "ENST00000657837.1" "ENST00000702847.1" "ENST00000618779.5"
+    ##
+    ## e.g. ENST00000657896.1 should be here with 4 exons:
+    ## ENSE00003869490
+    ## ENSE00001706796
+    ## ENSE00001787632
+    ## ENSE00003864563
+    ##
+    ## Instead the GTF file maps to: ENST00000429505.6
+    expect_length(
+        object = unique(mcols(object)[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    ## FIXME length 68918, not length 68974.
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["exonId"]])

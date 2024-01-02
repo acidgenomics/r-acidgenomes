@@ -107,6 +107,7 @@ test_that("Homo sapiens : transcripts", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
+    ## FIXME Check that genes match here.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
