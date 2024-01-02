@@ -1,3 +1,8 @@
+## FIXME Work on adding back exon support, but return as GRangesList, similar
+## to our GFF parsing approach.
+
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
