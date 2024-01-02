@@ -952,134 +952,27 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
     )
 })
 
-## FIXME Need to cover exons here.
+## FIXME Need to add support for exon parsing.
 
-file <- gffs[["gencode_grch38_gtf"]]
-
-test_that("GENCODE GRCh38 GTF genes", {
+test_that("GENCODE GRCh38 GFF3 exons", {
     object <- makeGRangesFromGff(
         file = file,
-        level = "genes",
+        level = "exons",
         ignoreVersion = FALSE
     )
-    expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 62696L)
-    ## FIXME Check expected gene count.
-    expect_named(
+    expect_s4_class(object, "GencodeExons")
+    expect_length(
         object = object,
-        expected = as.character(mcols(object)[["geneId"]])
+        n = n[["hsapiens"]][["gencode"]][["exons"]]
     )
-    expect_identical(
-        object = lapply(mcols(object), simpleClass),
-        expected = list(
-            "artifactualDuplication" = "character",
-            "broadClass" = "factor",
-            "description" = "character",
-            "geneBiotype" = "factor",
-            "geneId" = "character",
-            "geneIdNoVersion" = "character",
-            "geneIdVersion" = "character",
-            "geneName" = "character",
-            "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "character",
-            "hgncId" = "integer",
-            "level" = "factor",
-            "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "factor",
-            "tag" = "CompressedCharacterList",
-            "type" = "factor"
-        )
+    expect_length(
+        object = unique(mcols(object)[["txId"]]),
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
     )
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "chr2",
-            "start" = "177218667",
-            "end" = "177392756",
-            "width" = "174090",
-            "strand" = "-",
-            "artifactualDuplication" = NA_character_,
-            "broadClass" = "coding",
-            "description" = paste(
-                "NFE2 like bZIP transcription factor 2",
-                "[Source:HGNC Symbol;Acc:HGNC:7782]"
-            ),
-            "geneBiotype" = "protein_coding",
-            "geneId" = "ENSG00000116044.17",
-            "geneIdNoVersion" = "ENSG00000116044",
-            "geneIdVersion" = "ENSG00000116044.17",
-            "geneName" = "NFE2L2",
-            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
-            "havanaGene" = "OTTHUMG00000133620.18",
-            "hgncId" = "7782",
-            "level" = "1",
-            "ncbiGeneId" = "4780",
-            "source" = "HAVANA",
-            "tag" = "c(\"overlapping_locus\")",
-            "type" = "gene"
-        )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
     )
-    expect_identical(
-        object = levels(seqnames(object)),
-        expected = paste0(
-            "chr",
-            c(
-                seq(from = 1L, to = 22L),
-                "X", "Y", "M"
-            )
-        )
-    )
-    expect_identical(
-        object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
-        expected = list(
-            "seqlengths" = 248956422L,
-            "isCircular" = NA,
-            "genome" = "GRCh38"
-        )
-    )
-    expect_identical(
-        object = metadata(object)[["url"]],
-        expected = file
-    )
-    expect_true(
-        isAFile(metadata(object)[["file"]])
-    )
-    expect_identical(
-        object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38"
-    )
-    expect_identical(
-        object = metadata(object)[["md5"]],
-        expected = "b3a1bb9b1239d8075dd2b031817a36da"
-    )
-    expect_identical(
-        object = metadata(object)[["organism"]],
-        expected = "Homo sapiens"
-    )
-    expect_identical(
-        object = metadata(object)[["release"]],
-        expected = 42L
-    )
-    expect_identical(
-        object = metadata(object)[["sha256"]],
-        expected = "f59a5b38c6de1472430ccd0181927a01df0b4ad8d78f598e521badc9da80a76e" # nolint
-    )
-})
-
-test_that("GENCODE GRCh38 GTF transcripts", {
-    object <- makeGRangesFromGff(
-        file = file,
-        level = "transcripts",
-        ignoreVersion = FALSE
-    )
-    expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 252416L)
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -1144,7 +1037,13 @@ test_that("GENCODE GRCh38 GTF transcripts", {
             "ncbiGeneId" = "4780",
             "proteinId" = "ENSP00000380252.3",
             "source" = "HAVANA",
-            "tag" = "c(\"CCDS\")",
+            "tag" = paste(
+                "c(\"basic\",",
+                "\"Ensembl_canonical\",",
+                "\"MANE_Select\",",
+                "\"appris_alternative_1\",",
+                "\"CCDS\")"
+            ),
             "txBiotype" = "protein_coding",
             "txId" = "ENST00000397062.8",
             "txIdNoVersion" = "ENST00000397062",
@@ -1156,6 +1055,216 @@ test_that("GENCODE GRCh38 GTF transcripts", {
     )
 })
 
+file <- gffs[["gencode_grch38_gtf"]]
+
+test_that("GENCODE GRCh38 GTF genes", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "genes",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "GencodeGenes")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
+    expect_named(
+        object = object,
+        expected = as.character(mcols(object)[["geneId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "artifactualDuplication" = "character",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSynonyms" = "CompressedCharacterList",
+            "havanaGene" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSG00000116044.17"]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr2",
+            "start" = "177218667",
+            "end" = "177392756",
+            "width" = "174090",
+            "strand" = "-",
+            "artifactualDuplication" = NA_character_,
+            "broadClass" = "coding",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "hgncId" = "7782",
+            "level" = "1",
+            "ncbiGeneId" = "4780",
+            "source" = "HAVANA",
+            "tag" = "overlapping_locus",
+            "type" = "gene"
+        )
+    )
+    expect_identical(
+        object = levels(seqnames(object)),
+        expected = paste0(
+            "chr",
+            c(
+                seq(from = 1L, to = 22L),
+                "X", "Y", "M"
+            )
+        )
+    )
+    expect_identical(
+        object = as.data.frame(seqinfo(object))["chr1", , drop = TRUE],
+        expected = list(
+            "seqlengths" = 248956422L,
+            "isCircular" = NA,
+            "genome" = "GRCh38"
+        )
+    )
+    expect_identical(
+        object = metadata(object)[["url"]],
+        expected = file
+    )
+    expect_true(
+        isAFile(metadata(object)[["file"]])
+    )
+    expect_identical(
+        object = metadata(object)[["genomeBuild"]],
+        expected = "GRCh38"
+    )
+    expect_identical(
+        object = metadata(object)[["md5"]],
+        expected = "ee330cfe6d0654ba9b9cf434d5c1bfb1"
+    )
+    expect_identical(
+        object = metadata(object)[["organism"]],
+        expected = "Homo sapiens"
+    )
+    expect_identical(
+        object = metadata(object)[["release"]],
+        expected = 44L
+    )
+    expect_identical(
+        object = metadata(object)[["sha256"]],
+        expected = "01f817afed65feee863361b4baf30a95e722ee5c5d508ff77b04106ef7ba20d3" # nolint
+    )
+})
+
+test_that("GENCODE GRCh38 GTF transcripts", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "transcripts",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "GencodeTranscripts")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
+    expect_named(
+        object = object,
+        expected = as.character(mcols(object)[["txId"]])
+    )
+    expect_identical(
+        object = lapply(mcols(object), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSynonyms" = "CompressedCharacterList",
+            "havanaGene" = "character",
+            "havanaTranscript" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "proteinId" = "character",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENST00000397062.8"]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr2",
+            "start" = "177230308",
+            "end" = "177264727",
+            "width" = "34420",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS42782.1",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "havanaTranscript" = "OTTHUMT00000257752.5",
+            "hgncId" = "7782",
+            "level" = "2",
+            "ncbiGeneId" = "4780",
+            "proteinId" = "ENSP00000380252.3",
+            "source" = "HAVANA",
+            "tag" = "CCDS",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000397062.8",
+            "txIdNoVersion" = "ENST00000397062",
+            "txIdVersion" = "ENST00000397062.8",
+            "txName" = "NFE2L2-201",
+            "txSupportLevel" = "1",
+            "type" = "transcript"
+        )
+    )
+})
+
+## FIXME Need to add support for exon parsing.
 ## FIXME Need to cover exons here.
 
 file <- gffs[["refseq_grch38_gff3"]]
@@ -1319,6 +1428,7 @@ test_that("RefSeq GRCh38 GFF3 transcripts", {
     )
 })
 
+## FIXME Need to add support for parsing exons first I think.
 ## FIXME Need to cover exons here.
 
 file <- gffs[["refseq_grch38_gtf"]]
@@ -1472,6 +1582,7 @@ test_that("RefSeq GRCh38 GTF transcripts", {
     )
 })
 
+## FIXME Need to add support for parsing exons first I think.
 ## FIXME Need to cover exons here.
 
 file <- gffs[["ucsc_hg38_ncbirefseq_gtf"]]
