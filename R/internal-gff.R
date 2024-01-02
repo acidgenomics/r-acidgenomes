@@ -81,9 +81,12 @@
 
 
 
+## FIXME This is incorrectly returning FlyBase for Ensembl file:
+## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
+
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2023-12-04.
+#' @note Updated 2024-01-02.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -169,16 +172,21 @@
         } else if (any(grepl(
             pattern = "\tFlyBase\t", x = lines
         ))) {
+            ## FIXME This returns incorrectly for:
+            ## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
             l[["provider"]] <- "FlyBase"
         } else if (any(grepl(
             pattern = "\tWormBase\t", x = lines
         ))) {
+            ## FIXME Need to check C. elegans Ensembl file.
             l[["provider"]] <- "WormBase"
         } else if (any(grepl(
             ## NOTE This will currently miss genomes with gene identifiers that
             ## aren't prefixed with "ENS".
             pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
         ))) {
+            ## FIXME Rework this to detect directive keys, and or columns
+            ## in the GFF file.
             l[["provider"]] <- "Ensembl"
         } else if (
             identical(basename(file), "ref-transcripts.gtf") &&
