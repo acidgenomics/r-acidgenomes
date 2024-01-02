@@ -153,10 +153,7 @@
 
 
 
-## FIXME Check that this works for C. elegans, which doesn't contain
-## versioned identifiers.
-
-## Updated 2023-12-22.
+## Updated 2024-01-02.
 .rtracklayerEnsemblExonsGtf <-
     function(object) {
         assert(
@@ -164,20 +161,9 @@
             isSubset(
                 x = c(
                     "exon_id",
-                    "exon_version",
                     "gene_id",
-                    "gene_version",
                     "transcript_id",
-                    "transcript_version",
                     "type"
-                ),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "exon_id_version",
-                    "gene_id_version",
-                    "transcript_id_version"
                 ),
                 y = names(mcols(object))
             )
@@ -190,20 +176,23 @@
         object <- object[keep]
         object <- unique(object)
         assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
-        ## > FIXME mcols(object) <- removeNa(mcols(object))
         keys <- c("exon", "gene", "transcript")
-        ## FIXME Rework this for C. elegans.
         for (key in keys) {
             idCol <- paste(key, "id", sep = "_")
             idVerCol <- paste(idCol, "version", sep = "_")
             verCol <- paste(key, "version", sep = "_")
-            mcols(object)[[idVerCol]] <-
-                paste(
-                    mcols(object)[[idCol]],
-                    mcols(object)[[verCol]],
-                    sep = "."
-                )
-            mcols(object)[[verCol]] <- NULL
+            if (isSubset(verCol, colnames(mcols(object)))) {
+                mcols(object)[[idVerCol]] <-
+                    paste(
+                        mcols(object)[[idCol]],
+                        mcols(object)[[verCol]],
+                        sep = "."
+                    )
+                mcols(object)[[verCol]] <- NULL
+            } else {
+                ## e.g. Caenorhabditis elegans.
+                mcols(object)[[idVerCol]] <- mcols(object)[[idCol]]
+            }
         }
         object
     }
