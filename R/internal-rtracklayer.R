@@ -105,16 +105,10 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        ## FIXME Only call this for exon-to-transcript mappings, otherwise
-        ## we'll drop stuff.
-        object <- unique(object)
-        assert(
-            hasNoDuplicates(mcols(object)[["exon_id"]]),
-            allAreMatchingRegex(
-                x = as.character(mcols(object)[["Parent"]]),
-                pattern = "^transcript:"
-            )
-        )
+        assert(allAreMatchingRegex(
+            x = as.character(mcols(object)[["Parent"]]),
+            pattern = "^transcript:"
+        ))
         mcols(object) <- removeNa(mcols(object))
         names(mcols(object))[
             names(mcols(object)) == "Name"
@@ -172,10 +166,6 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        ## FIXME Only call this on exon-to-transcript mappings, otherwise we'll
-        ## drop stuff.
-        object <- unique(object)
-        assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
         keys <- c("exon", "gene", "transcript")
         for (key in keys) {
             idCol <- paste(key, "id", sep = "_")
