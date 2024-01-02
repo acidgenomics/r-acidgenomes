@@ -116,6 +116,9 @@ makeTxToGeneFromFasta <-
             ),
             x = head
         ))) {
+            ## FIXME Can we support other genomes that don't use "ENS"
+            ## identifiers, such as fly and worm?
+            ##
             ## Note that Ensembl includes "gene:" key.
             ## e.g. "ENST00000632684.1 cdna chromosome.*"
             provider <- "Ensembl"
