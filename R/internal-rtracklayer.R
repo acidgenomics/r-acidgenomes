@@ -88,10 +88,7 @@
 
 ## Ensembl =====================================================================
 
-## FIXME Check that this works for C. elegans, which doesn't contain
-## versioned identifiers.
-
-## Updated 2023-12-22.
+## Updated 2024-01-02.
 .rtracklayerEnsemblExonsGff <-
     function(object) {
         tx <- .rtracklayerEnsemblTranscriptsGff(object)
@@ -108,6 +105,7 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
+        ## FIXME Is this approach problematic for multi-mapping exons?
         object <- unique(object)
         assert(
             hasNoDuplicates(mcols(object)[["exon_id"]]),
@@ -125,17 +123,21 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
-        ## FIXME Rework this for C. elegans.
-        mcols(object)[["exon_id_version"]] <-
-            paste(
-                mcols(object)[["exon_id"]],
-                mcols(object)[["version"]],
-                sep = "."
-            )
+        if (isSubset("version", colnames(mcols(object)))) {
+            mcols(object)[["exon_id_version"]] <-
+                paste(
+                    mcols(object)[["exon_id"]],
+                    mcols(object)[["version"]],
+                    sep = "."
+                )
+            mcols(object)[["version"]] <- NULL
+        } else {
+            ## e.g. Caenorhabditis elegans.
+            mcols(object)[["exon_id_version"]] <- mcols(object)[["exon_id"]]
+        }
         mcols(object)[["Alias"]] <- NULL
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
-        mcols(object)[["version"]] <- NULL
         txCols <- c(
             "transcript_id",
             setdiff(
@@ -169,6 +171,7 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
+        ## FIXME Is this approach problematic for multi-mapping exons?
         object <- unique(object)
         assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
         keys <- c("exon", "gene", "transcript")
@@ -218,7 +221,6 @@
         names(mcols(object))[
             names(mcols(object)) == "biotype"
         ] <- "gene_biotype"
-
         if (isSubset("version", colnames(mcols(object)))) {
             mcols(object)[["gene_id_version"]] <-
                 paste(
@@ -272,9 +274,6 @@
     }
 
 
-
-## FIXME Check that this works for C. elegans, which doesn't contain
-## versioned identifiers.
 
 ## Updated 2024-01-02.
 .rtracklayerEnsemblTranscriptsGff <-
