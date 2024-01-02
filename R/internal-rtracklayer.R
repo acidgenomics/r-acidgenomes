@@ -125,6 +125,7 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
+        ## FIXME Rework this for C. elegans.
         mcols(object)[["exon_id_version"]] <-
             paste(
                 mcols(object)[["exon_id"]],
@@ -191,6 +192,7 @@
         assert(hasNoDuplicates(mcols(object)[["exon_id"]]))
         ## > FIXME mcols(object) <- removeNa(mcols(object))
         keys <- c("exon", "gene", "transcript")
+        ## FIXME Rework this for C. elegans.
         for (key in keys) {
             idCol <- paste(key, "id", sep = "_")
             idVerCol <- paste(idCol, "version", sep = "_")
@@ -211,7 +213,7 @@
 ## FIXME Check that this works for C. elegans, which doesn't contain
 ## versioned identifiers.
 
-## Updated 2022-05-04.
+## Updated 2024-01-02.
 .rtracklayerEnsemblGenesGff <-
     function(object) {
         assert(
@@ -239,6 +241,7 @@
         names(mcols(object))[
             names(mcols(object)) == "biotype"
         ] <- "gene_biotype"
+        ## FIXME Rework this for C. elegans.
         mcols(object)[["gene_id_version"]] <-
             paste(
                 mcols(object)[["gene_id"]],
@@ -331,6 +334,7 @@
             replacement = "",
             x = as.character(mcols(object)[["Parent"]])
         )
+        ## FIXME Rework this for C. elegans.
         mcols(object)[["transcript_id_version"]] <-
             paste(
                 mcols(object)[["transcript_id"]],
@@ -361,7 +365,7 @@
 ## FIXME Check that this works for C. elegans, which doesn't contain
 ## versioned identifiers.
 
-## Updated 2023-12-21.
+## Updated 2024-01-02.
 .rtracklayerEnsemblTranscriptsGtf <-
     function(object) {
         assert(
@@ -389,6 +393,7 @@
         object <- object[keep]
         assert(hasNoDuplicates(mcols(object)[["transcript_id"]]))
         keys <- c("gene", "transcript")
+        ## FIXME Rework this for C. elegans.
         for (key in keys) {
             idCol <- paste(key, "id", sep = "_")
             idVerCol <- paste(idCol, "version", sep = "_")
