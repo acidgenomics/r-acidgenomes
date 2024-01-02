@@ -1,15 +1,3 @@
-## FIXME Need to detect this file as Ensembl:
-## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
-
-## FIXME This file currently fails to import:
-## Doesn't contain "gene_version".
-## "https://ftp.ensembl.org/pub/release-110/gtf/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.110.gtf.gz"
-
-## FIXME Need to check support for GFF3 file too ugh:
-## https://ftp.ensembl.org/pub/release-110/gff3/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.110.gff3.gz
-
-
-
 #' Make GRanges from rtracklayer
 #'
 #' @note Updated 2024-01-02.
