@@ -682,20 +682,6 @@ test_that("FlyBase GTF genes", {
     )
 })
 
-## FIXME We need to filter out some garbage transcripts from return:
-## [1] "FBtr0475186" "FBtr0309810" "FBtr0347585"
-## [4] "FBtr0345732" "FBtr0345733" "FBtr0344032"
-##
-## These are defined in the GTF files, but not the FASTAs.
-##
-## 35703 - 30802 = 4901
-##
-## Ugh like Ensembl, FlyBase splits transcripts across multiple files:
-##
-## ❯ rg -l FBtr0475186 *.fasta | sort
-## dmel-all-intron-r6.55.fasta
-## dmel-all-pseudogene-r6.55.fasta
-
 test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
