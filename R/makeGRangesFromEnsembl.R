@@ -1,8 +1,3 @@
-## FIXME Work on adding back exon support, but return as GRangesList, similar
-## to our GFF parsing approach.
-
-
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
@@ -110,7 +105,7 @@ NULL
 #' @export
 makeGRangesFromEnsembl <-
     function(organism,
-             level = c("genes", "transcripts"),
+             level = c("genes", "transcripts", "exons"),
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = FALSE,
@@ -153,7 +148,7 @@ makeGRangesFromEnsembl <-
 #' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
 makeGRangesFromEnsDb <-
     function(object,
-             level = c("genes", "transcripts"),
+             level = c("genes", "transcripts", "exons"),
              ignoreVersion = FALSE,
              extraMcols = TRUE) {
         assert(
@@ -175,13 +170,11 @@ makeGRangesFromEnsDb <-
         assert(is(object, "EnsDb"))
         switch(
             EXPR = level,
-            ## Not sure how to map exons uniquely currently, whereas we can
-            ## do this from the GFF files.
-            ## > "exons" = {
-            ## >     fun <- ensembldb::exons
-            ## >     colKeys <- c("exon", "gene", "tx")
-            ## >     idCol <- "exon_id"
-            ## > },
+            "exons" = {
+                fun <- ensembldb::exons
+                colKeys <- c("exon", "gene", "tx")
+                idCol <- "exon_id"
+            },
             "genes" = {
                 fun <- ensembldb::genes
                 colKeys <- "gene"
@@ -193,24 +186,17 @@ makeGRangesFromEnsDb <-
                 idCol <- "tx_id"
             }
         )
-        if (isFALSE(ignoreVersion)) {
-            idCol <- paste(idCol, "version", sep = "_")
-        }
         quietly({
             cols <- ensembldb::listColumns(object, colKeys)
         })
         cols <- c(cols, "entrezid")
         cols <- sort(unique(cols))
-        assert(
-            isSubset(idCol, cols),
-            msg = sprintf(
-                paste(
-                    "Unsupported {.pkg %s} key: {.var %s}.",
-                    "Likely need to set {.val %s}."
-                ),
-                "ensembldb", idCol, "ignoreVersion = TRUE"
-            )
-        )
+        if (isFALSE(ignoreVersion)) {
+            idVerCol <- paste(idCol, "version", sep = "_")
+            if (isSubset(idVerCol, cols)) {
+                idCol <- idVerCol
+            }
+        }
         args <- list(
             "x" = object,
             "columns" = cols,
@@ -223,7 +209,6 @@ makeGRangesFromEnsDb <-
         })
         assert(is(gr, "GRanges"))
         metadata(gr) <- .getEnsDbMetadata(object = object, level = level)
-        assert(hasNoDuplicates(mcols(gr)[[idCol]]))
         gr <- .makeGRanges(
             object = gr,
             ignoreVersion = ignoreVersion,
