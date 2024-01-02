@@ -1,7 +1,3 @@
-## FIXME Add EnsemblExons, etc.
-
-
-
 ## Internal validity methods ===================================================
 
 #' Shared Ensembl validity checks
@@ -245,12 +241,12 @@
 #' Contains `GRanges` with Ensembl exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @return `EnsemblExons`.
 setClass(
     Class = "EnsemblExons",
-    contains = "GRanges"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "EnsemblExons",
@@ -335,12 +331,12 @@ setValidity(
 #' Contains `GRanges` with FlyBase exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @return `FlybaseExons`.
 setClass(
     Class = "FlybaseExons",
-    contains = "GRanges"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "FlybaseExons",
@@ -425,12 +421,12 @@ setValidity(
 #' Contains `GRanges` with GENCODE exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @return `GencodeExons`.
 setClass(
     Class = "GencodeExons",
-    contains = "GRanges"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "GencodeExons",
@@ -515,7 +511,7 @@ setValidity(
 #' Contains a `CompressedGRangesList` with RefSeq exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2024-01-02.
 #'
 #' @return `RefseqExons`.
 setClass(
@@ -605,12 +601,12 @@ setValidity(
 #' Contains `GRanges` with UCSC exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @return `UcscExons`.
 setClass(
     Class = "UcscExons",
-    contains = "GRanges"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "UcscExons",
@@ -695,12 +691,12 @@ setValidity(
 #' Contains `GRanges` with WormBase exon-level annotations.
 #'
 #' @export
-#' @note Updated 2023-12-20.
+#' @note Updated 2024-01-02.
 #'
 #' @return `WormbaseExons`.
 setClass(
     Class = "WormbaseExons",
-    contains = "GRanges"
+    contains = "CompressedGRangesList"
 )
 setValidity(
     Class = "WormbaseExons",

@@ -14,5 +14,5 @@ GENCODE exon annotations
 Contains \code{GRanges} with GENCODE exon-level annotations.
 }
 \note{
-Updated 2023-12-20.
+Updated 2024-01-02.
 }
