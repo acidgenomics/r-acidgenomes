@@ -1,3 +1,9 @@
+## FIXME Need to detect this file as Ensembl:
+## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
+
+
+
+
 #' Make GRanges from rtracklayer
 #'
 #' @note Updated 2024-01-02.
