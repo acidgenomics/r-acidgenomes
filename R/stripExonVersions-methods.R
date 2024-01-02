@@ -22,13 +22,13 @@ NULL
 
 
 
-## Updated 2023-11-28.
+## Updated 2024-01-02.
 `stripExonVersions,character` <- # nolint
     function(object) {
         assert(isCharacter(object))
-        pattern <- "^(ENS.*T[0-9]{11})(\\.[0-9]+)(_[0-9]+)?(_PAR_Y)?$"
+        pattern <- "^(ENS.*E[0-9]{11})(\\.[0-9]+)(_[0-9]+)?(_PAR_Y)?$"
         if (!any(grepl(pattern = pattern, x = object))) {
-            alertWarning("No transcript versions to modify.")
+            alertWarning("No exon versions to modify.")
             return(object)
         }
         out <- gsub(
@@ -41,7 +41,7 @@ NULL
 
 
 
-## Updated 2022-03-09.
+## Updated 2024-01-02.
 `stripExonVersions,integer` <- # nolint
     function(object) {
         object
@@ -49,7 +49,7 @@ NULL
 
 
 
-## Updated 2019-07-22.
+## Updated 2024-01-02.
 `stripExonVersions,matrix` <- # nolint
     function(object) {
         assert(hasRownames(object))
