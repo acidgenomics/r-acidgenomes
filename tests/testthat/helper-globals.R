@@ -45,7 +45,7 @@ n <- list(
             ## GRCh38 release 110.
             ## Ensembl preserves "TEC" and "artifact" biotypes in FASTA and
             ## GFF files, which differs from GENCODE.
-            "exons" = 733353L,
+            "exons" = 875428L,
             "genes" = 68974L,
             "transcripts" = 275741L
         ),
