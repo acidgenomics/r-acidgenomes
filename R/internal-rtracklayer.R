@@ -420,7 +420,7 @@
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
 
-## Updated 2023-12-20.
+## Updated 2024-01-02.
 .rtracklayerGencodeExonsGff <-
     function(object) {
         stop("FIXME WORK IN PROGRESS")
@@ -428,25 +428,48 @@
 
 
 
-## Updated 2023-12-20.
+## Updated 2024-01-02.
 .rtracklayerGencodeExonsGtf <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("exon_id", "gene_id", "transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        mcols(object)[["exon_id_version"]] <-
+            mcols(object)[["exon_id"]]
+        ## FIXME Need to add support for stripping exon versions.
+        mcols(object)[["exon_id"]] <-
+            stripExonVersions(mcols(object)[["exon_id_version"]])
+        mcols(object)[["transcript_id_version"]] <-
+            mcols(object)[["transcript_id"]]
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
+        ## FIXME Consider keeping this.
+        mcols(object)[["ont"]] <- NULL
+        object
     }
 
 
 
-## Updated 2023-12-19.
+## Updated 2024-01-02.
 .rtracklayerGencodeGenesGff <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c("ID", "gene_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("gene_id_no_version", "gene_version"),
                 y = names(mcols(object))
             )
         )
@@ -462,23 +485,20 @@
             stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
+        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
 
 
 
-## Updated 2022-05-04.
+## Updated 2023-01-02.
 .rtracklayerGencodeGenesGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c("gene_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("gene_id_version", "gene_version"),
                 y = names(mcols(object))
             )
         )
@@ -492,22 +512,19 @@
         assert(hasNoDuplicates(mcols(object)[["gene_id_version"]]))
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
+        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
 
 
 
-## Updated 2023-12-19.
+## Updated 2024-01-02.
 .rtracklayerGencodeTranscriptsGff <-
     function(object) {
         assert(
             isSubset(
                 x = c("ID", "gene_id", "transcript_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c("transcript_id_no_version", "transcript_version"),
                 y = names(mcols(object))
             )
         )
@@ -527,6 +544,7 @@
             stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
+        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -535,22 +553,13 @@
 
 ## GENCODE GRCh37 contains duplicate unversioned transcript identifiers.
 ##
-## Updated 2023-11-29.
+## Updated 2024-01-02.
 .rtracklayerGencodeTranscriptsGtf <-
     function(object) {
         assert(
             is(object, "GRanges"),
             isSubset(
                 x = c("gene_id", "transcript_id", "type"),
-                y = names(mcols(object))
-            ),
-            areDisjointSets(
-                x = c(
-                    "gene_id_version",
-                    "gene_version",
-                    "transcript_id_version",
-                    "transcript_version"
-                ),
                 y = names(mcols(object))
             )
         )
@@ -568,6 +577,7 @@
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
+        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
