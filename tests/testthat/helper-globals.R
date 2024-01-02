@@ -25,6 +25,7 @@ gr <- GRanges
 
 ## nolint end
 
+## Updated 2024-01-02.
 n <- list(
     "celegans" = list(
         "wormbase" = c(
@@ -54,13 +55,13 @@ n <- list(
             ## GENCODE removes "TEC" and "artifact" biotypes in FASTA and GFF
             ## files, which differs from Ensembl.
             "exons" = NA, # FIXME
-            "genes" = NA, # FIXME
+            "genes" = 62700L,
             "transcripts" = 252835L
         )
     )
 )
 
-## Updated 2023-12-21.
+## Updated 2024-01-02.
 txFastas <- c(
     "ensembl_cdna" = pasteUrl(
         "ftp.ensembl.org",

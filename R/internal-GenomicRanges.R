@@ -293,7 +293,7 @@
 
 #' Remove unwanted experimental biotypes from GRanges
 #'
-#' @note Updated 2023-12-22.
+#' @note Updated 2024-01-02.
 #' @noRd
 #'
 #' @details
@@ -315,7 +315,12 @@
     if (!isSubset(biotypeCol, colnames(mcols(object)))) {
         return(object)
     }
-    biotypes <- c("LRG_gene", "TEC", "artifact")
+    provider <- metadata(object)[["provider"]]
+    assert(isString(provider))
+    biotypes <- c("LRG_gene", "TEC")
+    if (!identical(provider, "GENCODE")) {
+        biotypes <- c(biotypes, "artifact")
+    }
     for (biotype in biotypes) {
         drop <- mcols(object)[[biotypeCol]] == biotype
         if (any(drop)) {
