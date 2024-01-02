@@ -317,9 +317,9 @@
     }
     provider <- metadata(object)[["provider"]]
     assert(isString(provider))
-    biotypes <- c("LRG_gene", "TEC")
+    biotypes <- "LRG_gene"
     if (!identical(provider, "GENCODE")) {
-        biotypes <- c(biotypes, "artifact")
+        biotypes <- append(x = biotypes, values = c("artifact", "TEC"))
     }
     for (biotype in biotypes) {
         drop <- mcols(object)[[biotypeCol]] == biotype

@@ -746,12 +746,6 @@ test_that("GENCODE GRCh38 GFF3 genes", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    ## FIXME This is now filtering out genes defined in the FASTA:
-    ## Looks like these are artifact genes. Don't filter these out for GENCODE.
-    ##
-    ## [1] "ENSG00000274276.6" "ENSG00000231004.2"
-    ## [3] "ENSG00000225931.3" "ENSG00000274559.3"
-    ## [5] "ENSG00000250733.6" "ENSG00000249852.1"
     expect_length(
         object = object,
         n = n[["hsapiens"]][["gencode"]][["genes"]]
@@ -868,7 +862,6 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    ## FIXME This differs from FASTA, need to resolve.
     expect_length(
         object = object,
         n = n[["hsapiens"]][["gencode"]][["transcripts"]]
