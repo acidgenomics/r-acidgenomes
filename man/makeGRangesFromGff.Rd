@@ -37,7 +37,7 @@ Make genomic ranges (\code{GRanges}) from a GFF/GTF file
 Remote URLs and compressed files are supported.
 }
 \note{
-Updated 2024-01-02.
+Updated 2024-01-03.
 }
 \section{GFF/GTF specification}{
 
