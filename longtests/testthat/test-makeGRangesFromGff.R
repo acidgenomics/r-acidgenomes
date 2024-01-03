@@ -1050,57 +1050,6 @@ test_that("GENCODE GRCh38 GFF3 exons", {
             "type" = "exon"
         )
     )
-
-
-
-    ## FIXME Update to cover exon.
-    expect_identical(
-        object = vapply(
-            X = as.data.frame(object["ENST00000397062.8"]), # nolint
-            FUN = as.character,
-            FUN.VALUE = character(1L)
-        ),
-        expected = c(
-            "seqnames" = "chr2",
-            "start" = "177230308",
-            "end" = "177264727",
-            "width" = "34420",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "ccdsId" = "CCDS42782.1",
-            "description" = paste(
-                "NFE2 like bZIP transcription factor 2",
-                "[Source:HGNC Symbol;Acc:HGNC:7782]"
-            ),
-            "geneBiotype" = "protein_coding",
-            "geneId" = "ENSG00000116044.17",
-            "geneIdNoVersion" = "ENSG00000116044",
-            "geneIdVersion" = "ENSG00000116044.17",
-            "geneName" = "NFE2L2",
-            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
-            "havanaGene" = "OTTHUMG00000133620.18",
-            "havanaTranscript" = "OTTHUMT00000257752.5",
-            "hgncId" = "7782",
-            "level" = "2",
-            "ncbiGeneId" = "4780",
-            "proteinId" = "ENSP00000380252.3",
-            "source" = "HAVANA",
-            "tag" = paste(
-                "c(\"basic\",",
-                "\"Ensembl_canonical\",",
-                "\"MANE_Select\",",
-                "\"appris_alternative_1\",",
-                "\"CCDS\")"
-            ),
-            "txBiotype" = "protein_coding",
-            "txId" = "ENST00000397062.8",
-            "txIdNoVersion" = "ENST00000397062",
-            "txIdVersion" = "ENST00000397062.8",
-            "txName" = "NFE2L2-201",
-            "txSupportLevel" = "1",
-            "type" = "transcript"
-        )
-    )
 })
 
 file <- gffs[["gencode_grch38_gtf"]]
