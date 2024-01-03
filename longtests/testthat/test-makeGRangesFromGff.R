@@ -952,8 +952,6 @@ test_that("GENCODE GRCh38 GFF3 transcripts", {
     )
 })
 
-## FIXME Need to add support for exon parsing.
-
 test_that("GENCODE GRCh38 GFF3 exons", {
     object <- makeGRangesFromGff(
         file = file,
@@ -965,24 +963,25 @@ test_that("GENCODE GRCh38 GFF3 exons", {
         object = object,
         n = n[["hsapiens"]][["gencode"]][["exons"]]
     )
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
     expect_length(
-        object = unique(mcols(object)[["txId"]]),
+        object = unique(mcols(gr)[["txId"]]),
         n = n[["hsapiens"]][["gencode"]][["transcripts"]]
     )
     expect_length(
-        object = unique(mcols(object)[["geneId"]]),
+        object = unique(mcols(gr)[["geneId"]]),
         n = n[["hsapiens"]][["gencode"]][["genes"]]
     )
-    expect_named(
-        object = object,
-        expected = as.character(mcols(object)[["txId"]])
-    )
     expect_identical(
-        object = lapply(mcols(object), simpleClass),
+        object = lapply(mcols(gr), simpleClass),
         expected = list(
             "broadClass" = "factor",
             "ccdsId" = "character",
             "description" = "character",
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonNumber" = "integer",
             "geneBiotype" = "factor",
             "geneId" = "character",
             "geneIdNoVersion" = "character",
@@ -1006,6 +1005,55 @@ test_that("GENCODE GRCh38 GFF3 exons", {
             "type" = "factor"
         )
     )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSE00001598988.1"][[1L]]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr2",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS46457.1",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonNumber" = "1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "havanaTranscript" = "OTTHUMT00000334264.2",
+            "hgncId" = "7782",
+            "level" = "2",
+            "ncbiGeneId" = "4780",
+            "proteinId" = "ENSP00000412191.2",
+            "source" = "HAVANA",
+            "tag" = "CCDS",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSupportLevel" = "1",
+            "type" = "exon"
+        )
+    )
+
+
+
+    ## FIXME Update to cover exon.
     expect_identical(
         object = vapply(
             X = as.data.frame(object["ENST00000397062.8"]), # nolint
