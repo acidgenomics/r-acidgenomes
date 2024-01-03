@@ -50,7 +50,7 @@ n <- list(
         ),
         "gencode" = c(
             ## GRCh38 release 44.
-            "exons" = NA, # FIXME
+            "exons" = 797952L,
             "genes" = 62700L,
             "transcripts" = 252835L
         )
