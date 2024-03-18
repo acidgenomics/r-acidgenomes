@@ -115,7 +115,9 @@ test_that("EnsemblGenes", {
     y <- EnsemblToNcbi(hs, useCurated = FALSE)
     expect_true(metadata(x)[["useCurated"]])
     expect_null(metadata(y)[["useCurated"]])
+    ## FIXME This check is now failing.
     expect_identical(nrow(x), 26606L)
+    ## FIXME This check is now failing.
     expect_identical(nrow(y), 26608L)
     expect_identical(
         object = setdiff(y[[1L]], x[[1L]]),
@@ -123,6 +125,7 @@ test_that("EnsemblGenes", {
     )
     y <- y[rownames(x), ]
     idx <- which(x[[2L]] != y[[2L]])
+    ## FIXME This check is now failing.
     expect_length(idx, 111L)
     expect_identical(
         object = head(data.frame(
