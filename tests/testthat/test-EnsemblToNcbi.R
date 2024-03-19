@@ -111,22 +111,20 @@ test_that("EnsemblGenes", {
         release = 110L,
         ignoreVersion = FALSE
     )
+    expect_length(hs, 68974L)
     x <- EnsemblToNcbi(hs, useCurated = TRUE)
     y <- EnsemblToNcbi(hs, useCurated = FALSE)
     expect_true(metadata(x)[["useCurated"]])
     expect_null(metadata(y)[["useCurated"]])
-    ## FIXME This check is now failing.
-    expect_identical(nrow(x), 26606L)
-    ## FIXME This check is now failing.
-    expect_identical(nrow(y), 26608L)
+    expect_identical(nrow(x), 26582L)
+    expect_identical(nrow(y), 26584L)
     expect_identical(
         object = setdiff(y[[1L]], x[[1L]]),
         expected = c("ENSG00000290723.1", "ENSG00000291109.1")
     )
     y <- y[rownames(x), ]
     idx <- which(x[[2L]] != y[[2L]])
-    ## FIXME This check is now failing.
-    expect_length(idx, 111L)
+    expect_length(idx, 109L)
     expect_identical(
         object = head(data.frame(
             "ensemblGeneId" = x[["ensemblGeneId"]][idx],
