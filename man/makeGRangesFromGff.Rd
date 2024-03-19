@@ -160,7 +160,7 @@ Example URLs:
 See also:
 \itemize{
 \item \href{https://www.ncbi.nlm.nih.gov/books/NBK50679/}{RefSeq FAQ}
-\item https://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
+\item https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
 }
 }
 

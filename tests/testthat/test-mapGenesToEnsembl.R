@@ -12,11 +12,11 @@ test_that("Homo sapiens", {
 
 ## FIXME This test is now failing due to missing URL:
 ## Seems like the URL has migrated from:
-## https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz
+## https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz
 ## to:
 ## https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz
 ## Seems like the NCBI server is currently down.
-## goalie::isAnExistingUrl("https://ftp.ncbi.nih.gov")
+## goalie::isAnExistingUrl("https://ftp.ncbi.nlm.nih.gov")
 ## ## goalie::isAnExistingUrl("https://ftp.ncbi.nlm.nih.gov")
 
 test_that("Mus musculus", {
