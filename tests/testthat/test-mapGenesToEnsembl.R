@@ -13,6 +13,7 @@ test_that("Homo sapiens", {
 ## FIXME This test is now failing due to missing URL:
 ## https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz
 ## Seems like the NCBI server is currently down.
+## goalie::isAnExistingUrl("https://ftp.ncbi.nih.gov")
 
 test_that("Mus musculus", {
     expect_identical(
