@@ -16,7 +16,7 @@
 #' @return `NcbiGeneInfo`.
 #'
 #' @seealso
-#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/
 #'
 #' @examples
 #' object <- NcbiGeneInfo(
@@ -35,7 +35,7 @@ NcbiGeneInfo <- # nolint
             isFlag(refseqGeneSummary)
         )
         baseURL <- pasteUrl(
-            "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
+            "ftp.ncbi.nlm.nih.gov", "gene", "DATA", "GENE_INFO",
             protocol = "https"
         )
         if (is.null(taxonomicGroup)) {
@@ -136,7 +136,7 @@ NcbiGeneInfo <- # nolint
 #'
 #' @seealso
 #' - https://www.ncbi.nlm.nih.gov/refseq/about/
-#' - https://ftp.ncbi.nih.gov/refseq/release/complete/
+#' - https://ftp.ncbi.nlm.nih.gov/refseq/release/complete/
 .refseqGeneSummary <- function(organism) {
     assert(
         requireNamespaces("GeneSummary"),

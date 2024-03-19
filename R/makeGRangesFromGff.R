@@ -110,7 +110,7 @@
 #' See also:
 #'
 #' - [RefSeq FAQ](https://www.ncbi.nlm.nih.gov/books/NBK50679/)
-#' - https://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
 #'
 #' @section UCSC:
 #'
