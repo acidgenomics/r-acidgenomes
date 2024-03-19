@@ -4,7 +4,7 @@
 #' @noRd
 #'
 #' @seealso
-#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/
 .matchNcbiTaxonomicGroup <-
     function(organism,
              mode = c("geneInfo", "refseq")) {
@@ -13,7 +13,7 @@
         baseUrl <- switch(
             EXPR = mode,
             "geneInfo" = pasteUrl(
-                "ftp.ncbi.nih.gov",
+                "ftp.ncbi.nlm.nih.gov",
                 "gene", "DATA", "GENE_INFO",
                 protocol = "ftp"
             ),
