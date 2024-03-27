@@ -177,6 +177,7 @@ mapHumanOrthologs <-
             organism, "Homo sapiens"
         ))
         alert(sprintf("Getting {.emph %s} gene symbols.", organism))
+        ## FIXME This function has been removed.
         g2s <- makeGeneToSymbolFromEnsembl(
             organism = organism,
             release = ensemblRelease,
@@ -186,6 +187,7 @@ mapHumanOrthologs <-
         g2s <- as(g2s, "DFrame")
         assert(identical(colnames(g2s), c("geneId", "geneName")))
         alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
+        ## FIXME This function has been removed.
         g2sHuman <- makeGeneToSymbolFromEnsembl(
             organism = "Homo sapiens",
             release = ensemblRelease,
