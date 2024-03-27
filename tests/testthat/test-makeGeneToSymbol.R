@@ -1,3 +1,5 @@
+## FIXME These functions have been removed, consider reworking.
+
 test_that("EnsDb : unmodified", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
     object <- makeGeneToSymbolFromEnsDb(

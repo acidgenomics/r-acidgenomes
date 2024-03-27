@@ -26,8 +26,6 @@
 #'
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeGeneToSymbol()].
-#'
 #' @examples
 #' data(GRanges, package = "AcidTest")
 #'
