@@ -165,11 +165,9 @@
             do.call(what = getChromInfoFromEnsembl, args = args)
         },
         warning = function(w) {
-            message(w)
             NULL
         },
         error = function(e) {
-            message(e)
             NULL
         }
     )
