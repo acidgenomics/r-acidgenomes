@@ -1,3 +1,8 @@
+## FIXME Now returning GRCh37 112 by default instead of expected GRCh38, which is behind at 111.
+## FIXME Need to think of approach for dealing with this edge case.
+## FIXME With GRCh37 112 update, we may be able to sunset legacy EnsDb.Hsapiens.v75 usage.
+
+
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
