@@ -1,6 +1,7 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
+** TODO Remove usage of Rle in metadata for gene annotations, makes package less confusing to use.
 ** TODO OMIM identifier mapping support.
 ** TODO makeGRangesFromEnsembl: disable extraMcols by default.
     Current Homo sapiens reference (112) isn't working with this enabled now, very annoying.
