@@ -1,9 +1,9 @@
 #' Map gene names to Ensembl
 #'
 #' @export
-#' @note Updated 2023-04-14.
+#' @note Updated 2024-08-14.
 #'
-#' @details Internally matches using `mapGenesToNCBI` first, so we can support
+#' @details Internally matches using `mapGeneNamesToNcbi` first, so we can support
 #' gene synonym matching.
 #'
 #' @inheritParams AcidRoxygen::params
