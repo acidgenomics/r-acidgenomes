@@ -42,6 +42,7 @@ Suggests:
     AnnotationDbi,
     AnnotationHub,
     BiocFileCache,
+    EnsDb.Hsapiens.v75,
     GenomicFeatures,
     RCurl,
     biomaRt,
