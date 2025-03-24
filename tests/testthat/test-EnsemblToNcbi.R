@@ -123,7 +123,8 @@ test_that("EnsemblGenes", {
     )
     y <- y[rownames(x), ]
     idx <- which(x[[2L]] != y[[2L]])
-    expect_length(idx, 111L)
+    ## NOTE This value changes with rolling NCBI updates.
+    expect_length(idx, 108L)
     expect_identical(
         object = head(data.frame(
             "ensemblGeneId" = x[["ensemblGeneId"]][idx],
