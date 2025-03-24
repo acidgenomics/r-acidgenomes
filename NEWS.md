@@ -1,6 +1,12 @@
 # Release notes
 
-## AcidGenoems 0.7.2 (2023-12-06)
+## AcidGenomes 0.7.3 (2025-03-25)
+
+Minor changes:
+
+- Relaxed R dependency from 4.3 to 4.0 for backwards compatibility.
+
+## AcidGenomes 0.7.2 (2023-12-06)
 
 Minor changes:
 
