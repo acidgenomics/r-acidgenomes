@@ -3,7 +3,8 @@ test_that("Genes", {
         organism = "Homo sapiens",
         level = "genes",
         release = 108L,
-        ignoreVersion = TRUE
+        ignoreVersion = TRUE,
+        extraMcols = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(
@@ -93,7 +94,8 @@ test_that("Transcripts", {
         organism = "Homo sapiens",
         level = "transcripts",
         release = 108L,
-        ignoreVersion = FALSE
+        ignoreVersion = FALSE,
+        extraMcols = TRUE
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, 275721L)
@@ -180,7 +182,8 @@ test_that("GRCh37", {
         organism = "Homo sapiens",
         level = "genes",
         genomeBuild = "GRCh37",
-        ignoreVersion = TRUE
+        ignoreVersion = TRUE,
+        extraMcols = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, 64102L)
@@ -202,7 +205,8 @@ test_that("Organism with 3 words", {
         organism = "Canis lupus familiaris",
         level = "genes",
         release = 110L,
-        ignoreVersion = FALSE
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
     )
     expect_s4_class(x, "EnsemblGenes")
 })
