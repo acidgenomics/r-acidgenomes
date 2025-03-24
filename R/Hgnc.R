@@ -2,12 +2,13 @@
 #' metadata
 #'
 #' @export
-#' @note Updated 2023-11-21.
+#' @note Updated 2025-03-24.
 #'
 #' @return `Hgnc`.
 #'
 #' @seealso
 #' - https://www.genenames.org/
+#' - https://www.genenames.org/download/archive/
 #' - https://www.genenames.org/download/statistics-and-files/
 #'
 #' @examples
@@ -17,33 +18,28 @@ Hgnc <- # nolint
     function() {
         alert("Importing HGNC complete set.")
         url <- pasteUrl(
-            "ftp.ebi.ac.uk",
-            "pub",
-            "databases",
-            "genenames",
-            "new",
+            "storage.googleapis.com",
+            "public-download-files",
+            "hgnc",
+            "tsv",
             "tsv",
             "hgnc_complete_set.txt",
             protocol = "https"
         )
-        file <- .cacheIt(url)
-        lines <- import(con = file, format = "lines")
-        lines <- fillLines(lines, format = "tsv")
-        con <- textConnection(lines)
+        con <- .cacheIt(url)
         df <- import(con = con, format = "tsv")
-        close(con)
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df), strict = TRUE)
-        df[["agr"]] <- NULL
-        df[["gencc"]] <- NULL
         assert(
             isSubset(
                 x = c(
+                    "agr",
                     "dateApprovedReserved",
                     "dateModified",
                     "dateNameChanged",
                     "dateSymbolChanged",
                     "entrezId",
+                    "gencc",
                     "hgncId",
                     "name",
                     "symbol"
@@ -52,6 +48,8 @@ Hgnc <- # nolint
             ),
             hasNoDuplicates(df[["hgncId"]])
         )
+        df[["agr"]] <- NULL
+        df[["gencc"]] <- NULL
         df[["hgncId"]] <- as.integer(sub(
             pattern = "^HGNC\\:",
             replacement = "",

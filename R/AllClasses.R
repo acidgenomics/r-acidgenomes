@@ -600,7 +600,7 @@ setValidity(
 #' Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2025-03-24.
 #'
 #' @return `Hgnc`.
 setClass(
@@ -659,7 +659,7 @@ setValidity(
                 "pubmedId" = "CompressedCharacterList",
                 "refseqAccession" = "CompressedCharacterList",
                 "rgdId" = "CompressedCharacterList",
-                "rnaCentralIds" = "logical",
+                "rnaCentralId" = "logical",
                 "snornabase" = "character",
                 "status" = "character",
                 "ucscId" = "character",
