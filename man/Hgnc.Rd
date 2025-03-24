@@ -24,6 +24,7 @@ print(object)
 \seealso{
 \itemize{
 \item https://www.genenames.org/
+\item https://www.genenames.org/download/
 \item https://www.genenames.org/download/archive/
 \item https://www.genenames.org/download/statistics-and-files/
 }

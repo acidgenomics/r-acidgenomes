@@ -11,5 +11,5 @@
 Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
 }
 \note{
-Updated 2023-11-22.
+Updated 2025-03-24.
 }
