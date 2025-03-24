@@ -1,6 +1,6 @@
 #' Make genomic ranges (`GRanges`) from TxDb object
 #'
-#' @note Updated 2023-07-31.
+#' @note Updated 2025-03-24.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -25,7 +25,7 @@
     function(object,
              level = c("transcripts", "genes", "exons", "cds"),
              ignoreVersion = FALSE,
-             extraMcols = TRUE) {
+             extraMcols = FALSE) {
         assert(
             requireNamespaces("AnnotationDbi"),
             is(object, "TxDb"),
