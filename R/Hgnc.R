@@ -8,6 +8,7 @@
 #'
 #' @seealso
 #' - https://www.genenames.org/
+#' - https://www.genenames.org/download/
 #' - https://www.genenames.org/download/archive/
 #' - https://www.genenames.org/download/statistics-and-files/
 #'
