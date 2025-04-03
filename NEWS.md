@@ -1,5 +1,14 @@
 # Release notes
 
+## AcidGenomes 0.7.4 (2025-04-03)
+
+Minor changes:
+
+- `makeGRangesFromEnsembl`: Fix for `extraMcols = TRUE` mode failure for
+  **Homo sapiens** when a release, such as Ensembl 112 contains MySQL core
+  files for both GRCh38 (`"homo_sapiens_core_112_38"`) and GRCh37
+  (`"homo_sapiens_core_112_37"`).
+
 ## AcidGenomes 0.7.3 (2025-03-25)
 
 Minor changes:
