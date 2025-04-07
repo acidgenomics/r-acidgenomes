@@ -1,5 +1,14 @@
 # Release notes
 
+## AcidGenomes 0.7.5 (2025-04-07)
+
+Minor changes:
+
+- `mapGeneNamesToEnsembl`, `mapGeneNamesToHgnc`, `mapGeneNamesToNcbi`:
+  Improved error messages on mapping failure.
+- `mapGeneNamesToHgnc`: Improved handling for **Homo sapiens** when
+  `genomeBuild` and `release` arguments are defined.
+
 ## AcidGenomes 0.7.4 (2025-04-03)
 
 Minor changes:
