@@ -62,6 +62,7 @@ mapGeneNamesToEnsembl <-
             ids <- mapGeneNamesToNcbi(genes = genes, organism = organism)
         }
         idx <- match(x = ids, table = map[[1L]])
+        ## FIXME Need to improve the error message here to include which genes failed.
         assert(!anyNA(idx), msg = "Failed to map all genes.")
         out <- map[idx, 2L, drop = TRUE]
         out
