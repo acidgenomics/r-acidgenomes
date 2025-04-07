@@ -48,18 +48,18 @@ mapGeneNamesToEnsembl <-
         } else {
             useHgnc <- FALSE
         }
-        if (is.null(genomeBuild)) {
-            genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
-        }
-        if (is.null(release)) {
-            release <- currentEnsemblVersion()
-        }
         if (isTRUE(useHgnc)) {
             hgnc <- Hgnc()
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
         } else {
+            if (is.null(genomeBuild)) {
+                genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
+            }
+            if (is.null(release)) {
+                release <- currentEnsemblVersion()
+            }
             map <- .importEnsemblNcbiMap(
                 organism = organism,
                 genomeBuild = genomeBuild,
