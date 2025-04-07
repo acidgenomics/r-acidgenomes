@@ -32,7 +32,7 @@ Internally matches using \code{mapGenesToNCBI} first, so we can support
 gene synonym matching.
 }
 \note{
-Updated 2023-04-14.
+Updated 2025-04-07.
 }
 \examples{
 ## Homo sapiens.

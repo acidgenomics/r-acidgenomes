@@ -1,7 +1,7 @@
 #' Map gene names to Ensembl
 #'
 #' @export
-#' @note Updated 2023-04-14.
+#' @note Updated 2025-04-07.
 #'
 #' @details Internally matches using `mapGenesToNCBI` first, so we can support
 #' gene synonym matching.
@@ -40,13 +40,21 @@ mapGeneNamesToEnsembl <-
             isString(genomeBuild, nullOk = TRUE),
             isInt(release, nullOk = TRUE)
         )
+        if (
+            identical(organism, "Homo sapiens") &&
+            is.null(genomeBuild) && is.null(release)
+        ) {
+            useHgnc <- TRUE
+        } else {
+            useHgnc <- FALSE
+        }
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
         }
         if (is.null(release)) {
             release <- currentEnsemblVersion()
         }
-        if (identical(organism, "Homo sapiens")) {
+        if (isTRUE(useHgnc)) {
             hgnc <- Hgnc()
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
@@ -60,7 +68,12 @@ mapGeneNamesToEnsembl <-
             ids <- mapGeneNamesToNcbi(genes = genes, organism = organism)
         }
         idx <- match(x = ids, table = map[[1L]])
-        assert(!anyNA(idx), msg = "Failed to map all genes.")
+        if (anyNA(idx)) {
+            abort(sprintf(
+                "Mapping failure: %s.",
+                toInlineString(genes[is.na(idx)])
+            ))
+        }
         out <- map[idx, 2L, drop = TRUE]
         out
     }
