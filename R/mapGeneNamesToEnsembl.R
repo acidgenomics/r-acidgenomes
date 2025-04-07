@@ -46,6 +46,8 @@ mapGeneNamesToEnsembl <-
         if (is.null(release)) {
             release <- currentEnsemblVersion()
         }
+        ## FIXME Only attempt this if we're using current genome build and release,
+        ## otherwise need to fall back to legacy Ensembl-NCBI map approach.
         if (identical(organism, "Homo sapiens")) {
             hgnc <- Hgnc()
             map <- as(hgnc, "DFrame")
