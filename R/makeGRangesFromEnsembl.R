@@ -64,7 +64,7 @@
 #' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
 #'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2024-01-02.
+#' @note Updated 2025-04-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -114,7 +114,7 @@ makeGRangesFromEnsembl <-
              genomeBuild = NULL,
              release = NULL,
              ignoreVersion = FALSE,
-             extraMcols = TRUE) {
+             extraMcols = FALSE) {
         assert(
             isFlag(ignoreVersion),
             isFlag(extraMcols)
@@ -155,7 +155,7 @@ makeGRangesFromEnsDb <-
     function(object,
              level = c("genes", "transcripts", "exons"),
              ignoreVersion = FALSE,
-             extraMcols = TRUE) {
+             extraMcols = FALSE) {
         assert(
             requireNamespaces("ensembldb"),
             isFlag(ignoreVersion),

@@ -1,7 +1,7 @@
 #' Map gene names to NCBI
 #'
 #' @export
-#' @note Updated 2023-03-03.
+#' @note Updated 2025-04-07.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams NcbiGeneInfo
@@ -45,7 +45,12 @@ mapGeneNamesToNcbi <-
         table <- as(ncbi, "DFrame")
         table <- table[, c("geneName", "geneSynonyms")]
         idx <- matchNested(x = genes, table = table)
-        assert(!anyNA(idx), msg = "Failed to map all genes.")
+        if (anyNA(idx)) {
+            abort(sprintf(
+                "Mapping failure: %s.",
+                toInlineString(genes[is.na(idx)])
+            ))
+        }
         out <- ncbi[idx, "geneId", drop = TRUE]
         out <- decode(out)
         out

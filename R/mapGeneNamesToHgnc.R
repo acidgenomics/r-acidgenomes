@@ -1,7 +1,7 @@
 #' Map gene names (symbols) to HGNC identifiers
 #'
 #' @export
-#' @note Updated 2023-11-21.
+#' @note Updated 2025-04-07.
 #'
 #' @param genes `character`.
 #' Human gene names (e.g. `"TUT4"`).
@@ -29,7 +29,12 @@ mapGeneNamesToHgnc <- function(genes, hgnc = NULL) {
     table <- as(hgnc, "DFrame")
     table <- table[, c("geneName", "prevSymbol", "aliasSymbol")]
     idx <- matchNested(x = genes, table = table)
-    assert(!anyNA(idx), msg = "Failed to map all genes.")
+    if (anyNA(idx)) {
+        abort(sprintf(
+            "Mapping failure: %s.",
+            toInlineString(genes[is.na(idx)])
+        ))
+    }
     out <- hgnc[idx, "hgncId", drop = TRUE]
     out
 }

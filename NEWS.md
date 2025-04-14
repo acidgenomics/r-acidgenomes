@@ -1,6 +1,30 @@
 # Release notes
 
-## AcidGenoems 0.7.2 (2023-12-06)
+## AcidGenomes 0.7.5 (2025-04-07)
+
+Minor changes:
+
+- `mapGeneNamesToEnsembl`, `mapGeneNamesToHgnc`, `mapGeneNamesToNcbi`:
+  Improved error messages on mapping failure.
+- `mapGeneNamesToHgnc`: Improved handling for **Homo sapiens** when
+  `genomeBuild` and `release` arguments are defined.
+
+## AcidGenomes 0.7.4 (2025-04-03)
+
+Minor changes:
+
+- `makeGRangesFromEnsembl`: Fix for `extraMcols = TRUE` mode failure for
+  **Homo sapiens** when a release, such as Ensembl 112 contains MySQL core
+  files for both GRCh38 (`"homo_sapiens_core_112_38"`) and GRCh37
+  (`"homo_sapiens_core_112_37"`).
+
+## AcidGenomes 0.7.3 (2025-03-25)
+
+Minor changes:
+
+- Relaxed R dependency from 4.3 to 4.0 for backwards compatibility.
+
+## AcidGenomes 0.7.2 (2023-12-06)
 
 Minor changes:
 
