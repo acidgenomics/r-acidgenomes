@@ -4,7 +4,13 @@
 \alias{mapGeneNamesToEnsembl}
 \title{Map gene names to Ensembl}
 \usage{
-mapGeneNamesToEnsembl(genes, organism, hgnc = NULL, ncbi = NULL)
+mapGeneNamesToEnsembl(
+  genes,
+  organism,
+  ignoreCase = FALSE,
+  hgnc = NULL,
+  ncbi = NULL
+)
 }
 \arguments{
 \item{genes}{Gene names (e.g. \code{"TUT4"}).}
