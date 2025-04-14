@@ -30,9 +30,16 @@ mapGeneNamesToHgnc <- function(genes, hgnc = NULL) {
     table <- table[, c("geneName", "prevSymbol", "aliasSymbol")]
     idx <- matchNested(x = genes, table = table)
     if (anyNA(idx)) {
+        fail <- genes[is.na(idx)]
         abort(sprintf(
-            "Mapping failure: %s.",
-            toInlineString(x = genes[is.na(idx)], n = 20L)
+            "%d mapping %s: %s.",
+            length(fail),
+            ngettext(
+                n = length(fail),
+                msg1 = "failure",
+                msg2 = "failures"
+            ),
+            toInlineString(x = fail, n = 20L)
         ))
     }
     out <- hgnc[idx, "hgncId", drop = TRUE]
