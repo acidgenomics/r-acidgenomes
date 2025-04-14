@@ -44,14 +44,19 @@ mapGeneNamesToEnsembl <-
             is(ncbi, "NcbiGeneInfo") || is.null(ncbi),
             is(hgnc, "Hgnc") || is.null(hgnc)
         )
+        ## Default to HGNC over NCBI for Homo sapiens.
+        if (
+            identical(organism, "Homo sapiens") &&
+            is.null(hgnc) &&
+            is.null(ncbi)
+        ) {
+            hgnc <- Hgnc()
+        }
         if (is(hgnc, "Hgnc")) {
             assert(
                 identical(organism, "Homo sapiens"),
                 is.null(ncbi)
             )
-            if (is.null(hgnc)) {
-                hgnc <- Hgnc()
-            }
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
