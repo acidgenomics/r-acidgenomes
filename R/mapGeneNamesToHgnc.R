@@ -27,15 +27,16 @@ mapGeneNamesToHgnc <- function(genes, hgnc = NULL) {
         )
     )
     table <- as(hgnc, "DFrame")
-    ## Enable case-insensitive matching, which handles some edge cases like
-    ## "HDGFRP3" incorrectly being labeled as "Hdgfrp3".
+    ## Enable case-insensitive matching.
+    table[["geneName2"]] <- toupper(table[["geneName"]])
     table[["prevSymbol2"]] <- toupper(table[["prevSymbol"]])
     table[["aliasSymbol2"]] <- toupper(table[["aliasSymbol"]])
     cols <- c(
         "geneName",
         "prevSymbol",
-        "prevSymbol2",
         "aliasSymbol",
+        "geneName2",
+        "prevSymbol2",
         "aliasSymbol2"
     )
     table <- table[, cols]
