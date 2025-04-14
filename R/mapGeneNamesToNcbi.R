@@ -43,9 +43,15 @@ mapGeneNamesToNcbi <-
             identical(organism, metadata(ncbi)[["organism"]])
         )
         table <- as(ncbi, "DFrame")
-        ## Enable case-insensitive matching against synonyms.
+        ## Enable case-insensitive matching.
+        table[["geneName2"]] <- toupper(table[["geneName"]])
         table[["geneSynonyms2"]] <- toupper(table[["geneSynonyms"]])
-        cols <- c("geneName", "geneSynonyms", "geneSynonyms2")
+        cols <- c(
+            "geneName",
+            "geneSynonyms",
+            "geneName2",
+            "geneSynonyms2"
+        )
         table <- table[, cols]
         idx <- matchNested(x = genes, table = table)
         if (anyNA(idx)) {
