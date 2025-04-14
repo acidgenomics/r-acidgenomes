@@ -4,7 +4,13 @@
 \alias{mapGeneNamesToNcbi}
 \title{Map gene names to NCBI}
 \usage{
-mapGeneNamesToNcbi(genes, organism, taxonomicGroup = NULL, ncbi = NULL)
+mapGeneNamesToNcbi(
+  genes,
+  organism,
+  taxonomicGroup = NULL,
+  ignoreCase = FALSE,
+  ncbi = NULL
+)
 }
 \arguments{
 \item{genes}{\code{character}.
@@ -16,6 +22,9 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 \item{taxonomicGroup}{\code{character(1)}.
 NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 Defining this manually avoids having to query the FTP server.}
+
+\item{ignoreCase}{\code{logical(1)}.
+Perform case-insensitive matching.}
 
 \item{ncbi}{\code{NcbiGeneIfo} or \code{NULL}.
 If \code{NULL}, NCBI annotations will be downloaded automatically.}
