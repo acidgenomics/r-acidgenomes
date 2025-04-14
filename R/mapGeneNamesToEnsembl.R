@@ -1,15 +1,19 @@
 #' Map gene names to Ensembl
 #'
 #' @export
-#' @note Updated 2024-08-14.
+#' @note Updated 2025-04-14.
 #'
-#' @details Internally matches using `mapGeneNamesToNcbi` first, so we can support
-#' gene synonym matching.
+#' @details Internally matches using `mapGeneNamesToNcbi` first, so we can
+#' support gene synonym matching.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
 #' @param genes
 #' Gene names (e.g. `"TUT4"`).
+#' @param useHgnc `logical(1)`.
+#' Supported for *Homo sapiens* genome only without `genomeBuild` or `release`
+#' defined. Overrides default behavior of mapping internally with
+#' `mapGeneNamesToNcbi` to use `mapGeneNamesToHgnc` instead.
 #'
 #' @examples
 #' ## Homo sapiens.
@@ -33,27 +37,32 @@ mapGeneNamesToEnsembl <-
     function(genes,
              organism,
              genomeBuild = NULL,
-             release = NULL) {
+             release = NULL,
+             useHgnc = FALSE) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
-            isInt(release, nullOk = TRUE)
+            isInt(release, nullOk = TRUE),
+            isFlag(useHgnc)
         )
-        if (is.null(genomeBuild)) {
-            genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
-        }
-        if (is.null(release)) {
-            release <- currentEnsemblVersion()
-        }
-        ## FIXME Only attempt this if we're using current genome build and release,
-        ## otherwise need to fall back to legacy Ensembl-NCBI map approach.
-        if (identical(organism, "Homo sapiens")) {
+        if (isTRUE(useHgnc)) {
+            assert(
+                identical(organism, "Homo sapiens"),
+                is.null(genomeBuild),
+                is.null(release)
+            )
             hgnc <- Hgnc()
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
         } else {
+            if (is.null(genomeBuild)) {
+                genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
+            }
+            if (is.null(release)) {
+                release <- currentEnsemblVersion()
+            }
             map <- .importEnsemblNcbiMap(
                 organism = organism,
                 genomeBuild = genomeBuild,
@@ -62,8 +71,12 @@ mapGeneNamesToEnsembl <-
             ids <- mapGeneNamesToNcbi(genes = genes, organism = organism)
         }
         idx <- match(x = ids, table = map[[1L]])
-        ## FIXME Need to improve the error message here to include which genes failed.
-        assert(!anyNA(idx), msg = "Failed to map all genes.")
+        if (anyNA(idx)) {
+            abort(sprintf(
+                "Mapping failure: %s.",
+                toInlineString(genes[is.na(idx)])
+            ))
+        }
         out <- map[idx, 2L, drop = TRUE]
         out
     }

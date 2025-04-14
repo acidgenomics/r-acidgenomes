@@ -5,7 +5,8 @@ test_that("Homo sapiens : genes", {
         organism = "Homo sapiens",
         level = "genes",
         release = 110L,
-        ignoreVersion = FALSE
+        ignoreVersion = FALSE,
+        extraMcols = TRUE
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_identical(
@@ -100,7 +101,8 @@ test_that("Homo sapiens : transcripts", {
         organism = "Homo sapiens",
         level = "transcripts",
         release = 110L,
-        ignoreVersion = FALSE
+        ignoreVersion = FALSE,
+        extraMcols = TRUE
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(

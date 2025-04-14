@@ -11,14 +11,14 @@ makeGRangesFromEnsembl(
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = FALSE,
-  extraMcols = TRUE
+  extraMcols = FALSE
 )
 
 makeGRangesFromEnsDb(
   object,
   level = c("genes", "transcripts", "exons"),
   ignoreVersion = FALSE,
-  extraMcols = TRUE
+  extraMcols = FALSE
 )
 }
 \arguments{
@@ -86,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2024-01-02.
+Updated 2025-04-12.
 }
 \section{Broad class definitions}{
 

@@ -122,6 +122,15 @@
             url = pasteUrl(ftpBaseUrl, "mysql"),
             pattern = snakeCase(paste(organism, "core", release))
         )
+        ## Resolve GRCh38 vs. GRCh37 for Homo sapiens, if necessary.
+        if (!isString(mysqlSubdir) && organism == "Homo sapiens") {
+            suffix <- sub(pattern = "GRCh", replacement = "", x = genomeBuild)
+            mysqlSubdir <- grep(
+                pattern = paste0("_", suffix, "$"),
+                x = mysqlSubdir,
+                value = TRUE
+            )
+        }
         assert(isString(mysqlSubdir))
         url <- pasteUrl(ftpBaseUrl, "mysql", mysqlSubdir, "gene.txt.gz")
         gene <- tryCatch(

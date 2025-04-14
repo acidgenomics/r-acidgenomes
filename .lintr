@@ -26,7 +26,6 @@ linters: linters_with_defaults(
     expect_s3_class_linter(),
     expect_s4_class_linter(),
     expect_true_false_linter(),
-    extraction_operator_linter(),
     function_left_parentheses_linter(),
     ifelse_censor_linter(),
     implicit_integer_linter(),

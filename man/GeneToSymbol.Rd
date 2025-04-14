@@ -77,6 +77,3 @@ print(x)
 object <- GRanges
 x <- GeneToSymbol(object)
 }
-\seealso{
-\code{\link[=makeGeneToSymbol]{makeGeneToSymbol()}}.
-}
