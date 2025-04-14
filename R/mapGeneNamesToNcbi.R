@@ -5,6 +5,7 @@
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams NcbiGeneInfo
+#' @inheritParams params
 #'
 #' @param genes `character`.
 #' Gene names (e.g. `"TUT4"`).
@@ -30,6 +31,7 @@ mapGeneNamesToNcbi <-
     function(genes,
              organism,
              taxonomicGroup = NULL,
+             ignoreCase = FALSE,
              ncbi = NULL) {
         if (is.null(ncbi)) {
             ncbi <- NcbiGeneInfo(
@@ -39,20 +41,19 @@ mapGeneNamesToNcbi <-
         }
         assert(
             isCharacter(genes),
+            isFlag(ignoreCase),
             is(ncbi, "NcbiGeneInfo"),
             identical(organism, metadata(ncbi)[["organism"]])
         )
         table <- as(ncbi, "DFrame")
-        ## Enable case-insensitive matching.
-        table[["geneName2"]] <- toupper(table[["geneName"]])
-        table[["geneSynonyms2"]] <- toupper(table[["geneSynonyms"]])
-        cols <- c(
-            "geneName",
-            "geneSynonyms",
-            "geneName2",
-            "geneSynonyms2"
-        )
+        cols <- c("geneName", "geneSynonyms")
         table <- table[, cols]
+        if (isTRUE(ignoreCase)) {
+            genes <- toupper(genes)
+            for (col in cols) {
+                table[[col]] <- toupper(table[[col]])
+            }
+        }
         idx <- matchNested(x = genes, table = table)
         if (anyNA(idx)) {
             fail <- genes[is.na(idx)]

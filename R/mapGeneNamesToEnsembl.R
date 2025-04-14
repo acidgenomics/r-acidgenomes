@@ -36,11 +36,13 @@
 mapGeneNamesToEnsembl <-
     function(genes,
              organism,
+             ignoreCase = FALSE,
              hgnc = NULL,
              ncbi = NULL) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
+            isFlag(ignoreCase),
             is(ncbi, "NcbiGeneInfo") || is.null(ncbi),
             is(hgnc, "Hgnc") || is.null(hgnc)
         )
@@ -59,7 +61,11 @@ mapGeneNamesToEnsembl <-
             )
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
-            ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
+            ids <- mapGeneNamesToHgnc(
+                genes = genes,
+                ignoreCase = ignoreCase,
+                hgnc = hgnc
+            )
         } else {
             genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
             release <- currentEnsemblVersion()
@@ -71,6 +77,7 @@ mapGeneNamesToEnsembl <-
             ids <- mapGeneNamesToNcbi(
                 genes = genes,
                 organism = organism,
+                ignoreCase = ignoreCase,
                 ncbi = ncbi
             )
         }

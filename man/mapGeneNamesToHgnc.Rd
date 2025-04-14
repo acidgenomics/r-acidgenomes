@@ -4,11 +4,14 @@
 \alias{mapGeneNamesToHgnc}
 \title{Map gene names (symbols) to HGNC identifiers}
 \usage{
-mapGeneNamesToHgnc(genes, hgnc = NULL)
+mapGeneNamesToHgnc(genes, ignoreCase = FALSE, hgnc = NULL)
 }
 \arguments{
 \item{genes}{\code{character}.
 Human gene names (e.g. \code{"TUT4"}).}
+
+\item{ignoreCase}{\code{logical(1)}.
+Perform case-insensitive matching.}
 
 \item{hgnc}{\code{Hgnc} or \code{NULL}.
 If \code{NULL}, HGNC annotations will be downloaded automatically.}
