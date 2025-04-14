@@ -9,7 +9,7 @@ mapGeneNamesToEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  useHgnc = FALSE
+  useHgnc = TRUE
 )
 }
 \arguments{
@@ -33,7 +33,9 @@ ensembldb in use.}
 \item{useHgnc}{\code{logical(1)}.
 Supported for \emph{Homo sapiens} genome only without \code{genomeBuild} or \code{release}
 defined. Overrides default behavior of mapping internally with
-\code{mapGeneNamesToNcbi} to use \code{mapGeneNamesToHgnc} instead.}
+\code{mapGeneNamesToNcbi} to use \code{mapGeneNamesToHgnc} instead. We have found that
+this is more performant and covers more gene symbols, but it doesn't support
+genome build and release pinning.}
 }
 \description{
 Map gene names to Ensembl
