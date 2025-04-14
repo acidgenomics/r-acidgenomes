@@ -9,7 +9,7 @@ mapGeneNamesToEnsembl(
   organism,
   genomeBuild = NULL,
   release = NULL,
-  useHgnc = TRUE
+  useHgnc = FALSE
 )
 }
 \arguments{
