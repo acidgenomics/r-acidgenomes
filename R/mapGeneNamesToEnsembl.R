@@ -40,7 +40,7 @@ mapGeneNamesToEnsembl <-
              organism,
              genomeBuild = NULL,
              release = NULL,
-             useHgnc = TRUE) {
+             useHgnc = FALSE) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
