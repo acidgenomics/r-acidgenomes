@@ -4,7 +4,13 @@
 \alias{mapGeneNamesToEnsembl}
 \title{Map gene names to Ensembl}
 \usage{
-mapGeneNamesToEnsembl(genes, organism, genomeBuild = NULL, release = NULL)
+mapGeneNamesToEnsembl(
+  genes,
+  organism,
+  genomeBuild = NULL,
+  release = NULL,
+  useHgnc = FALSE
+)
 }
 \arguments{
 \item{genes}{Gene names (e.g. \code{"TUT4"}).}
@@ -23,16 +29,21 @@ possible, for improved reproducibility. When left unset, the latest release
 available via AnnotationHub/ensembldb is used. Note that the latest version
 available can vary, depending on the versions of AnnotationHub and
 ensembldb in use.}
+
+\item{useHgnc}{\code{logical(1)}.
+Supported for \emph{Homo sapiens} genome only without \code{genomeBuild} or \code{release}
+defined. Overrides default behavior of mapping internally with
+\code{mapGeneNamesToNcbi} to use \code{mapGeneNamesToHgnc} instead.}
 }
 \description{
 Map gene names to Ensembl
 }
 \details{
-Internally matches using \code{mapGenesToNCBI} first, so we can support
-gene synonym matching.
+Internally matches using \code{mapGeneNamesToNcbi} first, so we can
+support gene synonym matching.
 }
 \note{
-Updated 2023-04-14.
+Updated 2025-04-14.
 }
 \examples{
 ## Homo sapiens.

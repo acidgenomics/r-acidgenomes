@@ -15,7 +15,7 @@ Import Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC)
 metadata
 }
 \note{
-Updated 2023-11-21.
+Updated 2025-03-24.
 }
 \examples{
 object <- Hgnc()
@@ -24,6 +24,8 @@ print(object)
 \seealso{
 \itemize{
 \item https://www.genenames.org/
+\item https://www.genenames.org/download/
+\item https://www.genenames.org/download/archive/
 \item https://www.genenames.org/download/statistics-and-files/
 }
 }

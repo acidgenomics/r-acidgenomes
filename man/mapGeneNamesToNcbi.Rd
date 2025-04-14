@@ -24,7 +24,7 @@ If \code{NULL}, NCBI annotations will be downloaded automatically.}
 Map gene names to NCBI
 }
 \note{
-Updated 2023-03-03.
+Updated 2025-04-07.
 }
 \examples{
 ## Homo sapiens.

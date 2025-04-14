@@ -2,7 +2,7 @@ Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
 Version: 0.8.0.9000
-Date: 2024-03-27
+Date: 2025-04-12
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -20,40 +20,40 @@ URL:
 BugReports: https://github.com/acidgenomics/r-acidgenomes/issues/
 License: AGPL-3
 Encoding: UTF-8
-Depends: R (>= 4.3)
+Depends: R (>= 4.0)
 Imports:
-    AcidBase (>= 0.7.3),
-    AcidCLI (>= 0.3.0),
-    AcidGenerics (>= 0.7.7),
-    AcidPlyr (>= 0.5.3),
-    BiocGenerics (>= 0.48.0),
-    GenomeInfoDb (>= 1.38.0),
-    GenomicRanges (>= 1.54.0),
-    IRanges (>= 2.36.0),
-    S4Vectors (>= 0.40.0),
-    goalie (>= 0.7.7),
-    pipette (>= 0.15.2),
-    syntactic (>= 0.7.1),
+    AcidBase,
+    AcidCLI,
+    AcidGenerics,
+    AcidPlyr,
+    BiocGenerics,
+    GenomeInfoDb,
+    GenomicRanges,
+    IRanges,
+    S4Vectors,
+    goalie,
     methods,
     parallel,
+    pipette,
+    syntactic,
     utils
 Suggests:
-    AcidDevTools (>= 0.7.4),
-    AcidTest (>= 0.9.0),
-    AnnotationDbi (>= 1.64.0),
-    AnnotationHub (>= 3.10.0),
-    BiocFileCache (>= 2.10.0),
-    GeneSummary (>= 0.99.0),
-    GenomicFeatures (>= 1.54.0),
-    RCurl (>= 1.98),
-    biomaRt (>= 2.58.0),
-    ensembldb (>= 2.26.0),
-    rvest (>= 1.0.3),
-    testthat (>= 3.2.1),
-    withr (>= 2.5.2)
+    AcidDevTools,
+    AcidTest,
+    AnnotationDbi,
+    AnnotationHub,
+    BiocFileCache,
+    EnsDb.Hsapiens.v75,
+    GenomicFeatures,
+    RCurl,
+    biomaRt,
+    ensembldb,
+    rvest,
+    testthat,
+    withr
 Additional_repositories: https://r.acidgenomics.com
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 biocViews: Infrastructure
