@@ -4,13 +4,7 @@
 \alias{mapGeneNamesToEnsembl}
 \title{Map gene names to Ensembl}
 \usage{
-mapGeneNamesToEnsembl(
-  genes,
-  organism,
-  genomeBuild = NULL,
-  release = NULL,
-  useHgnc = FALSE
-)
+mapGeneNamesToEnsembl(genes, organism, hgnc = NULL, ncbi = NULL)
 }
 \arguments{
 \item{genes}{Gene names (e.g. \code{"TUT4"}).}
@@ -18,31 +12,20 @@ mapGeneNamesToEnsembl(
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
-\item{genomeBuild}{\code{character(1)}.
-Ensembl genome build assembly name (e.g. \code{"GRCh38"}). If set \code{NULL},
-defaults to the most recent build available.
-\emph{Note:} don't pass in UCSC build IDs (e.g. \code{"hg38"}).}
+\item{hgnc}{\code{Hgnc} object.
+Supported for \emph{Homo sapiens} genome only. Snapshot of HGNC annotations.
+When defined, overrides default behavior of mapping internally with
+\code{mapGeneNamesToNcbi} to favor \code{mapGeneNamesToHgnc} instead.}
 
-\item{release}{\code{integer(1)}.
-Ensembl release version (e.g. \code{100}). We recommend setting this value if
-possible, for improved reproducibility. When left unset, the latest release
-available via AnnotationHub/ensembldb is used. Note that the latest version
-available can vary, depending on the versions of AnnotationHub and
-ensembldb in use.}
-
-\item{useHgnc}{\code{logical(1)}.
-Supported for \emph{Homo sapiens} genome only without \code{genomeBuild} or \code{release}
-defined. Overrides default behavior of mapping internally with
-\code{mapGeneNamesToNcbi} to use \code{mapGeneNamesToHgnc} instead. We have found that
-this is more performant and covers more gene symbols, but it doesn't support
-genome build and release pinning.}
+\item{ncbi}{\code{NcbiGeneInfo} object.
+Snapshot of NCBI annotations. Passes to \code{mapGeneNamesToNcbi} internally.}
 }
 \description{
 Map gene names to Ensembl
 }
 \details{
-Internally matches using \code{mapGeneNamesToNcbi} first, so we can
-support gene synonym matching.
+Internally matches using \code{mapGeneNamesToNcbi}, so we can support
+gene synonym matching.
 }
 \note{
 Updated 2025-04-14.
@@ -51,18 +34,14 @@ Updated 2025-04-14.
 ## Homo sapiens.
 x <- mapGeneNamesToEnsembl(
     genes = c("TUT4", "ZCCHC11", "TENT3A"),
-    organism = "Homo sapiens",
-    genomeBuild = "GRCh38",
-    release = 109L
+    organism = "Homo sapiens"
 )
 print(x)
 
 ## Mus musculus
 x <- mapGeneNamesToEnsembl(
     genes = c("Nfe2l2", "Nrf2"),
-    organism = "Mus musculus",
-    genomeBuild = "GRCm39",
-    release = 109L
+    organism = "Mus musculus"
 )
 print(x)
 }

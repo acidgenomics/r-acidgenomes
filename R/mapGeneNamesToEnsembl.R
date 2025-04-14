@@ -3,74 +3,71 @@
 #' @export
 #' @note Updated 2025-04-14.
 #'
-#' @details Internally matches using `mapGeneNamesToNcbi` first, so we can
-#' support gene synonym matching.
+#' @details Internally matches using `mapGeneNamesToNcbi`, so we can support
+#' gene synonym matching.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
 #' @param genes
 #' Gene names (e.g. `"TUT4"`).
-#' @param useHgnc `logical(1)`.
-#' Supported for *Homo sapiens* genome only without `genomeBuild` or `release`
-#' defined. Overrides default behavior of mapping internally with
-#' `mapGeneNamesToNcbi` to use `mapGeneNamesToHgnc` instead. We have found that
-#' this is more performant and covers more gene symbols, but it doesn't support
-#' genome build and release pinning.
+#'
+#' @param hgnc `Hgnc` object.
+#' Supported for *Homo sapiens* genome only. Snapshot of HGNC annotations.
+#' When defined, overrides default behavior of mapping internally with
+#' `mapGeneNamesToNcbi` to favor `mapGeneNamesToHgnc` instead.
+#'
+#' @param ncbi `NcbiGeneInfo` object.
+#' Snapshot of NCBI annotations. Passes to `mapGeneNamesToNcbi` internally.
 #'
 #' @examples
 #' ## Homo sapiens.
 #' x <- mapGeneNamesToEnsembl(
 #'     genes = c("TUT4", "ZCCHC11", "TENT3A"),
-#'     organism = "Homo sapiens",
-#'     genomeBuild = "GRCh38",
-#'     release = 109L
+#'     organism = "Homo sapiens"
 #' )
 #' print(x)
 #'
 #' ## Mus musculus
 #' x <- mapGeneNamesToEnsembl(
 #'     genes = c("Nfe2l2", "Nrf2"),
-#'     organism = "Mus musculus",
-#'     genomeBuild = "GRCm39",
-#'     release = 109L
+#'     organism = "Mus musculus"
 #' )
 #' print(x)
 mapGeneNamesToEnsembl <-
     function(genes,
              organism,
-             genomeBuild = NULL,
-             release = NULL,
-             useHgnc = FALSE) {
+             hgnc = NULL,
+             ncbi = NULL) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
-            isString(genomeBuild, nullOk = TRUE),
-            isInt(release, nullOk = TRUE),
-            isFlag(useHgnc)
+            is(ncbi, "NcbiGeneInfo") || is.null(ncbi),
+            is(hgnc, "Hgnc") || is.null(hgnc)
         )
-        if (isTRUE(useHgnc)) {
+        if (is(hgnc, "Hgnc")) {
             assert(
                 identical(organism, "Homo sapiens"),
-                is.null(genomeBuild),
-                is.null(release)
+                is.null(ncbi)
             )
-            hgnc <- Hgnc()
+            if (is.null(hgnc)) {
+                hgnc <- Hgnc()
+            }
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHgnc(genes = genes, hgnc = hgnc)
         } else {
-            if (is.null(genomeBuild)) {
-                genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
-            }
-            if (is.null(release)) {
-                release <- currentEnsemblVersion()
-            }
+            genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
+            release <- currentEnsemblVersion()
             map <- .importEnsemblNcbiMap(
                 organism = organism,
                 genomeBuild = genomeBuild,
                 release = release
             )
-            ids <- mapGeneNamesToNcbi(genes = genes, organism = organism)
+            ids <- mapGeneNamesToNcbi(
+                genes = genes,
+                organism = organism,
+                ncbi = ncbi
+            )
         }
         idx <- match(x = ids, table = map[[1L]])
         if (anyNA(idx)) {
