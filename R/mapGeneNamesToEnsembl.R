@@ -13,7 +13,9 @@
 #' @param useHgnc `logical(1)`.
 #' Supported for *Homo sapiens* genome only without `genomeBuild` or `release`
 #' defined. Overrides default behavior of mapping internally with
-#' `mapGeneNamesToNcbi` to use `mapGeneNamesToHgnc` instead.
+#' `mapGeneNamesToNcbi` to use `mapGeneNamesToHgnc` instead. We have found that
+#' this is more performant and covers more gene symbols, but it doesn't support
+#' genome build and release pinning.
 #'
 #' @examples
 #' ## Homo sapiens.
@@ -38,7 +40,7 @@ mapGeneNamesToEnsembl <-
              organism,
              genomeBuild = NULL,
              release = NULL,
-             useHgnc = FALSE) {
+             useHgnc = TRUE) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
@@ -72,9 +74,16 @@ mapGeneNamesToEnsembl <-
         }
         idx <- match(x = ids, table = map[[1L]])
         if (anyNA(idx)) {
+            fail <- genes[is.na(idx)]
             abort(sprintf(
-                "Mapping failure: %s.",
-                toInlineString(x = genes[is.na(idx)], n = 20L)
+                "%d mapping %s: %s.",
+                length(fail),
+                ngettext(
+                    n = length(fail),
+                    msg1 = "failure",
+                    msg2 = "failures"
+                ),
+                toInlineString(x = fail, n = 20L)
             ))
         }
         out <- map[idx, 2L, drop = TRUE]
