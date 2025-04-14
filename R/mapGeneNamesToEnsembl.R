@@ -74,7 +74,7 @@ mapGeneNamesToEnsembl <-
         if (anyNA(idx)) {
             abort(sprintf(
                 "Mapping failure: %s.",
-                toInlineString(genes[is.na(idx)])
+                toInlineString(x = genes[is.na(idx)], n = 20L)
             ))
         }
         out <- map[idx, 2L, drop = TRUE]

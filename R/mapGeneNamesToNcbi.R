@@ -1,7 +1,7 @@
 #' Map gene names to NCBI
 #'
 #' @export
-#' @note Updated 2025-04-07.
+#' @note Updated 2025-04-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams NcbiGeneInfo
@@ -48,7 +48,7 @@ mapGeneNamesToNcbi <-
         if (anyNA(idx)) {
             abort(sprintf(
                 "Mapping failure: %s.",
-                toInlineString(genes[is.na(idx)])
+                toInlineString(x = genes[is.na(idx)], n = 20L)
             ))
         }
         out <- ncbi[idx, "geneId", drop = TRUE]
