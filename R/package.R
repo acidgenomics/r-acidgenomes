@@ -27,7 +27,7 @@ NULL
 #' updateObject
 #' @importFrom GenomeInfoDb genome genome<- seqinfo seqinfo<- seqlevels
 #' seqnames<- seqnames
-#' @importFrom IRanges gsub ranges trim
+#' @importFrom IRanges gsub ranges toupper trim
 #' @importFrom S4Vectors complete.cases decode expand head mcols mcols<-
 #' merge metadata metadata<- na.omit split summary tail
 NULL
