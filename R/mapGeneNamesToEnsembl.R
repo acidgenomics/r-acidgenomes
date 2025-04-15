@@ -1,4 +1,5 @@
 ## FIXME Can use dbXrefs metadata in NcbiGeneInfo object for this task.
+## FIXME Can we add support for mapping from MGI here (Mus musculus)
 
 
 
