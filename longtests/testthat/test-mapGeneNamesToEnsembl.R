@@ -1,8 +1,6 @@
-startsWith <- IRanges::startsWith
-
 hgnc <- Hgnc()
-i <- !is.na(hgnc[["ensemblGeneId"]])
-hgnc <- hgnc[i, ]
+keep <- !is.na(hgnc[["ensemblGeneId"]])
+hgnc <- hgnc[keep, ]
 hgncGeneNames <- unlist(
     x = list(
         hgnc[["geneName"]],
@@ -15,13 +13,16 @@ hgncGeneNames <- unlist(
 hgncGeneNames <- sort(unique(hgncGeneNames))
 
 ncbi <- NcbiGeneInfo(organism = "Homo sapiens")
-i <- any(startsWith(x = ncbi[["dbXrefs"]], prefix = "Ensembl:"))
-## NOTE Consider removing NCBI genes that multi-map to multiple Ensembl IDs.
-ncbi <- ncbi[i, ]
+keep <- any(startsWith(x = ncbi[["dbXrefs"]], prefix = "Ensembl:"))
+ncbi <- ncbi[keep, ]
+dbXrefs <- ncbi[["dbXrefs"]]
+dbXrefs <- dbXrefs[startsWith(x = dbXrefs, prefix = "Ensembl:")]
+keep <- lengths(dbXrefs) == 1L
+ncbi <- ncbi[keep, ]
 ncbiGeneNames <- unlist(
     x = list(
-        ncbi[["geneName"]]
-        ## > unlist(ncbi[["geneSynonyms"]])
+        ncbi[["geneName"]],
+        unlist(ncbi[["geneSynonyms"]])
     ),
     recursive = TRUE,
     use.names = FALSE
@@ -46,38 +47,23 @@ test_that("HGNC gene names", {
     )
 })
 
-## FIXME Rework this to use direct mappings instead.
-## FIXME: "AARS1P1", "AARSD1P1", "ABCA15P", "ABCB10P3"
-## 106480683 to ENSG00000249038
 test_that("NCBI gene names", {
-    out <- mapGeneNamesToEnsembl(
-        genes = ncbiGeneNames,
-        organism = "Homo sapiens",
-        ncbi = ncbi
+    expect_no_error(
+        object = mapGeneNamesToEnsembl(
+            genes = ncbiGeneNames,
+            organism = "Homo sapiens",
+            ncbi = ncbi
+        )
+    )
+    expect_error(
+        object = mapGeneNamesToEnsembl(
+            genes = ncbiGeneNames,
+            organism = "Homo sapiens",
+            hgnc = hgnc
+        ),
+        regexp = "mapping failure"
     )
 })
-
-
-
-
-out <- mapGeneNamesToEnsembl(
-    genes = ncbiGeneNames,
-    organism = "Homo sapiens",
-    hgnc = hgnc
-)
-## ! 176965 mapping failures: "'C-K-RAS",
-## "(FM-3)", "(IV)-44", "(ppGpp)ase",
-## "0610011B16Rik", "0610037N12Rik",
-## "0710008D09Rik", "1-12P", "1-14P", "1-17P",
-## "1-67P", "1-68P", "1-AGPAT 3", "1-AGPAT 6",
-## "1-AGPAT1", "1-AGPAT2", "1-AGPAT4",
-## "10-FTHFDH", "104p", "105A"....
-
-
-
-
-## HGNC Currently has "HDGFRP3" incorrectly labeled as "Hdgfrp3" (note case).
-# ! 1 mapping failure: "HDGFRP3"
 
 test_that("Case sensitivity", {
     expect_identical(
@@ -99,13 +85,3 @@ test_that("Case sensitivity", {
         regexp = "HDGFRP3"
     )
 })
-
-
-
-
-## Works.
-mapGeneNamesToEnsembl(
-    genes = c("HDGFL3", "HDGFRP3"),
-    organism = "Homo sapiens",
-    ncbi = ncbi
-)
