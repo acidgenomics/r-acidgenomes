@@ -61,6 +61,8 @@ mapGeneNamesToEnsembl <-
                 identical(organism, "Homo sapiens"),
                 is.null(ncbi)
             )
+            keep <- !is.na(hgnc[["ensemblGeneId"]])
+            hgnc <- hgnc[keep, ]
             ids <- mapGeneNamesToHgnc(
                 genes = genes,
                 ignoreCase = ignoreCase,
@@ -69,19 +71,25 @@ mapGeneNamesToEnsembl <-
             map <- as(hgnc, "DFrame")
             map <- map[, c("hgncId", "ensemblGeneId")]
         } else {
-            ## FIXME Rework this to extract from "dbXrefs" column instead.
-            stop("FIXME Reworking")
-            map <- .importEnsemblNcbiMap(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                release = release
-            )
+            assert(is.null(hgnc))
+            keep <- any(startsWith(x = ncbi[["dbXrefs"]], prefix = "Ensembl:"))
+            ncbi <- ncbi[keep, ]
+            ensGene <- ncbi[["dbXrefs"]]
+            ensGene <- ensGene[startsWith(x = ensGene, prefix = "Ensembl:")]
+            keep <- lengths(ensGene) == 1L
+            ensGene <- ensGene[keep]
+            ncbi <- ncbi[keep, ]
             ids <- mapGeneNamesToNcbi(
                 genes = genes,
                 organism = organism,
                 ignoreCase = ignoreCase,
                 ncbi = ncbi
             )
+            map <- as(ncbi, "DFrame")
+            ensGene <- sub(pattern = "^Ensembl:", replacement = "", x = ensGene)
+            ensGene <- unlist(ensGene, recursive = FALSE, use.names = FALSE)
+            map[["ensemblGeneId"]] <- ensGene
+            map <- map[, c("geneId", "ensemblGeneId")]
         }
         idx <- match(x = ids, table = map[[1L]])
         if (anyNA(idx)) {
