@@ -1,3 +1,7 @@
+## FIXME Can use dbXrefs metadata in NcbiGeneInfo object for this task.
+
+
+
 #' Map gene names to Ensembl
 #'
 #' @export
@@ -67,8 +71,8 @@ mapGeneNamesToEnsembl <-
                 hgnc = hgnc
             )
         } else {
-            genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
-            release <- currentEnsemblVersion()
+            ## FIXME Rework this to extract from "dbXrefs" column instead.
+            stop("FIXME Reworking")
             map <- .importEnsemblNcbiMap(
                 organism = organism,
                 genomeBuild = genomeBuild,
@@ -101,12 +105,32 @@ mapGeneNamesToEnsembl <-
 
 
 
+## FIXME This approach misses some mappings that are defined in NCBI-to-Ensembl
+## so need to rethink this approach.
+
 #' Import Ensembl-to-NCBI gene identifier mappings
 #'
-#' @note Updated 2023-03-02.
+#' @note Updated 2025-04-15.
 #' @noRd
-.importEnsemblNcbiMap <-
-    function(organism, genomeBuild, release) {
+.importEnsemblToNcbiGeneMap <-
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        uniqueOnly = TRUE
+    ) {
+        assert(
+            isOrganism(organism),
+            isString(genomeBuild, nullOk = TRUE),
+            isInt(release, nullOk = TRUE),
+            isFlag(uniqueOnly)
+        )
+        if (is.null(genomeBuild)) {
+            genomeBuild <- currentEnsemblGenomeBuild(organism = organism)
+        }
+        if (is.null(release)) {
+            release <- currentEnsemblVersion()
+        }
         ## Ensure we remove the patch version.
         genomeBuild <- sub(
             pattern = "\\.p[0-9]+$",
@@ -142,15 +166,20 @@ mapGeneNamesToEnsembl <-
         df <- df[keep, , drop = FALSE]
         keep <- df[["infoType"]] == "DEPENDENT"
         df <- df[keep, , drop = FALSE]
-        df <- df[, c("xref", "geneStableId")]
+        df <- df[, c("geneStableId", "xref")]
         df <- df[complete.cases(df), , drop = FALSE]
         df <- unique(df)
         assert(all(grepl(pattern = "^[0-9]+$", x = df[["xref"]])))
-        colnames(df) <- c("ncbiGeneId", "ensemblGeneId")
+        colnames(df)[colnames(df) == "geneStableId"] <- "ensemblGeneId"
+        colnames(df)[colnames(df) == "xref"] <- "ncbiGeneId"
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
-        idx <- order(df[["ncbiGeneId"]], df[["ensemblGeneId"]])
+        idx <- order(df)
         df <- df[idx, , drop = FALSE]
-        keep <- !duplicated(df[["ncbiGeneId"]])
-        df <- df[keep, , drop = FALSE]
+        if (isTRUE(uniqueOnly)) {
+            for (col in seq_len(ncol(df))) {
+                keep <- !duplicated(df[[col]])
+                df <- df[keep, , drop = FALSE]
+            }
+        }
         df
     }
