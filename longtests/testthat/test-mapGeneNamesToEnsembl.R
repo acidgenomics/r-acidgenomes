@@ -16,6 +16,7 @@ hgncGeneNames <- sort(unique(hgncGeneNames))
 
 ncbi <- NcbiGeneInfo(organism = "Homo sapiens")
 i <- any(startsWith(x = ncbi[["dbXrefs"]], prefix = "Ensembl:"))
+## NOTE Consider removing NCBI genes that multi-map to multiple Ensembl IDs.
 ncbi <- ncbi[i, ]
 ncbiGeneNames <- unlist(
     x = list(
