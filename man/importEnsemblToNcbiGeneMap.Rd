@@ -41,4 +41,5 @@ Updated 2025-04-15.
 }
 \examples{
 df <- importEnsemblToNcbiGeneMap(organism = "Homo sapiens")
+print(df)
 }

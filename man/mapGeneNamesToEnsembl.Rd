@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapGeneNamesToEnsembl.R
 \name{mapGeneNamesToEnsembl}
 \alias{mapGeneNamesToEnsembl}
-\title{Map gene names to Ensembl}
+\title{Map gene names to Ensembl identifiers}
 \usage{
 mapGeneNamesToEnsembl(
   genes,
@@ -19,22 +19,24 @@ mapGeneNamesToEnsembl(
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
 \item{hgnc}{\code{Hgnc} object.
-Supported for \emph{Homo sapiens} genome only. Snapshot of HGNC annotations.
-When defined, overrides default behavior of mapping internally with
-\code{mapGeneNamesToNcbi} to favor \code{mapGeneNamesToHgnc} instead.}
+Supported for \emph{Homo sapiens} genome only.
+Snapshot of HGNC annotations.
+Passes to \code{mapGeneNamesToHgnc} internally.}
 
 \item{ncbi}{\code{NcbiGeneInfo} object.
-Snapshot of NCBI annotations. Passes to \code{mapGeneNamesToNcbi} internally.}
+Snapshot of NCBI annotations.
+Passes to \code{mapGeneNamesToNcbi} internally.}
 }
 \description{
-Map gene names to Ensembl
+Map gene names to Ensembl identifiers
 }
 \details{
-Internally matches using \code{mapGeneNamesToNcbi}, so we can support
-gene synonym matching.
+Internally matches using \code{mapGeneNamesToHgnc} (\emph{Homo sapiens} only)
+or \code{mapGeneNamesToNcbi} (all other organisms), so we can support gene synonym
+matching.
 }
 \note{
-Updated 2025-04-14.
+Updated 2025-04-15.
 }
 \examples{
 ## Homo sapiens.
