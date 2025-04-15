@@ -1,15 +1,11 @@
-## FIXME Can use dbXrefs metadata in NcbiGeneInfo object for this task.
-## FIXME Can we add support for mapping from MGI here (Mus musculus)
-
-
-
-#' Map gene names to Ensembl
+#' Map gene names to Ensembl identifiers
 #'
 #' @export
-#' @note Updated 2025-04-14.
+#' @note Updated 2025-04-15.
 #'
-#' @details Internally matches using `mapGeneNamesToNcbi`, so we can support
-#' gene synonym matching.
+#' @details Internally matches using `mapGeneNamesToHgnc` (*Homo sapiens* only)
+#' or `mapGeneNamesToNcbi` (all other organisms), so we can support gene synonym
+#' matching.
 #'
 #' @inheritParams AcidRoxygen::params
 #'
@@ -17,12 +13,13 @@
 #' Gene names (e.g. `"TUT4"`).
 #'
 #' @param hgnc `Hgnc` object.
-#' Supported for *Homo sapiens* genome only. Snapshot of HGNC annotations.
-#' When defined, overrides default behavior of mapping internally with
-#' `mapGeneNamesToNcbi` to favor `mapGeneNamesToHgnc` instead.
+#' Supported for *Homo sapiens* genome only.
+#' Snapshot of HGNC annotations.
+#' Passes to `mapGeneNamesToHgnc` internally.
 #'
 #' @param ncbi `NcbiGeneInfo` object.
-#' Snapshot of NCBI annotations. Passes to `mapGeneNamesToNcbi` internally.
+#' Snapshot of NCBI annotations.
+#' Passes to `mapGeneNamesToNcbi` internally.
 #'
 #' @examples
 #' ## Homo sapiens.
@@ -64,13 +61,13 @@ mapGeneNamesToEnsembl <-
                 identical(organism, "Homo sapiens"),
                 is.null(ncbi)
             )
-            map <- as(hgnc, "DFrame")
-            map <- map[, c("hgncId", "ensemblGeneId")]
             ids <- mapGeneNamesToHgnc(
                 genes = genes,
                 ignoreCase = ignoreCase,
                 hgnc = hgnc
             )
+            map <- as(hgnc, "DFrame")
+            map <- map[, c("hgncId", "ensemblGeneId")]
         } else {
             ## FIXME Rework this to extract from "dbXrefs" column instead.
             stop("FIXME Reworking")
