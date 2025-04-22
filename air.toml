@@ -1,0 +1,8 @@
+[format]
+default-exclude = true
+exclude = []
+indent-style = "space"
+indent-width = 4
+line-ending = "auto"
+line-width = 80
+persistent-line-breaks = true
