@@ -38,7 +38,6 @@
 NULL
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentEnsemblVersion <- function() {
@@ -69,7 +68,6 @@ currentEnsemblVersion <- function() {
     x <- as.integer(x)
     x
 }
-
 
 
 #' @rdname currentGenomeVersion
@@ -106,7 +104,6 @@ currentGencodeVersion <-
     }
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentRefseqVersion <- function() {
@@ -118,7 +115,6 @@ currentRefseqVersion <- function() {
     x <- as.integer(x)
     x
 }
-
 
 
 #' @rdname currentGenomeVersion
@@ -139,13 +135,15 @@ currentFlybaseVersion <- function(dmel = FALSE) {
 }
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentWormbaseVersion <- function() {
     url <- pasteUrl(
-        "ftp.wormbase.org", "pub", "wormbase",
-        "releases", "current-production-release",
+        "ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "current-production-release",
         protocol = "ftp"
     )
     x <- getUrlDirList(paste0(url, "/"))

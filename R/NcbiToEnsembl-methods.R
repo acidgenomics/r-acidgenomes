@@ -12,7 +12,6 @@
 NULL
 
 
-
 ## Updated 2023-11-27.
 `NcbiToEnsembl,integer` <- # nolint
     function(object, organism) {
@@ -77,7 +76,6 @@ NULL
     }
 
 
-
 ## Updated 2023-11-27.
 `NcbiToEnsembl,Hgnc` <- # nolint
     function(object) {
@@ -103,11 +101,9 @@ NULL
     }
 
 
-
 ## Updated 2023-11-27.
 `NcbiToEnsembl,Mgi` <- # nolint
     `NcbiToEnsembl,Hgnc`
-
 
 
 #' @rdname NcbiToEnsembl

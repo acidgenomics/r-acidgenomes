@@ -7,10 +7,7 @@
 #' .getEnsDbAnnotationHubId("Homo sapiens")
 #' .getEnsDbAnnotationHubId("Canis lupus familiaris")
 .getEnsDbAnnotationHubId <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL,
-             ah = NULL) {
+    function(organism, genomeBuild = NULL, release = NULL, ah = NULL) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -119,9 +116,12 @@
                     sep = "\n"
                 ),
                 as.character(packageVersion("AnnotationHub")),
-                "Organism", as.character(organism),
-                "Genome build", as.character(genomeBuild),
-                "Ensembl release", as.character(release)
+                "Organism",
+                as.character(organism),
+                "Genome build",
+                as.character(genomeBuild),
+                "Ensembl release",
+                as.character(release)
             ))
         }
         ## Select the most recent database (sorted by title, not identifier!).
@@ -134,7 +134,6 @@
         alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
         id
     }
-
 
 
 #' Get EnsDb from AnnotationHub identifier
@@ -168,7 +167,6 @@
 }
 
 
-
 #' Get EnsDb from Package
 #'
 #' @note Updated 2023-04-26.
@@ -189,7 +187,6 @@
     assert(is(edb, "EnsDb"))
     edb
 }
-
 
 
 #' Get metadata inside EnsDb object

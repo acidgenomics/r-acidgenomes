@@ -21,7 +21,6 @@
 NULL
 
 
-
 ## Updated 2024-01-02.
 `stripExonVersions,character` <- # nolint
     function(object) {
@@ -40,13 +39,11 @@ NULL
     }
 
 
-
 ## Updated 2024-01-02.
 `stripExonVersions,integer` <- # nolint
     function(object) {
         object
     }
-
 
 
 ## Updated 2024-01-02.
@@ -60,11 +57,9 @@ NULL
     }
 
 
-
 ## Updated 2020-01-30.
 `stripExonVersions,Matrix` <- # nolint
     `stripExonVersions,matrix`
-
 
 
 #' @rdname stripExonVersions

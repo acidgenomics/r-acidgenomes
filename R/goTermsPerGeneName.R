@@ -36,7 +36,8 @@ goTermsPerGeneName <-
     function(
         organism,
         geneNames = NULL,
-        format = c("long", "split", "nested")) {
+        format = c("long", "split", "nested")
+    ) {
         assert(
             isCharacter(geneNames, nullOk = TRUE),
             isOrganism(organism)

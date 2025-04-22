@@ -125,17 +125,14 @@ test_that("Homo sapiens hg19", {
 test_that("Mus musculus mm39", {
     testdir <- tempdir2()
     ## Adding the collate step here to avoid different sorting of identifiers.
-    with_collate(
-        new = "C",
-        code = {
-            info <- downloadUcscGenome(
-                organism = "Mus musculus",
-                genomeBuild = "mm39",
-                outputDir = testdir,
-                cache = TRUE
-            )
-        }
-    )
+    with_collate(new = "C", code = {
+        info <- downloadUcscGenome(
+            organism = "Mus musculus",
+            genomeBuild = "mm39",
+            outputDir = testdir,
+            cache = TRUE
+        )
+    })
     outputDir <- info[["args"]][["outputDir"]]
     expect_true(dir.exists(outputDir))
     expect_match(

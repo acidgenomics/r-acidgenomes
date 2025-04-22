@@ -21,7 +21,6 @@
 NULL
 
 
-
 ## Updated 2023-11-28.
 `stripGeneVersions,character` <- # nolint
     function(object) {
@@ -40,7 +39,6 @@ NULL
     }
 
 
-
 ## Allow passthrough support of NCBI gene identifiers (e.g. "7157", which
 ## corresponds to "TP53". This method is used in DepMapAnalysis package.
 ## Updated 2022-03-09.
@@ -48,7 +46,6 @@ NULL
     function(object) {
         object
     }
-
 
 
 ## Updated 2021-01-27.
@@ -62,11 +59,9 @@ NULL
     }
 
 
-
 ## Updated 2021-01-27.
 `stripGeneVersions,Matrix` <- # nolint
     `stripGeneVersions,matrix`
-
 
 
 #' @rdname stripGeneVersions

@@ -91,7 +91,6 @@ Hgnc <- # nolint
     }
 
 
-
 ## Updated 2021-03-19.
 .splitToCharacterList <- function(x, split = "|") {
     if (all(is.na(x))) {

@@ -1,7 +1,5 @@
 ## FIXME Add support for downloading exons.
 
-
-
 ## nolint start
 #' Download RefSeq reference genome
 #'
@@ -44,11 +42,13 @@
 #' ## > )
 ## nolint end
 downloadRefseqGenome <-
-    function(organism,
-             taxonomicGroup = NULL,
-             genomeBuild = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(
+        organism,
+        taxonomicGroup = NULL,
+        genomeBuild = NULL,
+        outputDir = getwd(),
+        cache = FALSE
+    ) {
         assert(
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
@@ -74,7 +74,10 @@ downloadRefseqGenome <-
         releaseUrl <- pasteUrl(baseUrl, "all_assembly_versions", genomeBuild)
         outputDir <- initDir(outputDir)
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "refseq", release
+            organism,
+            genomeBuild,
+            "refseq",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -82,8 +85,11 @@ downloadRefseqGenome <-
                 "Downloading RefSeq genome for {.emph %s}",
                 "%s %d from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild, release,
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            release,
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -123,13 +129,9 @@ downloadRefseqGenome <-
     }
 
 
-
 ## Updated 2022-05-24.
 .downloadRefSeqAnnotation <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
             "gff" = pasteUrl(
                 releaseUrl,
@@ -194,13 +196,9 @@ downloadRefseqGenome <-
     }
 
 
-
 ## Updated 2022-05-24.
 .downloadRefseqGenome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
             "fasta" = pasteUrl(
                 releaseUrl,
@@ -233,13 +231,9 @@ downloadRefseqGenome <-
     }
 
 
-
 ## Updated 2023-04-15.
 .downloadRefSeqMetadata <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
             ## > "readme" = pasteUrl(releaseUrl, "README.txt"),
             "annotationHashes" = pasteUrl(releaseUrl, "annotation_hashes.txt"),
@@ -267,13 +261,9 @@ downloadRefseqGenome <-
     }
 
 
-
 ## Updated 2022-05-24.
 .downloadRefSeqTranscriptome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
             "fasta" = pasteUrl(
                 releaseUrl,

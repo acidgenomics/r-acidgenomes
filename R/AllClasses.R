@@ -39,7 +39,6 @@
 }
 
 
-
 #' Shared FlyBase validity checks
 #'
 #' @note Updated 2023-09-26.
@@ -57,7 +56,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared GENCODE validity checks
@@ -90,7 +88,6 @@
 }
 
 
-
 #' Shared GRanges validity checks
 #'
 #' @note Updated 2023-09-26.
@@ -119,7 +116,9 @@
         !isSubset("entrezId", colnames(mcols(object))),
         msg = sprintf(
             "Object contains {.var %s} instead of {.var %s} in {.var %s}.",
-            "entrezId", "ncbiGeneId", "mcols"
+            "entrezId",
+            "ncbiGeneId",
+            "mcols"
         )
     )
     if (!isTRUE(ok)) {
@@ -127,7 +126,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared metadata validity checks
@@ -148,7 +146,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared RefSeq validity checks
@@ -181,7 +178,6 @@
 }
 
 
-
 #' Shared UCSC validity checks
 #'
 #' @note Updated 2023-09-26.
@@ -212,7 +208,6 @@
 }
 
 
-
 #' Shared WormBase validity checks
 #'
 #' @note Updated 2023-09-26.
@@ -230,7 +225,6 @@
     }
     TRUE
 }
-
 
 
 ## Genome annotation classes ===================================================
@@ -264,7 +258,6 @@ setValidity(
 )
 
 
-
 #' Ensembl gene annotations
 #'
 #' @details
@@ -292,7 +285,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Ensembl transcript annotations
@@ -324,7 +316,6 @@ setValidity(
 )
 
 
-
 #' FlyBase exon annotations
 #'
 #' @details
@@ -352,7 +343,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' FlyBase gene annotations
@@ -384,7 +374,6 @@ setValidity(
 )
 
 
-
 #' FlyBase transcript annotations
 #'
 #' @details
@@ -412,7 +401,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' GENCODE exon annotations
@@ -444,7 +432,6 @@ setValidity(
 )
 
 
-
 #' GENCODE gene annotations
 #'
 #' @details
@@ -472,7 +459,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' GENCODE transcript annotations
@@ -504,7 +490,6 @@ setValidity(
 )
 
 
-
 #' RefSeq exon annotations
 #'
 #' @details
@@ -532,7 +517,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' RefSeq gene annotations
@@ -564,7 +548,6 @@ setValidity(
 )
 
 
-
 #' RefSeq transcript annotations
 #'
 #' @details
@@ -592,7 +575,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' UCSC exon annotations
@@ -624,7 +606,6 @@ setValidity(
 )
 
 
-
 #' UCSC gene annotations
 #'
 #' @details
@@ -652,7 +633,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' UCSC transcript annotations
@@ -684,7 +664,6 @@ setValidity(
 )
 
 
-
 #' WormBase exon annotations
 #'
 #' @details
@@ -712,7 +691,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' WormBase gene annotations
@@ -744,7 +722,6 @@ setValidity(
 )
 
 
-
 #' WormBase transcript annotations
 #'
 #' @details
@@ -772,7 +749,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 ## Identifier classes ==========================================================
@@ -871,7 +847,6 @@ setValidity(
 )
 
 
-
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
@@ -932,7 +907,6 @@ setValidity(
 )
 
 
-
 #' NCBI gene history
 #'
 #' @export
@@ -981,7 +955,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' NCBI gene identifier information
@@ -1040,7 +1013,6 @@ setValidity(
 )
 
 
-
 ## Identifier mapping classes ==================================================
 
 #' @inherit AcidGenerics::EnsemblToNcbi description return title
@@ -1091,7 +1063,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' @inherit AcidGenerics::GeneToSymbol description return title
@@ -1145,7 +1116,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Jackson Laboratory (JAX) human-to-mouse gene mappings
@@ -1208,7 +1178,6 @@ setValidity(
 )
 
 
-
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
 #' @export
 #' @note Updated 2023-11-27.
@@ -1257,7 +1226,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Protein-to-gene mappings
@@ -1314,7 +1282,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' @inherit AcidGenerics::TxToGene description return title

@@ -134,7 +134,6 @@
 }
 
 
-
 ## NOTE We may want to make our own variant of `getChromInfoFromEnsembl` to
 ## avoid parsing issues currently seen with GenomeInfoDb.
 
@@ -189,7 +188,6 @@
 }
 
 
-
 #' Get GENCODE genome assembly seqinfo
 #'
 #' @note Updated 2023-11-22.
@@ -216,7 +214,6 @@
     seqnames(seq) <- paste0("chr", seqnames(seq))
     seq
 }
-
 
 
 #' Get UCSC genome assembly seqinfo

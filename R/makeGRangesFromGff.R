@@ -226,10 +226,12 @@
 #' ## > summary(transcripts)
 ## nolint end
 makeGRangesFromGff <-
-    function(file,
-             level = c("genes", "transcripts", "exons"),
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        file,
+        level = c("genes", "transcripts", "exons"),
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             .isSupportedGff(file),
             isFlag(ignoreVersion),
@@ -241,7 +243,8 @@ makeGRangesFromGff <-
         }
         alert(sprintf(
             fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-            "GRanges", file
+            "GRanges",
+            file
         ))
         tmpfile <- .cacheIt(file)
         meta <- .getGffMetadata(tmpfile)

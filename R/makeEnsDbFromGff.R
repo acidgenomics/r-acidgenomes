@@ -60,7 +60,8 @@ makeEnsDbFromGff <- function(file) {
         args <- append(x = args, values = list("gtf" = tmpfile))
     } else {
         abort(sprintf(
-            "Unsupported file: {.file %s}.", basename(file)
+            "Unsupported file: {.file %s}.",
+            basename(file)
         ))
     }
     quietly({
