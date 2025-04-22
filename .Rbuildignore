@@ -5,6 +5,7 @@
 ^[-._a-zA-Z0-9]+\.(R|Rcheck|Rproj|gz|html|org|pdf|png|sh|tar|txt|xz|yaml|yml|zip)$
 ^[._][-._a-zA-Z0-9]+$
 ^\.Rproj\.user$
+^air\.toml$
 ^cran-comments\.md$
 ^data-raw$
 ^doc$
