@@ -26,14 +26,16 @@
 #' )
 #' print(x)
 importTxToGene <-
-    function(file,
-             organism = NULL,
-             genomeBuild = NULL,
-             release = NULL,
-             ignoreVersion = c(
-                 "tx" = FALSE,
-                 "gene" = FALSE
-             )) {
+    function(
+        file,
+        organism = NULL,
+        genomeBuild = NULL,
+        release = NULL,
+        ignoreVersion = c(
+            "tx" = FALSE,
+            "gene" = FALSE
+        )
+    ) {
         assert(
             is.logical(ignoreVersion),
             areSetEqual(

@@ -36,11 +36,7 @@
 #' )
 #' print(x)
 mapGeneNamesToEnsembl <-
-    function(genes,
-             organism,
-             ignoreCase = FALSE,
-             hgnc = NULL,
-             ncbi = NULL) {
+    function(genes, organism, ignoreCase = FALSE, hgnc = NULL, ncbi = NULL) {
         assert(
             isCharacter(genes),
             isOrganism(organism),
@@ -51,8 +47,8 @@ mapGeneNamesToEnsembl <-
         ## Default to HGNC over NCBI for Homo sapiens.
         if (
             identical(organism, "Homo sapiens") &&
-            is.null(hgnc) &&
-            is.null(ncbi)
+                is.null(hgnc) &&
+                is.null(ncbi)
         ) {
             hgnc <- Hgnc()
         }

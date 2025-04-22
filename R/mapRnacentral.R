@@ -70,7 +70,9 @@ mapRnacentral <- function(organism, database) {
         isSubset(taxId, unique(df[["taxId"]])),
         msg = sprintf(
             "{.var %s} ({.var %s}) not defined in {.url %s}.",
-            organism, taxId, url
+            organism,
+            taxId,
+            url
         )
     )
     i <- df[["taxId"]] == taxId

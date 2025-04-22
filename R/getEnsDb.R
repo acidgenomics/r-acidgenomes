@@ -27,9 +27,7 @@
 #'     print(object)
 #' }
 getEnsDb <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL) {
+    function(organism, genomeBuild = NULL, release = NULL) {
         assert(
             isString(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -42,10 +40,8 @@ getEnsDb <-
         )
         if (
             identical(tolower(organism), "homo sapiens") &&
-            (
-                identical(tolower(as.character(genomeBuild)), "grch37") ||
-                identical(release, 75L)
-            )
+                (identical(tolower(as.character(genomeBuild)), "grch37") ||
+                    identical(release, 75L))
         ) {
             id <- "EnsDb.Hsapiens.v75"
             edb <- .getEnsDbFromPackage(package = id)

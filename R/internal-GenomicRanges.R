@@ -1,8 +1,6 @@
 ## FIXME Ensure we sanitize "txSupportLevel" to just integer.
 ## Need to remove stuff like "1 (assigned to previous version 4)".
 
-
-
 #' Add broad class annotations
 #'
 #' @note Updated 2023-12-20.
@@ -68,14 +66,14 @@
     if (all(x == "other")) {
         alertWarning(sprintf(
             "Returning without {.var %s} in {.var %s}.",
-            "broadClass", "mcols"
+            "broadClass",
+            "mcols"
         ))
         return(object)
     }
     mcols(object)[["broadClass"]] <- x
     object
 }
-
 
 
 #' Apply broad class definitions
@@ -144,18 +142,21 @@
             ))
     ) {
         "mito"
-    } else if (identical(
-        x = x[["biotype"]],
-        y = "protein_coding"
-    )) {
+    } else if (
+        identical(
+            x = x[["biotype"]],
+            y = "protein_coding"
+        )
+    ) {
         "coding"
     } else if (
-        x[["biotype"]] %in% c(
-            "known_ncrna",
-            "lincRNA",
-            "lncRNA",
-            "non_coding"
-        )
+        x[["biotype"]] %in%
+            c(
+                "known_ncrna",
+                "lincRNA",
+                "lncRNA",
+                "non_coding"
+            )
     ) {
         "noncoding"
     } else if (
@@ -167,24 +168,26 @@
     ) {
         "pseudo"
     } else if (
-        x[["biotype"]] %in% c(
-            "miRNA",
-            "misc_RNA",
-            "ribozyme",
-            "rRNA",
-            "scaRNA",
-            "scRNA",
-            "snoRNA",
-            "snRNA",
-            "sRNA"
-        )
+        x[["biotype"]] %in%
+            c(
+                "miRNA",
+                "misc_RNA",
+                "ribozyme",
+                "rRNA",
+                "scaRNA",
+                "scRNA",
+                "snoRNA",
+                "snRNA",
+                "sRNA"
+            )
     ) {
         "small"
     } else if (
-        x[["biotype"]] %in% c(
-            "non_stop_decay",
-            "nonsense_mediated_decay"
-        )
+        x[["biotype"]] %in%
+            c(
+                "non_stop_decay",
+                "nonsense_mediated_decay"
+            )
     ) {
         "decaying"
     } else if (
@@ -211,7 +214,6 @@
 }
 
 
-
 #' Include identifier version in primary identifier
 #'
 #' @note Updated 2023-12-20.
@@ -224,11 +226,7 @@
 #'
 #' Intentionally skips when identifier column is not defined.
 .includeVersion <-
-    function(object,
-             idCol,
-             idVersionCol,
-             idNoVersionCol,
-             quiet = TRUE) {
+    function(object, idCol, idVersionCol, idNoVersionCol, quiet = TRUE) {
         assert(
             is(object, "GRanges"),
             isString(idCol),
@@ -237,17 +235,20 @@
             isFlag(quiet)
         )
         ## Early return for genomes without identifier versions (e.g. FlyBase).
-        if (!isSubset(
-            x = c(idCol, idVersionCol),
-            y = names(mcols(object))
-        )) {
+        if (
+            !isSubset(
+                x = c(idCol, idVersionCol),
+                y = names(mcols(object))
+            )
+        ) {
             return(object)
         }
         assert(areDisjointSets(idNoVersionCol, names(mcols(object))))
         if (isFALSE(quiet)) {
             alert(sprintf(
                 "Including version in {.var %s} from {.var %s}.",
-                idCol, idVersionCol
+                idCol,
+                idVersionCol
             ))
             alertInfo(sprintf(
                 "Unversioned identifiers are in {.var %s}.",
@@ -259,7 +260,6 @@
         mcols(object)[[idCol]] <- id
         object
     }
-
 
 
 #' Match the identifier column in `GRanges` to use for names.
@@ -288,7 +288,6 @@
     assert(isString(x))
     x
 }
-
 
 
 #' Remove unwanted experimental biotypes from GRanges
@@ -339,7 +338,6 @@
     }
     object
 }
-
 
 
 #' Finalize `GRanges` mcols return
@@ -449,14 +447,26 @@
         mcols[["txSupportLevel"]] <- as.integer(mcols[["txSupportLevel"]])
     }
     factorCols <- c(
-        "ensemblEndPhase", "ensemblPhase", "exception", "geneBiotype",
-        "geneSource", "level", "logicName", "seqCoordSystem", "source",
-        "txBiotype", "txChrom", "txSource", "txStrand", "txSupportLevel", "type"
+        "ensemblEndPhase",
+        "ensemblPhase",
+        "exception",
+        "geneBiotype",
+        "geneSource",
+        "level",
+        "logicName",
+        "seqCoordSystem",
+        "source",
+        "txBiotype",
+        "txChrom",
+        "txSource",
+        "txStrand",
+        "txSupportLevel",
+        "type"
     )
     for (factorCol in factorCols) {
         if (
             isSubset(factorCol, colnames(mcols)) &&
-            !is.factor(mcols[[factorCol]])
+                !is.factor(mcols[[factorCol]])
         ) {
             assert(is.atomic(mcols[[factorCol]]))
             mcols[[factorCol]] <- as.factor(mcols[[factorCol]])
@@ -484,7 +494,6 @@
     mcols(object) <- mcols
     object
 }
-
 
 
 #' Standardize the `GRanges` mcols naming conventions
@@ -588,7 +597,6 @@
 }
 
 
-
 #' Make genomic ranges (`GRanges`)
 #'
 #' This is the main `GRanges` final return generator, used by
@@ -597,9 +605,7 @@
 #' @note Updated 2024-01-02.
 #' @noRd
 .makeGRanges <-
-    function(object,
-             ignoreVersion,
-             extraMcols) {
+    function(object, ignoreVersion, extraMcols) {
         assert(
             is(object, "GRanges"),
             hasLength(object),
@@ -627,10 +633,12 @@
         }
         if (isTRUE(extraMcols)) {
             object <- .addBroadClass(object)
-            if (isSubset(
-                x = metadata(object)[["provider"]],
-                y = c("Ensembl", "GENCODE")
-            )) {
+            if (
+                isSubset(
+                    x = metadata(object)[["provider"]],
+                    y = c("Ensembl", "GENCODE")
+                )
+            ) {
                 object <- .addEnsemblFtpMcols(
                     object = object,
                     ignoreVersion = ignoreVersion
@@ -643,7 +651,8 @@
         assert(isSubset(idCol, names(mcols(object))))
         alert(sprintf(
             "Defining names by {.var %s} column in {.fun %s}.",
-            idCol, "mcols"
+            idCol,
+            "mcols"
         ))
         ## Sort the ranges by genomic location.
         object <- sort(object)
@@ -659,11 +668,13 @@
         metadata(object) <- metadata(object)[sort(names(metadata(object)))]
         if (
             identical(level, "exons") ||
-            identical(provider, "RefSeq")
+                identical(provider, "RefSeq")
         ) {
             alertInfo(sprintf(
                 "Splitting {.cls %s} by {.var %s} into {.cls %s}.",
-                "GRanges", idCol, "GRangesList"
+                "GRanges",
+                idCol,
+                "GRangesList"
             ))
             ## Metadata gets dropped during `split()` call; stash and reassign.
             meta <- metadata(object)

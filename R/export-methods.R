@@ -30,7 +30,6 @@
 NULL
 
 
-
 ## Updated 2023-09-20.
 `export,TxToGene` <- # nolint
     function(object, con, ...) {
@@ -47,7 +46,6 @@ NULL
             ...
         )
     }
-
 
 
 #' @rdname export

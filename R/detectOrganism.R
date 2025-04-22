@@ -70,7 +70,6 @@ detectOrganism <- function(object) {
 }
 
 
-
 ## Updated 2020-10-06.
 .detectOrganism <- # nolint
     function(string, data) {

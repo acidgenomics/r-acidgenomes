@@ -11,7 +11,8 @@
 #' @examples
 #' object <- Mgi()
 #' print(object)
-Mgi <- function() { # nolint
+Mgi <- function() {
+    # nolint
     alert("Importing MGI metadata.")
     url <- pasteUrl(
         "www.informatics.jax.org",

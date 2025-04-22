@@ -1,7 +1,5 @@
 ## FIXME Add support for downloading exons.
 
-
-
 #' Download GENCODE reference genome
 #'
 #' @export
@@ -24,11 +22,13 @@
 #' ## >     annotation = "gtf"
 #' ## > )
 downloadGencodeGenome <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        outputDir = getwd(),
+        cache = FALSE
+    ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -66,7 +66,10 @@ downloadGencodeGenome <-
             releaseUrl <- pasteUrl(releaseUrl, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "gencode", release
+            organism,
+            genomeBuild,
+            "gencode",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -74,8 +77,11 @@ downloadGencodeGenome <-
                 "Downloading GENCODE genome for {.emph %s}",
                 "%s %s from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild, as.character(release),
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            as.character(release),
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -122,15 +128,16 @@ downloadGencodeGenome <-
     }
 
 
-
 ## Updated 2023-11-22.
 .downloadGencodeAnnotation <-
-    function(genomeBuild,
-             metadataFiles,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(
+        genomeBuild,
+        metadataFiles,
+        outputDir,
+        release,
+        releaseUrl,
+        cache
+    ) {
         urls <- c(
             "gff" = pasteUrl(
                 releaseUrl,
@@ -277,13 +284,9 @@ downloadGencodeGenome <-
     }
 
 
-
 ## Updated 2023-07-28.
 .downloadGencodeGenome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
             "fasta" = pasteUrl(
                 releaseUrl,
@@ -316,14 +319,9 @@ downloadGencodeGenome <-
     }
 
 
-
 ## Updated 2023-11-28.
 .downloadGencodeMetadata <-
-    function(genomeBuild,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
             "readme" = pasteUrl(
                 releaseUrl,
@@ -372,22 +370,18 @@ downloadGencodeGenome <-
     }
 
 
-
 ## Updated 2023-07-28.
 ##
 ## Regarding pipe delimiter handling:
 ## https://github.com/nf-core/rnaseq/issues/864
 .downloadGencodeTranscriptome <-
-    function(genomeBuild,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
             "fasta" = pasteUrl(
                 releaseUrl,
                 paste0(
-                    "gencode.v", release,
+                    "gencode.v",
+                    release,
                     switch(
                         EXPR = genomeBuild,
                         "GRCh37" = "lift37",

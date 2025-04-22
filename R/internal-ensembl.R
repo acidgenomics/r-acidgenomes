@@ -22,10 +22,12 @@
         } else {
             geneIdCol <- "geneId"
         }
-        if (isSubset(
-            x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
-            y = colnames(mcols(object))
-        )) {
+        if (
+            isSubset(
+                x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
+                y = colnames(mcols(object))
+            )
+        ) {
             return(object)
         }
         organism <- metadata(object)[["organism"]]
@@ -78,7 +80,6 @@
         mcols(object) <- mcols
         object
     }
-
 
 
 #' Get a data frame of extra gene-level metadata from Ensembl FTP server
@@ -170,7 +171,9 @@
             abort(sprintf("Unsupported file: {.file %s}.", url))
         )
         url <- pasteUrl(
-            ftpBaseUrl, "mysql", mysqlSubdir,
+            ftpBaseUrl,
+            "mysql",
+            mysqlSubdir,
             "external_synonym.txt.gz"
         )
         synonym <- tryCatch(
@@ -191,7 +194,9 @@
             return(NULL)
         }
         url <- pasteUrl(
-            ftpBaseUrl, "tsv", snakeCase(organism),
+            ftpBaseUrl,
+            "tsv",
+            snakeCase(organism),
             paste(
                 gsub(
                     pattern = " ",

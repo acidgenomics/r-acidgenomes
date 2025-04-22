@@ -15,7 +15,6 @@
 NULL
 
 
-
 ## Updated 2023-04-26.
 .updateGRanges <-
     function(object, ..., verbose = FALSE) {
@@ -23,7 +22,8 @@ NULL
             if (isTRUE(verbose)) {
                 alert(sprintf(
                     "Renaming {.var %s} to {.var %s}.",
-                    "entrezId", "ncbiGeneId"
+                    "entrezId",
+                    "ncbiGeneId"
                 ))
             }
             mcols(object)[["ncbiGeneId"]] <- mcols(object)[["entrezId"]]
@@ -32,7 +32,6 @@ NULL
         assert(validObject(object))
         object
     }
-
 
 
 ## Updated 2023-04-13.
@@ -50,7 +49,6 @@ NULL
 ## Updated 2023-04-13.
 `updateObject,GencodeTranscripts` <- # nolint
     .updateGRanges
-
 
 
 #' @rdname updateObject

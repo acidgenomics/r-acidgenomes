@@ -2,9 +2,12 @@
 
 test_that("mapHumanOrthologs", {
     genes <- c(
-        "ENSMUSG00000000001", "ENSMUSG00000000003",
-        "ENSMUSG00000000028", "ENSMUSG00000000031",
-        "ENSMUSG00000000037", "ENSMUSG00000000049"
+        "ENSMUSG00000000001",
+        "ENSMUSG00000000003",
+        "ENSMUSG00000000028",
+        "ENSMUSG00000000031",
+        "ENSMUSG00000000037",
+        "ENSMUSG00000000049"
     )
     ## This depends on biomaRt, and has a tendency to time out.
     object <- tryCatch(

@@ -3,7 +3,6 @@
 NULL
 
 
-
 #' GFF file name pattern matching
 #'
 #' @note Updated 2021-02-08.
@@ -69,7 +68,6 @@ NULL
 )
 
 
-
 #' GRanges annotation levels
 #'
 #' @note Updated 2023-04-26.
@@ -82,7 +80,6 @@ NULL
 )
 
 
-
 #' Package name
 #'
 #' @note Updated 2021-03-03.
@@ -90,13 +87,11 @@ NULL
 .pkgName <- packageName()
 
 
-
 #' Package version
 #'
 #' @note Updated 2021-03-03.
 #' @noRd
 .pkgVersion <- packageVersion(.pkgName)
-
 
 
 #' AcidGenomes test data URL

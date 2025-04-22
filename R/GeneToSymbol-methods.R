@@ -49,12 +49,13 @@
 NULL
 
 
-
 ## Updated 2023-12-21.
 `GeneToSymbol,DFrame` <- # nolint
-    function(object,
-             format = c("makeUnique", "1:1", "unmodified"),
-             quiet = FALSE) {
+    function(
+        object,
+        format = c("makeUnique", "1:1", "unmodified"),
+        quiet = FALSE
+    ) {
         assert(
             hasColnames(object),
             isFlag(quiet)
@@ -139,7 +140,6 @@ NULL
     }
 
 
-
 ## Updated 2023-04-26.
 `GeneToSymbol,GRanges` <- # nolint
     function(object, ...) {
@@ -149,14 +149,12 @@ NULL
     }
 
 
-
 ## Updated 2023-12-21.
 `GeneToSymbol,GRangesList` <- # nolint
     function(object, ...) {
         gr <- unlist(x = object, recursive = FALSE, use.names = TRUE)
         GeneToSymbol(gr, ...)
     }
-
 
 
 #' @rdname GeneToSymbol

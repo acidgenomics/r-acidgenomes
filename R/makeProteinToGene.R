@@ -17,14 +17,10 @@
 NULL
 
 
-
 #' @rdname makeProteinToGene
 #' @export
 makeProteinToGeneFromEnsembl <-
-    function(ids,
-             organism = NULL,
-             genomeBuild = NULL,
-             release = NULL) {
+    function(ids, organism = NULL, genomeBuild = NULL, release = NULL) {
         assert(
             requireNamespaces("ensembldb"),
             isCharacter(ids),

@@ -37,9 +37,7 @@
 #'     })
 #' }
 mapHumanOrthologs <-
-    function(genes,
-             organism = NULL,
-             ensemblRelease = NULL) {
+    function(genes, organism = NULL, ensemblRelease = NULL) {
         assert(
             requireNamespaces("biomaRt"),
             isCharacter(genes),
@@ -68,7 +66,9 @@ mapHumanOrthologs <-
                 "Matching orthologs against {.var %s} ({.url %s}) with",
                 "{.pkg %s} %s."
             ),
-            dataset, host, "bioMart",
+            dataset,
+            host,
+            "bioMart",
             as.character(packageVersion("biomaRt"))
         ))
         ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
@@ -82,7 +82,9 @@ mapHumanOrthologs <-
             error = function(e) {
                 abort(sprintf(
                     "{.pkg %s}::{.fun %s} failure: %s.",
-                    "biomaRt", "useMart", as.character(e)
+                    "biomaRt",
+                    "useMart",
+                    as.character(e)
                 ))
             }
         )
@@ -99,7 +101,9 @@ mapHumanOrthologs <-
             error = function(e) {
                 abort(sprintf(
                     "{.pkg %s}::{.fun %s} failure: %s.",
-                    "biomaRt", "select", as.character(e)
+                    "biomaRt",
+                    "select",
+                    as.character(e)
                 ))
             }
         )
@@ -174,7 +178,8 @@ mapHumanOrthologs <-
                 msg1 = "identifier",
                 msg2 = "identifiers"
             ),
-            organism, "Homo sapiens"
+            organism,
+            "Homo sapiens"
         ))
         alert(sprintf("Getting {.emph %s} gene symbols.", organism))
         ## FIXME This function has been removed.

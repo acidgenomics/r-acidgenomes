@@ -16,9 +16,7 @@
 #' x <- mapGeneNamesToHgnc(genes = c("TUT4", "ZCCHC11", "TENT3A"))
 #' print(x)
 mapGeneNamesToHgnc <-
-    function(genes,
-             ignoreCase = FALSE,
-             hgnc = NULL) {
+    function(genes, ignoreCase = FALSE, hgnc = NULL) {
         if (is.null(hgnc)) {
             hgnc <- Hgnc()
         }

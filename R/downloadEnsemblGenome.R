@@ -1,7 +1,5 @@
 ## FIXME Add support for downloading exons.
 
-
-
 #' Download Ensembl reference genome
 #'
 #' @export
@@ -23,11 +21,13 @@
 #' ## >     release = 100L
 #' ## > )
 downloadEnsemblGenome <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        outputDir = getwd(),
+        cache = FALSE
+    ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -52,7 +52,10 @@ downloadEnsemblGenome <-
         }
         releaseUrl <- pasteUrl(baseUrl, paste0("release-", release))
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "ensembl", release
+            organism,
+            genomeBuild,
+            "ensembl",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -60,8 +63,11 @@ downloadEnsemblGenome <-
                 "Downloading Ensembl genome for {.emph %s}",
                 "%s %d from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild, release,
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            release,
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -107,15 +113,9 @@ downloadEnsemblGenome <-
     }
 
 
-
 ## Updated 2023-04-14.
 .downloadEnsemblGff <-
-    function(organism,
-             genomeBuild,
-             release,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(organism, genomeBuild, release, outputDir, releaseUrl, cache) {
         baseUrl <- pasteUrl(releaseUrl, "gff3", snakeCase(organism))
         urls <- c(
             "readme" = pasteUrl(baseUrl, "README"),
@@ -124,7 +124,9 @@ downloadEnsemblGenome <-
                 baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "gff3.gz",
+                    genomeBuild,
+                    release,
+                    "gff3.gz",
                     sep = "."
                 )
             )
@@ -144,7 +146,10 @@ downloadEnsemblGenome <-
                 baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "chr_patch_hapl_scaff", "gff3.gz",
+                    genomeBuild,
+                    release,
+                    "chr_patch_hapl_scaff",
+                    "gff3.gz",
                     sep = "."
                 )
             )
@@ -175,15 +180,9 @@ downloadEnsemblGenome <-
     }
 
 
-
 ## Updated 2023-04-14.
 .downloadEnsemblGtf <-
-    function(organism,
-             genomeBuild,
-             release,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(organism, genomeBuild, release, outputDir, releaseUrl, cache) {
         baseUrl <- pasteUrl(releaseUrl, "gtf", snakeCase(organism))
         urls <- c(
             "readme" = pasteUrl(baseUrl, "README"),
@@ -192,7 +191,9 @@ downloadEnsemblGenome <-
                 baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "gtf.gz",
+                    genomeBuild,
+                    release,
+                    "gtf.gz",
                     sep = "."
                 )
             )
@@ -212,7 +213,10 @@ downloadEnsemblGenome <-
                 baseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, release, "chr_patch_hapl_scaff", "gtf.gz",
+                    genomeBuild,
+                    release,
+                    "chr_patch_hapl_scaff",
+                    "gtf.gz",
                     sep = "."
                 )
             )
@@ -262,14 +266,9 @@ downloadEnsemblGenome <-
     }
 
 
-
 ## Updated 2023-04-14.
 .downloadEnsemblGenome <-
-    function(organism,
-             genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(organism, genomeBuild, outputDir, releaseUrl, cache) {
         baseUrl <- pasteUrl(releaseUrl, "fasta", snakeCase(organism), "dna")
         urls <- c(
             "readme" = pasteUrl(baseUrl, "README"),
@@ -317,50 +316,69 @@ downloadEnsemblGenome <-
     }
 
 
-
 ## Updated 2023-04-14.
 .downloadEnsemblMetadata <-
-    function(organism,
-             genomeBuild,
-             release,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(organism, genomeBuild, release, outputDir, releaseUrl, cache) {
         baseUrl <- pasteUrl(releaseUrl, "tsv", snakeCase(organism))
         organism2 <- gsub(pattern = " ", replacement = "_", x = organism)
         urls <- c(
             "ena" = pasteUrl(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "ena", "tsv", "gz",
+                    organism2,
+                    genomeBuild,
+                    release,
+                    "ena",
+                    "tsv",
+                    "gz",
                     sep = "."
                 )
             ),
             "entrez" = pasteUrl(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "entrez", "tsv", "gz",
+                    organism2,
+                    genomeBuild,
+                    release,
+                    "entrez",
+                    "tsv",
+                    "gz",
                     sep = "."
                 )
             ),
             "karyotype" = pasteUrl(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "karyotype", "tsv", "gz",
+                    organism2,
+                    genomeBuild,
+                    release,
+                    "karyotype",
+                    "tsv",
+                    "gz",
                     sep = "."
                 )
             ),
             "refseq" = pasteUrl(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "refseq", "tsv", "gz",
+                    organism2,
+                    genomeBuild,
+                    release,
+                    "refseq",
+                    "tsv",
+                    "gz",
                     sep = "."
                 )
             ),
             "uniprot" = pasteUrl(
                 baseUrl,
                 paste(
-                    organism2, genomeBuild, release, "uniprot", "tsv", "gz",
+                    organism2,
+                    genomeBuild,
+                    release,
+                    "uniprot",
+                    "tsv",
+                    "gz",
                     sep = "."
                 )
             )
@@ -374,14 +392,9 @@ downloadEnsemblGenome <-
     }
 
 
-
 ## Updated 2022-05-24.
 .downloadEnsemblTranscriptome <-
-    function(organism,
-             genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(organism, genomeBuild, outputDir, releaseUrl, cache) {
         baseUrl <- pasteUrl(releaseUrl, "fasta", snakeCase(organism))
         ## Download cDNA FASTA files.
         cdnaBaseUrl <- pasteUrl(baseUrl, "cdna")
@@ -392,7 +405,10 @@ downloadEnsemblGenome <-
                 cdnaBaseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, "cdna", "all", "fa.gz",
+                    genomeBuild,
+                    "cdna",
+                    "all",
+                    "fa.gz",
                     sep = "."
                 )
             )
@@ -411,7 +427,9 @@ downloadEnsemblGenome <-
                 ncrnaBaseUrl,
                 paste(
                     gsub(pattern = " ", replacement = "_", x = organism),
-                    genomeBuild, "ncrna", "fa.gz",
+                    genomeBuild,
+                    "ncrna",
+                    "fa.gz",
                     sep = "."
                 )
             )

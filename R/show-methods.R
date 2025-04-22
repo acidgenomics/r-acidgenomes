@@ -10,7 +10,6 @@
 NULL
 
 
-
 ## Updated 2023-04-26.
 .showGRanges <- function(object) {
     assert(validObject(object))
@@ -24,7 +23,6 @@ NULL
         "names" = names(object)
     ))
 }
-
 
 
 `show,EnsemblExons` <- # nolint
@@ -80,7 +78,6 @@ NULL
 
 `show,WormbaseTranscripts` <- # nolint
     .showGRanges
-
 
 
 #' @rdname show

@@ -40,7 +40,6 @@
 NULL
 
 
-
 ## Updated 2021-03-03.
 `summary,GeneToSymbol` <- # nolint
     function(object) {
@@ -59,7 +58,6 @@ NULL
     }
 
 
-
 ## Updated 2021-03-03.
 `summary,TxToGene` <- # nolint
     function(object) {
@@ -75,7 +73,6 @@ NULL
             "date" = m[["date"]]
         ))
     }
-
 
 
 #' @rdname summary

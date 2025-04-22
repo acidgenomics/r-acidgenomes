@@ -6,9 +6,7 @@
 #' @return `character`
 #' Local file paths.
 .downloadUrls <-
-    function(urls,
-             outputDir,
-             cache) {
+    function(urls, outputDir, cache) {
         assert(
             allAreUrls(urls),
             isString(outputDir),
@@ -42,7 +40,6 @@
     }
 
 
-
 #' Get an internal function from the package
 #'
 #' @note Updated 2021-03-03.
@@ -56,7 +53,6 @@
     assert(is.function(fun))
     fun
 }
-
 
 
 #' Map a genome build to UCSC
@@ -98,7 +94,6 @@
         abort(sprintf("Unsupported genome build: {.val %s}.", x))
     )
 }
-
 
 
 #' Nest an S4 Data Frame by a grouping factor
