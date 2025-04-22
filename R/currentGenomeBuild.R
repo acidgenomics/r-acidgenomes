@@ -48,7 +48,6 @@
 NULL
 
 
-
 #' Return a simple (minimal) genome build version
 #'
 #' @details
@@ -61,7 +60,6 @@ NULL
     x <- sub(pattern = "\\.[^\\.]+$", replacement = "", x = x)
     x
 }
-
 
 
 ## Updated 2023-07-27.
@@ -85,7 +83,6 @@ currentEnsemblGenomeBuild <-
     }
 
 
-
 ## Updated 2021-01-31.
 #' @rdname currentGenomeBuild
 #' @export
@@ -97,7 +94,6 @@ currentGencodeGenomeBuild <-
         )
         currentEnsemblGenomeBuild(organism)
     }
-
 
 
 ## Alternate approach using URL only:
@@ -113,8 +109,7 @@ currentGencodeGenomeBuild <-
 #' FTP server taxonomic group subdirectory path (e.g. "vertebrate_mammalian").
 #' Defining this manually avoids having to query the FTP server.
 currentRefseqGenomeBuild <-
-    function(organism,
-             taxonomicGroup = NULL) {
+    function(organism, taxonomicGroup = NULL) {
         assert(
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE)
@@ -131,7 +126,6 @@ currentRefseqGenomeBuild <-
         out <- basename(summary[["ftp_path"]])
         out
     }
-
 
 
 ## Updated 2023-04-14.

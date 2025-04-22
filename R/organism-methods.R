@@ -31,7 +31,6 @@
 NULL
 
 
-
 ## Assuming gene identifiers are defined in the rownames.
 ## Updated 2019-07-22.
 `organism,matrix` <- # nolint
@@ -41,17 +40,14 @@ NULL
     }
 
 
-
 ## Updated 2020-01-30.
 `organism,Matrix` <- # nolint
     `organism,matrix`
 
 
-
 ## Updated 2019-07-22.
 `organism,data.frame` <- # nolint
     `organism,matrix`
-
 
 
 ## Note that `DFrame` and `GRanges` inherit from this class.
@@ -60,7 +56,6 @@ NULL
     function(object) {
         metadata(object)[["organism"]]
     }
-
 
 
 ## Updated 2023-04-26.
@@ -76,7 +71,6 @@ NULL
     }
 
 
-
 ## Updated 2021-02-02.
 `organism,GRanges` <- # nolint
     function(object) {
@@ -90,14 +84,12 @@ NULL
     }
 
 
-
 ## Updated 2019-08-06.
 `organism<-,Annotated,character` <- # nolint
     function(object, value) {
         metadata(object)[["organism"]] <- value
         object
     }
-
 
 
 #' @rdname organism

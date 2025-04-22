@@ -78,8 +78,31 @@ test_that("Ensembl GRCh38 GFF3 genes", {
     )
     expect_true(isSubset(
         x = c(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "X",
+            "Y",
+            "MT"
         ),
         y = levels(seqnames(object))
     ))
@@ -376,8 +399,31 @@ test_that("Ensembl GRCh38 GTF genes", {
     )
     expect_true(isSubset(
         x = c(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "X",
+            "Y",
+            "MT"
         ),
         y = levels(seqnames(object))
     ))
@@ -648,8 +694,15 @@ test_that("FlyBase GTF genes", {
     )
     expect_true(isSubset(
         x = c(
-            "2L", "2R", "3L", "3R", "4", "X", "Y",
-            "mitochondrion_genome", "rDNA"
+            "2L",
+            "2R",
+            "3L",
+            "3R",
+            "4",
+            "X",
+            "Y",
+            "mitochondrion_genome",
+            "rDNA"
         ),
         y = levels(seqnames(object))
     ))
@@ -814,7 +867,9 @@ test_that("GENCODE GRCh38 GFF3 genes", {
             "chr",
             c(
                 seq(from = 1L, to = 22L),
-                "X", "Y", "M"
+                "X",
+                "Y",
+                "M"
             )
         )
     )
@@ -1129,7 +1184,9 @@ test_that("GENCODE GRCh38 GTF genes", {
             "chr",
             c(
                 seq(from = 1L, to = 22L),
-                "X", "Y", "M"
+                "X",
+                "Y",
+                "M"
             )
         )
     )
@@ -1307,14 +1364,18 @@ test_that("RefSeq GRCh38 GFF3 genes", {
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")",
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")"
             ),
-            "description" =
-                rep("apoptosis antagonizing transcription factor", 2L),
+            "description" = rep(
+                "apoptosis antagonizing transcription factor",
+                2L
+            ),
             "exception" = rep(NA_character_, 2L),
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),
             "geneName" = rep("AATF", 2L),
-            "geneSynonym" =
-                rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),
+            "geneSynonym" = rep(
+                "c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")",
+                2L
+            ),
             "ncbiGeneId" = rep("26574", 2L),
             "parentGeneId" = c("AATF", "AATF-2"),
             "partial" = rep("FALSE", 2L),
@@ -1468,8 +1529,10 @@ test_that("RefSeq GRCh38 GTF genes", {
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
             "dbXref" = rep("MIM:608463", 2L),
-            "description" =
-                rep("apoptosis antagonizing transcription factor", 2L),
+            "description" = rep(
+                "apoptosis antagonizing transcription factor",
+                2L
+            ),
             "exception" = rep(NA_character_, 2L),
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),

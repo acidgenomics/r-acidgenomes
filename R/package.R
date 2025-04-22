@@ -6,14 +6,12 @@
 "_PACKAGE"
 
 
-
 ## Classes =====================================================================
 
 #' @importClassesFrom GenomicRanges CompressedGRangesList GRanges GRangesList
 #' @importClassesFrom IRanges DFrameList
 #' @importClassesFrom S4Vectors DFrame Vector
 NULL
-
 
 
 ## S4 generics and methods =====================================================
@@ -38,7 +36,6 @@ NULL
 #' @importMethodsFrom syntactic camelCase kebabCase makeNames snakeCase
 #' upperCamelCase
 NULL
-
 
 
 ## Standard functions ==========================================================

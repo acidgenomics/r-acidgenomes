@@ -25,9 +25,7 @@
 #' )
 #' print(object)
 NcbiGeneInfo <- # nolint
-    function(organism,
-             taxonomicGroup = NULL,
-             refseqGeneSummary = FALSE) {
+    function(organism, taxonomicGroup = NULL, refseqGeneSummary = FALSE) {
         assert(
             hasInternet(),
             isOrganism(organism),
@@ -35,7 +33,10 @@ NcbiGeneInfo <- # nolint
             isFlag(refseqGeneSummary)
         )
         baseURL <- pasteUrl(
-            "ftp.ncbi.nlm.nih.gov", "gene", "DATA", "GENE_INFO",
+            "ftp.ncbi.nlm.nih.gov",
+            "gene",
+            "DATA",
+            "GENE_INFO",
             protocol = "https"
         )
         if (is.null(taxonomicGroup)) {
@@ -54,7 +55,8 @@ NcbiGeneInfo <- # nolint
         )
         alert(sprintf(
             "Downloading {.emph %s} gene info from NCBI at {.url %s}.",
-            organism, url
+            organism,
+            url
         ))
         df <- import(
             con = .cacheIt(url),
@@ -126,7 +128,6 @@ NcbiGeneInfo <- # nolint
         )
         new(Class = "NcbiGeneInfo", df)
     }
-
 
 
 #' Import RefSeq gene summary

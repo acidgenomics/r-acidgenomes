@@ -7,7 +7,6 @@
 }
 
 
-
 #' Generate SHA256 checksum from file
 #'
 #' @note Updated 2021-02-02.

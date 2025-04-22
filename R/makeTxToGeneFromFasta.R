@@ -86,8 +86,7 @@
 #' ## > t2g <- makeTxToGeneFromFasta(file)
 #' ## > print(t2g)
 makeTxToGeneFromFasta <-
-    function(file,
-             ignoreVersion = FALSE) {
+    function(file, ignoreVersion = FALSE) {
         assert(
             isString(file),
             isFlag(ignoreVersion)
@@ -97,7 +96,8 @@ makeTxToGeneFromFasta <-
         }
         alert(sprintf(
             "Making {.cls %s} from FASTA file ({.file %s}).",
-            "TxToGene", file
+            "TxToGene",
+            file
         ))
         lines <- import(con = .cacheIt(file), format = "lines")
         lines <- grep(pattern = "^>", x = lines, value = TRUE)
@@ -106,13 +106,15 @@ makeTxToGeneFromFasta <-
             msg = sprintf("Unsupported FASTA: {.file %s}.", basename(file))
         )
         lines <- substr(x = lines, start = 2L, stop = nchar(lines))
-        if (grepl(
-            pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
-                "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
-            ),
-            x = lines[[1L]]
-        )) {
+        if (
+            grepl(
+                pattern = paste0(
+                    "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
+                    "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
+                ),
+                x = lines[[1L]]
+            )
+        ) {
             ## GENCODE uses pipes to separate.
             ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
             ## Note that GRCh37 identifiers also contain "_".
@@ -120,10 +122,12 @@ makeTxToGeneFromFasta <-
             provider <- "GENCODE"
         } else if (grepl(pattern = "FlyBase", x = lines[[1L]])) {
             provider <- "FlyBase"
-        } else if (grepl(
-            pattern = "\\sgene=(WBGene[0-9]{8})$",
-            x = lines[[1L]]
-        )) {
+        } else if (
+            grepl(
+                pattern = "\\sgene=(WBGene[0-9]{8})$",
+                x = lines[[1L]]
+            )
+        ) {
             provider <- "WormBase"
         } else if (
             ## Homo sapiens uses "chromosome" whereas Drosophila melanogaster
@@ -133,31 +137,31 @@ makeTxToGeneFromFasta <-
                 x = lines[[1L]],
                 fixed = FALSE
             ) &&
-            grepl(
-                pattern = " gene:",
-                x = lines[[1L]],
-                fixed = TRUE
-            ) &&
-            grepl(
-                pattern = " gene_biotype:",
-                x = lines[[1L]],
-                fixed = TRUE
-            ) &&
-            grepl(
-                pattern = " transcript_biotype:",
-                x = lines[[1L]],
-                fixed = TRUE
-            ) &&
-            grepl(
-                pattern = " gene_symbol:",
-                x = lines[[1L]],
-                fixed = TRUE
-            ) &&
-            grepl(
-                pattern = " description:",
-                x = lines[[1L]],
-                fixed = TRUE
-            )
+                grepl(
+                    pattern = " gene:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " gene_biotype:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " transcript_biotype:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " gene_symbol:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " description:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                )
         ) {
             provider <- "Ensembl"
         } else {

@@ -17,7 +17,10 @@ NcbiGeneHistory <- # nolint
         taxId <- .mapOrganismToNcbiTaxId(organism)
         assert(isInt(taxId))
         url <- pasteUrl(
-            "ftp.ncbi.nlm.nih.gov", "gene", "DATA", "gene_history.gz",
+            "ftp.ncbi.nlm.nih.gov",
+            "gene",
+            "DATA",
+            "gene_history.gz",
             protocol = "https"
         )
         df <- import(

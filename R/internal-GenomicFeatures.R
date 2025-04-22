@@ -22,10 +22,12 @@
 #' gr <- .makeGRangesFromTxDb(object = txdb)
 #' print(gr)
 .makeGRangesFromTxDb <-
-    function(object,
-             level = c("transcripts", "genes", "exons", "cds"),
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        object,
+        level = c("transcripts", "genes", "exons", "cds"),
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             requireNamespaces("AnnotationDbi"),
             is(object, "TxDb"),
@@ -161,7 +163,6 @@
     }
 
 
-
 ## nolint start
 #' Make TxDb from a GFF/GTF file
 #'
@@ -225,10 +226,12 @@
             "(\\.gz)?$"
         )
     )
-    if (grepl(
-        pattern = denylist[["refseq_gtf"]],
-        x = basename(file)
-    )) {
+    if (
+        grepl(
+            pattern = denylist[["refseq_gtf"]],
+            x = basename(file)
+        )
+    ) {
         abort(sprintf(
             paste(
                 "Unsupported file: {.file %s}.",
@@ -240,8 +243,10 @@
     }
     alert(sprintf(
         "Making {.cls %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
-        "TxDb", file,
-        "GenomicFeatures", "makeTxDbFromGFF"
+        "TxDb",
+        file,
+        "GenomicFeatures",
+        "makeTxDbFromGFF"
     ))
     assert(requireNamespaces("GenomicFeatures"))
     if (isAFile(file)) {

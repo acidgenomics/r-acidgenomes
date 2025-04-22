@@ -33,9 +33,11 @@
 #' ## Spike-ins.
 #' emptyRanges("ERCC", seqname = "spike")
 emptyRanges <-
-    function(names,
-             seqname = c("unknown", "transgene", "spike"),
-             mcolnames = NULL) {
+    function(
+        names,
+        seqname = c("unknown", "transgene", "spike"),
+        mcolnames = NULL
+    ) {
         assert(
             isCharacter(names),
             isAny(mcolnames, c("character", "NULL"))

@@ -80,7 +80,6 @@
 }
 
 
-
 ## FIXME Harden this function against any random input, such as a txFasta.
 
 #' Get metadata about a GFF file
@@ -159,27 +158,37 @@
         quiet = TRUE
     )
     if (!isString(l[["provider"]])) {
-        if (isSubset(
-            x = c(
-                "genebuild-last-updated", "genome-build",
-                "genome-build-accession", "genome-version"
-            ),
-            y = df[["key"]]
-        )) {
+        if (
+            isSubset(
+                x = c(
+                    "genebuild-last-updated",
+                    "genome-build",
+                    "genome-build-accession",
+                    "genome-version"
+                ),
+                y = df[["key"]]
+            )
+        ) {
             l[["provider"]] <- "Ensembl"
-        } else if (grepl(
-            pattern = paste0(
-                "^(",
-                "ensGene", "|",
-                "knownGene", "|",
-                "ncbiRefSeq", "|",
-                ## Now seeing this in files as of 2023.
-                "ncbiRefSeq\\.[0-9]{4}-[0-9]{2}-[0-9]{2}", "|",
-                "refGene",
-                ")$"
-            ),
-            x = df2[[2L]][[1L]]
-        )) {
+        } else if (
+            grepl(
+                pattern = paste0(
+                    "^(",
+                    "ensGene",
+                    "|",
+                    "knownGene",
+                    "|",
+                    "ncbiRefSeq",
+                    "|",
+                    ## Now seeing this in files as of 2023.
+                    "ncbiRefSeq\\.[0-9]{4}-[0-9]{2}-[0-9]{2}",
+                    "|",
+                    "refGene",
+                    ")$"
+                ),
+                x = df2[[2L]][[1L]]
+            )
+        ) {
             l[["provider"]] <- "UCSC"
         } else if (identical("FlyBase", df2[[2L]][[1L]])) {
             ## FIXME This returns incorrectly for:
@@ -198,7 +207,8 @@
         } else {
             abort(sprintf(
                 "Failed to detect provider (e.g. {.val %s}) from {.file %s}.",
-                "Ensembl", basename(file)
+                "Ensembl",
+                basename(file)
             ))
         }
     }
@@ -232,7 +242,7 @@
                 )[1L, , drop = TRUE]
                 if (
                     !isString(l[["organism"]]) &&
-                    identical(x[[3L]], "dmel")
+                        identical(x[[3L]], "dmel")
                 ) {
                     l[["organism"]] <- "Drosophila melanogaster"
                 }
@@ -252,10 +262,12 @@
                 )[1L, , drop = TRUE]
                 if (!isScalar(l[["release"]])) {
                     l[["release"]] <- x[[3L]]
-                    if (grepl(
-                        pattern = "^[0-9]+",
-                        x = l[["release"]]
-                    )) {
+                    if (
+                        grepl(
+                            pattern = "^[0-9]+",
+                            x = l[["release"]]
+                        )
+                    ) {
                         l[["release"]] <-
                             as.integer(l[["release"]])
                     }
@@ -298,7 +310,7 @@
                 )[1L, , drop = TRUE]
                 if (
                     !isString(l[["organism"]]) &&
-                    identical(x[[3L]], "c_elegans")
+                        identical(x[[3L]], "c_elegans")
                 ) {
                     l[["organism"]] <- "Caenorhabditis elegans"
                 }
@@ -356,7 +368,6 @@
 }
 
 
-
 ## Updated 2023-12-04.
 .gffGenomeBuild <- function(df) {
     assert(is(df, "DFrame"))
@@ -404,7 +415,6 @@
 }
 
 
-
 ## Updated 2021-01-21.
 .gffFormat <- function(file) {
     ifelse(
@@ -417,7 +427,6 @@
         no = "GFF3"
     )
 }
-
 
 
 ## Updated 2021-01-22.
@@ -433,23 +442,24 @@
         return("GENCODE")
     } else if (isTRUE(grepl(pattern = "^NCBI", x = annoSource))) {
         return("RefSeq")
-    } else if (isSubset(
-        x = c(
-            "genebuild-last-updated",
-            "genome-build",
-            "genome-build-accession",
-            "genome-date",
-            "genome-version"
-        ),
-        y = df[["key"]]
-    )) {
+    } else if (
+        isSubset(
+            x = c(
+                "genebuild-last-updated",
+                "genome-build",
+                "genome-build-accession",
+                "genome-date",
+                "genome-version"
+            ),
+            y = df[["key"]]
+        )
+    ) {
         return("Ensembl")
     } else if (isTRUE(grepl(pattern = "^WS[0-9]+$", x = geneBuildVersion))) {
         return("WormBase")
     }
     NULL
 }
-
 
 
 #' Is the input GFF file supported in the package?
@@ -482,16 +492,20 @@
             "(\\.gz)?$"
         )
     )
-    if (grepl(
-        pattern = denylist[["flybase_gff"]],
-        x = basename(file)
-    )) {
+    if (
+        grepl(
+            pattern = denylist[["flybase_gff"]],
+            x = basename(file)
+        )
+    ) {
         alertWarning("Use FlyBase GTF instead of GFF.")
         return(FALSE)
-    } else if (grepl(
-        pattern = denylist[["wormbase_gff"]],
-        x = basename(file)
-    )) {
+    } else if (
+        grepl(
+            pattern = denylist[["wormbase_gff"]],
+            x = basename(file)
+        )
+    ) {
         alertWarning("Use WormBase GTF instead of GFF.")
         return(FALSE)
     }

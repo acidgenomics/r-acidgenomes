@@ -2,7 +2,6 @@
 ## FIXME Need to think of approach for dealing with this edge case.
 ## FIXME With GRCh37 112 update, we may be able to sunset legacy EnsDb.Hsapiens.v75 usage.
 
-
 ## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
@@ -103,18 +102,18 @@
 NULL
 ## nolint end
 
-
-
 #' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
 #' querying AnnotationHub.
 #' @export
 makeGRangesFromEnsembl <-
-    function(organism,
-             level = c("genes", "transcripts", "exons"),
-             genomeBuild = NULL,
-             release = NULL,
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        organism,
+        level = c("genes", "transcripts", "exons"),
+        genomeBuild = NULL,
+        release = NULL,
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             isFlag(ignoreVersion),
             isFlag(extraMcols)
@@ -142,7 +141,6 @@ makeGRangesFromEnsembl <-
     }
 
 
-
 #' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
 #' annotation source. Alternatively, can pass in an EnsDb package name as
 #' a `character(1)`.
@@ -152,10 +150,12 @@ makeGRangesFromEnsembl <-
 #' `EnsDb` object or name of specific annotation package containing a
 #' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
 makeGRangesFromEnsDb <-
-    function(object,
-             level = c("genes", "transcripts", "exons"),
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        object,
+        level = c("genes", "transcripts", "exons"),
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             requireNamespaces("ensembldb"),
             isFlag(ignoreVersion),

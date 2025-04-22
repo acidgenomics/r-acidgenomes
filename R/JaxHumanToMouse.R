@@ -35,8 +35,13 @@ JaxHumanToMouse <- # nolint
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df))
         cols <- c(
-            "dbClassKey", "entrezGeneId", "hgncId", "ncbiTaxonId",
-            "mouseMgiId", "omimGeneId", "symbol"
+            "dbClassKey",
+            "entrezGeneId",
+            "hgncId",
+            "ncbiTaxonId",
+            "mouseMgiId",
+            "omimGeneId",
+            "symbol"
         )
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols, drop = FALSE]

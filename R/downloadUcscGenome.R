@@ -1,7 +1,5 @@
 ## FIXME Add support for downloading exons.
 
-
-
 ## nolint start
 #' Download UCSC reference genome
 #'
@@ -50,10 +48,7 @@
 #' ## > downloadUcscGenome(organism = "Homo sapiens")
 ## nolint end
 downloadUcscGenome <-
-    function(organism,
-             genomeBuild = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(organism, genomeBuild = NULL, outputDir = getwd(), cache = FALSE) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -87,7 +82,10 @@ downloadUcscGenome <-
         )
         releaseUrl <- pasteUrl(baseUrl, genomeBuild, "bigZips")
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "ucsc", release
+            organism,
+            genomeBuild,
+            "ucsc",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -95,8 +93,10 @@ downloadUcscGenome <-
                 "Downloading UCSC genome for {.emph %s}",
                 "%s from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild,
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -136,13 +136,9 @@ downloadUcscGenome <-
     }
 
 
-
 ## Updated 2023-11-22.
 .downloadUcscAnnotation <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         genesUrl <- pasteUrl(releaseUrl, "genes")
         urls <- c(
             "readme" = pasteUrl(genesUrl, "README.txt"),
@@ -200,14 +196,10 @@ downloadUcscGenome <-
     }
 
 
-
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
 ## Updated 2022-05-24.
 .downloadUcscGenome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         isHuman <- grepl(pattern = "^hg[0-9]+$", x = genomeBuild)
         latestUrl <- ifelse(
             test = isHuman,
@@ -233,7 +225,9 @@ downloadUcscGenome <-
             urls <- c(
                 urls,
                 "latestVersion" = pasteUrl(
-                    releaseUrl, "latest", "LATEST_VERSION"
+                    releaseUrl,
+                    "latest",
+                    "LATEST_VERSION"
                 )
             )
         }
@@ -263,12 +257,9 @@ downloadUcscGenome <-
     }
 
 
-
 ## Updated 2021-08-03.
 .downloadUcscMetadata <-
-    function(outputDir,
-             releaseUrl,
-             cache) {
+    function(outputDir, releaseUrl, cache) {
         urls <- c("readme" = pasteUrl(releaseUrl, "README.txt"))
         files <- .downloadUrls(
             urls = urls,
@@ -279,12 +270,9 @@ downloadUcscGenome <-
     }
 
 
-
 ## Updated 2022-05-24.
 .downloadUcscTranscriptome <-
-    function(outputDir,
-             releaseUrl,
-             cache) {
+    function(outputDir, releaseUrl, cache) {
         urls <- c(
             "mrna" = pasteUrl(releaseUrl, "mrna.fa.gz"),
             "mrnaChecksum" = pasteUrl(releaseUrl, "mrna.fa.gz.md5"),
