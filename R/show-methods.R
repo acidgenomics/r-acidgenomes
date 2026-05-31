@@ -16,11 +16,11 @@ NULL
     showHeader(object)
     meta <- metadata(object)
     showSlotInfo(list(
-        "organism" = meta[["organism"]],
-        "genomeBuild" = meta[["genomeBuild"]],
-        "release" = meta[["release"]],
-        "ignoreVersion" = meta[["ignoreVersion"]],
-        "names" = names(object)
+        organism = meta[["organism"]],
+        genomeBuild = meta[["genomeBuild"]],
+        release = meta[["release"]],
+        ignoreVersion = meta[["ignoreVersion"]],
+        names = names(object)
     ))
 }
 

@@ -37,11 +37,11 @@ mapRnacentral <- function(organism, database) {
     )
     database <- switch(
         EXPR = database,
-        "Ensembl" = "ensembl",
-        "GENCODE" = "ensembl_gencode",
-        "HGNC" = "hgnc",
-        "MGI" = "mgi",
-        "RefSeq" = "refseq"
+        Ensembl = "ensembl",
+        GENCODE = "ensembl_gencode",
+        HGNC = "hgnc",
+        MGI = "mgi",
+        RefSeq = "refseq"
     )
     taxId <- .mapOrganismToNcbiTaxId(organism)
     url <- pasteUrl(
@@ -79,10 +79,10 @@ mapRnacentral <- function(organism, database) {
     df <- df[i, , drop = FALSE]
     df <- as(df, "DFrame")
     metadata(df) <- list(
-        "database" = database,
-        "date" = Sys.Date(),
-        "organism" = organism,
-        "url" = url
+        database = database,
+        date = Sys.Date(),
+        organism = organism,
+        url = url
     )
     df
 }

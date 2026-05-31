@@ -1,8 +1,8 @@
 args <- list(
-    "file" = file.path(cacheDir, "tx2gene.csv"),
-    "organism" = "Homo sapiens",
-    "genomeBuild" = "GRCh38",
-    "release" = 100L
+    file = file.path(cacheDir, "tx2gene.csv"),
+    organism = "Homo sapiens",
+    genomeBuild = "GRCh38",
+    release = 100L
 )
 
 test_that("No version stripping", {
@@ -11,17 +11,18 @@ test_that("No version stripping", {
         args = append(
             x = args,
             values = list(
-                "ignoreVersion" = c("tx" = FALSE, "gene" = FALSE)
+                ignoreVersion = c(tx = FALSE, gene = FALSE)
             )
         )
     )
     expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 10L)
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "txId" = "ENST00000415118.1",
-            "geneId" = "ENSG00000223997.1"
+            stringsAsFactors = FALSE,
+            txId = "ENST00000415118.1",
+            geneId = "ENSG00000223997.1"
         )
     )
 })
@@ -32,17 +33,18 @@ test_that("Strip transcript and gene versions", {
         args = append(
             x = args,
             values = list(
-                "ignoreVersion" = c("tx" = TRUE, "gene" = TRUE)
+                ignoreVersion = c(tx = TRUE, gene = TRUE)
             )
         )
     )
     expect_s4_class(object, "TxToGene")
     expect_identical(nrow(object), 10L)
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "txId" = "ENST00000415118",
-            "geneId" = "ENSG00000223997"
+            stringsAsFactors = FALSE,
+            txId = "ENST00000415118",
+            geneId = "ENSG00000223997"
         )
     )
 })

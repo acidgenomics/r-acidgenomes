@@ -102,9 +102,9 @@ downloadUcscGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "outputDir" = outputDir,
-            "releaseUrl" = releaseUrl,
-            "cache" = cache
+            outputDir = outputDir,
+            releaseUrl = releaseUrl,
+            cache = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -112,7 +112,7 @@ downloadUcscGenome <-
             do.call(what = .downloadUcscMetadata, args = args)
         info[["transcriptome"]] <-
             do.call(what = .downloadUcscTranscriptome, args = args)
-        args <- append(x = args, values = list("genomeBuild" = genomeBuild))
+        args <- append(x = args, values = list(genomeBuild = genomeBuild))
         info[["genome"]] <-
             do.call(what = .downloadUcscGenome, args = args)
         info[["annotation"]] <-
@@ -139,12 +139,12 @@ downloadUcscGenome <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         genesUrl <- pasteUrl(releaseUrl, "genes")
         urls <- c(
-            "readme" = pasteUrl(genesUrl, "README.txt"),
-            "knownGene" = pasteUrl(
+            readme = pasteUrl(genesUrl, "README.txt"),
+            knownGene = pasteUrl(
                 genesUrl,
                 paste0(genomeBuild, ".knownGene.gtf.gz")
             ),
-            "ncbiRefSeq" = pasteUrl(
+            ncbiRefSeq = pasteUrl(
                 genesUrl,
                 paste0(genomeBuild, ".ncbiRefSeq.gtf.gz")
             )
@@ -195,7 +195,7 @@ downloadUcscGenome <-
             con = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["tx2gene"]] <- t2gFile
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -210,24 +210,24 @@ downloadUcscGenome <-
             no = releaseUrl
         )
         urls <- c(
-            "chromAlias" = pasteUrl(
+            chromAlias = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, ".chromAlias.txt")
             ),
-            "chromSizes" = pasteUrl(
+            chromSizes = pasteUrl(
                 latestUrl,
                 paste0(genomeBuild, ".chrom.sizes")
             ),
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 latestUrl,
                 paste0(genomeBuild, ".fa.gz")
             ),
-            "md5sum" = pasteUrl(latestUrl, "md5sum.txt")
+            md5sum = pasteUrl(latestUrl, "md5sum.txt")
         )
         if (identical(genomeBuild, "hg38")) {
             urls <- c(
                 urls,
-                "latestVersion" = pasteUrl(
+                latestVersion = pasteUrl(
                     releaseUrl,
                     "latest",
                     "LATEST_VERSION"
@@ -256,20 +256,20 @@ downloadUcscGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
 ## Updated 2021-08-03.
 .downloadUcscMetadata <-
     function(outputDir, releaseUrl, cache) {
-        urls <- c("readme" = pasteUrl(releaseUrl, "README.txt"))
+        urls <- c(readme = pasteUrl(releaseUrl, "README.txt"))
         files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -277,10 +277,10 @@ downloadUcscGenome <-
 .downloadUcscTranscriptome <-
     function(outputDir, releaseUrl, cache) {
         urls <- c(
-            "mrna" = pasteUrl(releaseUrl, "mrna.fa.gz"),
-            "mrnaChecksum" = pasteUrl(releaseUrl, "mrna.fa.gz.md5"),
-            "refMrna" = pasteUrl(releaseUrl, "refMrna.fa.gz"),
-            "refMrnaChecksum" = pasteUrl(releaseUrl, "refMrna.fa.gz.md5")
+            mrna = pasteUrl(releaseUrl, "mrna.fa.gz"),
+            mrnaChecksum = pasteUrl(releaseUrl, "mrna.fa.gz.md5"),
+            refMrna = pasteUrl(releaseUrl, "refMrna.fa.gz"),
+            refMrnaChecksum = pasteUrl(releaseUrl, "refMrna.fa.gz.md5")
         )
         files <- .downloadUrls(
             urls = urls,
@@ -304,5 +304,5 @@ downloadUcscGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }

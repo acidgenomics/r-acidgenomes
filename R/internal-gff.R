@@ -148,7 +148,7 @@
         nMax = 1000L,
         quiet = TRUE
     )
-    lines <- lines[!grepl(pattern = "^#", x = lines)]
+    lines <- lines[!startsWith(lines, "#")]
     df2 <- import(
         con = textConnection(lines),
         format = "tsv",
@@ -215,14 +215,14 @@
     assert(isString(pattern))
     switch(
         EXPR = l[["provider"]],
-        "Ensembl" = {
+        Ensembl = {
             if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                 x <- strMatch(
                     x = basename(file),
                     pattern = pattern
                 )[1L, , drop = TRUE]
                 if (!isOrganism(l[["organism"]])) {
-                    l[["organism"]] <- gsub("_", " ", x[[3L]])
+                    l[["organism"]] <- gsub("_", " ", x[[3L]], fixed = TRUE)
                 }
                 if (!isString(l[["genomeBuild"]])) {
                     l[["genomeBuild"]] <- x[[4L]]
@@ -232,7 +232,7 @@
                 }
             }
         },
-        "FlyBase" = {
+        FlyBase = {
             if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                 x <- strMatch(
                     x = basename(file),
@@ -252,7 +252,7 @@
                 }
             }
         },
-        "GENCODE" = {
+        GENCODE = {
             if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
                 x <- strMatch(
                     x = basename(file),
@@ -272,7 +272,7 @@
                 }
             }
         },
-        "RefSeq" = {
+        RefSeq = {
             if (!isScalar(l[["release"]])) {
                 ## e.g. "109.20190125".
                 l[["release"]] <- strMatch(
@@ -285,7 +285,7 @@
                 )[1L, 2L]
             }
         },
-        "UCSC" = {
+        UCSC = {
             if (!isString(l[["genomeBuild"]])) {
                 l[["genomeBuild"]] <- strMatch(
                     x = basename(file),
@@ -293,7 +293,7 @@
                 )[1L, 3L]
             }
         },
-        "WormBase" = {
+        WormBase = {
             if (!isString(l[["release"]])) {
                 l[["release"]] <- df[
                     df[["key"]] == "genebuild-version",
@@ -347,7 +347,7 @@
     ## Genome-specific organism workarounds.
     if (
         !isOrganism(l[["organism"]]) &&
-            any(grepl(pattern = "gene_source \"sgd\"", x = lines))
+            any(grepl("gene_source \"sgd\"", x = lines, fixed = TRUE))
     ) {
         l[["organism"]] <- "Saccharomyces cerevisiae"
     }
@@ -403,7 +403,7 @@
     }
     x <- .getValue(key = "genome-build", df = df)
     if (isString(x)) {
-        if (isTRUE(grepl(pattern = " ", x = x))) {
+        if (isTRUE(grepl(" ", x = x, fixed = TRUE))) {
             x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]]
             x <- x[length(x)]
         }
@@ -438,7 +438,7 @@
         df[df[["key"]] == "provider", "value", drop = TRUE]
     if (identical(provider, "GENCODE")) {
         return("GENCODE")
-    } else if (isTRUE(grepl(pattern = "^NCBI", x = annoSource))) {
+    } else if (isTRUE(startsWith(annoSource, "NCBI"))) {
         return("RefSeq")
     } else if (
         isSubset(
@@ -472,7 +472,7 @@
         return(FALSE)
     }
     denylist <- c(
-        "flybase_gff" = paste0(
+        flybase_gff = paste0(
             "^([a-z0-9]+_)?",
             "^([^-]+)",
             "-([^-]+)",
@@ -480,7 +480,7 @@
             "\\.gff",
             "(\\.gz)?$"
         ),
-        "wormbase_gff" = paste0(
+        wormbase_gff = paste0(
             "^([a-z0-9]+_)?",
             "^([a-z]_[a-z]+)",
             "\\.([A-Z0-9]+)",

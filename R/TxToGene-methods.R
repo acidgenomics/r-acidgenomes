@@ -75,7 +75,7 @@ NULL
             all(complete.cases(object)),
             hasNoDuplicates(object[["txId"]])
         )
-        object <- object[order(object), , drop = FALSE]
+        object <- sort(object)
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]

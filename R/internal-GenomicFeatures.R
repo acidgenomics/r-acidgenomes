@@ -37,10 +37,10 @@
         level <- match.arg(level)
         cols <- AnnotationDbi::columns(object)
         colsList <- list(
-            "cds" = grep(pattern = "^CDS", x = cols, value = TRUE),
-            "exons" = grep(pattern = "^EXON", x = cols, value = TRUE),
-            "genes" = grep(pattern = "^GENE", x = cols, value = TRUE),
-            "transcripts" = grep(pattern = "^TX", x = cols, value = TRUE)
+            cds = grep(pattern = "^CDS", x = cols, value = TRUE),
+            exons = grep(pattern = "^EXON", x = cols, value = TRUE),
+            genes = grep(pattern = "^GENE", x = cols, value = TRUE),
+            transcripts = grep(pattern = "^TX", x = cols, value = TRUE)
         )
         colsList[["cds"]] <-
             c(colsList[["cds"]], colsList[["genes"]])
@@ -62,16 +62,16 @@
         columns <- colsList[[level]]
         assert(isCharacter(columns))
         args <- list(
-            "x" = object,
-            "columns" = columns
+            x = object,
+            columns = columns
         )
         switch(
             EXPR = level,
-            "genes" = {
+            genes = {
                 args <- append(
                     x = args,
                     values = list(
-                        "single.strand.genes.only" = TRUE
+                        single.strand.genes.only = TRUE
                     )
                 )
             }
@@ -99,7 +99,7 @@
             ## Ensure "rna-" prefix is correctly removed from identifiers.
             ## This is not currently handled correctly for RefSeq input.
             ## (e.g. "rna-MIR1302-2", "rna-TRNP", etc.).
-            if (any(grepl(pattern = "^rna-", x = mcols(gr)[["tx_id"]]))) {
+            if (any(startsWith(mcols(gr)[["tx_id"]], "rna-"))) {
                 mcols(gr)[["tx_id"]] <-
                     gsub(
                         pattern = "^rna-",
@@ -107,7 +107,7 @@
                         x = mcols(gr)[["tx_id"]]
                     )
             }
-            if (any(grepl(pattern = "^rna-", x = mcols(gr)[["tx_name"]]))) {
+            if (any(startsWith(mcols(gr)[["tx_name"]], "rna-"))) {
                 mcols(gr)[["tx_name"]] <-
                     gsub(
                         pattern = "^rna-",
@@ -217,7 +217,7 @@
     ## Check for input of unsupported files.
     ## See `.gffPatterns` for details.
     denylist <- c(
-        "refseq_gtf" = paste0(
+        refseq_gtf = paste0(
             "^([0-9a-z]_)?",
             "(GC[AF]_[0-9]+\\.[0-9]+)",
             "_([^_]+)",
@@ -260,14 +260,14 @@
     ## builds. Note that it's currently out of date with GRCh38.
     ## https://github.com/Bioconductor/GenomicFeatures/issues/27
     args <- list(
-        "file" = .cacheIt(file),
-        "dataSource" = file,
-        "organism" = meta[["organism"]]
+        file = .cacheIt(file),
+        dataSource = file,
+        organism = meta[["organism"]]
     )
     if (!is.null(seqinfo)) {
-        args <- append(x = args, values = list("chrominfo" = seqinfo))
+        args <- append(x = args, values = list(chrominfo = seqinfo))
     }
-    what <- GenomicFeatures::makeTxDbFromGFF
+    what <- get("makeTxDbFromGFF", envir = asNamespace("GenomicFeatures"))
     quietly({
         txdb <- do.call(what = what, args = args)
     })

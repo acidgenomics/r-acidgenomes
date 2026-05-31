@@ -24,7 +24,7 @@
         gr <- import(con = .cacheIt(file))
         assert(is(gr, "GRanges"))
         format <- ifelse(
-            test = grepl(pattern = "GTF", x = meta[["format"]]),
+            test = grepl("GTF", x = meta[["format"]], fixed = TRUE),
             yes = "GTF",
             no = "GFF"
         )
@@ -54,7 +54,7 @@
                 abort(sprintf("Unsupported GFF: {.file %s}.", basename(file)))
             }
         )
-        gr <- do.call(what = what, args = list("object" = gr))
+        gr <- do.call(what = what, args = list(object = gr))
         metadata(gr) <- meta
         seqinfo <- .getSeqinfo(meta)
         if (is(seqinfo, "Seqinfo")) {
@@ -618,7 +618,7 @@
         args = strsplit(x = ncbiGeneIds, split = ":", fixed = TRUE)
     )[, 2L]
     ncbiGeneIds <- as.integer(ncbiGeneIds)
-    df <- DataFrame("ID" = geneIds, "ncbi_gene_id" = ncbiGeneIds)
+    df <- DataFrame(ID = geneIds, ncbi_gene_id = ncbiGeneIds)
     df <- df[complete.cases(df), , drop = FALSE]
     df <- unique(df)
     assert(hasNoDuplicates(df[["ID"]]))
@@ -642,7 +642,7 @@
         pattern = "GeneID:([[:digit:]]+)"
     )[, 2L]
     ncbiGeneIds <- as.integer(ncbiGeneIds)
-    df <- DataFrame("gene_id" = geneIds, "ncbi_gene_id" = ncbiGeneIds)
+    df <- DataFrame(gene_id = geneIds, ncbi_gene_id = ncbiGeneIds)
     df <- df[complete.cases(df), ]
     df
 }
@@ -676,7 +676,7 @@
         ncbiGeneIds <- do.call(
             what = rbind,
             args = strsplit(
-                x = ncbiGeneIds[grepl(pattern = "^GeneID:", x = ncbiGeneIds)],
+                x = ncbiGeneIds[startsWith(ncbiGeneIds, "GeneID:")],
                 split = ":",
                 fixed = TRUE
             )
@@ -764,9 +764,9 @@
         names(mcols(object))[names(mcols(object)) == "ID"] <- "parent_gene_id"
         assert(hasNoDuplicates(mcols(object)[["parent_gene_id"]]))
         names(mcols(object))[names(mcols(object)) == "gene"] <- "gene_id"
-        assert(all(grepl(
-            pattern = "^gene-",
-            x = mcols(object)[["parent_gene_id"]]
+        assert(all(startsWith(
+            mcols(object)[["parent_gene_id"]],
+            "gene-"
         )))
         mcols(object)[["parent_gene_id"]] <- gsub(
             pattern = "^gene-",
@@ -866,7 +866,7 @@
         keep <- bapply(
             X = mcols(object)[["Parent"]],
             FUN = function(x) {
-                any(grepl(pattern = "^gene-", x = x))
+                any(startsWith(x, "gene-"))
             }
         )
         assert(
@@ -987,7 +987,9 @@
 ## Updated 2023-12-20.
 .rtracklayerWormbaseExonsGff <-
     function(object) {
+        ## nolint start
         stop("Exon parsing from WormBase GFF3 is not yet supported.")
+        ## nolint end
     }
 
 

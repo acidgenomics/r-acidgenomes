@@ -121,21 +121,21 @@ goTermsPerGeneName <-
                 X = spl,
                 FUN = function(x) {
                     idx <- list(
-                        "bp" = which(x[["goCategory"]] == "BP"),
-                        "cc" = which(x[["goCategory"]] == "CC"),
-                        "mf" = which(x[["goCategory"]] == "MF")
+                        bp = which(x[["goCategory"]] == "BP"),
+                        cc = which(x[["goCategory"]] == "CC"),
+                        mf = which(x[["goCategory"]] == "MF")
                     )
                     out <- DataFrame(
-                        "geneName" = x[["geneName"]][[1L]],
-                        "goBp" = I(list(paste(
+                        geneName = x[["geneName"]][[1L]],
+                        goBp = I(list(paste(
                             x[["goId"]][idx[["bp"]]],
                             x[["goName"]][idx[["bp"]]]
                         ))),
-                        "goCc" = I(list(paste(
+                        goCc = I(list(paste(
                             x[["goId"]][idx[["cc"]]],
                             x[["goName"]][idx[["cc"]]]
                         ))),
-                        "goMf" = I(list(paste(
+                        goMf = I(list(paste(
                             x[["goId"]][idx[["mf"]]],
                             x[["goName"]][idx[["mf"]]]
                         )))
@@ -154,11 +154,11 @@ goTermsPerGeneName <-
             df <- spl
         }
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "format" = format,
-            "geneNames" = geneNames,
-            "organism" = organism,
-            "url" = url
+            date = Sys.Date(),
+            format = format,
+            geneNames = geneNames,
+            organism = organism,
+            url = url
         )
         df
     }

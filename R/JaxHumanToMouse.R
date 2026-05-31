@@ -112,12 +112,12 @@ JaxHumanToMouse <- # nolint
         j <- sort(colnames(df))
         df <- df[i, j, drop = FALSE]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
-            "mouseDupes" = sort(dupes(mm[["mouseGeneName"]])),
-            "packageVersion" = .pkgVersion,
-            "unique" = unique,
-            "url" = url
+            date = Sys.Date(),
+            humanDupes = sort(dupes(hs[["humanGeneName"]])),
+            mouseDupes = sort(dupes(mm[["mouseGeneName"]])),
+            packageVersion = .pkgVersion,
+            unique = unique,
+            url = url
         )
         new(Class = "JaxHumanToMouse", df)
     }

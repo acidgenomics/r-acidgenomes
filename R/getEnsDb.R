@@ -33,16 +33,10 @@ getEnsDb <-
             isString(genomeBuild, nullOk = TRUE),
             isInt(release, nullOk = TRUE)
         )
-        organism <- gsub(
-            pattern = "_",
-            replacement = " ",
-            x = makeNames(organism)
-        )
-        if (
-            identical(tolower(organism), "homo sapiens") &&
-                (identical(tolower(as.character(genomeBuild)), "grch37") ||
-                    identical(release, 75L))
-        ) {
+        organism <- gsub("_", " ", x = makeNames(organism), fixed = TRUE)
+        grch37 <- identical(tolower(as.character(genomeBuild)), "grch37") ||
+            identical(release, 75L)
+        if (identical(tolower(organism), "homo sapiens") && grch37) {
             id <- "EnsDb.Hsapiens.v75"
             edb <- .getEnsDbFromPackage(package = id)
         } else {

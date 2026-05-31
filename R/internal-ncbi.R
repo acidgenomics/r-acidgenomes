@@ -11,14 +11,14 @@
         mode <- match.arg(mode)
         baseUrl <- switch(
             EXPR = mode,
-            "geneInfo" = pasteUrl(
+            geneInfo = pasteUrl(
                 "ftp.ncbi.nlm.nih.gov",
                 "gene",
                 "DATA",
                 "GENE_INFO",
                 protocol = "ftp"
             ),
-            "refseq" = pasteUrl(
+            refseq = pasteUrl(
                 "ftp.ncbi.nlm.nih.gov",
                 "genomes",
                 "refseq",
@@ -38,8 +38,8 @@
         ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Mammalia",
-                "refseq" = "vertebrate_mammalian"
+                geneInfo = "Mammalia",
+                refseq = "vertebrate_mammalian"
             ))
         } else if (
             isSubset(
@@ -52,8 +52,8 @@
         ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Invertebrates",
-                "refseq" = "invertebrate"
+                geneInfo = "Invertebrates",
+                refseq = "invertebrate"
             ))
         } else if (
             isSubset(
@@ -63,8 +63,8 @@
         ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Fungi",
-                "refseq" = "fungi"
+                geneInfo = "Fungi",
+                refseq = "fungi"
             ))
         }
         alertWarning(sprintf(
@@ -79,8 +79,8 @@
         x <- getUrlDirList(url = baseUrl)
         pattern <- switch(
             EXPR = mode,
-            "geneInfo" = "^[A-Z][A-Za-z_-]+$",
-            "refseq" = "^[a-z_]+$"
+            geneInfo = "^[A-Z][A-Za-z_-]+$",
+            refseq = "^[a-z_]+$"
         )
         keep <- grepl(pattern = pattern, x = x)
         groups <- sort(x[keep])
@@ -93,7 +93,7 @@
                 x <- getUrlDirList(url = url)
                 switch(
                     EXPR = mode,
-                    "geneInfo" = {
+                    geneInfo = {
                         keep <- grepl(
                             pattern = "^[A-Z][a-z]+_[a-z]+\\.gene_info\\.gz$",
                             x = x
@@ -105,7 +105,7 @@
                             x = x
                         )
                     },
-                    "refseq" = {
+                    refseq = {
                         keep <- grepl(
                             pattern = "^[A-Z][a-z]+_[a-z]+$",
                             x = x
@@ -120,7 +120,7 @@
         names(list) <- groups
         match <- vapply(
             X = list,
-            organism = gsub(pattern = " ", replacement = "_", x = organism),
+            organism = gsub(" ", "_", x = organism, fixed = TRUE),
             FUN = function(strings, organism) {
                 isSubset(x = organism, y = strings)
             },
@@ -190,7 +190,7 @@
             x = sub(pattern = "^#\\s", replacement = "", x = lines[[1L]]),
             split = "\\t"
         )[[1L]]
-        values <- strsplit(x = lines[[2L]], split = "\\t")[[1L]]
+        values <- strsplit(x = lines[[2L]], split = "	", fixed = TRUE)[[1L]]
         x <- as.character(values[seq_len(20L)])
         names(x) <- names[seq_len(20L)]
         x <- x[nzchar(x)]
@@ -237,10 +237,10 @@
         url <- pasteUrl(
             baseUrl,
             taxonomicGroup,
-            gsub(pattern = " ", replacement = "_", x = organism)
+            gsub(" ", "_", x = organism, fixed = TRUE)
         )
         if (isFALSE(quiet)) {
-            dl(c("URL" = url))
+            dl(c(URL = url))
         }
         url
     }
@@ -341,7 +341,7 @@
     colnames <- comments[length(comments)]
     assert(isMatchingFixed(x = colnames, pattern = "\t"))
     colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
-    colnames <- strsplit(colnames, split = "\t")[[1L]]
+    colnames <- strsplit(colnames, split = "\t", fixed = TRUE)[[1L]]
     colnames <- camelCase(colnames, strict = TRUE)
     seqnames <- ifelse(
         test = ucsc,
@@ -349,8 +349,8 @@
         no = "refSeqAccn"
     )
     whatCols <- c(
-        "seqnames" = seqnames,
-        "seqlengths" = "sequenceLength"
+        seqnames = seqnames,
+        seqlengths = "sequenceLength"
     )
     assert(isSubset(whatCols, colnames))
     ## NOTE `data.table::fread` doesn't currently support comment exclusion,

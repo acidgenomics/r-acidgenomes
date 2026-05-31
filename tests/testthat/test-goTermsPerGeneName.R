@@ -7,12 +7,13 @@ test_that("Homo sapiens : long", {
     expect_s4_class(object, "DFrame")
     expect_null(rownames(object))
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "geneName" = "NFE2L2",
-            "goCategory" = "BP",
-            "goId" = "GO:0002931",
-            "goName" = "response to ischemia"
+            stringsAsFactors = FALSE,
+            geneName = "NFE2L2",
+            goCategory = "BP",
+            goId = "GO:0002931",
+            goName = "response to ischemia"
         )
     )
 })
@@ -27,12 +28,13 @@ test_that("Homo sapiens : split", {
     expect_length(object, 2L)
     expect_named(object, c("NFE2L2", "MTOR"))
     expect_identical(
-        object = as.data.frame(object[[1L]][1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[[1L]][1L, ]),
         expected = data.frame(
-            "geneName" = "NFE2L2",
-            "goCategory" = "BP",
-            "goId" = "GO:0002931",
-            "goName" = "response to ischemia"
+            stringsAsFactors = FALSE,
+            geneName = "NFE2L2",
+            goCategory = "BP",
+            goId = "GO:0002931",
+            goName = "response to ischemia"
         )
     )
 })

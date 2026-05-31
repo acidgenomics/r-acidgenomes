@@ -48,8 +48,8 @@ mapGoTerms <- function() {
     df <- sort(df)
     rownames(df) <- NULL
     metadata(df) <- list(
-        "date" = Sys.Date(),
-        "url" = url
+        date = Sys.Date(),
+        url = url
     )
     df
 }

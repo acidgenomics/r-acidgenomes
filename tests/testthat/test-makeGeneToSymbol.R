@@ -11,7 +11,7 @@ test_that("EnsDb : unmodified", {
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 63677L)
     expect_identical(
-        object = as.data.frame(object)[
+        object = as.data.frame(stringsAsFactors = FALSE, object)[
             c(
                 "ENSG00000225989",
                 "ENSG00000238602",
@@ -20,13 +20,14 @@ test_that("EnsDb : unmodified", {
             ),
         ],
         expected = data.frame(
-            "geneId" = c(
+            stringsAsFactors = FALSE,
+            geneId = c(
                 "ENSG00000225989",
                 "ENSG00000238602",
                 "ENSG00000254144",
                 "ENSG00000273195"
             ),
-            "geneName" = c(
+            geneName = c(
                 "ABCF1",
                 "5S_rRNA",
                 "7SK",
@@ -55,7 +56,7 @@ test_that("EnsDb : makeUnique", {
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 63677L)
     expect_identical(
-        object = as.data.frame(object)[
+        object = as.data.frame(stringsAsFactors = FALSE, object)[
             c(
                 "ENSG00000225989",
                 "ENSG00000238602",
@@ -64,13 +65,14 @@ test_that("EnsDb : makeUnique", {
             ),
         ],
         expected = data.frame(
-            "geneId" = c(
+            stringsAsFactors = FALSE,
+            geneId = c(
                 "ENSG00000225989",
                 "ENSG00000238602",
                 "ENSG00000254144",
                 "ENSG00000273195"
             ),
-            "geneName" = c(
+            geneName = c(
                 "ABCF1.2",
                 "5S_rRNA.2",
                 "7SK.2",
@@ -99,7 +101,7 @@ test_that("EnsDb : 1:1", {
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 56638L)
     expect_identical(
-        object = as.data.frame(object)[
+        object = as.data.frame(stringsAsFactors = FALSE, object)[
             c(
                 "ENSG00000197953",
                 "ENSG00000251595",
@@ -108,13 +110,14 @@ test_that("EnsDb : 1:1", {
             ),
         ],
         expected = data.frame(
-            "geneId" = c(
+            stringsAsFactors = FALSE,
+            geneId = c(
                 "ENSG00000197953",
                 "ENSG00000251595",
                 "ENSG00000260053",
                 "ENSG00000073734"
             ),
-            "geneName" = c(
+            geneName = c(
                 "AADACL2",
                 "ABCA11P",
                 "ABCB10P4",

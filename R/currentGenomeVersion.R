@@ -90,7 +90,7 @@ currentGencodeVersion <-
         )
         url <- paste0(url, "/", shortName, "/")
         x <- RCurl::getURL(url)
-        x <- strsplit(x = x, split = "\n")[[1L]]
+        x <- strsplit(x = x, split = "\n", fixed = TRUE)[[1L]]
         x <- grep(
             pattern = paste0("^<h1>", pattern),
             x = x,
