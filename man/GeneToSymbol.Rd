@@ -61,11 +61,11 @@ data(GRanges, package = "AcidTest")
 
 ## DFrame ====
 df <- S4Vectors::DataFrame(
-    "geneId" = c(
+    geneId = c(
         "ENSG00000228572.7",
         "ENSG00000182378.14"
     ),
-    "geneName" = c(
+    geneName = c(
         "AL954722.1",
         "PLCXD1"
     )

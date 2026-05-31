@@ -137,3 +137,182 @@
     )
     do.call(what = DataFrame, args = args)
 }
+
+
+#' Generate chromosome sizes file from a genome FASTA
+#'
+#' Produces a 2-column tab-delimited file (seqname, length) suitable for use
+#' with kallisto index `--genomebam` / `--chromosomes` and similar tools.
+#' Parses FASTA headers from the compressed file using only base R connections.
+#'
+#' @note Updated 2026-05-31.
+#' @noRd
+#'
+#' @param fastaFile `character(1)`.
+#' Path to a genome FASTA file (`.fa.gz` or `.fa`).
+#'
+#' @param outputDir `character(1)`.
+#' Output directory where `chrom.sizes` will be written.
+#'
+#' @return Invisible `character(1)`. Path to the written `chrom.sizes` file.
+.generateChromSizes <- function(fastaFile, outputDir) {
+    assert(
+        isAFile(fastaFile),
+        isString(outputDir)
+    )
+    alert("Generating chromosome sizes file for kallisto.")
+    con <- if (endsWith(fastaFile, ".gz")) {
+        gzcon(file(fastaFile, open = "rb"))
+    } else {
+        file(fastaFile, open = "r")
+    }
+    on.exit(close(con), add = TRUE)
+    seqNames <- character(0L)
+    seqLengths <- integer(0L)
+    currentSeq <- NULL
+    currentLen <- 0L
+    repeat {
+        line <- readLines(con = con, n = 1L, warn = FALSE)
+        if (length(line) == 0L) {
+            break
+        }
+        if (startsWith(line, ">")) {
+            if (!is.null(currentSeq)) {
+                seqNames <- c(seqNames, currentSeq)
+                seqLengths <- c(seqLengths, currentLen)
+            }
+            ## Take only the first token from the FASTA header.
+            currentSeq <- sub("^>([^ \t]+).*$", "\\1", line)
+            currentLen <- 0L
+        } else {
+            currentLen <- currentLen + nchar(line)
+        }
+    }
+    if (!is.null(currentSeq)) {
+        seqNames <- c(seqNames, currentSeq)
+        seqLengths <- c(seqLengths, currentLen)
+    }
+    assert(
+        hasLength(seqNames),
+        hasLength(seqLengths),
+        identical(length(seqNames), length(seqLengths))
+    )
+    outputFile <- file.path(outputDir, "chrom.sizes")
+    df <- data.frame(
+        seqname = seqNames,
+        length = seqLengths,
+        stringsAsFactors = FALSE
+    )
+    write.table(
+        x = df,
+        file = outputFile,
+        sep = "\t",
+        row.names = FALSE,
+        col.names = FALSE,
+        quote = FALSE
+    )
+    alertSuccess(sprintf(
+        "Chromosome sizes file written to {.path %s}.",
+        outputFile
+    ))
+    invisible(outputFile)
+}
+
+
+#' Generate salmon decoy files (gentrome + decoys.txt)
+#'
+#' Salmon selective alignment recommends indexing a "gentrome" — the
+#' transcriptome FASTA concatenated with the genome FASTA — along with a
+#' `decoys.txt` file listing the genome sequence names. This avoids mapping
+#' reads to non-transcriptomic regions.
+#'
+#' @note Updated 2026-05-31.
+#' @noRd
+#'
+#' @param genomeFasta `character(1)`.
+#' Path to the genome FASTA (`.fa.gz` or `.fa`).
+#'
+#' @param transcriptomeFasta `character(1)`.
+#' Path to the transcriptome FASTA (`.fa.gz` or `.fa`).
+#'
+#' @param outputDir `character(1)`.
+#' Output directory where `gentrome.fa.gz` and `decoys.txt` will be written.
+#'
+#' @return Invisible named `character` with paths to `gentrome` and `decoys`.
+.generateSalmonDecoys <- function(genomeFasta, transcriptomeFasta, outputDir) {
+    assert(
+        isAFile(genomeFasta),
+        isAFile(transcriptomeFasta),
+        isString(outputDir)
+    )
+    alert("Generating salmon decoy files (gentrome + decoys.txt).")
+    outputDir <- initDir(outputDir)
+    ## Extract genome sequence names for decoys.txt.
+    con <- if (endsWith(genomeFasta, ".gz")) {
+        gzcon(file(genomeFasta, open = "rb"))
+    } else {
+        file(genomeFasta, open = "r")
+    }
+    on.exit(close(con), add = TRUE)
+    decoyNames <- character(0L)
+    repeat {
+        line <- readLines(con = con, n = 1L, warn = FALSE)
+        if (length(line) == 0L) {
+            break
+        }
+        if (startsWith(line, ">")) {
+            decoyNames <- c(decoyNames, sub("^>([^ \t]+).*$", "\\1", line))
+        }
+    }
+    close(con)
+    on.exit(NULL)
+    assert(hasLength(decoyNames))
+    decoyFile <- file.path(outputDir, "decoys.txt")
+    writeLines(text = decoyNames, con = decoyFile)
+    ## Concatenate transcriptome + genome into gentrome.fa.gz using system tools
+    ## when available, otherwise fall back to R connections for portability.
+    gentromeFile <- file.path(outputDir, "gentrome.fa.gz")
+    if (!isWindows() && nzchar(Sys.which("cat")) && nzchar(Sys.which("gzip"))) {
+        ## Fast path: shell pipeline (handles both .gz and plain FASTA inputs).
+        decompressCmd <- function(f) {
+            if (endsWith(f, ".gz")) {
+                paste("gzip -dc", shQuote(f))
+            } else {
+                paste("cat", shQuote(f))
+            }
+        }
+        cmd <- paste(
+            decompressCmd(transcriptomeFasta),
+            decompressCmd(genomeFasta),
+            "| gzip -c >",
+            shQuote(gentromeFile)
+        )
+        ret <- system(cmd)
+        if (!identical(ret, 0L)) {
+            abort("Failed to generate gentrome.fa.gz via shell pipeline.")
+        }
+    } else {
+        ## Portable R fallback: read both FASTAs and write gzipped output.
+        outCon <- gzfile(gentromeFile, open = "wb")
+        on.exit(close(outCon), add = TRUE)
+        for (fastaIn in c(transcriptomeFasta, genomeFasta)) {
+            inCon <- if (endsWith(fastaIn, ".gz")) {
+                gzcon(file(fastaIn, open = "rb"))
+            } else {
+                file(fastaIn, open = "r")
+            }
+            repeat {
+                chunk <- readLines(con = inCon, n = 10000L, warn = FALSE)
+                if (length(chunk) == 0L) {
+                    break
+                }
+                writeLines(text = chunk, con = outCon)
+            }
+            close(inCon)
+        }
+    }
+    out <- c(gentrome = gentromeFile, decoys = decoyFile)
+    assert(allAreFiles(out))
+    alertSuccess("Salmon decoy files written.")
+    invisible(out)
+}

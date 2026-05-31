@@ -109,6 +109,16 @@ downloadGencodeGenome <-
                     values = list(metadataFiles = info[["metadata"]])
                 )
             )
+        ## Generate salmon decoy files (gentrome + decoys.txt).
+        ## nolint start
+        info[["salmon"]] <- .generateSalmonDecoys(
+            genomeFasta = info[["genome"]][["files"]][["fasta"]],
+            transcriptomeFasta = info[["transcriptome"]][["files"]][[
+                "fastaFixed"
+            ]],
+            outputDir = outputDir
+        )
+        ## nolint end
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -246,8 +256,6 @@ downloadGencodeGenome <-
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        ## Disabled Rle encoding in 0.7.3 update.
-        ## > mcols(genes) <- encode(mcols)
         ## Add NCBI and RefSeq identifiers to transcript metadata.
         mcols <- decode(mcols(transcripts))
         if (isSubset("ncbiGeneId", names(mcols))) {
@@ -268,8 +276,6 @@ downloadGencodeGenome <-
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        ## Disabled Rle encoding in 0.7.3 update.
-        ## > mcols(transcripts) <- encode(mcols)
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
@@ -313,6 +319,13 @@ downloadGencodeGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
+        ## Generate chromosome sizes file for kallisto.
+        ## nolint start
+        .generateChromSizes(
+            fastaFile = files[["fasta"]],
+            outputDir = outputDir
+        )
+        ## nolint end
         invisible(list(files = files, urls = urls))
     }
 

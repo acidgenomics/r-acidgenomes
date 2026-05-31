@@ -148,7 +148,6 @@ test_that("Homo sapiens : transcripts", {
         object = lapply(mcols(object), simpleClass),
         expected = list(
             broadClass = "factor",
-            canonicalTranscript = "character",
             description = "character",
             gcContent = "numeric",
             geneBiotype = "factor",
@@ -186,7 +185,6 @@ test_that("Homo sapiens : transcripts", {
             width = "34420",
             strand = "-",
             broadClass = "coding",
-            canonicalTranscript = "ENST00000397062",
             description = paste(
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"

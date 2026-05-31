@@ -61,8 +61,6 @@ NcbiGeneHistory <- # nolint
         df <- df[, j, drop = FALSE]
         i <- order(df)
         df <- df[i, , drop = FALSE]
-        ## Disabled Rle encoding in 0.7.3 update.
-        ## > df <- encode(df)
         rownames(df) <- df[["discontinuedGeneId"]]
         metadata(df) <- list(
             date = Sys.Date(),

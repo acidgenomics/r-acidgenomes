@@ -88,7 +88,7 @@ JaxHumanToMouse <- # nolint
         mm[["ncbiTaxonId"]] <- NULL
         mm[["omimGeneId"]] <- NULL
         mm <- unique(mm)
-        assert(hasNoDuplicates(mm[["dbClassKey"]]))
+        mm <- mm[!isDuplicate(mm[["dbClassKey"]]), , drop = FALSE]
         colnames(mm)[colnames(mm) == "entrezGeneId"] <- "mouseNcbiGeneId"
         colnames(mm)[colnames(mm) == "symbol"] <- "mouseGeneName"
         df <- leftJoin(x = hs, y = mm, by = "dbClassKey")

@@ -9,7 +9,8 @@ downloadRefseqGenome(
   taxonomicGroup = NULL,
   genomeBuild = NULL,
   outputDir = getwd(),
-  cache = FALSE
+  cache = FALSE,
+  analysisSet = FALSE
 )
 }
 \arguments{
@@ -30,6 +31,12 @@ Output directory path.}
 
 \item{cache}{\code{logical(1)}.
 Cache URLs locally, using BiocFileCache internally.}
+
+\item{analysisSet}{\code{logical(1)}.
+Download the NCBI "no-alt analysis set" FASTA alongside the standard
+genome. This ALT-contig-free FASTA is recommended for aligners such as
+STAR that do not natively handle ALT contigs. Currently supported for
+GRCh38 and GRCm39. Defaults to \code{FALSE}.}
 }
 \value{
 Invisible \code{list}.

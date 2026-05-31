@@ -115,8 +115,6 @@ NcbiGeneInfo <- # nolint
             gs <- .refseqGeneSummary(organism)
             df <- leftJoin(df, gs, by = "geneId")
         }
-        ## Disabled Rle encoding in 0.7.3 update.
-        ## > df <- encode(df)
         df <- df[, sort(colnames(df))]
         metadata(df) <- list(
             date = Sys.Date(),

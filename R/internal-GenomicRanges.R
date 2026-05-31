@@ -642,6 +642,14 @@
                 )
             }
         }
+        ## canonicalTranscript (the transcript ID string) is redundant at the
+        ## transcript level since txIsCanonical (logical) already flags it.
+        if (
+            identical(level, "transcripts") &&
+                isSubset("canonicalTranscript", colnames(mcols(object)))
+        ) {
+            mcols(object)[["canonicalTranscript"]] <- NULL
+        }
         object <- .returnMcols(object)
         object <- .removeBiotypes(object)
         idCol <- .matchGRangesNamesColumn(object)
