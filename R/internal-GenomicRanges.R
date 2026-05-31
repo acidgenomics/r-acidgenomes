@@ -275,7 +275,7 @@
     x <- camelCase(names(mcols(object)), strict = TRUE)
     table <- switch(
         EXPR = level,
-        cds = "cdsId",
+        cds = "txId",
         exons = "exonId",
         genes = "geneId",
         transcripts = "txId"
@@ -672,7 +672,8 @@
         )
         metadata(object) <- metadata(object)[sort(names(metadata(object)))]
         if (
-            identical(level, "exons") ||
+            identical(level, "cds") ||
+                identical(level, "exons") ||
                 identical(provider, "RefSeq")
         ) {
             alertInfo(sprintf(
@@ -700,7 +701,7 @@
         }
         ## Run final assert checks before returning.
         assert(validObject(object))
-        if (isSubset(level, c("exons", "genes", "transcripts"))) {
+        if (isSubset(level, c("cds", "exons", "genes", "transcripts"))) {
             class <- upperCamelCase(tolower(paste(provider, level)))
             object <- new(Class = class, object)
         }

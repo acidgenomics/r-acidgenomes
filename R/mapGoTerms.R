@@ -37,14 +37,12 @@ mapGoTerms <- function() {
         "go-basic.obo",
         protocol = "https"
     )
-    obo <- import(con = .cacheIt(url), format = "obo")
-    df <- as.data.frame(obo)
+    df <- import(con = .cacheIt(url), format = "obo")
     assert(isSubset(c("id", "name", "obsolete"), colnames(df)))
     i <- !df[["obsolete"]]
     j <- c("id", "name")
     df <- df[i, j, drop = FALSE]
     assert(hasNoDuplicates(df[["id"]]))
-    df <- as(df, "DFrame")
     df <- sort(df)
     rownames(df) <- NULL
     metadata(df) <- list(

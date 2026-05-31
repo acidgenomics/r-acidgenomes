@@ -229,6 +229,36 @@
 
 ## Genome annotation classes ===================================================
 
+#' Ensembl CDS (coding sequence) annotations
+#'
+#' @details
+#' Contains `GRangesList` with Ensembl CDS-level annotations grouped by
+#' transcript identifier.
+#'
+#' @export
+#' @note Updated 2026-05-31.
+#'
+#' @return `EnsemblCds`.
+setClass(
+    Class = "EnsemblCds",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "EnsemblCds",
+    method = function(object) {
+        ok <- .validateEnsembl(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "cds"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
 #' Ensembl exon annotations
 #'
 #' @details

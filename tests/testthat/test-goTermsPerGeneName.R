@@ -1,4 +1,5 @@
 test_that("Homo sapiens : long", {
+    skip_if_not_installed("ontologyIndex")
     object <- goTermsPerGeneName(
         organism = "Homo sapiens",
         geneNames = c("NFE2L2", "MTOR"),
@@ -19,6 +20,7 @@ test_that("Homo sapiens : long", {
 })
 
 test_that("Homo sapiens : split", {
+    skip_if_not_installed("ontologyIndex")
     object <- goTermsPerGeneName(
         organism = "Homo sapiens",
         geneNames = c("NFE2L2", "MTOR"),
@@ -40,6 +42,7 @@ test_that("Homo sapiens : split", {
 })
 
 test_that("Homo sapiens : nested", {
+    skip_if_not_installed("ontologyIndex")
     object <- goTermsPerGeneName(
         organism = "Homo sapiens",
         geneNames = c("NFE2L2", "MTOR"),

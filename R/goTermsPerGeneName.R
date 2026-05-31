@@ -98,7 +98,7 @@ goTermsPerGeneName <-
         )
         df <- sort(df)
         if (!is.null(geneNames)) {
-            i <- matchAll(x = geneNames, table = df[["geneName"]])
+            i <- unlist(matchAll(x = geneNames, table = df[["geneName"]]))
             df <- df[i, ]
         }
         goMap <- mapGoTerms()
