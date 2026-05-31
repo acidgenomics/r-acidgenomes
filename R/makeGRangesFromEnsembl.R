@@ -193,8 +193,12 @@ makeGRangesFromEnsDb <-
             quietly({
                 cdsCols <- intersect(
                     x = c(
-                        "gene_id", "gene_name", "gene_biotype",
-                        "tx_id", "tx_biotype", "tx_support_level"
+                        "gene_id",
+                        "gene_name",
+                        "gene_biotype",
+                        "tx_id",
+                        "tx_biotype",
+                        "tx_support_level"
                     ),
                     y = ensembldb::listColumns(object, c("gene", "tx"))
                 )

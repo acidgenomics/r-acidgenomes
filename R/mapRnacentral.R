@@ -53,7 +53,7 @@ mapRnacentral <- function(organism, database) {
         "id_mapping",
         "database_mappings",
         paste0(database, ".tsv"),
-        protocol = "ftp"
+        protocol = "https"
     )
     df <- import(
         con = .cacheIt(url),

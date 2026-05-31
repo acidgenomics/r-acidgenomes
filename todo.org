@@ -1,9 +1,10 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
-** TODO Consider adding mcols support for rowRanges mcols
 ** TODO For gene/transcript level, consider using `featureType` instead of `level`.
+** TODO Consider adding mcols support for rowRanges mcols
 ** TODO Caching URL needs to show progress bar for large files.
     - e.g. Ensembl primary assembly FASTA)
+** TODO Enable ultrathink and deeply review handling of OBO/OWL files in the package. Look to see if we have any issues with expecting ontologyIndex, and any upstream changes in r-pipette package.
 ** TODO For our unit tests, probably OK to remove ontologyIndex check:
     skip_if_not_installed("ontologyIndex")
