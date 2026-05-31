@@ -11,8 +11,9 @@
 #' @return `DFrame`.
 #'
 #' @examples
-#' df <- importEnsemblToNcbiGeneMap(organism = "Homo sapiens")
-#' print(df)
+#' ## This example is bandwidth intensive.
+#' ## > df <- importEnsemblToNcbiGeneMap(organism = "Homo sapiens")
+#' ## > print(df)
 importEnsemblToNcbiGeneMap <-
     function(
         organism,
