@@ -157,6 +157,24 @@ makeGRangesFromEnsDb <-
             isFlag(ignoreVersion),
             isFlag(extraMcols)
         )
+        ## Defensively detach packages introduced by ensembldb loading (e.g.
+        ## AnnotationFilter, rtracklayer, BiocIO) to avoid masking select verb.
+        pkgsBefore <- search()
+        on.exit(
+            {
+                pkgsAfter <- search()
+                introduced <- setdiff(pkgsAfter, pkgsBefore)
+                for (pkg in rev(introduced)) {
+                    suppressWarnings(
+                        try(
+                            detach(pkg, unload = TRUE, character.only = TRUE), # nolint
+                            silent = TRUE
+                        )
+                    )
+                }
+            },
+            add = TRUE
+        )
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from {.cls %s}.", "GRanges", "EnsDb"))
         if (isString(object)) {

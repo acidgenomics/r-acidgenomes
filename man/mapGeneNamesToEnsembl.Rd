@@ -18,6 +18,9 @@ mapGeneNamesToEnsembl(
 \item{organism}{\code{character(1)}.
 Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 
+\item{ignoreCase}{\code{logical(1)}.
+Enable case-insensitive matching.}
+
 \item{hgnc}{\code{Hgnc} object.
 Supported for \emph{Homo sapiens} genome only.
 Snapshot of HGNC annotations.

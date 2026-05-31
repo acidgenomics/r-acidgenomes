@@ -58,15 +58,8 @@ downloadUcscGenome <-
             choices = c("Homo sapiens", "Mus musculus")
         )
         outputDir <- initDir(outputDir)
-        ## Homo sapiens is now defaulting to "hs1", which is the experimental
-        ## new T2T-CHM13 assembly. We're not quite ready to support this yet, so
-        ## keeping pinned to hg38.
         if (is.null(genomeBuild)) {
-            genomeBuild <- switch(
-                EXPR = organism,
-                "Homo sapiens" = "hg38",
-                currentUcscGenomeBuild(organism)
-            )
+            genomeBuild <- currentUcscGenomeBuild(organism)
         }
         ## UCSC is updated on a rolling schedule, so use today's date as a
         ## substitution for release number.
@@ -200,12 +193,13 @@ downloadUcscGenome <-
 
 
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
-## Updated 2022-05-24.
+## Updated 2026-05-31.
 .downloadUcscGenome <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
-        isHuman <- grepl(pattern = "^hg[0-9]+$", x = genomeBuild)
+        ## hg38/hg19 and hs1 (T2T-CHM13) all support the "latest/" subdir.
+        hasLatest <- grepl(pattern = "^(hg[0-9]+|hs[0-9]+)$", x = genomeBuild)
         latestUrl <- ifelse(
-            test = isHuman,
+            test = hasLatest,
             yes = pasteUrl(releaseUrl, "latest"),
             no = releaseUrl
         )
@@ -224,7 +218,7 @@ downloadUcscGenome <-
             ),
             md5sum = pasteUrl(latestUrl, "md5sum.txt")
         )
-        if (identical(genomeBuild, "hg38")) {
+        if (isSubset(genomeBuild, c("hg38", "hs1"))) {
             urls <- c(
                 urls,
                 latestVersion = pasteUrl(

@@ -1009,10 +1009,26 @@
             msg = "Failed to extract any exons."
         )
         object <- object[keep]
-        assert(allAreMatchingRegex(
-            x = mcols(object)[["gene_id"]],
-            pattern = "^WBGene[[:digit:]]{8}$"
-        ))
+        validGeneId <- grepl(
+            pattern = "^WBGene[[:digit:]]{8}$",
+            x = mcols(object)[["gene_id"]]
+        )
+        nDropped <- sum(!validGeneId)
+        if (nDropped > 0L) {
+            alertWarning(sprintf(
+                "Dropping %d exon %s with malformed WormBase gene_id.",
+                nDropped,
+                ngettext(n = nDropped, msg1 = "entry", msg2 = "entries")
+            ))
+            object <- object[validGeneId]
+        }
+        assert(
+            hasLength(object),
+            allAreMatchingRegex(
+                x = mcols(object)[["gene_id"]],
+                pattern = "^WBGene[[:digit:]]{8}$"
+            )
+        )
         object
     }
 
@@ -1033,7 +1049,21 @@
             msg = "Failed to extract any transcripts."
         )
         object <- object[keep]
+        validGeneId <- grepl(
+            pattern = "^WBGene[[:digit:]]{8}$",
+            x = mcols(object)[["gene_id"]]
+        )
+        nDropped <- sum(!validGeneId)
+        if (nDropped > 0L) {
+            alertWarning(sprintf(
+                "Dropping %d gene %s with malformed WormBase gene_id.",
+                nDropped,
+                ngettext(n = nDropped, msg1 = "entry", msg2 = "entries")
+            ))
+            object <- object[validGeneId]
+        }
         assert(
+            hasLength(object),
             hasNoDuplicates(mcols(object)[["gene_id"]]),
             allAreMatchingRegex(
                 x = mcols(object)[["gene_id"]],
@@ -1068,7 +1098,21 @@
             msg = "Failed to extract any transcripts."
         )
         object <- object[keep]
+        validGeneId <- grepl(
+            pattern = "^WBGene[[:digit:]]{8}$",
+            x = mcols(object)[["gene_id"]]
+        )
+        nDropped <- sum(!validGeneId)
+        if (nDropped > 0L) {
+            alertWarning(sprintf(
+                "Dropping %d transcript %s with malformed WormBase gene_id.",
+                nDropped,
+                ngettext(n = nDropped, msg1 = "entry", msg2 = "entries")
+            ))
+            object <- object[validGeneId]
+        }
         assert(
+            hasLength(object),
             hasNoDuplicates(mcols(object)[["transcript_id"]]),
             allAreMatchingRegex(
                 x = mcols(object)[["gene_id"]],

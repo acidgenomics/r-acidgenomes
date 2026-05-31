@@ -17,6 +17,9 @@
 #' Snapshot of HGNC annotations.
 #' Passes to `mapGeneNamesToHgnc` internally.
 #'
+#' @param ignoreCase `logical(1)`.
+#' Enable case-insensitive matching.
+#'
 #' @param ncbi `NcbiGeneInfo` object.
 #' Snapshot of NCBI annotations.
 #' Passes to `mapGeneNamesToNcbi` internally.
@@ -68,10 +71,11 @@ mapGeneNamesToEnsembl <-
             map <- map[, c("hgncId", "ensemblGeneId")]
         } else {
             assert(is.null(hgnc))
-            keep <- any(startsWith(x = ncbi[["dbXrefs"]], prefix = "Ensembl:"))
+            ## grepl on CompressedCharacterList via BiocGenerics.
+            keep <- any(grepl("^Ensembl:", x = ncbi[["dbXrefs"]])) # nolint
             ncbi <- ncbi[keep, ]
             ensGene <- ncbi[["dbXrefs"]]
-            ensGene <- ensGene[startsWith(x = ensGene, prefix = "Ensembl:")]
+            ensGene <- ensGene[grepl("^Ensembl:", x = ensGene)] # nolint
             keep <- lengths(ensGene) == 1L
             ensGene <- ensGene[keep]
             ncbi <- ncbi[keep, ]

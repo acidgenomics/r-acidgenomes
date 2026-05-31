@@ -94,6 +94,16 @@ downloadEnsemblGenome <-
             info[["metadata"]] <-
                 do.call(what = .downloadEnsemblMetadata, args = args)
         }
+        ## Generate salmon decoy files (gentrome + decoys.txt).
+        ## nolint start
+        info[["salmon"]] <- .generateSalmonDecoys(
+            genomeFasta = info[["genome"]][["files"]][["fasta"]],
+            transcriptomeFasta = info[["transcriptome"]][["files"]][["fasta"]][[
+                "merge"
+            ]],
+            outputDir = outputDir
+        )
+        ## nolint end
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -240,6 +250,24 @@ downloadEnsemblGenome <-
                 }
             )
             files[["gtfSymlink"]] <- gtfSymlink
+            ## For Homo sapiens / Mus musculus, also symlink the haplotype
+            ## scaffold GTF for use with salmon selective alignment.
+            if (isSubset("gtf2", names(files))) {
+                gtf2File <- files[["gtf2"]]
+                gtf2RelativeFile <- sub(
+                    pattern = paste0("^", outputDir, "/"),
+                    replacement = "",
+                    x = gtf2File
+                )
+                gtf2Symlink <- paste0("annotation.salmon.", fileExt(gtf2File))
+                withr::with_dir(
+                    new = outputDir,
+                    code = {
+                        file.symlink(from = gtf2RelativeFile, to = gtf2Symlink)
+                    }
+                )
+                files[["gtf2Symlink"]] <- gtf2Symlink
+            }
         }
         ## Save genomic ranges.
         genes <- makeGRangesFromGff(
@@ -310,6 +338,13 @@ downloadEnsemblGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
+        ## Generate chromosome sizes file for kallisto.
+        ## nolint start
+        .generateChromSizes(
+            fastaFile = files[["fasta"]],
+            outputDir = outputDir
+        )
+        ## nolint end
         invisible(list(files = files, urls = urls))
     }
 

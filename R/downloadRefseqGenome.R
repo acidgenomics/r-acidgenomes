@@ -18,6 +18,12 @@
 #' RefSeq genome build assembly name (e.g. `"GCF_000001405.39_GRCh38.p12"`).
 #' If set `NULL`, defauls to the most recent build available.
 #'
+#' @param analysisSet `logical(1)`.
+#' Download the NCBI "no-alt analysis set" FASTA alongside the standard
+#' genome. This ALT-contig-free FASTA is recommended for aligners such as
+#' STAR that do not natively handle ALT contigs. Currently supported for
+#' GRCh38 and GRCm39. Defaults to `FALSE`.
+#'
 #' @return Invisible `list`.
 #'
 #' @seealso
@@ -45,14 +51,16 @@ downloadRefseqGenome <-
         taxonomicGroup = NULL,
         genomeBuild = NULL,
         outputDir = getwd(),
-        cache = FALSE
+        cache = FALSE,
+        analysisSet = FALSE
     ) {
         assert(
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
             isString(genomeBuild, nullOk = TRUE),
             isString(outputDir),
-            isFlag(cache)
+            isFlag(cache),
+            isFlag(analysisSet)
         )
         release <- currentRefseqVersion()
         baseUrl <- .getRefSeqGenomeUrl(
@@ -110,6 +118,18 @@ downloadRefseqGenome <-
             do.call(what = .downloadRefSeqTranscriptome, args = args)
         info[["annotation"]] <-
             do.call(what = .downloadRefSeqAnnotation, args = args)
+        ## Optionally download the no-alt analysis set (ALT-free), useful for
+        ## STAR and other aligners that don't handle ALT contigs well.
+        if (isTRUE(analysisSet)) {
+            ## nolint start
+            info[["analysisSet"]] <- .downloadRefseqAnalysisSet(
+                organism = organism,
+                genomeBuild = genomeBuild,
+                outputDir = outputDir,
+                cache = cache
+            )
+            ## nolint end
+        }
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -294,6 +314,96 @@ downloadRefseqGenome <-
                 }
             )
             files[["fastaSymlink"]] <- fastaSymlink
+        }
+        invisible(list(files = files, urls = urls))
+    }
+
+
+## Updated 2026-05-31.
+## NCBI alignment pipeline sets: ALT-contig-free FASTA files for Homo sapiens
+## and Mus musculus. Useful for STAR alignment without ALT handling.
+## See: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/
+##      GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/
+.downloadRefseqAnalysisSet <-
+    function(organism, genomeBuild, outputDir, cache) {
+        assert(
+            isOrganism(organism),
+            isString(genomeBuild),
+            isString(outputDir),
+            isFlag(cache)
+        )
+        ## Map known genome builds to their alignment pipeline FASTA URLs.
+        ## These are GCA (GenBank) accessions stored under a separate path.
+        analysisSetUrls <- list(
+            GCF_000001405.40_GRCh38.p14 = pasteUrl(
+                "ftp.ncbi.nlm.nih.gov",
+                "genomes",
+                "all",
+                "GCA",
+                "000",
+                "001",
+                "405",
+                "GCA_000001405.15_GRCh38",
+                "seqs_for_alignment_pipelines.ucsc_ids",
+                "GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz",
+                protocol = "https"
+            ),
+            GCF_000001635.27_GRCm39 = pasteUrl(
+                "ftp.ncbi.nlm.nih.gov",
+                "genomes",
+                "all",
+                "GCA",
+                "000",
+                "001",
+                "635",
+                "GCA_000001635.9_GRCm39",
+                "seqs_for_alignment_pipelines.ucsc_ids",
+                "GCA_000001635.9_GRCm39_no_alt_analysis_set.fna.gz",
+                protocol = "https"
+            )
+        )
+        buildPrefix <- sub(
+            pattern = "^(GCF_[0-9]+\\.[0-9]+_[^_]+).*$",
+            replacement = "\\1",
+            x = genomeBuild
+        )
+        url <- analysisSetUrls[[buildPrefix]]
+        if (is.null(url)) {
+            alertWarning(sprintf(
+                paste0(
+                    "No alignment pipeline analysis set available for genome ",
+                    "build {.val %s}. Skipping."
+                ),
+                genomeBuild
+            ))
+            return(invisible(NULL))
+        }
+        alert(sprintf(
+            "Downloading no-alt analysis set FASTA from {.url %s}.",
+            url
+        ))
+        analysisSetDir <- file.path(outputDir, "genome_analysis_set")
+        urls <- c(noAltFasta = url)
+        files <- .downloadUrls(
+            urls = urls,
+            outputDir = analysisSetDir,
+            cache = cache
+        )
+        if (!isWindows() && requireNamespace("withr", quietly = TRUE)) {
+            fastaFile <- files[["noAltFasta"]]
+            fastaRelativeFile <- sub(
+                pattern = paste0("^", outputDir, "/"),
+                replacement = "",
+                x = fastaFile
+            )
+            noAltSymlink <- "genome.no_alt.fa.gz"
+            withr::with_dir(
+                new = outputDir,
+                code = {
+                    file.symlink(from = fastaRelativeFile, to = noAltSymlink)
+                }
+            )
+            files[["fastaSymlink"]] <- noAltSymlink
         }
         invisible(list(files = files, urls = urls))
     }

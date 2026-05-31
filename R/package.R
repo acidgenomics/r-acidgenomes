@@ -67,4 +67,5 @@ NULL
 #' @importFrom parallel mclapply
 #' @importFrom pipette cacheUrl getJson getUrlDirList md5 sha256
 #' @importFrom utils capture.output packageName packageVersion sessionInfo
+#' @importFrom utils write.table
 NULL

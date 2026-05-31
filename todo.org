@@ -1,45 +1,15 @@
 #+TITLE: AcidGenomes
 #+STARTUP: content
 * Development
-** TODO Remove usage of Rle in metadata for gene annotations, makes package less confusing to use.
-** TODO OMIM identifier mapping support.
-** TODO makeGRangesFromEnsembl: disable extraMcols by default.
-    Current Homo sapiens reference (112) isn't working with this enabled now, very annoying.
-** TODO Add human-to-mouse symbol mapping, which is very useful for PDX databases.
-** TODO Remove `canonicalTranscript` from EnsemblTranscripts return.
-** TODO We may need to force detach rtracklayer and BiocIO, to make sure that our pipette
-    export method doesn't get messed up.
 ** TODO Consider sanitizing transcript identifiers in GENCODE transcriptome FASTA.
-** TODO Add support for legacy RefSeq hg38 reference for assembly pipelines.
-    This has the advantage of ALT contig removal, which is nice for STAR.
-** TODO Add support for T2T genome from NCBI.
-    Can we also support from UCSC?
-    Not yet up on Ensembl or GENCODE.
-** TODO Package is no longer detaching ensembldb correctly?
-    Confirm that this is working with `makeGRangesFromEnsembl`.
-    In particular, ensure that `select` verb is not being attached into environment.
 ** TODO Improve factorization of metadata columns in GRanges return.
 ** TODO Consider adding mcols support for rowRanges mcols
-** TODO Need to ensure that `geneBiotype` and other repeated values columns are converted to factor-Rle for makeGRangesFromEnsembl.
-    This is currently the case for broadClass, but not the other biotype columns currently.
-** TODO `Ensembl2Entrez()`: Consider returning as factor?
-    Check `summary()` method to see if it is informative enough.
 ** TODO For gene/transcript level, consider using `featureType` instead of `level`.
-** TODO Do we need to download additional chromosome information for kallisto?
-** TODO Need to add 'mapGencodeReleaseToEnsembl' function.
-** TODO Consider also adding 'mapEnsemblReleaseToGencode' function.
 ** TODO Caching URL needs to show progress bar for large files.
     - e.g. Ensembl primary assembly FASTA)
 ** TODO Consider adding code coverage for export of EnsemblGenes output that contains Entrez identifier mappings.
     - We expected these to be written to disk formatted via toString.
-** TODO downloadGenome functions: Need to include a chromosome file that is compatible with kallisto.
-** TODO Look into generating decoy sequences recommended for sallmon.
-** TODO Consider creating a GTF symlink for salmon that contains all transcripts.
-    This needs to be haploytype scaffold GTF for Homo sapiens.
 ** TODO Consider adding file caching support for genome downloader functions.
-** TODO Consider classing gene/transcript return from EnsDb and TxDb.
 ** TODO Consider adding better support for CDS, exon, and promoter extraction from EnsDb/TxDb objects in a future update.
-** TODO Add automatic tx2gene output for RefSeq genome download.
-** TODO Need to include current gene name (symbol) in the synonyms, in case we're mapping to an older reference, such as GRCh37.
-** TODO Improve WormBase GTF identifier sanitization.
-    - WormBase has some malformed entries in GTF (e.g. Transcript:AC8.13). We may want to add a filter for these.
+
+** TODO Can we just use pipette package instead of loading ontologyIndex here?

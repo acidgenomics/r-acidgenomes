@@ -11,7 +11,9 @@
 #' @examples
 #' object <- Mgi()
 #' print(object)
-Mgi <- function() { # nolint
+## nolint start
+Mgi <- function() {
+    ## nolint end
     alert("Importing MGI metadata.")
     url <- pasteUrl(
         "www.informatics.jax.org",
@@ -72,8 +74,6 @@ Mgi <- function() { # nolint
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
     df[["ensemblGeneStrand"]] <- as.factor(df[["ensemblGeneStrand"]])
     df[["ncbiGeneStrand"]] <- as.factor(df[["ncbiGeneStrand"]])
-    ## Disabled Rle encoding in 0.7.3 update.
-    ## > df <- encode(df)
     metadata(df) <- list(
         date = Sys.Date(),
         organism = "Mus musculus",

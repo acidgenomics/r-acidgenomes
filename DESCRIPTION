@@ -48,6 +48,8 @@ Suggests:
     RCurl,
     biomaRt,
     ensembldb,
+    GeneSummary,
+    ontologyIndex,
     rvest,
     testthat,
     withr
