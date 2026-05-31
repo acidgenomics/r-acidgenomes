@@ -7,7 +7,7 @@
 \usage{
 makeGRangesFromEnsembl(
   organism,
-  level = c("genes", "transcripts", "exons"),
+  level = c("genes", "transcripts", "exons", "cds"),
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = FALSE,
@@ -16,7 +16,7 @@ makeGRangesFromEnsembl(
 
 makeGRangesFromEnsDb(
   object,
-  level = c("genes", "transcripts", "exons"),
+  level = c("genes", "transcripts", "exons", "cds"),
   ignoreVersion = FALSE,
   extraMcols = FALSE
 )

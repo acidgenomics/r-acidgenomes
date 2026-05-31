@@ -427,6 +427,25 @@ downloadGencodeGenome <-
         )
         export(object = lines, con = fastaFixedFile)
         files[["fastaFixed"]] <- fastaFixedFile
+        ## Prepare a version-stripped FASTA for tools requiring unversioned IDs
+        ## (e.g. ENST00000456328 instead of ENST00000456328.2).
+        fastaNoVersionFile <- sub(
+            pattern = ".transcripts_fixed.",
+            replacement = ".transcripts_noversion.",
+            x = fastaFixedFile,
+            fixed = TRUE
+        )
+        alert(sprintf(
+            "Preparing version-stripped FASTA file {.file %s}.",
+            basename(fastaNoVersionFile)
+        ))
+        linesNoVersion <- sub(
+            pattern = "^(>[^.]+)\\.[0-9]+(.*)$",
+            replacement = "\\1\\2",
+            x = lines
+        )
+        export(object = linesNoVersion, con = fastaNoVersionFile)
+        files[["fastaNoVersion"]] <- fastaNoVersionFile
         ## Save transcript-to-gene mappings.
         t2g <- makeTxToGeneFromFasta(
             file = fastaFile,

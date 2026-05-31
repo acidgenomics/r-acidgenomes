@@ -71,6 +71,9 @@ mapGeneNamesToEnsembl <-
             map <- map[, c("hgncId", "ensemblGeneId")]
         } else {
             assert(is.null(hgnc))
+            if (is.null(ncbi)) {
+                ncbi <- NcbiGeneInfo(organism = organism)
+            }
             ## grepl on CompressedCharacterList via BiocGenerics.
             keep <- any(grepl("^Ensembl:", x = ncbi[["dbXrefs"]])) # nolint
             ncbi <- ncbi[keep, ]

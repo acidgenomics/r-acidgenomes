@@ -104,7 +104,7 @@ NULL
 makeGRangesFromEnsembl <-
     function(
         organism,
-        level = c("genes", "transcripts", "exons"),
+        level = c("genes", "transcripts", "exons", "cds"),
         genomeBuild = NULL,
         release = NULL,
         ignoreVersion = FALSE,
@@ -148,7 +148,7 @@ makeGRangesFromEnsembl <-
 makeGRangesFromEnsDb <-
     function(
         object,
-        level = c("genes", "transcripts", "exons"),
+        level = c("genes", "transcripts", "exons", "cds"),
         ignoreVersion = FALSE,
         extraMcols = FALSE
     ) {
@@ -187,6 +187,42 @@ makeGRangesFromEnsDb <-
             )
         }
         assert(is(object, "EnsDb"))
+        ## CDS uses cdsBy(), which returns GRangesList directly — handle
+        ## separately and return early to bypass the flat-GRanges pipeline.
+        if (identical(level, "cds")) {
+            quietly({
+                cdsCols <- intersect(
+                    x = c(
+                        "gene_id", "gene_name", "gene_biotype",
+                        "tx_id", "tx_biotype", "tx_support_level"
+                    ),
+                    y = ensembldb::listColumns(object, c("gene", "tx"))
+                )
+                grList <- ensembldb::cdsBy(
+                    x = object,
+                    by = "tx",
+                    columns = cdsCols
+                )
+            })
+            gr <- unlist(grList, use.names = TRUE)
+            if (!isSubset("tx_id", colnames(mcols(gr)))) {
+                mcols(gr)[["tx_id"]] <- names(gr)
+            }
+            names(gr) <- NULL
+            metadata(gr) <- .getEnsDbMetadata(object = object, level = "cds")
+            gr <- .makeGRanges(
+                object = gr,
+                ignoreVersion = ignoreVersion,
+                extraMcols = extraMcols
+            )
+            metadata(gr)[["call"]] <- tryCatch(
+                expr = standardizeCall(),
+                error = function(e) {
+                    NULL
+                }
+            )
+            return(gr)
+        }
         switch(
             EXPR = level,
             exons = {
