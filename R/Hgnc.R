@@ -82,10 +82,10 @@ Hgnc <- # nolint
         df[["dateSymbolChanged"]] <- as.Date(df[["dateSymbolChanged"]])
         df[["ncbiGeneId"]] <- as.integer(df[["ncbiGeneId"]])
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = "Homo sapiens",
-            "packageVersion" = .pkgVersion,
-            "url" = url
+            date = Sys.Date(),
+            organism = "Homo sapiens",
+            packageVersion = .pkgVersion,
+            url = url
         )
         new("Hgnc", df)
     }

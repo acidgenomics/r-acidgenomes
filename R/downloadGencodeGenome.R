@@ -87,16 +87,16 @@ downloadGencodeGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "genomeBuild" = genomeBuild,
-            "outputDir" = outputDir,
-            "releaseUrl" = releaseUrl,
-            "cache" = cache
+            genomeBuild = genomeBuild,
+            outputDir = outputDir,
+            releaseUrl = releaseUrl,
+            cache = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
         info[["genome"]] <-
             do.call(what = .downloadGencodeGenome, args = args)
-        args <- append(x = args, values = list("release" = release))
+        args <- append(x = args, values = list(release = release))
         info[["metadata"]] <-
             do.call(what = .downloadGencodeMetadata, args = args)
         info[["transcriptome"]] <-
@@ -106,7 +106,7 @@ downloadGencodeGenome <-
                 what = .downloadGencodeAnnotation,
                 args = append(
                     x = args,
-                    values = list("metadataFiles" = info[["metadata"]])
+                    values = list(metadataFiles = info[["metadata"]])
                 )
             )
         info[["args"]] <- args
@@ -137,27 +137,27 @@ downloadGencodeGenome <-
         cache
     ) {
         urls <- c(
-            "gff" = pasteUrl(
+            gff = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".annotation.gff3.gz"
                 )
             ),
-            "gtf" = pasteUrl(
+            gtf = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".annotation.gtf.gz"
@@ -278,7 +278,7 @@ downloadGencodeGenome <-
             object = transcripts,
             file = file.path(outputDir, "transcripts.rds")
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -286,7 +286,7 @@ downloadGencodeGenome <-
 .downloadGencodeGenome <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
@@ -313,7 +313,7 @@ downloadGencodeGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -321,38 +321,38 @@ downloadGencodeGenome <-
 .downloadGencodeMetadata <-
     function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
-            "readme" = pasteUrl(
+            readme = pasteUrl(
                 releaseUrl,
                 switch(
                     EXPR = genomeBuild,
-                    "GRCh37" = "_README_GRCh37_mapping.txt",
+                    GRCh37 = "_README_GRCh37_mapping.txt",
                     "_README.TXT"
                 )
             ),
-            "md5sums" = pasteUrl(releaseUrl, "MD5SUMS"),
+            md5sums = pasteUrl(releaseUrl, "MD5SUMS"),
             ## TSV mapping transcripts to NCBI (Entrez) genes.
-            "ncbiGene" = pasteUrl(
+            ncbiGene = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".metadata.EntrezGene.gz"
                 )
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
-            "refseq" = pasteUrl(
+            refseq = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".metadata.RefSeq.gz"
@@ -364,7 +364,7 @@ downloadGencodeGenome <-
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -375,14 +375,14 @@ downloadGencodeGenome <-
 .downloadGencodeTranscriptome <-
     function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".transcripts.fa.gz"
@@ -441,5 +441,5 @@ downloadGencodeGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }

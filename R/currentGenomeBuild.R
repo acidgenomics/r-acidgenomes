@@ -143,10 +143,10 @@ currentUcscGenomeBuild <-
             f = function(name, x) {
                 ## Other useful keys: description, sourceName.
                 c(
-                    "build" = name,
-                    "active" = x[["active"]],
-                    "orderKey" = x[["orderKey"]],
-                    "scientificName" = x[["scientificName"]]
+                    build = name,
+                    active = x[["active"]],
+                    orderKey = x[["orderKey"]],
+                    scientificName = x[["scientificName"]]
                 )
             },
             USE.NAMES = FALSE

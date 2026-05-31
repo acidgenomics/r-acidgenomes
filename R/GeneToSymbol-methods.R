@@ -31,11 +31,11 @@
 #'
 #' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
-#'     "geneId" = c(
+#'     geneId = c(
 #'         "ENSG00000228572.7",
 #'         "ENSG00000182378.14"
 #'     ),
-#'     "geneName" = c(
+#'     geneName = c(
 #'         "AL954722.1",
 #'         "PLCXD1"
 #'     )
@@ -106,7 +106,7 @@ NULL
         }
         switch(
             EXPR = format,
-            "makeUnique" = {
+            makeUnique = {
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
@@ -115,7 +115,7 @@ NULL
                 i <- !duplicated(object[["geneName"]])
                 object <- object[i, , drop = FALSE]
             },
-            "unmodified" = {
+            unmodified = {
                 if (isFALSE(quiet) && hasLength(dupes)) {
                     alertInfo(sprintf(
                         "Returning unmodified with %d duplicate gene %s: %s.",

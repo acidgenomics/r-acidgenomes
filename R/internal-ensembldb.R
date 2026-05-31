@@ -221,11 +221,11 @@
     })
     release <- as.integer(release)
     list <- list(
-        "ensembldb" = metadata,
-        "genomeBuild" = genomeBuild,
-        "organism" = organism,
-        "provider" = "Ensembl",
-        "release" = release
+        ensembldb = metadata,
+        genomeBuild = genomeBuild,
+        organism = organism,
+        provider = "Ensembl",
+        release = release
     )
     if (!is.null(level)) {
         list[["level"]] <- level
@@ -235,12 +235,12 @@
         list[["annotationHubId"]] <- attr(object, "annotationHubId")
     }
     items <- c(
-        "Organism" = list[["organism"]],
+        Organism = list[["organism"]],
         "Genome build" = list[["genomeBuild"]],
-        "Release" = list[["release"]]
+        Release = list[["release"]]
     )
     if (isString(list[["level"]])) {
-        items <- c(items, "Level" = list[["level"]])
+        items <- c(items, Level = list[["level"]])
     }
     dl(items)
     list

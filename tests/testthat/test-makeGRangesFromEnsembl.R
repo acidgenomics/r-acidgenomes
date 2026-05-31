@@ -17,10 +17,10 @@ test_that("Homo sapiens : genes", {
             "release"
         )],
         expected = list(
-            "annotationHubId" = "AH113665",
-            "genomeBuild" = "GRCh38",
-            "organism" = "Homo sapiens",
-            "release" = 110L
+            annotationHubId = "AH113665",
+            genomeBuild = "GRCh38",
+            organism = "Homo sapiens",
+            release = 110L
         )
     )
     expect_length(
@@ -38,17 +38,17 @@ test_that("Homo sapiens : genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "factor",
-            "canonicalTranscript" = "character",
-            "description" = "character",
-            "geneBiotype" = "factor",
-            "geneId" = "character",
-            "geneIdNoVersion" = "character",
-            "geneIdVersion" = "character",
-            "geneName" = "character",
-            "geneSynonyms" = "CompressedCharacterList",
-            "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "factor"
+            broadClass = "factor",
+            canonicalTranscript = "character",
+            description = "character",
+            geneBiotype = "factor",
+            geneId = "character",
+            geneIdNoVersion = "character",
+            geneIdVersion = "character",
+            geneName = "character",
+            geneSynonyms = "CompressedCharacterList",
+            ncbiGeneId = "CompressedIntegerList",
+            seqCoordSystem = "factor"
         )
     )
     expect_identical(
@@ -58,25 +58,25 @@ test_that("Homo sapiens : genes", {
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "2",
-            "start" = "177218667",
-            "end" = "177392756",
-            "width" = "174090",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "canonicalTranscript" = "ENST00000397062",
-            "description" = paste(
+            seqnames = "2",
+            start = "177218667",
+            end = "177392756",
+            width = "174090",
+            strand = "-",
+            broadClass = "coding",
+            canonicalTranscript = "ENST00000397062",
+            description = paste(
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "geneBiotype" = "protein_coding",
-            "geneId" = "ENSG00000116044.17",
-            "geneIdNoVersion" = "ENSG00000116044",
-            "geneIdVersion" = "ENSG00000116044.17",
-            "geneName" = "NFE2L2",
-            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
-            "ncbiGeneId" = "4780",
-            "seqCoordSystem" = "chromosome"
+            geneBiotype = "protein_coding",
+            geneId = "ENSG00000116044.17",
+            geneIdNoVersion = "ENSG00000116044",
+            geneIdVersion = "ENSG00000116044.17",
+            geneName = "NFE2L2",
+            geneSynonyms = "c(\"NRF-2\", \"NRF2\")",
+            ncbiGeneId = "4780",
+            seqCoordSystem = "chromosome"
         )
     )
     expect_true(isSubset(
@@ -112,9 +112,9 @@ test_that("Homo sapiens : genes", {
     expect_identical(
         object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
         expected = list(
-            "seqlengths" = 248956422L,
-            "isCircular" = FALSE,
-            "genome" = "GRCh38"
+            seqlengths = 248956422L,
+            isCircular = FALSE,
+            genome = "GRCh38"
         )
     )
 })
@@ -147,30 +147,30 @@ test_that("Homo sapiens : transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "factor",
-            "canonicalTranscript" = "character",
-            "description" = "character",
-            "gcContent" = "numeric",
-            "geneBiotype" = "factor",
-            "geneId" = "character",
-            "geneIdNoVersion" = "character",
-            "geneIdVersion" = "character",
-            "geneName" = "character",
-            "geneSeqEnd" = "integer",
-            "geneSeqStart" = "integer",
-            "geneSynonyms" = "CompressedCharacterList",
-            "ncbiGeneId" = "CompressedIntegerList",
-            "seqCoordSystem" = "factor",
-            "txBiotype" = "factor",
-            "txCdsSeqEnd" = "integer",
-            "txCdsSeqStart" = "integer",
-            "txExternalName" = "character",
-            "txId" = "character",
-            "txIdNoVersion" = "character",
-            "txIdVersion" = "character",
-            "txIsCanonical" = "logical",
-            "txName" = "character",
-            "txSupportLevel" = "factor"
+            broadClass = "factor",
+            canonicalTranscript = "character",
+            description = "character",
+            gcContent = "numeric",
+            geneBiotype = "factor",
+            geneId = "character",
+            geneIdNoVersion = "character",
+            geneIdVersion = "character",
+            geneName = "character",
+            geneSeqEnd = "integer",
+            geneSeqStart = "integer",
+            geneSynonyms = "CompressedCharacterList",
+            ncbiGeneId = "CompressedIntegerList",
+            seqCoordSystem = "factor",
+            txBiotype = "factor",
+            txCdsSeqEnd = "integer",
+            txCdsSeqStart = "integer",
+            txExternalName = "character",
+            txId = "character",
+            txIdNoVersion = "character",
+            txIdVersion = "character",
+            txIsCanonical = "logical",
+            txName = "character",
+            txSupportLevel = "factor"
         )
     )
     expect_identical(
@@ -180,38 +180,38 @@ test_that("Homo sapiens : transcripts", {
             FUN.VALUE = character(1L)
         ),
         expected = c(
-            "seqnames" = "2",
-            "start" = "177230308",
-            "end" = "177264727",
-            "width" = "34420",
-            "strand" = "-",
-            "broadClass" = "coding",
-            "canonicalTranscript" = "ENST00000397062",
-            "description" = paste(
+            seqnames = "2",
+            start = "177230308",
+            end = "177264727",
+            width = "34420",
+            strand = "-",
+            broadClass = "coding",
+            canonicalTranscript = "ENST00000397062",
+            description = paste(
                 "NFE2 like bZIP transcription factor 2",
                 "[Source:HGNC Symbol;Acc:HGNC:7782]"
             ),
-            "gcContent" = "42.1095666394113",
-            "geneBiotype" = "protein_coding",
-            "geneId" = "ENSG00000116044.17",
-            "geneIdNoVersion" = "ENSG00000116044",
-            "geneIdVersion" = "ENSG00000116044.17",
-            "geneName" = "NFE2L2",
-            "geneSeqEnd" = "177392756",
-            "geneSeqStart" = "177218667",
-            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
-            "ncbiGeneId" = "4780",
-            "seqCoordSystem" = "chromosome",
-            "txBiotype" = "protein_coding",
-            "txCdsSeqEnd" = "177264576",
-            "txCdsSeqStart" = "177230785",
-            "txExternalName" = "NFE2L2-201",
-            "txId" = "ENST00000397062.8",
-            "txIdNoVersion" = "ENST00000397062",
-            "txIdVersion" = "ENST00000397062.8",
-            "txIsCanonical" = "TRUE",
-            "txName" = "ENST00000397062",
-            "txSupportLevel" = "1"
+            gcContent = "42.1095666394113",
+            geneBiotype = "protein_coding",
+            geneId = "ENSG00000116044.17",
+            geneIdNoVersion = "ENSG00000116044",
+            geneIdVersion = "ENSG00000116044.17",
+            geneName = "NFE2L2",
+            geneSeqEnd = "177392756",
+            geneSeqStart = "177218667",
+            geneSynonyms = "c(\"NRF-2\", \"NRF2\")",
+            ncbiGeneId = "4780",
+            seqCoordSystem = "chromosome",
+            txBiotype = "protein_coding",
+            txCdsSeqEnd = "177264576",
+            txCdsSeqStart = "177230785",
+            txExternalName = "NFE2L2-201",
+            txId = "ENST00000397062.8",
+            txIdNoVersion = "ENST00000397062",
+            txIdVersion = "ENST00000397062.8",
+            txIsCanonical = "TRUE",
+            txName = "ENST00000397062",
+            txSupportLevel = "1"
         )
     )
 })

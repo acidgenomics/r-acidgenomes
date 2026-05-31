@@ -171,17 +171,17 @@ makeGRangesFromEnsDb <-
         assert(is(object, "EnsDb"))
         switch(
             EXPR = level,
-            "exons" = {
+            exons = {
                 fun <- ensembldb::exons
                 colKeys <- c("exon", "gene", "tx")
                 idCol <- "exon_id"
             },
-            "genes" = {
+            genes = {
                 fun <- ensembldb::genes
                 colKeys <- "gene"
                 idCol <- "gene_id"
             },
-            "transcripts" = {
+            transcripts = {
                 fun <- ensembldb::transcripts
                 colKeys <- c("gene", "tx")
                 idCol <- "tx_id"
@@ -199,11 +199,11 @@ makeGRangesFromEnsDb <-
             }
         }
         args <- list(
-            "x" = object,
-            "columns" = cols,
-            "order.by" = idCol,
-            "order.type" = "asc",
-            "return.type" = "GRanges"
+            x = object,
+            columns = cols,
+            order.by = idCol,
+            order.type = "asc",
+            return.type = "GRanges"
         )
         quietly({
             gr <- do.call(what = fun, args = args)

@@ -4,14 +4,15 @@ test_that("Ensembl", {
         database = "Ensembl"
     )
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "rnacentralId" = "URS0000000055",
-            "database" = "ENSEMBL",
-            "txId" = "ENST00000585414",
-            "taxId" = 9606L,
-            "txBiotype" = "lncRNA",
-            "geneId" = "ENSG00000226803.9"
+            stringsAsFactors = FALSE,
+            rnacentralId = "URS0000000055",
+            database = "ENSEMBL",
+            txId = "ENST00000585414",
+            taxId = 9606L,
+            txBiotype = "lncRNA",
+            geneId = "ENSG00000226803.9"
         )
     )
 })
@@ -22,14 +23,15 @@ test_that("GENCODE", {
         database = "GENCODE"
     )
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "rnacentralId" = "URS0000000055",
-            "database" = "ENSEMBL_GENCODE",
-            "txId" = "ENST00000585414",
-            "taxId" = 9606L,
-            "txBiotype" = "lncRNA",
-            "geneId" = "ENSG00000226803.9"
+            stringsAsFactors = FALSE,
+            rnacentralId = "URS0000000055",
+            database = "ENSEMBL_GENCODE",
+            txId = "ENST00000585414",
+            taxId = 9606L,
+            txBiotype = "lncRNA",
+            geneId = "ENSG00000226803.9"
         )
     )
 })
@@ -40,14 +42,15 @@ test_that("HGNC", {
         database = "HGNC"
     )
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "rnacentralId" = "URS0000000A8C",
-            "database" = "HGNC",
-            "txId" = "HGNC:12655",
-            "taxId" = 9606L,
-            "txBiotype" = "vault_RNA",
-            "geneId" = "VTRNA1-2"
+            stringsAsFactors = FALSE,
+            rnacentralId = "URS0000000A8C",
+            database = "HGNC",
+            txId = "HGNC:12655",
+            taxId = 9606L,
+            txBiotype = "vault_RNA",
+            geneId = "VTRNA1-2"
         )
     )
 })
@@ -58,14 +61,15 @@ test_that("MGI", {
         database = "MGI"
     )
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "rnacentralId" = "URS0000007529",
-            "database" = "MGI",
-            "txId" = "MGI:102485",
-            "taxId" = 10090L,
-            "txBiotype" = "tRNA",
-            "geneId" = "mt-Th"
+            stringsAsFactors = FALSE,
+            rnacentralId = "URS0000007529",
+            database = "MGI",
+            txId = "MGI:102485",
+            taxId = 10090L,
+            txBiotype = "tRNA",
+            geneId = "mt-Th"
         )
     )
 })
@@ -76,14 +80,15 @@ test_that("RefSeq", {
         database = "RefSeq"
     )
     expect_identical(
-        object = as.data.frame(object[1L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L, ]),
         expected = data.frame(
-            "rnacentralId" = "URS0000000A8C",
-            "database" = "REFSEQ",
-            "txId" = "NR_026704",
-            "taxId" = 9606L,
-            "txBiotype" = "vault_RNA",
-            "geneId" = "VTRNA1-2"
+            stringsAsFactors = FALSE,
+            rnacentralId = "URS0000000A8C",
+            database = "REFSEQ",
+            txId = "NR_026704",
+            taxId = 9606L,
+            txBiotype = "vault_RNA",
+            geneId = "VTRNA1-2"
         )
     )
 })

@@ -65,11 +65,11 @@ NcbiGeneHistory <- # nolint
         ## > df <- encode(df)
         rownames(df) <- df[["discontinuedGeneId"]]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = organism,
-            "packageVersion" = .pkgVersion,
-            "taxonomyId" = taxId,
-            "url" = url
+            date = Sys.Date(),
+            organism = organism,
+            packageVersion = .pkgVersion,
+            taxonomyId = taxId,
+            url = url
         )
         new(df, Class = "NcbiGeneHistory")
     }

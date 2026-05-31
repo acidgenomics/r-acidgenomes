@@ -11,8 +11,7 @@
 #' @examples
 #' object <- Mgi()
 #' print(object)
-Mgi <- function() {
-    # nolint
+Mgi <- function() { # nolint
     alert("Importing MGI metadata.")
     url <- pasteUrl(
         "www.informatics.jax.org",
@@ -23,7 +22,7 @@ Mgi <- function() {
     )
     file <- .cacheIt(url)
     lines <- import(con = file, format = "lines")
-    cn <- strsplit(lines[[1L]], split = "\t")[[1L]]
+    cn <- strsplit(lines[[1L]], split = "\t", fixed = TRUE)[[1L]]
     assert(hasLength(cn, n = 15L))
     cn <- sub(pattern = "^[0-9]+\\.\\s", replacement = "", x = cn)
     cn <- camelCase(cn)
@@ -76,10 +75,10 @@ Mgi <- function() {
     ## Disabled Rle encoding in 0.7.3 update.
     ## > df <- encode(df)
     metadata(df) <- list(
-        "date" = Sys.Date(),
-        "organism" = "Mus musculus",
-        "packageVersion" = .pkgVersion,
-        "url" = url
+        date = Sys.Date(),
+        organism = "Mus musculus",
+        packageVersion = .pkgVersion,
+        url = url
     )
     new(Class = "Mgi", df)
 }

@@ -95,10 +95,10 @@ downloadRefseqGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "genomeBuild" = genomeBuild,
-            "outputDir" = outputDir,
-            "releaseUrl" = releaseUrl,
-            "cache" = cache
+            genomeBuild = genomeBuild,
+            outputDir = outputDir,
+            releaseUrl = releaseUrl,
+            cache = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -131,11 +131,11 @@ downloadRefseqGenome <-
 .downloadRefSeqAnnotation <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            "gff" = pasteUrl(
+            gff = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_genomic.gff.gz")
             ),
-            "gtf" = pasteUrl(
+            gtf = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_genomic.gtf.gz")
             )
@@ -195,7 +195,7 @@ downloadRefseqGenome <-
             con = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["tx2gene"]] <- t2gFile
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -203,7 +203,7 @@ downloadRefseqGenome <-
 .downloadRefseqGenome <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_genomic.fna.gz")
             )
@@ -230,7 +230,7 @@ downloadRefseqGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -238,19 +238,19 @@ downloadRefseqGenome <-
 .downloadRefSeqMetadata <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            ## > "readme" = pasteUrl(releaseUrl, "README.txt"),
-            "annotationHashes" = pasteUrl(releaseUrl, "annotation_hashes.txt"),
-            "assemblyStatus" = pasteUrl(releaseUrl, "assembly_status.txt"),
-            "md5checksums" = pasteUrl(releaseUrl, "md5checksums.txt"),
-            "assemblyRegions" = pasteUrl(
+            ## > readme = pasteUrl(releaseUrl, "README.txt"),
+            annotationHashes = pasteUrl(releaseUrl, "annotation_hashes.txt"),
+            assemblyStatus = pasteUrl(releaseUrl, "assembly_status.txt"),
+            md5checksums = pasteUrl(releaseUrl, "md5checksums.txt"),
+            assemblyRegions = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_assembly_regions.txt")
             ),
-            "assemblyReport" = pasteUrl(
+            assemblyReport = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_assembly_report.txt")
             ),
-            "assemblyStats" = pasteUrl(
+            assemblyStats = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_assembly_stats.txt")
             )
@@ -260,7 +260,7 @@ downloadRefseqGenome <-
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
@@ -268,7 +268,7 @@ downloadRefseqGenome <-
 .downloadRefSeqTranscriptome <-
     function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, "_rna.fna.gz")
             )
@@ -295,5 +295,5 @@ downloadRefseqGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }

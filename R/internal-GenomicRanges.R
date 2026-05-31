@@ -52,9 +52,9 @@
     ## Apply broad class. Note that this method doesn't seem to work right with
     ## DFrame class.
     df <- data.frame(
-        "biotype" = biotypeData,
-        "chromosome" = seqnamesData,
-        "geneName" = geneNameData,
+        biotype = biotypeData,
+        chromosome = seqnamesData,
+        geneName = geneNameData,
         stringsAsFactors = TRUE
     )
     ## We may be able to speed up this step slightly by running in parallel.
@@ -275,10 +275,10 @@
     x <- camelCase(names(mcols(object)), strict = TRUE)
     table <- switch(
         EXPR = level,
-        "cds" = "cdsId",
-        "exons" = "exonId",
-        "genes" = "geneId",
-        "transcripts" = "txId"
+        cds = "cdsId",
+        exons = "exonId",
+        genes = "geneId",
+        transcripts = "txId"
     )
     idx <- which(x %in% table)
     x <- names(mcols(object))[idx]
@@ -657,9 +657,9 @@
         metadata(object) <- append(
             x = metadata(object),
             values = list(
-                "date" = Sys.Date(),
-                "ignoreVersion" = ignoreVersion,
-                "packageVersion" = .pkgVersion
+                date = Sys.Date(),
+                ignoreVersion = ignoreVersion,
+                packageVersion = .pkgVersion
             )
         )
         metadata(object) <- metadata(object)[sort(names(metadata(object)))]

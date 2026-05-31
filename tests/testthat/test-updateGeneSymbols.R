@@ -6,8 +6,8 @@ test_that("Homo sapiens", {
     expect_identical(
         object = object,
         expected = c(
-            "ZCCHC6" = "TUT7",
-            "ZCCHC11" = "TUT4"
+            ZCCHC6 = "TUT7",
+            ZCCHC11 = "TUT4"
         )
     )
 })
@@ -20,8 +20,8 @@ test_that("Mus musculus", {
     expect_identical(
         object = object,
         expected = c(
-            "Zcchc6" = "Tut7",
-            "Zcchc11" = "Tut4"
+            Zcchc6 = "Tut7",
+            Zcchc11 = "Tut4"
         )
     )
 })

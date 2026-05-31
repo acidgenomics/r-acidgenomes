@@ -89,21 +89,21 @@
     )
     seq <- switch(
         EXPR = x[["provider"]],
-        "Ensembl" = {
+        Ensembl = {
             .getEnsemblSeqinfo(
                 organism = x[["organism"]],
                 genomeBuild = x[["genomeBuild"]],
                 release = x[["release"]]
             )
         },
-        "GENCODE" = {
+        GENCODE = {
             .getGencodeSeqinfo(
                 organism = x[["organism"]],
                 genomeBuild = x[["genomeBuild"]],
                 release = x[["release"]]
             )
         },
-        "RefSeq" = {
+        RefSeq = {
             .getRefSeqSeqinfo(
                 file = ifelse(
                     test = isAUrl(x[["url"]]),
@@ -112,7 +112,7 @@
                 )
             )
         },
-        "UCSC" = {
+        UCSC = {
             .getUcscSeqinfo(genomeBuild = x[["genomeBuild"]])
         },
         NULL
@@ -152,7 +152,7 @@
         isString(genomeBuild),
         isInt(release)
     )
-    args <- list("species" = organism, "release" = release, "as.Seqinfo" = TRUE)
+    args <- list(species = organism, release = release, as.Seqinfo = TRUE)
     if (grepl(pattern = "GRCh37", x = genomeBuild, fixed = TRUE)) {
         ## Specifying release 87 currently errors.
         ## https://github.com/Bioconductor/GenomeInfoDb/issues/97

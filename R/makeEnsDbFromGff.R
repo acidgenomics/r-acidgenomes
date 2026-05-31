@@ -46,7 +46,7 @@ makeEnsDbFromGff <- function(file) {
         pattern = pattern
     )[1L, , drop = TRUE]
     args[["genomeBuild"]] <- x[[4L]]
-    args[["organism"]] <- gsub(pattern = "_", replacement = " ", x = x[[3L]])
+    args[["organism"]] <- gsub("_", " ", x = x[[3L]], fixed = TRUE)
     args[["version"]] <- as.integer(x[[5L]])
     args[["outfile"]] <- tempfile()
     ext <- fileExt(file)
@@ -54,10 +54,10 @@ makeEnsDbFromGff <- function(file) {
     meta <- .getGffMetadata(file)
     if (grepl(pattern = "gff", x = ext, ignore.case = TRUE)) {
         what <- ensembldb::ensDbFromGff
-        args <- append(x = args, values = list("gff" = tmpfile))
+        args <- append(x = args, values = list(gff = tmpfile))
     } else if (grepl(pattern = "gtf", x = ext, ignore.case = TRUE)) {
         what <- ensembldb::ensDbFromGtf
-        args <- append(x = args, values = list("gtf" = tmpfile))
+        args <- append(x = args, values = list(gtf = tmpfile))
     } else {
         abort(sprintf(
             "Unsupported file: {.file %s}.",

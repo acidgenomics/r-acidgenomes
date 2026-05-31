@@ -31,11 +31,11 @@ NULL
         )
         switch(
             EXPR = return,
-            "EnsemblToNcbi" = {
+            EnsemblToNcbi = {
                 fromCol <- "ensemblGeneId"
                 toCol <- "ncbiGeneId"
             },
-            "NcbiToEnsembl" = {
+            NcbiToEnsembl = {
                 fromCol <- "ncbiGeneId"
                 toCol <- "ensemblGeneId"
             }
@@ -68,9 +68,9 @@ NULL
         metadata(map) <- append(
             x = metadata(object),
             values = list(
-                "date" = Sys.Date(),
-                "organism" = organism,
-                "packageVersion" = .pkgVersion
+                date = Sys.Date(),
+                organism = organism,
+                packageVersion = .pkgVersion
             )
         )
         new(Class = return, map)

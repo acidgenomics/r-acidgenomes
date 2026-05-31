@@ -129,7 +129,7 @@ mapHumanOrthologs <-
             ))
             map <- map[keep, , drop = FALSE]
         }
-        map <- map[order(map), , drop = FALSE]
+        map <- sort(map)
         keep <- !duplicated(map[["geneId"]])
         if (!all(keep)) {
             dupes <- unique(map[["geneId"]][!keep])

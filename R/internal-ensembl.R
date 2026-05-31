@@ -125,7 +125,7 @@
         )
         ## Resolve GRCh38 vs. GRCh37 for Homo sapiens, if necessary.
         if (!isString(mysqlSubdir) && organism == "Homo sapiens") {
-            suffix <- sub(pattern = "GRCh", replacement = "", x = genomeBuild)
+            suffix <- sub("GRCh", "", x = genomeBuild, fixed = TRUE)
             mysqlSubdir <- grep(
                 pattern = paste0("_", suffix, "$"),
                 x = mysqlSubdir,
@@ -155,17 +155,17 @@
             EXPR = as.character(ncol(gene)),
             "16" = {
                 geneColMap <- c(
-                    "mysqlId" = 8L,
-                    "geneId" = 13L,
-                    "description" = 10L
+                    mysqlId = 8L,
+                    geneId = 13L,
+                    description = 10L
                 )
             },
             "17" = {
                 ## e.g. GRCh38 and GRCm38 release 87.
                 geneColMap <- c(
-                    "mysqlId" = 8L,
-                    "geneId" = 14L,
-                    "description" = 11L
+                    mysqlId = 8L,
+                    geneId = 14L,
+                    description = 11L
                 )
             },
             abort(sprintf("Unsupported file: {.file %s}.", url))
@@ -199,9 +199,10 @@
             snakeCase(organism),
             paste(
                 gsub(
-                    pattern = " ",
-                    replacement = "_",
-                    x = organism
+                    " ",
+                    "_",
+                    x = organism,
+                    fixed = TRUE
                 ),
                 genomeBuild,
                 release,
@@ -243,8 +244,8 @@
         df2 <- split(x = df2, f = df2[[1L]])
         df2 <- lapply(X = df2, FUN = `[[`, 2L)
         df2 <- as.DataFrame(list(
-            "mysqlId" = as.integer(names(df2)),
-            "geneSynonyms" = unname(df2)
+            mysqlId = as.integer(names(df2)),
+            geneSynonyms = unname(df2)
         ))
         df3 <- entrez
         df3 <- df3[, c("gene_stable_id", "xref"), drop = FALSE]
@@ -256,8 +257,8 @@
         df3 <- split(x = df3, f = df3[[1L]])
         df3 <- lapply(X = df3, FUN = `[[`, 2L)
         df3 <- as.DataFrame(list(
-            "geneId" = names(df3),
-            "ncbiGeneId" = unname(df3)
+            geneId = names(df3),
+            ncbiGeneId = unname(df3)
         ))
         out <- leftJoin(x = df1, y = df2, by = "mysqlId")
         out <- leftJoin(x = out, y = df3, by = "geneId")

@@ -17,7 +17,7 @@
     }
     ok <- validateClasses(
         object = metadata(object),
-        expected = list("organism" = "character"),
+        expected = list(organism = "character"),
         subset = TRUE
     )
     if (!isTRUE(ok)) {
@@ -28,7 +28,7 @@
     if (isSubset("ensembldb", names(metadata(object)))) {
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("release" = "integer"),
+            expected = list(release = "integer"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -76,8 +76,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -103,9 +103,9 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "ignoreVersion" = "logical",
-            "level" = "character",
-            "provider" = "character"
+            ignoreVersion = "logical",
+            level = "character",
+            provider = "character"
         ),
         subset = TRUE
     )
@@ -136,8 +136,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "date" = "Date",
-            "packageVersion" = "package_version"
+            date = "Date",
+            packageVersion = "package_version"
         ),
         subset = TRUE
     )
@@ -166,8 +166,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -196,8 +196,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -769,58 +769,58 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "aliasName" = "CompressedCharacterList",
-                "aliasSymbol" = "CompressedCharacterList",
-                "bioparadigmsSlc" = "character",
-                "ccdsId" = "CompressedCharacterList",
-                "cd" = "character",
-                "cosmic" = "character",
-                "dateApprovedReserved" = "Date",
-                "dateModified" = "Date",
-                "dateNameChanged" = "Date",
-                "dateSymbolChanged" = "Date",
-                "description" = "character",
-                "ena" = "CompressedCharacterList",
-                "ensemblGeneId" = "character",
-                "enzymeId" = "CompressedCharacterList",
-                "geneGroup" = "CompressedCharacterList",
-                "geneGroupId" = "CompressedCharacterList",
-                "geneName" = "character",
-                "gtrnadb" = "character",
-                "hgncId" = "integer",
-                "homeodb" = "numeric",
-                "hordeId" = "character",
-                "imgt" = "character",
-                "intermediateFilamentDb" = "logical",
-                "iuphar" = "character",
-                "kznfGeneCatalog" = "logical",
-                "lncipedia" = "character",
-                "lncrnadb" = "character",
-                "location" = "character",
-                "locationSortable" = "character",
-                "locusGroup" = "character",
-                "locusType" = "character",
-                "lsdb" = "CompressedCharacterList",
-                "mamitTrnadb" = "numeric",
-                "maneSelect" = "CompressedCharacterList",
-                "merops" = "character",
-                "mgdId" = "CompressedCharacterList",
-                "mirbase" = "character",
-                "ncbiGeneId" = "integer",
-                "omimId" = "CompressedCharacterList",
-                "orphanet" = "numeric",
-                "prevName" = "CompressedCharacterList",
-                "prevSymbol" = "CompressedCharacterList",
-                "pseudogeneOrg" = "character",
-                "pubmedId" = "CompressedCharacterList",
-                "refseqAccession" = "CompressedCharacterList",
-                "rgdId" = "CompressedCharacterList",
-                "rnaCentralId" = "logical",
-                "snornabase" = "character",
-                "status" = "character",
-                "ucscId" = "character",
-                "uniprotIds" = "CompressedCharacterList",
-                "vegaId" = "character"
+                aliasName = "CompressedCharacterList",
+                aliasSymbol = "CompressedCharacterList",
+                bioparadigmsSlc = "character",
+                ccdsId = "CompressedCharacterList",
+                cd = "character",
+                cosmic = "character",
+                dateApprovedReserved = "Date",
+                dateModified = "Date",
+                dateNameChanged = "Date",
+                dateSymbolChanged = "Date",
+                description = "character",
+                ena = "CompressedCharacterList",
+                ensemblGeneId = "character",
+                enzymeId = "CompressedCharacterList",
+                geneGroup = "CompressedCharacterList",
+                geneGroupId = "CompressedCharacterList",
+                geneName = "character",
+                gtrnadb = "character",
+                hgncId = "integer",
+                homeodb = "numeric",
+                hordeId = "character",
+                imgt = "character",
+                intermediateFilamentDb = "logical",
+                iuphar = "character",
+                kznfGeneCatalog = "logical",
+                lncipedia = "character",
+                lncrnadb = "character",
+                location = "character",
+                locationSortable = "character",
+                locusGroup = "character",
+                locusType = "character",
+                lsdb = "CompressedCharacterList",
+                mamitTrnadb = "numeric",
+                maneSelect = "CompressedCharacterList",
+                merops = "character",
+                mgdId = "CompressedCharacterList",
+                mirbase = "character",
+                ncbiGeneId = "integer",
+                omimId = "CompressedCharacterList",
+                orphanet = "numeric",
+                prevName = "CompressedCharacterList",
+                prevSymbol = "CompressedCharacterList",
+                pseudogeneOrg = "character",
+                pubmedId = "CompressedCharacterList",
+                refseqAccession = "CompressedCharacterList",
+                rgdId = "CompressedCharacterList",
+                rnaCentralId = "logical",
+                snornabase = "character",
+                status = "character",
+                ucscId = "character",
+                uniprotIds = "CompressedCharacterList",
+                vegaId = "character"
             )
         )
         ok <- validate(hasRows(object))
@@ -834,8 +834,8 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "url" = "character"
+                organism = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -863,21 +863,21 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ensemblGeneChromosome" = "character",
-                "ensemblGeneEnd" = "integer",
-                "ensemblGeneId" = "character",
-                "ensemblGeneStart" = "integer",
-                "ensemblGeneStrand" = "factor",
-                "genomeBuild" = "character",
-                "markerName" = "character",
-                "markerSymbol" = "character",
-                "markerType" = "character",
-                "mgiAccessionId" = "integer",
-                "ncbiGeneChromosome" = "character",
-                "ncbiGeneEnd" = "integer",
-                "ncbiGeneId" = "integer",
-                "ncbiGeneStart" = "integer",
-                "ncbiGeneStrand" = "factor"
+                ensemblGeneChromosome = "character",
+                ensemblGeneEnd = "integer",
+                ensemblGeneId = "character",
+                ensemblGeneStart = "integer",
+                ensemblGeneStrand = "factor",
+                genomeBuild = "character",
+                markerName = "character",
+                markerSymbol = "character",
+                markerType = "character",
+                mgiAccessionId = "integer",
+                ncbiGeneChromosome = "character",
+                ncbiGeneEnd = "integer",
+                ncbiGeneId = "integer",
+                ncbiGeneStart = "integer",
+                ncbiGeneStrand = "factor"
             )
         )
         if (!isTRUE(ok)) {
@@ -894,8 +894,8 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "url" = "character"
+                organism = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -923,10 +923,10 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "discontinuedGeneId" = "integer",
-                "discontinuedSymbol" = "character",
-                "discontinueDate" = "Date",
-                "geneId" = "integer"
+                discontinuedGeneId = "integer",
+                discontinuedSymbol = "character",
+                discontinueDate = "Date",
+                geneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -943,9 +943,9 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "taxonomyId" = "integer",
-                "url" = "character"
+                organism = "character",
+                taxonomyId = "integer",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -973,19 +973,19 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "chromosome" = "character",
-                "dbXrefs" = "CompressedCharacterList",
-                "description" = "character",
-                "featureType" = "character",
-                "geneId" = "integer",
-                "geneName" = "character",
-                "geneSynonyms" = "CompressedCharacterList",
-                "mapLocation" = "character",
-                "modificationDate" = "Date",
-                "nomenclatureStatus" = "character",
-                "otherDesignations" = "CompressedCharacterList",
-                "taxonomyId" = "integer",
-                "typeOfGene" = "character"
+                chromosome = "character",
+                dbXrefs = "CompressedCharacterList",
+                description = "character",
+                featureType = "character",
+                geneId = "integer",
+                geneName = "character",
+                geneSynonyms = "CompressedCharacterList",
+                mapLocation = "character",
+                modificationDate = "Date",
+                nomenclatureStatus = "character",
+                otherDesignations = "CompressedCharacterList",
+                taxonomyId = "integer",
+                typeOfGene = "character"
             ),
             subset = TRUE
         )
@@ -999,9 +999,9 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "taxonomicGroup" = "character",
-                "url" = "character"
+                organism = "character",
+                taxonomicGroup = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -1031,8 +1031,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ensemblGeneId" = "character",
-                "ncbiGeneId" = "integer"
+                ensemblGeneId = "character",
+                ncbiGeneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -1054,7 +1054,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1086,8 +1086,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "geneId" = "character",
-                "geneName" = "character"
+                geneId = "character",
+                geneName = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -1107,7 +1107,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("format" = "character"),
+            expected = list(format = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1139,14 +1139,14 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "dbClassKey" = "integer",
-                "humanGeneName" = "character",
-                "humanHgncId" = "integer",
-                "humanNcbiGeneId" = "integer",
-                "humanOmimGeneId" = "integer",
-                "mouseGeneName" = "character",
-                "mouseMgiId" = "integer",
-                "mouseNcbiGeneId" = "integer"
+                dbClassKey = "integer",
+                humanGeneName = "character",
+                humanHgncId = "integer",
+                humanNcbiGeneId = "integer",
+                humanOmimGeneId = "integer",
+                mouseGeneName = "character",
+                mouseMgiId = "integer",
+                mouseNcbiGeneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -1163,10 +1163,10 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "humanDupes" = "character",
-                "mouseDupes" = "character",
-                "unique" = "logical",
-                "url" = "character"
+                humanDupes = "character",
+                mouseDupes = "character",
+                unique = "logical",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -1194,8 +1194,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ncbiGeneId" = "integer",
-                "ensemblGeneId" = "character"
+                ncbiGeneId = "integer",
+                ensemblGeneId = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -1217,7 +1217,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1252,9 +1252,9 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "proteinId" = "character",
-                "geneId" = "character",
-                "geneName" = "character"
+                proteinId = "character",
+                geneId = "character",
+                geneName = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -1273,7 +1273,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1310,8 +1310,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "txId" = "character",
-                "geneId" = "character"
+                txId = "character",
+                geneId = "character"
             )
         )
         if (!isTRUE(ok)) {

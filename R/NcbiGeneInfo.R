@@ -49,7 +49,7 @@ NcbiGeneInfo <- # nolint
             baseURL,
             taxonomicGroup,
             paste0(
-                gsub(" ", "_", organism),
+                gsub(" ", "_", x = organism, fixed = TRUE),
                 ".gene_info.gz"
             )
         )
@@ -119,12 +119,12 @@ NcbiGeneInfo <- # nolint
         ## > df <- encode(df)
         df <- df[, sort(colnames(df))]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = organism,
-            "packageVersion" = .pkgVersion,
-            "refseqGeneSummary" = refseqGeneSummary,
-            "taxonomicGroup" = taxonomicGroup,
-            "url" = url
+            date = Sys.Date(),
+            organism = organism,
+            packageVersion = .pkgVersion,
+            refseqGeneSummary = refseqGeneSummary,
+            taxonomicGroup = taxonomicGroup,
+            url = url
         )
         new(Class = "NcbiGeneInfo", df)
     }
@@ -144,7 +144,7 @@ NcbiGeneInfo <- # nolint
         isOrganism(organism)
     )
     taxId <- .mapOrganismToNcbiTaxId(organism)
-    df <- GeneSummary::loadGeneSummary(organism = taxId)
+    df <- GeneSummary::loadGeneSummary(organism = taxId) # nolint
     assert(is.data.frame(df))
     df <- as(df, "DFrame")
     colnames(df) <- camelCase(colnames(df))
@@ -170,7 +170,7 @@ NcbiGeneInfo <- # nolint
             "PREDICTED REFSEQ"
         )
     )
-    df <- df[order(df), , drop = FALSE]
+    df <- sort(df)
     df <- df[!duplicated(df[["geneId"]]), , drop = FALSE]
     assert(hasNoDuplicates(df[["geneId"]]))
     colnames(df)[colnames(df) == "geneSummary"] <- "refseqGeneSummary"

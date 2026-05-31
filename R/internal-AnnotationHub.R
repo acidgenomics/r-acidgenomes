@@ -38,11 +38,11 @@
         )
         switch(
             EXPR = return,
-            "EnsemblToNcbi" = {
+            EnsemblToNcbi = {
                 keytype <- "ENSEMBL"
                 columns <- "ENTREZID"
             },
-            "NcbiToEnsembl" = {
+            NcbiToEnsembl = {
                 keytype <- "ENTREZID"
                 columns <- "ENSEMBL"
             }

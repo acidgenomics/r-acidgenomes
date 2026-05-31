@@ -32,8 +32,8 @@ importTxToGene <-
         genomeBuild = NULL,
         release = NULL,
         ignoreVersion = c(
-            "tx" = FALSE,
-            "gene" = FALSE
+            tx = FALSE,
+            gene = FALSE
         )
     ) {
         assert(
@@ -55,10 +55,10 @@ importTxToGene <-
                 stripGeneVersions(data[["geneId"]])
         }
         metadata(data) <- list(
-            "genomeBuild" = genomeBuild,
-            "ignoreVersion" = ignoreVersion,
-            "organism" = organism,
-            "release" = release
+            genomeBuild = genomeBuild,
+            ignoreVersion = ignoreVersion,
+            organism = organism,
+            release = release
         )
         TxToGene(data)
     }

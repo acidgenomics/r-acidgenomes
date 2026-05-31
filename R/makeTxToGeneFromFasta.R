@@ -120,7 +120,7 @@ makeTxToGeneFromFasta <-
             ## Note that GRCh37 identifiers also contain "_".
             ## e.g. "ENST00000456328.2_1".
             provider <- "GENCODE"
-        } else if (grepl(pattern = "FlyBase", x = lines[[1L]])) {
+        } else if (grepl("FlyBase", x = lines[[1L]], fixed = TRUE)) {
             provider <- "FlyBase"
         } else if (
             grepl(
@@ -173,7 +173,7 @@ makeTxToGeneFromFasta <-
         alertInfo(sprintf("%s transcriptome detected.", provider))
         switch(
             EXPR = provider,
-            "Ensembl" = {
+            Ensembl = {
                 x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
@@ -188,7 +188,7 @@ makeTxToGeneFromFasta <-
                     x = x[, 2L]
                 )
             },
-            "FlyBase" = {
+            FlyBase = {
                 x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
@@ -203,7 +203,7 @@ makeTxToGeneFromFasta <-
                     x = x[, 2L]
                 )
             },
-            "GENCODE" = {
+            GENCODE = {
                 x <- strsplit(x = lines, split = "|", fixed = TRUE)
                 x <- lapply(
                     X = x,
@@ -213,7 +213,7 @@ makeTxToGeneFromFasta <-
                 )
                 x <- do.call(what = rbind, args = x)
             },
-            "WormBase" = {
+            WormBase = {
                 x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
@@ -236,17 +236,17 @@ makeTxToGeneFromFasta <-
         }
         out <- TxToGene(x)
         meta <- list(
-            "call" = tryCatch(
+            call = tryCatch(
                 expr = standardizeCall(),
                 error = function(e) {
                     NULL
                 }
             ),
-            "date" = Sys.Date(),
-            "file" = file,
-            "ignoreVersion" = ignoreVersion,
-            "packageVersion" = .pkgVersion,
-            "provider" = provider
+            date = Sys.Date(),
+            file = file,
+            ignoreVersion = ignoreVersion,
+            packageVersion = .pkgVersion,
+            provider = provider
         )
         metadata(out) <- meta
         out
