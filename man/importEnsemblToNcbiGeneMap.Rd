@@ -40,6 +40,7 @@ Import Ensembl-to-NCBI gene identifier mappings
 Updated 2025-04-15.
 }
 \examples{
-df <- importEnsemblToNcbiGeneMap(organism = "Homo sapiens")
-print(df)
+## This example is bandwidth intensive.
+## > df <- importEnsemblToNcbiGeneMap(organism = "Homo sapiens")
+## > print(df)
 }

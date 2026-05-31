@@ -163,17 +163,17 @@
 #'
 #' @examples
 #' ## Ensembl ====
-#' file <- AcidBase::pasteUrl(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-108",
-#'     "gtf",
-#'     "homo_sapiens",
-#'     "Homo_sapiens.GRCh38.108.gtf.gz",
-#'     protocol = "ftp"
-#' )
-#' genes <- makeGRangesFromGff(file = file, level = "genes")
-#' summary(genes)
+#' ## > file <- AcidBase::pasteUrl(
+#' ## >     "ftp.ensembl.org",
+#' ## >     "pub",
+#' ## >     "release-108",
+#' ## >     "gtf",
+#' ## >     "homo_sapiens",
+#' ## >     "Homo_sapiens.GRCh38.108.gtf.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > genes <- makeGRangesFromGff(file = file, level = "genes")
+#' ## > summary(genes)
 #' ## > transcripts <- makeGRangesFromGff(file = file, level = "transcripts")
 #' ## > summary(transcripts)
 #'

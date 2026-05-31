@@ -14,18 +14,18 @@
 #'
 #' @examples
 #' ## Ensembl ====
-#' file <- AcidBase::pasteUrl(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-102",
-#'     "fasta",
-#'     "homo_sapiens",
-#'     "cdna",
-#'     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
-#'     protocol = "ftp"
-#' )
-#' t2g <- makeTxToGeneFromFasta(file)
-#' print(t2g)
+#' ## > file <- AcidBase::pasteUrl(
+#' ## >     "ftp.ensembl.org",
+#' ## >     "pub",
+#' ## >     "release-102",
+#' ## >     "fasta",
+#' ## >     "homo_sapiens",
+#' ## >     "cdna",
+#' ## >     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > t2g <- makeTxToGeneFromFasta(file)
+#' ## > print(t2g)
 #'
 #' ## GENCODE ====
 #' ## GRCh38:

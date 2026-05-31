@@ -12,7 +12,7 @@ test_that("Ensembl", {
             txId = "ENST00000585414",
             taxId = 9606L,
             txBiotype = "lncRNA",
-            geneId = "ENSG00000226803.9"
+            geneId = "ENSG00000226803.10"
         )
     )
 })
@@ -31,7 +31,7 @@ test_that("GENCODE", {
             txId = "ENST00000585414",
             taxId = 9606L,
             txBiotype = "lncRNA",
-            geneId = "ENSG00000226803.9"
+            geneId = "ENSG00000226803.10"
         )
     )
 })
