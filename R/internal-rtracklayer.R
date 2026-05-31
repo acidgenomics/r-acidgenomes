@@ -407,10 +407,37 @@
 ## Note that `gene_id` and `gene_name` are nicely defined, so don't use `Name`.
 ## Consider removing gene and transcript versions automatically.
 
-## Updated 2024-01-02.
+## Updated 2026-05-31.
 .rtracklayerGencodeExonsGff <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("exon_id", "gene_id", "transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        mcols(object)[["exon_id_version"]] <-
+            mcols(object)[["exon_id"]]
+        mcols(object)[["exon_id"]] <-
+            stripExonVersions(mcols(object)[["exon_id_version"]])
+        mcols(object)[["transcript_id_version"]] <-
+            mcols(object)[["transcript_id"]]
+        mcols(object)[["transcript_id"]] <-
+            stripTranscriptVersions(mcols(object)[["transcript_id_version"]])
+        mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
+        mcols(object)[["gene_id"]] <-
+            stripGeneVersions(mcols(object)[["gene_id_version"]])
+        mcols(object)[["ID"]] <- NULL
+        mcols(object)[["Parent"]] <- NULL
+        mcols(object)[["ont"]] <- NULL
+        object
     }
 
 
@@ -432,7 +459,6 @@
         object <- object[keep]
         mcols(object)[["exon_id_version"]] <-
             mcols(object)[["exon_id"]]
-        ## FIXME Need to add support for stripping exon versions.
         mcols(object)[["exon_id"]] <-
             stripExonVersions(mcols(object)[["exon_id_version"]])
         mcols(object)[["transcript_id_version"]] <-
@@ -442,7 +468,6 @@
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
-        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -470,7 +495,6 @@
             stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
-        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -496,7 +520,6 @@
         assert(hasNoDuplicates(mcols(object)[["gene_id_version"]]))
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
-        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -527,7 +550,6 @@
             stripGeneVersions(mcols(object)[["gene_id_version"]])
         mcols(object)[["ID"]] <- NULL
         mcols(object)[["Parent"]] <- NULL
-        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -559,7 +581,6 @@
         mcols(object)[["gene_id_version"]] <- mcols(object)[["gene_id"]]
         mcols(object)[["gene_id"]] <-
             stripGeneVersions(mcols(object)[["gene_id_version"]])
-        ## FIXME Consider keeping this.
         mcols(object)[["ont"]] <- NULL
         object
     }
@@ -627,17 +648,93 @@
 }
 
 
-## Updated 2023-12-20.
+## Updated 2026-05-31.
 .rtracklayerRefseqExonsGff <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("Dbxref", "gene", "transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        keep <- grepl(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        )
+        object <- object[keep]
+        ## Extract NCBI gene IDs directly from Dbxref on exon rows.
+        dbxref <- mcols(object)[["Dbxref"]]
+        lgl <- grepl(pattern = "GeneID:", x = dbxref, fixed = TRUE)
+        ncbiGeneIds <- unlist(dbxref[lgl], recursive = FALSE)
+        ncbiGeneIds <- do.call(
+            what = rbind,
+            args = strsplit(
+                x = ncbiGeneIds[grepl(pattern = "^GeneID:", x = ncbiGeneIds)],
+                split = ":",
+                fixed = TRUE
+            )
+        )[, 2L]
+        ncbiGeneIds <- as.integer(ncbiGeneIds)
+        assert(identical(length(ncbiGeneIds), length(object)))
+        mcols(object)[["ncbi_gene_id"]] <- ncbiGeneIds
+        names(mcols(object))[
+            names(mcols(object)) == "gene"
+        ] <- "gene_id"
+        mcols(object)[["Dbxref"]] <- NULL
+        mcols(object)[["ID"]] <- NULL
+        mcols(object)[["Name"]] <- NULL
+        mcols(object)[["Note"]] <- NULL
+        mcols(object)[["Parent"]] <- NULL
+        mcols(object)[["gbkey"]] <- NULL
+        object
     }
 
 
-## Updated 2023-12-20.
+## Updated 2026-05-31.
 .rtracklayerRefseqExonsGtf <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("gene_id", "transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        ## Extract NCBI gene IDs from exon rows before filtering, since
+        ## the db_xref attribute carrying GeneID is only present on these.
+        ncbiGeneIds <- .getNcbiGeneIdsFromRefSeqGtf(object)
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        keep <- grepl(
+            pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+            x = mcols(object)[["transcript_id"]]
+        )
+        object <- object[keep]
+        mcols(object) <- leftJoin(
+            x = mcols(object),
+            y = ncbiGeneIds,
+            by = "gene_id"
+        )
+        names(mcols(object))[
+            names(mcols(object)) == "gene_id"
+        ] <- "parent_gene_id"
+        names(mcols(object))[
+            names(mcols(object)) == "gene"
+        ] <- "gene_id"
+        mcols(object)[["gbkey"]] <- NULL
+        mcols(object)[["note"]] <- NULL
+        object
     }
 
 
@@ -890,14 +987,31 @@
 ## Updated 2023-12-20.
 .rtracklayerWormbaseExonsGff <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        stop("Exon parsing from WormBase GFF3 is not yet supported.")
     }
 
 
-## Updated 2023-12-20.
+## Updated 2026-05-31.
 .rtracklayerWormbaseExonsGtf <-
     function(object) {
-        stop("FIXME WORK IN PROGRESS")
+        assert(
+            is(object, "GRanges"),
+            isSubset(
+                x = c("exon_id", "gene_id", "transcript_id", "type"),
+                y = names(mcols(object))
+            )
+        )
+        keep <- mcols(object)[["type"]] == "exon"
+        assert(
+            any(keep),
+            msg = "Failed to extract any exons."
+        )
+        object <- object[keep]
+        assert(allAreMatchingRegex(
+            x = mcols(object)[["gene_id"]],
+            pattern = "^WBGene[[:digit:]]{8}$"
+        ))
+        object
     }
 
 

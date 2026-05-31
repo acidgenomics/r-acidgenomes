@@ -29,14 +29,14 @@ gr <- GRanges
 n <- list(
     "celegans" = list(
         "wormbase" = c(
-            "exons" = NA, # FIXME
-            "genes" = NA, # FIXME
+            "exons" = NA,
+            "genes" = NA,
             "transcripts" = 32004L
         )
     ),
     "dmelanogaster" = list(
         "flybase" = c(
-            "exons" = NA, # FIXME
+            "exons" = NA,
             "genes" = 17873L,
             "transcripts" = 35703L
         )
@@ -338,7 +338,6 @@ gffs <- c(
         "GCF_000001405.40_GRCh38.p14_genomic.gtf.gz",
         protocol = "ftp"
     ),
-    ## FIXME Add coverage of this in longtests.
     "refseq_grch38_pipeline_gff3" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
@@ -352,7 +351,6 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gff.gz",
         protocol = "ftp"
     ),
-    ## FIXME Add coverage of this in longtests.
     "refseq_grch38_pipeline_gtf" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
@@ -366,7 +364,6 @@ gffs <- c(
         "GCA_000001405.15_GRCh38_full_analysis_set.refseq_annotation.gtf.gz",
         protocol = "ftp"
     ),
-    ## FIXME Add coverage of this in longtests.
     "refseq_t2t_gff3" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",
@@ -378,7 +375,6 @@ gffs <- c(
         "GCF_009914755.1_T2T-CHM13v2.0_genomic.gff.gz",
         protocol = "ftp"
     ),
-    ## FIXME Add coverage of this in longtests.
     "refseq_t2t_gtf" = pasteUrl(
         "ftp.ncbi.nlm.nih.gov",
         "genomes",

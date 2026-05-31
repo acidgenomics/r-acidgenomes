@@ -1,5 +1,3 @@
-## FIXME Add support for downloading exons.
-
 #' Download Ensembl reference genome
 #'
 #' @export

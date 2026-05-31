@@ -1,5 +1,3 @@
-## FIXME Add support for downloading exons.
-
 ## nolint start
 #' Download RefSeq reference genome
 #'
@@ -185,7 +183,12 @@ downloadRefseqGenome <-
             file = file.path(outputDir, "transcripts.rds")
         )
         ## Save transcript-to-gene mappings.
-        t2g <- makeTxToGeneFromGff(file = gffFile)
+        t2g <- TxToGene(makeGRangesFromGff(
+            file = gffFile,
+            level = "transcripts",
+            ignoreVersion = FALSE,
+            extraMcols = FALSE
+        ))
         saveRDS(object = t2g, file = file.path(outputDir, "tx2gene.rds"))
         t2gFile <- export(
             object = t2g,

@@ -1318,8 +1318,6 @@ test_that("GENCODE GRCh38 GTF transcripts", {
     )
 })
 
-## FIXME Need to add support for exon parsing.
-## FIXME Need to cover exons here.
 
 file <- gffs[["refseq_grch38_gff3"]]
 
@@ -1486,8 +1484,39 @@ test_that("RefSeq GRCh38 GFF3 transcripts", {
     )
 })
 
-## FIXME Need to add support for parsing exons first I think.
-## FIXME Need to cover exons here.
+test_that("RefSeq GRCh38 GFF3 exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "RefseqExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = mcols(gr)[["txId"]]
+    )))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "description" = "character",
+            "exception" = "character",
+            "geneBiotype" = "character",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSynonym" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "product" = "character",
+            "proteinId" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "txId" = "character",
+            "type" = "factor"
+        )
+    )
+})
+
 
 file <- gffs[["refseq_grch38_gtf"]]
 
@@ -1642,8 +1671,42 @@ test_that("RefSeq GRCh38 GTF transcripts", {
     )
 })
 
-## FIXME Need to add support for parsing exons first I think.
-## FIXME Need to cover exons here.
+test_that("RefSeq GRCh38 GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "RefseqExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = mcols(gr)[["txId"]]
+    )))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "description" = "character",
+            "exception" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSynonym" = "character",
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "product" = "character",
+            "proteinId" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "txId" = "character",
+            "type" = "factor"
+        )
+    )
+})
+
 
 file <- gffs[["ucsc_hg38_ncbirefseq_gtf"]]
 
@@ -1753,7 +1816,6 @@ test_that("UCSC hg38 GTF transcripts", {
     )
 })
 
-## FIXME Need to cover exons here.
 
 file <- gffs[["wormbase_gtf"]]
 
@@ -1764,7 +1826,6 @@ test_that("WormBase GTF genes", {
     )
     expect_s4_class(object, "WormbaseGenes")
     expect_length(object, 46928L)
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1845,8 +1906,6 @@ test_that("WormBase GTF transcripts", {
     )
     expect_s4_class(object, "WormbaseTranscripts")
     expect_length(object, 60136L)
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -1896,7 +1955,38 @@ test_that("WormBase GTF transcripts", {
     )
 })
 
-## FIXME Need to cover exons here.
+test_that("WormBase GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "WormbaseExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(allAreMatchingRegex(
+        x = mcols(gr)[["geneId"]],
+        pattern = "^WBGene[[:digit:]]{8}$"
+    ))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "exonId" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "proteinId" = "character",
+            "source" = "factor",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txSource" = "factor",
+            "type" = "factor"
+        )
+    )
+})
+
 
 file <- file.path(cacheDir, "ref-transcripts.gtf")
 
@@ -1908,7 +1998,6 @@ test_that("WormBase GTF genes", {
     )
     expect_s4_class(object, "EnsemblGenes")
     expect_length(object, n = 60L)
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -1971,8 +2060,6 @@ test_that("WormBase GTF transcripts", {
     )
     expect_s4_class(object, "EnsemblTranscripts")
     expect_length(object, n = 167L)
-    ## FIXME Check expected transcript count.
-    ## FIXME Check expected gene count.
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -2039,7 +2126,6 @@ test_that("WormBase GTF transcripts", {
     )
 })
 
-## FIXME Need to cover exons here.
 
 ## See related issues:
 ## - https://github.com/Bioconductor/GenomeInfoDb/issues/97
