@@ -80,8 +80,6 @@
 }
 
 
-## FIXME Harden this function against any random input, such as a txFasta.
-
 #' Get metadata about a GFF file
 #'
 #' @note Updated 2024-01-02.
@@ -191,11 +189,11 @@
         ) {
             l[["provider"]] <- "UCSC"
         } else if (identical("FlyBase", df2[[2L]][[1L]])) {
-            ## FIXME This returns incorrectly for:
-            ## https://ftp.ensembl.org/pub/release-110/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.46.110.gtf.gz
+            ## Note: Ensembl-hosted Drosophila GTF files also carry "FlyBase"
+            ## as the source column, so this may misidentify Ensembl files as
+            ## FlyBase provider. Use explicit `provider` override if needed.
             l[["provider"]] <- "FlyBase"
         } else if (identical("WormBase", df2[[2L]][[1L]])) {
-            ## FIXME Need to check C. elegans Ensembl file.
             l[["provider"]] <- "WormBase"
         } else if (
             identical(basename(file), "ref-transcripts.gtf") &&

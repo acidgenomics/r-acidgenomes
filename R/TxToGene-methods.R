@@ -6,7 +6,7 @@
 #' @inheritParams params
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeTxToGene()].
+#' @seealso [makeTxToGeneFromFasta()].
 #'
 #' @examples
 #' ## DFrame ====

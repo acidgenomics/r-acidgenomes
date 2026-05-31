@@ -54,5 +54,5 @@ object <- TxToGene(df)
 print(object)
 }
 \seealso{
-\code{\link[=makeTxToGene]{makeTxToGene()}}.
+\code{\link[=makeTxToGeneFromFasta]{makeTxToGeneFromFasta()}}.
 }

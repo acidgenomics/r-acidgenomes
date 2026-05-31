@@ -182,21 +182,25 @@ mapHumanOrthologs <-
             "Homo sapiens"
         ))
         alert(sprintf("Getting {.emph %s} gene symbols.", organism))
-        ## FIXME This function has been removed.
-        g2s <- makeGeneToSymbolFromEnsembl(
-            organism = organism,
-            release = ensemblRelease,
-            ignoreVersion = TRUE,
+        g2s <- GeneToSymbol(
+            object = makeGRangesFromEnsembl(
+                organism = organism,
+                level = "genes",
+                release = ensemblRelease,
+                ignoreVersion = TRUE
+            ),
             format = "unmodified"
         )
         g2s <- as(g2s, "DFrame")
         assert(identical(colnames(g2s), c("geneId", "geneName")))
         alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
-        ## FIXME This function has been removed.
-        g2sHuman <- makeGeneToSymbolFromEnsembl(
-            organism = "Homo sapiens",
-            release = ensemblRelease,
-            ignoreVersion = TRUE,
+        g2sHuman <- GeneToSymbol(
+            object = makeGRangesFromEnsembl(
+                organism = "Homo sapiens",
+                level = "genes",
+                release = ensemblRelease,
+                ignoreVersion = TRUE
+            ),
             format = "unmodified"
         )
         g2sHuman <- as(g2sHuman, "DFrame")

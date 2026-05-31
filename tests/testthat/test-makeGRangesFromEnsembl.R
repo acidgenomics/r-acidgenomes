@@ -132,7 +132,10 @@ test_that("Homo sapiens : transcripts", {
         object = object,
         n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
     )
-    ## FIXME Check that genes match here.
+    expect_true(allAreMatchingRegex(
+        x = unique(mcols(object)[["geneId"]]),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])

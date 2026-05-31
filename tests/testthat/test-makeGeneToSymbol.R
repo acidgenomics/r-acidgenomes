@@ -1,11 +1,12 @@
-## FIXME These functions have been removed, consider reworking.
-
 test_that("EnsDb : unmodified", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
-    object <- makeGeneToSymbolFromEnsDb(
-        object = "EnsDb.Hsapiens.v75",
-        format = "unmodified",
-        ignoreVersion = TRUE
+    object <- GeneToSymbol(
+        object = makeGRangesFromEnsDb(
+            object = "EnsDb.Hsapiens.v75",
+            level = "genes",
+            ignoreVersion = TRUE
+        ),
+        format = "unmodified"
     )
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 63677L)
@@ -43,10 +44,13 @@ test_that("EnsDb : unmodified", {
 
 test_that("EnsDb : makeUnique", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
-    object <- makeGeneToSymbolFromEnsDb(
-        object = "EnsDb.Hsapiens.v75",
-        format = "makeUnique",
-        ignoreVersion = TRUE
+    object <- GeneToSymbol(
+        object = makeGRangesFromEnsDb(
+            object = "EnsDb.Hsapiens.v75",
+            level = "genes",
+            ignoreVersion = TRUE
+        ),
+        format = "makeUnique"
     )
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 63677L)
@@ -84,10 +88,13 @@ test_that("EnsDb : makeUnique", {
 
 test_that("EnsDb : 1:1", {
     skip_if_not_installed("EnsDb.Hsapiens.v75")
-    object <- makeGeneToSymbolFromEnsDb(
-        object = "EnsDb.Hsapiens.v75",
-        format = "1:1",
-        ignoreVersion = TRUE
+    object <- GeneToSymbol(
+        object = makeGRangesFromEnsDb(
+            object = "EnsDb.Hsapiens.v75",
+            level = "genes",
+            ignoreVersion = TRUE
+        ),
+        format = "1:1"
     )
     expect_s4_class(object, "GeneToSymbol")
     expect_identical(nrow(object), 56638L)
