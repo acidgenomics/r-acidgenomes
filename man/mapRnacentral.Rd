@@ -29,8 +29,8 @@ Updated 2023-12-13.
 }
 \examples{
 ## Get RNAcentral to RefSeq identifier mappings.
-object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
-print(object)
+## > object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+## > print(object)
 }
 \seealso{
 \itemize{

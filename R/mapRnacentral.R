@@ -21,8 +21,8 @@
 #'
 #' @examples
 #' ## Get RNAcentral to RefSeq identifier mappings.
-#' object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
-#' print(object)
+#' ## > object <- mapRnacentral(organism = "Homo sapiens", database = "refseq")
+#' ## > print(object)
 mapRnacentral <- function(organism, database) {
     assert(isOrganism(organism))
     database <- match.arg(
