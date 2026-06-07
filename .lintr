@@ -112,3 +112,7 @@ linters: linters_with_defaults(
     which_grepl_linter(),
     whitespace_linter(),
     yoda_test_linter())
+
+exclude: "# nolint"
+exclude_start: "# nolint start"
+exclude_end: "# nolint end"

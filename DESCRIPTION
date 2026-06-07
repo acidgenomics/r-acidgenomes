@@ -55,6 +55,6 @@ Suggests:
 Additional_repositories: https://r.acidgenomics.com
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
-Config/testthat/parallel: false
+Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
 biocViews: Infrastructure
