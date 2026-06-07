@@ -22,16 +22,16 @@ License: AGPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    AcidBase,
+    AcidBase (>= 0.7.5),
     AcidCLI,
-    AcidGenerics,
-    AcidPlyr,
+    AcidGenerics (>= 0.7.6),
+    AcidPlyr (>= 0.5.5),
     BiocGenerics,
     GenomeInfoDb,
     GenomicRanges,
     IRanges,
     S4Vectors,
-    goalie,
+    goalie (>= 0.7.8),
     methods,
     parallel,
     pipette,
