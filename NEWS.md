@@ -33,6 +33,10 @@ Minor changes:
 
 - Code reformatted with the `air` R formatter.
 
+License changes:
+
+- Switched from AGPL-3.0 to Apache-2.0.
+
 ## AcidGenomes 0.7.5 (2025-04-07)
 
 Minor changes:
