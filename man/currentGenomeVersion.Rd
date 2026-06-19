@@ -34,7 +34,7 @@ Release version.
 Obtain the latest release version from various genome annotation sources.
 }
 \note{
-Updated 2023-10-04.
+Updated 2025-04-14.
 }
 \examples{
 ## Ensembl.

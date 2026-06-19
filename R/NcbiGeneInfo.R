@@ -1,21 +1,22 @@
 #' Import NCBI (Entrez) gene identifier information
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-19.
 #'
 #' @inheritParams AcidRoxygen::params
-#'
-#' @param cache `logical(1)`.
-#' Cache the gene info file from NCBI FTP server using BiocFileCache.
 #'
 #' @param taxonomicGroup `character(1)`.
 #' NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 #' Defining this manually avoids having to query the FTP server.
 #'
+#' @param refseqGeneSummary `logical(1)`.
+#' Include RefSeq gene summary in `"refseqGeneSummary"` column.
+#' Requires Bioconductor GeneSummary package to be installed.
+#'
 #' @return `NcbiGeneInfo`.
 #'
 #' @seealso
-#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/
 #'
 #' @examples
 #' object <- NcbiGeneInfo(
@@ -24,17 +25,18 @@
 #' )
 #' print(object)
 NcbiGeneInfo <- # nolint
-    function(organism,
-             taxonomicGroup = NULL,
-             cache = TRUE) {
+    function(organism, taxonomicGroup = NULL, refseqGeneSummary = FALSE) {
         assert(
             hasInternet(),
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
-            isFlag(cache)
+            isFlag(refseqGeneSummary)
         )
         baseURL <- pasteUrl(
-            "ftp.ncbi.nih.gov", "gene", "DATA", "GENE_INFO",
+            "ftp.ncbi.nlm.nih.gov",
+            "gene",
+            "DATA",
+            "GENE_INFO",
             protocol = "https"
         )
         if (is.null(taxonomicGroup)) {
@@ -47,20 +49,17 @@ NcbiGeneInfo <- # nolint
             baseURL,
             taxonomicGroup,
             paste0(
-                gsub(" ", "_", organism),
+                gsub(" ", "_", x = organism, fixed = TRUE),
                 ".gene_info.gz"
             )
         )
         alert(sprintf(
             "Downloading {.emph %s} gene info from NCBI at {.url %s}.",
-            organism, url
+            organism,
+            url
         ))
         df <- import(
-            con = ifelse(
-                test = cache,
-                yes = .cacheIt(url),
-                no = url
-            ),
+            con = .cacheIt(url),
             format = "tsv",
             colnames = TRUE,
             naStrings = "-"
@@ -90,7 +89,6 @@ NcbiGeneInfo <- # nolint
         colnames(df)[colnames(df) == "synonyms"] <- "geneSynonyms"
         colnames(df)[colnames(df) == "xTaxId"] <- "taxonomyId"
         df <- removeNa(df)
-        df <- df[, sort(colnames(df))]
         rownames(df) <- df[["geneId"]]
         splitToList <- function(x) {
             x <- strsplit(x = x, split = "|", fixed = TRUE)
@@ -113,13 +111,67 @@ NcbiGeneInfo <- # nolint
             x = df[["modificationDate"]]
         )
         df[["modificationDate"]] <- as.Date(df[["modificationDate"]])
-        df <- encode(df)
+        if (isTRUE(refseqGeneSummary)) {
+            gs <- .refseqGeneSummary(organism)
+            df <- leftJoin(df, gs, by = "geneId")
+        }
+        df <- df[, sort(colnames(df))]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = organism,
-            "packageVersion" = .pkgVersion,
-            "taxonomicGroup" = taxonomicGroup,
-            "url" = url
+            date = Sys.Date(),
+            organism = organism,
+            packageVersion = .pkgVersion,
+            refseqGeneSummary = refseqGeneSummary,
+            taxonomicGroup = taxonomicGroup,
+            url = url
         )
         new(Class = "NcbiGeneInfo", df)
     }
+
+
+#' Import RefSeq gene summary
+#'
+#' @note Updated 2023-12-12.
+#' @noRd
+#'
+#' @seealso
+#' - https://www.ncbi.nlm.nih.gov/refseq/about/
+#' - https://ftp.ncbi.nlm.nih.gov/refseq/release/complete/
+.refseqGeneSummary <- function(organism) {
+    assert(
+        requireNamespaces("GeneSummary"),
+        isOrganism(organism)
+    )
+    taxId <- .mapOrganismToNcbiTaxId(organism)
+    df <- GeneSummary::loadGeneSummary(organism = taxId) # nolint
+    assert(is.data.frame(df))
+    df <- as(df, "DFrame")
+    colnames(df) <- camelCase(colnames(df))
+    cols <- c(
+        ## > "refSeqAccession",
+        ## > "organism",
+        ## > "taxonId",
+        "geneId",
+        "reviewStatus",
+        "geneSummary"
+    )
+    assert(isSubset(cols, colnames(df)))
+    df <- df[, cols, drop = FALSE]
+    df <- df[complete.cases(df), , drop = FALSE]
+    df <- unique(df)
+    df[["reviewStatus"]] <- factor(
+        x = df[["reviewStatus"]],
+        levels = c(
+            "REVIEWED REFSEQ",
+            "VALIDATED REFSEQ",
+            "PROVISIONAL REFSEQ",
+            "INFERRED REFSEQ",
+            "PREDICTED REFSEQ"
+        )
+    )
+    df <- sort(df)
+    df <- df[!duplicated(df[["geneId"]]), , drop = FALSE]
+    assert(hasNoDuplicates(df[["geneId"]]))
+    colnames(df)[colnames(df) == "geneSummary"] <- "refseqGeneSummary"
+    df[["reviewStatus"]] <- NULL
+    df
+}

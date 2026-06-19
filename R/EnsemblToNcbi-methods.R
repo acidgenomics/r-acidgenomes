@@ -19,7 +19,6 @@
 NULL
 
 
-
 #' Make an `EnsemblToNcbi` (or `NcbiToEnsembl`) object
 #'
 #' @note Updated 2023-11-27.
@@ -32,11 +31,11 @@ NULL
         )
         switch(
             EXPR = return,
-            "EnsemblToNcbi" = {
+            EnsemblToNcbi = {
                 fromCol <- "ensemblGeneId"
                 toCol <- "ncbiGeneId"
             },
-            "NcbiToEnsembl" = {
+            NcbiToEnsembl = {
                 fromCol <- "ncbiGeneId"
                 toCol <- "ensemblGeneId"
             }
@@ -69,14 +68,13 @@ NULL
         metadata(map) <- append(
             x = metadata(object),
             values = list(
-                "date" = Sys.Date(),
-                "organism" = organism,
-                "packageVersion" = .pkgVersion
+                date = Sys.Date(),
+                organism = organism,
+                packageVersion = .pkgVersion
             )
         )
         new(Class = return, map)
     }
-
 
 
 ## Updated 2023-11-27.
@@ -148,7 +146,6 @@ NULL
         rownames(out) <- unname(object)
         out
     }
-
 
 
 ## Updated 2023-12-04.
@@ -229,7 +226,6 @@ NULL
     }
 
 
-
 ## Updated 2023-11-27.
 `EnsemblToNcbi,Hgnc` <- # nolint
     function(object) {
@@ -255,17 +251,14 @@ NULL
     }
 
 
-
 ## Updated 2023-11-27.
 `EnsemblToNcbi,Mgi` <- # nolint
     `EnsemblToNcbi,Hgnc`
 
 
-
 ## Updated 2023-03-01.
 `EnsemblToNcbi,GencodeGenes` <- # nolint
     `EnsemblToNcbi,EnsemblGenes`
-
 
 
 #' @rdname EnsemblToNcbi

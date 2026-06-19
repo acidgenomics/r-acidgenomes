@@ -35,8 +35,13 @@ JaxHumanToMouse <- # nolint
         df <- as(df, "DFrame")
         colnames(df) <- camelCase(colnames(df))
         cols <- c(
-            "dbClassKey", "entrezGeneId", "hgncId", "ncbiTaxonId",
-            "mouseMgiId", "omimGeneId", "symbol"
+            "dbClassKey",
+            "entrezGeneId",
+            "hgncId",
+            "ncbiTaxonId",
+            "mouseMgiId",
+            "omimGeneId",
+            "symbol"
         )
         assert(isSubset(cols, colnames(df)))
         df <- df[, cols, drop = FALSE]
@@ -83,7 +88,7 @@ JaxHumanToMouse <- # nolint
         mm[["ncbiTaxonId"]] <- NULL
         mm[["omimGeneId"]] <- NULL
         mm <- unique(mm)
-        assert(hasNoDuplicates(mm[["dbClassKey"]]))
+        mm <- mm[!isDuplicate(mm[["dbClassKey"]]), , drop = FALSE]
         colnames(mm)[colnames(mm) == "entrezGeneId"] <- "mouseNcbiGeneId"
         colnames(mm)[colnames(mm) == "symbol"] <- "mouseGeneName"
         df <- leftJoin(x = hs, y = mm, by = "dbClassKey")
@@ -107,12 +112,12 @@ JaxHumanToMouse <- # nolint
         j <- sort(colnames(df))
         df <- df[i, j, drop = FALSE]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "humanDupes" = sort(dupes(hs[["humanGeneName"]])),
-            "mouseDupes" = sort(dupes(mm[["mouseGeneName"]])),
-            "packageVersion" = .pkgVersion,
-            "unique" = unique,
-            "url" = url
+            date = Sys.Date(),
+            humanDupes = sort(dupes(hs[["humanGeneName"]])),
+            mouseDupes = sort(dupes(mm[["mouseGeneName"]])),
+            packageVersion = .pkgVersion,
+            unique = unique,
+            url = url
         )
         new(Class = "JaxHumanToMouse", df)
     }

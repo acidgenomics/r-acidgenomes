@@ -1,3 +1,4 @@
+## nolint start
 #' Make genomic ranges (`GRanges`) from Ensembl
 #'
 #' Quickly obtain gene and transcript annotations from
@@ -41,8 +42,24 @@
 #'
 #' [EnsDb.Hsapiens.v75]: https://bioconductor.org/packages/EnsDb.Hsapiens.v75/
 #'
+#' @section Ensembl canonical transcript:
+#'
+#' Fetching the canonical transcripts currently requires connecting to the
+#' [Ensembl Perl API][]. This information is currently processed by the
+#' ensembldb package using the `fetchTablesFromEnsembl` function.
+#'
+#' See also:
+#' - http://useast.ensembl.org/info/genome/genebuild/canonical.html
+#' - https://www.ensembl.info/2021/04/16/update-to-the-ensembl-canonical-transcript-set/
+#' - https://github.com/jorainer/ensembldb/blob/devel/inst/perl/get_gene_transcript_exon_tables.pl
+#' - https://github.com/jorainer/ensembldb/issues/123
+#' - https://github.com/jorainer/ensembldb/blob/devel/R/functions-create-EnsDb.R#L36
+#' - `ensembldb::fetchTablesFromEnsembl()`.
+#'
+#' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
+#'
 #' @name makeGRangesFromEnsembl
-#' @note Updated 2025-03-24.
+#' @note Updated 2025-04-12.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params
@@ -53,6 +70,9 @@
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #' - `ensembldb::ensDbFromGff()`, `ensembldb::ensDbFromGtf()`.
+#' - [Ensembl biotypes](https://useast.ensembl.org/info/genome/genebuild/biotypes.html).
+#' - [Gene/transcript biotypes in GENCODE and Ensembl](https://www.gencodegenes.org/pages/biotypes.html).
+#' - [Locus reference genomic](http://www.lrg-sequence.org/).
 #'
 #' @examples
 #' ## Get annotations from Ensembl via AnnotationHub query.
@@ -76,26 +96,27 @@
 #' ## >     summary(genes)
 #' ## > }
 NULL
-
-
+## nolint end
 
 #' @describeIn makeGRangesFromEnsembl Obtain annotations from Ensembl by
 #' querying AnnotationHub.
 #' @export
 makeGRangesFromEnsembl <-
-    function(organism,
-             level = c("genes", "transcripts"),
-             genomeBuild = NULL,
-             release = NULL,
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        organism,
+        level = c("genes", "transcripts", "exons", "cds"),
+        genomeBuild = NULL,
+        release = NULL,
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             isFlag(ignoreVersion),
             isFlag(extraMcols)
         )
         level <- match.arg(level)
         alert(sprintf("Making {.cls %s} from Ensembl.", "GRanges"))
-        edb <- .getEnsDb(
+        edb <- getEnsDb(
             organism = organism,
             genomeBuild = genomeBuild,
             release = release
@@ -116,7 +137,6 @@ makeGRangesFromEnsembl <-
     }
 
 
-
 #' @describeIn makeGRangesFromEnsembl Use a specific `EnsDb` object as the
 #' annotation source. Alternatively, can pass in an EnsDb package name as
 #' a `character(1)`.
@@ -126,20 +146,37 @@ makeGRangesFromEnsembl <-
 #' `EnsDb` object or name of specific annotation package containing a
 #' versioned EnsDb object (e.g. "EnsDb.Hsapiens.v75").
 makeGRangesFromEnsDb <-
-    function(object,
-             level = c("genes", "transcripts"),
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        object,
+        level = c("genes", "transcripts", "exons", "cds"),
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             requireNamespaces("ensembldb"),
             isFlag(ignoreVersion),
             isFlag(extraMcols)
         )
+        ## Defensively detach packages introduced by ensembldb loading (e.g.
+        ## AnnotationFilter, rtracklayer, BiocIO) to avoid masking select verb.
+        pkgsBefore <- search()
+        on.exit(
+            {
+                pkgsAfter <- search()
+                introduced <- setdiff(pkgsAfter, pkgsBefore)
+                for (pkg in rev(introduced)) {
+                    suppressWarnings(
+                        try(
+                            detach(pkg, unload = TRUE, character.only = TRUE), # nolint
+                            silent = TRUE
+                        )
+                    )
+                }
+            },
+            add = TRUE
+        )
         level <- match.arg(level)
-        alert(sprintf(
-            "Making {.cls %s} from {.cls %s}.",
-            "GRanges", "EnsDb"
-        ))
+        alert(sprintf("Making {.cls %s} from {.cls %s}.", "GRanges", "EnsDb"))
         if (isString(object)) {
             package <- object
             assert(requireNamespaces(package))
@@ -150,41 +187,81 @@ makeGRangesFromEnsDb <-
             )
         }
         assert(is(object, "EnsDb"))
-        args <- list(
-            "x" = object,
-            "order.type" = "asc",
-            "return.type" = "GRanges"
-        )
-        quietly({
-            geneCols <- ensembldb::listColumns(object, "gene")
-        })
-        geneCols <- sort(unique(c(geneCols, "entrezid")))
-        quietly({
-            txCols <- ensembldb::listColumns(object, "tx")
-        })
-        txCols <- sort(unique(c(txCols, geneCols)))
+        ## CDS uses cdsBy(), which returns GRangesList directly — handle
+        ## separately and return early to bypass the flat-GRanges pipeline.
+        if (identical(level, "cds")) {
+            quietly({
+                cdsCols <- intersect(
+                    x = c(
+                        "gene_id",
+                        "gene_name",
+                        "gene_biotype",
+                        "tx_id",
+                        "tx_biotype",
+                        "tx_support_level"
+                    ),
+                    y = ensembldb::listColumns(object, c("gene", "tx"))
+                )
+                grList <- ensembldb::cdsBy(
+                    x = object,
+                    by = "tx",
+                    columns = cdsCols
+                )
+            })
+            gr <- unlist(grList, use.names = TRUE)
+            if (!isSubset("tx_id", colnames(mcols(gr)))) {
+                mcols(gr)[["tx_id"]] <- names(gr)
+            }
+            names(gr) <- NULL
+            metadata(gr) <- .getEnsDbMetadata(object = object, level = "cds")
+            gr <- .makeGRanges(
+                object = gr,
+                ignoreVersion = ignoreVersion,
+                extraMcols = extraMcols
+            )
+            metadata(gr)[["call"]] <- tryCatch(
+                expr = standardizeCall(),
+                error = function(e) {
+                    NULL
+                }
+            )
+            return(gr)
+        }
         switch(
             EXPR = level,
-            "genes" = {
-                fun <- ensembldb::genes
-                args <- append(
-                    x = args,
-                    values = list(
-                        "columns" = geneCols,
-                        "order.by" = "gene_id"
-                    )
-                )
+            exons = {
+                fun <- ensembldb::exons
+                colKeys <- c("exon", "gene", "tx")
+                idCol <- "exon_id"
             },
-            "transcripts" = {
+            genes = {
+                fun <- ensembldb::genes
+                colKeys <- "gene"
+                idCol <- "gene_id"
+            },
+            transcripts = {
                 fun <- ensembldb::transcripts
-                args <- append(
-                    x = args,
-                    values = list(
-                        "columns" = txCols,
-                        "order.by" = "tx_id"
-                    )
-                )
+                colKeys <- c("gene", "tx")
+                idCol <- "tx_id"
             }
+        )
+        quietly({
+            cols <- ensembldb::listColumns(object, colKeys)
+        })
+        cols <- c(cols, "entrezid")
+        cols <- sort(unique(cols))
+        if (isFALSE(ignoreVersion)) {
+            idVerCol <- paste(idCol, "version", sep = "_")
+            if (isSubset(idVerCol, cols)) {
+                idCol <- idVerCol
+            }
+        }
+        args <- list(
+            x = object,
+            columns = cols,
+            order.by = idCol,
+            order.type = "asc",
+            return.type = "GRanges"
         )
         quietly({
             gr <- do.call(what = fun, args = args)

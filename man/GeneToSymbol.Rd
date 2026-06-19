@@ -4,6 +4,7 @@
 \alias{GeneToSymbol}
 \alias{GeneToSymbol,DFrame-method}
 \alias{GeneToSymbol,GRanges-method}
+\alias{GeneToSymbol,GRangesList-method}
 \title{Gene-to-symbol mappings}
 \usage{
 GeneToSymbol(object, ...)
@@ -15,6 +16,8 @@ GeneToSymbol(object, ...)
 )
 
 \S4method{GeneToSymbol}{GRanges}(object, ...)
+
+\S4method{GeneToSymbol}{GRangesList}(object, ...)
 }
 \arguments{
 \item{object}{Object.}
@@ -51,18 +54,18 @@ For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
 here in the documentation for approaches that deal with this issue.
 }
 \note{
-Updated 2023-09-26.
+Updated 2023-12-21.
 }
 \examples{
 data(GRanges, package = "AcidTest")
 
 ## DFrame ====
 df <- S4Vectors::DataFrame(
-    "geneId" = c(
+    geneId = c(
         "ENSG00000228572.7",
         "ENSG00000182378.14"
     ),
-    "geneName" = c(
+    geneName = c(
         "AL954722.1",
         "PLCXD1"
     )
@@ -73,7 +76,4 @@ print(x)
 ## GRanges ====
 object <- GRanges
 x <- GeneToSymbol(object)
-}
-\seealso{
-\code{\link[=makeGeneToSymbol]{makeGeneToSymbol()}}.
 }

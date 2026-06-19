@@ -2,7 +2,7 @@
 #' Make genomic ranges (`GRanges`) from a GFF/GTF file
 #'
 #' @export
-#' @note Updated 2025-03-24.
+#' @note Updated 2025-04-14.
 #'
 #' @details
 #' Remote URLs and compressed files are supported.
@@ -36,14 +36,8 @@
 #'
 #' @section Supported sources:
 #'
-#' Currently [makeGRangesFromGff()] supports genomes from these sources:
-#'
-#' - Ensembl
-#' - GENCODE
-#' - RefSeq
-#' - UCSC
-#' - FlyBase
-#' - WormBase
+#' Currently [makeGRangesFromGff()] supports genomes: Ensembl, GENCODE, RefSeq,
+#' UCSC, FlyBase, and WormBase.
 #'
 #' @section Ensembl:
 #'
@@ -116,7 +110,7 @@
 #' See also:
 #'
 #' - [RefSeq FAQ](https://www.ncbi.nlm.nih.gov/books/NBK50679/)
-#' - https://ftp.ncbi.nih.gov/gene/DATA/gene2refseq.gz
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
 #'
 #' @section UCSC:
 #'
@@ -139,6 +133,10 @@
 #' - FlyBase *Drosophila melanogaster* r6.49
 #' [GTF](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz),
 #' [GFF3](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz)
+#'
+#' See also:
+#'
+#' - [FlyBase nomenclature](https://wiki.flybase.org/wiki/FlyBase:Nomenclature)
 #'
 #' @section WormBase:
 #'
@@ -165,17 +163,17 @@
 #'
 #' @examples
 #' ## Ensembl ====
-#' file <- AcidBase::pasteUrl(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-108",
-#'     "gtf",
-#'     "homo_sapiens",
-#'     "Homo_sapiens.GRCh38.108.gtf.gz",
-#'     protocol = "ftp"
-#' )
-#' genes <- makeGRangesFromGff(file = file, level = "genes")
-#' summary(genes)
+#' ## > file <- AcidBase::pasteUrl(
+#' ## >     "ftp.ensembl.org",
+#' ## >     "pub",
+#' ## >     "release-108",
+#' ## >     "gtf",
+#' ## >     "homo_sapiens",
+#' ## >     "Homo_sapiens.GRCh38.108.gtf.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > genes <- makeGRangesFromGff(file = file, level = "genes")
+#' ## > summary(genes)
 #' ## > transcripts <- makeGRangesFromGff(file = file, level = "transcripts")
 #' ## > summary(transcripts)
 #'
@@ -228,10 +226,12 @@
 #' ## > summary(transcripts)
 ## nolint end
 makeGRangesFromGff <-
-    function(file,
-             level = c("genes", "transcripts"),
-             ignoreVersion = FALSE,
-             extraMcols = FALSE) {
+    function(
+        file,
+        level = c("genes", "transcripts", "exons"),
+        ignoreVersion = FALSE,
+        extraMcols = FALSE
+    ) {
         assert(
             .isSupportedGff(file),
             isFlag(ignoreVersion),
@@ -243,7 +243,8 @@ makeGRangesFromGff <-
         }
         alert(sprintf(
             fmt = "Making {.cls %s} from GFF file ({.file %s}).",
-            "GRanges", file
+            "GRanges",
+            file
         ))
         tmpfile <- .cacheIt(file)
         meta <- .getGffMetadata(tmpfile)

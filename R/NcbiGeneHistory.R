@@ -17,7 +17,10 @@ NcbiGeneHistory <- # nolint
         taxId <- .mapOrganismToNcbiTaxId(organism)
         assert(isInt(taxId))
         url <- pasteUrl(
-            "ftp.ncbi.nih.gov", "gene", "DATA", "gene_history.gz",
+            "ftp.ncbi.nlm.nih.gov",
+            "gene",
+            "DATA",
+            "gene_history.gz",
             protocol = "https"
         )
         df <- import(
@@ -58,14 +61,13 @@ NcbiGeneHistory <- # nolint
         df <- df[, j, drop = FALSE]
         i <- order(df)
         df <- df[i, , drop = FALSE]
-        df <- encode(df)
         rownames(df) <- df[["discontinuedGeneId"]]
         metadata(df) <- list(
-            "date" = Sys.Date(),
-            "organism" = organism,
-            "packageVersion" = .pkgVersion,
-            "taxonomyId" = taxId,
-            "url" = url
+            date = Sys.Date(),
+            organism = organism,
+            packageVersion = .pkgVersion,
+            taxonomyId = taxId,
+            url = url
         )
         new(df, Class = "NcbiGeneHistory")
     }

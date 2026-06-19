@@ -89,21 +89,21 @@
     )
     seq <- switch(
         EXPR = x[["provider"]],
-        "Ensembl" = {
+        Ensembl = {
             .getEnsemblSeqinfo(
                 organism = x[["organism"]],
                 genomeBuild = x[["genomeBuild"]],
                 release = x[["release"]]
             )
         },
-        "GENCODE" = {
+        GENCODE = {
             .getGencodeSeqinfo(
                 organism = x[["organism"]],
                 genomeBuild = x[["genomeBuild"]],
                 release = x[["release"]]
             )
         },
-        "RefSeq" = {
+        RefSeq = {
             .getRefSeqSeqinfo(
                 file = ifelse(
                     test = isAUrl(x[["url"]]),
@@ -112,7 +112,7 @@
                 )
             )
         },
-        "UCSC" = {
+        UCSC = {
             .getUcscSeqinfo(genomeBuild = x[["genomeBuild"]])
         },
         NULL
@@ -134,7 +134,6 @@
 }
 
 
-
 ## NOTE We may want to make our own variant of `getChromInfoFromEnsembl` to
 ## avoid parsing issues currently seen with GenomeInfoDb.
 
@@ -153,7 +152,7 @@
         isString(genomeBuild),
         isInt(release)
     )
-    args <- list("species" = organism, "release" = release, "as.Seqinfo" = TRUE)
+    args <- list(species = organism, release = release, as.Seqinfo = TRUE)
     if (grepl(pattern = "GRCh37", x = genomeBuild, fixed = TRUE)) {
         ## Specifying release 87 currently errors.
         ## https://github.com/Bioconductor/GenomeInfoDb/issues/97
@@ -165,11 +164,9 @@
             do.call(what = getChromInfoFromEnsembl, args = args)
         },
         warning = function(w) {
-            message(w)
             NULL
         },
         error = function(e) {
-            message(e)
             NULL
         }
     )
@@ -189,7 +186,6 @@
     }
     seq
 }
-
 
 
 #' Get GENCODE genome assembly seqinfo
@@ -218,7 +214,6 @@
     seqnames(seq) <- paste0("chr", seqnames(seq))
     seq
 }
-
 
 
 #' Get UCSC genome assembly seqinfo

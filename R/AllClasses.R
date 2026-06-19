@@ -17,7 +17,7 @@
     }
     ok <- validateClasses(
         object = metadata(object),
-        expected = list("organism" = "character"),
+        expected = list(organism = "character"),
         subset = TRUE
     )
     if (!isTRUE(ok)) {
@@ -28,7 +28,7 @@
     if (isSubset("ensembldb", names(metadata(object)))) {
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("release" = "integer"),
+            expected = list(release = "integer"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -37,7 +37,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared FlyBase validity checks
@@ -59,7 +58,6 @@
 }
 
 
-
 #' Shared GENCODE validity checks
 #'
 #' @note Updated 2023-09-26.
@@ -78,8 +76,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -88,7 +86,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared GRanges validity checks
@@ -106,9 +103,9 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "ignoreVersion" = "logical",
-            "level" = "character",
-            "provider" = "character"
+            ignoreVersion = "logical",
+            level = "character",
+            provider = "character"
         ),
         subset = TRUE
     )
@@ -119,7 +116,9 @@
         !isSubset("entrezId", colnames(mcols(object))),
         msg = sprintf(
             "Object contains {.var %s} instead of {.var %s} in {.var %s}.",
-            "entrezId", "ncbiGeneId", "mcols"
+            "entrezId",
+            "ncbiGeneId",
+            "mcols"
         )
     )
     if (!isTRUE(ok)) {
@@ -127,7 +126,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared metadata validity checks
@@ -138,8 +136,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "date" = "Date",
-            "packageVersion" = "package_version"
+            date = "Date",
+            packageVersion = "package_version"
         ),
         subset = TRUE
     )
@@ -148,7 +146,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared RefSeq validity checks
@@ -169,8 +166,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -179,7 +176,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared UCSC validity checks
@@ -200,8 +196,8 @@
     ok <- validateClasses(
         object = metadata(object),
         expected = list(
-            "genomeBuild" = "character",
-            "organism" = "character"
+            genomeBuild = "character",
+            organism = "character"
         ),
         subset = TRUE
     )
@@ -210,7 +206,6 @@
     }
     TRUE
 }
-
 
 
 #' Shared WormBase validity checks
@@ -232,8 +227,66 @@
 }
 
 
-
 ## Genome annotation classes ===================================================
+
+#' Ensembl CDS (coding sequence) annotations
+#'
+#' @details
+#' Contains `GRangesList` with Ensembl CDS-level annotations grouped by
+#' transcript identifier.
+#'
+#' @export
+#' @note Updated 2026-05-31.
+#'
+#' @return `EnsemblCds`.
+setClass(
+    Class = "EnsemblCds",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "EnsemblCds",
+    method = function(object) {
+        ok <- .validateEnsembl(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "cds"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
+
+#' Ensembl exon annotations
+#'
+#' @details
+#' Contains `GRanges` with Ensembl exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `EnsemblExons`.
+setClass(
+    Class = "EnsemblExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "EnsemblExons",
+    method = function(object) {
+        ok <- .validateEnsembl(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' Ensembl gene annotations
 #'
@@ -262,7 +315,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Ensembl transcript annotations
@@ -294,6 +346,34 @@ setValidity(
 )
 
 
+#' FlyBase exon annotations
+#'
+#' @details
+#' Contains `GRanges` with FlyBase exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `FlybaseExons`.
+setClass(
+    Class = "FlybaseExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "FlybaseExons",
+    method = function(object) {
+        ok <- .validateFlybase(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' FlyBase gene annotations
 #'
@@ -322,7 +402,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' FlyBase transcript annotations
@@ -354,6 +433,34 @@ setValidity(
 )
 
 
+#' GENCODE exon annotations
+#'
+#' @details
+#' Contains `GRanges` with GENCODE exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `GencodeExons`.
+setClass(
+    Class = "GencodeExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "GencodeExons",
+    method = function(object) {
+        ok <- .validateGencode(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' GENCODE gene annotations
 #'
@@ -382,7 +489,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' GENCODE transcript annotations
@@ -414,6 +520,34 @@ setValidity(
 )
 
 
+#' RefSeq exon annotations
+#'
+#' @details
+#' Contains a `CompressedGRangesList` with RefSeq exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `RefseqExons`.
+setClass(
+    Class = "RefseqExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "RefseqExons",
+    method = function(object) {
+        ok <- .validateRefseq(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' RefSeq gene annotations
 #'
@@ -442,7 +576,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' RefSeq transcript annotations
@@ -474,6 +607,34 @@ setValidity(
 )
 
 
+#' UCSC exon annotations
+#'
+#' @details
+#' Contains `GRanges` with UCSC exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `UcscExons`.
+setClass(
+    Class = "UcscExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "UcscExons",
+    method = function(object) {
+        ok <- .validateUcsc(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' UCSC gene annotations
 #'
@@ -502,7 +663,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' UCSC transcript annotations
@@ -534,6 +694,34 @@ setValidity(
 )
 
 
+#' WormBase exon annotations
+#'
+#' @details
+#' Contains `GRanges` with WormBase exon-level annotations.
+#'
+#' @export
+#' @note Updated 2024-01-02.
+#'
+#' @return `WormbaseExons`.
+setClass(
+    Class = "WormbaseExons",
+    contains = "CompressedGRangesList"
+)
+setValidity(
+    Class = "WormbaseExons",
+    method = function(object) {
+        ok <- .validateWormbase(object)
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        ok <- validate(identical(metadata(object)[["level"]], "exons"))
+        if (!isTRUE(ok)) {
+            return(ok)
+        }
+        TRUE
+    }
+)
+
 
 #' WormBase gene annotations
 #'
@@ -562,7 +750,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' WormBase transcript annotations
@@ -594,7 +781,6 @@ setValidity(
 )
 
 
-
 ## Identifier classes ==========================================================
 
 #' Human Genome Organization (HUGO) Gene Nomenclature Committee (HGNC) metadata
@@ -613,58 +799,58 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "aliasName" = "CompressedCharacterList",
-                "aliasSymbol" = "CompressedCharacterList",
-                "bioparadigmsSlc" = "character",
-                "ccdsId" = "CompressedCharacterList",
-                "cd" = "character",
-                "cosmic" = "character",
-                "dateApprovedReserved" = "Date",
-                "dateModified" = "Date",
-                "dateNameChanged" = "Date",
-                "dateSymbolChanged" = "Date",
-                "description" = "character",
-                "ena" = "CompressedCharacterList",
-                "ensemblGeneId" = "character",
-                "enzymeId" = "CompressedCharacterList",
-                "geneGroup" = "CompressedCharacterList",
-                "geneGroupId" = "CompressedCharacterList",
-                "geneName" = "character",
-                "gtrnadb" = "character",
-                "hgncId" = "integer",
-                "homeodb" = "numeric",
-                "hordeId" = "character",
-                "imgt" = "character",
-                "intermediateFilamentDb" = "logical",
-                "iuphar" = "character",
-                "kznfGeneCatalog" = "logical",
-                "lncipedia" = "character",
-                "lncrnadb" = "character",
-                "location" = "character",
-                "locationSortable" = "character",
-                "locusGroup" = "character",
-                "locusType" = "character",
-                "lsdb" = "CompressedCharacterList",
-                "mamitTrnadb" = "numeric",
-                "maneSelect" = "CompressedCharacterList",
-                "merops" = "character",
-                "mgdId" = "CompressedCharacterList",
-                "mirbase" = "character",
-                "ncbiGeneId" = "integer",
-                "omimId" = "CompressedCharacterList",
-                "orphanet" = "numeric",
-                "prevName" = "CompressedCharacterList",
-                "prevSymbol" = "CompressedCharacterList",
-                "pseudogeneOrg" = "character",
-                "pubmedId" = "CompressedCharacterList",
-                "refseqAccession" = "CompressedCharacterList",
-                "rgdId" = "CompressedCharacterList",
-                "rnaCentralId" = "logical",
-                "snornabase" = "character",
-                "status" = "character",
-                "ucscId" = "character",
-                "uniprotIds" = "CompressedCharacterList",
-                "vegaId" = "character"
+                aliasName = "CompressedCharacterList",
+                aliasSymbol = "CompressedCharacterList",
+                bioparadigmsSlc = "character",
+                ccdsId = "CompressedCharacterList",
+                cd = "character",
+                cosmic = "character",
+                dateApprovedReserved = "Date",
+                dateModified = "Date",
+                dateNameChanged = "Date",
+                dateSymbolChanged = "Date",
+                description = "character",
+                ena = "CompressedCharacterList",
+                ensemblGeneId = "character",
+                enzymeId = "CompressedCharacterList",
+                geneGroup = "CompressedCharacterList",
+                geneGroupId = "CompressedCharacterList",
+                geneName = "character",
+                gtrnadb = "character",
+                hgncId = "integer",
+                homeodb = "numeric",
+                hordeId = "character",
+                imgt = "character",
+                intermediateFilamentDb = "logical",
+                iuphar = "character",
+                kznfGeneCatalog = "logical",
+                lncipedia = "character",
+                lncrnadb = "character",
+                location = "character",
+                locationSortable = "character",
+                locusGroup = "character",
+                locusType = "character",
+                lsdb = "CompressedCharacterList",
+                mamitTrnadb = "numeric",
+                maneSelect = "CompressedCharacterList",
+                merops = "character",
+                mgdId = "CompressedCharacterList",
+                mirbase = "character",
+                ncbiGeneId = "integer",
+                omimId = "CompressedCharacterList",
+                orphanet = "numeric",
+                prevName = "CompressedCharacterList",
+                prevSymbol = "CompressedCharacterList",
+                pseudogeneOrg = "character",
+                pubmedId = "CompressedCharacterList",
+                refseqAccession = "CompressedCharacterList",
+                rgdId = "CompressedCharacterList",
+                rnaCentralId = "logical",
+                snornabase = "character",
+                status = "character",
+                ucscId = "character",
+                uniprotIds = "CompressedCharacterList",
+                vegaId = "character"
             )
         )
         ok <- validate(hasRows(object))
@@ -678,8 +864,8 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "url" = "character"
+                organism = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -691,11 +877,10 @@ setValidity(
 )
 
 
-
 #' Mouse Genomic Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-19.
 #'
 #' @return `Mgi`.
 setClass(
@@ -708,21 +893,21 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ensemblGeneChromosome" = "Rle",
-                "ensemblGeneEnd" = "Rle",
-                "ensemblGeneId" = "Rle",
-                "ensemblGeneStart" = "Rle",
-                "ensemblGeneStrand" = "Rle",
-                "genomeBuild" = "Rle",
-                "markerName" = "Rle",
-                "markerSymbol" = "Rle",
-                "markerType" = "Rle",
-                "mgiAccessionId" = "Rle",
-                "ncbiGeneChromosome" = "Rle",
-                "ncbiGeneEnd" = "Rle",
-                "ncbiGeneId" = "Rle",
-                "ncbiGeneStart" = "Rle",
-                "ncbiGeneStrand" = "Rle"
+                ensemblGeneChromosome = "character",
+                ensemblGeneEnd = "integer",
+                ensemblGeneId = "character",
+                ensemblGeneStart = "integer",
+                ensemblGeneStrand = "factor",
+                genomeBuild = "character",
+                markerName = "character",
+                markerSymbol = "character",
+                markerType = "character",
+                mgiAccessionId = "integer",
+                ncbiGeneChromosome = "character",
+                ncbiGeneEnd = "integer",
+                ncbiGeneId = "integer",
+                ncbiGeneStart = "integer",
+                ncbiGeneStrand = "factor"
             )
         )
         if (!isTRUE(ok)) {
@@ -739,8 +924,8 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "url" = "character"
+                organism = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -752,11 +937,10 @@ setValidity(
 )
 
 
-
 #' NCBI gene history
 #'
 #' @export
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-19.
 #'
 #' @return `NcbiGeneHistory`.
 setClass(
@@ -769,10 +953,10 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "discontinuedGeneId" = "Rle",
-                "discontinuedSymbol" = "Rle",
-                "discontinueDate" = "Date",
-                "geneId" = "Rle"
+                discontinuedGeneId = "integer",
+                discontinuedSymbol = "character",
+                discontinueDate = "Date",
+                geneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -789,9 +973,9 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "taxonomyId" = "integer",
-                "url" = "character"
+                organism = "character",
+                taxonomyId = "integer",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -803,11 +987,10 @@ setValidity(
 )
 
 
-
 #' NCBI gene identifier information
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-19.
 #'
 #' @return `NcbiGeneInfo`.
 setClass(
@@ -820,20 +1003,21 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "chromosome" = "Rle",
-                "dbXrefs" = "CompressedCharacterList",
-                "description" = "Rle",
-                "featureType" = "Rle",
-                "geneId" = "Rle",
-                "geneName" = "Rle",
-                "geneSynonyms" = "CompressedCharacterList",
-                "mapLocation" = "Rle",
-                "modificationDate" = "Date",
-                "nomenclatureStatus" = "Rle",
-                "otherDesignations" = "CompressedCharacterList",
-                "taxonomyId" = "Rle",
-                "typeOfGene" = "Rle"
-            )
+                chromosome = "character",
+                dbXrefs = "CompressedCharacterList",
+                description = "character",
+                featureType = "character",
+                geneId = "integer",
+                geneName = "character",
+                geneSynonyms = "CompressedCharacterList",
+                mapLocation = "character",
+                modificationDate = "Date",
+                nomenclatureStatus = "character",
+                otherDesignations = "CompressedCharacterList",
+                taxonomyId = "integer",
+                typeOfGene = "character"
+            ),
+            subset = TRUE
         )
         if (!isTRUE(ok)) {
             return(ok)
@@ -845,9 +1029,9 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "organism" = "character",
-                "taxonomicGroup" = "character",
-                "url" = "character"
+                organism = "character",
+                taxonomicGroup = "character",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -857,7 +1041,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 ## Identifier mapping classes ==================================================
@@ -878,8 +1061,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ensemblGeneId" = "character",
-                "ncbiGeneId" = "integer"
+                ensemblGeneId = "character",
+                ncbiGeneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -901,7 +1084,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -910,7 +1093,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' @inherit AcidGenerics::GeneToSymbol description return title
@@ -934,8 +1116,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "geneId" = "character",
-                "geneName" = "character"
+                geneId = "character",
+                geneName = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -955,7 +1137,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("format" = "character"),
+            expected = list(format = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -964,7 +1146,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Jackson Laboratory (JAX) human-to-mouse gene mappings
@@ -988,14 +1169,14 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "dbClassKey" = "integer",
-                "humanGeneName" = "character",
-                "humanHgncId" = "integer",
-                "humanNcbiGeneId" = "integer",
-                "humanOmimGeneId" = "integer",
-                "mouseGeneName" = "character",
-                "mouseMgiId" = "integer",
-                "mouseNcbiGeneId" = "integer"
+                dbClassKey = "integer",
+                humanGeneName = "character",
+                humanHgncId = "integer",
+                humanNcbiGeneId = "integer",
+                humanOmimGeneId = "integer",
+                mouseGeneName = "character",
+                mouseMgiId = "integer",
+                mouseNcbiGeneId = "integer"
             )
         )
         if (!isTRUE(ok)) {
@@ -1012,10 +1193,10 @@ setValidity(
         ok <- validateClasses(
             object = metadata(object),
             expected = list(
-                "humanDupes" = "character",
-                "mouseDupes" = "character",
-                "unique" = "logical",
-                "url" = "character"
+                humanDupes = "character",
+                mouseDupes = "character",
+                unique = "logical",
+                url = "character"
             ),
             subset = TRUE
         )
@@ -1025,7 +1206,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' @inherit AcidGenerics::NcbiToEnsembl description return title
@@ -1044,8 +1224,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "ncbiGeneId" = "integer",
-                "ensemblGeneId" = "character"
+                ncbiGeneId = "integer",
+                ensemblGeneId = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -1067,7 +1247,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1076,7 +1256,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' Protein-to-gene mappings
@@ -1103,9 +1282,9 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "proteinId" = "character",
-                "geneId" = "character",
-                "geneName" = "character"
+                proteinId = "character",
+                geneId = "character",
+                geneName = "character"
             )
         )
         if (!isTRUE(ok)) {
@@ -1124,7 +1303,7 @@ setValidity(
         }
         ok <- validateClasses(
             object = metadata(object),
-            expected = list("organism" = "character"),
+            expected = list(organism = "character"),
             subset = TRUE
         )
         if (!isTRUE(ok)) {
@@ -1133,7 +1312,6 @@ setValidity(
         TRUE
     }
 )
-
 
 
 #' @inherit AcidGenerics::TxToGene description return title
@@ -1162,8 +1340,8 @@ setValidity(
         ok <- validateClasses(
             object = object,
             expected = list(
-                "txId" = "character",
-                "geneId" = "character"
+                txId = "character",
+                geneId = "character"
             )
         )
         if (!isTRUE(ok)) {

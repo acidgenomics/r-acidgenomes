@@ -24,7 +24,7 @@ EnsemblGenes <- # nolint
         )
         names(mcols(object)) <- camelCase(names(mcols(object)), strict = TRUE)
         assert(isSubset("geneId", names(mcols(object))))
-        if (any(grepl("^transcript", names(mcols(object))))) {
+        if (any(startsWith(names(mcols(object)), "transcript"))) {
             names(mcols(object)) <- sub(
                 pattern = "^transcript",
                 replacement = "tx",

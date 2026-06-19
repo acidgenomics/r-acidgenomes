@@ -22,10 +22,12 @@
         } else {
             geneIdCol <- "geneId"
         }
-        if (isSubset(
-            x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
-            y = colnames(mcols(object))
-        )) {
+        if (
+            isSubset(
+                x = c(geneIdCol, "description", "geneSynonyms", "ncbiGeneId"),
+                y = colnames(mcols(object))
+            )
+        ) {
             return(object)
         }
         organism <- metadata(object)[["organism"]]
@@ -39,6 +41,14 @@
             x = genomeBuild
         )
         if (isSubset(genomeBuild2, "GRCh37")) {
+            ## For GRCh37, inject the current HGNC symbol into geneSynonyms so
+            ## that alias lookups against a current reference still work.
+            if (
+                identical(organism, "Homo sapiens") &&
+                    isSubset("geneName", colnames(mcols(object)))
+            ) {
+                object <- .addCurrentHgncSynonyms(object)
+            }
             return(object)
         }
         release <- metadata(object)[["release"]]
@@ -80,7 +90,6 @@
     }
 
 
-
 #' Get a data frame of extra gene-level metadata from Ensembl FTP server
 #'
 #' @note Updated 2023-10-12.
@@ -118,20 +127,40 @@
             paste0("release-", release),
             protocol = "https"
         )
-        mysqlSubdir <- getUrlDirList(
-            url = pasteUrl(ftpBaseUrl, "mysql"),
-            pattern = snakeCase(paste(organism, "core", release))
+        mysqlSubdir <- tryCatch(
+            expr = {
+                getUrlDirList(
+                    url = pasteUrl(ftpBaseUrl, "mysql"),
+                    pattern = snakeCase(paste(organism, "core", release))
+                )
+            },
+            error = function(e) {
+                NULL
+            }
         )
         ## Resolve GRCh38 vs. GRCh37 for Homo sapiens, if necessary.
-        if (!isString(mysqlSubdir) && organism == "Homo sapiens") {
-            suffix <- sub(pattern = "GRCh", replacement = "", x = genomeBuild)
+        if (
+            isCharacter(mysqlSubdir) &&
+                !isString(mysqlSubdir) &&
+                organism == "Homo sapiens"
+        ) {
+            suffix <- sub("GRCh", "", x = genomeBuild, fixed = TRUE)
             mysqlSubdir <- grep(
                 pattern = paste0("_", suffix, "$"),
                 x = mysqlSubdir,
                 value = TRUE
             )
         }
-        assert(isString(mysqlSubdir))
+        if (!isString(mysqlSubdir)) {
+            alertWarning(sprintf(
+                paste0(
+                    "Failed to locate Ensembl MySQL directory for release %d. ",
+                    "Skipping extra metadata columns."
+                ),
+                release
+            ))
+            return(NULL)
+        }
         url <- pasteUrl(ftpBaseUrl, "mysql", mysqlSubdir, "gene.txt.gz")
         gene <- tryCatch(
             expr = {
@@ -154,23 +183,35 @@
             EXPR = as.character(ncol(gene)),
             "16" = {
                 geneColMap <- c(
-                    "mysqlId" = 8L,
-                    "geneId" = 13L,
-                    "description" = 10L
+                    mysqlId = 8L,
+                    geneId = 13L,
+                    description = 10L
                 )
             },
             "17" = {
                 ## e.g. GRCh38 and GRCm38 release 87.
                 geneColMap <- c(
-                    "mysqlId" = 8L,
-                    "geneId" = 14L,
-                    "description" = 11L
+                    mysqlId = 8L,
+                    geneId = 14L,
+                    description = 11L
                 )
             },
-            abort(sprintf("Unsupported file: {.file %s}.", url))
+            {
+                alertWarning(sprintf(
+                    paste(
+                        "Unsupported Ensembl gene.txt.gz format",
+                        "(%d columns) at {.url %s}."
+                    ),
+                    ncol(gene),
+                    url
+                ))
+                return(NULL)
+            }
         )
         url <- pasteUrl(
-            ftpBaseUrl, "mysql", mysqlSubdir,
+            ftpBaseUrl,
+            "mysql",
+            mysqlSubdir,
             "external_synonym.txt.gz"
         )
         synonym <- tryCatch(
@@ -191,12 +232,15 @@
             return(NULL)
         }
         url <- pasteUrl(
-            ftpBaseUrl, "tsv", snakeCase(organism),
+            ftpBaseUrl,
+            "tsv",
+            snakeCase(organism),
             paste(
                 gsub(
-                    pattern = " ",
-                    replacement = "_",
-                    x = organism
+                    " ",
+                    "_",
+                    x = organism,
+                    fixed = TRUE
                 ),
                 genomeBuild,
                 release,
@@ -238,8 +282,8 @@
         df2 <- split(x = df2, f = df2[[1L]])
         df2 <- lapply(X = df2, FUN = `[[`, 2L)
         df2 <- as.DataFrame(list(
-            "mysqlId" = as.integer(names(df2)),
-            "geneSynonyms" = unname(df2)
+            mysqlId = as.integer(names(df2)),
+            geneSynonyms = unname(df2)
         ))
         df3 <- entrez
         df3 <- df3[, c("gene_stable_id", "xref"), drop = FALSE]
@@ -251,8 +295,8 @@
         df3 <- split(x = df3, f = df3[[1L]])
         df3 <- lapply(X = df3, FUN = `[[`, 2L)
         df3 <- as.DataFrame(list(
-            "geneId" = names(df3),
-            "ncbiGeneId" = unname(df3)
+            geneId = names(df3),
+            ncbiGeneId = unname(df3)
         ))
         out <- leftJoin(x = df1, y = df2, by = "mysqlId")
         out <- leftJoin(x = out, y = df3, by = "geneId")
@@ -260,3 +304,85 @@
         out <- out[, sort(colnames(out))]
         out
     }
+
+
+#' Inject current HGNC gene name into geneSynonyms for GRCh37
+#'
+#' When querying GRCh37 annotations, gene symbols may be outdated relative to
+#' the current HGNC release. This helper downloads current HGNC data and
+#' prepends the current symbol to geneSynonyms, enabling alias-based lookups
+#' against modern references.
+#'
+#' @note Updated 2026-05-31.
+#' @noRd
+#'
+#' @param object `GRanges`.
+#' Gene-level GRanges with `geneName` mcol.
+#'
+#' @return `GRanges` with `geneSynonyms` mcol added or updated.
+.addCurrentHgncSynonyms <- function(object) {
+    assert(
+        is(object, "GRanges"),
+        isSubset("geneName", colnames(mcols(object)))
+    )
+    hgnc <- tryCatch(
+        expr = Hgnc(),
+        error = function(e) {
+            alertWarning(
+                "Failed to download HGNC data for GRCh37 synonym injection."
+            )
+            NULL
+        }
+    )
+    if (is.null(hgnc)) {
+        return(object)
+    }
+    hgncDf <- as(hgnc, "DFrame")
+    assert(isSubset(c("geneName", "prevSymbol"), colnames(hgncDf)))
+    ## Build a lookup: historical symbol -> current symbol.
+    historicalNames <- mcols(object)[["geneName"]]
+    ## For each gene, check if its GRCh37 name maps to a current HGNC symbol.
+    currentIdx <- match(x = historicalNames, table = hgncDf[["geneName"]])
+    ## Also check prevSymbol (historical aliases) for renamed genes.
+    renamedIdx <- vapply(
+        X = historicalNames,
+        FUN = function(name) {
+            hit <- which(vapply(
+                X = as.list(hgncDf[["prevSymbol"]]),
+                FUN = function(prev) any(name == prev, na.rm = TRUE),
+                FUN.VALUE = logical(1L)
+            ))
+            if (length(hit) == 0L) NA_integer_ else hit[[1L]]
+        },
+        FUN.VALUE = integer(1L)
+    )
+    ## Use direct match first, fall back to prevSymbol match.
+    resolvedIdx <- ifelse(!is.na(currentIdx), currentIdx, renamedIdx)
+    currentSymbols <- hgncDf[["geneName"]][resolvedIdx]
+    ## Inject current symbol into geneSynonyms when it differs from geneName.
+    existing <- mcols(object)[["geneSynonyms"]]
+    if (is.null(existing)) {
+        existing <- vector("list", length(object))
+    } else {
+        existing <- as.list(existing)
+    }
+    for (i in seq_along(historicalNames)) {
+        current <- currentSymbols[[i]]
+        if (is.na(current)) {
+            next
+        }
+        historical <- historicalNames[[i]]
+        if (identical(current, historical)) {
+            next
+        }
+        syns <- existing[[i]]
+        if (is.null(syns) || all(is.na(syns))) {
+            syns <- current
+        } else if (!isTRUE(current %in% syns)) {
+            syns <- c(current, syns)
+        }
+        existing[[i]] <- syns
+    }
+    mcols(object)[["geneSynonyms"]] <- CharacterList(existing)
+    object
+}

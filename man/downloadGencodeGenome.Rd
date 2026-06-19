@@ -41,7 +41,7 @@ Invisible \code{list}.
 Download GENCODE reference genome
 }
 \note{
-Updated 2023-11-28.
+Updated 2023-12-19.
 }
 \examples{
 ## This example is bandwidth intensive.
@@ -52,4 +52,9 @@ Updated 2023-11-28.
 ## >     type = "transcriptome",
 ## >     annotation = "gtf"
 ## > )
+}
+\seealso{
+\itemize{
+\item https://www.gencodegenes.org/pages/tags.html
+}
 }

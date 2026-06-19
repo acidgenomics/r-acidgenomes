@@ -1,6 +1,6 @@
 #' @name GeneToSymbol
 #' @inherit AcidGenerics::GeneToSymbol description return title
-#' @note Updated 2023-09-26.
+#' @note Updated 2023-12-21.
 #'
 #' @details
 #' For some organisms, gene identifiers and gene names do not map 1:1 (e.g.
@@ -26,18 +26,16 @@
 #'
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeGeneToSymbol()].
-#'
 #' @examples
 #' data(GRanges, package = "AcidTest")
 #'
 #' ## DFrame ====
 #' df <- S4Vectors::DataFrame(
-#'     "geneId" = c(
+#'     geneId = c(
 #'         "ENSG00000228572.7",
 #'         "ENSG00000182378.14"
 #'     ),
-#'     "geneName" = c(
+#'     geneName = c(
 #'         "AL954722.1",
 #'         "PLCXD1"
 #'     )
@@ -51,12 +49,13 @@
 NULL
 
 
-
-## Updated 2023-09-16.
+## Updated 2023-12-21.
 `GeneToSymbol,DFrame` <- # nolint
-    function(object,
-             format = c("makeUnique", "1:1", "unmodified"),
-             quiet = FALSE) {
+    function(
+        object,
+        format = c("makeUnique", "1:1", "unmodified"),
+        quiet = FALSE
+    ) {
         assert(
             hasColnames(object),
             isFlag(quiet)
@@ -64,128 +63,81 @@ NULL
         format <- match.arg(format)
         meta <- metadata(object)
         meta[["format"]] <- format
+        object <- as(object, "DFrame")
         cols <- c("geneId", "geneName")
         if (!isSubset(cols, colnames(object))) {
             colnames(object) <- camelCase(colnames(object), strict = TRUE)
         }
         assert(
             isSubset(cols, colnames(object)),
-            hasRows(object)
+            hasRows(object),
+            !anyNA(object[["geneId"]])
         )
-        object <- as(object, "DFrame")
         object <- object[, cols, drop = FALSE]
         object <- decode(object)
-        assert(allAreAtomic(object))
         object <- unique(object)
-        ## Remove incomplete elements, except for "makeUnique" mode.
-        if (!identical(format, "makeUnique")) {
-            keep <- complete.cases(object)
-            if (!all(keep)) {
-                ## e.g. applies to Ensembl Mus musculus GRCm39 104.
-                meta[["dropped"]] <- which(!keep)
-                if (isFALSE(quiet)) {
-                    n <- sum(!keep)
-                    alertWarning(sprintf(
-                        "Dropping %d %s without defined gene symbol.",
-                        n,
-                        ngettext(
-                            n = n,
-                            msg1 = "identifier",
-                            msg2 = "identifiers"
-                        )
-                    ))
-                }
-                object <- object[keep, , drop = FALSE]
+        keep <- complete.cases(object)
+        if (!all(keep)) {
+            ## e.g. applies to Ensembl Mus musculus GRCm39 104.
+            meta[["dropped"]] <- object[["geneId"]][!keep]
+            if (isFALSE(quiet)) {
+                n <- sum(!keep)
+                alertWarning(sprintf(
+                    "Dropping %d %s without defined gene symbol.",
+                    n,
+                    ngettext(
+                        n = n,
+                        msg1 = "identifier",
+                        msg2 = "identifiers"
+                    )
+                ))
             }
+            object <- object[keep, , drop = FALSE]
         }
-        assert(hasRows(object))
-        ## Enforce coercion of integer gene identifiers (e.g. NCBI).
-        if (is.integer(object[["geneId"]])) {
-            object[["geneId"]] <- as.character(object[["geneId"]])
+        assert(
+            hasRows(object),
+            hasNoDuplicates(object[["geneId"]])
+        )
+        i <- order(object)
+        object <- object[i, , drop = FALSE]
+        dupes <- sort(dupes(object[["geneName"]]))
+        if (hasLength(dupes)) {
+            meta[["dupes"]] <- dupes
         }
         switch(
             EXPR = format,
-            "makeUnique" = {
-                ## Ensure we arrange by gene identifier prior to sanization.
-                object <- object[order(object), , drop = FALSE]
-                ## Replace any "NA" gene names with "unannotated".
-                if (anyNA(object[["geneName"]])) {
-                    object[["geneName"]][
-                        which(is.na(object[["geneName"]]))
-                    ] <- "unannotated"
-                }
-                ## Inform the user about how many symbols multi-map.
-                ## Don't count "unannotated" genes as true duplicates here.
-                ## Note that `duplicated()` doesn't work on Rle.
-                dupes <- duplicated(object[["geneName"]])
-                if (any(dupes)) {
-                    dupes <- setdiff(
-                        x = sort(unique(object[["geneName"]][dupes])),
-                        y = "unannotated"
-                    )
-                    if (hasLength(dupes)) {
-                        meta[["dupes"]] <- dupes
-                        if (isFALSE(quiet)) {
-                            n <- length(dupes)
-                            alertInfo(sprintf(
-                                "%d non-unique gene %s detected: %s.",
-                                n,
-                                ngettext(
-                                    n = n,
-                                    msg1 = "symbol",
-                                    msg2 = "symbols"
-                                ),
-                                toInlineString(dupes, n = 10L, class = "val")
-                            ))
-                        }
-                    }
-                }
+            makeUnique = {
                 object[["geneName"]] <- make.unique(object[["geneName"]])
             },
             "1:1" = {
-                assert(all(complete.cases(object)))
-                alert(paste(
-                    "Returning 1:1 mappings using oldest",
-                    "gene identifier per symbol."
-                ))
-                x <- split(x = object, f = object[["geneName"]])
-                assert(is(x, "SplitDFrameList"))
-                x <- SplitDataFrameList(lapply(
-                    X = x,
-                    FUN = function(x) {
-                        idx <- order(
-                            x = x[["geneId"]],
-                            decreasing = FALSE,
-                            na.last = TRUE
-                        )
-                        head(x[idx, , drop = FALSE], n = 1L)
-                    }
-                ))
-                object <- do.call(what = rbind, args = x)
+                i <- order(object[["geneName"]], object[["geneId"]])
+                object <- object[i, , drop = FALSE]
+                i <- !duplicated(object[["geneName"]])
+                object <- object[i, , drop = FALSE]
             },
-            "unmodified" = {
-                if (isFALSE(quiet)) {
-                    alertInfo(paste(
-                        "Returning with unmodified gene symbols",
-                        "{.emph (may contain duplicates)}."
+            unmodified = {
+                if (isFALSE(quiet) && hasLength(dupes)) {
+                    alertInfo(sprintf(
+                        "Returning unmodified with %d duplicate gene %s: %s.",
+                        length(dupes),
+                        ngettext(
+                            n = length(dupes),
+                            msg1 = "symbol",
+                            msg2 = "symbols"
+                        ),
+                        toInlineString(dupes)
                     ))
                 }
             }
         )
-        assert(
-            is(object, "DFrame"),
-            all(complete.cases(object)),
-            hasNoDuplicates(object[["geneId"]]),
-            msg = "Failed to generate GeneToSymbol object."
-        )
-        object <- object[order(object), , drop = FALSE]
+        i <- order(object)
+        object <- object[i, , drop = FALSE]
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]
         metadata(object) <- meta
         new(Class = "GeneToSymbol", object)
     }
-
 
 
 ## Updated 2023-04-26.
@@ -196,6 +148,13 @@ NULL
         GeneToSymbol(df, ...)
     }
 
+
+## Updated 2023-12-21.
+`GeneToSymbol,GRangesList` <- # nolint
+    function(object, ...) {
+        gr <- unlist(x = object, recursive = FALSE, use.names = TRUE)
+        GeneToSymbol(gr, ...)
+    }
 
 
 #' @rdname GeneToSymbol
@@ -212,4 +171,12 @@ setMethod(
     f = "GeneToSymbol",
     signature = signature(object = "GRanges"),
     definition = `GeneToSymbol,GRanges`
+)
+
+#' @rdname GeneToSymbol
+#' @export
+setMethod(
+    f = "GeneToSymbol",
+    signature = signature(object = "GRangesList"),
+    definition = `GeneToSymbol,GRangesList`
 )

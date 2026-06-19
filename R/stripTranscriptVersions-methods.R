@@ -24,7 +24,6 @@
 NULL
 
 
-
 ## Updated 2023-11-28.
 `stripTranscriptVersions,character` <- # nolint
     function(object) {
@@ -43,13 +42,11 @@ NULL
     }
 
 
-
 ## Updated 2022-03-09.
 `stripTranscriptVersions,integer` <- # nolint
     function(object) {
         object
     }
-
 
 
 ## Updated 2019-07-22.
@@ -63,11 +60,9 @@ NULL
     }
 
 
-
 ## Updated 2020-01-30.
 `stripTranscriptVersions,Matrix` <- # nolint
     `stripTranscriptVersions,matrix`
-
 
 
 #' @rdname stripTranscriptVersions

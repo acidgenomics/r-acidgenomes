@@ -12,11 +12,11 @@
 #' @examples
 #' ## GeneToSymbol ====
 #' df <- S4Vectors::DataFrame(
-#'     "geneId" = c(
+#'     geneId = c(
 #'         "ENSG00000228572.7",
 #'         "ENSG00000182378.14"
 #'     ),
-#'     "geneName" = c(
+#'     geneName = c(
 #'         "AL954722.1",
 #'         "PLCXD1"
 #'     )
@@ -26,11 +26,11 @@
 #'
 #' ## TxToGene ====
 #' df <- S4Vectors::DataFrame(
-#'     "txId" = c(
+#'     txId = c(
 #'         "ENST00000635602.1",
 #'         "ENST00000635506.1"
 #'     ),
-#'     "geneId" = c(
+#'     geneId = c(
 #'         "ENSG00000283061.1",
 #'         "ENSG00000283061.1"
 #'     )
@@ -40,24 +40,22 @@
 NULL
 
 
-
 ## Updated 2021-03-03.
 `summary,GeneToSymbol` <- # nolint
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            "genes" = length(unique(object[["geneId"]])),
-            "symbols" = length(unique(object[["geneName"]])),
-            "format" = m[["format"]],
-            "organism" = m[["organism"]],
-            "provider" = m[["provider"]],
-            "genomeBuild" = m[["genomeBuild"]],
-            "release" = m[["release"]],
-            "annotationHub" = m[["annotationHubId"]],
-            "date" = m[["date"]]
+            genes = length(unique(object[["geneId"]])),
+            symbols = length(unique(object[["geneName"]])),
+            format = m[["format"]],
+            organism = m[["organism"]],
+            provider = m[["provider"]],
+            genomeBuild = m[["genomeBuild"]],
+            release = m[["release"]],
+            annotationHub = m[["annotationHubId"]],
+            date = m[["date"]]
         ))
     }
-
 
 
 ## Updated 2021-03-03.
@@ -65,17 +63,16 @@ NULL
     function(object) {
         m <- metadata(object)
         showSlotInfo(list(
-            "transcripts" = length(unique(object[["txId"]])),
-            "genes" = length(unique(object[["geneId"]])),
-            "organism" = m[["organism"]],
-            "provider" = m[["provider"]],
-            "genomeBuild" = m[["genomeBuild"]],
-            "release" = m[["ensemblRelease"]],
-            "annotationHub" = m[["id"]],
-            "date" = m[["date"]]
+            transcripts = length(unique(object[["txId"]])),
+            genes = length(unique(object[["geneId"]])),
+            organism = m[["organism"]],
+            provider = m[["provider"]],
+            genomeBuild = m[["genomeBuild"]],
+            release = m[["ensemblRelease"]],
+            annotationHub = m[["id"]],
+            date = m[["date"]]
         ))
     }
-
 
 
 #' @rdname summary

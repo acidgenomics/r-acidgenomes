@@ -20,7 +20,6 @@
 }
 
 
-
 #' Get Ensembl / NCBI (Entrez) mappings from NCBI OrgDb via AnnotationHub
 #'
 #' @note Updated 2023-11-27.
@@ -39,11 +38,11 @@
         )
         switch(
             EXPR = return,
-            "EnsemblToNcbi" = {
+            EnsemblToNcbi = {
                 keytype <- "ENSEMBL"
                 columns <- "ENTREZID"
             },
-            "NcbiToEnsembl" = {
+            NcbiToEnsembl = {
                 keytype <- "ENTREZID"
                 columns <- "ENSEMBL"
             }
@@ -56,7 +55,8 @@
                 msg1 = "identifier",
                 msg2 = "identifiers"
             ),
-            "OrgDb", "AnnotationHub",
+            "OrgDb",
+            "AnnotationHub",
             packageVersion("AnnotationHub")
         ))
         ah <- .annotationHub()

@@ -1,8 +1,8 @@
 Package: AcidGenomes
 Title: Acid Genomics Genome Annotations
 Description: Toolkit for downloading and processing genome annotations.
-Version: 0.7.5
-Date: 2025-04-07
+Version: 0.8.0
+Date: 2026-05-31
 Authors@R: c(
     person(
         "Michael", "Steinbaugh",
@@ -18,21 +18,22 @@ URL:
     https://r.acidgenomics.com/packages/acidgenomes/,
     https://github.com/acidgenomics/r-acidgenomes/
 BugReports: https://github.com/acidgenomics/r-acidgenomes/issues/
-License: AGPL-3
+License: Apache License (>= 2)
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    AcidBase,
+    AcidBase (>= 0.7.5),
     AcidCLI,
-    AcidGenerics,
-    AcidPlyr,
+    AcidGenerics (>= 0.7.6),
+    AcidPlyr (>= 0.5.5),
     BiocGenerics,
     GenomeInfoDb,
     GenomicRanges,
     IRanges,
     S4Vectors,
-    goalie,
+    goalie (>= 0.7.8),
     methods,
+    parallel,
     pipette,
     syntactic,
     utils
@@ -47,12 +48,13 @@ Suggests:
     RCurl,
     biomaRt,
     ensembldb,
+    GeneSummary,
     rvest,
     testthat,
     withr
 Additional_repositories: https://r.acidgenomics.com
+Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
-Config/testthat/parallel: false
+Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 biocViews: Infrastructure
