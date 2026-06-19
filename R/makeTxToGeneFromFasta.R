@@ -1,7 +1,7 @@
 #' Make a TxToGene object from transcriptome FASTA
 #'
 #' @export
-#' @note Updated 2023-11-28.
+#' @note Updated 2024-01-02.
 #'
 #' @details
 #' RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
@@ -14,18 +14,18 @@
 #'
 #' @examples
 #' ## Ensembl ====
-#' file <- AcidBase::pasteUrl(
-#'     "ftp.ensembl.org",
-#'     "pub",
-#'     "release-102",
-#'     "fasta",
-#'     "homo_sapiens",
-#'     "cdna",
-#'     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
-#'     protocol = "ftp"
-#' )
-#' t2g <- makeTxToGeneFromFasta(file)
-#' print(t2g)
+#' ## > file <- AcidBase::pasteUrl(
+#' ## >     "ftp.ensembl.org",
+#' ## >     "pub",
+#' ## >     "release-102",
+#' ## >     "fasta",
+#' ## >     "homo_sapiens",
+#' ## >     "cdna",
+#' ## >     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
+#' ## >     protocol = "ftp"
+#' ## > )
+#' ## > t2g <- makeTxToGeneFromFasta(file)
+#' ## > print(t2g)
 #'
 #' ## GENCODE ====
 #' ## GRCh38:
@@ -86,8 +86,7 @@
 #' ## > t2g <- makeTxToGeneFromFasta(file)
 #' ## > print(t2g)
 makeTxToGeneFromFasta <-
-    function(file,
-             ignoreVersion = FALSE) {
+    function(file, ignoreVersion = FALSE) {
         assert(
             isString(file),
             isFlag(ignoreVersion)
@@ -97,47 +96,74 @@ makeTxToGeneFromFasta <-
         }
         alert(sprintf(
             "Making {.cls %s} from FASTA file ({.file %s}).",
-            "TxToGene", file
+            "TxToGene",
+            file
         ))
-        x <- import(con = .cacheIt(file), format = "lines")
-        x <- grep(pattern = "^>", x = x, value = TRUE)
+        lines <- import(con = .cacheIt(file), format = "lines")
+        lines <- grep(pattern = "^>", x = lines, value = TRUE)
         assert(
-            hasLength(x),
+            hasLength(lines),
             msg = sprintf("Unsupported FASTA: {.file %s}.", basename(file))
         )
-        x <- substr(x, start = 2L, stop = nchar(x))
-        ## Detect the provider of the FASTA.
-        head <- head(x, n = 10L)
-        if (any(grepl(
-            pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9]+)\\s",
-                ".+",
-                "gene:(ENS.*G[0-9]{11}\\.[0-9]+)"
-            ),
-            x = head
-        ))) {
-            ## Note that Ensembl includes "gene:" key.
-            ## e.g. "ENST00000632684.1 cdna chromosome.*"
-            provider <- "Ensembl"
-        } else if (any(grepl(pattern = "FlyBase", x = head))) {
-            provider <- "FlyBase"
-        } else if (any(grepl(
-            pattern = paste0(
-                "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
-                "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
-            ),
-            x = head
-        ))) {
+        lines <- substr(x = lines, start = 2L, stop = nchar(lines))
+        if (
+            grepl(
+                pattern = paste0(
+                    "^(ENS.*T[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|",
+                    "(ENS.*G[0-9]{11}\\.[0-9_]+)(_PAR_Y)?\\|"
+                ),
+                x = lines[[1L]]
+            )
+        ) {
             ## GENCODE uses pipes to separate.
             ## e.g. "ENST00000456328.2|ENSG00000223972.5|.*".
             ## Note that GRCh37 identifiers also contain "_".
             ## e.g. "ENST00000456328.2_1".
             provider <- "GENCODE"
-        } else if (any(grepl(
-            pattern = "\\sgene=(WBGene[0-9]{8})$",
-            x = head
-        ))) {
+        } else if (grepl("FlyBase", x = lines[[1L]], fixed = TRUE)) {
+            provider <- "FlyBase"
+        } else if (
+            grepl(
+                pattern = "\\sgene=(WBGene[0-9]{8})$",
+                x = lines[[1L]]
+            )
+        ) {
             provider <- "WormBase"
+        } else if (
+            ## Homo sapiens uses "chromosome" whereas Drosophila melanogaster
+            ## uses "primary_assembly" in 3rd position.
+            grepl(
+                pattern = " (chromosome|primary_assembly):",
+                x = lines[[1L]],
+                fixed = FALSE
+            ) &&
+                grepl(
+                    pattern = " gene:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " gene_biotype:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " transcript_biotype:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " gene_symbol:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                ) &&
+                grepl(
+                    pattern = " description:",
+                    x = lines[[1L]],
+                    fixed = TRUE
+                )
+        ) {
+            provider <- "Ensembl"
         } else {
             abort(sprintf(
                 "Unsupported FASTA: {.file %s}.",
@@ -147,8 +173,8 @@ makeTxToGeneFromFasta <-
         alertInfo(sprintf("%s transcriptome detected.", provider))
         switch(
             EXPR = provider,
-            "Ensembl" = {
-                x <- strsplit(x = x, split = " ", fixed = TRUE)
+            Ensembl = {
+                x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
                     FUN = function(x) {
@@ -161,19 +187,9 @@ makeTxToGeneFromFasta <-
                     replacement = "",
                     x = x[, 2L]
                 )
-                assert(
-                    allAreMatchingRegex(
-                        x = x[, 1L],
-                        pattern = "^ENS.*T[0-9]{11}\\.[0-9]+$"
-                    ),
-                    allAreMatchingRegex(
-                        x = x[, 2L],
-                        pattern = "^ENS.*G[0-9]{11}\\.[0-9]+$"
-                    )
-                )
             },
-            "FlyBase" = {
-                x <- strsplit(x = x, split = " ", fixed = TRUE)
+            FlyBase = {
+                x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
                     FUN = function(x) {
@@ -186,19 +202,9 @@ makeTxToGeneFromFasta <-
                     replacement = "\\1",
                     x = x[, 2L]
                 )
-                assert(
-                    allAreMatchingRegex(
-                        x = x[, 1L],
-                        pattern = "^FBtr[0-9]{7}$"
-                    ),
-                    allAreMatchingRegex(
-                        x = x[, 2L],
-                        pattern = "^FBgn[0-9]{7}$"
-                    )
-                )
             },
-            "GENCODE" = {
-                x <- strsplit(x = x, split = "|", fixed = TRUE)
+            GENCODE = {
+                x <- strsplit(x = lines, split = "|", fixed = TRUE)
                 x <- lapply(
                     X = x,
                     FUN = function(x) {
@@ -206,19 +212,9 @@ makeTxToGeneFromFasta <-
                     }
                 )
                 x <- do.call(what = rbind, args = x)
-                assert(
-                    allAreMatchingRegex(
-                        x = x[, 1L],
-                        pattern = "^ENS.*T[0-9]{11}\\.[0-9_]+(_PAR_Y)?$"
-                    ),
-                    allAreMatchingRegex(
-                        x = x[, 2L],
-                        pattern = "^ENS.*G[0-9]{11}\\.[0-9_]+(_PAR_Y)?$"
-                    )
-                )
             },
-            "WormBase" = {
-                x <- strsplit(x = x, split = " ", fixed = TRUE)
+            WormBase = {
+                x <- strsplit(x = lines, split = " ", fixed = TRUE)
                 x <- lapply(
                     X = x,
                     FUN = function(x) {
@@ -231,16 +227,6 @@ makeTxToGeneFromFasta <-
                     replacement = "",
                     x = x[, 2L]
                 )
-                assert(
-                    allAreMatchingRegex(
-                        x = x[, 1L],
-                        pattern = "^[A-Za-z0-9_]+\\.[a-z0-9]+\\.[0-9]+$"
-                    ),
-                    allAreMatchingRegex(
-                        x = x[, 2L],
-                        pattern = "^WBGene[0-9]{8}$"
-                    )
-                )
             },
             abort(sprintf("Unsupported FASTA: {.file %s}.", basename(file)))
         )
@@ -250,17 +236,17 @@ makeTxToGeneFromFasta <-
         }
         out <- TxToGene(x)
         meta <- list(
-            "call" = tryCatch(
+            call = tryCatch(
                 expr = standardizeCall(),
                 error = function(e) {
                     NULL
                 }
             ),
-            "date" = Sys.Date(),
-            "file" = file,
-            "ignoreVersion" = ignoreVersion,
-            "packageVersion" = .pkgVersion,
-            "provider" = provider
+            date = Sys.Date(),
+            file = file,
+            ignoreVersion = ignoreVersion,
+            packageVersion = .pkgVersion,
+            provider = provider
         )
         metadata(out) <- meta
         out

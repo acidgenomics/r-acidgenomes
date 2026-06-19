@@ -1,11 +1,14 @@
 #' Download GENCODE reference genome
 #'
 #' @export
-#' @note Updated 2023-11-28.
+#' @note Updated 2023-12-19.
 #'
 #' @inheritParams downloadEnsemblGenome
 #'
 #' @return Invisible `list`.
+#'
+#' @seealso
+#' - https://www.gencodegenes.org/pages/tags.html
 #'
 #' @examples
 #' ## This example is bandwidth intensive.
@@ -17,11 +20,13 @@
 #' ## >     annotation = "gtf"
 #' ## > )
 downloadGencodeGenome <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(
+        organism,
+        genomeBuild = NULL,
+        release = NULL,
+        outputDir = getwd(),
+        cache = FALSE
+    ) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -59,7 +64,10 @@ downloadGencodeGenome <-
             releaseUrl <- pasteUrl(releaseUrl, "GRCh37_mapping")
         }
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "gencode", release
+            organism,
+            genomeBuild,
+            "gencode",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -67,8 +75,11 @@ downloadGencodeGenome <-
                 "Downloading GENCODE genome for {.emph %s}",
                 "%s %s from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild, as.character(release),
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            as.character(release),
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -76,16 +87,16 @@ downloadGencodeGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "genomeBuild" = genomeBuild,
-            "outputDir" = outputDir,
-            "releaseUrl" = releaseUrl,
-            "cache" = cache
+            genomeBuild = genomeBuild,
+            outputDir = outputDir,
+            releaseUrl = releaseUrl,
+            cache = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
         info[["genome"]] <-
             do.call(what = .downloadGencodeGenome, args = args)
-        args <- append(x = args, values = list("release" = release))
+        args <- append(x = args, values = list(release = release))
         info[["metadata"]] <-
             do.call(what = .downloadGencodeMetadata, args = args)
         info[["transcriptome"]] <-
@@ -95,9 +106,19 @@ downloadGencodeGenome <-
                 what = .downloadGencodeAnnotation,
                 args = append(
                     x = args,
-                    values = list("metadataFiles" = info[["metadata"]])
+                    values = list(metadataFiles = info[["metadata"]])
                 )
             )
+        ## Generate salmon decoy files (gentrome + decoys.txt).
+        ## nolint start
+        info[["salmon"]] <- .generateSalmonDecoys(
+            genomeFasta = info[["genome"]][["files"]][["fasta"]],
+            transcriptomeFasta = info[["transcriptome"]][["files"]][[
+                "fastaFixed"
+            ]],
+            outputDir = outputDir
+        )
+        ## nolint end
         info[["args"]] <- args
         info[["call"]] <- tryCatch(
             expr = standardizeCall(),
@@ -115,37 +136,38 @@ downloadGencodeGenome <-
     }
 
 
-
 ## Updated 2023-11-22.
 .downloadGencodeAnnotation <-
-    function(genomeBuild,
-             metadataFiles,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(
+        genomeBuild,
+        metadataFiles,
+        outputDir,
+        release,
+        releaseUrl,
+        cache
+    ) {
         urls <- c(
-            "gff" = pasteUrl(
+            gff = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".annotation.gff3.gz"
                 )
             ),
-            "gtf" = pasteUrl(
+            gtf = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".annotation.gtf.gz"
@@ -234,7 +256,6 @@ downloadGencodeGenome <-
             by = "geneId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(genes) <- encode(mcols)
         ## Add NCBI and RefSeq identifiers to transcript metadata.
         mcols <- decode(mcols(transcripts))
         if (isSubset("ncbiGeneId", names(mcols))) {
@@ -255,7 +276,6 @@ downloadGencodeGenome <-
             by = "txId"
         )
         mcols <- mcols[, sort(colnames(mcols))]
-        mcols(transcripts) <- encode(mcols)
         saveRDS(
             object = genes,
             file = file.path(outputDir, "genes.rds")
@@ -264,19 +284,15 @@ downloadGencodeGenome <-
             object = transcripts,
             file = file.path(outputDir, "transcripts.rds")
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
-
 
 
 ## Updated 2023-07-28.
 .downloadGencodeGenome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, ".primary_assembly.genome.fa.gz")
             )
@@ -303,51 +319,53 @@ downloadGencodeGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        ## Generate chromosome sizes file for kallisto.
+        ## nolint start
+        .generateChromSizes(
+            fastaFile = files[["fasta"]],
+            outputDir = outputDir
+        )
+        ## nolint end
+        invisible(list(files = files, urls = urls))
     }
-
 
 
 ## Updated 2023-11-28.
 .downloadGencodeMetadata <-
-    function(genomeBuild,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
-            "readme" = pasteUrl(
+            readme = pasteUrl(
                 releaseUrl,
                 switch(
                     EXPR = genomeBuild,
-                    "GRCh37" = "_README_GRCh37_mapping.txt",
+                    GRCh37 = "_README_GRCh37_mapping.txt",
                     "_README.TXT"
                 )
             ),
-            "md5sums" = pasteUrl(releaseUrl, "MD5SUMS"),
+            md5sums = pasteUrl(releaseUrl, "MD5SUMS"),
             ## TSV mapping transcripts to NCBI (Entrez) genes.
-            "ncbiGene" = pasteUrl(
+            ncbiGene = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".metadata.EntrezGene.gz"
                 )
             ),
             ## TSV (without colnames) mapping transcripts to RefSeq IDs.
-            "refseq" = pasteUrl(
+            refseq = pasteUrl(
                 releaseUrl,
                 paste0(
                     "gencode.v",
                     release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".metadata.RefSeq.gz"
@@ -359,9 +377,8 @@ downloadGencodeGenome <-
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
-
 
 
 ## Updated 2023-07-28.
@@ -369,19 +386,16 @@ downloadGencodeGenome <-
 ## Regarding pipe delimiter handling:
 ## https://github.com/nf-core/rnaseq/issues/864
 .downloadGencodeTranscriptome <-
-    function(genomeBuild,
-             outputDir,
-             release,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, release, releaseUrl, cache) {
         urls <- c(
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 releaseUrl,
                 paste0(
-                    "gencode.v", release,
+                    "gencode.v",
+                    release,
                     switch(
                         EXPR = genomeBuild,
-                        "GRCh37" = "lift37",
+                        GRCh37 = "lift37",
                         ""
                     ),
                     ".transcripts.fa.gz"
@@ -413,6 +427,25 @@ downloadGencodeGenome <-
         )
         export(object = lines, con = fastaFixedFile)
         files[["fastaFixed"]] <- fastaFixedFile
+        ## Prepare a version-stripped FASTA for tools requiring unversioned IDs
+        ## (e.g. ENST00000456328 instead of ENST00000456328.2).
+        fastaNoVersionFile <- sub(
+            pattern = ".transcripts_fixed.",
+            replacement = ".transcripts_noversion.",
+            x = fastaFixedFile,
+            fixed = TRUE
+        )
+        alert(sprintf(
+            "Preparing version-stripped FASTA file {.file %s}.",
+            basename(fastaNoVersionFile)
+        ))
+        linesNoVersion <- sub(
+            pattern = "^(>[^.]+)\\.[0-9]+(.*)$",
+            replacement = "\\1\\2",
+            x = lines
+        )
+        export(object = linesNoVersion, con = fastaNoVersionFile)
+        files[["fastaNoVersion"]] <- fastaNoVersionFile
         ## Save transcript-to-gene mappings.
         t2g <- makeTxToGeneFromFasta(
             file = fastaFile,
@@ -440,5 +473,5 @@ downloadGencodeGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }

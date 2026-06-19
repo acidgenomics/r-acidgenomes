@@ -1,7 +1,7 @@
 #' Map protein identifiers to genes
 #'
 #' @name makeProteinToGene
-#' @note Updated 2023-09-16.
+#' @note Updated 2023-12-20.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param ids `character`.
@@ -17,14 +17,10 @@
 NULL
 
 
-
 #' @rdname makeProteinToGene
 #' @export
 makeProteinToGeneFromEnsembl <-
-    function(ids,
-             organism = NULL,
-             genomeBuild = NULL,
-             release = NULL) {
+    function(ids, organism = NULL, genomeBuild = NULL, release = NULL) {
         assert(
             requireNamespaces("ensembldb"),
             isCharacter(ids),
@@ -34,7 +30,7 @@ makeProteinToGeneFromEnsembl <-
         if (is.null(organism)) {
             organism <- detectOrganism(ids)
         }
-        edb <- .getEnsDb(
+        edb <- getEnsDb(
             organism = organism,
             genomeBuild = genomeBuild,
             release = release

@@ -4,59 +4,67 @@
 #' @noRd
 #'
 #' @seealso
-#' - https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+#' - https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/
 .matchNcbiTaxonomicGroup <-
-    function(organism,
-             mode = c("geneInfo", "refseq")) {
+    function(organism, mode = c("geneInfo", "refseq")) {
         assert(isOrganism(organism))
         mode <- match.arg(mode)
         baseUrl <- switch(
             EXPR = mode,
-            "geneInfo" = pasteUrl(
-                "ftp.ncbi.nih.gov",
-                "gene", "DATA", "GENE_INFO",
+            geneInfo = pasteUrl(
+                "ftp.ncbi.nlm.nih.gov",
+                "gene",
+                "DATA",
+                "GENE_INFO",
                 protocol = "ftp"
             ),
-            "refseq" = pasteUrl(
+            refseq = pasteUrl(
                 "ftp.ncbi.nlm.nih.gov",
-                "genomes", "refseq",
+                "genomes",
+                "refseq",
                 protocol = "ftp"
             )
         )
-        if (isSubset(
-            x = organism,
-            y = c(
-                "Danio rerio", # Zebrafish
-                "Homo sapiens", # Human
-                "Mus musculus", # Mouse
-                "Rattus norvegicus" # Rat
+        if (
+            isSubset(
+                x = organism,
+                y = c(
+                    "Danio rerio", # Zebrafish
+                    "Homo sapiens", # Human
+                    "Mus musculus", # Mouse
+                    "Rattus norvegicus" # Rat
+                )
             )
-        )) {
+        ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Mammalia",
-                "refseq" = "vertebrate_mammalian"
+                geneInfo = "Mammalia",
+                refseq = "vertebrate_mammalian"
             ))
-        } else if (isSubset(
-            x = organism,
-            y = c(
-                "Caenorhabditis elegans", # Worm
-                "Drosophila melanogaster" # Fruitfly
+        } else if (
+            isSubset(
+                x = organism,
+                y = c(
+                    "Caenorhabditis elegans", # Worm
+                    "Drosophila melanogaster" # Fruitfly
+                )
             )
-        )) {
+        ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Invertebrates",
-                "refseq" = "invertebrate"
+                geneInfo = "Invertebrates",
+                refseq = "invertebrate"
             ))
-        } else if (isSubset(
-            x = organism,
-            y = "Saccharomyces cerevisiae" # Yeast
-        )) {
+        } else if (
+            isSubset(
+                x = organism,
+                y = "Saccharomyces cerevisiae" # Yeast
+            )
+        ) {
             return(switch(
                 EXPR = mode,
-                "geneInfo" = "Fungi",
-                "refseq" = "fungi"
+                geneInfo = "Fungi",
+                refseq = "fungi"
             ))
         }
         alertWarning(sprintf(
@@ -64,13 +72,15 @@
                 "Detecting taxonomic group from {.var %s} at {.url %s}.",
                 "Set {.var %s} manually to speed up this step."
             ),
-            "organism", baseUrl, "taxonimicGroup"
+            "organism",
+            baseUrl,
+            "taxonimicGroup"
         ))
         x <- getUrlDirList(url = baseUrl)
         pattern <- switch(
             EXPR = mode,
-            "geneInfo" = "^[A-Z][A-Za-z_-]+$",
-            "refseq" = "^[a-z_]+$"
+            geneInfo = "^[A-Z][A-Za-z_-]+$",
+            refseq = "^[a-z_]+$"
         )
         keep <- grepl(pattern = pattern, x = x)
         groups <- sort(x[keep])
@@ -83,7 +93,7 @@
                 x <- getUrlDirList(url = url)
                 switch(
                     EXPR = mode,
-                    "geneInfo" = {
+                    geneInfo = {
                         keep <- grepl(
                             pattern = "^[A-Z][a-z]+_[a-z]+\\.gene_info\\.gz$",
                             x = x
@@ -95,7 +105,7 @@
                             x = x
                         )
                     },
-                    "refseq" = {
+                    refseq = {
                         keep <- grepl(
                             pattern = "^[A-Z][a-z]+_[a-z]+$",
                             x = x
@@ -110,7 +120,7 @@
         names(list) <- groups
         match <- vapply(
             X = list,
-            organism = gsub(pattern = " ", replacement = "_", x = organism),
+            organism = gsub(" ", "_", x = organism, fixed = TRUE),
             FUN = function(strings, organism) {
                 isSubset(x = organism, y = strings)
             },
@@ -121,7 +131,6 @@
         assert(isString(out))
         out
     }
-
 
 
 ## nolint start
@@ -181,13 +190,12 @@
             x = sub(pattern = "^#\\s", replacement = "", x = lines[[1L]]),
             split = "\\t"
         )[[1L]]
-        values <- strsplit(x = lines[[2L]], split = "\\t")[[1L]]
+        values <- strsplit(x = lines[[2L]], split = "	", fixed = TRUE)[[1L]]
         x <- as.character(values[seq_len(20L)])
         names(x) <- names[seq_len(20L)]
         x <- x[nzchar(x)]
         x
     }
-
 
 
 #' Get the RefSeq base genome URL for an organism
@@ -201,9 +209,7 @@
 #'     taxonomicGroup = "vertebrate_mammalian"
 #' )
 .getRefSeqGenomeUrl <-
-    function(organism,
-             taxonomicGroup = NULL,
-             quiet = FALSE) {
+    function(organism, taxonomicGroup = NULL, quiet = FALSE) {
         assert(
             isOrganism(organism),
             isString(taxonomicGroup, nullOk = TRUE),
@@ -217,7 +223,9 @@
         }
         ## FTP is faster than HTTPS but more prone to timeouts.
         baseUrl <- pasteUrl(
-            "ftp.ncbi.nlm.nih.gov", "genomes", "refseq",
+            "ftp.ncbi.nlm.nih.gov",
+            "genomes",
+            "refseq",
             protocol = "ftp"
         )
         if (is.null(taxonomicGroup)) {
@@ -229,14 +237,13 @@
         url <- pasteUrl(
             baseUrl,
             taxonomicGroup,
-            gsub(pattern = " ", replacement = "_", x = organism)
+            gsub(" ", "_", x = organism, fixed = TRUE)
         )
         if (isFALSE(quiet)) {
-            dl(c("URL" = url))
+            dl(c(URL = url))
         }
         url
     }
-
 
 
 #' Get RefSeq genome assembly seqinfo
@@ -316,7 +323,8 @@
     assert(isMatchingRegex(x = basename(file), pattern = pattern))
     alert(sprintf(
         "Getting {.cls %s} from {.file %s}.",
-        "Seqinfo", basename(file)
+        "Seqinfo",
+        basename(file)
     ))
     ## e.g. "GRCh38.p13", which is the format Seqinfo expects.
     ## Refer to GenomeInfoDb documentation for details on NCBI.
@@ -333,7 +341,7 @@
     colnames <- comments[length(comments)]
     assert(isMatchingFixed(x = colnames, pattern = "\t"))
     colnames <- sub(pattern = "^# ", replacement = "", x = colnames)
-    colnames <- strsplit(colnames, split = "\t")[[1L]]
+    colnames <- strsplit(colnames, split = "\t", fixed = TRUE)[[1L]]
     colnames <- camelCase(colnames, strict = TRUE)
     seqnames <- ifelse(
         test = ucsc,
@@ -341,8 +349,8 @@
         no = "refSeqAccn"
     )
     whatCols <- c(
-        "seqnames" = seqnames,
-        "seqlengths" = "sequenceLength"
+        seqnames = seqnames,
+        seqlengths = "sequenceLength"
     )
     assert(isSubset(whatCols, colnames))
     ## NOTE `data.table::fread` doesn't currently support comment exclusion,
@@ -376,7 +384,6 @@
     )
     seq
 }
-
 
 
 #' Locate RefSeq assembly report, from GFF file
@@ -441,10 +448,12 @@
         x = basename(file)
     )
     if (isAUrl(file)) {
-        if (identical(
-            x = "seqs_for_alignment_pipelines.ucsc_ids",
-            y = basename(dirname(file))
-        )) {
+        if (
+            identical(
+                x = "seqs_for_alignment_pipelines.ucsc_ids",
+                y = basename(dirname(file))
+            )
+        ) {
             x <- pasteUrl(parentDir(file, n = 2L), reportBasename)
         } else {
             x <- pasteUrl(dirname(file), reportBasename)
@@ -462,10 +471,10 @@
         return(x)
     }
     abort(sprintf(
-        "Failed to locate RefSeq assembly report from {.file %s}.", file
+        "Failed to locate RefSeq assembly report from {.file %s}.",
+        file
     ))
 }
-
 
 
 #' Map organism to NCBI taxonomy identifier

@@ -23,7 +23,7 @@
 mapGencodeToEnsembl <- function(release) {
     assert(isScalar(release))
     organism <- ifelse(
-        test = grepl(pattern = "^M", x = release),
+        test = startsWith(as.character(release), "M"),
         yes = "Mus musculus",
         no = "Homo sapiens"
     )

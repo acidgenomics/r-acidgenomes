@@ -29,11 +29,11 @@ Updated 2019-11-19.
 \examples{
 ## GeneToSymbol ====
 df <- S4Vectors::DataFrame(
-    "geneId" = c(
+    geneId = c(
         "ENSG00000228572.7",
         "ENSG00000182378.14"
     ),
-    "geneName" = c(
+    geneName = c(
         "AL954722.1",
         "PLCXD1"
     )
@@ -43,11 +43,11 @@ summary(g2s)
 
 ## TxToGene ====
 df <- S4Vectors::DataFrame(
-    "txId" = c(
+    txId = c(
         "ENST00000635602.1",
         "ENST00000635506.1"
     ),
-    "geneId" = c(
+    geneId = c(
         "ENSG00000283061.1",
         "ENSG00000283061.1"
     )

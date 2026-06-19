@@ -1,5 +1,42 @@
 # Release notes
 
+## AcidGenomes 0.8.0 (2026-05-31)
+
+New functions:
+
+- `goTermsPerGeneName`: Import gene ontology (GO) terms per gene name from
+  GOA annotation files.
+- `importEnsemblToNcbiGeneMap`: Import Ensembl-to-NCBI gene identifier mappings.
+- `mapGoTerms`: Map GO term identifiers to human-readable names.
+- `mapRnacentral`: Map gene identifiers to RNAcentral.
+- `stripExonVersions`: Strip version suffixes from exon identifiers.
+- `updateGeneSymbols`: Update outdated gene symbols to current nomenclature.
+
+New classes:
+
+- Added exon-level annotation classes: `EnsemblExons`, `FlybaseExons`,
+  `GencodeExons`, `RefseqExons`, `UcscExons`, `WormbaseExons`.
+
+Major changes:
+
+- Removed `makeGeneToSymbol` (all variants: `makeGeneToSymbolFromEnsembl`,
+  `makeGeneToSymbolFromEnsDb`, `makeGeneToSymbolFromGff`) and `makeTxToGene`
+  (variants: `makeTxToGeneFromEnsDb`, `makeTxToGeneFromEnsembl`,
+  `makeTxToGeneFromGff`). Use `makeGRangesFromEnsembl()` or
+  `makeGRangesFromEnsDb()` composed with `GeneToSymbol()` or `TxToGene()`
+  directly. `makeTxToGeneFromFasta()` remains.
+- Reworked internal gene mapping to use `NcbiGeneInfo` dbXrefs, improving
+  reliability of Ensembl-to-NCBI identifier mapping.
+- Enabled case-insensitive gene name matching in mapping functions.
+
+Minor changes:
+
+- Code reformatted with the `air` R formatter.
+
+License changes:
+
+- Switched from AGPL-3.0 to Apache-2.0.
+
 ## AcidGenomes 0.7.5 (2025-04-07)
 
 Minor changes:

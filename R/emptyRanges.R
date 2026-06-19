@@ -33,9 +33,11 @@
 #' ## Spike-ins.
 #' emptyRanges("ERCC", seqname = "spike")
 emptyRanges <-
-    function(names,
-             seqname = c("unknown", "transgene", "spike"),
-             mcolnames = NULL) {
+    function(
+        names,
+        seqname = c("unknown", "transgene", "spike"),
+        mcolnames = NULL
+    ) {
         assert(
             isCharacter(names),
             isAny(mcolnames, c("character", "NULL"))
@@ -44,17 +46,13 @@ emptyRanges <-
         gr <- GRanges(
             seqnames = seqname,
             ranges = IRanges(
-                start = (seq_len(length(names)) - 1L) * 100L + 1L,
+                start = (seq_along(names) - 1L) * 100L + 1L,
                 width = 100L
             )
         )
         names(gr) <- names
         ## Create the required empty metadata columns.
-        if (!hasLength(mcolnames)) {
-            ncol <- 0L
-        } else {
-            ncol <- length(mcolnames)
-        }
+        ncol <- if (hasLength(mcolnames)) length(mcolnames) else 0L
         mcols <- matrix(
             nrow = length(names),
             ncol = ncol,

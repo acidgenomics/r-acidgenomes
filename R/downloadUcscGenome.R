@@ -46,10 +46,7 @@
 #' ## > downloadUcscGenome(organism = "Homo sapiens")
 ## nolint end
 downloadUcscGenome <-
-    function(organism,
-             genomeBuild = NULL,
-             outputDir = getwd(),
-             cache = FALSE) {
+    function(organism, genomeBuild = NULL, outputDir = getwd(), cache = FALSE) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -61,15 +58,8 @@ downloadUcscGenome <-
             choices = c("Homo sapiens", "Mus musculus")
         )
         outputDir <- initDir(outputDir)
-        ## Homo sapiens is now defaulting to "hs1", which is the experimental
-        ## new T2T-CHM13 assembly. We're not quite ready to support this yet, so
-        ## keeping pinned to hg38.
         if (is.null(genomeBuild)) {
-            genomeBuild <- switch(
-                EXPR = organism,
-                "Homo sapiens" = "hg38",
-                currentUcscGenomeBuild(organism)
-            )
+            genomeBuild <- currentUcscGenomeBuild(organism)
         }
         ## UCSC is updated on a rolling schedule, so use today's date as a
         ## substitution for release number.
@@ -83,7 +73,10 @@ downloadUcscGenome <-
         )
         releaseUrl <- pasteUrl(baseUrl, genomeBuild, "bigZips")
         outputBasename <- kebabCase(tolower(paste(
-            organism, genomeBuild, "ucsc", release
+            organism,
+            genomeBuild,
+            "ucsc",
+            release
         )))
         outputDir <- file.path(outputDir, outputBasename)
         h1(sprintf(
@@ -91,8 +84,10 @@ downloadUcscGenome <-
                 "Downloading UCSC genome for {.emph %s}",
                 "%s from {.url %s} to {.path %s}."
             ),
-            organism, genomeBuild,
-            releaseUrl, outputDir
+            organism,
+            genomeBuild,
+            releaseUrl,
+            outputDir
         ))
         assert(
             !isADir(outputDir),
@@ -100,9 +95,9 @@ downloadUcscGenome <-
         )
         outputDir <- initDir(outputDir)
         args <- list(
-            "outputDir" = outputDir,
-            "releaseUrl" = releaseUrl,
-            "cache" = cache
+            outputDir = outputDir,
+            releaseUrl = releaseUrl,
+            cache = cache
         )
         info <- list()
         info[["date"]] <- Sys.Date()
@@ -110,7 +105,7 @@ downloadUcscGenome <-
             do.call(what = .downloadUcscMetadata, args = args)
         info[["transcriptome"]] <-
             do.call(what = .downloadUcscTranscriptome, args = args)
-        args <- append(x = args, values = list("genomeBuild" = genomeBuild))
+        args <- append(x = args, values = list(genomeBuild = genomeBuild))
         info[["genome"]] <-
             do.call(what = .downloadUcscGenome, args = args)
         info[["annotation"]] <-
@@ -132,21 +127,17 @@ downloadUcscGenome <-
     }
 
 
-
 ## Updated 2023-11-22.
 .downloadUcscAnnotation <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
+    function(genomeBuild, outputDir, releaseUrl, cache) {
         genesUrl <- pasteUrl(releaseUrl, "genes")
         urls <- c(
-            "readme" = pasteUrl(genesUrl, "README.txt"),
-            "knownGene" = pasteUrl(
+            readme = pasteUrl(genesUrl, "README.txt"),
+            knownGene = pasteUrl(
                 genesUrl,
                 paste0(genomeBuild, ".knownGene.gtf.gz")
             ),
-            "ncbiRefSeq" = pasteUrl(
+            ncbiRefSeq = pasteUrl(
                 genesUrl,
                 paste0(genomeBuild, ".ncbiRefSeq.gtf.gz")
             )
@@ -185,51 +176,55 @@ downloadUcscGenome <-
             file = file.path(outputDir, "transcripts.rds")
         )
         ## Save transcript-to-gene mappings.
-        t2g <- makeTxToGeneFromGff(gtfFile)
+        t2g <- TxToGene(makeGRangesFromGff(
+            file = gtfFile,
+            level = "transcripts",
+            ignoreVersion = FALSE,
+            extraMcols = FALSE
+        ))
         saveRDS(object = t2g, file = file.path(outputDir, "tx2gene.rds"))
         t2gFile <- export(
             object = t2g,
             con = file.path(outputDir, "tx2gene.csv.gz")
         )
         files[["tx2gene"]] <- t2gFile
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
 
 
-
 ## Note that both hg38 and hg19 support "latest/" subdirectory.
-## Updated 2022-05-24.
+## Updated 2026-05-31.
 .downloadUcscGenome <-
-    function(genomeBuild,
-             outputDir,
-             releaseUrl,
-             cache) {
-        isHuman <- grepl(pattern = "^hg[0-9]+$", x = genomeBuild)
+    function(genomeBuild, outputDir, releaseUrl, cache) {
+        ## hg38/hg19 and hs1 (T2T-CHM13) all support the "latest/" subdir.
+        hasLatest <- grepl(pattern = "^(hg[0-9]+|hs[0-9]+)$", x = genomeBuild)
         latestUrl <- ifelse(
-            test = isHuman,
+            test = hasLatest,
             yes = pasteUrl(releaseUrl, "latest"),
             no = releaseUrl
         )
         urls <- c(
-            "chromAlias" = pasteUrl(
+            chromAlias = pasteUrl(
                 releaseUrl,
                 paste0(genomeBuild, ".chromAlias.txt")
             ),
-            "chromSizes" = pasteUrl(
+            chromSizes = pasteUrl(
                 latestUrl,
                 paste0(genomeBuild, ".chrom.sizes")
             ),
-            "fasta" = pasteUrl(
+            fasta = pasteUrl(
                 latestUrl,
                 paste0(genomeBuild, ".fa.gz")
             ),
-            "md5sum" = pasteUrl(latestUrl, "md5sum.txt")
+            md5sum = pasteUrl(latestUrl, "md5sum.txt")
         )
-        if (identical(genomeBuild, "hg38")) {
+        if (isSubset(genomeBuild, c("hg38", "hs1"))) {
             urls <- c(
                 urls,
-                "latestVersion" = pasteUrl(
-                    releaseUrl, "latest", "LATEST_VERSION"
+                latestVersion = pasteUrl(
+                    releaseUrl,
+                    "latest",
+                    "LATEST_VERSION"
                 )
             )
         }
@@ -255,37 +250,31 @@ downloadUcscGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
-
 
 
 ## Updated 2021-08-03.
 .downloadUcscMetadata <-
-    function(outputDir,
-             releaseUrl,
-             cache) {
-        urls <- c("readme" = pasteUrl(releaseUrl, "README.txt"))
+    function(outputDir, releaseUrl, cache) {
+        urls <- c(readme = pasteUrl(releaseUrl, "README.txt"))
         files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "metadata"),
             cache = cache
         )
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }
-
 
 
 ## Updated 2022-05-24.
 .downloadUcscTranscriptome <-
-    function(outputDir,
-             releaseUrl,
-             cache) {
+    function(outputDir, releaseUrl, cache) {
         urls <- c(
-            "mrna" = pasteUrl(releaseUrl, "mrna.fa.gz"),
-            "mrnaChecksum" = pasteUrl(releaseUrl, "mrna.fa.gz.md5"),
-            "refMrna" = pasteUrl(releaseUrl, "refMrna.fa.gz"),
-            "refMrnaChecksum" = pasteUrl(releaseUrl, "refMrna.fa.gz.md5")
+            mrna = pasteUrl(releaseUrl, "mrna.fa.gz"),
+            mrnaChecksum = pasteUrl(releaseUrl, "mrna.fa.gz.md5"),
+            refMrna = pasteUrl(releaseUrl, "refMrna.fa.gz"),
+            refMrnaChecksum = pasteUrl(releaseUrl, "refMrna.fa.gz.md5")
         )
         files <- .downloadUrls(
             urls = urls,
@@ -309,5 +298,5 @@ downloadUcscGenome <-
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
-        invisible(list("files" = files, "urls" = urls))
+        invisible(list(files = files, urls = urls))
     }

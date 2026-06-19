@@ -37,9 +37,7 @@
 #'     })
 #' }
 mapHumanOrthologs <-
-    function(genes,
-             organism = NULL,
-             ensemblRelease = NULL) {
+    function(genes, organism = NULL, ensemblRelease = NULL) {
         assert(
             requireNamespaces("biomaRt"),
             isCharacter(genes),
@@ -68,7 +66,9 @@ mapHumanOrthologs <-
                 "Matching orthologs against {.var %s} ({.url %s}) with",
                 "{.pkg %s} %s."
             ),
-            dataset, host, "bioMart",
+            dataset,
+            host,
+            "bioMart",
             as.character(packageVersion("biomaRt"))
         ))
         ## Can use "ENSEMBL_MART_ENSEMBL" instead of "ensembl" here.
@@ -82,7 +82,9 @@ mapHumanOrthologs <-
             error = function(e) {
                 abort(sprintf(
                     "{.pkg %s}::{.fun %s} failure: %s.",
-                    "biomaRt", "useMart", as.character(e)
+                    "biomaRt",
+                    "useMart",
+                    as.character(e)
                 ))
             }
         )
@@ -99,7 +101,9 @@ mapHumanOrthologs <-
             error = function(e) {
                 abort(sprintf(
                     "{.pkg %s}::{.fun %s} failure: %s.",
-                    "biomaRt", "select", as.character(e)
+                    "biomaRt",
+                    "select",
+                    as.character(e)
                 ))
             }
         )
@@ -125,7 +129,7 @@ mapHumanOrthologs <-
             ))
             map <- map[keep, , drop = FALSE]
         }
-        map <- map[order(map), , drop = FALSE]
+        map <- sort(map)
         keep <- !duplicated(map[["geneId"]])
         if (!all(keep)) {
             dupes <- unique(map[["geneId"]][!keep])
@@ -174,22 +178,29 @@ mapHumanOrthologs <-
                 msg1 = "identifier",
                 msg2 = "identifiers"
             ),
-            organism, "Homo sapiens"
+            organism,
+            "Homo sapiens"
         ))
         alert(sprintf("Getting {.emph %s} gene symbols.", organism))
-        g2s <- makeGeneToSymbolFromEnsembl(
-            organism = organism,
-            release = ensemblRelease,
-            ignoreVersion = TRUE,
+        g2s <- GeneToSymbol(
+            object = makeGRangesFromEnsembl(
+                organism = organism,
+                level = "genes",
+                release = ensemblRelease,
+                ignoreVersion = TRUE
+            ),
             format = "unmodified"
         )
         g2s <- as(g2s, "DFrame")
         assert(identical(colnames(g2s), c("geneId", "geneName")))
         alert(sprintf("Getting {.emph %s} gene symbols.", "Homo sapiens"))
-        g2sHuman <- makeGeneToSymbolFromEnsembl(
-            organism = "Homo sapiens",
-            release = ensemblRelease,
-            ignoreVersion = TRUE,
+        g2sHuman <- GeneToSymbol(
+            object = makeGRangesFromEnsembl(
+                organism = "Homo sapiens",
+                level = "genes",
+                release = ensemblRelease,
+                ignoreVersion = TRUE
+            ),
             format = "unmodified"
         )
         g2sHuman <- as(g2sHuman, "DFrame")

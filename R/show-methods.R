@@ -10,27 +10,31 @@
 NULL
 
 
-
 ## Updated 2023-04-26.
 .showGRanges <- function(object) {
     assert(validObject(object))
     showHeader(object)
     meta <- metadata(object)
     showSlotInfo(list(
-        "organism" = meta[["organism"]],
-        "genomeBuild" = meta[["genomeBuild"]],
-        "release" = meta[["release"]],
-        "ignoreVersion" = meta[["ignoreVersion"]],
-        "names" = names(object)
+        organism = meta[["organism"]],
+        genomeBuild = meta[["genomeBuild"]],
+        release = meta[["release"]],
+        ignoreVersion = meta[["ignoreVersion"]],
+        names = names(object)
     ))
 }
 
 
+`show,EnsemblExons` <- # nolint
+    .showGRanges
 
 `show,EnsemblGenes` <- # nolint
     .showGRanges
 
 `show,EnsemblTranscripts` <- # nolint
+    .showGRanges
+
+`show,FlybaseExons` <- # nolint
     .showGRanges
 
 `show,FlybaseGenes` <- # nolint
@@ -39,10 +43,16 @@ NULL
 `show,FlybaseTranscripts` <- # nolint
     .showGRanges
 
+`show,GencodeExons` <- # nolint
+    .showGRanges
+
 `show,GencodeGenes` <- # nolint
     .showGRanges
 
 `show,GencodeTranscripts` <- # nolint
+    .showGRanges
+
+`show,RefseqExons` <- # nolint
     .showGRanges
 
 `show,RefseqGenes` <- # nolint
@@ -51,10 +61,16 @@ NULL
 `show,RefseqTranscripts` <- # nolint
     .showGRanges
 
+`show,UcscExons` <- # nolint
+    .showGRanges
+
 `show,UcscGenes` <- # nolint
     .showGRanges
 
 `show,UcscTranscripts` <- # nolint
+    .showGRanges
+
+`show,WormbaseExons` <- # nolint
     .showGRanges
 
 `show,WormbaseGenes` <- # nolint
@@ -64,6 +80,13 @@ NULL
     .showGRanges
 
 
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
+    signature = signature(object = "EnsemblExons"),
+    definition = `show,EnsemblExons`
+)
 
 #' @rdname show
 #' @export
@@ -79,6 +102,14 @@ setMethod(
     f = "show",
     signature = signature(object = "EnsemblTranscripts"),
     definition = `show,EnsemblTranscripts`
+)
+
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
+    signature = signature(object = "FlybaseExons"),
+    definition = `show,FlybaseExons`
 )
 
 #' @rdname show
@@ -101,6 +132,14 @@ setMethod(
 #' @export
 setMethod(
     f = "show",
+    signature = signature(object = "GencodeExons"),
+    definition = `show,GencodeExons`
+)
+
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
     signature = signature(object = "GencodeGenes"),
     definition = `show,GencodeGenes`
 )
@@ -111,6 +150,14 @@ setMethod(
     f = "show",
     signature = signature(object = "GencodeTranscripts"),
     definition = `show,GencodeTranscripts`
+)
+
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
+    signature = signature(object = "RefseqExons"),
+    definition = `show,RefseqExons`
 )
 
 #' @rdname show
@@ -133,6 +180,14 @@ setMethod(
 #' @export
 setMethod(
     f = "show",
+    signature = signature(object = "UcscExons"),
+    definition = `show,UcscExons`
+)
+
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
     signature = signature(object = "UcscGenes"),
     definition = `show,UcscGenes`
 )
@@ -143,6 +198,14 @@ setMethod(
     f = "show",
     signature = signature(object = "UcscTranscripts"),
     definition = `show,UcscTranscripts`
+)
+
+#' @rdname show
+#' @export
+setMethod(
+    f = "show",
+    signature = signature(object = "WormbaseExons"),
+    definition = `show,WormbaseExons`
 )
 
 #' @rdname show

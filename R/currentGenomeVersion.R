@@ -3,7 +3,7 @@
 #' Obtain the latest release version from various genome annotation sources.
 #'
 #' @name currentGenomeVersion
-#' @note Updated 2023-10-04.
+#' @note Updated 2025-04-14.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @param dmel `logical(1)`.
@@ -38,7 +38,6 @@
 NULL
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentEnsemblVersion <- function() {
@@ -52,12 +51,23 @@ currentEnsemblVersion <- function() {
         format = "lines",
         quiet = TRUE
     )
-    x <- x[[3L]]
-    x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]][[3L]]
+    x <- grep(
+        pattern = "current release",
+        x = x,
+        ignore.case = TRUE,
+        value = TRUE
+    )
+    if (!isString(x)) {
+        abort("Failed to extract release version from Ensembl FTP server.")
+    }
+    x <- sub(
+        pattern = "^.*Ensembl\\s([0-9]+).*$",
+        replacement = "\\1",
+        x = x
+    )
     x <- as.integer(x)
     x
 }
-
 
 
 #' @rdname currentGenomeVersion
@@ -80,7 +90,7 @@ currentGencodeVersion <-
         )
         url <- paste0(url, "/", shortName, "/")
         x <- RCurl::getURL(url)
-        x <- strsplit(x = x, split = "\n")[[1L]]
+        x <- strsplit(x = x, split = "\n", fixed = TRUE)[[1L]]
         x <- grep(
             pattern = paste0("^<h1>", pattern),
             x = x,
@@ -94,7 +104,6 @@ currentGencodeVersion <-
     }
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentRefseqVersion <- function() {
@@ -106,7 +115,6 @@ currentRefseqVersion <- function() {
     x <- as.integer(x)
     x
 }
-
 
 
 #' @rdname currentGenomeVersion
@@ -127,13 +135,15 @@ currentFlybaseVersion <- function(dmel = FALSE) {
 }
 
 
-
 #' @rdname currentGenomeVersion
 #' @export
 currentWormbaseVersion <- function() {
     url <- pasteUrl(
-        "ftp.wormbase.org", "pub", "wormbase",
-        "releases", "current-production-release",
+        "ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "current-production-release",
         protocol = "ftp"
     )
     x <- getUrlDirList(paste0(url, "/"))

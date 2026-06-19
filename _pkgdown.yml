@@ -15,3 +15,42 @@ news:
 template:
   bootstrap: 5
 url: https://r.acidgenomics.com/packages/acidgenomes
+reference:
+  - title: Download genome files
+    contents:
+      - starts_with("download")
+  - title: Current versions and builds
+    contents:
+      - starts_with("current")
+      - gencodeReleaseHistory
+      - detectOrganism
+  - title: Make genomic objects
+    contents:
+      - starts_with("make")
+      - EnsemblGenes
+      - EnsemblToNcbi
+      - GeneToSymbol
+      - Hgnc
+      - JaxHumanToMouse
+      - Mgi
+      - NcbiGeneHistory
+      - NcbiGeneInfo
+      - NcbiToEnsembl
+      - TxToGene
+  - title: Gene name mapping
+    contents:
+      - starts_with("map")
+      - starts_with("goTerm")
+  - title: Version and ID utilities
+    contents:
+      - starts_with("strip")
+      - starts_with("mapEnsembl")
+      - starts_with("mapGencode")
+      - starts_with("updateGene")
+      - emptyRanges
+  - title: Data access
+    contents:
+      - getEnsDb
+      - export
+      - importTxToGene
+      - AcidGenomesTestsUrl

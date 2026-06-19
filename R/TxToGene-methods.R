@@ -6,7 +6,7 @@
 #' @inheritParams params
 #' @param ... Arguments pass through to `DFrame` method.
 #'
-#' @seealso [makeTxToGene()].
+#' @seealso [makeTxToGeneFromFasta()].
 #'
 #' @examples
 #' ## DFrame ====
@@ -25,11 +25,9 @@
 NULL
 
 
-
 ## Updated 2023-11-29.
 `TxToGene,DFrame` <- # nolint
-    function(object,
-             quiet = FALSE) {
+    function(object, quiet = FALSE) {
         assert(
             hasColnames(object),
             hasRows(object),
@@ -77,14 +75,13 @@ NULL
             all(complete.cases(object)),
             hasNoDuplicates(object[["txId"]])
         )
-        object <- object[order(object), , drop = FALSE]
+        object <- sort(object)
         meta[["date"]] <- Sys.Date()
         meta[["packageVersion"]] <- .pkgVersion
         meta <- meta[sort(names(meta))]
         metadata(object) <- meta
         new(Class = "TxToGene", object)
     }
-
 
 
 ## Updated 2021-08-09.
@@ -94,7 +91,6 @@ NULL
         metadata(df) <- metadata(object)
         TxToGene(df, ...)
     }
-
 
 
 ## Updated 2023-04-26.
@@ -107,7 +103,6 @@ NULL
     }
 
 
-
 ## Updated 2021-08-09.
 `TxToGene,data.frame` <- # nolint
     function(object, ...) {
@@ -116,7 +111,6 @@ NULL
         object <- as(object, "DFrame")
         TxToGene(object, ...)
     }
-
 
 
 ## Updated 2021-08-09.
@@ -129,7 +123,6 @@ NULL
         object <- as.data.frame(object, stringsAsFactors = FALSE)
         TxToGene(object, ...)
     }
-
 
 
 #' @rdname TxToGene

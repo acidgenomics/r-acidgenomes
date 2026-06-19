@@ -7,13 +7,13 @@ test_that("character : Homo sapiens", {
     )
     object <- EnsemblToNcbi(genes, organism = NULL)
     expected <- DataFrame(
-        "ensemblGeneId" = c(
+        ensemblGeneId = c(
             "ENSG00000063587",
             "ENSG00000004866",
             "ENSG00000000005",
             "ENSG00000000003"
         ),
-        "ncbiGeneId" = c(
+        ncbiGeneId = c(
             10838L,
             7982L,
             64102L,
@@ -22,8 +22,8 @@ test_that("character : Homo sapiens", {
         row.names = genes
     )
     expect_identical(
-        object = as.data.frame(object),
-        expected = as.data.frame(expected)
+        object = as.data.frame(stringsAsFactors = FALSE, object),
+        expected = as.data.frame(stringsAsFactors = FALSE, expected)
     )
     expect_error(
         EnsemblToNcbi(
@@ -53,13 +53,13 @@ test_that("character : Mus musculus", {
     )
     object <- EnsemblToNcbi(genes, organism = NULL)
     expected <- DataFrame(
-        "ensemblGeneId" = c(
+        ensemblGeneId = c(
             "ENSG00000063587",
             "ENSG00000004866",
             "ENSG00000000005",
             "ENSG00000000003"
         ),
-        "ncbiGeneId" = c(
+        ncbiGeneId = c(
             10838L,
             7982L,
             64102L,
@@ -68,8 +68,8 @@ test_that("character : Mus musculus", {
         row.names = genes
     )
     expect_identical(
-        object = as.data.frame(object),
-        expected = as.data.frame(expected)
+        object = as.data.frame(stringsAsFactors = FALSE, object),
+        expected = as.data.frame(stringsAsFactors = FALSE, expected)
     )
     expect_error(
         object = EnsemblToNcbi(
@@ -87,13 +87,13 @@ test_that("character : Caenorhabditis elegans", {
         organism = "Caenorhabditis elegans"
     )
     expected <- DataFrame(
-        "ensemblGeneId" = genes,
-        "ncbiGeneId" = c(175410L, 177343L),
+        ensemblGeneId = genes,
+        ncbiGeneId = c(175410L, 177343L),
         row.names = genes
     )
     expect_identical(
-        object = as.data.frame(object),
-        expected = as.data.frame(expected)
+        object = as.data.frame(stringsAsFactors = FALSE, object),
+        expected = as.data.frame(stringsAsFactors = FALSE, expected)
     )
     expect_error(
         object = EnsemblToNcbi(
@@ -111,12 +111,13 @@ test_that("EnsemblGenes", {
         release = 110L,
         ignoreVersion = FALSE
     )
+    expect_length(hs, 68974L)
     x <- EnsemblToNcbi(hs, useCurated = TRUE)
     y <- EnsemblToNcbi(hs, useCurated = FALSE)
     expect_true(metadata(x)[["useCurated"]])
     expect_null(metadata(y)[["useCurated"]])
-    expect_identical(nrow(x), 26606L)
-    expect_identical(nrow(y), 26608L)
+    expect_identical(nrow(x), 26582L)
+    expect_identical(nrow(y), 26584L)
     expect_identical(
         object = setdiff(y[[1L]], x[[1L]]),
         expected = c("ENSG00000290723.1", "ENSG00000291109.1")
@@ -127,12 +128,14 @@ test_that("EnsemblGenes", {
     expect_length(idx, 108L)
     expect_identical(
         object = head(data.frame(
-            "ensemblGeneId" = x[["ensemblGeneId"]][idx],
-            "ncbiGeneId1" = x[["ncbiGeneId"]][idx],
-            "ncbiGeneId2" = y[["ncbiGeneId"]][idx]
+            stringsAsFactors = FALSE,
+            ensemblGeneId = x[["ensemblGeneId"]][idx],
+            ncbiGeneId1 = x[["ncbiGeneId"]][idx],
+            ncbiGeneId2 = y[["ncbiGeneId"]][idx]
         )),
         expected = data.frame(
-            "ensemblGeneId" = c(
+            stringsAsFactors = FALSE,
+            ensemblGeneId = c(
                 "ENSG00000111215.12",
                 "ENSG00000169627.9",
                 "ENSG00000176797.4",
@@ -140,7 +143,7 @@ test_that("EnsemblGenes", {
                 "ENSG00000178934.5",
                 "ENSG00000180525.14"
             ),
-            "ncbiGeneId1" = c(
+            ncbiGeneId1 = c(
                 11272L,
                 654483L,
                 414325L,
@@ -148,7 +151,7 @@ test_that("EnsemblGenes", {
                 653499L,
                 414235L
             ),
-            "ncbiGeneId2" = c(
+            ncbiGeneId2 = c(
                 5554L,
                 552900L,
                 55894L,
@@ -164,16 +167,17 @@ test_that("Hgnc", {
     hgnc <- Hgnc()
     object <- EnsemblToNcbi(hgnc)
     expect_identical(
-        object = as.data.frame(object[1L:5L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L:5L, ]),
         expected = data.frame(
-            "ensemblGeneId" = c(
+            stringsAsFactors = FALSE,
+            ensemblGeneId = c(
                 "ENSG00000000003",
                 "ENSG00000000005",
                 "ENSG00000000419",
                 "ENSG00000000457",
                 "ENSG00000000460"
             ),
-            "ncbiGeneId" = c(
+            ncbiGeneId = c(
                 7105L,
                 64102L,
                 8813L,
@@ -195,16 +199,17 @@ test_that("Mgi", {
     mgi <- Mgi()
     object <- EnsemblToNcbi(mgi)
     expect_identical(
-        object = as.data.frame(object[1L:5L, ]),
+        object = as.data.frame(stringsAsFactors = FALSE, object[1L:5L, ]),
         expected = data.frame(
-            "ensemblGeneId" = c(
+            stringsAsFactors = FALSE,
+            ensemblGeneId = c(
                 "ENSMUSG00000000001",
                 "ENSMUSG00000000003",
                 "ENSMUSG00000000028",
                 "ENSMUSG00000000031",
                 "ENSMUSG00000000037"
             ),
-            "ncbiGeneId" = c(
+            ncbiGeneId = c(
                 14679L,
                 54192L,
                 12544L,

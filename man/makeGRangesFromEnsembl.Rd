@@ -7,7 +7,7 @@
 \usage{
 makeGRangesFromEnsembl(
   organism,
-  level = c("genes", "transcripts"),
+  level = c("genes", "transcripts", "exons", "cds"),
   genomeBuild = NULL,
   release = NULL,
   ignoreVersion = FALSE,
@@ -16,7 +16,7 @@ makeGRangesFromEnsembl(
 
 makeGRangesFromEnsDb(
   object,
-  level = c("genes", "transcripts"),
+  level = c("genes", "transcripts", "exons", "cds"),
   ignoreVersion = FALSE,
   extraMcols = FALSE
 )
@@ -86,7 +86,7 @@ a \code{character(1)}.
 
 }}
 \note{
-Updated 2025-03-24.
+Updated 2025-04-12.
 }
 \section{Broad class definitions}{
 
@@ -113,6 +113,24 @@ groups:
 75) build by internally querying the \href{https://bioconductor.org/packages/EnsDb.Hsapiens.v75/}{EnsDb.Hsapiens.v75} package.
 Alternatively, the corresponding GTF/GFF file can be loaded directly from
 GENCODE or Ensembl.
+}
+
+\section{Ensembl canonical transcript}{
+
+
+Fetching the canonical transcripts currently requires connecting to the
+\href{http://useast.ensembl.org/info/docs/api/index.html}{Ensembl Perl API}. This information is currently processed by the
+ensembldb package using the \code{fetchTablesFromEnsembl} function.
+
+See also:
+\itemize{
+\item http://useast.ensembl.org/info/genome/genebuild/canonical.html
+\item https://www.ensembl.info/2021/04/16/update-to-the-ensembl-canonical-transcript-set/
+\item https://github.com/jorainer/ensembldb/blob/devel/inst/perl/get_gene_transcript_exon_tables.pl
+\item https://github.com/jorainer/ensembldb/issues/123
+\item https://github.com/jorainer/ensembldb/blob/devel/R/functions-create-EnsDb.R#L36
+\item \code{ensembldb::fetchTablesFromEnsembl()}.
+}
 }
 
 \examples{
@@ -142,5 +160,8 @@ summary(transcripts)
 \item \href{https://bioconductor.org/packages/AnnotationHub/}{AnnotationHub}.
 \item \href{https://bioconductor.org/packages/ensembldb/}{ensembldb}.
 \item \code{ensembldb::ensDbFromGff()}, \code{ensembldb::ensDbFromGtf()}.
+\item \href{https://useast.ensembl.org/info/genome/genebuild/biotypes.html}{Ensembl biotypes}.
+\item \href{https://www.gencodegenes.org/pages/biotypes.html}{Gene/transcript biotypes in GENCODE and Ensembl}.
+\item \href{http://www.lrg-sequence.org/}{Locus reference genomic}.
 }
 }

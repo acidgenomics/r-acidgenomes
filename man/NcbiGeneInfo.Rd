@@ -4,7 +4,7 @@
 \alias{NcbiGeneInfo}
 \title{Import NCBI (Entrez) gene identifier information}
 \usage{
-NcbiGeneInfo(organism, taxonomicGroup = NULL, cache = TRUE)
+NcbiGeneInfo(organism, taxonomicGroup = NULL, refseqGeneSummary = FALSE)
 }
 \arguments{
 \item{organism}{\code{character(1)}.
@@ -14,8 +14,9 @@ Full Latin organism name (e.g. \code{"Homo sapiens"}).}
 NCBI FTP server taxonomic group subdirectory path (e.g. "Mammalia").
 Defining this manually avoids having to query the FTP server.}
 
-\item{cache}{\code{logical(1)}.
-Cache the gene info file from NCBI FTP server using BiocFileCache.}
+\item{refseqGeneSummary}{\code{logical(1)}.
+Include RefSeq gene summary in \code{"refseqGeneSummary"} column.
+Requires Bioconductor GeneSummary package to be installed.}
 }
 \value{
 \code{NcbiGeneInfo}.
@@ -24,7 +25,7 @@ Cache the gene info file from NCBI FTP server using BiocFileCache.}
 Import NCBI (Entrez) gene identifier information
 }
 \note{
-Updated 2023-09-26.
+Updated 2023-12-19.
 }
 \examples{
 object <- NcbiGeneInfo(
@@ -35,6 +36,6 @@ print(object)
 }
 \seealso{
 \itemize{
-\item https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/
+\item https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/
 }
 }

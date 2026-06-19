@@ -1,45 +1,49 @@
 test_that("Unsupported files", {
-    for (file in gffs[c(
-        "flybase_gff3",
-        "wormbase_gff3"
-    )]) {
+    for (file in gffs[c("flybase_gff3", "wormbase_gff3")]) {
         expect_error(
             object = makeGRangesFromGff(file = file),
-            regexp = "isSupportedGFF"
+            regexp = "isSupportedGff"
         )
     }
 })
 
-file <- gffs[["ensembl_grch38_gff3"]]
+file <- gffs[["ensembl_grch38_gff3_scaff"]]
 
-test_that("GFF3 genes", {
+test_that("Ensembl GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 62703L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "logicName" = "Rle",
+            "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
-            "type" = "Rle"
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -72,19 +76,42 @@ test_that("GFF3 genes", {
             "type" = "gene"
         )
     )
-    expect_identical(
-        object = levels(seqnames(object))[seq_len(25L)],
-        expected = c(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
-        )
-    )
+    expect_true(isSubset(
+        x = c(
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "X",
+            "Y",
+            "MT"
+        ),
+        y = levels(seqnames(object))
+    ))
     expect_identical(
         object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
         expected = list(
             "seqlengths" = 248956422L,
             "isCircular" = NA,
-            "genome" = "GRCh38.p13"
+            "genome" = "GRCh38.p14"
         )
     )
     expect_identical(
@@ -96,11 +123,11 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
+        expected = "GRCh38.p14"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "0d9311600fa404a31f517b752002dcda"
+        expected = "2c414ba2cd6e6f8a7a036f0f277cc8a7"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -108,49 +135,60 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 108L
+        expected = 110L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "4cf5bfc008e3a9b8d22d7613d989ee72dd7424dca552ce14cc3d5a87e0ca8048" # nolint
+        expected = "c8ab2cca61d7f4ca94a8f7396f8123f5291efaaf17d32508c6db07418ba875bf" # nolint
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("Ensembl GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 252300L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "logicName" = "Rle",
+            "logicName" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -186,41 +224,148 @@ test_that("GFF3 transcripts", {
             "txIdNoVersion" = "ENST00000397062",
             "txIdVersion" = "ENST00000397062.8",
             "txName" = "NFE2L2-201",
-            "txSupportLevel" = "1 (assigned to previous version 7)",
+            "txSupportLevel" = "1",
             "type" = "mRNA"
         )
     )
 })
 
-file <- gffs[["ensembl_grch38_gtf"]]
+test_that("Ensembl GRCh38 GFF3 exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblExons")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["exons"]]
+    )
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_length(
+        object = unique(mcols(gr)[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(gr)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "constitutive" = "logical",
+            "description" = "character",
+            "ensemblEndPhase" = "factor",
+            "ensemblPhase" = "factor",
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonName" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSynonyms" = "CompressedCharacterList",
+            "logicName" = "factor",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "rank" = "factor",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSE00001598988.1"][[1L]]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "2",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS46457.1",
+            "constitutive" = "FALSE",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "ensemblEndPhase" = "-1",
+            "ensemblPhase" = "-1",
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonName" = "ENSE00001598988",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "logicName" = "ensembl_havana_gene_homo_sapiens",
+            "ncbiGeneId" = "4780",
+            "rank" = "1",
+            "source" = "havana",
+            "tag" = "character(0)",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSupportLevel" = "1",
+            "type" = "exon"
+        )
+    )
+})
 
-test_that("GTF genes", {
+file <- gffs[["ensembl_grch38_gtf_scaff"]]
+
+test_that("Ensembl GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblGenes")
-    expect_length(object, 62703L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENSG[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -252,19 +397,42 @@ test_that("GTF genes", {
             "type" = "gene"
         )
     )
-    expect_identical(
-        object = levels(seqnames(object))[seq_len(25L)],
-        expected = c(
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-            "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y", "MT"
-        )
-    )
+    expect_true(isSubset(
+        x = c(
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "X",
+            "Y",
+            "MT"
+        ),
+        y = levels(seqnames(object))
+    ))
     expect_identical(
         object = as.data.frame(seqinfo(object))["1", , drop = TRUE],
         expected = list(
             "seqlengths" = 248956422L,
             "isCircular" = NA,
-            "genome" = "GRCh38.p13"
+            "genome" = "GRCh38.p14"
         )
     )
     expect_identical(
@@ -276,11 +444,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "GRCh38.p13"
+        expected = "GRCh38.p14"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "27864327a647f9fdae2cafff5f3ea45e"
+        expected = "636baf45d5897f936257b0dcb62a3b67"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -288,50 +456,61 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 108L
+        expected = 110L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "1ae26267acf522d8d9a94736e2c00b5ff1008d43623fc73644092016ae0c57e8" # nolint
+        expected = "507f418e7cb1cf8e10ecb6d35597a84a767f35cf7ad9236c81ec567055b0180f" # nolint
     )
 })
 
-test_that("GTF transcripts", {
+test_that("Ensembl GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "EnsemblTranscripts")
-    expect_length(object, 252301L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
     )
+    expect_true(allAreMatchingRegex(
+        x = names(object),
+        pattern = "^ENST[0-9]{11}.[0-9]+$"
+    ))
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -368,21 +547,118 @@ test_that("GTF transcripts", {
             "txIdVersion" = "ENST00000397062.8",
             "txName" = "NFE2L2-201",
             "txSource" = "ensembl_havana",
-            "txSupportLevel" = "1 (assigned to previous version 7)",
+            "txSupportLevel" = "1",
             "type" = "transcript"
+        )
+    )
+})
+
+test_that("Ensembl GRCh38 GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "EnsemblExons")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["ensembl"]][["exons"]]
+    )
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_length(
+        object = unique(mcols(gr)[["txId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(gr)[["geneId"]]),
+        n = n[["hsapiens"]][["ensembl"]][["genes"]]
+    )
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneSynonyms" = "CompressedCharacterList",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSE00001598988.1"][[1L]]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "2",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS46457",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonNumber" = "1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSource" = "ensembl_havana",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "ncbiGeneId" = "4780",
+            "source" = "havana",
+            "tag" = "basic",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSource" = "havana",
+            "txSupportLevel" = "1",
+            "type" = "exon"
         )
     )
 })
 
 file <- gffs[["flybase_gtf"]]
 
-test_that("GTF genes", {
+test_that("FlyBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
     )
     expect_s4_class(object, "FlybaseGenes")
-    expect_length(object, 17896L)
+    expect_length(
+        object = object,
+        n = n[["dmelanogaster"]][["flybase"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -390,11 +666,11 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -418,8 +694,15 @@ test_that("GTF genes", {
     )
     expect_true(isSubset(
         x = c(
-            "2L", "2R", "3L", "3R", "4", "X", "Y",
-            "mitochondrion_genome", "rDNA"
+            "2L",
+            "2R",
+            "3L",
+            "3R",
+            "4",
+            "X",
+            "Y",
+            "mitochondrion_genome",
+            "rDNA"
         ),
         y = levels(seqnames(object))
     ))
@@ -433,11 +716,11 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["genomeBuild"]],
-        expected = "r6.49"
+        expected = "r6.55"
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "722ba353d2dd6d3036d747f1498a2e9f"
+        expected = "4ac3ab08dac0ec7881ef77ec6b8fa245"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -445,21 +728,29 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = "r6.49"
+        expected = "r6.55"
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "565b486cbfe78942127482018e4439a28a6b171d71624d8ffe2a3611e162a101" # nolint
+        expected = "24825a1eb694cb886dafc9e84b9273b8f32a906654d27ae8ec5687d08805e2cf" # nolint
     )
 })
 
-test_that("GTF transcripts", {
+test_that("FlyBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
     )
     expect_s4_class(object, "FlybaseTranscripts")
-    expect_length(object, 35723L)
+    expect_length(
+        object = object,
+        n = n[["dmelanogaster"]][["flybase"]][["transcripts"]]
+    )
+    ## No transcripts for "FBgn0013687" (mt:ori).
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["dmelanogaster"]][["flybase"]][["genes"]] - 1L
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -467,13 +758,13 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "source" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "source" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -501,14 +792,17 @@ test_that("GTF transcripts", {
 
 file <- gffs[["gencode_grch38_gff3"]]
 
-test_that("GFF3 genes", {
+test_that("GENCODE GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 62696L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -516,22 +810,22 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "artifDupl" = "Rle",
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "artifactualDuplication" = "character",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
-            "type" = "Rle"
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -546,7 +840,7 @@ test_that("GFF3 genes", {
             "end" = "177392756",
             "width" = "174090",
             "strand" = "-",
-            "artifDupl" = NA_character_,
+            "artifactualDuplication" = NA_character_,
             "broadClass" = "coding",
             "description" = paste(
                 "NFE2 like bZIP transcription factor 2",
@@ -559,7 +853,7 @@ test_that("GFF3 genes", {
             "geneName" = "NFE2L2",
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "1",
             "ncbiGeneId" = "4780",
             "source" = "HAVANA",
@@ -573,7 +867,9 @@ test_that("GFF3 genes", {
             "chr",
             c(
                 seq(from = 1L, to = 22L),
-                "X", "Y", "M"
+                "X",
+                "Y",
+                "M"
             )
         )
     )
@@ -598,7 +894,7 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "b0199f8b1522f61093896e8d48750a0c"
+        expected = "0d066b7f1a814422bbbd3d1d5f881445"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -606,22 +902,29 @@ test_that("GFF3 genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 42L
+        expected = 44L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "10d01b26b75d0142677d0bddf369af375c2e24f6b4c99ce04f408032c51ca432" # nolint
+        expected = "55f4330d54e0e35704b41486078352567ea9f17129f5badbd8ff705177814d76" # nolint
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("GENCODE GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 252416L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -629,30 +932,30 @@ test_that("GFF3 transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "havanaTranscript" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "havanaTranscript" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "proteinId" = "Rle",
-            "source" = "Rle",
+            "proteinId" = "character",
+            "source" = "factor",
             "tag" = "CompressedCharacterList",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -681,7 +984,7 @@ test_that("GFF3 transcripts", {
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
             "havanaTranscript" = "OTTHUMT00000257752.5",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "2",
             "ncbiGeneId" = "4780",
             "proteinId" = "ENSP00000380252.3",
@@ -704,16 +1007,119 @@ test_that("GFF3 transcripts", {
     )
 })
 
+test_that("GENCODE GRCh38 GFF3 exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons",
+        ignoreVersion = FALSE
+    )
+    expect_s4_class(object, "GencodeExons")
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["exons"]]
+    )
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_length(
+        object = unique(mcols(gr)[["txId"]]),
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(gr)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "exonId" = "character",
+            "exonIdNoVersion" = "character",
+            "exonIdVersion" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSynonyms" = "CompressedCharacterList",
+            "havanaGene" = "character",
+            "havanaTranscript" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
+            "ncbiGeneId" = "CompressedIntegerList",
+            "proteinId" = "character",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
+        )
+    )
+    expect_identical(
+        object = vapply(
+            X = as.data.frame(object["ENSE00001598988.1"][[1L]]), # nolint
+            FUN = as.character,
+            FUN.VALUE = character(1L)
+        ),
+        expected = c(
+            "seqnames" = "chr2",
+            "start" = "177263529",
+            "end" = "177263800",
+            "width" = "272",
+            "strand" = "-",
+            "broadClass" = "coding",
+            "ccdsId" = "CCDS46457.1",
+            "description" = paste(
+                "NFE2 like bZIP transcription factor 2",
+                "[Source:HGNC Symbol;Acc:HGNC:7782]"
+            ),
+            "exonId" = "ENSE00001598988.1",
+            "exonIdNoVersion" = "ENSE00001598988",
+            "exonIdVersion" = "ENSE00001598988.1",
+            "exonNumber" = "1",
+            "geneBiotype" = "protein_coding",
+            "geneId" = "ENSG00000116044.17",
+            "geneIdNoVersion" = "ENSG00000116044",
+            "geneIdVersion" = "ENSG00000116044.17",
+            "geneName" = "NFE2L2",
+            "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
+            "havanaGene" = "OTTHUMG00000133620.18",
+            "havanaTranscript" = "OTTHUMT00000334264.2",
+            "hgncId" = "7782",
+            "level" = "2",
+            "ncbiGeneId" = "4780",
+            "proteinId" = "ENSP00000412191.2",
+            "source" = "HAVANA",
+            "tag" = "CCDS",
+            "txBiotype" = "protein_coding",
+            "txId" = "ENST00000421929.6",
+            "txIdNoVersion" = "ENST00000421929",
+            "txIdVersion" = "ENST00000421929.6",
+            "txName" = "NFE2L2-203",
+            "txSupportLevel" = "1",
+            "type" = "exon"
+        )
+    )
+})
+
 file <- gffs[["gencode_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("GENCODE GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeGenes")
-    expect_length(object, 62696L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["geneId"]])
@@ -721,22 +1127,22 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "artifDupl" = "Rle",
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "artifactualDuplication" = "character",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -751,7 +1157,7 @@ test_that("GTF genes", {
             "end" = "177392756",
             "width" = "174090",
             "strand" = "-",
-            "artifDupl" = NA_character_,
+            "artifactualDuplication" = NA_character_,
             "broadClass" = "coding",
             "description" = paste(
                 "NFE2 like bZIP transcription factor 2",
@@ -764,7 +1170,7 @@ test_that("GTF genes", {
             "geneName" = "NFE2L2",
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "1",
             "ncbiGeneId" = "4780",
             "source" = "HAVANA",
@@ -778,7 +1184,9 @@ test_that("GTF genes", {
             "chr",
             c(
                 seq(from = 1L, to = 22L),
-                "X", "Y", "M"
+                "X",
+                "Y",
+                "M"
             )
         )
     )
@@ -803,7 +1211,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["md5"]],
-        expected = "b3a1bb9b1239d8075dd2b031817a36da"
+        expected = "ee330cfe6d0654ba9b9cf434d5c1bfb1"
     )
     expect_identical(
         object = metadata(object)[["organism"]],
@@ -811,22 +1219,29 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = metadata(object)[["release"]],
-        expected = 42L
+        expected = 44L
     )
     expect_identical(
         object = metadata(object)[["sha256"]],
-        expected = "f59a5b38c6de1472430ccd0181927a01df0b4ad8d78f598e521badc9da80a76e" # nolint
+        expected = "01f817afed65feee863361b4baf30a95e722ee5c5d508ff77b04106ef7ba20d3" # nolint
     )
 })
 
-test_that("GTF transcripts", {
+test_that("GENCODE GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
         ignoreVersion = FALSE
     )
     expect_s4_class(object, "GencodeTranscripts")
-    expect_length(object, 252416L)
+    expect_length(
+        object = object,
+        n = n[["hsapiens"]][["gencode"]][["transcripts"]]
+    )
+    expect_length(
+        object = unique(mcols(object)[["geneId"]]),
+        n = n[["hsapiens"]][["gencode"]][["genes"]]
+    )
     expect_named(
         object = object,
         expected = as.character(mcols(object)[["txId"]])
@@ -834,30 +1249,30 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdNoVersion" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "ccdsId" = "character",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdNoVersion" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
             "geneSynonyms" = "CompressedCharacterList",
-            "havanaGene" = "Rle",
-            "havanaTranscript" = "Rle",
-            "hgncId" = "Rle",
-            "level" = "Rle",
+            "havanaGene" = "character",
+            "havanaTranscript" = "character",
+            "hgncId" = "integer",
+            "level" = "factor",
             "ncbiGeneId" = "CompressedIntegerList",
-            "proteinId" = "Rle",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdNoVersion" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "proteinId" = "character",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdNoVersion" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -886,7 +1301,7 @@ test_that("GTF transcripts", {
             "geneSynonyms" = "c(\"NRF-2\", \"NRF2\")",
             "havanaGene" = "OTTHUMG00000133620.18",
             "havanaTranscript" = "OTTHUMT00000257752.5",
-            "hgncId" = "HGNC:7782",
+            "hgncId" = "7782",
             "level" = "2",
             "ncbiGeneId" = "4780",
             "proteinId" = "ENSP00000380252.3",
@@ -903,9 +1318,10 @@ test_that("GTF transcripts", {
     )
 })
 
+
 file <- gffs[["refseq_grch38_gff3"]]
 
-test_that("GFF3 genes", {
+test_that("RefSeq GRCh38 GFF3 genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -914,20 +1330,20 @@ test_that("GFF3 genes", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "dbxref" = "CompressedCharacterList",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "dbXref" = "CompressedCharacterList",
+            "description" = "character",
+            "exception" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
             "geneSynonym" = "CompressedCharacterList",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "logical",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -942,23 +1358,27 @@ test_that("GFF3 genes", {
             "width" = rep("107918", 2L),
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
-            "dbxref" = c(
+            "dbXref" = c(
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")",
                 "c(\"GeneID:26574\", \"HGNC:HGNC:19235\", \"MIM:608463\")"
             ),
-            "description" =
-                rep("apoptosis antagonizing transcription factor", 2L),
+            "description" = rep(
+                "apoptosis antagonizing transcription factor",
+                2L
+            ),
             "exception" = rep(NA_character_, 2L),
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),
             "geneName" = rep("AATF", 2L),
-            "geneSynonym" =
-                rep("c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")", 2L),
+            "geneSynonym" = rep(
+                "c(\"BFR2\", \"CHE-1\", \"CHE1\", \"DED\")",
+                2L
+            ),
             "ncbiGeneId" = rep("26574", 2L),
             "parentGeneId" = c("AATF", "AATF-2"),
-            "partial" = rep(NA_character_, 2L),
-            "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq%2CGnomon"),
+            "partial" = rep("FALSE", 2L),
+            "pseudo" = rep("FALSE", 2L),
+            "source" = rep("BestRefSeq/Gnomon", 2L),
             "type" = rep("gene", 2L)
         )
     )
@@ -987,7 +1407,7 @@ test_that("GFF3 genes", {
     )
 })
 
-test_that("GFF3 transcripts", {
+test_that("RefSeq GRCh38 GFF3 transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1000,26 +1420,26 @@ test_that("GFF3 transcripts", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "dbxref" = "CompressedCharacterList",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
+            "broadClass" = "factor",
+            "dbXref" = "CompressedCharacterList",
+            "description" = "character",
+            "exception" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
             "geneSynonym" = "CompressedCharacterList",
-            "inference" = "Rle",
-            "modelEvidence" = "Rle",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "product" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "logical",
+            "product" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1035,7 +1455,7 @@ test_that("GFF3 transcripts", {
             "width" = "48212",
             "strand" = "-",
             "broadClass" = "coding",
-            "dbxref" = paste(
+            "dbXref" = paste(
                 "c(\"Ensembl:ENST00000318602.12\",",
                 "\"GeneID:2\",",
                 "\"GenBank:NM_000014.6\",",
@@ -1052,9 +1472,9 @@ test_that("GFF3 transcripts", {
             "modelEvidence" = NA_character_,
             "ncbiGeneId" = "2",
             "parentGeneId" = "A2M",
-            "partial" = NA_character_,
+            "partial" = "FALSE",
             "product" = "alpha-2-macroglobulin, transcript variant 1",
-            "pseudo" = NA_character_,
+            "pseudo" = "FALSE",
             "source" = "BestRefSeq",
             "tag" = "MANE Select",
             "txId" = "NM_000014.6",
@@ -1064,9 +1484,43 @@ test_that("GFF3 transcripts", {
     )
 })
 
+test_that("RefSeq GRCh38 GFF3 exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "RefseqExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = mcols(gr)[["txId"]]
+    )))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "description" = "character",
+            "exception" = "character",
+            "geneBiotype" = "character",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSynonym" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "product" = "character",
+            "proteinId" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "txId" = "character",
+            "type" = "factor"
+        )
+    )
+})
+
+
 file <- gffs[["refseq_grch38_gtf"]]
 
-test_that("GTF genes", {
+test_that("RefSeq GRCh38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -1075,20 +1529,20 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "dbXref" = "Rle",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSynonym" = "Rle",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "dbXref" = "CompressedCharacterList",
+            "description" = "character",
+            "exception" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSynonym" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "logical",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1104,8 +1558,10 @@ test_that("GTF genes", {
             "strand" = rep("+", 2L),
             "broadClass" = rep("coding", 2L),
             "dbXref" = rep("MIM:608463", 2L),
-            "description" =
-                rep("apoptosis antagonizing transcription factor", 2L),
+            "description" = rep(
+                "apoptosis antagonizing transcription factor",
+                2L
+            ),
             "exception" = rep(NA_character_, 2L),
             "geneBiotype" = rep("protein_coding", 2L),
             "geneId" = rep("AATF", 2L),
@@ -1113,9 +1569,9 @@ test_that("GTF genes", {
             "geneSynonym" = rep("DED", 2L),
             "ncbiGeneId" = rep("26574", 2L),
             "parentGeneId" = c("AATF", "AATF_1"),
-            "partial" = rep(NA_character_, 2L),
-            "pseudo" = rep(NA_character_, 2L),
-            "source" = c("BestRefSeq%2CGnomon", "BestRefSeq%2CGnomon"),
+            "partial" = rep("FALSE", 2L),
+            "pseudo" = rep("FALSE", 2L),
+            "source" = c("BestRefSeq/Gnomon", "BestRefSeq/Gnomon"),
             "type" = rep("gene", 2L)
         )
     )
@@ -1144,7 +1600,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("RefSeq GRCh38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1157,26 +1613,26 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object[[1L]]), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "dbXref" = "Rle",
-            "description" = "Rle",
-            "exception" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "inference" = "Rle",
-            "modelEvidence" = "Rle",
-            "ncbiGeneId" = "Rle",
-            "parentGeneId" = "Rle",
-            "partial" = "Rle",
-            "product" = "Rle",
-            "pseudo" = "Rle",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "dbXref" = "CompressedCharacterList",
+            "description" = "character",
+            "exception" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "partial" = "logical",
+            "product" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1202,9 +1658,9 @@ test_that("GTF transcripts", {
             "modelEvidence" = NA_character_,
             "ncbiGeneId" = "2",
             "parentGeneId" = "A2M",
-            "partial" = NA_character_,
+            "partial" = FALSE,
             "product" = "alpha-2-macroglobulin, transcript variant 1",
-            "pseudo" = NA_character_,
+            "pseudo" = FALSE,
             "source" = "BestRefSeq",
             "tag" = "MANE Select",
             "txBiotype" = "mRNA",
@@ -1215,9 +1671,46 @@ test_that("GTF transcripts", {
     )
 })
 
+test_that("RefSeq GRCh38 GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "RefseqExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(all(grepl(
+        pattern = "^[A-Z]{2}_[0-9]+\\.[0-9]+$",
+        x = mcols(gr)[["txId"]]
+    )))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "description" = "character",
+            "exception" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSynonym" = "character",
+            "inference" = "character",
+            "modelEvidence" = "character",
+            "ncbiGeneId" = "integer",
+            "parentGeneId" = "character",
+            "product" = "character",
+            "proteinId" = "character",
+            "pseudo" = "logical",
+            "source" = "factor",
+            "txId" = "character",
+            "type" = "factor"
+        )
+    )
+})
+
+
 file <- gffs[["ucsc_hg38_ncbirefseq_gtf"]]
 
-test_that("GTF genes", {
+test_that("UCSC hg38 GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -1227,8 +1720,8 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = "Rle",
-            "geneName" = "Rle"
+            "geneId" = "character",
+            "geneName" = "character"
         )
     )
     expect_identical(
@@ -1275,7 +1768,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("UCSC hg38 GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -1285,16 +1778,16 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "txBiotype" = "Rle",
-            "txChrom" = "Rle",
-            "txEnd" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "txNumber" = "Rle",
-            "txStart" = "Rle",
-            "txStrand" = "Rle"
+            "geneId" = "character",
+            "geneName" = "character",
+            "txBiotype" = "factor",
+            "txChrom" = "factor",
+            "txEnd" = "integer",
+            "txId" = "character",
+            "txName" = "character",
+            "txNumber" = "integer",
+            "txStart" = "integer",
+            "txStrand" = "factor"
         )
     )
     expect_identical(
@@ -1323,9 +1816,10 @@ test_that("GTF transcripts", {
     )
 })
 
+
 file <- gffs[["wormbase_gtf"]]
 
-test_that("GTF genes", {
+test_that("WormBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes"
@@ -1339,14 +1833,14 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "geneVersion" = "Rle",
-            "source" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1373,15 +1867,7 @@ test_that("GTF genes", {
     )
     expect_identical(
         object = levels(seqnames(object)),
-        expected = c(
-            "I",
-            "II",
-            "III",
-            "IV",
-            "V",
-            "X",
-            "MtDNA"
-        )
+        expected = c("I", "II", "III", "IV", "V", "X", "MtDNA")
     )
     expect_true(all(is.na(seqlengths(object))))
     expect_identical(
@@ -1413,7 +1899,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("WormBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts"
@@ -1427,18 +1913,18 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
-            "geneVersion" = "Rle",
-            "source" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "type" = "Rle"
+            "broadClass" = "factor",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "source" = "factor",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1469,9 +1955,42 @@ test_that("GTF transcripts", {
     )
 })
 
+test_that("WormBase GTF exons", {
+    object <- makeGRangesFromGff(
+        file = file,
+        level = "exons"
+    )
+    expect_s4_class(object, "WormbaseExons")
+    gr <- unlist(object, recursive = FALSE, use.names = FALSE)
+    expect_true(allAreMatchingRegex(
+        x = mcols(gr)[["geneId"]],
+        pattern = "^WBGene[[:digit:]]{8}$"
+    ))
+    expect_identical(
+        object = lapply(mcols(gr), simpleClass),
+        expected = list(
+            "broadClass" = "factor",
+            "exonId" = "character",
+            "exonNumber" = "integer",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
+            "geneVersion" = "integer",
+            "proteinId" = "character",
+            "source" = "factor",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txSource" = "factor",
+            "type" = "factor"
+        )
+    )
+})
+
+
 file <- file.path(cacheDir, "ref-transcripts.gtf")
 
-test_that("GTF genes", {
+test_that("WormBase GTF genes", {
     object <- makeGRangesFromGff(
         file = file,
         level = "genes",
@@ -1486,17 +2005,17 @@ test_that("GTF genes", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "broadClass" = "factor",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1533,7 +2052,7 @@ test_that("GTF genes", {
     )
 })
 
-test_that("GTF transcripts", {
+test_that("WormBase GTF transcripts", {
     object <- makeGRangesFromGff(
         file = file,
         level = "transcripts",
@@ -1548,25 +2067,25 @@ test_that("GTF transcripts", {
     expect_identical(
         object = lapply(mcols(object), simpleClass),
         expected = list(
-            "broadClass" = "Rle",
+            "broadClass" = "factor",
             "ccdsId" = "Rle",
-            "description" = "Rle",
-            "geneBiotype" = "Rle",
-            "geneId" = "Rle",
-            "geneIdVersion" = "Rle",
-            "geneName" = "Rle",
-            "geneSource" = "Rle",
+            "description" = "character",
+            "geneBiotype" = "factor",
+            "geneId" = "character",
+            "geneIdVersion" = "character",
+            "geneName" = "character",
+            "geneSource" = "factor",
             "geneSynonyms" = "CompressedCharacterList",
             "ncbiGeneId" = "CompressedIntegerList",
-            "source" = "Rle",
-            "tag" = "Rle",
-            "txBiotype" = "Rle",
-            "txId" = "Rle",
-            "txIdVersion" = "Rle",
-            "txName" = "Rle",
-            "txSource" = "Rle",
-            "txSupportLevel" = "Rle",
-            "type" = "Rle"
+            "source" = "factor",
+            "tag" = "CompressedCharacterList",
+            "txBiotype" = "factor",
+            "txId" = "character",
+            "txIdVersion" = "character",
+            "txName" = "character",
+            "txSource" = "factor",
+            "txSupportLevel" = "factor",
+            "type" = "factor"
         )
     )
     expect_identical(
@@ -1607,11 +2126,12 @@ test_that("GTF transcripts", {
     )
 })
 
+
 ## See related issues:
 ## - https://github.com/Bioconductor/GenomeInfoDb/issues/97
 ## - https://github.com/Bioconductor/GenomeInfoDb/issues/98
 
-test_that("getChromInfoFromEnsembl Seqinfo failure", {
+test_that("Ensembl Mus musculus getChromInfoFromEnsembl issue", {
     file <- pasteUrl(
         "ftp.ensembl.org",
         "pub",

@@ -1,56 +1,3 @@
-#' Get EnsDb from Bioconductor
-#'
-#' @note Updated 2022-01-12.
-#' @noRd
-#'
-#' @inheritParams AcidRoxygen::params
-#'
-#' @details
-#' Remaps UCSC genome build to Ensembl automatically, if necessary.
-#' Provides legacy support for GRCh37 (hg19).
-#'
-#' @return `EnsDb`.
-#'
-#' @examples
-#' edb <- .getEnsDb(organism = "Homo sapiens", release = 100L)
-#' print(edb)
-.getEnsDb <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL) {
-        assert(
-            isString(organism),
-            isString(genomeBuild, nullOk = TRUE),
-            isInt(release, nullOk = TRUE)
-        )
-        organism <- gsub(
-            pattern = "_",
-            replacement = " ",
-            x = makeNames(organism)
-        )
-        if (
-            identical(tolower(organism), "homo sapiens") &&
-                (
-                    identical(tolower(as.character(genomeBuild)), "grch37") ||
-                        identical(release, 75L)
-                )
-        ) {
-            id <- "EnsDb.Hsapiens.v75"
-            edb <- .getEnsDbFromPackage(package = id)
-        } else {
-            id <- .getEnsDbAnnotationHubId(
-                organism = organism,
-                genomeBuild = genomeBuild,
-                release = release
-            )
-            edb <- .getEnsDbFromAnnotationHub(id = id)
-        }
-        attr(edb, "annotationHubId") <- id
-        edb
-    }
-
-
-
 #' Get the AnnotationHub identifier for desired EnsDb
 #'
 #' @note Updated 2023-12-04.
@@ -60,10 +7,7 @@
 #' .getEnsDbAnnotationHubId("Homo sapiens")
 #' .getEnsDbAnnotationHubId("Canis lupus familiaris")
 .getEnsDbAnnotationHubId <-
-    function(organism,
-             genomeBuild = NULL,
-             release = NULL,
-             ah = NULL) {
+    function(organism, genomeBuild = NULL, release = NULL, ah = NULL) {
         assert(
             isOrganism(organism),
             isString(genomeBuild, nullOk = TRUE),
@@ -172,9 +116,12 @@
                     sep = "\n"
                 ),
                 as.character(packageVersion("AnnotationHub")),
-                "Organism", as.character(organism),
-                "Genome build", as.character(genomeBuild),
-                "Ensembl release", as.character(release)
+                "Organism",
+                as.character(organism),
+                "Genome build",
+                as.character(genomeBuild),
+                "Ensembl release",
+                as.character(release)
             ))
         }
         ## Select the most recent database (sorted by title, not identifier!).
@@ -187,7 +134,6 @@
         alertInfo(sprintf("{.val %s}: %s.", id, mcols[["title"]]))
         id
     }
-
 
 
 #' Get EnsDb from AnnotationHub identifier
@@ -221,7 +167,6 @@
 }
 
 
-
 #' Get EnsDb from Package
 #'
 #' @note Updated 2023-04-26.
@@ -242,7 +187,6 @@
     assert(is(edb, "EnsDb"))
     edb
 }
-
 
 
 #' Get metadata inside EnsDb object
@@ -277,11 +221,11 @@
     })
     release <- as.integer(release)
     list <- list(
-        "ensembldb" = metadata,
-        "genomeBuild" = genomeBuild,
-        "organism" = organism,
-        "provider" = "Ensembl",
-        "release" = release
+        ensembldb = metadata,
+        genomeBuild = genomeBuild,
+        organism = organism,
+        provider = "Ensembl",
+        release = release
     )
     if (!is.null(level)) {
         list[["level"]] <- level
@@ -291,12 +235,12 @@
         list[["annotationHubId"]] <- attr(object, "annotationHubId")
     }
     items <- c(
-        "Organism" = list[["organism"]],
+        Organism = list[["organism"]],
         "Genome build" = list[["genomeBuild"]],
-        "Release" = list[["release"]]
+        Release = list[["release"]]
     )
     if (isString(list[["level"]])) {
-        items <- c(items, "Level" = list[["level"]])
+        items <- c(items, Level = list[["level"]])
     }
     dl(items)
     list

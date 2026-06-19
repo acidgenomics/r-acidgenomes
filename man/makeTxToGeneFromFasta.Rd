@@ -27,22 +27,22 @@ RefSeq transcript FASTA (e.g. "GCF_000001405.39_GRCh38.p13_rna.fna.gz")
 doesn't contain gene identifiers, and is not supported.
 }
 \note{
-Updated 2023-11-28.
+Updated 2024-01-02.
 }
 \examples{
 ## Ensembl ====
-file <- AcidBase::pasteUrl(
-    "ftp.ensembl.org",
-    "pub",
-    "release-102",
-    "fasta",
-    "homo_sapiens",
-    "cdna",
-    "Homo_sapiens.GRCh38.cdna.all.fa.gz",
-    protocol = "ftp"
-)
-t2g <- makeTxToGeneFromFasta(file)
-print(t2g)
+## > file <- AcidBase::pasteUrl(
+## >     "ftp.ensembl.org",
+## >     "pub",
+## >     "release-102",
+## >     "fasta",
+## >     "homo_sapiens",
+## >     "cdna",
+## >     "Homo_sapiens.GRCh38.cdna.all.fa.gz",
+## >     protocol = "ftp"
+## > )
+## > t2g <- makeTxToGeneFromFasta(file)
+## > print(t2g)
 
 ## GENCODE ====
 ## GRCh38:

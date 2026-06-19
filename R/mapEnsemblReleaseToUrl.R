@@ -49,7 +49,7 @@ mapEnsemblReleaseToUrl <- function(release) {
         replacement = "",
         x = df[["name"]]
     )
-    df[["currentRelease"]] <- grepl(pattern = "this site", x = df[["date"]])
+    df[["currentRelease"]] <- grepl("this site", x = df[["date"]], fixed = TRUE)
     df[["date"]] <- strExtract(df[["date"]], pattern = "[A-Za-z]{3} [0-9]{4}")
     df[["url"]] <- unlist(Map(
         version = df[["version"]],
@@ -57,15 +57,16 @@ mapEnsemblReleaseToUrl <- function(release) {
         f = function(version, date) {
             switch(
                 EXPR = version,
-                "GRCh37" = {
+                GRCh37 = {
                     pasteUrl("grch37.ensembl.org", protocol = "https")
                 },
                 pasteUrl(
                     paste0(
                         sub(
-                            pattern = " ",
-                            replacement = "",
-                            x = tolower(date)
+                            " ",
+                            "",
+                            x = tolower(date),
+                            fixed = TRUE
                         ),
                         ".archive.ensembl.org"
                     ),

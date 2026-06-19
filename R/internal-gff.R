@@ -80,10 +80,9 @@
 }
 
 
-
 #' Get metadata about a GFF file
 #'
-#' @note Updated 2023-12-04.
+#' @note Updated 2024-01-02.
 #' @noRd
 #'
 #' @inheritParams AcidRoxygen::params
@@ -141,48 +140,64 @@
     if (isString(l[["gffVersion"]])) {
         l[["gffVersion"]] <- numeric_version(l[["gffVersion"]])
     }
-    ## Parse the first 100 elements of the GFF file. We can use this to identify
-    ## ambiguous sources or genomes with non-standard identifiers.
+    ## Parse the head of the GFF file. We can use this to identify ambiguous
+    ## sources or genomes with non-standard identifiers.
     lines <- import(
         con = .cacheIt(file),
         format = "lines",
         nMax = 1000L,
         quiet = TRUE
     )
-    lines <- lines[!grepl(pattern = "^#", x = lines)]
-    lines <- head(lines, n = 100L)
+    lines <- lines[!startsWith(lines, "#")]
+    df2 <- import(
+        con = textConnection(lines),
+        format = "tsv",
+        colnames = FALSE,
+        quiet = TRUE
+    )
     if (!isString(l[["provider"]])) {
-        if (any(grepl(
-            pattern = paste0(
-                "\t(",
-                "ensGene", "|",
-                "knownGene", "|",
-                "ncbiRefSeq", "|",
-                ## Now seeing this in files as of 2023.
-                "ncbiRefSeq\\.[0-9]{4}-[0-9]{2}-[0-9]{2}", "|",
-                "refGene",
-                ")\t"
-            ),
-            x = lines
-        ))) {
-            l[["provider"]] <- "UCSC"
-        } else if (any(grepl(
-            pattern = "\tFlyBase\t", x = lines
-        ))) {
-            l[["provider"]] <- "FlyBase"
-        } else if (any(grepl(
-            pattern = "\tWormBase\t", x = lines
-        ))) {
-            l[["provider"]] <- "WormBase"
-        } else if (any(grepl(
-            ## NOTE This will currently miss genomes with gene identifiers that
-            ## aren't prefixed with "ENS".
-            pattern = "\tgene_id \"ENS.*G[0-9]{11}", x = lines
-        ))) {
+        if (
+            isSubset(
+                x = c(
+                    "genebuild-last-updated",
+                    "genome-build",
+                    "genome-build-accession",
+                    "genome-version"
+                ),
+                y = df[["key"]]
+            )
+        ) {
             l[["provider"]] <- "Ensembl"
         } else if (
+            grepl(
+                pattern = paste0(
+                    "^(",
+                    "ensGene",
+                    "|",
+                    "knownGene",
+                    "|",
+                    "ncbiRefSeq",
+                    "|",
+                    ## Now seeing this in files as of 2023.
+                    "ncbiRefSeq\\.[0-9]{4}-[0-9]{2}-[0-9]{2}",
+                    "|",
+                    "refGene",
+                    ")$"
+                ),
+                x = df2[[2L]][[1L]]
+            )
+        ) {
+            l[["provider"]] <- "UCSC"
+        } else if (identical("FlyBase", df2[[2L]][[1L]])) {
+            ## Note: Ensembl-hosted Drosophila GTF files also carry "FlyBase"
+            ## as the source column, so this may misidentify Ensembl files as
+            ## FlyBase provider. Use explicit `provider` override if needed.
+            l[["provider"]] <- "FlyBase"
+        } else if (identical("WormBase", df2[[2L]][[1L]])) {
+            l[["provider"]] <- "WormBase"
+        } else if (
             identical(basename(file), "ref-transcripts.gtf") &&
-                any(grepl(pattern = "^chrI", x = lines))
+                identical("chrI", df2[[1L]][[1L]])
         ) {
             ## bcbio-nextgen genome, processed with gffutils.
             ## https://github.com/daler/gffutils
@@ -190,125 +205,124 @@
         } else {
             abort(sprintf(
                 "Failed to detect provider (e.g. {.val %s}) from {.file %s}.",
-                "Ensembl", basename(file)
+                "Ensembl",
+                basename(file)
             ))
         }
     }
-    ## Attempt to parse file names for useful values.
-    if (isString(l[["provider"]])) {
-        pattern <- .gffPatterns[[tolower(l[["provider"]])]]
-        switch(
-            EXPR = l[["provider"]],
-            "Ensembl" = {
-                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- strMatch(
-                        x = basename(file),
-                        pattern = pattern
-                    )[1L, , drop = TRUE]
-                    if (!isOrganism(l[["organism"]])) {
-                        l[["organism"]] <- gsub("_", " ", x[[3L]])
-                    }
-                    if (!isString(l[["genomeBuild"]])) {
-                        l[["genomeBuild"]] <- x[[4L]]
-                    }
-                    if (!isInt(l[["release"]])) {
-                        l[["release"]] <- as.integer(x[[5L]])
-                    }
+    assert(isString(l[["provider"]]))
+    pattern <- .gffPatterns[[tolower(l[["provider"]])]]
+    assert(isString(pattern))
+    switch(
+        EXPR = l[["provider"]],
+        Ensembl = {
+            if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                x <- strMatch(
+                    x = basename(file),
+                    pattern = pattern
+                )[1L, , drop = TRUE]
+                if (!isOrganism(l[["organism"]])) {
+                    l[["organism"]] <- gsub("_", " ", x[[3L]], fixed = TRUE)
                 }
-            },
-            "FlyBase" = {
-                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- strMatch(
-                        x = basename(file),
-                        pattern = pattern
-                    )[1L, , drop = TRUE]
-                    if (
-                        !isString(l[["organism"]]) &&
-                            identical(x[[3L]], "dmel")
-                    ) {
-                        l[["organism"]] <- "Drosophila melanogaster"
-                    }
-                    if (!isString(l[["release"]])) {
-                        l[["release"]] <- x[[5L]]
-                    }
-                    if (!isString(l[["genomeBuild"]])) {
-                        l[["genomeBuild"]] <- l[["release"]]
-                    }
-                }
-            },
-            "GENCODE" = {
-                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- strMatch(
-                        x = basename(file),
-                        pattern = pattern
-                    )[1L, , drop = TRUE]
-                    if (!isScalar(l[["release"]])) {
-                        l[["release"]] <- x[[3L]]
-                        if (grepl(
-                            pattern = "^[0-9]+",
-                            x = l[["release"]]
-                        )) {
-                            l[["release"]] <-
-                                as.integer(l[["release"]])
-                        }
-                    }
-                }
-            },
-            "RefSeq" = {
-                if (!isScalar(l[["release"]])) {
-                    ## e.g. "109.20190125".
-                    l[["release"]] <- strMatch(
-                        x = df[
-                            df[["key"]] == "annotation-source",
-                            "value",
-                            drop = TRUE
-                        ],
-                        pattern = "^NCBI.+Annotation\\sRelease\\s([.0-9]+)$"
-                    )[1L, 2L]
-                }
-            },
-            "UCSC" = {
                 if (!isString(l[["genomeBuild"]])) {
-                    l[["genomeBuild"]] <- strMatch(
-                        x = basename(file),
-                        pattern = pattern
-                    )[1L, 3L]
+                    l[["genomeBuild"]] <- x[[4L]]
                 }
-            },
-            "WormBase" = {
+                if (!isInt(l[["release"]])) {
+                    l[["release"]] <- as.integer(x[[5L]])
+                }
+            }
+        },
+        FlyBase = {
+            if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                x <- strMatch(
+                    x = basename(file),
+                    pattern = pattern
+                )[1L, , drop = TRUE]
+                if (
+                    !isString(l[["organism"]]) &&
+                        identical(x[[3L]], "dmel")
+                ) {
+                    l[["organism"]] <- "Drosophila melanogaster"
+                }
                 if (!isString(l[["release"]])) {
-                    l[["release"]] <- df[
-                        df[["key"]] == "genebuild-version",
-                        "value",
-                        drop = TRUE
-                    ]
-                }
-                if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
-                    x <- strMatch(
-                        x = basename(file),
-                        pattern = pattern
-                    )[1L, , drop = TRUE]
-                    if (
-                        !isString(l[["organism"]]) &&
-                            identical(x[[3L]], "c_elegans")
-                    ) {
-                        l[["organism"]] <- "Caenorhabditis elegans"
-                    }
-                    if (!isString(l[["release"]])) {
-                        l[["release"]] <- x[[5L]]
-                    }
+                    l[["release"]] <- x[[5L]]
                 }
                 if (!isString(l[["genomeBuild"]])) {
                     l[["genomeBuild"]] <- l[["release"]]
                 }
             }
-        )
-    }
+        },
+        GENCODE = {
+            if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                x <- strMatch(
+                    x = basename(file),
+                    pattern = pattern
+                )[1L, , drop = TRUE]
+                if (!isScalar(l[["release"]])) {
+                    l[["release"]] <- x[[3L]]
+                    if (
+                        grepl(
+                            pattern = "^[0-9]+",
+                            x = l[["release"]]
+                        )
+                    ) {
+                        l[["release"]] <-
+                            as.integer(l[["release"]])
+                    }
+                }
+            }
+        },
+        RefSeq = {
+            if (!isScalar(l[["release"]])) {
+                ## e.g. "109.20190125".
+                l[["release"]] <- strMatch(
+                    x = df[
+                        df[["key"]] == "annotation-source",
+                        "value",
+                        drop = TRUE
+                    ],
+                    pattern = "^NCBI.+Annotation\\sRelease\\s([.0-9]+)$"
+                )[1L, 2L]
+            }
+        },
+        UCSC = {
+            if (!isString(l[["genomeBuild"]])) {
+                l[["genomeBuild"]] <- strMatch(
+                    x = basename(file),
+                    pattern = pattern
+                )[1L, 3L]
+            }
+        },
+        WormBase = {
+            if (!isString(l[["release"]])) {
+                l[["release"]] <- df[
+                    df[["key"]] == "genebuild-version",
+                    "value",
+                    drop = TRUE
+                ]
+            }
+            if (isTRUE(grepl(pattern = pattern, x = basename(file)))) {
+                x <- strMatch(
+                    x = basename(file),
+                    pattern = pattern
+                )[1L, , drop = TRUE]
+                if (
+                    !isString(l[["organism"]]) &&
+                        identical(x[[3L]], "c_elegans")
+                ) {
+                    l[["organism"]] <- "Caenorhabditis elegans"
+                }
+                if (!isString(l[["release"]])) {
+                    l[["release"]] <- x[[5L]]
+                }
+            }
+            if (!isString(l[["genomeBuild"]])) {
+                l[["genomeBuild"]] <- l[["release"]]
+            }
+        }
+    )
     ## Attempt to detect the organism from the genome build, if necessary.
-    if (
-        !isOrganism(l[["organism"]]) &&
-            isString(l[["genomeBuild"]])
-    ) {
+    if (!isOrganism(l[["organism"]]) && isString(l[["genomeBuild"]])) {
         l[["organism"]] <- tryCatch(
             expr = detectOrganism(l[["genomeBuild"]]),
             error = function(e) {
@@ -333,7 +347,7 @@
     ## Genome-specific organism workarounds.
     if (
         !isOrganism(l[["organism"]]) &&
-            any(grepl(pattern = "gene_source \"sgd\"", x = lines))
+            any(grepl("gene_source \"sgd\"", x = lines, fixed = TRUE))
     ) {
         l[["organism"]] <- "Saccharomyces cerevisiae"
     }
@@ -350,7 +364,6 @@
     )
     l
 }
-
 
 
 ## Updated 2023-12-04.
@@ -390,7 +403,7 @@
     }
     x <- .getValue(key = "genome-build", df = df)
     if (isString(x)) {
-        if (isTRUE(grepl(pattern = " ", x = x))) {
+        if (isTRUE(grepl(" ", x = x, fixed = TRUE))) {
             x <- strsplit(x = x, split = " ", fixed = TRUE)[[1L]]
             x <- x[length(x)]
         }
@@ -398,7 +411,6 @@
     }
     NULL
 }
-
 
 
 ## Updated 2021-01-21.
@@ -415,7 +427,6 @@
 }
 
 
-
 ## Updated 2021-01-22.
 .gffProvider <- function(df) {
     assert(is(df, "DFrame"))
@@ -427,25 +438,26 @@
         df[df[["key"]] == "provider", "value", drop = TRUE]
     if (identical(provider, "GENCODE")) {
         return("GENCODE")
-    } else if (isTRUE(grepl(pattern = "^NCBI", x = annoSource))) {
+    } else if (isTRUE(startsWith(annoSource, "NCBI"))) {
         return("RefSeq")
-    } else if (isSubset(
-        x = c(
-            "genebuild-last-updated",
-            "genome-build",
-            "genome-build-accession",
-            "genome-date",
-            "genome-version"
-        ),
-        y = df[["key"]]
-    )) {
+    } else if (
+        isSubset(
+            x = c(
+                "genebuild-last-updated",
+                "genome-build",
+                "genome-build-accession",
+                "genome-date",
+                "genome-version"
+            ),
+            y = df[["key"]]
+        )
+    ) {
         return("Ensembl")
     } else if (isTRUE(grepl(pattern = "^WS[0-9]+$", x = geneBuildVersion))) {
         return("WormBase")
     }
     NULL
 }
-
 
 
 #' Is the input GFF file supported in the package?
@@ -460,7 +472,7 @@
         return(FALSE)
     }
     denylist <- c(
-        "flybase_gff" = paste0(
+        flybase_gff = paste0(
             "^([a-z0-9]+_)?",
             "^([^-]+)",
             "-([^-]+)",
@@ -468,7 +480,7 @@
             "\\.gff",
             "(\\.gz)?$"
         ),
-        "wormbase_gff" = paste0(
+        wormbase_gff = paste0(
             "^([a-z0-9]+_)?",
             "^([a-z]_[a-z]+)",
             "\\.([A-Z0-9]+)",
@@ -478,16 +490,20 @@
             "(\\.gz)?$"
         )
     )
-    if (grepl(
-        pattern = denylist[["flybase_gff"]],
-        x = basename(file)
-    )) {
+    if (
+        grepl(
+            pattern = denylist[["flybase_gff"]],
+            x = basename(file)
+        )
+    ) {
         alertWarning("Use FlyBase GTF instead of GFF.")
         return(FALSE)
-    } else if (grepl(
-        pattern = denylist[["wormbase_gff"]],
-        x = basename(file)
-    )) {
+    } else if (
+        grepl(
+            pattern = denylist[["wormbase_gff"]],
+            x = basename(file)
+        )
+    ) {
         alertWarning("Use WormBase GTF instead of GFF.")
         return(FALSE)
     }

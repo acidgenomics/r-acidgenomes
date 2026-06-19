@@ -1,7 +1,7 @@
 #' Import Mouse Genome Informatics (MGI) metadata
 #'
 #' @export
-#' @note Updated 2023-11-22.
+#' @note Updated 2023-12-19.
 #'
 #' @return `Mgi`.
 #'
@@ -11,7 +11,9 @@
 #' @examples
 #' object <- Mgi()
 #' print(object)
-Mgi <- function() { # nolint
+## nolint start
+Mgi <- function() {
+    ## nolint end
     alert("Importing MGI metadata.")
     url <- pasteUrl(
         "www.informatics.jax.org",
@@ -22,7 +24,7 @@ Mgi <- function() { # nolint
     )
     file <- .cacheIt(url)
     lines <- import(con = file, format = "lines")
-    cn <- strsplit(lines[[1L]], split = "\t")[[1L]]
+    cn <- strsplit(lines[[1L]], split = "\t", fixed = TRUE)[[1L]]
     assert(hasLength(cn, n = 15L))
     cn <- sub(pattern = "^[0-9]+\\.\\s", replacement = "", x = cn)
     cn <- camelCase(cn)
@@ -70,12 +72,13 @@ Mgi <- function() { # nolint
     df[[idCol]] <- as.integer(df[[idCol]])
     rownames(df) <- df[[idCol]]
     df <- df[order(df[[idCol]]), sort(colnames(df)), drop = FALSE]
-    df <- encode(df)
+    df[["ensemblGeneStrand"]] <- as.factor(df[["ensemblGeneStrand"]])
+    df[["ncbiGeneStrand"]] <- as.factor(df[["ncbiGeneStrand"]])
     metadata(df) <- list(
-        "date" = Sys.Date(),
-        "organism" = "Mus musculus",
-        "packageVersion" = .pkgVersion,
-        "url" = url
+        date = Sys.Date(),
+        organism = "Mus musculus",
+        packageVersion = .pkgVersion,
+        url = url
     )
     new(Class = "Mgi", df)
 }
