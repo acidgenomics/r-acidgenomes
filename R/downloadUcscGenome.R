@@ -158,9 +158,7 @@ downloadUcscGenome <-
             gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = gtfRelativeFile, to = gtfSymlink)
-                }
+                code = file.symlink(from = gtfRelativeFile, to = gtfSymlink)
             )
             files[["gtfSymlink"]] <- gtfSymlink
         }
@@ -244,9 +242,7 @@ downloadUcscGenome <-
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
@@ -292,9 +288,7 @@ downloadUcscGenome <-
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
