@@ -1,6 +1,1 @@
-.RData
-.Rcheck
-.Rhistory
-.Rproj.user
-docs/
-tests/testthat/_problems/
+# This file intentionally minimal — see ~/.config/git/ignore for global patterns.
