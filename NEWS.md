@@ -1,5 +1,12 @@
 # Release notes
 
+## AcidGenomes 0.8.1 (2026-06-19)
+
+Minor changes:
+
+- Modernized tooling: removed per-package `.lintr` in favour of global
+  `~/.lintr`; added `air.toml`; migrated to roxygen2 8.0.
+
 ## AcidGenomes 0.8.0 (2026-05-31)
 
 New functions:

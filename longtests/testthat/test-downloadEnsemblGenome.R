@@ -1,4 +1,3 @@
-
 test_that("Homo sapiens GRCh38", {
     testdir <- tempdir2()
     info <- downloadEnsemblGenome(
