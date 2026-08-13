@@ -11,7 +11,7 @@ Toolkit for downloading and processing genome annotations.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://r.acidgenomics.com/packages/acidgenomes/}
+  \item \url{https://r.acidgenomics.com/acidgenomes/}
   \item \url{https://github.com/acidgenomics/r-acidgenomes/}
   \item Report bugs at \url{https://github.com/acidgenomics/r-acidgenomes/issues/}
 }

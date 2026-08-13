@@ -11,10 +11,10 @@ navbar:
   structure:
     right: [acid, github]
 news:
-  - one_page: false
+  one_page: false
 template:
   bootstrap: 5
-url: https://r.acidgenomics.com/packages/acidgenomes
+url: https://r.acidgenomics.com/acidgenomes
 reference:
   - title: Download genome files
     contents:
@@ -54,3 +54,38 @@ reference:
       - export
       - importTxToGene
       - AcidGenomesTestsUrl
+  - title: Internal
+    contents:
+      - EnsemblCds-class
+      - EnsemblExons-class
+      - EnsemblGenes-class
+      - EnsemblToNcbi-class
+      - EnsemblTranscripts-class
+      - FlybaseExons-class
+      - FlybaseGenes-class
+      - FlybaseTranscripts-class
+      - GencodeExons-class
+      - GencodeGenes-class
+      - GencodeTranscripts-class
+      - GeneToSymbol-class
+      - Hgnc-class
+      - JaxHumanToMouse-class
+      - Mgi-class
+      - NcbiGeneHistory-class
+      - NcbiGeneInfo-class
+      - NcbiToEnsembl-class
+      - ProteinToGene-class
+      - RefseqExons-class
+      - RefseqGenes-class
+      - RefseqTranscripts-class
+      - TxToGene-class
+      - UcscExons-class
+      - UcscGenes-class
+      - UcscTranscripts-class
+      - WormbaseExons-class
+      - WormbaseGenes-class
+      - WormbaseTranscripts-class
+      - importEnsemblToNcbiGeneMap
+      - organism
+      - show
+      - updateObject

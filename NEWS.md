@@ -1,5 +1,3 @@
-# Release notes
-
 ## AcidGenomes 0.8.1 (2026-06-19)
 
 Minor changes:
