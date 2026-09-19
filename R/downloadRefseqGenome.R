@@ -244,9 +244,7 @@ downloadRefseqGenome <-
             fastaSymlink <- "genome.fa.gz"
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
@@ -309,9 +307,7 @@ downloadRefseqGenome <-
             fastaSymlink <- "transcriptome.fa.gz"
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
@@ -399,9 +395,7 @@ downloadRefseqGenome <-
             noAltSymlink <- "genome.no_alt.fa.gz"
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = noAltSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = noAltSymlink)
             )
             files[["fastaSymlink"]] <- noAltSymlink
         }

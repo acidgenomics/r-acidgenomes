@@ -34,8 +34,7 @@ downloadEnsemblGenome <-
             isFlag(cache)
         )
         outputDir <- initDir(outputDir)
-        ## Can switch to HTTPS if FTP server is down, but often slower.
-        baseUrl <- pasteUrl("ftp.ensembl.org", "pub", protocol = "ftp")
+        baseUrl <- .ensemblFtpUrl()
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)
@@ -178,9 +177,7 @@ downloadEnsemblGenome <-
             gffSymlink <- paste0("annotation.", fileExt(gffFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = gffRelativeFile, to = gffSymlink)
-                }
+                code = file.symlink(from = gffRelativeFile, to = gffSymlink)
             )
             files[["gffSymlink"]] <- gffSymlink
         }
@@ -245,9 +242,7 @@ downloadEnsemblGenome <-
             gtfSymlink <- paste0("annotation.", fileExt(gtfFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = gtfRelativeFile, to = gtfSymlink)
-                }
+                code = file.symlink(from = gtfRelativeFile, to = gtfSymlink)
             )
             files[["gtfSymlink"]] <- gtfSymlink
             ## For Homo sapiens / Mus musculus, also symlink the haplotype
@@ -262,9 +257,10 @@ downloadEnsemblGenome <-
                 gtf2Symlink <- paste0("annotation.salmon.", fileExt(gtf2File))
                 withr::with_dir(
                     new = outputDir,
-                    code = {
-                        file.symlink(from = gtf2RelativeFile, to = gtf2Symlink)
-                    }
+                    code = file.symlink(
+                        from = gtf2RelativeFile,
+                        to = gtf2Symlink
+                    )
                 )
                 files[["gtf2Symlink"]] <- gtf2Symlink
             }
@@ -332,9 +328,7 @@ downloadEnsemblGenome <-
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
@@ -517,9 +511,7 @@ downloadEnsemblGenome <-
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }

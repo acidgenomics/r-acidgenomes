@@ -1,3 +1,30 @@
+#' Construct an Ensembl data URL
+#'
+#' @noRd
+.ensemblFtpUrl <- function(...) {
+    pasteUrl(
+        "ftp.ensembl.org",
+        "pub",
+        ...,
+        protocol = "https"
+    )
+}
+
+
+#' Parse an Ensembl release version
+#'
+#' @noRd
+.parseEnsemblVersion <- function(x) {
+    assert(isString(x))
+    x <- trimws(x)
+    assert(
+        grepl(pattern = "^[0-9]+$", x = x),
+        msg = "Failed to extract release version from Ensembl FTP server."
+    )
+    as.integer(x)
+}
+
+
 #' Assign extra gene metadata columns (mcols) from Ensembl into GRanges
 #'
 #' @note Updated 2023-12-05.
@@ -121,12 +148,7 @@
             x = genomeBuild
         )
         ## Ensembl is prone to timeouts over FTP, so using HTTPS here instead.
-        ftpBaseUrl <- pasteUrl(
-            "ftp.ensembl.org",
-            "pub",
-            paste0("release-", release),
-            protocol = "https"
-        )
+        ftpBaseUrl <- .ensemblFtpUrl(paste0("release-", release))
         mysqlSubdir <- tryCatch(
             expr = {
                 getUrlDirList(

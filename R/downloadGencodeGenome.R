@@ -313,9 +313,7 @@ downloadGencodeGenome <-
             fastaSymlink <- paste0("genome.", fileExt(fastaFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
@@ -467,9 +465,7 @@ downloadGencodeGenome <-
             fastaSymlink <- paste0("transcriptome.", fileExt(fastaFixedFile))
             withr::with_dir(
                 new = outputDir,
-                code = {
-                    file.symlink(from = fastaRelativeFile, to = fastaSymlink)
-                }
+                code = file.symlink(from = fastaRelativeFile, to = fastaSymlink)
             )
             files[["fastaSymlink"]] <- fastaSymlink
         }
