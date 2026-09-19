@@ -35,7 +35,7 @@
 #' - [bcbio hg38 reference genome](https://steinbaugh.com/posts/bcbio-hg38.html)
 #' - [Heng Li: Which human reference genome to use?](https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use)
 #' - [GRCh38 assembly for alignment pipelines](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/)
-#' - [UCSC hg38 bigZips](https://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/)
+#' - [UCSC hg38 bigZips](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
 #'
 #' @examples
 #' ## This example is bandwidth intensive.

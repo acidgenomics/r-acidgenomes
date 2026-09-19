@@ -117,22 +117,21 @@
 #' Example URLs:
 #'
 #' - UCSC *Homo sapiens* hg38 GTF files:
-#' [hg38.knownGene.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
-#' [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
+#' [hg38.knownGene.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz),
+#' [hg38.ncbiRefSeq.gtf.gz](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz),
 #'
 #' Related URLs:
 #'
 #' - [UCSC downloads](https://hgdownload.soe.ucsc.edu/downloads.html)
-#' - [UCSC hg38 bigZips](https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/)
+#' - [UCSC hg38 bigZips](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
 #' - [UCSC hgTables](https://genome.ucsc.edu/cgi-bin/hgTables)
 #'
 #' @section FlyBase:
 #'
 #' Example URLs:
 #'
-#' - FlyBase *Drosophila melanogaster* r6.49
-#' [GTF](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz),
-#' [GFF3](https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz)
+#' - FlyBase *Drosophila melanogaster* r6.49 annotations are available from
+#' [FlyBase](https://flybase.org/).
 #'
 #' See also:
 #'
@@ -142,9 +141,7 @@
 #'
 #' Example URLs:
 #'
-#' - WormBase *Caenorhabditis elegans* WS287
-#' [GTF](ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.canonical_geneset.gtf.gz),
-#' [GFF3](ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.annotations.gff3.gz)
+#' - WormBase *Caenorhabditis elegans* WS287 annotations.
 #'
 #' @inheritParams AcidRoxygen::params
 #' @inheritParams params

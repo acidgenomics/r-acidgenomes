@@ -49,14 +49,14 @@
 #' ensembldb package using the `fetchTablesFromEnsembl` function.
 #'
 #' See also:
-#' - http://useast.ensembl.org/info/genome/genebuild/canonical.html
 #' - https://www.ensembl.info/2021/04/16/update-to-the-ensembl-canonical-transcript-set/
+#' - https://github.com/Ensembl/ensembl
 #' - https://github.com/jorainer/ensembldb/blob/devel/inst/perl/get_gene_transcript_exon_tables.pl
 #' - https://github.com/jorainer/ensembldb/issues/123
 #' - https://github.com/jorainer/ensembldb/blob/devel/R/functions-create-EnsDb.R#L36
 #' - `ensembldb::fetchTablesFromEnsembl()`.
 #'
-#' [Ensembl Perl API]: http://useast.ensembl.org/info/docs/api/index.html
+#' [Ensembl Perl API]: https://github.com/Ensembl/ensembl
 #'
 #' @name makeGRangesFromEnsembl
 #' @note Updated 2025-04-12.
@@ -70,7 +70,7 @@
 #' - [AnnotationHub](https://bioconductor.org/packages/AnnotationHub/).
 #' - [ensembldb](https://bioconductor.org/packages/ensembldb/).
 #' - `ensembldb::ensDbFromGff()`, `ensembldb::ensDbFromGtf()`.
-#' - [Ensembl biotypes](https://useast.ensembl.org/info/genome/genebuild/biotypes.html).
+#' - Ensembl biotypes.
 #' - [Gene/transcript biotypes in GENCODE and Ensembl](https://www.gencodegenes.org/pages/biotypes.html).
 #' - [Locus reference genomic](http://www.lrg-sequence.org/).
 #'
