@@ -21,21 +21,20 @@
 #' })
 mapEnsemblReleaseToUrl <- function(release) {
     assert(isInt(release, nullOk = TRUE))
-    currentUrl <- pasteUrl("useast.ensembl.org", protocol = "https")
+    currentUrl <- pasteUrl("www.ensembl.org", protocol = "https")
     if (is.null(release)) {
         return(currentUrl)
     }
     release <- as.character(release)
     assert(requireNamespaces("rvest"))
     url <- pasteUrl(
-        "useast.ensembl.org",
+        "www.ensembl.org",
         "info",
         "website",
         "archives",
         "index.html",
         protocol = "https"
     )
-    assert(isAnExistingUrl(url))
     html <- rvest::read_html(url)
     ele <- rvest::html_element(html, css = ".archive-box")
     ele <- rvest::html_element(ele, css = ".spaced")
@@ -86,7 +85,5 @@ mapEnsemblReleaseToUrl <- function(release) {
     if (isTRUE(isCurrent)) {
         return(currentUrl)
     }
-    url <- df[i, "url"]
-    assert(isAnExistingUrl(url))
-    url
+    df[i, "url"]
 }

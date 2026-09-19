@@ -1,3 +1,14 @@
+## AcidGenomes 0.8.2 (2026-09-18)
+
+Bug fixes:
+
+- Restore Ensembl reference-genome downloads by using the supported HTTPS
+  transport instead of FTP.
+- Restore automatic Ensembl release detection using the machine-readable
+  `VERSION` endpoint.
+- Replace the unavailable `useast.ensembl.org` archive endpoint with the
+  canonical Ensembl website endpoint.
+
 ## AcidGenomes 0.8.1 (2026-06-19)
 
 Minor changes:
