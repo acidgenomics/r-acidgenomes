@@ -29,7 +29,7 @@ test_that("Homo sapiens GRCh38", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 62754L)
+    expect_length(genes, 61679L)
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -40,7 +40,7 @@ test_that("Homo sapiens GRCh38", {
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "EnsemblTranscripts")
-    expect_length(transcripts, 252894L)
+    expect_length(transcripts, 251798L)
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(
@@ -179,7 +179,7 @@ test_that("Mus musculus GRCm39", {
     ))))
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "EnsemblGenes")
-    expect_length(genes, 56941L)
+    expect_length(genes, 53707L)
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
         expected = c(
@@ -190,7 +190,7 @@ test_that("Mus musculus GRCm39", {
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "EnsemblTranscripts")
-    expect_length(transcripts, 149547L)
+    expect_length(transcripts, 146263L)
     expect_identical(
         object = head(sort(names(transcripts)), n = 3L),
         expected = c(

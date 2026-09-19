@@ -151,16 +151,6 @@ makeTxToGeneFromFasta <-
                     pattern = " transcript_biotype:",
                     x = lines[[1L]],
                     fixed = TRUE
-                ) &&
-                grepl(
-                    pattern = " gene_symbol:",
-                    x = lines[[1L]],
-                    fixed = TRUE
-                ) &&
-                grepl(
-                    pattern = " description:",
-                    x = lines[[1L]],
-                    fixed = TRUE
                 )
         ) {
             provider <- "Ensembl"
