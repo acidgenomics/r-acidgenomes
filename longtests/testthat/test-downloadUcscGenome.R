@@ -146,17 +146,17 @@ test_that("Mus musculus mm39", {
             "genes.rds",
             "genome.fa.gz",
             "metadata.rds",
-            "transcriptome.fa.gz",
             "transcripts.rds",
             "tx2gene.csv.gz",
             "tx2gene.rds"
         )
     ))))
+    expect_length(info[["transcriptome"]][["files"]], 0L)
     genes <- import(file.path(outputDir, "genes.rds"))
     expect_s4_class(genes, "UcscGenes")
     expect_identical(
         object = head(names(genes), n = 3L),
-        expected = c("Gm26206", "Gm18956", "LOC118567655")
+        expected = c("Gm26206", "Gm18956", "Gm53491")
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "UcscTranscripts")

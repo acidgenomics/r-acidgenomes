@@ -42,31 +42,11 @@ NULL
 #' @export
 currentEnsemblVersion <- function() {
     x <- import(
-        con = pasteUrl(
-            "ftp.ensembl.org",
-            "pub",
-            "current_README",
-            protocol = "https"
-        ),
+        con = .ensemblFtpUrl("VERSION"),
         format = "lines",
         quiet = TRUE
     )
-    x <- grep(
-        pattern = "current release",
-        x = x,
-        ignore.case = TRUE,
-        value = TRUE
-    )
-    if (!isString(x)) {
-        abort("Failed to extract release version from Ensembl FTP server.")
-    }
-    x <- sub(
-        pattern = "^.*Ensembl\\s([0-9]+).*$",
-        replacement = "\\1",
-        x = x
-    )
-    x <- as.integer(x)
-    x
+    .parseEnsemblVersion(x)
 }
 
 

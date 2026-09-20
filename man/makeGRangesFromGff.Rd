@@ -170,14 +170,14 @@ See also:
 Example URLs:
 \itemize{
 \item UCSC \emph{Homo sapiens} hg38 GTF files:
-\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
-\href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz}{hg38.knownGene.gtf.gz},
+\href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.ncbiRefSeq.gtf.gz}{hg38.ncbiRefSeq.gtf.gz},
 }
 
 Related URLs:
 \itemize{
 \item \href{https://hgdownload.soe.ucsc.edu/downloads.html}{UCSC downloads}
-\item \href{https://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/}{UCSC hg38 bigZips}
+\item \href{https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/}{UCSC hg38 bigZips}
 \item \href{https://genome.ucsc.edu/cgi-bin/hgTables}{UCSC hgTables}
 }
 }
@@ -187,9 +187,8 @@ Related URLs:
 
 Example URLs:
 \itemize{
-\item FlyBase \emph{Drosophila melanogaster} r6.49
-\href{https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gtf/dmel-all-r6.49.gtf.gz}{GTF},
-\href{https://ftp.flybase.net/releases/FB2022_06/dmel_r6.49/gff/dmel-all-r6.49.gff.gz}{GFF3}
+\item FlyBase \emph{Drosophila melanogaster} r6.49 annotations are available from
+\href{https://flybase.org/}{FlyBase}.
 }
 
 See also:
@@ -203,9 +202,7 @@ See also:
 
 Example URLs:
 \itemize{
-\item WormBase \emph{Caenorhabditis elegans} WS287
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.canonical_geneset.gtf.gz}{GTF},
-\href{ftp://ftp.wormbase.org/pub/wormbase/releases/WS287/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS287.annotations.gff3.gz}{GFF3}
+\item WormBase \emph{Caenorhabditis elegans} WS287 annotations.
 }
 }
 

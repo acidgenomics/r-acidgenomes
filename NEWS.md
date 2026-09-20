@@ -1,3 +1,27 @@
+## AcidGenomes 0.9.0 (2026-09-20)
+
+Bug fixes:
+
+- `makeGRangesFromGff`: Restore UCSC GTF import with current Bioconductor by
+  using `txdbmaker::makeTxDbFromGFF()`.
+- `downloadUcscGenome`: Continue downloading UCSC mm39 genome annotations when
+  its retired transcriptome FASTA files are unavailable.
+
+Testing:
+
+- Refresh RefSeq and UCSC longtest expectations for current upstream content.
+
+## AcidGenomes 0.8.2 (2026-09-18)
+
+Bug fixes:
+
+- Restore Ensembl reference-genome downloads by using the supported HTTPS
+  transport instead of FTP.
+- Restore automatic Ensembl release detection using the machine-readable
+  `VERSION` endpoint.
+- Replace the unavailable `useast.ensembl.org` archive endpoint with the
+  canonical Ensembl website endpoint.
+
 ## AcidGenomes 0.8.1 (2026-06-19)
 
 Minor changes:

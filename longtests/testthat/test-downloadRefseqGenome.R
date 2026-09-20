@@ -109,8 +109,8 @@ test_that("Homo sapiens GRCh37", {
     expect_s4_class(t2g, "TxToGene")
     t2g <- as.data.frame(t2g)
     aatfExpected <- data.frame(
-        "txId" = c("NM_012138.4"),
-        "geneId" = "AATF"
+        "txId" = c("NM_001411094.1", "NM_012138.4"),
+        "geneId" = c("AATF", "AATF")
     )
     aatfCurrent <- t2g[t2g[, 2L] == "AATF", ]
     rownames(aatfCurrent) <- NULL
@@ -158,7 +158,7 @@ test_that("Mus musculus", {
     expect_s4_class(genes, "RefseqGenes")
     expect_identical(
         object = head(sort(names(genes)), n = 3L),
-        expected = c("0610005C13Rik", "0610006L08Rik", "0610009B22Rik")
+        expected = c("0610005C13Rik", "0610006L08Rik", "0610009E02Rik")
     )
     transcripts <- import(file.path(outputDir, "transcripts.rds"))
     expect_s4_class(transcripts, "RefseqTranscripts")

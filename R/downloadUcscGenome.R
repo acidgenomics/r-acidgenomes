@@ -272,6 +272,22 @@ downloadUcscGenome <-
             refMrna = pasteUrl(releaseUrl, "refMrna.fa.gz"),
             refMrnaChecksum = pasteUrl(releaseUrl, "refMrna.fa.gz.md5")
         )
+        available <- vapply(
+            X = urls,
+            FUN = isAnExistingUrl,
+            FUN.VALUE = logical(1L),
+            USE.NAMES = FALSE
+        )
+        if (!all(available)) {
+            alertWarning(sprintf(
+                "UCSC does not provide transcriptome files for {.url %s}.",
+                releaseUrl
+            ))
+            return(invisible(list(
+                files = character(0L),
+                urls = urls[available]
+            )))
+        }
         files <- .downloadUrls(
             urls = urls,
             outputDir = file.path(outputDir, "metadata"),

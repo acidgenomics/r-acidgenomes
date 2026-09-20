@@ -281,9 +281,14 @@
                 paste("cat", shQuote(f))
             }
         }
-        cmd <- paste(
-            decompressCmd(transcriptomeFasta),
-            decompressCmd(genomeFasta),
+        cmd <- paste0(
+            "{ ",
+            paste(
+                decompressCmd(transcriptomeFasta),
+                decompressCmd(genomeFasta),
+                sep = "; "
+            ),
+            "; }",
             "| gzip -c >",
             shQuote(gentromeFile)
         )

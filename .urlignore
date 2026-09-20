@@ -1,0 +1,3 @@
+# Ensembl REST accepts requests from package consumers but intermittently
+# times out under automated URL checks.
+https://rest.ensembl.org

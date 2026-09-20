@@ -1,2 +1,12 @@
 * Development
 ** TODO For gene/transcript level, consider using `featureType` instead of `level`.
+
+* Testing
+** TODO Make longtests use a configurable temporary directory.
+   The GFF suite can exhaust R's macOS temporary session volume during large
+   Ensembl imports even when the APFS data volume has ample free space. Support
+   a persistent, user-configurable temporary directory for these live tests.
+** TODO Refresh GFF longtest expectations against current upstream metadata.
+   After the temporary-directory issue is resolved, rerun the complete GFF
+   suite and update only assertions verified to have changed upstream. See the
+   retained 2026-09-19 run log in the Copilot session workspace.

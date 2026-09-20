@@ -34,8 +34,7 @@ downloadEnsemblGenome <-
             isFlag(cache)
         )
         outputDir <- initDir(outputDir)
-        ## Can switch to HTTPS if FTP server is down, but often slower.
-        baseUrl <- pasteUrl("ftp.ensembl.org", "pub", protocol = "ftp")
+        baseUrl <- .ensemblFtpUrl()
         if (is.null(genomeBuild)) {
             genomeBuild <- currentEnsemblGenomeBuild(organism)
             genomeBuild <- .simpleGenomeBuild(genomeBuild)

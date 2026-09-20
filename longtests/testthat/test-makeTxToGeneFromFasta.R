@@ -39,6 +39,28 @@ test_that("Ensembl : Homo sapiens : GRCh38", {
     )
 })
 
+test_that("Ensembl : Homo sapiens : GRCh37", {
+    file <- tempfile(fileext = ".fa")
+    writeLines(
+        text = paste(
+            ">ENST00000415118.1 havana_ig_gene:known",
+            "chromosome:GRCh37:14:22907539:22907546:1",
+            "gene:ENSG00000223997.1",
+            "gene_biotype:TR_D_gene",
+            "transcript_biotype:TR_D_gene"
+        ),
+        con = file
+    )
+    out <- makeTxToGeneFromFasta(file)
+    expect_identical(
+        object = as.data.frame(out),
+        expected = data.frame(
+            txId = "ENST00000415118.1",
+            geneId = "ENSG00000223997.1"
+        )
+    )
+})
+
 test_that("FlyBase", {
     args <- list()
     args[["mirna"]] <-
