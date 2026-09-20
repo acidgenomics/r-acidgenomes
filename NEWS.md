@@ -1,4 +1,4 @@
-## AcidGenomes 0.8.3 (development)
+## AcidGenomes 0.9.0 (2026-09-20)
 
 Bug fixes:
 
