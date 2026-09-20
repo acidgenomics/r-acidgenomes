@@ -96,25 +96,6 @@
             ## Drop transcripts that don't map to genes.
             keep <- !is.na(mcols(gr)[["gene_id"]])
             gr <- gr[keep]
-            ## Ensure "rna-" prefix is correctly removed from identifiers.
-            ## This is not currently handled correctly for RefSeq input.
-            ## (e.g. "rna-MIR1302-2", "rna-TRNP", etc.).
-            if (any(startsWith(mcols(gr)[["tx_id"]], "rna-"))) {
-                mcols(gr)[["tx_id"]] <-
-                    gsub(
-                        pattern = "^rna-",
-                        replacement = "",
-                        x = mcols(gr)[["tx_id"]]
-                    )
-            }
-            if (any(startsWith(mcols(gr)[["tx_name"]], "rna-"))) {
-                mcols(gr)[["tx_name"]] <-
-                    gsub(
-                        pattern = "^rna-",
-                        replacement = "",
-                        x = mcols(gr)[["tx_name"]]
-                    )
-            }
             ## Improve identifier handling for UCSC and/or RefSeq input. Note
             ## that RefSeq transcript names currently map to the gene names
             ## here, which is incorrect and confusing.
@@ -126,6 +107,31 @@
                 ## time being just in case.
                 mcols(gr)[["tx_number"]] <- mcols(gr)[["tx_id"]]
                 mcols(gr)[["tx_id"]] <- mcols(gr)[["tx_name"]]
+            }
+            ## Ensure "rna-" prefix is correctly removed from identifiers.
+            ## This is not currently handled correctly for RefSeq input.
+            ## (e.g. "rna-MIR1302-2", "rna-TRNP", etc.).
+            if (
+                is.character(mcols(gr)[["tx_id"]]) &&
+                    any(startsWith(mcols(gr)[["tx_id"]], "rna-"))
+            ) {
+                mcols(gr)[["tx_id"]] <-
+                    gsub(
+                        pattern = "^rna-",
+                        replacement = "",
+                        x = mcols(gr)[["tx_id"]]
+                    )
+            }
+            if (
+                is.character(mcols(gr)[["tx_name"]]) &&
+                    any(startsWith(mcols(gr)[["tx_name"]], "rna-"))
+            ) {
+                mcols(gr)[["tx_name"]] <-
+                    gsub(
+                        pattern = "^rna-",
+                        replacement = "",
+                        x = mcols(gr)[["tx_name"]]
+                    )
             }
             ## Drop any transcript identifiers that return NA. This can happen
             ## with RefSeq return.
@@ -245,10 +251,10 @@
         "Making {.cls %s} from {.file %s} with {.pkg %s}::{.fun %s}.",
         "TxDb",
         file,
-        "GenomicFeatures",
+        "txdbmaker",
         "makeTxDbFromGFF"
     ))
-    assert(requireNamespaces("GenomicFeatures"))
+    assert(requireNamespaces("txdbmaker"))
     if (isAFile(file)) {
         file <- realpath(file)
     }
@@ -267,9 +273,8 @@
     if (!is.null(seqinfo)) {
         args <- append(x = args, values = list(chrominfo = seqinfo))
     }
-    what <- get("makeTxDbFromGFF", envir = asNamespace("GenomicFeatures"))
     quietly({
-        txdb <- do.call(what = what, args = args)
+        txdb <- do.call(what = txdbmaker::makeTxDbFromGFF, args = args)
     })
     assert(is(txdb, "TxDb"))
     ## Stash the GFF metadata, so we can access in `makeGRangesFromGff()`.

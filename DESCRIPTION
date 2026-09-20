@@ -28,6 +28,7 @@ Imports:
     AcidPlyr (>= 0.5.5),
     BiocGenerics,
     GenomeInfoDb,
+    GenomeInfoDbData,
     GenomicRanges,
     IRanges,
     S4Vectors,
@@ -36,6 +37,7 @@ Imports:
     parallel,
     pipette,
     syntactic,
+    txdbmaker,
     utils
 Suggests:
     AcidDevTools,

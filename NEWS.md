@@ -1,3 +1,16 @@
+## AcidGenomes 0.8.3 (development)
+
+Bug fixes:
+
+- `makeGRangesFromGff`: Restore UCSC GTF import with current Bioconductor by
+  using `txdbmaker::makeTxDbFromGFF()`.
+- `downloadUcscGenome`: Continue downloading UCSC mm39 genome annotations when
+  its retired transcriptome FASTA files are unavailable.
+
+Testing:
+
+- Refresh RefSeq and UCSC longtest expectations for current upstream content.
+
 ## AcidGenomes 0.8.2 (2026-09-18)
 
 Bug fixes:
