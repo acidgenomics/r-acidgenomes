@@ -1,3 +1,16 @@
+## AcidGenomes 0.10.0 (2026-09-24)
+
+New functions:
+
+- `classifyCuratedGeneGroups`: Tags genes into curated HGNC gene groups
+  (`"riboCyto"`, `"riboMito"`, `"hemoglobin"`) sourced from HGNC's own
+  `geneGroupId` assignments, never a symbol regex. For Mus musculus, human
+  HGNC groups are propagated via a fully identifier-based chain (HGNC
+  `hgncId` -> JAX ortholog `mouseMgiId` -> MGI `ensemblGeneId`), with no
+  gene-symbol matching at any step. Deliberately independent of
+  `broadClass`, which is single-valued and already assigns every
+  ribosomal/hemoglobin gene a value (`"coding"`, `"pseudo"`, etc).
+
 ## AcidGenomes 0.9.0 (2026-09-20)
 
 Bug fixes:
