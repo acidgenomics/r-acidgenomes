@@ -41,6 +41,9 @@ reference:
     contents:
       - starts_with("map")
       - starts_with("goTerm")
+  - title: Gene group classification
+    contents:
+      - starts_with("classify")
   - title: Version and ID utilities
     contents:
       - starts_with("strip")
